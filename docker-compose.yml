@@ -50,7 +50,7 @@ services:
   prod-ci-deploy:
     container_name: prod-ci-deploy
     extends: gocompiler-docker-dns-proxy
-    command: bash -c "builder validate-release || exit 0 && builder apply-version && builder build && builder upload-release"
+    command: bash -c "builder deploy-ci"
     environment:
       - CURRENT_BRANCH=$TRAVIS_BRANCH # current branch name
       - REPO_TOKEN=$REPO_TOKEN # github token to deploy the binary

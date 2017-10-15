@@ -96,12 +96,24 @@ case $1 in
 
 	;;
 
-
 	validate-release )
 
 		if git rev-parse "$APP_VERSION^{}" >/dev/null 2>&1; then
 			echo "> Version already exists $APP_VERSION"
 			exit 3
+		fi
+
+	;;
+
+	deploy-ci )
+
+		echo "> build started, current branch=$CURRENT_BRANCH"
+		if [ "$CURRENT_BRANCH" = "master" ]; then
+			echo "> deploying new version"
+			builder validate-release || exit 0 && builder apply-version && builder build && builder upload-release
+		else
+			echo "> building candidate"
+			builder build
 		fi
 
 	;;
