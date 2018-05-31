@@ -2,8 +2,7 @@
 
 Setup the environment
 
-    $ docker-compose -d compiler-dps up
-    $ docker exec -it gocompiler bash
+    $ docker-compose up -d compiler-dps && docker exec -it gocompiler-dps bash
 
 Running the application 
 

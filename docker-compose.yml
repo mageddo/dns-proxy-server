@@ -4,7 +4,7 @@ services:
   # Base Image to build project
   compiler-dps:
     image: golang:1.9
-    container_name: docker-dns-gocompiler
+    container_name: gocompiler-dps
     working_dir: /app/src/github.com/mageddo/dns-proxy-server
     volumes:
       - $PWD:/app/src/github.com/mageddo/dns-proxy-server
