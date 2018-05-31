@@ -10,11 +10,22 @@ Now all **mageddo.com** subdomains will solve to that nginx container
 
 ```
 $ nslookup site1.mageddo.com
-$ nslookup site2.mageddo.com
+Server:		172.17.0.4
+Address:	172.17.0.4#53
+
+Non-authoritative answer:
+Name:	site1.mageddo.com
+Address: 172.17.0.5
+
 $ nslookup mageddo.com
+Server:		172.17.0.4
+Address:	172.17.0.4#53
+
+Non-authoritative answer:
+Name:	mageddo.com
+Address: 172.17.0.5
 
 ```
-
 
 ### Enable/Disable console log or change log path
 You can disable, log to console, log to default log file path or specify a log path at config file, environment or command line argument. Available options:
