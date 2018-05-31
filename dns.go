@@ -26,6 +26,7 @@ import (
 
 func init(){
 	// TODO unavailable log.SetLevel(conf.LogLevel())
+	logging.SetLevel(conf.LogLevel())
 	log.SetOutput(conf.LogFile())
 }
 
