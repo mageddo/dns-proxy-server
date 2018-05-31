@@ -26,10 +26,8 @@ You can disable, log to console, log to default log file path or specify a log p
 ### Set log level
 You can change system log level at config file, environment or command line argument. Available levels:
 
-* CRITICAL
 * ERROR
 * WARNING
-* NOTICE
 * INFO
 * DEBUG (Default)
 
