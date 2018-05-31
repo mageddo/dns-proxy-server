@@ -1,3 +1,6 @@
+### 2.5.4
+* Organize some logs and auto reconfigure as default dns if resolvconf changes
+
 ### 2.5.3
 * Fixing wildcard resolution were not solving main domain to local configuration, just the subdomains
 
