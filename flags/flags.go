@@ -24,7 +24,7 @@ var (
 		uninstall = uninstall the service from machine `)
 	publishServicePort = flag.Bool("service-publish-web-port", true, "Publish web port when running as service in docker mode")
 	logToFile = flag.String("log-file", "console", "Log to file instead of console, (true=log to default log file, /tmp/log.log=log to custom log location)")
-	logLevel = flag.String("log-level", "DEBUG", "Log Level CRITICAL, ERROR, WARNING, NOTICE, INFO, DEBUG")
+	logLevel = flag.String("log-level", "DEBUG", "Log Level ERROR, WARNING, INFO, DEBUG")
 	Version = flag.Bool("version", false, "Current version")
 	Help = flag.Bool("help", false, "This message")
 )
