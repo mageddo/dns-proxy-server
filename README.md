@@ -30,4 +30,4 @@ The Dns Proxy Server follow the below order to solve hostnames
 ### Documents
 * [Running it on Linux/Windows/MAC](http://mageddo.github.io/dns-proxy-server/docs/api/running.html)
 * [Latest Rest API Features](http://mageddo.github.io/dns-proxy-server/docs/api/)
-* Take a look [developing section](docs/developing) for more details of how develop at this project
+* [Developing ](docs/developing) for more details of how develop at this project
