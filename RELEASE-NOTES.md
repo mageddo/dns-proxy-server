@@ -1,5 +1,6 @@
 ### 2.5.2
 * Fixing log level that stopped of work after **2.5.0**
+* Fixing and increasing docs development instructions
 
 ### 2.5.1
 * Fixing ping slowness, takes more than 10 seconds to respond 

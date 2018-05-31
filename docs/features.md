@@ -1,3 +1,21 @@
+### Solve hostnames using wildcards
+
+If you register a hostname with `.` at start, then all subdomains will solve to that container/local storage entry
+
+Example
+
+	docker run --rm --hostname .mageddo.com nginx:latest
+
+Now all **mageddo.com** subdomains will solve to that nginx container
+
+```
+$ nslookup site1.mageddo.com
+$ nslookup site2.mageddo.com
+$ nslookup mageddo.com
+
+```
+
+
 ### Enable/Disable console log or change log path
 You can disable, log to console, log to default log file path or specify a log path at config file, environment or command line argument. Available options:
 
