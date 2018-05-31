@@ -14,7 +14,7 @@ Dns-proxy-server is a end user(developers, Server Administrators) DNS server too
 
 **For more details see** [the Documentation ](http://mageddo.github.io/dns-proxy-server/docs/features) or [Release Notes](RELEASE-NOTES.md) 
 
-![](https://i.imgur.com/Mb8XT1o.png)
+![](https://i.imgur.com/VkzNLpp.png)
 
 ### Requirements
 * Linux/Windows/MAC
