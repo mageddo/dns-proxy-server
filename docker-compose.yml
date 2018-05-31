@@ -20,7 +20,6 @@ services:
 
   # Run from docker image
   prod-dps:
-    container_name: dns-proxy-server
     image: defreitas/dns-proxy-server:2.5.1
     hostname: dns.mageddo
     volumes:

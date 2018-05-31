@@ -18,10 +18,17 @@ docker-dns-server-compiler           | _/app/src
 docker-dns-server-compiler exited with code 0
 ```
 
-Create the docker image
+Then binaries mus be available at **build** folder
 
 ```
-$ docker-compose build prod-build-image-dps
+$ ls build/
+dns-proxy-server  dns-proxy-server-2.5.1.tgz  static
+``` 
+
+If you want you can build the docker image
+
+```
+$ docker-compose build prod-build-image-dps && docker-compose up prod-dps
 ```
 
 ### Used tecnologies 
