@@ -9,6 +9,7 @@ import (
 	"github.com/mageddo/dns-proxy-server/utils"
 	"flag"
 	"github.com/mageddo/dns-proxy-server/utils/env"
+	"github.com/mageddo/go-logging"
 )
 
 func TestDefaultFlagValues(t *testing.T) {
@@ -40,7 +41,7 @@ func TestFlagValuesFromConf(t *testing.T) {
 
 
 func TestLogLevel_DefaultValue(t *testing.T) {
-	assert.Equal(t, "DEBUG", LogLevel())
+	assert.Equal(t, logging.DEBUG, LogLevel())
 }
 
 func TestLogLevel_ReadFromConfig(t *testing.T) {
@@ -55,7 +56,7 @@ func TestLogLevel_ReadFromConfig(t *testing.T) {
 	level := LogLevel()
 
 	// assert
-	assert.Equal(t, "INFO", level)
+	assert.Equal(t, logging.INFO, level)
 
 	os.Remove(local.GetConfPath())
 }
@@ -69,7 +70,7 @@ func TestLogLevel_ReadFromEnv(t *testing.T) {
 	level := LogLevel()
 
 	// assert
-	assert.Equal(t, "WARNING", level)
+	assert.Equal(t, logging.WARNING, level)
 
 }
 
