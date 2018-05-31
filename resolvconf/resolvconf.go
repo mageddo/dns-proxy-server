@@ -74,8 +74,6 @@ func ProcessResolvconf( handler DnsHandler ) error {
 	return nil
 }
 
-
-
 func getDNSLine(serverIP string) string {
 	return "nameserver " + serverIP + " # dps-entry"
 }
@@ -96,17 +94,14 @@ func getDnsEntryType(line string) DnsEntry {
 }
 
 func SetCurrentDNSServerToMachineAndLockIt() error {
-
 	err := SetCurrentDNSServerToMachine()
 	if err != nil {
 		return err
 	}
 	return LockResolvConf()
-
 }
 
 func SetCurrentDNSServerToMachine() error {
-
 	ip, err := GetCurrentIpAddress()
 	logging.Infof("status=begin, ip=%s, err=%v", ip, err)
 	if err != nil {
@@ -177,5 +172,4 @@ func GetCurrentIpAddress() (string, error) {
 		}
 	}
 	return "", nil
-
 }
