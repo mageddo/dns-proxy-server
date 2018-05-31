@@ -35,5 +35,4 @@ $ docker-compose build prod-build-image-dps && docker-compose up prod-dps
 
 * Docker
 * Docker Compose
-* Git
 * Golang 1.9

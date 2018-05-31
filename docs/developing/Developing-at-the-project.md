@@ -1,4 +1,4 @@
-# Developing with docker
+### Developing with docker
 
 Setup the environment
 
@@ -12,7 +12,7 @@ Running unit tests
 
     $ go test -cover=false ./src/github.com/mageddo/dns-proxy-server/.../
 
-# Developing at Intellij 
+### Developing at Intellij 
 * [Install Golang plugin](https://github.com/go-lang-plugin-org)
 * Import the project at `File -> New -> Project from existing sources`
 * Make solve dependencies 
