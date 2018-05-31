@@ -9,6 +9,7 @@ import (
 	"net"
 	"strconv"
 	"strings"
+	"fmt"
 )
 
 type DockerDnsSolver struct {
@@ -17,17 +18,34 @@ type DockerDnsSolver struct {
 
 func (s DockerDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns.Msg, error) {
 
-	key := question.Name[:len(question.Name)-1]
+	questionName := question.Name[:len(question.Name)-1]
+
+	// simple solving
+	var key = questionName
 	if s.c.ContainsKey(key) {
-		logging.Debugf("solver=docker, status=solved-key, solver=docker, hostname=%s, ip=%+v", key, s.c.Get(key))
-		return s.getMsg(key, question), nil
+		return s.doSolve(key, question)
 	}
-	i := strings.Index(key, ".")
-	if i > 0 && s.c.ContainsKey(key[i:]) {
-		logging.Debugf("solver=docker, status=solved-key-wildcard, solver=docker, hostname=%s, ip=%+v", key, s.c.Get(key[i:]))
-		return s.getMsg(key[i:], question), nil
+
+	// solving domain by wild card
+	key = fmt.Sprintf(".%s", questionName)
+	if s.c.ContainsKey(key) {
+		return s.doSolve(key, question)
+	}
+
+	// Solving subdomains by wildcard
+	i := strings.Index(questionName, ".")
+	if i > 0 {
+		key = questionName[i:]
+		if s.c.ContainsKey(key) {
+			return s.doSolve(key, question)
+		}
 	}
 	return nil, errors.New("hostname not found " + key)
+}
+
+func (s DockerDnsSolver) doSolve(k string, q dns.Question) (*dns.Msg, error) {
+	logging.Debugf("solver=docker, status=solved-key, question=%s, hostname=%s, ip=%+v", q.Name, k, s.c.Get(k))
+	return s.getMsg(k, q), nil
 }
 
 func NewDockerSolver(c cache.Cache) DockerDnsSolver {
