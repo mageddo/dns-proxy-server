@@ -136,12 +136,13 @@ func getHostnames(inspect types.ContainerJSON) []string {
 func putHostnames(hostnames []string, inspect types.ContainerJSON) error {
 	for _, host := range hostnames {
 
-		var ip string = ""
-		for _, network := range inspect.NetworkSettings.Networks {
+		var ip = ""
+		for k, network := range inspect.NetworkSettings.Networks {
+			logging.Debugf("container=%s, network=%s, ip=%s", inspect.Name, k, network.IPAddress)
 			ip = network.IPAddress
 		}
 		if len(ip) == 0 {
-			ip = inspect.NetworkSettings.IPAddress;
+			ip = inspect.NetworkSettings.IPAddress
 			if len(ip) == 0 {
 				err := fmt.Sprintf("no network found to %s", inspect.Name)
 				logging.Error(err)

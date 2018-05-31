@@ -10,6 +10,15 @@ import (
 	"github.com/mageddo/go-logging/native"
 )
 
+// in accord to https://tools.ietf.org/html/rfc5424
+const (
+	ERROR = 3
+	WARNING = 4
+	NOTICE = 5
+	INFO = 6
+	DEBUG = 7
+)
+
 type Printer interface {
 	Printf(format string, args ...interface{})
 	Println(args ...interface{})
@@ -35,39 +44,58 @@ type Log interface {
 
 	Printer() Printer
 
+	// specify log level
+	SetLevel(level int)
+	GetLevel() int
 }
 
 var l Log = New(native.NewGologPrinter(os.Stdout, "", log.LstdFlags), 3)
 func Debug(args ...interface{}) {
-	l.Debug(args...)
+	if isActive(l.GetLevel(), DEBUG) {
+		l.Debug(args...)
+	}
 }
 
 func Debugf(format string, args ...interface{}){
-	l.Debugf(format, args...)
+	if isActive(l.GetLevel(), DEBUG) {
+		l.Debugf(format, args...)
+	}
 }
 
 func Info(args ...interface{}){
-	l.Info(args...)
+	if isActive(l.GetLevel(), INFO) {
+		l.Info(args...)
+	}
 }
 
 func Infof(format string, args ...interface{}){
-	l.Infof(format, args...)
+	if isActive(l.GetLevel(), INFO) {
+		l.Infof(format, args...)
+	}
 }
 
 func Warning(args ...interface{}){
-	l.Warning(args...)
+	if isActive(l.GetLevel(), WARNING) {
+		l.Warning(args...)
+	}
 }
 
 func Warningf(format string, args ...interface{}) {
-	l.Warningf(format, args...)
+	if isActive(l.GetLevel(), WARNING) {
+		l.Warningf(format, args...)
+	}
 }
 
 func Error(args ...interface{}){
-	l.Error(args...)
+	if isActive(l.GetLevel(), ERROR) {
+		l.Error(args...)
+	}
 }
 
 func Errorf(format string, args ...interface{}){
-	l.Errorf(format, args...)
+	if isActive(l.GetLevel(), ERROR) {
+		l.Errorf(format, args...)
+	}
 }
 
 func SetOutput(w io.Writer) {
@@ -86,4 +114,16 @@ func SetLog(logger Log){
 //
 func GetLog() Log {
 	return l
+}
+
+func SetLevel(level int){
+	l.SetLevel(level)
+}
+
+func GetLevel() int {
+	return l.GetLevel()
+}
+
+func isActive(currentLevel, levelToCompare int) bool {
+	return currentLevel >= levelToCompare
 }
