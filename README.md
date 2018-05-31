@@ -21,13 +21,13 @@ Dns-proxy-server is a end user(developers, Server Administrators) DNS server too
 * Docker 1.9.x
 
 ### DNS resolution order
-The Dns Proxy Server follow the below order to solve hostnames
+DNS  Proxy Server follow the below order to solve hostnames
 
-* DNS try to solve the hosts from **docker** containers
-* then from local database file
-* then from 3rd configured remote DNS servers
+* Try to solve the hostname from **docker** containers
+* Then from local database file
+* Then from 3rd configured remote DNS servers
 
 ### Documents
 * [Running it on Linux/Windows/MAC](http://mageddo.github.io/dns-proxy-server/docs/api/running.html)
 * [Latest Rest API Features](http://mageddo.github.io/dns-proxy-server/docs/api/)
-* [Developing ](docs/developing) for more details of how develop at this project
+* [Coding](docs/developing) at DNS Proxy Server

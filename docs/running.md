@@ -6,6 +6,26 @@
 * [Installing it as a Linux service](#installing-it-as-a-linux-service)
 * [File configuration/Terminal Options](#configure-your-dns)
 
+### Running on Linux
+
+__From docker__
+
+```bash
+$ docker run --rm --hostname dns.mageddo --name dns-proxy-server -p 5380:5380 \
+  -v /opt/dns-proxy-server/conf:/app/conf \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /etc/resolv.conf:/etc/resolv.conf \
+  defreitas/dns-proxy-server
+```
+
+__Standalone run__
+
+Download the [latest version](https://github.com/mageddo/dns-proxy-server/releases), extract and run
+
+	$ sudo ./dns-proxy-server
+
+Dns Proxy Server is now your current DNS server, to back everything to original state just press `CTRL + C`
+
 ### Running on Windows / MAC
 
 > We have [cases](https://github.com/mageddo/dns-proxy-server/issues/66) of people got DPS running on Windows,
@@ -33,27 +53,6 @@ pictures (sorry they are in portuguese)
 [![](https://i.imgur.com/1goUHp0s.png)](https://i.imgur.com/1goUHp0.png)
 [![](https://i.imgur.com/XKM7JwNs.png)](https://i.imgur.com/XKM7JwN.png)
 [![](https://i.imgur.com/EFno6F6s.png)](https://i.imgur.com/EFno6F6.png)
-
-### Running on Linux
-
-__From docker__
-
-```bash
-$ docker run --rm --hostname dns.mageddo --name dns-proxy-server -p 5380:5380 \
-  -v /opt/dns-proxy-server/conf:/app/conf \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  -v /etc/resolv.conf:/etc/resolv.conf \
-  defreitas/dns-proxy-server
-```
-
-__Standalone run__
-
-Download the [latest version](https://github.com/mageddo/dns-proxy-server/releases), extract and run
-
-	$ sudo ./dns-proxy-server
-
-Dns Proxy Server is now your current DNS server, to back everything to original state just press `CTRL + C`
-
 
 ### Testing the DNS server
 
