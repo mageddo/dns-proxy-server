@@ -1,3 +1,6 @@
+### 2.5.3
+* Fixing wildcard resolution were not solving main domain to local configuration, just the subdomains
+
 ### 2.5.2
 * Fixing log level that stopped of work after **2.5.0**
 * Fixing and increasing docs development instructions

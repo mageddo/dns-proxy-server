@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 	"github.com/mageddo/go-logging"
+	"fmt"
 )
 
 type localDnsSolver struct {
@@ -19,14 +20,27 @@ type localDnsSolver struct {
 
 func (s localDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns.Msg, error) {
 
-	key := question.Name[:len(question.Name)-1]
+	questionName := question.Name[:len(question.Name)-1]
+
+	// simple solving
+	var key = questionName
 	if msg, err := s.solveHostname(ctx, question, key); err == nil {
-		return msg, err
+		return msg, nil
 	}
 
-	i := strings.Index(key, ".")
+	// solving domain by wild card
+	key = fmt.Sprintf(".%s", questionName)
+	if msg, err := s.solveHostname(ctx, question, key); err == nil {
+		return msg, nil
+	}
+
+	// Solving subdomains by wildcard
+	i := strings.Index(questionName, ".")
 	if i > 0 {
-		return s.solveHostname(ctx, question, key[i:])
+		key = questionName[i:]
+		if msg, err := s.solveHostname(ctx, question, key); err == nil {
+			return msg, nil
+		}
 	}
 	return nil, errors.New("hostname not found " + key)
 }
