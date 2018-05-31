@@ -4,10 +4,14 @@ import (
 	"github.com/mageddo/go-logging"
 	"os"
 	"io"
+	"github.com/mageddo/dns-proxy-server/conf"
 )
 
 func init(){
 	setup(os.Stdout)
+	logging.SetLevel(conf.LogLevel())
+	logging.Warningf("status=log level changed to %d", conf.LogLevel())
+	SetOutput(conf.LogFile())
 }
 
 func setup(out io.Writer) {

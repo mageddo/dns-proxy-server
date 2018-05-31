@@ -6,7 +6,7 @@ You can disable, log to console, log to default log file path or specify a log p
 * true - stop log to console and log to `/var/log/dns-proxy-server.log` file
 * <path> eg. /tmp/log.log - log to specified path
 
-#### Config File
+__Config File__
 ```json
 {
 	...
@@ -15,23 +15,31 @@ You can disable, log to console, log to default log file path or specify a log p
 }
 ```
 
-#### Environment
+__Environment__
 
 	export MG_LOG_FILE=console
 
-#### Command line argument
+__Command line argument__
 
 	go run dns.go  -log-file=console
 
 ### Set log level
-You can change system log level at config file, environment or command line argument. Available levels:
+You can change system log level using environment variable, config file, or command line argument, 
+DPS will consider the parameters in that order, first is more important.
+ 
+Available levels:
 
 * ERROR
 * WARNING
 * INFO
 * DEBUG (Default)
 
-#### Config file
+__Environment__
+
+	export MG_LOG_LEVEL=DEBUG
+
+__Config file__
+
 ```json
 {
 	...
@@ -40,11 +48,7 @@ You can change system log level at config file, environment or command line argu
 }
 ```
 
-#### Environment
-
-	export MG_LOG_LEVEL=DEBUG
-
-#### Command line argument
+__ Command line argument__
 
 	go run dns.go  -log-level=DEBUG
 

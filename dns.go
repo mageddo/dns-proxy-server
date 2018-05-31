@@ -1,8 +1,8 @@
 package main
 
 import (
+	_ "github.com/mageddo/dns-proxy-server/log"
 	_ "github.com/mageddo/dns-proxy-server/controller"
-	"github.com/mageddo/dns-proxy-server/log"
 	"fmt"
 	"os"
 	"runtime/pprof"
@@ -23,11 +23,6 @@ import (
 	"github.com/mageddo/dns-proxy-server/resolvconf"
 	"context"
 )
-
-func init(){
-	logging.SetLevel(conf.LogLevel())
-	log.SetOutput(conf.LogFile())
-}
 
 func handleQuestion(respWriter dns.ResponseWriter, reqMsg *dns.Msg) {
 
