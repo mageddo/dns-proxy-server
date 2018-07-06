@@ -2,7 +2,7 @@
 * Running
 	* [Running on Linux](#running-on-linux)
 	* [Running on Windows](#running-on-windows)
-	* [MAC Support]
+	* [MAC Support](#mac-support)
 * [Testing the DNS server](#testing-the-dns-server)
 * [Installing it as a Linux service](#installing-it-as-a-linux-service)
 * [File configuration/Terminal Options](#configure-your-dns)
