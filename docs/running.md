@@ -2,7 +2,6 @@
 * Running
 	* [Running on Linux](#running-on-linux)
 	* [Running on Windows](#running-on-windows)
-	* [MAC Support](#mac-support)
 * [Testing the DNS server](#testing-the-dns-server)
 * [Installing it as a Linux service](#installing-it-as-a-linux-service)
 * [File configuration/Terminal Options](#configure-your-dns)
@@ -50,10 +49,6 @@ pictures (sorry they are in portuguese)
 [![](https://i.imgur.com/1goUHp0s.png)](https://i.imgur.com/1goUHp0.png)
 [![](https://i.imgur.com/XKM7JwNs.png)](https://i.imgur.com/XKM7JwN.png)
 [![](https://i.imgur.com/EFno6F6s.png)](https://i.imgur.com/EFno6F6.png)
-
-### MAC Support
-Based on users feedback, DPS don't work on MAC, unfortunatly I'm haven't a MAC computer to work on that, if you want to contribute please try to fix it then open a pull request, thanks.
-
 
 ### Testing the DNS server
 
