@@ -33,4 +33,4 @@ DNS  Proxy Server follow the below order to solve hostnames
 * [Coding](docs/developing) at DNS Proxy Server
 
 ### MAC Support
-Based on users feedback, DPS don't work on MAC, unfortunatly I'm haven't a MAC computer to work on that, if you want to contribute please try to fix it then open a pull request, thanks.
+Based on users feedback, DPS don't work on MAC, unfortunatly I don't have a MAC computer to work on that, if you want to contribute please try to fix it then open a pull request, thanks.
