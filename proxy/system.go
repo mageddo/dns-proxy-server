@@ -38,7 +38,6 @@ func NewSystemSolver() SystemDnsSolver {
 
 func (s SystemDnsSolver) getMsg(key, ip string, question dns.Question) *dns.Msg {
 	ipArr := strings.Split(ip, ".")
-	logging.Infof("iparr=%v", ipArr)
 	i1, _ := strconv.Atoi(ipArr[0])
 	i2, _ := strconv.Atoi(ipArr[1])
 	i3, _ := strconv.Atoi(ipArr[2])
