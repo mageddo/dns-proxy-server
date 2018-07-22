@@ -11,6 +11,7 @@ Dns-proxy-server is a end user(developers, Server Administrators) DNS server too
 * [Solve hostnames using wildcards](http://mageddo.github.io/dns-proxy-server/docs/features#Solve-hostnames-using-wildcards)
 * [Graphic interface to manage it](http:/127.0.0.1:5380/static/)
 	* List and edit DNS local entries
+* [Solve host machine IP using `host.docker` hostname](http://mageddo.github.io/dns-proxy-server/docs/features#Solve-host-machine-IP-from-anywhere)
 
 **For more details see** [the Documentation ](http://mageddo.github.io/dns-proxy-server/docs/features) or [Release Notes](RELEASE-NOTES.md) 
 

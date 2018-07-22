@@ -10,7 +10,7 @@ Running the application
 
 Running unit tests
 
-    $ go test -cover=false ./src/github.com/mageddo/dns-proxy-server/.../
+    $ go test -cover=false ./.../
 
 ### Developing at Intellij 
 * [Install Golang plugin](https://github.com/go-lang-plugin-org)

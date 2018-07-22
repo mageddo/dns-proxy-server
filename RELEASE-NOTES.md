@@ -1,3 +1,9 @@
+### 2.6.1
+* Updating docs
+
+### 2.6.0
+* Now you can solve host machine IP from anywhere using host `host.docker`
+
 ### 2.5.4
 * Organize some logs and auto reconfigure as default dns if resolvconf changes
 
