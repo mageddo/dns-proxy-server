@@ -48,7 +48,8 @@ func handleQuestion(respWriter dns.ResponseWriter, reqMsg *dns.Msg) {
 
 	// loading the solvers and try to solve the hostname in that order
 	solvers := []proxy.DnsSolver{
-		proxy.NewDockerSolver(docker.GetCache()),  proxy.NewLocalDNSSolver(store.GetInstance()), proxy.NewRemoteDnsSolver(),
+		proxy.NewSystemSolver(), proxy.NewDockerSolver(docker.GetCache()),
+		proxy.NewLocalDNSSolver(store.GetInstance()), proxy.NewRemoteDnsSolver(),
 	}
 	
 	for _, solver := range solvers {
