@@ -1,19 +1,19 @@
 package docker
 
 import (
-	"fmt"
-	"github.com/docker/engine-api/types/filters"
 	"encoding/json"
-	"github.com/docker/engine-api/types/events"
-	"io"
-	"github.com/docker/engine-api/client"
-	"golang.org/x/net/context"
-	"github.com/mageddo/go-logging"
-	"github.com/docker/engine-api/types"
-	"github.com/mageddo/dns-proxy-server/cache/lru"
-	"github.com/mageddo/dns-proxy-server/cache"
-	"strings"
 	"errors"
+	"fmt"
+	"github.com/docker/engine-api/client"
+	"github.com/docker/engine-api/types"
+	"github.com/docker/engine-api/types/events"
+	"github.com/docker/engine-api/types/filters"
+	"github.com/mageddo/dns-proxy-server/cache"
+	"github.com/mageddo/dns-proxy-server/cache/lru"
+	"github.com/mageddo/go-logging"
+	"golang.org/x/net/context"
+	"io"
+	"strings"
 )
 
 var c = lru.New(43690)
@@ -110,19 +110,18 @@ func GetCache() cache.Cache {
 }
 
 func getHostnames(inspect types.ContainerJSON) []string {
+	hostnames := *new([]string)
+	if machineHostname, err := getMachineHostname(inspect); err == nil {
+		hostnames = append(hostnames, machineHostname)
+	}
+	hostnames = append(hostnames, getHostnamesFromEnv(inspect)...)
+	return hostnames
+}
 
+func getHostnamesFromEnv(inspect types.ContainerJSON) ([]string){
 	const hostnameEnv = "HOSTNAMES="
 	hostnames := *new([]string)
-
-	if len(inspect.Config.Hostname) != 0 {
-		if len(inspect.Config.Domainname) != 0 {
-			hostnames = append(hostnames, fmt.Sprintf("%s.%s", inspect.Config.Hostname, inspect.Config.Domainname))
-		}else {
-			hostnames = append(hostnames, inspect.Config.Hostname)
-		}
-	}
 	for _, env := range inspect.Config.Env {
-
 		envName := strings.Index(env, hostnameEnv)
 		if envName == 0 {
 			envValue := env[envName + len(hostnameEnv) : ]
@@ -131,6 +130,18 @@ func getHostnames(inspect types.ContainerJSON) []string {
 		}
 	}
 	return hostnames
+}
+
+// Returns current docker container machine hostname
+func getMachineHostname(inspect types.ContainerJSON) (string, error) {
+	if len(inspect.Config.Hostname) != 0 {
+		if len(inspect.Config.Domainname) != 0 {
+			return fmt.Sprintf("%s.%s", inspect.Config.Hostname, inspect.Config.Domainname), nil
+		}else {
+			return inspect.Config.Hostname, nil
+		}
+	}
+	return "", errors.New("hostname not found")
 }
 
 func putHostnames(hostnames []string, inspect types.ContainerJSON) error {
