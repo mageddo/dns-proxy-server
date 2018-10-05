@@ -3,7 +3,7 @@ services:
 
   # Base Image to build project
   compiler-dps:
-    image: golang:1.9
+    image: golang:1.11
     working_dir: /app/src/github.com/mageddo/dns-proxy-server
     volumes:
       - $PWD:/app/src/github.com/mageddo/dns-proxy-server
