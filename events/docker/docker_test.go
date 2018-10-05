@@ -42,7 +42,7 @@ func TestContainerNamesRegistryMustBeDisabledByDefault(t *testing.T){
 		},
 	}
 	inspect.ContainerJSONBase = new(types.ContainerJSONBase)
-	inspect.Name = "nginx-container"
+	inspect.Name = "/nginx-container"
 
 	// assert
 	hosts := getHostnames(inspect)
@@ -67,7 +67,7 @@ func TestMustGetHostnamesBasedOnMachineHostnameAndEnvironmentVariableAndContaine
 		},
 	}
 	inspect.ContainerJSONBase = new(types.ContainerJSONBase)
-	inspect.Name = "nginx-container"
+	inspect.Name = "/nginx-container"
 
 	// assert
 	hosts := getHostnames(inspect)
