@@ -153,12 +153,13 @@ func getMachineHostname(inspect types.ContainerJSON) (string, error) {
 }
 
 func getHostnameFromContainerName(inspect types.ContainerJSON) string {
-	return fmt.Sprintf("%s.docker", inspect.Name)
+	return fmt.Sprintf("%s.docker", inspect.Name[1:])
 }
 
 func getHostnameFromServiceName(inspect types.ContainerJSON) (string, error) {
 	const serviceNameLabelKey = "com.docker.compose.service"
 	if v, ok := inspect.Config.Labels[serviceNameLabelKey]; ok {
+		logging.Debugf("status=service-found, service=%s", v)
 		return fmt.Sprintf("%s.docker", v), nil
 	}
 	return "", errors.New("service not found")

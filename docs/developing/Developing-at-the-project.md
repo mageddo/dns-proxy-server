@@ -2,15 +2,15 @@
 
 Setup the environment
 
-    $ docker-compose up -d compiler-dps && docker-compose exec compiler-dps bash
+	$ docker-compose run compiler-dps bash
 
 Running the application 
 
-    go run dns.go
+	go run dns.go
 
 Running unit tests
 
-    $ go test -cover=false ./.../
+	$ go test -cover=false ./.../
 
 ### Developing at Intellij 
 * [Install Golang plugin](https://github.com/go-lang-plugin-org)

@@ -1,3 +1,6 @@
+### 2.7.0
+* Now you can access your container by it's container / docker-compose service name, syntax is `<container-name>.docker`
+
 ### 2.6.1
 * Updating docs
 

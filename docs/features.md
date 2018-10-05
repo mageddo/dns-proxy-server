@@ -77,7 +77,7 @@ __Config file__
 }
 ```
 
-__ Command line argument__
+__Command line argument__
 
 	go run dns.go  -log-level=DEBUG
 
@@ -92,4 +92,20 @@ PING host.docker (172.21.0.1) 56(84) bytes of data.
 64 bytes from 172.21.0.1 (172.21.0.1): icmp_seq=1 ttl=64 time=0.086 ms
 64 bytes from 172.21.0.1 (172.21.0.1): icmp_seq=2 ttl=64 time=0.076 ms
 64 bytes from 172.21.0.1 (172.21.0.1): icmp_seq=3 ttl=64 time=0.081 ms
+```
+
+### Access container by it's container name / service name
+
+```bash
+$ docker run -rm nginx --name my-nginx
+```
+
+```bash
+$ nslookup my-nginx.docker
+Server:		172.17.0.3
+Address:	172.17.0.3#53
+
+Non-authoritative answer:
+Name:	my-nginx.docker
+Address: 10.0.2.3
 ```
