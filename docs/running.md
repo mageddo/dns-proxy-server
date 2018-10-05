@@ -113,7 +113,8 @@ Start the server at [custom port](#configure-your-dns) and solving from it
   "webServerPort": 0, // web admin port, when 0 the default value is used, see --help option
   "dnsServerPort": 8980, // dns server port, when 0 the default value is used
   "logLevel": "DEBUG",
-  "logFile": "console" // where the log will be written
+  "logFile": "console" // where the log will be written,
+  "registerContainerNames": false // if should register container name / service name as a hostname
 }
 ```
 

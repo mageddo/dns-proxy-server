@@ -109,3 +109,23 @@ Non-authoritative answer:
 Name:	my-nginx.docker
 Address: 10.0.2.3
 ```
+
+You can enable this feature by 
+
+__Activating by command line__
+
+	./dns-proxy-server -register-container-names
+
+__Configuring at json config file__
+
+```
+...
+"registerContainerNames": true
+...
+```
+
+__Using environment variable__
+
+```bash
+MG_REGISTER_CONTAINER_NAMES=1 ./dns-proxy-server
+```
