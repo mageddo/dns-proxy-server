@@ -144,6 +144,18 @@ func getMachineHostname(inspect types.ContainerJSON) (string, error) {
 	return "", errors.New("hostname not found")
 }
 
+func getHostnameFromContainerName(inspect types.ContainerJSON) string {
+	return fmt.Sprintf("%s.docker", inspect.Name)
+}
+
+func getHostnameFromServiceName(inspect types.ContainerJSON) (string, error) {
+	const serviceNameLabelKey = "com.docker.compose.service"
+	if v, ok := inspect.Config.Labels[serviceNameLabelKey]; ok {
+		return fmt.Sprintf("%s.docker", v), nil
+	}
+	return "", errors.New("service not found")
+}
+
 func putHostnames(hostnames []string, inspect types.ContainerJSON) error {
 	for _, host := range hostnames {
 
