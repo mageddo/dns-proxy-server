@@ -10,6 +10,7 @@ import (
 	"github.com/docker/engine-api/types/filters"
 	"github.com/mageddo/dns-proxy-server/cache"
 	"github.com/mageddo/dns-proxy-server/cache/lru"
+	"github.com/mageddo/dns-proxy-server/conf"
 	"github.com/mageddo/go-logging"
 	"golang.org/x/net/context"
 	"io"
@@ -115,6 +116,13 @@ func getHostnames(inspect types.ContainerJSON) []string {
 		hostnames = append(hostnames, machineHostname)
 	}
 	hostnames = append(hostnames, getHostnamesFromEnv(inspect)...)
+
+	if conf.RegisterContainerNames() {
+		hostnames = append(hostnames, getHostnameFromContainerName(inspect))
+		if hostnameFromServiceName, err := getHostnameFromServiceName(inspect); err == nil {
+			hostnames = append(hostnames, hostnameFromServiceName)
+		}
+	}
 	return hostnames
 }
 

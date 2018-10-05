@@ -97,3 +97,13 @@ func GetString(value, defaultValue string) string {
 	}
 	return value
 }
+
+func RegisterContainerNames() bool {
+	if v := os.Getenv(env.MG_REGISTER_CONTAINER_NAMES); v == "1" {
+		return true
+	}
+	if conf, _ := getConf(); conf != nil && conf.RegisterContainerNames != nil {
+		return *conf.RegisterContainerNames
+	}
+	return flags.RegisterContainerNames()
+}

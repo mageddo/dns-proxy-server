@@ -25,6 +25,7 @@ var (
 	publishServicePort = flag.Bool("service-publish-web-port", true, "Publish web port when running as service in docker mode")
 	logToFile = flag.String("log-file", "console", "Log to file instead of console, (true=log to default log file, /tmp/log.log=log to custom log location)")
 	logLevel = flag.String("log-level", "DEBUG", "Log Level ERROR, WARNING, INFO, DEBUG")
+	registerContainerNames = flag.Bool("register-container-names", false, "If must register container name / service name as host in DNS server")
 	Version = flag.Bool("version", false, "Current version")
 	Help = flag.Bool("help", false, "This message")
 )
@@ -74,3 +75,6 @@ func LogToFile() string {
 	return *logToFile
 }
 
+func RegisterContainerNames() bool {
+	return *registerContainerNames
+}
