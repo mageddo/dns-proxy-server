@@ -91,11 +91,14 @@ case $1 in
 		go test -race -cover -ldflags "-X github.com/mageddo/dns-proxy-server/flags.version=test" ./.../
 		echo "> Tests completed"
 
+		export GOOS=linux
+		export GOARCH=arm64
+
 		echo "> Building..."
 		go build -v -o build/dns-proxy-server -ldflags "-X github.com/mageddo/dns-proxy-server/flags.version=$APP_VERSION"
 		cp -r static build/
 		cd build/
-		tar -czvf dns-proxy-server-${APP_VERSION}.tgz *
+		tar -czvf dns-proxy-server-${GOOS}-${GOARCH}-${APP_VERSION}.tgz *
 
 		echo "> Build success"
 

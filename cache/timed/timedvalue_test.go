@@ -1,9 +1,9 @@
 package timed
 
 import (
+	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestTimedValueImpl_IsValid(t *testing.T) {
