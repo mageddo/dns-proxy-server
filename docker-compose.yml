@@ -35,13 +35,34 @@ services:
     container_name: docker-dns-server-compiler
     command: bash -c "builder build"
 
-  # Build project and generate docker image you will need to run prod-build-image-dps first
+  # Build project and generate docker image you will need to run prod-build-binary-dps first
   prod-build-image-dps:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: docker-dns-server-docker-compiler
     image: defreitas/dns-proxy-server:2.7.0
+
+  prod-build-arm7x86-image-dps:
+    build:
+      context: .
+      dockerfile: Dockerfile.arm7x86
+    container_name: docker-dns-server-docker-compiler
+    image: defreitas/dns-proxy-server-arm7x86:2.7.0
+
+  prod-build-arm8x64-image-dps:
+    build:
+      context: .
+      dockerfile: Dockerfile.arm8x64
+    container_name: docker-dns-server-docker-compiler
+    image: defreitas/dns-proxy-server-arm8x64:2.7.0
+
+  prod-build-arm8x86-image-dps:
+    build:
+      context: .
+      dockerfile: Dockerfile.arm8x86
+    container_name: docker-dns-server-docker-compiler
+    image: defreitas/dns-proxy-server-arm8x86:2.7.0
 
   # build the project and make the github release
   prod-ci-deploy:
