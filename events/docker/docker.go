@@ -19,6 +19,8 @@ import (
 
 var c = lru.New(43690)
 
+const defaultNetworkLabel = "dps.network"
+
 func HandleDockerEvents(){
 
 	// connecting to docker api
@@ -167,11 +169,14 @@ func getHostnameFromServiceName(inspect types.ContainerJSON) (string, error) {
 
 func putHostnames(hostnames []string, inspect types.ContainerJSON) error {
 	for _, host := range hostnames {
-
-		var ip = ""
-		for k, network := range inspect.NetworkSettings.Networks {
-			logging.Debugf("container=%s, network=%s, ip=%s", inspect.Name, k, network.IPAddress)
-			ip = network.IPAddress
+		networkName := inspect.Config.Labels[defaultNetworkLabel]
+		ip := ""
+		for actualNetwork, network := range inspect.NetworkSettings.Networks {
+			logging.Debugf("container=%s, defaultNetwork=%s, network=%s, ip=%s", inspect.Name, networkName, actualNetwork, network.IPAddress)
+			if len(networkName) == 0 || networkName == actualNetwork {
+				ip = network.IPAddress
+				break
+			}
 		}
 		if len(ip) == 0 {
 			ip = inspect.NetworkSettings.IPAddress

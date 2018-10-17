@@ -3,6 +3,7 @@
 /build
 .idea/
 *.iml
+/files
 
 .gradle/
 *.orig
