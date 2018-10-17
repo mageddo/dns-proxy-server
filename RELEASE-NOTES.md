@@ -1,3 +1,6 @@
+### 2.8.0
+* If your container have multiple networks you can specify which network to use when solving IP by specifying `dps.network` label
+
 ### 2.7.0
 * Now you can access your container by it's container / docker-compose service name, syntax is `<container-name>.docker`
 
