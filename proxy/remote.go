@@ -57,7 +57,7 @@ func (r remoteDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns
 		// if the answer not be returned
 		if res == nil {
 			err = errors.New(fmt.Sprintf("status=answer-can-not-be-null, err=%v", err))
-			logging.Infof("status=no-answer, err=%s", err)
+			logging.Infof("status=no-answer, question=%s, server=%s, err=%s", question.Name, formatServer, err)
 			continue
 		} else if res.Rcode != dns.RcodeSuccess { // what the code of the return message ?
 			err = errors.New(fmt.Sprintf("status=invalid-answer-name, name=%s, rcode=%d", question.Name, res.Rcode))
@@ -67,6 +67,7 @@ func (r remoteDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns
 		return res, nil
 	}
 	logging.Infof("status=complete, name=%s, res=%d, err=%s", question.Name, getRCode(res), err)
+
 	return res, err
 }
 

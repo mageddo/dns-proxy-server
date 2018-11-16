@@ -143,9 +143,10 @@ func main() {
 
 	// setup resolv conf
 	go func() {
+		logging.Infof("status=setup-default-dns, setup-dns=%b", conf.SetupResolvConf())
 		if conf.SetupResolvConf() {
-			logging.Infof("status=setup-as-default-dns")
 			for ; ; {
+				logging.Info("status=updating-resolv.conf")
 				err := resolvconf.SetCurrentDNSServerToMachine()
 				if err != nil {
 					logging.Error("status=cant-turn-default-dns", err)
