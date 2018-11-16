@@ -3,6 +3,7 @@ package proxy
 import (
 	"context"
 	"github.com/miekg/dns"
+	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"testing"
@@ -10,7 +11,7 @@ import (
 
 var testCtx = context.Background()
 
-func TestMustCacheWhenResultIsSuccessFull(t *testing.T){
+func TestMustCacheWhenResultIsSuccess(t *testing.T){
 
 	// arrange
 	c := &FakeSolver{}
@@ -30,14 +31,37 @@ func TestMustCacheWhenResultIsSuccessFull(t *testing.T){
 	c.AssertNumberOfCalls(t, "Solve", 1)
 }
 
+func TestMustNotCacheWhenResultIsError(t *testing.T){
+
+	// arrange
+	c := &FakeSolver{}
+	solver := NewCacheDnsSolver(c)
+	q := dns.Question{Name: "acme.com."}
+	c.On("Solve", ctx, q).Return(nil, errors.New("not found"))
+
+	for i := 0; i < 2; i++ {
+		// act
+		msg, err := solver.Solve(testCtx, q)
+
+		// assert
+		assert.NotNil(t, err)
+		assert.Nil(t, msg)
+	}
+
+	c.AssertNumberOfCalls(t, "Solve", 2)
+}
+
 type FakeSolver struct {
 	mock.Mock
 }
 
 func (m *FakeSolver) Solve(ctx context.Context, question dns.Question) (*dns.Msg, error) {
 	args := m.Called(ctx, question)
-	if v, ok := args.Get(1).(error); ok {
-		return args.Get(0).(*dns.Msg), v
+	if msg, ok := args.Get(0).(*dns.Msg); ok {
+		return msg, nil
 	}
-	return args.Get(0).(*dns.Msg), nil
+	if v, ok := args.Get(1).(error); ok {
+		return nil, v
+	}
+	return nil, nil
 }
