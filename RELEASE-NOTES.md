@@ -1,3 +1,7 @@
+### 2.9.0
+* Now remote resolved names are cached respecting TTL
+* Refactored local storage cache
+
 ### 2.8.0
 * If your container have multiple networks you can specify which network to use when solving IP by specifying `dps.network` label
 
