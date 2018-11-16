@@ -61,7 +61,7 @@ func newCacheMock() cache.Cache {
 	m := CacheMock{}
 	m.Cache, err = glru.New(10)
 	if err != nil {
-		panic(err);
+		panic(err)
 	}
 	return &m
 }

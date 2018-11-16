@@ -6,8 +6,5 @@ import (
 )
 
 type DnsSolver interface {
-
 	Solve(ctx context.Context, question dns.Question) (*dns.Msg, error)
-
-
 }

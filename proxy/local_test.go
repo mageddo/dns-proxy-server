@@ -29,7 +29,7 @@ func TestLocalDnsSolver_Solve(t *testing.T) {
 	solver := NewLocalDNSSolver(store.GetInstance())
 
 	// act
-	res, err := solver.Solve(ctx, *question)
+	res, err := solver.Solve(testCtx, *question)
 	assert.Nil(t, err, "Fail to solve")
 
 	// assert
@@ -48,7 +48,7 @@ func TestLocalDnsSolver_SolveNotFoundHost(t *testing.T) {
 	solver := NewLocalDNSSolver(store.GetInstance())
 
 	// act
-	_, err := solver.Solve(ctx, *question)
+	_, err := solver.Solve(testCtx, *question)
 	assert.NotNil(t, err, "Fail to solve")
 
 }
@@ -86,7 +86,7 @@ func TestLocalDnsSolver_SolveValidatingCache(t *testing.T) {
 	for i := 5; i > 0; i-- {
 
 		// act
-		res, err := solver.Solve(ctx, *question)
+		res, err := solver.Solve(testCtx, *question)
 		assert.Nil(t, err, "Fail to solve")
 
 		// assert
@@ -129,7 +129,7 @@ func TestLocalDnsSolver_SolveCacheExpiration(t *testing.T) {
 		time.Sleep(time.Duration(int64(1100)) * time.Millisecond)
 
 		// act
-		res, err := solver.Solve(ctx, *question)
+		res, err := solver.Solve(testCtx, *question)
 		assert.Nil(t, err, "Fail to solve")
 
 		// assert
@@ -160,7 +160,7 @@ func TestLocalDnsSolver_SolvingByWildcard(t *testing.T) {
 	question.Name = "server1.github.com."
 
 	// act
-	res, err := solver.Solve(ctx, *question)
+	res, err := solver.Solve(testCtx, *question)
 
 	// assert
 	assert.Nil(t, err, "Fail to solve")
@@ -187,7 +187,7 @@ func TestLocalDnsSolver_WildcardRegisteredButNotMatched(t *testing.T) {
 	question.Name = "server1.mageddo.com."
 
 	// act
-	res, err := solver.Solve(ctx, *question)
+	res, err := solver.Solve(testCtx, *question)
 
 	// assert
 	assert.NotNil(t, err, "Fail to solve")
