@@ -25,6 +25,17 @@ func (c *TimedCache) Get(key interface{}) interface{} {
 	return nil
 }
 
+func (c *TimedCache) GetTimeValue(key interface{}) interface{} {
+	if v, ok := c.cache.Get(key).(TimedValue); ok {
+		if v.IsValid(time.Now()) {
+			return v
+		}
+		c.Remove(key)
+		return nil
+	}
+	return nil
+}
+
 func (c *TimedCache) ContainsKey(key interface{}) bool {
 	panic("don't use that! It will cause concurrency problems")
 }
