@@ -1,27 +1,26 @@
 package main
 
 import (
-	_ "github.com/mageddo/dns-proxy-server/log"
-	_ "github.com/mageddo/dns-proxy-server/controller"
+	"context"
 	"fmt"
+	"github.com/mageddo/dns-proxy-server/conf"
+	_ "github.com/mageddo/dns-proxy-server/controller"
+	"github.com/mageddo/dns-proxy-server/events/docker"
+	"github.com/mageddo/dns-proxy-server/events/local"
+	_ "github.com/mageddo/dns-proxy-server/log"
+	"github.com/mageddo/dns-proxy-server/proxy"
+	"github.com/mageddo/dns-proxy-server/resolvconf"
+	"github.com/mageddo/dns-proxy-server/service"
+	"github.com/mageddo/dns-proxy-server/utils"
+	"github.com/mageddo/dns-proxy-server/utils/exitcodes"
+	"github.com/mageddo/go-logging"
+	"github.com/miekg/dns"
+	"net/http"
 	"os"
+	"reflect"
+	"runtime/debug"
 	"runtime/pprof"
 	"strings"
-	"github.com/miekg/dns"
-	"github.com/mageddo/dns-proxy-server/proxy"
-	"reflect"
-	"github.com/mageddo/dns-proxy-server/utils"
-	"github.com/mageddo/dns-proxy-server/events/local"
-	"github.com/mageddo/dns-proxy-server/events/docker"
-	"net/http"
-	"github.com/mageddo/dns-proxy-server/conf"
-	"github.com/mageddo/dns-proxy-server/utils/exitcodes"
-	"github.com/mageddo/dns-proxy-server/service"
-	"github.com/mageddo/go-logging"
-	"runtime/debug"
-	"github.com/mageddo/dns-proxy-server/cache/store"
-	"github.com/mageddo/dns-proxy-server/resolvconf"
-	"context"
 	"sync/atomic"
 	"time"
 )
@@ -82,7 +81,7 @@ func getSolvers() *[]proxy.DnsSolver {
 	if atomic.CompareAndSwapInt32(&solversCreated, 0, 1) {
 		solvers = &[]proxy.DnsSolver{
 			proxy.NewSystemSolver(), proxy.NewDockerSolver(docker.GetCache()),
-			proxy.NewLocalDNSSolver(store.GetInstance()), proxy.NewCacheDnsSolver(proxy.NewRemoteDnsSolver()),
+			proxy.NewCacheDnsSolver(proxy.NewLocalDNSSolver()), proxy.NewCacheDnsSolver(proxy.NewRemoteDnsSolver()),
 		}
 	}
 	return solvers
