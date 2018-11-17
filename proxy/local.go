@@ -56,10 +56,10 @@ func (*localDnsSolver) getMsg(question dns.Question, hostname *local.HostnameVo)
 }
 
 func (s localDnsSolver) solveHostname(ctx context.Context, question dns.Question, key string) (*dns.Msg, error) {
-	logging.Debugf("solver=local, status=hot-load, hostname=%s", key)
+	logging.Debugf("solver=local, status=hot-load, hostname=%s", ctx, key)
 	conf, err := local.LoadConfiguration()
 	if err != nil {
-		logging.Errorf("status=could-not-load-conf, err=%v", err)
+		logging.Errorf("status=could-not-load-conf, err=%v", ctx, err)
 		return nil, err
 	}
 	activeEnv, _ := conf.GetActiveEnv()

@@ -25,7 +25,7 @@ func (s CacheDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns.
 		for _, v := range msg.Answer {
 			v.Header().Ttl = uint32(leftTime / time.Second)
 		}
-		logging.Debugf("status=cached-answer, host=%s, seconds=%d, leftTime=%s", hostname, ttl, leftTime)
+		logging.Debugf("status=cached-answer, host=%s, seconds=%d, leftTime=%s", ctx, hostname, ttl, leftTime)
 		return msg, nil
 	}
 	msg, err := s.decorator.Solve(ctx, question)
@@ -35,7 +35,7 @@ func (s CacheDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns.
 	for _, answer := range msg.Answer {
 		ttl := int64(answer.Header().Ttl)
 		s.c.PutTTL(hostname, msg, ttl)
-		logging.Infof("status=caching, host=%s, seconds=%d", hostname, ttl)
+		logging.Infof("status=caching, host=%s, seconds=%d", ctx, hostname, ttl)
 	}
 	return msg, nil
 }

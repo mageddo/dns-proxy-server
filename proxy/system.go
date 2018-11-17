@@ -22,10 +22,10 @@ func (s SystemDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns
 		ip, err, code := utils.Exec("sh", "-c", "ip r | awk '/default/{print $3}'")
 		if code == 0 {
 			clearedIP := regexp.MustCompile(`\s`).ReplaceAllLiteralString(string(ip), ``)
-			logging.Infof("status=solved, solver=system, question=%s, ip=%s", questionName, clearedIP)
+			logging.Infof("status=solved, solver=system, question=%s, ip=%s", ctx, questionName, clearedIP)
 			return s.getMsg(questionName, clearedIP, question), nil
 		}
-		logging.Errorf("status=not-solved, solver=system, question=%s", questionName, err)
+		logging.Warningf("status=not-solved, solver=system, question=%s", ctx, questionName, err)
 		return nil, err
 	}
 	return nil, errors.New("host not found")

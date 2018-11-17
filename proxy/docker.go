@@ -23,13 +23,13 @@ func (s DockerDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns
 	// simple solving
 	var key = questionName
 	if s.c.ContainsKey(key) {
-		return s.doSolve(key, question)
+		return s.doSolve(ctx, key, question)
 	}
 
 	// solving domain by wild card
 	key = fmt.Sprintf(".%s", questionName)
 	if s.c.ContainsKey(key) {
-		return s.doSolve(key, question)
+		return s.doSolve(ctx, key, question)
 	}
 
 	// Solving subdomains by wildcard
@@ -37,14 +37,14 @@ func (s DockerDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns
 	if i > 0 {
 		key = questionName[i:]
 		if s.c.ContainsKey(key) {
-			return s.doSolve(key, question)
+			return s.doSolve(ctx, key, question)
 		}
 	}
 	return nil, errors.New("hostname not found " + key)
 }
 
-func (s DockerDnsSolver) doSolve(k string, q dns.Question) (*dns.Msg, error) {
-	logging.Debugf("solver=docker, status=solved-key, question=%s, hostname=%s, ip=%+v", q.Name, k, s.c.Get(k))
+func (s DockerDnsSolver) doSolve(ctx context.Context, k string, q dns.Question) (*dns.Msg, error) {
+	logging.Debugf("solver=docker, status=solved-key, question=%s, hostname=%s, ip=%+v", ctx, q.Name, k, s.c.Get(k))
 	return s.getMsg(k, q), nil
 }
 
