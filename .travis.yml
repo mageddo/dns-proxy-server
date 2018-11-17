@@ -3,7 +3,7 @@ sudo: required
 services:
   - docker
 
-script: docker-compose up --abort-on-container-exit prod-ci-deploy
+script: docker-compose up --force-recreate --abort-on-container-exit prod-ci-deploy
 
 branches:
   only:
