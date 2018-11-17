@@ -36,6 +36,7 @@ func (s CacheDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns.
 		ttl := int64(answer.Header().Ttl)
 		s.c.PutTTL(hostname, msg, ttl)
 		logging.Infof("status=caching, host=%s, seconds=%d", ctx, hostname, ttl)
+		break
 	}
 	return msg, nil
 }

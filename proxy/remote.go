@@ -50,8 +50,6 @@ func (r remoteDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns
 
 		// server and port to ask
 		formatServer := fmt.Sprintf("%d.%d.%d.%d", server[0], server[1], server[2], server[3])
-		logging.Debugf("status=format-server, server=%s", ctx, formatServer)
-
 		res, _, err = client.Exchange(m, net.JoinHostPort(formatServer, "53"))
 
 		// if the answer not be returned
@@ -64,6 +62,7 @@ func (r remoteDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns
 			logging.Infof("status=bad-code, name=%s, rcode=%d, err=%s", ctx, question.Name, res.Rcode, err)
 			continue
 		}
+		logging.Debugf("status=remote-solved, server=%s, name=%s, res=%d", ctx, formatServer, question.Name, getRCode(res))
 		return res, nil
 	}
 	logging.Infof("status=complete, name=%s, res=%d, err=%s", ctx, question.Name, getRCode(res), err)
