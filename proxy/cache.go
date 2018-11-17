@@ -21,6 +21,9 @@ func (s CacheDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns.
 		tvalue := r.(timed.TimedValue)
 		msg := tvalue.Value().(*dns.Msg).Copy()
 		ttl := msg.Answer[0].Header().Ttl
+		if ttl <= 0 {
+			ttl = 5
+		}
 		leftTime := (time.Duration(ttl) * time.Second) - time.Now().Sub(tvalue.Creation())
 		for _, v := range msg.Answer {
 			v.Header().Ttl = uint32(leftTime / time.Second)
