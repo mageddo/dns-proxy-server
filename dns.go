@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"github.com/mageddo/dns-proxy-server/conf"
 	_ "github.com/mageddo/dns-proxy-server/controller"
@@ -9,6 +8,7 @@ import (
 	"github.com/mageddo/dns-proxy-server/events/local"
 	_ "github.com/mageddo/dns-proxy-server/log"
 	"github.com/mageddo/dns-proxy-server/proxy"
+	"github.com/mageddo/dns-proxy-server/reference"
 	"github.com/mageddo/dns-proxy-server/resolvconf"
 	"github.com/mageddo/dns-proxy-server/service"
 	"github.com/mageddo/dns-proxy-server/utils"
@@ -52,7 +52,7 @@ func handleQuestion(respWriter dns.ResponseWriter, reqMsg *dns.Msg) {
 		solverID := reflect.TypeOf(solver).String()
 		logging.Debugf("status=begin, solver=%s", solverID)
 		// loop through questions
-		resp, err := solver.Solve(context.Background(), firstQuestion)
+		resp, err := solver.Solve(reference.Context(), firstQuestion)
 		if resp != nil {
 
 			var firstAnswer dns.RR
