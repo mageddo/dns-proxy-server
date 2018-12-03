@@ -106,9 +106,8 @@ case $1 in
 	;;
 	
 	compile )
-		cd $PWD/build/
-		go build -v -o build/dns-proxy-server -ldflags "-X github.com/mageddo/dns-proxy-server/flags.version=$APP_VERSION"
-		export TAR_FILE=dns-proxy-server-${GOOS}-${GOARCH}-${APP_VERSION}.tgz
+		go build -v -o $PWD/build/dns-proxy-server -ldflags "-X github.com/mageddo/dns-proxy-server/flags.version=$APP_VERSION"
+		export TAR_FILE=$PWD/build/dns-proxy-server-${GOOS}-${GOARCH}-${APP_VERSION}.tgz
 		tar --exclude=*.tgz -czvf $TAR_FILE *
 	;;
 
