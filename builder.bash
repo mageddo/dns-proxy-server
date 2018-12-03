@@ -63,13 +63,12 @@ case $1 in
 		create_release
 		echo "> Release created with id $TAG_ID"
 
-		# TODO loop through all tgz files and upload them
-		SOURCE_FILE="build/dns-proxy-server-$APP_VERSION.tgz"
-		TARGET_FILE=dns-proxy-server-$APP_VERSION.tgz
-		echo "> Source file hash"
-		md5sum $SOURCE_FILE && ls -lha $SOURCE_FILE
-
-		upload_file
+		for TARGET_FILE in $PWD/build/*.tgz; do
+			SOURCE_FILE="$PWD/build/$TARGET_FILE"
+			echo "> Source file hash"
+			md5sum $SOURCE_FILE && ls -lha $SOURCE_FILE
+			upload_file
+		done
 
 	;;
 
@@ -108,8 +107,7 @@ case $1 in
 		cd $PWD/build/
 		go build -v -o build/dns-proxy-server -ldflags "-X github.com/mageddo/dns-proxy-server/flags.version=$APP_VERSION"
 		export TAR_FILE=dns-proxy-server-${GOOS}-${GOARCH}-${APP_VERSION}.tgz
-		# TODO exclude tgz files here
-		tar -czvf $TAR_FILE *
+		tar --exclude=*.tgz -czvf $TAR_FILE *
 	;;
 
 	validate-release )
