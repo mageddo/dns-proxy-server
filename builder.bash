@@ -80,19 +80,18 @@ case $1 in
 
 	;;
 
-	build )
-
-		echo "> Starting build"
-
-		rm -rf build/
-		mkdir -p build/
-
+	test )
 		echo "> Testing ..."
 		go test -race -cover -ldflags "-X github.com/mageddo/dns-proxy-server/flags.version=test" ./.../
 		echo "> Tests completed"
+	;;
 
-		export GOOS=linux
-		export GOARCH=arm64
+	build )
+
+		echo "> Starting build os=${GOOS}, arch=${GOARCH}"
+
+		rm -rf build/
+		mkdir -p build/
 
 		echo "> Building..."
 		go build -v -o build/dns-proxy-server -ldflags "-X github.com/mageddo/dns-proxy-server/flags.version=$APP_VERSION"
@@ -118,7 +117,17 @@ case $1 in
 		echo "> build started, current branch=$CURRENT_BRANCH"
 		if [ "$CURRENT_BRANCH" = "master" ]; then
 			echo "> deploying new version"
-			builder.bash validate-release || exit 0 && builder.bash apply-version && builder.bash build && builder.bash upload-release
+			builder.bash validate-release || exit 0 && builder.bash apply-version
+
+			export GOOS=linux
+			export GOARCH=arm64
+			builder.bash build
+
+			export GOOS=linux
+			export GOARCH=
+			builder.bash build
+
+			builder.bash upload-release
 		else
 			echo "> building candidate"
 			builder.bash build
