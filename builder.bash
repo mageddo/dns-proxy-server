@@ -96,8 +96,12 @@ case $1 in
 
 		cp -r static build/
 
+		# LINUX
+		# INTEL / AMD
 		export GOOS=linux && export GOARCH=386 && builder.bash compile
 		export GOOS=linux && export GOARCH=amd64 && builder.bash compile
+
+		# ARM
 		export GOOS=linux && export GOARCH=arm && builder.bash compile
 		export GOOS=linux && export GOARCH=arm64 && builder.bash compile
 
