@@ -63,6 +63,7 @@ case $1 in
 		create_release
 		echo "> Release created with id $TAG_ID"
 
+		# TODO loop through all tgz files and upload them
 		SOURCE_FILE="build/dns-proxy-server-$APP_VERSION.tgz"
 		TARGET_FILE=dns-proxy-server-$APP_VERSION.tgz
 		echo "> Source file hash"
@@ -94,13 +95,21 @@ case $1 in
 		mkdir -p build/
 
 		echo "> Building..."
-		go build -v -o build/dns-proxy-server -ldflags "-X github.com/mageddo/dns-proxy-server/flags.version=$APP_VERSION"
 		cp -r static build/
-		cd build/
-		tar -czvf dns-proxy-server-${GOOS}-${GOARCH}-${APP_VERSION}.tgz *
+		
+		export GOOS=linux && export GOARCH= && builder.bash compile
+		export GOOS=linux && export GOARCH=arm64 && builder.bash compile
 
 		echo "> Build success"
 
+	;;
+	
+	compile )
+		cd $PWD/build/
+		go build -v -o build/dns-proxy-server -ldflags "-X github.com/mageddo/dns-proxy-server/flags.version=$APP_VERSION"
+		export TAR_FILE=dns-proxy-server-${GOOS}-${GOARCH}-${APP_VERSION}.tgz
+		# TODO exclude tgz files here
+		tar -czvf $TAR_FILE *
 	;;
 
 	validate-release )
@@ -118,15 +127,7 @@ case $1 in
 		if [ "$CURRENT_BRANCH" = "master" ]; then
 			echo "> deploying new version"
 			builder.bash validate-release || exit 0 && builder.bash apply-version
-
-			export GOOS=linux
-			export GOARCH=arm64
 			builder.bash build
-
-			export GOOS=linux
-			export GOARCH=
-			builder.bash build
-
 			builder.bash upload-release
 		else
 			echo "> building candidate"
