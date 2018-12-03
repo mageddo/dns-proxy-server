@@ -27,6 +27,19 @@ upload_file(){
 "https://uploads.github.com/repos/$REPO_URL/releases/$TAG_ID/assets?name=$TARGET_FILE&access_token=$REPO_TOKEN"
 }
 
+assemble(){
+	echo "> Testing ..."
+	go test -race -cover -ldflags "-X github.com/mageddo/dns-proxy-server/flags.version=test" ./.../
+	echo "> Tests completed"
+
+	echo "> Building..."
+
+	rm -rf build/
+	mkdir -p build/
+
+	cp -r static build/
+}
+
 case $1 in
 
 	setup-repository )
@@ -82,17 +95,13 @@ case $1 in
 
 	build )
 
-		unset GOOS GOARCH
-		echo "> Testing ..."
-		go test -race -cover -ldflags "-X github.com/mageddo/dns-proxy-server/flags.version=test" ./.../
-		echo "> Tests completed"
+		assemble
 
-		echo "> Building..."
-
-		rm -rf build/
-		mkdir -p build/
-
-		cp -r static build/
+		if [ ! -z "$2" ]
+		then
+			builder.bash compile $2 $3
+			exit 0
+		fi
 
 		# LINUX
 		# INTEL / AMD
