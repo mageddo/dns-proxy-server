@@ -1,3 +1,14 @@
+### 2.9.1
+* Supporting Multilevel wildcard
+* Fixing ping slowness, bug introduced on **2.9.0**
+
+### 2.9.0
+* Now remote resolved names are cached respecting TTL
+* Refactored local storage cache
+
+### 2.8.0
+* If your container have multiple networks you can specify which network to use when solving IP by specifying `dps.network` label
+
 ### 2.7.0
 * Now you can access your container by it's container / docker-compose service name, syntax is `<container-name>.docker`
 

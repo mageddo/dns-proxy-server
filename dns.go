@@ -1,36 +1,36 @@
 package main
 
 import (
-	_ "github.com/mageddo/dns-proxy-server/log"
-	_ "github.com/mageddo/dns-proxy-server/controller"
 	"fmt"
+	"github.com/mageddo/dns-proxy-server/conf"
+	_ "github.com/mageddo/dns-proxy-server/controller"
+	"github.com/mageddo/dns-proxy-server/events/docker"
+	"github.com/mageddo/dns-proxy-server/events/local"
+	_ "github.com/mageddo/dns-proxy-server/log"
+	"github.com/mageddo/dns-proxy-server/proxy"
+	"github.com/mageddo/dns-proxy-server/reference"
+	"github.com/mageddo/dns-proxy-server/resolvconf"
+	"github.com/mageddo/dns-proxy-server/service"
+	"github.com/mageddo/dns-proxy-server/utils"
+	"github.com/mageddo/dns-proxy-server/utils/exitcodes"
+	"github.com/mageddo/go-logging"
+	"github.com/miekg/dns"
+	"net/http"
 	"os"
+	"reflect"
+	"runtime/debug"
 	"runtime/pprof"
 	"strings"
-	"github.com/miekg/dns"
-	"github.com/mageddo/dns-proxy-server/proxy"
-	"reflect"
-	"github.com/mageddo/dns-proxy-server/utils"
-	"github.com/mageddo/dns-proxy-server/events/local"
-	"github.com/mageddo/dns-proxy-server/events/docker"
-	"net/http"
-	"github.com/mageddo/dns-proxy-server/conf"
-	"github.com/mageddo/dns-proxy-server/utils/exitcodes"
-	"github.com/mageddo/dns-proxy-server/service"
-	"github.com/mageddo/go-logging"
-	"runtime/debug"
-	"github.com/mageddo/dns-proxy-server/cache/store"
-	"github.com/mageddo/dns-proxy-server/resolvconf"
-	"context"
+	"sync/atomic"
 	"time"
 )
 
 func handleQuestion(respWriter dns.ResponseWriter, reqMsg *dns.Msg) {
-
+	ctx := reference.Context()
 	defer func() {
 		err := recover()
 		if err != nil {
-			logging.Errorf("status=error, error=%v, stack=%s", err, string(debug.Stack()))
+			logging.Errorf("status=error, error=%v, stack=%s", ctx, err, string(debug.Stack()))
 		}
 	}()
 
@@ -38,46 +38,54 @@ func handleQuestion(respWriter dns.ResponseWriter, reqMsg *dns.Msg) {
 	questionsQtd := len(reqMsg.Question)
 	if questionsQtd != 0 {
 		firstQuestion = reqMsg.Question[0]
-	}else{
-		logging.Error("status=question-is-nil")
+	} else {
+		logging.Error(ctx, "status=question-is-nil")
 		return
 	}
 
-	logging.Debugf("status=begin, reqId=%d, questions=%d, question=%s, type=%s", reqMsg.Id,
-	questionsQtd, firstQuestion.Name, utils.DnsQTypeCodeToName(firstQuestion.Qtype))
+	logging.Debugf(
+		"status=begin, reqId=%d, questions=%d, question=%s, type=%s", ctx, reqMsg.Id,
+		questionsQtd, firstQuestion.Name, utils.DnsQTypeCodeToName(firstQuestion.Qtype),
+	)
 
 	// loading the solvers and try to solve the hostname in that order
-	solvers := []proxy.DnsSolver{
-		proxy.NewSystemSolver(), proxy.NewDockerSolver(docker.GetCache()),
-		proxy.NewLocalDNSSolver(store.GetInstance()), proxy.NewRemoteDnsSolver(),
-	}
-	
-	for _, solver := range solvers {
+	for _, solver := range *getSolvers() {
 
 		solverID := reflect.TypeOf(solver).String()
-		logging.Debugf("status=begin, solver=%s", solverID)
-		// loop through questions
-		resp, err := solver.Solve(context.Background(), firstQuestion)
+		logging.Debugf("status=begin, solver=%s", ctx, solverID)
+		resp, err := solver.Solve(ctx, firstQuestion)
 		if resp != nil {
 
 			var firstAnswer dns.RR
 			answerLenth := len(resp.Answer)
 
-			logging.Debugf("status=answer-found, solver=%s, length=%d", solverID, answerLenth)
+			logging.Debugf("status=answer-found, solver=%s, length=%d", ctx, solverID, answerLenth)
 			if answerLenth != 0 {
 				firstAnswer = resp.Answer[0]
 			}
-			logging.Debugf("status=resolved, solver=%s, alength=%d, answer=%v", solverID, answerLenth, firstAnswer)
+			logging.Debugf("status=resolved, solver=%s, length=%d, answer=%v", ctx, solverID, answerLenth, firstAnswer)
 
 			resp.SetReply(reqMsg)
 			resp.Compress = conf.Compress()
 			respWriter.WriteMsg(resp)
 			break
 		}
-		logging.Debugf("status=not-resolved, solver=%s, err=%v", solverID, err)
+		logging.Debugf("status=not-resolved, solver=%s, err=%v", ctx, solverID, err)
 
 	}
 
+}
+
+var solversCreated int32 = 0
+var solvers *[]proxy.DnsSolver = nil
+func getSolvers() *[]proxy.DnsSolver {
+	if atomic.CompareAndSwapInt32(&solversCreated, 0, 1) {
+		solvers = &[]proxy.DnsSolver{
+			proxy.NewSystemSolver(), proxy.NewDockerSolver(docker.GetCache()),
+			proxy.NewCacheDnsSolver(proxy.NewLocalDNSSolver()), proxy.NewCacheDnsSolver(proxy.NewRemoteDnsSolver()),
+		}
+	}
+	return solvers
 }
 
 func serve(net, name, secret string) {
@@ -143,9 +151,10 @@ func main() {
 
 	// setup resolv conf
 	go func() {
+		logging.Infof("status=setup-default-dns, setup-dns=%b", conf.SetupResolvConf())
 		if conf.SetupResolvConf() {
-			logging.Infof("status=setup-as-default-dns")
 			for ; ; {
+				logging.Info("status=updating-resolv.conf")
 				err := resolvconf.SetCurrentDNSServerToMachine()
 				if err != nil {
 					logging.Error("status=cant-turn-default-dns", err)

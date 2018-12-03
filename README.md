@@ -14,6 +14,8 @@ docker containers hostnames:
 * [Graphic interface to manage it](http:/127.0.0.1:5380/static/)
 	* List and edit DNS local entries
 * [Solve host machine IP using `host.docker` hostname](http://mageddo.github.io/dns-proxy-server/docs/features#solve-host-machine-ip-from-anywhere)
+* [Access container by it’s container name / service name](http://mageddo.github.io/dns-proxy-server/docs/features#access-container-by-its-container-name--service-name)
+* [Specify from which network solve container IP](http://mageddo.github.io/dns-proxy-server/docs/features#specify-from-which-network-solve-container-ip)
 
 **For more details see** [the Documentation ](http://mageddo.github.io/dns-proxy-server/docs/features) or [Release Notes](RELEASE-NOTES.md) 
 

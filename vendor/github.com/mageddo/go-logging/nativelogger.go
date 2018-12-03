@@ -2,6 +2,7 @@ package logging
 
 import (
 	"bytes"
+	"context"
 	"github.com/mageddo/go-logging/pkg/trace"
 	"fmt"
 	"runtime/debug"
@@ -18,43 +19,37 @@ func New(p Printer, level ...int) *defaultLogger {
 	if len(level) > 0 {
 		return &defaultLogger{p, level[0], DEBUG}
 	}
-	return &defaultLogger{p, 2, DEBUG}
+	return &defaultLogger{p, 3, DEBUG}
 }
 
 func (l *defaultLogger) Debug(args ...interface{}) {
-	args = append([]interface{}{withCallerMethod(withLevel(new(bytes.Buffer), "DEBUG"), l.level).String()}, args...)
-	l.Printer().Println(args...)
+	l.print(args, DEBUG)
 }
 
 func (l *defaultLogger) Debugf(format string, args ...interface{}) {
-	l.Printer().Printf(withFormat(withCallerMethod(withLevel(new(bytes.Buffer), "DEBUG"), l.level), format).String(), args...)
+	l.fPrint(format, args, DEBUG)
 }
 
 func (l *defaultLogger) Info(args ...interface{}) {
-	args = append([]interface{}{withCallerMethod(withLevel(new(bytes.Buffer), "INFO"), l.level).String()}, args...)
-	l.Printer().Println(args...)
+	l.print(args, INFO)
 }
 func (l *defaultLogger) Infof(format string, args ...interface{}) {
-	l.Printer().Printf(withFormat(withCallerMethod(withLevel(new(bytes.Buffer), "INFO"), l.level), format).String(), args...)
+	l.fPrint(format, args, INFO)
 }
 
 func (l *defaultLogger) Warning(args ...interface{}) {
-	args = append([]interface{}{withCallerMethod(withLevel(new(bytes.Buffer), "WARNING"), l.level).String()}, args...)
-	l.Printer().Println(args...)
+	l.print(args, WARNING)
 }
+
 func (l *defaultLogger) Warningf(format string, args ...interface{}) {
-	l.Printer().Printf(withFormat(withCallerMethod(withLevel(new(bytes.Buffer), "WARNING"), l.level), format).String(), args...)
+	l.fPrint(format, args, WARNING)
 }
 
 func (l *defaultLogger) Error(args ...interface{}) {
-	transformErrorInStackTrace(args, nil)
-	args = append([]interface{}{withCallerMethod(withLevel(new(bytes.Buffer), "ERROR"), l.level).String()}, args...)
-	l.Printer().Println(args...)
+	l.print(args, ERROR)
 }
 func (l *defaultLogger) Errorf(format string, args ...interface{}) {
-	vfmt := withFormat(withCallerMethod(withLevel(new(bytes.Buffer), "ERROR"), l.level), format)
-	r := transformErrorInStackTrace(args, vfmt)
-	l.Printer().Printf(vfmt.String(), r...)
+	l.fPrint(format, args, ERROR)
 }
 
 func (l *defaultLogger) Printer() Printer {
@@ -86,6 +81,32 @@ func transformErrorInStackTrace(args []interface{}, buf *bytes.Buffer) []interfa
 	return args
 }
 
+func (l *defaultLogger) fPrint(format string, args []interface{}, methodLevel int){
+	args, ctx := popContext(args)
+	vfmt := withFormat(withContextUUID(withCallerMethod(withLevel(new(bytes.Buffer), getLevelName(methodLevel)), l.level), ctx), format)
+	if l.level == ERROR {
+		args = transformErrorInStackTrace(args, vfmt)
+	}
+	l.Printer().Printf(vfmt.String(), args...)
+}
+
+func (l *defaultLogger) print(args []interface{}, methodLevel int) {
+	args = transformErrorInStackTrace(args, nil)
+	args, ctx := popContext(args)
+	args = append([]interface{}{withContextUUID(withCallerMethod(withLevel(new(bytes.Buffer), getLevelName(methodLevel)), l.level), ctx).String()}, args...)
+	l.Printer().Println(args...)
+}
+
+func withContextUUID(buff *bytes.Buffer, ctx context.Context) *bytes.Buffer {
+	if ctx == nil {
+		return buff
+	}
+	buff.WriteString("uuid=")
+	buff.WriteString(ctx.Value("UUID").(string))
+	buff.WriteString(" ")
+	return buff
+}
+
 // add method caller name to message
 func withCallerMethod(buff *bytes.Buffer, level int) *bytes.Buffer {
 	s := trace.GetCallerFunction(level)
@@ -112,4 +133,31 @@ func withLevel(buff *bytes.Buffer, lvl string) *bytes.Buffer {
 func withFormat(buff *bytes.Buffer, format string) *bytes.Buffer {
 	buff.WriteString(format)
 	return buff
+}
+
+func popContext(args []interface{}) ([]interface{}, context.Context) {
+	if len(args) == 0 {
+		return args, nil
+	}
+	if ctx, ok := args[0].(context.Context); ok {
+		return args[1:], ctx
+	}
+	return args, nil
+}
+
+func getLevelName(level int) string {
+	switch level {
+	case DEBUG:
+		return "DEBUG"
+	case INFO:
+		return "INFO"
+	case NOTICE:
+		return "NOTICE"
+	case WARNING:
+		return "WARNING"
+	case ERROR:
+		return "ERROR"
+	default:
+		panic(fmt.Sprintf("unknown code %d", level))
+	}
 }

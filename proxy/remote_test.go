@@ -27,11 +27,11 @@ func TestRemoteDnsSolver_SolveCacheSuccess(t *testing.T) {
 		return local.LoadConfiguration()
 	}
 
-	remoteSolver.On("confloader", ctx).Once()
+	remoteSolver.On("confloader", testCtx).Once()
 
 	question := new(dns.Question)
-	remoteSolver.Solve(ctx, *question)
-	remoteSolver.Solve(ctx, *question)
+	remoteSolver.Solve(testCtx, *question)
+	remoteSolver.Solve(testCtx, *question)
 
 	remoteSolver.AssertExpectations(t)
 

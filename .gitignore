@@ -1,9 +1,9 @@
-/files/
 /pkg
 /bin
 /build
 .idea/
 *.iml
+/files
 
 .gradle/
 *.orig

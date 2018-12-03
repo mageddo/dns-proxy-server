@@ -1,17 +1,17 @@
 package proxy
 
 import (
-	"testing"
-	"github.com/miekg/dns"
-	"github.com/stretchr/testify/mock"
-	"github.com/stretchr/testify/assert"
-	"github.com/mageddo/dns-proxy-server/cache/lru"
-	"github.com/mageddo/dns-proxy-server/cache"
 	glru "github.com/hashicorp/golang-lru"
-	"context"
+	"github.com/mageddo/dns-proxy-server/cache"
+	"github.com/mageddo/dns-proxy-server/cache/lru"
+	"github.com/mageddo/dns-proxy-server/reference"
+	"github.com/miekg/dns"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
+	"testing"
 )
 
-var ctx = context.Background()
+var ctx = reference.Context()
 
 func TestDockerSolve_HostFound(t *testing.T){
 	c := newCacheMock()
@@ -61,7 +61,7 @@ func newCacheMock() cache.Cache {
 	m := CacheMock{}
 	m.Cache, err = glru.New(10)
 	if err != nil {
-		panic(err);
+		panic(err)
 	}
 	return &m
 }

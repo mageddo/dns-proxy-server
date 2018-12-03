@@ -5,6 +5,7 @@ import (
 )
 
 type TimedValue interface {
+
 	Creation() time.Time
 	Timeout() time.Duration
 	Value() interface{}

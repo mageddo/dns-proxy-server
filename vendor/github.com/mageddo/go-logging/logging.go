@@ -49,7 +49,7 @@ type Log interface {
 	GetLevel() int
 }
 
-var l Log = New(native.NewGologPrinter(os.Stdout, "", log.LstdFlags), 3)
+var l Log = New(native.NewGologPrinter(os.Stdout, "", log.LstdFlags), 4)
 func Debug(args ...interface{}) {
 	if isActive(l.GetLevel(), DEBUG) {
 		l.Debug(args...)

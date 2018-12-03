@@ -1,17 +1,17 @@
 package utils
 
 import (
-	"path/filepath"
-	"os"
-	"encoding/json"
-	"io"
-	"time"
-	"github.com/mageddo/dns-proxy-server/utils/env"
-	"strings"
-	"os/signal"
-	"syscall"
 	"bytes"
+	"encoding/json"
 	"github.com/mageddo/dns-proxy-server/flags"
+	"github.com/mageddo/dns-proxy-server/utils/env"
+	"io"
+	"os"
+	"os/signal"
+	"path/filepath"
+	"strings"
+	"syscall"
+	"time"
 )
 
 var QTypeCodes = map[uint16] string {
