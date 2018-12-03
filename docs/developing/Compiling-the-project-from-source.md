@@ -22,7 +22,7 @@ Then binaries mus be available at **build** folder
 
 ```
 $ ls build/
-dns-proxy-server  dns-proxy-server-2.5.1.tgz  static
+dns-proxy-server dns-proxy-server-2.5.1.tgz  static
 ``` 
 
 If you want you can build the docker image
@@ -30,6 +30,8 @@ If you want you can build the docker image
 ```
 $ docker-compose build prod-build-image-dps && docker-compose up prod-dps
 ```
+
+Take a look at docker-compose.yml for prod-build-image-dps* to build other arch 
 
 ### Building binary for specific ARCH
 

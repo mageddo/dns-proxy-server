@@ -41,19 +41,19 @@ services:
       dockerfile: Dockerfile
     image: defreitas/dns-proxy-server:2.9.1
 
-  prod-build-arm7x86-image-dps:
+  prod-build-image-dps-arm7x86:
     build:
       context: .
       dockerfile: Dockerfile.arm7x86
     image: defreitas/dns-proxy-server-arm7x86:2.7.0
 
-  prod-build-arm8x64-image-dps:
+  prod-build-image-dps-arm8x64:
     build:
       context: .
       dockerfile: Dockerfile.arm8x64
     image: defreitas/dns-proxy-server-arm8x64:2.7.0
 
-  prod-build-arm8x86-image-dps:
+  prod-build-image-dps-arm8x86:
     build:
       context: .
       dockerfile: Dockerfile.arm8x86
