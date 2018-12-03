@@ -80,14 +80,12 @@ case $1 in
 
 	;;
 
-	test )
+	build )
+
 		unset GOOS GOARCH
 		echo "> Testing ..."
 		go test -race -cover -ldflags "-X github.com/mageddo/dns-proxy-server/flags.version=test" ./.../
 		echo "> Tests completed"
-	;;
-
-	build )
 
 		echo "> Building..."
 
