@@ -39,28 +39,24 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: docker-dns-server-docker-compiler
     image: defreitas/dns-proxy-server:2.9.1
 
   prod-build-arm7x86-image-dps:
     build:
       context: .
       dockerfile: Dockerfile.arm7x86
-    container_name: docker-dns-server-docker-compiler
     image: defreitas/dns-proxy-server-arm7x86:2.7.0
 
   prod-build-arm8x64-image-dps:
     build:
       context: .
       dockerfile: Dockerfile.arm8x64
-    container_name: docker-dns-server-docker-compiler
     image: defreitas/dns-proxy-server-arm8x64:2.7.0
 
   prod-build-arm8x86-image-dps:
     build:
       context: .
       dockerfile: Dockerfile.arm8x86
-    container_name: docker-dns-server-docker-compiler
     image: defreitas/dns-proxy-server-arm8x86:2.7.0
 
   # build the project and make the github release

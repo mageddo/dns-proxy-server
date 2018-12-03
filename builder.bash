@@ -96,18 +96,20 @@ case $1 in
 
 		# LINUX
 		# INTEL / AMD
-		export GOOS=linux && export GOARCH=386 && builder.bash compile
-		export GOOS=linux && export GOARCH=amd64 && builder.bash compile
+		builder.bash compile linux 386
+		builder.bash compile linux amd64
 
 		# ARM
-		export GOOS=linux && export GOARCH=arm && builder.bash compile
-		export GOOS=linux && export GOARCH=arm64 && builder.bash compile
+		builder.bash compile linux arm
+		builder.bash compile linux arm64
 
 		echo "> Build success"
 
 	;;
 
 	compile )
+		GOOS=$2
+		GOARCH=$3
 		echo "> Compiling os=${GOOS}, arch=${GOARCH}"
 		go build -o $PWD/build/dns-proxy-server -ldflags "-X github.com/mageddo/dns-proxy-server/flags.version=$APP_VERSION"
 		export TAR_FILE=dns-proxy-server-${GOOS}-${GOARCH}-${APP_VERSION}.tgz
@@ -129,9 +131,7 @@ case $1 in
 		echo "> build started, current branch=$CURRENT_BRANCH"
 		if [ "$CURRENT_BRANCH" = "master" ]; then
 			echo "> deploying new version"
-			builder.bash validate-release || exit 0 && builder.bash apply-version
-			builder.bash build
-			builder.bash upload-release
+			builder.bash validate-release || exit 0 && builder.bash apply-version && builder.bash build && builder.bash upload-release
 		else
 			echo "> building candidate"
 			builder.bash build
