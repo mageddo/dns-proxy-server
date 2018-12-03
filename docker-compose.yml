@@ -32,7 +32,6 @@ services:
   # Build the project and generate binary at build folder
   prod-build-binary-dps:
     extends: compiler-dps
-    container_name: docker-dns-server-compiler
     command: bash -c "builder.bash build"
 
   # Build project and generate docker image you will need to run prod-build-binary-dps first

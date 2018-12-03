@@ -96,7 +96,9 @@ case $1 in
 		echo "> Building..."
 		cp -r static build/
 		
-		export GOOS=linux && export GOARCH= && builder.bash compile
+		export GOOS=linux && export GOARCH=386 && builder.bash compile
+		export GOOS=linux && export GOARCH=amd64 && builder.bash compile
+		export GOOS=linux && export GOARCH=arm && builder.bash compile
 		export GOOS=linux && export GOARCH=arm64 && builder.bash compile
 
 		echo "> Build success"
