@@ -88,14 +88,13 @@ case $1 in
 
 	build )
 
-		echo "> Starting build os=${GOOS}, arch=${GOARCH}"
+		echo "> Building..."
 
 		rm -rf build/
 		mkdir -p build/
 
-		echo "> Building..."
 		cp -r static build/
-		
+
 		export GOOS=linux && export GOARCH=386 && builder.bash compile
 		export GOOS=linux && export GOARCH=amd64 && builder.bash compile
 		export GOOS=linux && export GOARCH=arm && builder.bash compile
@@ -104,11 +103,13 @@ case $1 in
 		echo "> Build success"
 
 	;;
-	
+
 	compile )
-		go build -v -o $PWD/build/dns-proxy-server -ldflags "-X github.com/mageddo/dns-proxy-server/flags.version=$APP_VERSION"
-		export TAR_FILE=$PWD/build/dns-proxy-server-${GOOS}-${GOARCH}-${APP_VERSION}.tgz
-		tar --exclude=*.tgz -czvf $TAR_FILE *
+		echo "> Compiling os=${GOOS}, arch=${GOARCH}"
+		go build -o $PWD/build/dns-proxy-server -ldflags "-X github.com/mageddo/dns-proxy-server/flags.version=$APP_VERSION"
+		export TAR_FILE=dns-proxy-server-${GOOS}-${GOARCH}-${APP_VERSION}.tgz
+		cd $PWD/build/
+		tar --exclude=*.tgz -czf $TAR_FILE *
 	;;
 
 	validate-release )
