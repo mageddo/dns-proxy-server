@@ -118,10 +118,10 @@ case $1 in
 		echo "> build started, current branch=$CURRENT_BRANCH"
 		if [ "$CURRENT_BRANCH" = "master" ]; then
 			echo "> deploying new version"
-			builder validate-release || exit 0 && builder apply-version && builder build && builder upload-release
+			builder.bash validate-release || exit 0 && builder.bash apply-version && builder.bash build && builder.bash upload-release
 		else
 			echo "> building candidate"
-			builder build
+			builder.bash build
 		fi
 
 	;;

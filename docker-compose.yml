@@ -7,7 +7,7 @@ services:
     working_dir: /app/src/github.com/mageddo/dns-proxy-server
     volumes:
       - $PWD:/app/src/github.com/mageddo/dns-proxy-server
-      - $PWD/builder:/bin/builder
+      - $PWD/builder.bash:/bin/builder.bash
       - /var/run/docker.sock:/var/run/docker.sock
     command: tail -f /dev/null
     environment:
@@ -33,7 +33,7 @@ services:
   prod-build-binary-dps:
     extends: compiler-dps
     container_name: docker-dns-server-compiler
-    command: bash -c "builder build"
+    command: bash -c "builder.bash build"
 
   # Build project and generate docker image you will need to run prod-build-binary-dps first
   prod-build-image-dps:
@@ -68,7 +68,7 @@ services:
   prod-ci-deploy:
     container_name: prod-ci-deploy
     extends: compiler-dps
-    command: bash -c "builder deploy-ci"
+    command: bash -c "builder.bash deploy-ci"
     environment:
       - CURRENT_BRANCH=$TRAVIS_BRANCH # current branch name
       - REPO_TOKEN=$REPO_TOKEN # github token to deploy the binary
