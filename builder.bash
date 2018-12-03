@@ -89,7 +89,7 @@ case $1 in
 
 		# updating files version
 		sed -i -E "s/(dns-proxy-server.*)[0-9]+\.[0-9]+\.[0-9]+/\1$APP_VERSION/" docker-compose.yml
-		sed -i -E "s/[0-9]+\.[0-9]+\.[0-9]+/$APP_VERSION/g" Dockerfile.hub
+		sed -i -E "s/[0-9]+\.[0-9]+\.[0-9]+/$APP_VERSION/g" Dockerfile*.hub
 
 	;;
 
@@ -140,7 +140,8 @@ case $1 in
 		echo "> build started, current branch=$CURRENT_BRANCH"
 		if [ "$CURRENT_BRANCH" = "master" ]; then
 			echo "> deploying new version"
-			builder.bash validate-release || exit 0 && builder.bash apply-version && builder.bash build && builder.bash upload-release
+			builder.bash validate-release || exit 0 && builder.bash apply-version && builder.bash build &&\
+			builder.bash upload-release && builder.bash trigger-docker-hub
 		else
 			echo "> building candidate"
 			builder.bash build
