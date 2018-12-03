@@ -31,8 +31,23 @@ If you want you can build the docker image
 $ docker-compose build prod-build-image-dps && docker-compose up prod-dps
 ```
 
-### Used tecnologies 
+### Building binary for specific ARCH
+
+You can generate DPS binaries for [all archs that are supported by golang](https://golang.org/doc/install/source#environment),
+DPS were designed to run on linux BTW.
+
+```bash
+$ docker-compose run prod-build-binary-dps builder.bash build linux amd64
+> Testing
+> Tests completed
+> Building...
+> Compiling os=linux, arch=amd64
+```
+
+
+### Used technologies 
 
 * Docker
 * Docker Compose
-* Golang 1.9
+* Golang
+
