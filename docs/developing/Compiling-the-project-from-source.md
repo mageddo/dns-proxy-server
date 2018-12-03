@@ -44,7 +44,6 @@ $ docker-compose run prod-build-binary-dps builder.bash build linux amd64
 > Compiling os=linux, arch=amd64
 ```
 
-
 ### Used technologies 
 
 * Docker
