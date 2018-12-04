@@ -76,9 +76,9 @@ case $1 in
 		create_release
 		echo "> Release created with id $TAG_ID"
 
-		for TARGET_FILE in $PWD/build/*.tgz; do
-			SOURCE_FILE="$PWD/build/$TARGET_FILE"
-			echo "> Source file hash"
+		for SOURCE_FILE in $PWD/build/*.tgz; do
+			TARGET_FILE="$(basename $SOURCE_FILE)"
+			echo "> Source hash file=$TARGET_FILE"
 			md5sum $SOURCE_FILE && ls -lha $SOURCE_FILE
 			upload_file
 		done
