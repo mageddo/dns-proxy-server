@@ -53,12 +53,6 @@ services:
       dockerfile: Dockerfile.arm8x64
     image: defreitas/dns-proxy-server-arm8x64:2.10.2
 
-  prod-build-image-dps-arm8x86:
-    build:
-      context: .
-      dockerfile: Dockerfile.arm8x86
-    image: defreitas/dns-proxy-server-arm8x86:2.10.2
-
   # build the project and make the github release
   prod-ci-deploy:
     container_name: prod-ci-deploy
