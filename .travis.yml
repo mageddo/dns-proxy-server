@@ -3,7 +3,12 @@ sudo: required
 services:
   - docker
 
-script: docker-compose up --force-recreate --abort-on-container-exit prod-ci-deploy
+script:
+  - |
+    docker-compose up --force-recreate --abort-on-container-exit prod-ci-deploy &&\
+    docker-compose build prod-build-image-dps-arm7x86 prod-build-image-dps-arm8x64 &&\
+    echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&\
+    docker-compose push prod-build-image-dps-arm7x86 prod-build-image-dps-arm8x64
 
 branches:
   only:

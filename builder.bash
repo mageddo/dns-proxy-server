@@ -141,7 +141,8 @@ case $1 in
 		if [ "$CURRENT_BRANCH" = "master" ]; then
 			echo "> deploying new version"
 			builder.bash validate-release || exit 0 && builder.bash apply-version && builder.bash build &&\
-			builder.bash upload-release && builder.bash trigger-docker-hub
+			builder.bash upload-release
+
 		else
 			echo "> building candidate"
 			builder.bash build
