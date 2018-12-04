@@ -1,3 +1,6 @@
+### 2.10.2
+* Fixing binaries were generated for wrong arch
+
 ### 2.10.1
 * Official support for ARM
 
