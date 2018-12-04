@@ -19,7 +19,7 @@ services:
 
   # Run from docker image
   prod-dps:
-    image: defreitas/dns-proxy-server:2.10.1
+    image: defreitas/dns-proxy-server:2.10.2
     hostname: dns.mageddo
     volumes:
       - /opt/dns-proxy-server/conf:/app/conf
@@ -39,25 +39,25 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: defreitas/dns-proxy-server:2.10.1
+    image: defreitas/dns-proxy-server:2.10.2
 
   prod-build-image-dps-arm7x86:
     build:
       context: .
       dockerfile: Dockerfile.arm7x86
-    image: defreitas/dns-proxy-server-arm7x86:2.10.1
+    image: defreitas/dns-proxy-server-arm7x86:2.10.2
 
   prod-build-image-dps-arm8x64:
     build:
       context: .
       dockerfile: Dockerfile.arm8x64
-    image: defreitas/dns-proxy-server-arm8x64:2.10.1
+    image: defreitas/dns-proxy-server-arm8x64:2.10.2
 
   prod-build-image-dps-arm8x86:
     build:
       context: .
       dockerfile: Dockerfile.arm8x86
-    image: defreitas/dns-proxy-server-arm8x86:2.10.1
+    image: defreitas/dns-proxy-server-arm8x86:2.10.2
 
   # build the project and make the github release
   prod-ci-deploy:
