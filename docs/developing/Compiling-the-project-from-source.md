@@ -2,7 +2,6 @@
 
 **DPS** uses docker to simplify the compile process
 
-
 Generate the binaries
 
 ```bash
@@ -36,7 +35,7 @@ Take a look at docker-compose.yml for prod-build-image-dps* to build other arch
 ### Building binary for specific ARCH
 
 You can generate DPS binaries for [all archs that are supported by golang](https://golang.org/doc/install/source#environment),
-DPS were designed to run on linux BTW.
+DPS were designed to run on linux though.
 
 ```bash
 $ docker-compose run prod-build-binary-dps builder.bash build linux amd64
