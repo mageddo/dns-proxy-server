@@ -7,6 +7,7 @@ services:
       - /etc/resolv.conf:/etc/resolv.conf
     environment:
       - MG_LOG_LEVEL=ERROR
+    hostname: dns.mageddo
     networks:
       dps:
         ipv4_address: 172.0.0.10

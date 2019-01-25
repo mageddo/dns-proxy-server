@@ -40,7 +40,8 @@ PING dns.mageddo (172.17.0.4) 56(84) bytes of data.
 64 bytes from 172.17.0.4: icmp_seq=3 ttl=64 time=0.064 ms
 ```
 
-[Checkout the full running it documentation for more details](http://mageddo.github.io/dns-proxy-server/docs/running.html)
+* [Checkout the full running it documentation for more details](http://mageddo.github.io/dns-proxy-server/docs/running.html)
+* [Some examples](https://github.com/mageddo/dns-proxy-server/tree/master/examples)
 
 ### Requirements
 * Linux/Windows
