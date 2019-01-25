@@ -14,6 +14,30 @@ curl-client_1_b51dbdc408d6 | Content-Length: 612
 curl-client_1_b51dbdc408d6 | Last-Modified: Tue, 25 Dec 2018 09:56:47 GMT
 curl-client_1_b51dbdc408d6 | Connection: keep-alive
 curl-client_1_b51dbdc408d6 | ETag: "5c21fedf-264"
-curl-client_1_b51dbdc408d6 | Accept-Ranges: bytes
-curl-client_1_b51dbdc408d6 | 
+curl-client_1_b51dbdc408d6 | Accept-Ranges: bytes 
+```
+
+Docker version
+
+```
+docker version
+Client: Docker Engine - Community
+ Version:           18.09.0
+ API version:       1.39
+ Go version:        go1.10.4
+ Git commit:        4d60db4
+ Built:             Wed Nov  7 00:46:51 2018
+ OS/Arch:           linux/amd64
+ Experimental:      false
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          18.09.0
+  API version:      1.39 (minimum version 1.12)
+  Go version:       go1.10.4
+  Git commit:       4d60db4
+  Built:            Wed Nov  7 00:52:55 2018
+  OS/Arch:          linux/amd64
+  Experimental:     false
+
 ```
