@@ -1,4 +1,5 @@
-Note if you are using docker-compose v2 or v3 DPS is not necessary to solve containers on the same compose file
+Note if you are using docker-compose v2 or v3 DPS is not necessary to solve containers on the same compose file, note 
+you will not be able to solve containers from host
 
 ```bash
 $ docker-compose -f docker-compose-v2.yml up --force-recreate

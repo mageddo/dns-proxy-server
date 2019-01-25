@@ -1,4 +1,5 @@
-When you are using different compose files DPS is not required as well, just create a common network for all services
+When you are using different compose files DPS is not required as well, just create a common network for all services,
+note you will not be able to solve containers from host
 
 ```bash
 $ docker network create --attachable dps || true &&\
