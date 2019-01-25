@@ -8,14 +8,14 @@ services:
       - MG_LOG_LEVEL=ERROR
     networks:
       dps:
-        ipv4_address: 172.16.238.10
+        ipv4_address: 172.0.0.10
 
   nginx:
     image: nginx
     environment:
       - HOSTNAMES=nginx.server
     dns:
-      - 172.16.238.10
+      - 172.0.0.10
     networks:
       - dps
 
@@ -23,7 +23,7 @@ services:
     image: alpine
     command: sh -c "apk add --update curl; watch 'curl -s -I nginx.server'"
     dns:
-      - 172.16.238.10
+      - 172.0.0.10
     networks:
       - dps
 
@@ -31,4 +31,4 @@ networks:
   dps:
     ipam:
       config:
-        - subnet: 172.16.238.0/24
+        - subnet: 172.0.0.0/24
