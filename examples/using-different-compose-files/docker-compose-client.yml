@@ -1,0 +1,10 @@
+version: '3'
+services:
+  curl-client:
+    image: alpine
+    command: sh -c "apk add --update curl; watch 'curl -s -I nginx'"
+    networks:
+      - dps
+networks:
+  dps:
+    external: true

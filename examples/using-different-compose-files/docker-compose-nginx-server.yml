@@ -1,0 +1,14 @@
+version: '3'
+services:
+  nginx:
+    image: nginx
+    networks:
+      - dps
+  #    depends_on:
+  #      - dps
+  #          condition: service_healthy
+  #    volumes:
+  #      - /etc/resolv.conf:/etc/resolv.conf
+networks:
+  dps:
+    external: true

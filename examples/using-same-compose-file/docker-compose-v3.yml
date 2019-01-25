@@ -1,0 +1,7 @@
+version: '3'
+services:
+  nginx:
+    image: nginx
+  curl-client:
+    image: alpine
+    command: sh -c "apk add --update curl; watch 'curl -s -I nginx'"
