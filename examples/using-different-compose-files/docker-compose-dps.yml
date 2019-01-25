@@ -4,16 +4,10 @@ services:
       image: defreitas/dns-proxy-server
       environment:
         - MG_REGISTER_CONTAINER_NAMES=1
-      healthcheck:
-        test: ["CMD", "exit", "0"]
-        interval: 30s
-        timeout: 10s
-        retries: 5
       networks:
         - dps
       volumes:
         - /var/run/docker.sock:/var/run/docker.sock
-#        - /etc/resolv.conf:/etc/resolv.conf
 
 networks:
   dps:
