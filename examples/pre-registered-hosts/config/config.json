@@ -1,0 +1,28 @@
+{
+	"remoteDnsServers": [],
+	"envs": [
+		{
+			"name": "",
+			"hostnames": [
+				{
+					"id": 2,
+					"hostname": "google.com",
+					"ip": [
+						172,
+						5,
+						1,
+						10
+					],
+					"ttl": 20
+				}
+			]
+		}
+	],
+	"activeEnv": "",
+	"lastId": 6,
+	"webServerPort": 0,
+	"dnsServerPort": 0,
+	"defaultDns": null,
+	"logLevel": "",
+	"logFile": ""
+}

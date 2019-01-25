@@ -1,0 +1,28 @@
+version: '3'
+services:
+  dps:
+    image: defreitas/dns-proxy-server
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/resolv.conf:/etc/resolv.conf
+      - ./config/:/app/conf/
+    environment:
+      - MG_LOG_LEVEL=ERROR
+    hostname: dns.mageddo
+    networks:
+      dps:
+        ipv4_address: 172.5.1.10
+
+  curl-client:
+    image: alpine
+    command: sh -c "apk add --update curl; watch 'curl -D- -s -i -o /dev/null google.com:5380'"
+    dns:
+      - 172.5.1.10
+    networks:
+      - dps
+
+networks:
+  dps:
+    ipam:
+      config:
+        - subnet: 172.5.1.0/24
