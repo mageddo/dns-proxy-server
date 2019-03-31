@@ -94,6 +94,28 @@ PING host.docker (172.21.0.1) 56(84) bytes of data.
 64 bytes from 172.21.0.1 (172.21.0.1): icmp_seq=3 ttl=64 time=0.081 ms
 ```
 
+You can customize this hostname by setting 
+
+Environment variable
+
+```bash
+$ docker run dns-proxy-server -e MG_HOST_MACHINE_HOSTNAME=$(cat /etc/hostname)
+```
+
+Command line option
+
+```bash
+$ ./dns-proxy-server --host-machine-hostname $(cat /etc/hostname)
+```
+
+Json configuration
+
+```json
+{
+	"hostMachineHostname": "host.docker" 
+}
+```
+
 ### Access container by it's container name / service name
 
 ```bash

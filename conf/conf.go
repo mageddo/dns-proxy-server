@@ -109,11 +109,11 @@ func RegisterContainerNames() bool {
 }
 
 func GetHostname() string {
-	if hostname := os.Getenv(env.MG_HOSTNAME); len(strings.Trim(hostname, " ")) != 0 {
+	if hostname := os.Getenv(env.MG_HOST_MACHINE_HOSTNAME); len(strings.Trim(hostname, " ")) != 0 {
 		return hostname
 	}
-	if conf, _ := getConf(); conf != nil &&  len(conf.Hostname) != 0 {
-		return conf.Hostname
+	if conf, _ := getConf(); conf != nil &&  len(conf.HostMachineHostname) != 0 {
+		return conf.HostMachineHostname
 	}
 	return *flags.Hostname
 }

@@ -113,7 +113,7 @@ type LocalConfiguration struct {
 	RegisterContainerNames *bool `json:"registerContainerNames"`
 
 	// hostname to solve host machine IP
-	Hostname string `json:"hostname"`
+	HostMachineHostname string `json:"hostMachineHostname"`
 }
 
 type EnvVo struct {
