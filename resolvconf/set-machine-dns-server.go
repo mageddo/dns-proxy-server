@@ -34,6 +34,6 @@ func (hd *setMachineDNSServerHandler) afterProcess(hasContent bool, foundDnsProx
 
 func newSetMachineDnsServerHandler(serverIP string) DnsHandler {
 	hd := setMachineDNSServerHandler{}
-	hd.serverIP = serverIP;
+	hd.serverIP = serverIP
 	return &hd
 }

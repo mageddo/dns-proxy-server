@@ -2,14 +2,15 @@ package proxy
 
 import (
 	"errors"
-		"github.com/mageddo/go-logging"
+	"github.com/mageddo/dns-proxy-server/resolvconf"
+	"github.com/mageddo/dns-proxy-server/utils"
+	"github.com/mageddo/go-logging"
 	"github.com/miekg/dns"
 	"golang.org/x/net/context"
 	"net"
+	"regexp"
 	"strconv"
 	"strings"
-		"github.com/mageddo/dns-proxy-server/utils"
-	"regexp"
 )
 
 type SystemDnsSolver struct {}
@@ -18,7 +19,7 @@ func (s SystemDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns
 
 	questionName := question.Name[:len(question.Name)-1]
 	switch questionName {
-	case "host.docker":
+	case resolvconf.GetHostname(questionName):
 		ip, err, code := utils.Exec("sh", "-c", "ip r | awk '/default/{print $3}'")
 		if code == 0 {
 			clearedIP := regexp.MustCompile(`\s`).ReplaceAllLiteralString(string(ip), ``)

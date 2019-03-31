@@ -28,6 +28,41 @@ func SetMachineDNSServer(serverIP string) error {
 	return ProcessResolvconf(hd)
 }
 
+
+type getSearchDomainServerHandler struct {
+	serverIP string
+}
+
+func (hd *getSearchDomainServerHandler) process(line string, entryType DnsEntry) *string {
+	switch entryType {
+	case SEARCH:
+		return &line
+	}
+	return nil
+}
+
+func (hd *getSearchDomainServerHandler) afterProcess(hasContent bool, foundDnsProxy bool) *string {
+	return nil
+}
+
+func GetSearchDomainEntry() (string, error) {
+	fileRead, err := os.Open(conf.GetResolvConf())
+	if err != nil {
+		return "", err
+	}
+	defer fileRead.Close()
+	scanner := bufio.NewScanner(fileRead)
+	for ; scanner.Scan();  {
+		line := scanner.Text()
+		switch getDnsEntryType(line) {
+		case SEARCH:
+			return line[0 : len(SEARCH)], nil
+		}
+	}
+	return "", errors.New("Search domain not found")
+}
+
+
 func ProcessResolvconf( handler DnsHandler ) error {
 
 	var newResolvConfBuff bytes.Buffer
@@ -88,6 +123,8 @@ func getDnsEntryType(line string) DnsEntry {
 		return COMMENT
 	} else if strings.HasPrefix(line, "nameserver") {
 		return SERVER
+	} else if strings.HasPrefix(line, "search") {
+		return SEARCH
 	} else {
 		return ELSE
 	}
@@ -154,6 +191,7 @@ const(
 	COMMENTED_SERVER DnsEntry = "COMMENTED_SERVER"
 	SERVER DnsEntry = "SERVER"
 	PROXY DnsEntry = "PROXY"
+	SEARCH DnsEntry = "SEARCH"
 	ELSE DnsEntry = "ELSE"
 )
 
@@ -172,4 +210,11 @@ func GetCurrentIpAddress() (string, error) {
 		}
 	}
 	return "", nil
+}
+
+func GetHostname(subdomain string) string {
+	if domainEntry, err := GetSearchDomainEntry(); err != nil {
+		return fmt.Sprintf("%s.%s", conf.GetHostname(), domainEntry)
+	}
+	return subdomain
 }

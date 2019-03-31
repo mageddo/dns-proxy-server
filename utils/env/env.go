@@ -9,4 +9,6 @@ const (
 
 	// if must register container name / service name as hostname
 	MG_REGISTER_CONTAINER_NAMES = "MG_REGISTER_CONTAINER_NAMES"
+
+	MG_HOSTNAME = "MG_HOSTNAME"
 )

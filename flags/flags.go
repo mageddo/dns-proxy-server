@@ -27,6 +27,7 @@ var (
 	logLevel = flag.String("log-level", "DEBUG", "Log Level ERROR, WARNING, INFO, DEBUG")
 	registerContainerNames = flag.Bool("register-container-names", false, "If must register container name / service name as host in DNS server")
 	Version = flag.Bool("version", false, "Current version")
+	Hostname = flag.String("hostname", "host.docker", "The hostname to get host machine IP")
 	Help = flag.Bool("help", false, "This message")
 )
 
