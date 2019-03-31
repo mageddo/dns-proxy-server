@@ -11,9 +11,7 @@ type DnsSolverFactory interface {
 	Solve(ctx context.Context, question dns.Question, solvers []DnsSolver) (*dns.Msg, error)
 }
 
-type DefaultDnsSolverFactory struct {
-
-}
+type DefaultDnsSolverFactory struct {}
 
 func (*DefaultDnsSolverFactory) Solve(ctx context.Context, question dns.Question, solvers []DnsSolver) (*dns.Msg, error) {
 	for _, solver := range solvers {
@@ -30,6 +28,7 @@ func (*DefaultDnsSolverFactory) Solve(ctx context.Context, question dns.Question
 type CnameDnsSolverFactory struct {
 	proxy DnsSolverFactory
 }
+
 func NewCnameDnsSolverFactory(delegate DnsSolverFactory) CnameDnsSolverFactory {
 	return CnameDnsSolverFactory{proxy:delegate}
 }

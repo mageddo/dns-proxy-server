@@ -63,10 +63,6 @@ func (s localDnsSolver) solveHostname(ctx context.Context, question dns.Question
 		case local.A, "":
 			return getAMsg(question, hostname), nil
 		case local.CNAME:
-			//targetHostname, i := activeEnv.GetHostname(hostname.Target)
-			//if i < 0 {
-			//	return nil, errors.New("CNAME Target not found for hostname " + question.Name)
-			//}
 			return getCnameMsg(question, hostname), nil
 		}
 	}
