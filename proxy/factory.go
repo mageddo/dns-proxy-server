@@ -3,6 +3,7 @@ package proxy
 import (
 	"context"
 	"errors"
+	"github.com/mageddo/go-logging"
 	"github.com/miekg/dns"
 )
 
@@ -18,9 +19,11 @@ func (*DefaultDnsSolverFactory) Solve(ctx context.Context, question dns.Question
 	for _, solver := range solvers {
 		msg, err := solver.Solve(ctx, question)
 		if msg != nil {
+			logging.Debugf("solver-factory=default, status=found, question=%+v, answers=%d", question, len(msg.Answer))
 			return msg, err
 		}
 	}
+	logging.Debugf("solver-factory=default, status=not-found, question=%+v", question)
 	return nil, errors.New("Not solver for the question " + question.Name)
 }
 
@@ -34,9 +37,10 @@ func NewCnameDnsSolverFactory(delegate DnsSolverFactory) CnameDnsSolverFactory {
 func (s *CnameDnsSolverFactory) Solve(ctx context.Context, question dns.Question, solvers []DnsSolver) (*dns.Msg, error) {
 
 	firstMsg, err := s.proxy.Solve(ctx, question, solvers)
-	if err != nil {
-		return nil, err
+	if err != nil || len(firstMsg.Answer) == 0 {
+		return firstMsg, err
 	}
+
 	firstAnswer := firstMsg.Answer[0]
 	if firstAnswer.Header().Rrtype == dns.TypeCNAME && firstAnswer.Header().Class == 256 {
 		question.Name = firstAnswer.(*dns.CNAME).Target
