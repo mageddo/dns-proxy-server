@@ -196,15 +196,19 @@ func GetCurrentIpAddress() (string, error) {
 	return "", nil
 }
 
-
-
 const SEARCH_DOMAIN_KEY = "SEARCH_DOMAIN"
 func GetSearchDomainEntryCached() (string, error){
 	cache := store.GetInstance()
 	if cache.ContainsKey(SEARCH_DOMAIN_KEY) {
+		logging.Debugf("status=cached-search-domain, domain=%s", cache.Get(SEARCH_DOMAIN_KEY))
 		return cache.Get(SEARCH_DOMAIN_KEY).(string), nil
 	}
-	return GetSearchDomainEntry()
+	logging.Debugf("status=hot-load-search-domain")
+	entry, err := GetSearchDomainEntry()
+	if err == nil {
+		cache.Put(SEARCH_DOMAIN_KEY, entry)
+	}
+	return entry, err
 }
 
 func GetHostname(subdomain string) string {
