@@ -26,9 +26,19 @@ func NewLocalDNSSolver() *localDnsSolver {
 	return &localDnsSolver{}
 }
 
-func (*localDnsSolver) getMsg(question dns.Question, hostname *local.HostnameVo) *dns.Msg {
+func getCnameMsg(question dns.Question, hostname *local.HostnameVo) *dns.Msg{
+	rr := &dns.CNAME{
+		Hdr: dns.RR_Header{Name: question.Name, Rrtype: dns.TypeCNAME, Class: 256, Ttl: 60},
+		Target: hostname.Target + ".",
+	}
+	m := new(dns.Msg)
+	m.Answer = append(m.Answer, rr)
+	return m
+}
+
+func getAMsg(question dns.Question, hostname *local.HostnameVo) *dns.Msg{
 	rr := &dns.A{
-		Hdr: dns.RR_Header{Name: question.Name, Rrtype: dns.TypeA, Class: dns.ClassINET, Ttl: 0},
+		Hdr: dns.RR_Header{Name: question.Name, Rrtype: dns.TypeA, Class: dns.ClassINET, Ttl: 60},
 		A:   net.IPv4(hostname.Ip[0], hostname.Ip[1], hostname.Ip[2], hostname.Ip[3]),
 	}
 	m := new(dns.Msg)
@@ -45,11 +55,20 @@ func (s localDnsSolver) solveHostname(ctx context.Context, question dns.Question
 	}
 	activeEnv, _ := conf.GetActiveEnv()
 	if activeEnv == nil {
-		return nil, errors.New("original env")
+		return nil, errors.New("Not active env found")
 	}
-	hostname, _ := activeEnv.GetHostname(key)
-	if hostname != nil {
-		return s.getMsg(question, hostname), nil
+
+	if hostname, _ := activeEnv.GetHostname(key); hostname != nil {
+		switch hostname.Type {
+		case local.A, "":
+			return getAMsg(question, hostname), nil
+		case local.CNAME:
+			//targetHostname, i := activeEnv.GetHostname(hostname.Target)
+			//if i < 0 {
+			//	return nil, errors.New("CNAME Target not found for hostname " + question.Name)
+			//}
+			return getCnameMsg(question, hostname), nil
+		}
 	}
 	return nil, errors.New("hostname not found " + key)
 }

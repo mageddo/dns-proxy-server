@@ -36,3 +36,46 @@ func TestSaveConfiguration_ClearCacheAfterChangeConfiguration(t *testing.T) {
 	assert.Equal(t, [4]byte{192,168,0,2}, foundHostname.Ip)
 
 }
+
+func TestShouldSaveARecord(t *testing.T) {
+
+	defer ResetConf()
+
+	expectedHostname := "github.io"
+
+	conf, err := LoadConfiguration()
+	assert.Nil(t, err, "could not load conf")
+
+	// act
+	assert.Nil(t, conf.AddHostname( "", HostnameVo{Ip: [4]byte{192,168,0,2}, Ttl:30, Env:"", Hostname: expectedHostname, Type:A}))
+
+	// assert
+
+	env, _ := conf.GetActiveEnv()
+	hostnameVo, _ := env.GetHostname("github.io")
+	assert.Equal(t, expectedHostname, hostnameVo.Hostname)
+	assert.Equal(t, A, hostnameVo.Type)
+
+}
+
+
+func TestShouldSaveCnameRecord(t *testing.T) {
+
+	defer ResetConf()
+
+	expectedHostname := "github.io"
+
+	conf, err := LoadConfiguration()
+	assert.Nil(t, err, "could not load conf")
+
+	// act
+	assert.Nil(t, conf.AddHostname( "", HostnameVo{Ip: [4]byte{192,168,0,2}, Ttl:30, Env:"", Hostname: expectedHostname, Type:CNAME}))
+
+	// assert
+
+	env, _ := conf.GetActiveEnv()
+	hostnameVo, _ := env.GetHostname("github.io")
+	assert.Equal(t, expectedHostname, hostnameVo.Hostname)
+	assert.Equal(t, CNAME, hostnameVo.Type)
+
+}

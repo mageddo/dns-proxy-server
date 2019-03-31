@@ -1,19 +1,19 @@
 package local
 
 import (
-	"encoding/json"
-	"os"
-	"github.com/mageddo/go-logging"
 	"bufio"
-	"github.com/mageddo/dns-proxy-server/utils"
+	"encoding/json"
 	"errors"
-	"golang.org/x/net/context"
-	"time"
 	"fmt"
-	"regexp"
-	"github.com/mageddo/dns-proxy-server/flags"
-	"strings"
 	"github.com/mageddo/dns-proxy-server/cache/store"
+	"github.com/mageddo/dns-proxy-server/flags"
+	"github.com/mageddo/dns-proxy-server/utils"
+	"github.com/mageddo/go-logging"
+	"golang.org/x/net/context"
+	"os"
+	"regexp"
+	"strings"
+	"time"
 )
 
 var confPath string = GetConfPath()
@@ -52,7 +52,7 @@ func LoadConfiguration() (*LocalConfiguration, error){
 			}
 		}
 		logging.Info("status=success")
-	}else{
+	} else {
 		logging.Info("status=create-new-conf")
 		err := os.MkdirAll(confPath[:strings.LastIndex(confPath, "/")], 0755)
 		if err != nil {
@@ -124,16 +124,23 @@ type EnvVo struct {
 	Hostnames []HostnameVo `json:"hostnames,omitempty"`
 }
 
+type EntryType string
+const (
+	A EntryType = "A"
+	CNAME EntryType = "CNAME"
+)
+
 type HostnameVo struct {
 	Id int `json:"id"`
 	Hostname string `json:"hostname"`
-	Ip [4]byte `json:"ip"`
+	Ip [4]byte `json:"ip"` // hostname ip when type=A
+	Target string `json:"target"` // target hostname when type=CNAME
 	Ttl int `json:"ttl"`
-	Env string `json:"env,omitempty"` // apenas para o post do rest
+	Env string `json:"env,omitempty"` // apenas para o post do rest,
+	Type EntryType `json:"type"`
 }
 
 func (lc *LocalConfiguration) GetEnv(envName string) (*EnvVo, int) {
-
 	for i := range lc.Envs {
 		env := &lc.Envs[i]
 		if (*env).Name == envName {
@@ -167,9 +174,11 @@ func(env *EnvVo) GetHostname(hostname string) (*HostnameVo, int) {
 	for i := range env.Hostnames {
 		host := &env.Hostnames[i]
 		if (*host).Hostname == hostname {
+			logging.Debugf("status=hostname-found, env=%s, hostname=%s", env.Name, hostname)
 			return host, i
 		}
 	}
+	logging.Debugf("status=hostname-not-found, env=%s, hostname=%s", env.Name, hostname)
 	return nil, -1
 }
 
@@ -248,6 +257,9 @@ func (lc *LocalConfiguration) RemoveDns(index int){
 
 
 func (lc *LocalConfiguration) AddHostname(envName string, hostname HostnameVo) error {
+	if hostname.Type == "" {
+		return errors.New("Type is required")
+	}
 	hostname.Id = lc.nextId()
 	logging.Infof("status=begin, evnName=%s, hostname=%+v", envName, hostname)
 	foundEnv, _ := lc.GetEnv(envName)

@@ -17,7 +17,6 @@ import (
 type SystemDnsSolver struct {}
 
 func (s SystemDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns.Msg, error) {
-
 	questionName := question.Name[:len(question.Name)-1]
 	switch questionName {
 	case conf.GetHostname(), resolvconf.GetHostname(conf.GetHostname()):

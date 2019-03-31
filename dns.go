@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"github.com/mageddo/dns-proxy-server/conf"
 	_ "github.com/mageddo/dns-proxy-server/controller"
@@ -48,38 +49,66 @@ func handleQuestion(respWriter dns.ResponseWriter, reqMsg *dns.Msg) {
 		questionsQtd, firstQuestion.Name, utils.DnsQTypeCodeToName(firstQuestion.Qtype),
 	)
 
-	// loading the solvers and try to solve the hostname in that order
-	for _, solver := range *getSolvers() {
-
-		solverID := reflect.TypeOf(solver).String()
-		logging.Debugf("status=begin, solver=%s", ctx, solverID)
-		resp, err := solver.Solve(ctx, firstQuestion)
-		if resp != nil {
-
-			var firstAnswer dns.RR
-			answerLenth := len(resp.Answer)
-
-			logging.Debugf("status=answer-found, solver=%s, length=%d", ctx, solverID, answerLenth)
-			if answerLenth != 0 {
-				firstAnswer = resp.Answer[0]
+	var resp *dns.Msg
+	//var solverID string
+	if rootResp, solverID := solveQuestion(ctx, firstQuestion); rootResp != nil {
+		answers := len(rootResp.Answer)
+		if answers > 0 {
+			if resp = processCname(ctx, rootResp, firstQuestion); resp == nil {
+				resp = rootResp
 			}
-			logging.Debugf("status=resolved, solver=%s, length=%d, answer=%v", ctx, solverID, answerLenth, firstAnswer)
-
-			resp.SetReply(reqMsg)
-			resp.Compress = conf.Compress()
-			respWriter.WriteMsg(resp)
-			break
 		}
-		logging.Debugf("status=not-resolved, solver=%s, err=%v", ctx, solverID, err)
-
+		logging.Debugf("status=resolved, solver=%s, length=%d, answers=%v", ctx, solverID, len(rootResp.Answer), rootResp.Answer)
+		resp.SetReply(reqMsg)
+		resp.Compress = conf.Compress()
+		respWriter.WriteMsg(resp)
 	}
 
+}
+
+func processCname(ctx context.Context, rootResp *dns.Msg, firstQuestion dns.Question) (*dns.Msg) {
+	firstAnswer := rootResp.Answer[0]
+	logging.Debugf("status=processing-cname, length=%d, answers=%+v", ctx, len(rootResp.Answer), firstAnswer.Header())
+	if firstAnswer.Header().Rrtype == dns.TypeCNAME && firstAnswer.Header().Class == 256 {
+		//firstAnswer.Header().Class =
+		firstQuestion.Name = firstAnswer.(*dns.CNAME).Target
+		if resp, solverID := solveQuestion(ctx, firstQuestion); resp != nil {
+			answers := []dns.RR {
+				&dns.CNAME{
+					Hdr: dns.RR_Header{Name: firstAnswer.Header().Name, Rrtype: dns.TypeCNAME, Class: dns.ClassINET, Ttl:  firstAnswer.Header().Ttl},
+					Target: firstAnswer.(*dns.CNAME).Target,
+				},
+			}
+			m := new(dns.Msg)
+			m.Answer = append(answers, resp.Answer...)
+			logging.Debugf("status=resolved-for-cname, solver=%s, length=%d, answers=%v", ctx, solverID, len(resp.Answer), resp.Answer)
+			return m
+		}
+	}
+	logging.Debugf("status=cname-not-found, question=%+v", firstQuestion)
+	return nil
+}
+
+func solveQuestion(ctx context.Context, question dns.Question) (*dns.Msg, string) {
+	for _, solver := range *getSolvers() {
+		solverID := reflect.TypeOf(solver).String()
+		logging.Debugf("status=begin, solver=%s", ctx, solverID)
+		if resp, err := solver.Solve(ctx, question); err == nil {
+			logging.Debugf("status=after-solve, answers=%d, solver=%s, err=%v", ctx, len(resp.Answer), solverID, err)
+			return resp, solverID
+		} else {
+			logging.Debugf("status=not-solved, solver=%s, err=%v", ctx, solverID, err)
+		}
+	}
+	logging.Debugf("status=no-answer, question=%s", ctx, question.Name)
+	return nil, ""
 }
 
 var solversCreated int32 = 0
 var solvers *[]proxy.DnsSolver = nil
 func getSolvers() *[]proxy.DnsSolver {
 	if atomic.CompareAndSwapInt32(&solversCreated, 0, 1) {
+		// loading the solvers and try to solve the hostname in that order
 		solvers = &[]proxy.DnsSolver{
 			proxy.NewSystemSolver(), proxy.NewDockerSolver(docker.GetCache()),
 			proxy.NewCacheDnsSolver(proxy.NewLocalDNSSolver()), proxy.NewCacheDnsSolver(proxy.NewRemoteDnsSolver()),
