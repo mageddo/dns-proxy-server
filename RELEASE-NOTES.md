@@ -1,3 +1,6 @@
+### 2.12.0
+* Possibility to change container hostname domain, [see the docs](https://github.com/mageddo/dns-proxy-server/blob/70a0ff8/docs/features.md#access-container-by-its-container-name--service-name)
+
 ### 2.11.0
 * Now you can customize host machine hostname, see [the docs](https://github.com/mageddo/dns-proxy-server/blob/fa1e044b/docs/features.md#solve-host-machine-ip-from-anywhere)
 * Increased default loglevel to INFO

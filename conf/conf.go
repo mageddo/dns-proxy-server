@@ -1,6 +1,7 @@
 package conf
 
 import (
+	"fmt"
 	"github.com/mageddo/dns-proxy-server/events/local"
 	"github.com/mageddo/dns-proxy-server/flags"
 	"os"
@@ -118,6 +119,9 @@ func GetHostname() string {
 	return *flags.HostMachineHostname
 }
 
+func FormatDPSDomain(subdomain string) string {
+	return fmt.Sprintf("%s.%s", subdomain, GetDPSDomain())
+}
 func GetDPSDomain() string {
 	if domain := os.Getenv(env.MG_DOMAIN); len(strings.TrimSpace(domain)) != 0 {
 		return domain
