@@ -113,7 +113,7 @@ func GetHostname() string {
 	if hostname := os.Getenv(env.MG_HOST_MACHINE_HOSTNAME); len(strings.TrimSpace(hostname)) != 0 {
 		return hostname
 	}
-	if conf, _ := getConf(); conf != nil &&  len(conf.Domain) != 0 {
+	if conf, _ := getConf(); conf != nil &&  len(conf.HostMachineHostname) != 0 {
 		return conf.HostMachineHostname
 	}
 	return *flags.HostMachineHostname
