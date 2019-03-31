@@ -1,3 +1,6 @@
+### 2.11.0
+* Now you can customize host machine hostname, see [the docs](https://github.com/mageddo/dns-proxy-server/blob/fa1e044b/docs/features.md#solve-host-machine-ip-from-anywhere)
+
 ### 2.10.3
 * Build arm images on travis cause docker hub haven't support
 
