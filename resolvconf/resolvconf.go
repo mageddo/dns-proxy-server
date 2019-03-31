@@ -28,23 +28,6 @@ func SetMachineDNSServer(serverIP string) error {
 	return ProcessResolvconf(hd)
 }
 
-
-type getSearchDomainServerHandler struct {
-	serverIP string
-}
-
-func (hd *getSearchDomainServerHandler) process(line string, entryType DnsEntry) *string {
-	switch entryType {
-	case SEARCH:
-		return &line
-	}
-	return nil
-}
-
-func (hd *getSearchDomainServerHandler) afterProcess(hasContent bool, foundDnsProxy bool) *string {
-	return nil
-}
-
 func GetSearchDomainEntry() (string, error) {
 	fileRead, err := os.Open(conf.GetResolvConf())
 	if err != nil {
