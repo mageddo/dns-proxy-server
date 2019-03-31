@@ -158,6 +158,26 @@ __Using environment variable__
 MG_REGISTER_CONTAINER_NAMES=1 ./dns-proxy-server
 ```
 
+You can also  customize the domain from docker to whatever you want by
+ 
+__Activating by command line__
+
+	./dns-proxy-server --domain docker
+
+__Configuring at json config file__
+
+```
+...
+"domain": "docker"
+...
+```
+
+__Using environment variable__
+
+```bash
+MG_DOMAIN=docker ./dns-proxy-server
+```
+
 ### Specify from which network solve container IP
 If your container have multiple networks then you can specify which network to use when solving IP by specifying `dps.network` label.
 
