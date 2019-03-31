@@ -22,14 +22,14 @@ var (
 		docker = start as docker service,
 		normal = start as normal service,
 		uninstall = uninstall the service from machine `)
-	publishServicePort = flag.Bool("service-publish-web-port", true, "Publish web port when running as service in docker mode")
-	logToFile = flag.String("log-file", "console", "Log to file instead of console, (true=log to default log file, /tmp/log.log=log to custom log location)")
-	logLevel = flag.String("log-level", "INFO", "Log Level ERROR, WARNING, INFO, DEBUG")
+	publishServicePort     = flag.Bool("service-publish-web-port", true, "Publish web port when running as service in docker mode")
+	logToFile              = flag.String("log-file", "console", "Log to file instead of console, (true=log to default log file, /tmp/log.log=log to custom log location)")
+	logLevel               = flag.String("log-level", "INFO", "Log Level ERROR, WARNING, INFO, DEBUG")
 	registerContainerNames = flag.Bool("register-container-names", false, "If must register container name / service name as host in DNS server")
-	Version = flag.Bool("version", false, "Current version")
-	Hostname = flag.String("host-machine-hostname", "host.docker", "The hostname to get host machine IP")
-	Domain = flag.String("domain", "docker", "Domain utilized to solver containers and services hostnames")
-	Help = flag.Bool("help", false, "This message")
+	Version                = flag.Bool("version", false, "Current version")
+	HostMachineHostname    = flag.String("host-machine-hostname", "host.docker", "The hostname to get host machine IP")
+	Domain                 = flag.String("domain", "docker", "Domain utilized to solver containers and services hostnames")
+	Help                   = flag.Bool("help", false, "This message")
 )
 
 func init(){

@@ -109,21 +109,21 @@ func ShouldRegisterContainerNames() bool {
 }
 
 func GetHostname() string {
-	if domain := os.Getenv(env.MG_HOST_MACHINE_HOSTNAME); len(strings.TrimSpace(domain)) != 0 {
-		return domain
+	if hostname := os.Getenv(env.MG_HOST_MACHINE_HOSTNAME); len(strings.TrimSpace(hostname)) != 0 {
+		return hostname
 	}
 	if conf, _ := getConf(); conf != nil &&  len(conf.Domain) != 0 {
-		return conf.Domain
+		return conf.HostMachineHostname
 	}
-	return *flags.Domain
+	return *flags.HostMachineHostname
 }
 
 func GetDPSDomain() string {
-	if hostname := os.Getenv(env.MG_DOMAIN); len(strings.TrimSpace(hostname)) != 0 {
-		return hostname
+	if domain := os.Getenv(env.MG_DOMAIN); len(strings.TrimSpace(domain)) != 0 {
+		return domain
 	}
 	if conf, _ := getConf(); conf != nil &&  len(conf.HostMachineHostname) != 0 {
-		return conf.HostMachineHostname
+		return conf.Domain
 	}
-	return *flags.Hostname
+	return *flags.Domain
 }
