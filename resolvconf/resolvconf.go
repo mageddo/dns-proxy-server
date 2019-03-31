@@ -39,7 +39,7 @@ func GetSearchDomainEntry() (string, error) {
 		line := scanner.Text()
 		switch getDnsEntryType(line) {
 		case SEARCH:
-			return line[0 : len(SEARCH)], nil
+			return line[len(SEARCH) + 1:], nil
 		}
 	}
 	return "", errors.New("Search domain not found")
