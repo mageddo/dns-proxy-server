@@ -1,6 +1,7 @@
 package resolvconf
 
 import (
+	"github.com/mageddo/dns-proxy-server/cache/store"
 	"io/ioutil"
 	"fmt"
 	"github.com/stretchr/testify/assert"
@@ -206,6 +207,8 @@ nameserver 9.9.9.9
 	if err != nil {
 		t.Error(err)
 	}
+
+	store.GetInstance().Clear()
 
 	// act
 	hostname := GetHostname("site1.com")

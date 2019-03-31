@@ -41,7 +41,7 @@ func TestFlagValuesFromConf(t *testing.T) {
 
 
 func TestLogLevel_DefaultValue(t *testing.T) {
-	assert.Equal(t, logging.DEBUG, LogLevel())
+	assert.Equal(t, logging.INFO, LogLevel())
 }
 
 func TestLogLevel_ReadFromConfig(t *testing.T) {
