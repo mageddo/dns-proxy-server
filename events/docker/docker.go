@@ -119,7 +119,7 @@ func getHostnames(inspect types.ContainerJSON) []string {
 	}
 	hostnames = append(hostnames, getHostnamesFromEnv(inspect)...)
 
-	if conf.RegisterContainerNames() {
+	if conf.ShouldRegisterContainerNames() {
 		hostnames = append(hostnames, getHostnameFromContainerName(inspect))
 		if hostnameFromServiceName, err := getHostnameFromServiceName(inspect); err == nil {
 			hostnames = append(hostnames, hostnameFromServiceName)
@@ -155,7 +155,7 @@ func getMachineHostname(inspect types.ContainerJSON) (string, error) {
 }
 
 func getHostnameFromContainerName(inspect types.ContainerJSON) string {
-	return fmt.Sprintf("%s.docker", inspect.Name[1:])
+	return fmt.Sprintf("%s.%s", inspect.Name[1:], conf.GetDPSDomain())
 }
 
 func getHostnameFromServiceName(inspect types.ContainerJSON) (string, error) {

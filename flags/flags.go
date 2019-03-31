@@ -28,6 +28,7 @@ var (
 	registerContainerNames = flag.Bool("register-container-names", false, "If must register container name / service name as host in DNS server")
 	Version = flag.Bool("version", false, "Current version")
 	Hostname = flag.String("host-machine-hostname", "host.docker", "The hostname to get host machine IP")
+	Domain = flag.String("domain", "docker", "Domain utilized to solver containers and services hostnames")
 	Help = flag.Bool("help", false, "This message")
 )
 
@@ -49,14 +50,6 @@ func PublishServicePort() bool {
 }
 
 func GetRawCurrentVersion() string {
-
-	//if len(version) == 0 {
-		//b, err := ioutil.ReadFile(utils.GetPath("VERSION")) // just pass the file name
-		//if err == nil {
-		//	return string(b)
-		//}
-		//log.Logger.Warningf("status=could-not-recover-version, err=%v", err)
-	//}
 	return version
 }
 

@@ -114,6 +114,9 @@ type LocalConfiguration struct {
 
 	// hostname to solve host machine IP
 	HostMachineHostname string `json:"hostMachineHostname"`
+
+	// domain utilized to solve container names
+	Domain string `json:"domain"`
 }
 
 type EnvVo struct {
