@@ -1,18 +1,19 @@
 package resolvconf
 
 import (
-	"bytes"
-	"os"
 	"bufio"
-	"strings"
-	"io/ioutil"
-	"os/exec"
-	"syscall"
+	"bytes"
 	"errors"
 	"fmt"
+	"github.com/mageddo/dns-proxy-server/cache/store"
 	"github.com/mageddo/dns-proxy-server/conf"
-	"net"
 	"github.com/mageddo/go-logging"
+	"io/ioutil"
+	"net"
+	"os"
+	"os/exec"
+	"strings"
+	"syscall"
 )
 
 func RestoreResolvconfToDefault() error {
@@ -42,7 +43,7 @@ func GetSearchDomainEntry() (string, error) {
 			return line[len(SEARCH) + 1:], nil
 		}
 	}
-	return "", errors.New("Search domain not found")
+	return "", nil
 }
 
 
@@ -195,8 +196,19 @@ func GetCurrentIpAddress() (string, error) {
 	return "", nil
 }
 
+
+
+const SEARCH_DOMAIN_KEY = "SEARCH_DOMAIN"
+func GetSearchDomainEntryCached() (string, error){
+	cache := store.GetInstance()
+	if cache.ContainsKey(SEARCH_DOMAIN_KEY) {
+		return cache.Get(SEARCH_DOMAIN_KEY).(string), nil
+	}
+	return GetSearchDomainEntry()
+}
+
 func GetHostname(subdomain string) string {
-	if domainEntry, err := GetSearchDomainEntry(); err == nil {
+	if domainEntry, err := GetSearchDomainEntryCached(); err == nil && len(domainEntry) !=0 {
 		return fmt.Sprintf("%s.%s", subdomain, domainEntry)
 	}
 	return subdomain
