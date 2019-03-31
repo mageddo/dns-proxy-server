@@ -2,6 +2,7 @@ package proxy
 
 import (
 	"errors"
+	"github.com/mageddo/dns-proxy-server/conf"
 	"github.com/mageddo/dns-proxy-server/resolvconf"
 	"github.com/mageddo/dns-proxy-server/utils"
 	"github.com/mageddo/go-logging"
@@ -19,7 +20,7 @@ func (s SystemDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns
 
 	questionName := question.Name[:len(question.Name)-1]
 	switch questionName {
-	case resolvconf.GetHostname(questionName):
+	case resolvconf.GetHostname(conf.GetHostname()):
 		ip, err, code := utils.Exec("sh", "-c", "ip r | awk '/default/{print $3}'")
 		if code == 0 {
 			clearedIP := regexp.MustCompile(`\s`).ReplaceAllLiteralString(string(ip), ``)

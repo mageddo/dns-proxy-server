@@ -196,8 +196,8 @@ func GetCurrentIpAddress() (string, error) {
 }
 
 func GetHostname(subdomain string) string {
-	if domainEntry, err := GetSearchDomainEntry(); err != nil {
-		return fmt.Sprintf("%s.%s", conf.GetHostname(), domainEntry)
+	if domainEntry, err := GetSearchDomainEntry(); err == nil {
+		return fmt.Sprintf("%s.%s", subdomain, domainEntry)
 	}
 	return subdomain
 }
