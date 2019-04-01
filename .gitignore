@@ -10,3 +10,5 @@
 *.tmp
 conf/config.json
 *.log
+
+node_modules

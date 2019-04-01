@@ -13,6 +13,8 @@ indent_size = 2
 
 [*.yml]
 indent_style = space
+
+[app/*package.json]
+indent_style = space
 indent_size = 2
-insert_final_newline = true
-charset = utf-8
+

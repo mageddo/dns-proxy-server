@@ -1,13 +1,13 @@
 package controller
 
 import (
-	"net/http"
 	"encoding/json"
-	"github.com/mageddo/dns-proxy-server/events/local"
-	"golang.org/x/net/context"
-	"github.com/mageddo/go-logging"
 	"fmt"
+	"github.com/mageddo/dns-proxy-server/events/local"
 	. "github.com/mageddo/go-httpmap"
+	"github.com/mageddo/go-logging"
+	"golang.org/x/net/context"
+	"net/http"
 )
 
 const (
