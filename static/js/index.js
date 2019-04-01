@@ -1,3 +1,4 @@
+window.activeEnv = '';
 $.notifyDefaults({
 	mouse_over: 'pause',
 	z_index: 5000,
@@ -13,7 +14,7 @@ $.notifyDefaults({
 
 });
 
-class Login extends React.Component {
+class RecordForm extends React.Component {
 	constructor() {
 		super();
 		this.state = {
@@ -190,7 +191,7 @@ class Login extends React.Component {
 								required
 							/>
 						</td>
-						<td className="text-right">
+						<td className="text-center">
 							<button type="submit" className="btn btn-info">
 								<span className="fa fa-save"/>
 							</button>
@@ -203,4 +204,100 @@ class Login extends React.Component {
 	}
 }
 
-ReactDOM.render(<Login />, document.getElementById("root"));
+class RecordTable extends React.Component {
+	constructor(){
+		super();
+		this.state = {
+			table: []
+		};
+	}
+	componentDidMount(){
+		let that = this;
+		return $.ajax({
+			url: '/hostname/find/?env=' + window.activeEnv + '&hostname='
+		}).then(function(data) {
+			that.setState({table: data});
+			console.debug('m=getData, data=%o', data);
+		}, function(err){
+			console.error('m=getData, status=error', err);
+		});
+	}
+	formatIp(ip){
+		return ip.join('.');
+	}
+	render(){
+		return (
+			<div >
+				<h3>Records</h3>
+				<table className="table table-bordered table-hover table-condensed editable-table demoTable table-hostnames" >
+					<colgroup>
+						<col width="50%"/>
+						<col width="10%"/>
+						<col width="15%"/>
+						<col width="10%"/>
+						<col width="10%"/>
+					</colgroup>
+					<tbody>
+					<tr>
+						<td>Hostname</td>
+						<td className="text-center">Type</td>
+						<td>Value</td>
+						<td >TTL</td>
+						<td className="text-center">Actions</td>
+					</tr>
+					{
+						this.state.table.map((v, k) => {
+							return <tr key={k}>
+								<td>{v.hostname}</td>
+								<td className="text-center">{v.type}</td>
+								{v.type === 'A' && <td>{this.formatIp(v.ip)}</td>}
+								{v.type === 'CNAME' && <td>{v.target}</td>}
+								<td className="text-right">{v.ttl}</td>
+								<td className="text-right records-actions">
+									<button className="btn btn-info fa fa-pencil-alt" ></button>
+									<button className="btn btn-danger fa fa-trash-alt" ></button>
+									{/*<button className="btn btn-primary fa fa-save" ></button>*/}
+									{/*<button className="btn btn-danger fa fa-window-close" ></button>*/}
+								</td>
+							</tr>
+						})
+					}
+					</tbody>
+				</table>
+			</div>
+		);
+	}
+}
+
+ReactDOM.render(
+	<div>
+		<nav className="navbar navbar-inverse navbar-fixed-top" >
+			<a className="navbar-brand" href="#">DNS PROXY SERVER</a>
+			<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+							aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span className="navbar-toggler-icon"></span>
+			</button>
+			<div className="collapse navbar-collapse" id="navbarNav">
+				<ul className="navbar-nav pull-right">
+					<li className="nav-item active">
+						<a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
+					</li>
+					<li className="nav-item">
+						<a className="nav-link" href="#">Features</a>
+					</li>
+					<li className="nav-item">
+						<a className="nav-link" href="#">Pricing</a>
+					</li>
+					<li className="nav-item">
+						<a className="nav-link disabled" href="#">Disabled</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<div className="container">
+			<h3>New Record</h3>
+			<RecordForm/>
+			<RecordTable/>
+		</div>
+	</div>, document.getElementById("root")
+);
