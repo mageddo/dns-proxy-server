@@ -49,10 +49,10 @@ func init(){
 	})
 
 	Post(HOSTNAME, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
-		res.Header().Add("Content-Type", "application/json")
 		logging.Infof("m=/hostname/, status=begin, action=create-hostname")
 		var hostname local.HostnameVo
 		if err := json.NewDecoder(req.Body).Decode(&hostname); err != nil {
+			res.Header().Add("Content-Type", "application/json")
 			BadRequest(res, "Invalid JSON")
 			return
 		}
@@ -63,6 +63,7 @@ func init(){
 				BadRequest(res, err.Error())
 				return
 			}
+			res.WriteHeader(201)
 			logging.Infof("m=/hostname/, status=success, action=create-hostname")
 			return
 		}

@@ -1,208 +1,206 @@
-angular.module("myApp", ["ngTable"]);
+$.notifyDefaults({
+	mouse_over: 'pause',
+	z_index: 5000,
+	delay: 5000,
+	placement: {
+		from: "bottom",
+		align: "right"
+	},
+	animate: {
+		enter: 'animated fadeInRight',
+		exit: 'animated fadeOutRight'
+	}
 
-(function() {
-		"use strict";
-		
-		angular.module('myApp')
-		.filter('ipArray', function($filter) {
-			return (ipArray, errorMessage) => {
-				return ipArray.join('.');
+});
+
+class Login extends React.Component {
+	constructor() {
+		super();
+		this.state = {
+			form: {
+				hostname: "support@acme.com",
+				ip: "192.168.0.1",
+				target: "",
+				type: "A",
+				ttl: 60
+			},
+			showIp: true,
+			showTarget: false,
+			valueField: {}
+		};
+	}
+
+	componentDidMount(){
+		this.processValueLabel(this.state.form.type);
+	}
+
+	handleIp(e){
+		let form = this.state.form;
+		form[e.target.name] = e.target.value.split("\.").map(it => parseInt(it));
+		this.setState({ form });
+	}
+
+	handleChange(evt) {
+		let form = this.state.form;
+		form[evt.target.name] = evt.target.value;
+		this.setState({ form });
+		console.debug('m=handleChange, %s=%s', evt.target.name, evt.target.value);
+	}
+
+	handleType(evt){
+		let form = this.state.form;
+		form[evt.target.name] = evt.target.value;
+		if(evt.target.name === 'A'){
+			this.state.showIp = true;
+			this.state.showTarget = false;
+		} else {
+			this.state.showIp = false;
+			this.state.showTarget = true;
+		}
+		this.setState({form: form});
+	}
+
+	processValueLabel(k){
+		let label = {
+			'A': {
+				label: 'IP *',
+				field: 'ip'
+			},
+			'CNAME': {
+				label: 'CNAME *',
+				field: 'target'
 			}
-		})
-		.filter('envFormatter', function($filter) {
-			return (env, errorMessage) => {
-				return env ? env : 'Default Environment';
-			}
-		})
-		.controller("demoController", ["NgTableParams", "$http", "$scope", demoController])
-		.directive('arrayToString', function() {
-			return {
-				require: 'ngModel',
-				link: function(scope, element, attrs, ngModel) {
-					ngModel.$parsers.push(function(value) {
-						return value.split('\.').map(ip => {return parseInt(ip);});
-					});
-					ngModel.$formatters.push(function(value) {
-						return value.join('.');
-					});
-				}
-			}
-		})
-		.directive('ip', function() {
-			return {
-				require: 'ngModel',
-				link: function(scope, elm, attrs, ctrl) {
-					ctrl.$validators.ip = function(modelValue, viewValue) {
+		}[k];
+		this.setState({valueField: label});
+		return label;
+	}
 
-						if( ctrl.$isEmpty(modelValue)){
-							return true;
-						}
-
-						if (/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(viewValue)) {
-							console.debug('m=ip, status=valid');
-							return true;
-						}
-
-						console.debug('m=ip, status=INvalid');
-						return false;
-					}
-				}
+	handleSubmit(e) {
+		e.preventDefault();
+		e.target.checkValidity();
+		$.ajax({
+			method: 'POST',
+			url: '/hostname/',
+			contentType: 'application/json',
+			// dataType: 'json',
+			data: JSON.stringify(this.state.form),
+		})
+		.done(function(){
+			$.notify({
+				message: 'Saved'
+			});
+		})
+		.fail(function(err){
+			console.error('m=saveNewLine, status=error', err);
+			if(err.status < 500){
+				$.notify({message: JSON.parse(err.responseText).message}, {type: 'danger'});
+			} else {
+				$.notify({message: err.responseText}, {type: 'danger'});
 			}
 		});
+		;
+	}
 
-		function demoController(NgTableParams, $http, $scope) {
-				var self = this;
-				var originalData;
-				$scope.activeEnv = "";
-				$scope.envs = [];
-				$scope.envs = [];
-				$http.get('/env').then(function(data) {
-					console.debug('m=getEnvs, length=%d', data.data.length, data.data);
-					$scope.envs = data.data;
-				}, function(err){
-					console.error('m=getData, status=error', err);
-				});
+	render() {
+		return (
+			<form onSubmit={(e) => this.handleSubmit(e)}>
+				<table className="table table-bordered table-hover table-condensed ">
+					<colgroup>
+						<col width="50%"/>
+						<col width="14.5%"/>
+						<col width="14.5%"/>
+						<col width="9%" style={{textAlign: "right"}}/>
+						<col width="7.5%"/>
+					</colgroup>
+					<tbody>
+					<tr>
+						<th>
+							<label className="control-label " htmlFor="hostname">
+								Hostname<span className="asteriskField">*</span>
+							</label>
+						</th>
+						<th>
+							{this.state.showIp &&
+							<label className="control-label requiredField" htmlFor="ip">
+								IP<span className="asteriskField">*</span>
+							</label>
+							}
+							{
+								this.state.showTarget &&
+								<label className="control-label requiredField" htmlFor="target" required>
+									Target<span className="asteriskField">*</span>
+								</label>
+							}
+						</th>
+						<th>
+							<label className="control-label">
+								Type<span className="asteriskField">*</span>
+							</label>
+						</th>
+						<th>
+							<label className="control-label requiredField" htmlFor="ttl">
+								TTL<span className="asteriskField">*</span>
+							</label>
+						</th>
+						<th>Actions</th>
+					</tr>
+					<tr>
+						<td>
+							<input
+								className="form-control"
+								id="hostname"
+								name="hostname"
+								onChange={(e) => this.handleChange(e)}
+								value={this.state.form.hostname}
+								type="text"
+								required
+							/>
+						</td>
+						<td>
+							{
+								this.state.showIp &&
+								<input className="form-control"
+											 pattern="[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+"
+											 title="Please provide a valid IP" name="ip" id="ip"
+											 onChange={(e) => this.handleIp(e)}
+											 required
+								/>
+							}
+							{
+								this.state.showTarget &&
+								<input className="form-control" name="target" id="target" onChange={(e) => this.handleChange(e)}/>
+							}
+						</td>
+						<td>
+							<select name="type" onChange={(e) => this.handleType(e)} className="form-control" type="text">
+								<option value="A">A</option>
+								<option value="CNAME">CNAME</option>
+							</select>
+						</td>
+						<td>
+							<input
+								onChange={(e) => this.handleChange(e)}
+								className="form-control"
+								value={this.state.form.ttl}
+								id="ttl"
+								name="ttl"
+								type="number"
+								size="3"
+								min="1"
+								required
+							/>
+						</td>
+						<td className="text-right">
+							<button type="submit" className="btn btn-info">
+								<span className="fa fa-save"/>
+							</button>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</form>
+		);
+	}
+}
 
-				$http.get('/env/active').then(function(data) {
-					console.debug('m=getActiveEnv', data.data);
-					$scope.activeEnv = data.data.name;
-					reloadTable();
-				}, function(err){
-					console.error('m=getActiveEnv, status=error', err);
-				});
-
-				self.tableParams = new NgTableParams({}, {
-						filterDelay: 0,
-						getData: function(params) {
-							console.debug('m=getData, status=begin, params=%o', params);
-							var hostname = params._params.filter.name ? params._params.filter.name : '';
-
-							return $http.get('/hostname/find/?env=' + $scope.activeEnv + '&hostname=' + hostname).then(function(data) {
-
-								params.total(data.data.length); // recal. page nav controls
-								console.debug('m=getData, length=%d', data.data.length, data.data);
-								originalData = data.data;
-								return angular.copy(data.data);
-
-							}, function(err){
-								console.error('m=getData, status=error', err);
-							});
-						}
-				});
-
-				self.cancel = cancel;
-				self.del = del;
-				self.save = save;
-				self.saveNewLine = saveNewLine;
-				self.requestEdit = requestEdit;
-
-				function cancel(row, rowForm) {
-					console.debug('m=cancel, status=begin, row=%o', row);
-					var originalRow = resetRow(row, rowForm);
-					console.debug('m=cancel, status=success, foundRow=%o', originalRow);
-					angular.extend(row, originalRow);
-				}
-
-				function requestEdit(row){
-					console.debug('m=requestEdit, status=begin, row=%o', row);
-					row.isEditing = true;
-				}
-
-				function del(row) {
-					console.debug('m=del, hostname=%s', row.hostname)
-					$http({
-						url: '/hostname',
-						method: 'DELETE',
-						data: {env: $scope.activeEnv, hostname: row.hostname}
-					}).then(function(data) {
-						console.debug('m=del, status=scucess')
-						_.remove(originalData, function(item) {
-								return row.id === item.id;
-						});
-						reloadTable();
-					}, function(err){
-						console.error('m=save, status=error', err);
-
-					});
-
-				}
-
-				function resetRow(row, rowForm){
-					row.isEditing = false;
-					rowForm.$setPristine();
-					console.debug('m=originalData, status=begin, originalData=%o', originalData);
-					return _.find(originalData, function(r){
-						return r.id === row.id;
-					});
-				}
-
-				function save(row, rowForm) {
-					console.debug('m=save, hostname=%o', row)
-					$http.put('/hostname', {id: row.id, env: $scope.activeEnv, hostname: row.hostname, ip: row.ip, ttl: row.ttl}).then(function(data) {
-						console.debug('m=save, status=scucess')
-						var originalRow = resetRow(row, rowForm);
-						angular.extend(originalRow, row);
-					}, function(err){
-						console.error('m=save, status=error', err);
-					});
-
-				}
-
-				function saveNewLine(line, form){
-					console.debug('m=saveNewLine, statys=begin, valid=%s', form.$valid)
-					if(!form.$valid){
-						return ;
-					}
-					line = angular.copy(line);
-					console.debug('m=saveNewLine, status=begin, hostname=%o', line);
-					line.ip = line.ip.split('\.').map(n => { return parseInt(n) });
-
-					$http({
-						method: 'POST', url: '/hostname/',
-						data: {env: $scope.activeEnv, hostname: line.hostname, ip: line.ip, ttl: line.ttl},
-						headers: {
-							'Content-Type': 'application/json'
-						}
-					}).then(function(data){
-						console.debug('m=saveNewLine, status=success');
-						$scope.line = null;
-						reloadTable();
-					}, function(err){
-						console.error('m=saveNewLine, status=error', err);
-					});
-				};
-
-				$scope.changeEnv = function(activeEnv){
-					console.debug('m=changeEnv, status=begin, activeEnv=%o', activeEnv)
-					$http.put('/env/active', {name: activeEnv}).then(function(data) {
-						console.debug('m=changeEnv, status=scucess')
-						reloadTable();
-					}, function(err){
-						console.error('m=changeEnv, status=error', err);
-					});
-				}
-
-				function reloadTable(){
-					self.tableParams.reload().then(function(data) {
-						if (data.length === 0 && self.tableParams.total() > 0) {
-								self.tableParams.page(self.tableParams.page() - 1);
-								self.tableParams.reload();
-						}
-					});
-				}
-		}
-})();
-
-
-
-(function() {
-		"use strict";
-
-		angular.module("myApp").run(configureDefaults);
-		configureDefaults.$inject = ["ngTableDefaults"];
-
-		function configureDefaults(ngTableDefaults) {
-				ngTableDefaults.params.count = 500000;
-				ngTableDefaults.settings.counts = [];
-		}
-})();
+ReactDOM.render(<Login />, document.getElementById("root"));
