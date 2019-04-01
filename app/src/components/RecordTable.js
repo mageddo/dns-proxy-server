@@ -5,7 +5,8 @@ export class RecordTable extends React.Component {
 	constructor(props){
 		super();
 		this.state = {
-			table: []
+			table: [],
+			someText: "some text"
 		};
 		this.props = props;
 	}
@@ -28,6 +29,37 @@ export class RecordTable extends React.Component {
 	formatIp(ip){
 		return ip.join('.');
 	}
+
+	renderLineView(v, k){
+		return <tr key={k}>
+			<td>{v.hostname}</td>
+			<td className="text-center">{v.type}</td>
+			{v.type === 'A' && <td>{this.formatIp(v.ip)}</td>}
+			{v.type === 'CNAME' && <td>{v.target}</td>}
+			<td className="text-right">{v.ttl}</td>
+			<td className="text-right records-actions">
+				<button className="btn btn-info fa fa-pencil-alt" onClick={(e) => { v.editing = !v.editing; this.setState({someText: "hi"})} } ></button>
+				<button className="btn btn-danger fa fa-trash-alt" ></button>
+				{/*<button className="btn btn-primary fa fa-save" ></button>*/}
+				{/*<button className="btn btn-danger fa fa-window-close" ></button>*/}
+			</td>
+		</tr>
+	}
+
+	renderLineEditing(v, k){
+		return <tr key={k}>
+			<td><input className="form-control" value={v.hostname}/></td>
+			<td className="text-center"><input className="form-control" value={v.type}/></td>
+			{v.type === 'A' && <td><input className="form-control"  type="text" value={this.formatIp(v.ip)}/></td>}
+			{v.type === 'CNAME' && <td><input className="form-control" type="text" value={v.target}/></td>}
+			<td className="text-right"><input className="form-control" type="text" value={v.ttl}/></td>
+			<td className="text-right records-actions">
+				<button className="btn btn-primary fa fa-save" ></button>
+				<button className="btn btn-danger fa fa-window-close" ></button>
+			</td>
+		</tr>
+	}
+
 	render(){
 		return (
 			<div >
@@ -50,19 +82,7 @@ export class RecordTable extends React.Component {
 					</tr>
 					{
 						this.state.table.map((v, k) => {
-							return <tr key={k}>
-								<td>{v.hostname}</td>
-								<td className="text-center">{v.type}</td>
-								{v.type === 'A' && <td>{this.formatIp(v.ip)}</td>}
-								{v.type === 'CNAME' && <td>{v.target}</td>}
-								<td className="text-right">{v.ttl}</td>
-								<td className="text-right records-actions">
-									<button className="btn btn-info fa fa-pencil-alt" ></button>
-									<button className="btn btn-danger fa fa-trash-alt" ></button>
-									{/*<button className="btn btn-primary fa fa-save" ></button>*/}
-									{/*<button className="btn btn-danger fa fa-window-close" ></button>*/}
-								</td>
-							</tr>
+							return v.editing ? this.renderLineEditing(v, k) : this.renderLineView(v, k)
 						})
 					}
 					</tbody>
