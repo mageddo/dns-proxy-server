@@ -40,7 +40,7 @@ export class RecordForm extends React.Component {
 	handleType(evt){
 		let form = this.state.form;
 		form[evt.target.name] = evt.target.value;
-		if(evt.target.name === 'A'){
+		if(evt.target.value === 'A'){
 			this.state.showIp = true;
 			this.state.showTarget = false;
 		} else {
