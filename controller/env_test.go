@@ -94,7 +94,7 @@ func TestPostEnvSuccess(t *testing.T) {
 	r, err := resty.R().
 		SetBody(`{
 			"name": "ThirdEnv",
-			"hostnames": [{"hostname": "github.com", "ip": [1,2,3,4], "ttl":30}]
+			"hostnames": [{"hostname": "github.com", "ip": [1,2,3,4], "ttl":30,"type":"A"}]
 		}`).
 		Post(s.URL + ENV)
 	assert.Nil(t, err)
@@ -105,7 +105,7 @@ func TestPostEnvSuccess(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, 200, r.StatusCode())
 	assert.Equal(t,
-		`[{"name":""},{"name":"ThirdEnv","hostnames":[{"id":1,"hostname":"github.com","ip":[1,2,3,4],"ttl":30}]}]`,
+		`[{"name":""},{"name":"ThirdEnv","hostnames":[{"id":1,"hostname":"github.com","ip":[1,2,3,4],"target":"","ttl":30,"type":"A"}]}]`,
 		r.String(),
 	)
 }

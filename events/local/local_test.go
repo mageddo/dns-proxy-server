@@ -16,10 +16,11 @@ func TestSaveConfiguration_ClearCacheAfterChangeConfiguration(t *testing.T) {
 	assert.Nil(t, err, "could not load conf")
 
 	cache := store.GetInstance()
-
 	env, _ := conf.GetActiveEnv()
+
+	assert.False(t, cache.ContainsKey(expectedHostname))
 	foundHostname, _ := env.GetHostname(expectedHostname)
-	assert.Nil(t, foundHostname, "can't be nil")
+	assert.Nil(t, foundHostname)
 
 	// setting the host
 	cache.Put(expectedHostname, foundHostname)
@@ -27,8 +28,8 @@ func TestSaveConfiguration_ClearCacheAfterChangeConfiguration(t *testing.T) {
 	assert.Nil(t, cache.Get(expectedHostname))
 
 	// changing value for the hostname at configuration database
-	hostname := HostnameVo{Ip: [4]byte{192,168,0,2}, Ttl:30, Env:"", Hostname: expectedHostname}
-	conf.AddHostname( "", hostname)
+	hostname := HostnameVo{Ip: [4]byte{192,168,0,2}, Ttl:30, Env:"", Hostname: expectedHostname, Type:"A"}
+	assert.Nil(t, conf.AddHostname( "", hostname))
 
 	// cache must be clear after add a hostname in conf
 	assert.False(t, cache.ContainsKey(expectedHostname))

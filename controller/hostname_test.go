@@ -29,7 +29,7 @@ func TestGetHostnamesByEnv(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.Equal(t, http.StatusOK, r.StatusCode())
-	assert.Equal(t, `{"name":"MyEnv","hostnames":[{"id":1,"hostname":"github.io","ip":[1,2,3,4],"ttl":55}]}`, r.String())
+	assert.Equal(t, `{"name":"MyEnv","hostnames":[{"id":1,"hostname":"github.io","ip":[1,2,3,4],"target":"","ttl":55,"type":""}]}`, r.String())
 
 }
 
@@ -52,7 +52,7 @@ func TestGetHostnamesByEnvAndHostname(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.Equal(t, http.StatusOK, r.StatusCode())
-	assert.Equal(t, `[{"id":1,"hostname":"github.io","ip":[1,2,3,4],"ttl":55}]`, r.String())
+	assert.Equal(t, `[{"id":1,"hostname":"github.io","ip":[1,2,3,4],"target":"","ttl":55,"type":""}]`, r.String())
 
 }
 
@@ -68,11 +68,11 @@ func TestPostHostname(t *testing.T) {
 	defer s.Close()
 
 	r, err := resty.R().
-		SetBody(`{"hostname": "github.io", "ip": [1,2,3,4], "ttl": 55, "env": "MyOtherEnv"}`).
+		SetBody(`{"hostname": "github.io", "ip": [1,2,3,4], "ttl": 55, "env": "MyOtherEnv", "type": "A"}`).
 		Post(s.URL + HOSTNAME)
 
 	assert.Nil(t, err)
-	assert.Equal(t, http.StatusOK, r.StatusCode())
+	assert.Equal(t, http.StatusCreated, r.StatusCode())
 	assert.Empty(t, r.String())
 
 	r, err = resty.R().
@@ -82,7 +82,7 @@ func TestPostHostname(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.Equal(t, http.StatusOK, r.StatusCode())
-	assert.Equal(t, `[{"id":1,"hostname":"github.io","ip":[1,2,3,4],"ttl":55,"env":"MyOtherEnv"}]`, r.String())
+	assert.Equal(t, `[{"id":1,"hostname":"github.io","ip":[1,2,3,4],"target":"","ttl":55,"env":"MyOtherEnv","type":"A"}]`, r.String())
 
 }
 
@@ -127,7 +127,7 @@ func TestPutHostname(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.Equal(t, http.StatusOK, r.StatusCode())
-	assert.Equal(t, `[{"id":999,"hostname":"github.io","ip":[4,3,2,1],"ttl":65}]`, r.String())
+	assert.Equal(t, `[{"id":999,"hostname":"github.io","ip":[4,3,2,1],"target":"","ttl":65,"type":""}]`, r.String())
 
 }
 
