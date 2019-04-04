@@ -1,16 +1,21 @@
 ### Developing with docker
 
-Setup the environment
 
-	$ docker-compose rm -f && docker-compose run compiler-dps bash
+	$ docker-compose rm -f && docker-compose up app-dps compiler-dps
 
 Running the application 
 
-	$ go run dns.go
+```
+$ docker-compose exec compiler-dps bash
+$ go run dns.go
+```
 
 Running the GUI
 
-	$ cd app && npm start
+```
+$ docker-compose exec app-dps bash
+$ npm start
+```
 
 Running unit tests
 

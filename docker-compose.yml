@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 services:
 
   # Base Image to build project
@@ -10,15 +10,22 @@ services:
       - $PWD:/app/src/github.com/mageddo/dns-proxy-server
       - $PWD/builder.bash:/bin/builder.bash
       - /var/run/docker.sock:/var/run/docker.sock
-    command: tail -f /dev/null
     environment:
       - TERM=xterm
       - GOPATH=/app
       - MG_WORK_DIR=/app/src/github.com/mageddo/dns-proxy-server
-    hostname: dns-proxy-server.dev
-    network_mode: bridge
+    command: tail -f /dev/null
 
-  # Run from docker image
+  app-dps:
+    image: node:8.15-jessie
+    volumes:
+      - ./app:/app
+    working_dir: /app
+    ports:
+      - 5380:3000
+    command: tail -f /dev/null
+
+      # Run from docker image
   prod-dps:
     image: defreitas/dns-proxy-server:2.12.0
     hostname: dns.mageddo
@@ -26,8 +33,6 @@ services:
       - /opt/dns-proxy-server/conf:/app/conf
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/resolv.conf:/etc/resolv.conf
-    ports:
-      - 5380:5380
     network_mode: bridge
 
   # Build the project and generate binary at build folder

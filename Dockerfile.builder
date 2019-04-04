@@ -5,6 +5,6 @@ ENV PUBLIC_URL=/static
 RUN npm run build &&\
 	rm -f `find ./build -name *.map`
 
-FROM golang:1.11
+FROM golang:1.11 AS GOLANG
 WORKDIR /app/src/github.com/mageddo/dns-proxy-server
 COPY --from=BUILDER /app/build /static

@@ -23,5 +23,5 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "proxy": "http://172.17.0.3:5380"
+  "proxy": "http://compiler-dps:5380"
 }
