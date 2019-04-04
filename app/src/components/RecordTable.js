@@ -15,7 +15,7 @@ export class RecordTable extends React.Component {
 	}
 
 	reloadTable() {
-		var that = this;
+		let that = this;
 		return $.ajax({
 			url: '/hostname/find/?env=' + window.activeEnv + '&hostname='
 		}).then(function (data) {
@@ -59,7 +59,24 @@ export class RecordTable extends React.Component {
 	}
 
 	deleteRecord(row){
-		console.info('deleting ' + row.id);
+		console.info('deleting ' + row.hostname);
+		let that = this;
+		$.ajax({
+			url: '/hostname',
+			method: 'DELETE',
+			data: JSON.stringify({
+				env: window.activeEnv,
+				hostname: row.hostname
+			}),
+			contentType: 'application/json'
+		}).then(function(data) {
+			console.debug('m=del, status=scucess');
+			window.$.notify({message: 'Removed: ' + row.hostname});
+			that.reloadTable();
+		}, function(err){
+			console.error('m=save, status=error', err);
+			window.$.notify({message: err.responseText}, {type: 'danger'});
+		});
 	}
 
 	formatIp(ip){
@@ -68,7 +85,13 @@ export class RecordTable extends React.Component {
 
 	handleChange(evt, row) {
 		row[evt.target.name] = evt.target.value;
-		console.debug('m=handleChange, %s=%s, row=%o', evt.target.name, evt.target.value, row);
+		console.info('m=handleChange, %s=%s, row=%o', evt.target.name, evt.target.value, row);
+		this.forceUpdate();
+	}
+
+	handleNumberChange(evt, row) {
+		row[evt.target.name] = parseInt(evt.target.value);
+		console.info('m=handleChange, %s=%s, row=%o', evt.target.name, evt.target.value, row);
 		this.forceUpdate();
 	}
 
@@ -119,7 +142,7 @@ export class RecordTable extends React.Component {
 			</td>
 			}
 			<td className="text-right">
-				<input className="form-control" name="ttl" type="text" onChange={(e) => this.handleChange(e, v)} value={v.ttl}/>
+				<input className="form-control" name="ttl" type="number" onChange={(e) => this.handleNumberChange(e, v)} value={v.ttl}/>
 			</td>
 			<td className="text-right records-actions">
 				<button className="btn btn-primary fa fa-save" onClick={(e) => this.updateRecord(v) } ></button>

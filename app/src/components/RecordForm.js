@@ -37,6 +37,13 @@ export class RecordForm extends React.Component {
 		console.debug('m=handleChange, %s=%s', evt.target.name, evt.target.value);
 	}
 
+	handleNumberChange(evt) {
+		let form = this.state.form;
+		form[evt.target.name] = parseInt(evt.target.value);
+		this.setState({ form });
+		console.debug('m=handleChange, %s=%s', evt.target.name, evt.target.value);
+	}
+
 	handleType(evt){
 		let form = this.state.form;
 		form[evt.target.name] = evt.target.value;
@@ -172,7 +179,7 @@ export class RecordForm extends React.Component {
 							</td>
 							<td>
 								<input
-									onChange={(e) => this.handleChange(e)}
+									onChange={(e) => this.handleNumberChange(e)}
 									className="form-control"
 									value={this.state.form.ttl}
 									id="ttl"
