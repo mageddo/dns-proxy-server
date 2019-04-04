@@ -8,9 +8,9 @@ export class RecordForm extends React.Component {
 		this.props = props;
 		this.state = {
 			form: {
-				hostname: "support@acme.com",
+				hostname: "mywebsite.acme.com",
 				ip: "192.168.0.1",
-				target: "",
+				target: "acme.com",
 				type: "A",
 				ttl: 60
 			},
