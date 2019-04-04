@@ -5,7 +5,7 @@
 Generate the binaries
 
 ```bash
-$ docker-compose up prod-build-binary-dps
+$ docker-compose rm -f && docker-compose up --build prod-build-binary-dps
 Starting docker-dns-server-compiler
 Attaching to docker-dns-server-compiler
 docker-dns-server-compiler           | ok  	github.com/mageddo/dns-proxy-server/conf	0.008s
