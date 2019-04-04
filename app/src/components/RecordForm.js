@@ -103,90 +103,92 @@ export class RecordForm extends React.Component {
 						<col width="9%" style={{textAlign: "right"}}/>
 						<col width="7.5%"/>
 					</colgroup>
-					<tbody>
-					<tr>
-						<th>
-							<label className="control-label " htmlFor="hostname">
-								Hostname<span className="asteriskField">*</span>
-							</label>
-						</th>
-						<th>
-							{this.state.showIp &&
-							<label className="control-label requiredField" htmlFor="ip">
-								IP<span className="asteriskField">*</span>
-							</label>
-							}
-							{
-								this.state.showTarget &&
-								<label className="control-label requiredField" htmlFor="target" required>
-									Target<span className="asteriskField">*</span>
+					<thead className="thead-dark">
+						<tr>
+							<th>
+								<label className="control-label " htmlFor="hostname">
+									Hostname<span className="asteriskField">*</span>
 								</label>
-							}
-						</th>
-						<th>
-							<label className="control-label">
-								Type<span className="asteriskField">*</span>
-							</label>
-						</th>
-						<th>
-							<label className="control-label requiredField" htmlFor="ttl">
-								TTL<span className="asteriskField">*</span>
-							</label>
-						</th>
-						<th>Actions</th>
-					</tr>
-					<tr>
-						<td>
-							<input
-								className="form-control"
-								id="hostname"
-								name="hostname"
-								onChange={(e) => this.handleChange(e)}
-								value={this.state.form.hostname}
-								type="text"
-								required
-							/>
-						</td>
-						<td>
-							{
-								this.state.showIp &&
-								<input className="form-control"
-											 pattern="[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+"
-											 title="Please provide a valid IP" name="ip" id="ip"
-											 onChange={(e) => this.handleIp(e)}
-											 required
+							</th>
+							<th>
+								{this.state.showIp &&
+								<label className="control-label requiredField" htmlFor="ip">
+									IP<span className="asteriskField">*</span>
+								</label>
+								}
+								{
+									this.state.showTarget &&
+									<label className="control-label requiredField" htmlFor="target" required>
+										Target<span className="asteriskField">*</span>
+									</label>
+								}
+							</th>
+							<th>
+								<label className="control-label">
+									Type<span className="asteriskField">*</span>
+								</label>
+							</th>
+							<th>
+								<label className="control-label requiredField" htmlFor="ttl">
+									TTL<span className="asteriskField">*</span>
+								</label>
+							</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+								<input
+									className="form-control"
+									id="hostname"
+									name="hostname"
+									onChange={(e) => this.handleChange(e)}
+									value={this.state.form.hostname}
+									type="text"
+									required
 								/>
-							}
-							{
-								this.state.showTarget &&
-								<input className="form-control" name="target" id="target" onChange={(e) => this.handleChange(e)}/>
-							}
-						</td>
-						<td>
-							<select name="type" onChange={(e) => this.handleType(e)} className="form-control" type="text">
-								<option value="A">A</option>
-								<option value="CNAME">CNAME</option>
-							</select>
-						</td>
-						<td>
-							<input
-								onChange={(e) => this.handleChange(e)}
-								className="form-control"
-								value={this.state.form.ttl}
-								id="ttl"
-								name="ttl"
-								type="number"
-								size="3"
-								min="1"
-								required
-							/>
-						</td>
-						<td className="text-center">
-							<button type="submit" className="btn btn-info">
-								<span className="fa fa-save"/>
-							</button>
-						</td>
-					</tr>
+							</td>
+							<td>
+								{
+									this.state.showIp &&
+									<input className="form-control"
+												 pattern="[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+"
+												 title="Please provide a valid IP" name="ip" id="ip"
+												 onChange={(e) => this.handleIp(e)}
+												 required
+									/>
+								}
+								{
+									this.state.showTarget &&
+									<input className="form-control" name="target" id="target" onChange={(e) => this.handleChange(e)}/>
+								}
+							</td>
+							<td>
+								<select name="type" onChange={(e) => this.handleType(e)} className="form-control" type="text">
+									<option value="A">A</option>
+									<option value="CNAME">CNAME</option>
+								</select>
+							</td>
+							<td>
+								<input
+									onChange={(e) => this.handleChange(e)}
+									className="form-control"
+									value={this.state.form.ttl}
+									id="ttl"
+									name="ttl"
+									type="number"
+									size="3"
+									min="1"
+									required
+								/>
+							</td>
+							<td className="text-center">
+								<button type="submit" className="btn btn-info">
+									<span className="fa fa-save"/>
+								</button>
+							</td>
+						</tr>
 					</tbody>
 				</table>
 			</form>

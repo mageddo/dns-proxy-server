@@ -2,11 +2,11 @@
 
 Setup the environment
 
-	$ docker-compose run compiler-dps bash
+	$ docker-compose rm -f && docker-compose run compiler-dps bash
 
 Running the application 
 
-	go run dns.go
+	$ go run dns.go
 
 Running unit tests
 

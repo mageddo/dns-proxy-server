@@ -71,10 +71,10 @@ func init(){
 	})
 
 	Put(HOSTNAME, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
-		res.Header().Add("Content-Type", "application/json")
 		logging.Infof("m=/hostname/, status=begin, action=update-hostname")
 		var hostname local.HostnameVo
 		if err := json.NewDecoder(req.Body).Decode(&hostname); err != nil {
+			res.Header().Add("Content-Type", "application/json")
 			BadRequest(res, "Invalid JSON")
 			return
 		}
@@ -82,6 +82,7 @@ func init(){
 		if conf, _ := local.LoadConfiguration(); conf != nil {
 			if err := conf.UpdateHostname(hostname.Env, hostname);  err != nil {
 				logging.Infof("m=/hostname/, status=error, action=update-hostname, err=%+v", err)
+				res.Header().Add("Content-Type", "application/json")
 				BadRequest(res, err.Error())
 				return
 			}
