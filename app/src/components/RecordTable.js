@@ -41,8 +41,10 @@ export class RecordTable extends React.Component {
 			data: JSON.stringify({
 				env: window.activeEnv,
 				id: row.id,
+				type: row.type,
 				hostname: row.hostname,
 				ip: row.ip,
+				target: row.target,
 				ttl: row.ttl
 			})
 		}).then(function(data) {
@@ -71,11 +73,13 @@ export class RecordTable extends React.Component {
 	}
 
 	handleIpChange(e, row) {
-		row[e.target.name] = e.target.value.split("\.").map(it => parseInt(it));
+		row[e.target.name] = e.target.value.split("\.").map(it => it ? parseInt(it) : "");
+		this.forceUpdate();
 	}
 
 	handleTargetChange(evt, row) {
 		row[evt.target.name] = evt.target.value;
+		this.forceUpdate();
 		console.debug('m=handleChange, %s=%s', evt.target.name, evt.target.value);
 	}
 
@@ -99,7 +103,10 @@ export class RecordTable extends React.Component {
 				<input className="form-control" name="hostname" onChange={(e) => this.handleChange(e, v)} value={v.hostname}/>
 			</td>
 			<td className="text-center">
-				<input className="form-control" name="type" onChange={(e) => this.handleChange(e, v)} value={v.type}/>
+				<select name="type" onChange={(e) => this.handleChange(e, v)} value={v.type} className="form-control">
+					<option value="A">A</option>
+					<option value="CNAME">CNAME</option>
+				</select>
 			</td>
 			{v.type === 'A' &&
 			<td>
@@ -127,8 +134,8 @@ export class RecordTable extends React.Component {
 				<h3>Records</h3>
 				<table className="table table-bordered table-hover table-condensed editable-table demoTable table-hostnames" >
 					<colgroup>
-						<col width="50%"/>
-						<col width="10%"/>
+						<col width="45%"/>
+						<col width="15%"/>
 						<col width="15%"/>
 						<col width="10%"/>
 						<col width="10%"/>

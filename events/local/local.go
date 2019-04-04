@@ -293,7 +293,7 @@ func (lc *LocalConfiguration) UpdateHostname(envName string, hostname HostnameVo
 	}
 
 	SaveConfiguration(lc)
-	logging.Infof("status=success")
+	logging.Infof("status=success, hostname=%s", hostname.Hostname)
 	return nil
 }
 
@@ -301,12 +301,13 @@ func (env *EnvVo) UpdateHostname(hostname HostnameVo) error {
 
 	foundHostname, _ := env.GetHostnameById(hostname.Id)
 	if foundHostname == nil {
-		return errors.New("not hostname found")
+		return errors.New("not hostname found: " + hostname.Hostname)
 	}
-	foundHostname.Ip = hostname.Ip;
-	foundHostname.Ttl = hostname.Ttl;
-	foundHostname.Hostname = hostname.Hostname;
-
+	foundHostname.Hostname = hostname.Hostname
+	foundHostname.Ttl = hostname.Ttl
+	foundHostname.Ip = hostname.Ip
+	foundHostname.Target = hostname.Target
+	foundHostname.Type = hostname.Type
 	return nil
 }
 
