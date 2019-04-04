@@ -110,7 +110,7 @@ export class RecordTable extends React.Component {
 		return <tr key={k}>
 			<td>{v.hostname}</td>
 			<td className="text-center">{v.type}</td>
-			{v.type === 'A' && <td>{this.formatIp(v.ip)}</td>}
+			{(!v.type || v.type === 'A') && <td>{this.formatIp(v.ip)}</td>}
 			{v.type === 'CNAME' && <td>{v.target}</td>}
 			<td className="text-right">{v.ttl}</td>
 			<td className="text-right records-actions">
@@ -131,7 +131,7 @@ export class RecordTable extends React.Component {
 					<option value="CNAME">CNAME</option>
 				</select>
 			</td>
-			{v.type === 'A' &&
+			{(v.type === 'A' || !v.type) &&
 			<td>
 				<input className="form-control" name="ip" type="text" onChange={(e) => this.handleIpChange(e, v)} value={this.formatIp(v.ip)}/>
 			</td>
