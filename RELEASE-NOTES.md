@@ -1,3 +1,6 @@
+### 2.13.1
+* Make sure value column will not break the table (#116)
+
 ### 2.13.0
 * Support for CNAME on local entries, [see the docs](https://github.com/mageddo/dns-proxy-server/blob/7dacc2c/docs/features.md#manager-customer-dns-records)
 
