@@ -37,7 +37,7 @@ assemble(){
 	rm -rf build/
 	mkdir -p build/
 
-	cp -r static build/
+	cp -r /static build/
 }
 
 case $1 in
@@ -103,14 +103,14 @@ case $1 in
 			exit 0
 		fi
 
+		# ARM
+		builder.bash compile linux arm
+		builder.bash compile linux arm64
+
 		# LINUX
 		# INTEL / AMD
 		builder.bash compile linux 386
 		builder.bash compile linux amd64
-
-		# ARM
-		builder.bash compile linux arm
-		builder.bash compile linux arm64
 
 		echo "> Build success"
 

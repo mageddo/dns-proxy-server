@@ -3,8 +3,9 @@ services:
 
   # Base Image to build project
   compiler-dps:
-    image: golang:1.11
-    working_dir: /app/src/github.com/mageddo/dns-proxy-server
+    build:
+      context: .
+      dockerfile: Dockerfile.builder
     volumes:
       - $PWD:/app/src/github.com/mageddo/dns-proxy-server
       - $PWD/builder.bash:/bin/builder.bash

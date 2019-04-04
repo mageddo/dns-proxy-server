@@ -8,6 +8,10 @@ Running the application
 
 	$ go run dns.go
 
+Running the GUI
+
+	$ cd app && npm start
+
 Running unit tests
 
 	$ go test -cover=false ./.../
