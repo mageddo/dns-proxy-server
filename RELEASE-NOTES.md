@@ -1,5 +1,5 @@
 ### 2.13.0
-* Support for CNAME on local entries
+* Support for CNAME on local entries, [see the docs](https://github.com/mageddo/dns-proxy-server/blob/7dacc2c/docs/features.md#manager-customer-dns-records)
 
 ### 2.12.0
 * Possibility to change container hostname domain, [see the docs](https://github.com/mageddo/dns-proxy-server/blob/70a0ff8/docs/features.md#access-container-by-its-container-name--service-name)
