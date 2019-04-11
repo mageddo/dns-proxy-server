@@ -7,6 +7,7 @@ import (
 	"github.com/miekg/dns"
 	"golang.org/x/net/context"
 	"net"
+	"reflect"
 )
 
 type localDnsSolver struct {
@@ -16,9 +17,11 @@ func (s localDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns.
 	questionName := question.Name[:len(question.Name)-1]
 	for _, host := range getAllHosts("." + questionName) {
 		if msg, err := s.solveHostname(ctx, question, host); err == nil {
+			logging.Debugf("status=found, solver=%s, question=%+v", ctx, reflect.TypeOf(s).String(), question)
 			return msg, nil
 		}
 	}
+	logging.Debugf("status=not-found, solver=%s, hostname=%+v", ctx, reflect.TypeOf(s).String(), question)
 	return nil, errors.New("hostname not found " + questionName)
 }
 
@@ -55,7 +58,7 @@ func (s localDnsSolver) solveHostname(ctx context.Context, question dns.Question
 	}
 	activeEnv, _ := conf.GetActiveEnv()
 	if activeEnv == nil {
-		return nil, errors.New("Not active env found")
+		return nil, errors.New("Not active env found.")
 	}
 
 	if hostname, _ := activeEnv.GetHostname(key); hostname != nil {

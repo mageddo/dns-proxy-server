@@ -29,7 +29,7 @@ func handleQuestion(respWriter dns.ResponseWriter, reqMsg *dns.Msg) {
 	defer func() {
 		err := recover()
 		if err != nil {
-			logging.Errorf("status=error, error=%v, stack=%s", ctx, err, string(debug.Stack()))
+			logging.Errorf("status=fatal-error-handling-question, req=%+v, err=%s, stack=%+v", ctx, reqMsg.Question, err, string(debug.Stack()))
 		}
 	}()
 
@@ -38,7 +38,7 @@ func handleQuestion(respWriter dns.ResponseWriter, reqMsg *dns.Msg) {
 	if questionsQtd != 0 {
 		firstQuestion = reqMsg.Question[0]
 	} else {
-		logging.Error(ctx, "status=question-is-nil")
+		logging.Error(ctx, "status=no-questions-to-answer, reqId=%d", reqMsg.Id)
 		return
 	}
 
@@ -49,16 +49,10 @@ func handleQuestion(respWriter dns.ResponseWriter, reqMsg *dns.Msg) {
 
 	solverFactory := proxy.NewCnameDnsSolverFactory(&proxy.DefaultDnsSolverFactory{})
 	msg, err := solverFactory.Solve(ctx, firstQuestion, getSolvers())
-	if err != nil {
-		logging.Errorf("status=not-resolved, question=%+v", ctx, firstQuestion, err)
-		respWriter.WriteMsg(msg)
-	} else {
-		logging.Debugf("status=resolved, question=%+v, answers=%+v", ctx, firstQuestion, msg.Answer)
-		msg.SetReply(reqMsg)
-		msg.Compress = conf.Compress()
-		respWriter.WriteMsg(msg)
-	}
-
+	msg.SetReply(reqMsg)
+	msg.Compress = conf.Compress()
+	respWriter.WriteMsg(msg)
+	logging.Debugf("status=complete, question=%+v, answers=%+v, err=%+v", ctx, firstQuestion, msg.Answer, err)
 }
 
 var solversCreated int32 = 0

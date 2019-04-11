@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/mageddo/go-logging"
 	"github.com/miekg/dns"
+	"reflect"
 )
 
 type DnsSolverFactory interface {
@@ -14,14 +15,18 @@ type DnsSolverFactory interface {
 type DefaultDnsSolverFactory struct {}
 
 func (*DefaultDnsSolverFactory) Solve(ctx context.Context, question dns.Question, solvers []DnsSolver) (*dns.Msg, error) {
-	for _, solver := range solvers {
+	var solver DnsSolver
+	for _, solver = range solvers {
 		msg, err := solver.Solve(ctx, question)
 		if msg != nil {
-			logging.Debugf("solver-factory=default, status=found, question=%+v, answers=%d", question, len(msg.Answer))
+			logging.Debugf(
+				"solver=%s, status=found, question=%+v, answers=%d",
+				ctx, reflect.TypeOf(solver).String(), question, len(msg.Answer),
+			)
 			return msg, err
 		}
 	}
-	logging.Debugf("solver-factory=default, status=not-found, question=%+v", question)
+	logging.Debugf("status=not-found, lastSolver=%s, question=%+v", ctx, reflect.TypeOf(solver).String(), question)
 	return nil, errors.New("Not solver for the question " + question.Name)
 }
 
@@ -43,6 +48,7 @@ func (s *CnameDnsSolverFactory) Solve(ctx context.Context, question dns.Question
 	firstAnswer := firstMsg.Answer[0]
 	if firstAnswer.Header().Rrtype == dns.TypeCNAME && firstAnswer.Header().Class == 256 {
 		question.Name = firstAnswer.(*dns.CNAME).Target
+		logging.Debugf("status=solving-cname, questionName=%s", ctx, question.Name)
 		if secondMsg, err := s.proxy.Solve(ctx, question, solvers); secondMsg != nil {
 			if err != nil {
 				return nil, err

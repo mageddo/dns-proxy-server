@@ -16,7 +16,7 @@ import (
 	"time"
 )
 
-var confPath string = GetConfPath()
+var confPath = GetConfPath()
 
 func GetConfPath() string {
 	return utils.GetPath(*flags.ConfPath)
@@ -29,11 +29,8 @@ func LoadConfiguration() (*LocalConfiguration, error){
 		RemoteDnsServers: make([][4]byte, 0),
 	}
 
-	logging.Infof("status=begin, confPath=%s", confPath)
-
 	if _, err := os.Stat(confPath); err == nil {
 
-		logging.Info("status=openingFile")
 		f, _ := os.Open(confPath)
 
 		defer f.Close()
@@ -51,16 +48,15 @@ func LoadConfiguration() (*LocalConfiguration, error){
 				}
 			}
 		}
-		logging.Info("status=success")
+		logging.Debugf("status=success-loaded-file, path=%s", confPath)
 	} else {
-		logging.Info("status=create-new-conf")
 		err := os.MkdirAll(confPath[:strings.LastIndex(confPath, "/")], 0755)
 		if err != nil {
-			logging.Errorf("status=error-to-create-conf-folder, err=%v", err)
+			logging.Errorf("status=error-to-create-conf-path, path=%s", confPath)
 			return nil, err
 		}
 		SaveConfiguration(&configuration)
-		logging.Info("status=success")
+		logging.Info("status=success-creating-conf-file, path=%s", confPath)
 	}
 	return &configuration, nil
 }
