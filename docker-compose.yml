@@ -14,6 +14,7 @@ services:
       - TERM=xterm
       - GOPATH=/app
       - MG_WORK_DIR=/app/src/github.com/mageddo/dns-proxy-server
+    network_mode: bridge
     command: tail -f /dev/null
 
   app-dps:
@@ -22,7 +23,7 @@ services:
       - ./app:/app
     working_dir: /app
     ports:
-      - 5380:3000
+      - 5381:3000
     command: tail -f /dev/null
 
       # Run from docker image
