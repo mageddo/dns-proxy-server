@@ -1,3 +1,7 @@
+### 2.13.2
+* Fixing broken answer when hostname is not found
+* Fixing ping slowness
+ 
 ### 2.13.1
 * Make sure value column will not break the table (#116)
 
