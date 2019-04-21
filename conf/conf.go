@@ -3,11 +3,12 @@ package conf
 import (
 	"fmt"
 	"github.com/mageddo/dns-proxy-server/events/local"
+	"github.com/mageddo/dns-proxy-server/events/local/localvo"
 	"github.com/mageddo/dns-proxy-server/flags"
-	"os"
 	"github.com/mageddo/dns-proxy-server/utils/env"
-	"strings"
 	"github.com/mageddo/go-logging"
+	"os"
+	"strings"
 )
 
 func CpuProfile() string {
@@ -47,7 +48,7 @@ func GetResolvConf() string {
 	return GetString(os.Getenv(env.MG_RESOLVCONF), "/etc/resolv.conf")
 }
 
-func getConf() (*local.LocalConfiguration, error) {
+func getConf() (*localvo.LocalConfiguration, error) {
 	return local.LoadConfiguration()
 }
 

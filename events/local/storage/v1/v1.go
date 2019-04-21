@@ -1,6 +1,8 @@
 package v1
 
-import "github.com/mageddo/dns-proxy-server/events/local"
+import (
+	"github.com/mageddo/dns-proxy-server/events/local/localvo"
+)
 
 type LocalConfiguration struct {
 	/**
@@ -40,16 +42,16 @@ type HostnameVo struct {
 	Target string `json:"target"` // target hostname when type=CNAME
 	Ttl int `json:"ttl"`
 	Env string `json:"env,omitempty"` // apenas para o post do rest,
-	Type local.EntryType `json:"type"`
+	Type localvo.EntryType `json:"type"`
 }
 
 
-func ValueOf(c *local.LocalConfiguration) *LocalConfiguration {
+func ValueOf(c *localvo.LocalConfiguration) *LocalConfiguration {
 	panic("unsupported operation")
 }
 
-func (c *LocalConfiguration) ToConfig() *local.LocalConfiguration {
-	return &local.LocalConfiguration{
+func (c *LocalConfiguration) ToConfig() *localvo.LocalConfiguration {
+	return &localvo.LocalConfiguration{
 		Version:1,
 		ActiveEnv:c.ActiveEnv,
 		DefaultDns:c.DefaultDns,
@@ -65,8 +67,8 @@ func (c *LocalConfiguration) ToConfig() *local.LocalConfiguration {
 	}
 }
 
-func toEnvs(v1Envs []EnvVo) []local.EnvVo {
-	envs := make([]local.EnvVo, len(v1Envs))
+func toEnvs(v1Envs []EnvVo) []localvo.EnvVo {
+	envs := make([]localvo.EnvVo, len(v1Envs))
 	for i, env := range envs {
 		v1Env := v1Envs[i]
 		env.Name = v1Env.Name
@@ -77,7 +79,7 @@ func toEnvs(v1Envs []EnvVo) []local.EnvVo {
 	return envs
 }
 
-func fillHostname(hostname *local.HostnameVo, v1Hostname *HostnameVo) {
+func fillHostname(hostname *localvo.HostnameVo, v1Hostname *HostnameVo) {
 	hostname.Env = v1Hostname.Env
 	hostname.Hostname = v1Hostname.Hostname
 	hostname.Id = v1Hostname.Id

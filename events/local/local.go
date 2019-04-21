@@ -5,7 +5,8 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/mageddo/dns-proxy-server/cache/store"
-	v1 "github.com/mageddo/dns-proxy-server/events/local/storage/v1"
+	"github.com/mageddo/dns-proxy-server/events/local/localvo"
+	"github.com/mageddo/dns-proxy-server/events/local/storage/v1"
 	"github.com/mageddo/dns-proxy-server/events/local/storage/v2"
 	"github.com/mageddo/dns-proxy-server/flags"
 	"github.com/mageddo/dns-proxy-server/utils"
@@ -22,7 +23,7 @@ func GetConfPath() string {
 	return utils.GetPath(*flags.ConfPath)
 }
 
-func LoadConfiguration() (*LocalConfiguration, error){
+func LoadConfiguration() (*localvo.LocalConfiguration, error){
 	if _, err := os.Stat(confPath); err == nil {
 		confBytes, err := ioutil.ReadFile(confPath)
 		if err != nil {
@@ -46,9 +47,9 @@ func LoadConfiguration() (*LocalConfiguration, error){
 		}
 		logging.Debugf("status=success-loaded-file, path=%s", confPath)
 	} else {
-		storeDefaultConfig(&LocalConfiguration{
+		storeDefaultConfig(&localvo.LocalConfiguration{
 			Version:1,
-			Envs:             make([]EnvVo, 0),
+			Envs:             make([]localvo.EnvVo, 0),
 			RemoteDnsServers: make([][4]byte, 0),
 		})
 	}
@@ -66,7 +67,7 @@ func readVersion(confBytes []byte) int {
 	}
 }
 
-func SaveConfiguration(c *LocalConfiguration) {
+func SaveConfiguration(c *localvo.LocalConfiguration) {
 
 	if len(c.Envs) == 0 {
 		c.Envs = NewEmptyEnv()
@@ -82,7 +83,7 @@ func SaveConfiguration(c *LocalConfiguration) {
 	storeToFile(confVO)
 }
 
-func storeDefaultConfig(configuration *LocalConfiguration) error {
+func storeDefaultConfig(configuration *localvo.LocalConfiguration) error {
 	err := os.MkdirAll(confPath[:strings.LastIndex(confPath, "/")], 0755)
 	if err != nil {
 		logging.Errorf("status=error-to-create-conf-path, path=%s", confPath)
@@ -115,8 +116,8 @@ func storeToFile(confFileVO interface{}){
 	logging.Infof("status=success, confPath=%s, time=%d", confPath, utils.DiffMillis(now, time.Now()))
 }
 
-func NewEmptyEnv() []EnvVo {
-	return []EnvVo{{Hostnames:[]HostnameVo{}, Name:""}}
+func NewEmptyEnv() []localvo.EnvVo {
+	return []localvo.EnvVo{{Hostnames:[]localvo.HostnameVo{}, Name:""}}
 }
 
 func ResetConf() {

@@ -1,4 +1,4 @@
-package local
+package localvo
 
 import (
 	"context"
@@ -134,7 +134,7 @@ func (lc *LocalConfiguration) AddEnv(ctx context.Context, env EnvVo) error {
 		return errors.New(fmt.Sprintf("The '%s' env already exists", env.Name))
 	}
 	lc.Envs = append(lc.Envs, env)
-	SaveConfiguration(lc)
+	//local.SaveConfiguration(lc)
 	logging.Infof("status=success, env=%s", env.Name)
 	return nil
 }
@@ -146,7 +146,7 @@ func (lc *LocalConfiguration) RemoveEnvByName(name string) error {
 		return errors.New(fmt.Sprintf("The env '%s' was not found", name))
 	}
 	lc.RemoveEnv(i)
-	SaveConfiguration(lc)
+	//local.SaveConfiguration(lc)
 	logging.Infof("status=success, env=%s", name)
 	return nil
 }
@@ -154,18 +154,18 @@ func (lc *LocalConfiguration) RemoveEnvByName(name string) error {
 func (lc *LocalConfiguration) RemoveEnv(index int){
 	logging.Infof("status=begin, index=%d", index)
 	lc.Envs = append(lc.Envs[:index], lc.Envs[index+1:]...)
-	SaveConfiguration(lc)
+	//local.SaveConfiguration(lc)
 	logging.Infof("status=success, index=%d", index)
 }
 
 func (lc *LocalConfiguration) AddDns( dns [4]byte){
 	lc.RemoteDnsServers = append(lc.RemoteDnsServers, dns)
-	SaveConfiguration(lc)
+	//local.SaveConfiguration(lc)
 }
 
 func (lc *LocalConfiguration) RemoveDns(index int){
 	lc.RemoteDnsServers = append(lc.RemoteDnsServers[:index], lc.RemoteDnsServers[index+1:]...)
-	SaveConfiguration(lc)
+	//local.SaveConfiguration(lc)
 }
 
 func (lc *LocalConfiguration) AddHostname(envName string, hostname HostnameVo) error {
@@ -181,7 +181,7 @@ func (lc *LocalConfiguration) AddHostname(envName string, hostname HostnameVo) e
 	if err != nil {
 		return err
 	}
-	SaveConfiguration(lc)
+	//local.SaveConfiguration(lc)
 	logging.Infof("status=success")
 	return nil
 }
@@ -198,7 +198,7 @@ func (lc *LocalConfiguration) UpdateHostname(envName string, hostname HostnameVo
 		return err
 	}
 
-	SaveConfiguration(lc)
+	//local.SaveConfiguration(lc)
 	logging.Infof("status=success, hostname=%s", hostname.Hostname)
 	return nil
 }
@@ -237,7 +237,7 @@ func (lc *LocalConfiguration) RemoveHostname(envIndex int, hostIndex int){
 	logging.Infof("status=begin, envIndex=%d, hostIndex=%d", envIndex, hostIndex)
 	env := &lc.Envs[envIndex]
 	(*env).Hostnames = append((*env).Hostnames[:hostIndex], (*env).Hostnames[hostIndex+1:]...)
-	SaveConfiguration(lc)
+	//local.SaveConfiguration(lc)
 	logging.Infof("status=success, envIndex=%d, hostIndex=%d", envIndex, hostIndex)
 
 }
@@ -250,7 +250,7 @@ func (lc *LocalConfiguration) SetActiveEnv(env EnvVo) error {
 		return errors.New("Env not found: " + env.Name)
 	}
 	lc.ActiveEnv = env.Name
-	SaveConfiguration(lc)
+	//local.SaveConfiguration(lc)
 	logging.Infof("status=success")
 	return nil
 }

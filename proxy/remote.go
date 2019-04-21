@@ -1,6 +1,7 @@
 package proxy
 
 import (
+	"github.com/mageddo/dns-proxy-server/events/local/localvo"
 	"github.com/miekg/dns"
 	"net"
 	"errors"
@@ -15,7 +16,7 @@ import (
 const SERVERS = "SERVERS"
 
 type remoteDnsSolver struct {
-	confloader func(ctx context.Context) (*local.LocalConfiguration, error)
+	confloader func(ctx context.Context) (*localvo.LocalConfiguration, error)
 }
 
 // reference https://miek.nl/2014/August/16/go-dns-package/
@@ -27,7 +28,7 @@ func (r remoteDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns
 	m.RecursionDesired = true
 
 	logging.Debugf("solver=remote, name=%s, qtype=%d", ctx, question.Name, question.Qtype)
-	var config *local.LocalConfiguration
+	var config *localvo.LocalConfiguration
 	var err error
 	if !c.ContainsKey(SERVERS) {
 		if config, err = r.confloader(ctx); err != nil {
@@ -36,7 +37,7 @@ func (r remoteDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns
 		}
 		c.PutIfAbsent(SERVERS, config)
 	}
-	config = c.Get(SERVERS).(*local.LocalConfiguration)
+	config = c.Get(SERVERS).(*localvo.LocalConfiguration)
 
 	var res *dns.Msg
 	for _, server := range config.GetRemoteServers(ctx) {
@@ -69,7 +70,7 @@ func (r remoteDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns
 
 func NewRemoteDnsSolver() *remoteDnsSolver {
 	return &remoteDnsSolver{
-		confloader: func(ctx context.Context) (*local.LocalConfiguration, error) {
+		confloader: func(ctx context.Context) (*localvo.LocalConfiguration, error) {
 			return local.LoadConfiguration()
 		},
 	}

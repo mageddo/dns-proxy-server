@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/mageddo/dns-proxy-server/events/local"
+	"github.com/mageddo/dns-proxy-server/events/local/localvo"
 	. "github.com/mageddo/go-httpmap"
 	"github.com/mageddo/go-logging"
 	"golang.org/x/net/context"
@@ -37,7 +38,7 @@ func init(){
 			env := req.URL.Query().Get("env")
 			hostname := req.URL.Query().Get("hostname")
 			var err error
-			var hostnames *[]local.HostnameVo
+			var hostnames *[]localvo.HostnameVo
 			if hostnames, err = conf.FindHostnameByNameAndEnv(ctx, env, hostname);  err == nil {
 				json.NewEncoder(res).Encode(hostnames)
 				return
@@ -50,7 +51,7 @@ func init(){
 
 	Post(HOSTNAME, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
 		logging.Infof("m=/hostname/, status=begin, action=create-hostname")
-		var hostname local.HostnameVo
+		var hostname localvo.HostnameVo
 		if err := json.NewDecoder(req.Body).Decode(&hostname); err != nil {
 			res.Header().Add("Content-Type", "application/json")
 			BadRequest(res, "Invalid JSON")
@@ -72,7 +73,7 @@ func init(){
 
 	Put(HOSTNAME, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
 		logging.Infof("m=/hostname/, status=begin, action=update-hostname")
-		var hostname local.HostnameVo
+		var hostname localvo.HostnameVo
 		if err := json.NewDecoder(req.Body).Decode(&hostname); err != nil {
 			res.Header().Add("Content-Type", "application/json")
 			BadRequest(res, "Invalid JSON")
@@ -94,7 +95,7 @@ func init(){
 
 	Delete(HOSTNAME, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
 		logging.Infof("m=/hostname/, status=begin, action=delete-hostname")
-		var hostname local.HostnameVo
+		var hostname localvo.HostnameVo
 		json.NewDecoder(req.Body).Decode(&hostname)
 		logging.Infof("m=/hostname/, status=parsed-host, action=delete-hostname, host=%+v", hostname)
 		if conf, _ := local.LoadConfiguration(); conf != nil {

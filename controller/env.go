@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"github.com/mageddo/dns-proxy-server/events/local/localvo"
 	"net/http"
 	"github.com/mageddo/dns-proxy-server/events/local"
 	"encoding/json"
@@ -22,7 +23,7 @@ func init(){
 	Get(ENV_ACTIVE, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
 		res.Header().Add("Content-Type", "application/json")
 		if conf, _ := local.LoadConfiguration(); conf != nil {
-			utils.GetJsonEncoder(res).Encode(local.EnvVo{Name: conf.ActiveEnv})
+			utils.GetJsonEncoder(res).Encode(localvo.EnvVo{Name: conf.ActiveEnv})
 			return
 		}
 		confLoadError(res)
@@ -33,7 +34,7 @@ func init(){
 		logging.Infof("m=/env/active/, status=begin")
 		res.Header().Add("Content-Type", "application/json")
 
-		var envVo local.EnvVo
+		var envVo localvo.EnvVo
 		json.NewDecoder(req.Body).Decode(&envVo)
 		logging.Infof("m=/env/active/, status=parsed-host, env=%+v", envVo)
 
@@ -62,7 +63,7 @@ func init(){
 	Post(ENV, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
 		res.Header().Add("Content-Type", "application/json")
 		logging.Infof("m=/env/, status=begin, action=create-env")
-		var envVo local.EnvVo
+		var envVo localvo.EnvVo
 		json.NewDecoder(req.Body).Decode(&envVo)
 		logging.Infof("m=/env/, status=parsed-host, env=%+v", envVo)
 		if conf, _ := local.LoadConfiguration(); conf != nil {
@@ -80,7 +81,7 @@ func init(){
 	Delete(ENV, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
 		res.Header().Add("Content-Type", "application/json")
 		logging.Infof("m=/env/, status=begin, action=delete-env")
-		var env local.EnvVo
+		var env localvo.EnvVo
 		json.NewDecoder(req.Body).Decode(&env)
 		logging.Infof("m=/env/, status=parsed-host, action=delete-env, env=%+v", env)
 		if conf, _ := local.LoadConfiguration(); conf != nil {
