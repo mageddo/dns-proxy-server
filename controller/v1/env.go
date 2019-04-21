@@ -1,4 +1,4 @@
-package controller
+package v1
 
 import (
 	"github.com/mageddo/dns-proxy-server/events/local/localvo"
