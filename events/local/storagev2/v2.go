@@ -4,16 +4,16 @@ import (
 	"github.com/mageddo/dns-proxy-server/events/local/localvo"
 )
 
-type LocalConfiguration struct {
+type ConfigurationV2 struct {
 	/**
 	 * The remote servers to ask when, DPS can not solve from docker or local file,
 	 * it will try one by one in order, if no one is specified then 8.8.8.8 is used by default
 	 * DO NOT call this variable directly, use GetRemoteDnsServers instead
 	 */
 	RemoteDnsServers [][4]byte `json:"remoteDnsServers"`
-	Envs []EnvVo `json:"envs"`
-	ActiveEnv string `json:"activeEnv"`
-	LastId int `json:"lastId"`
+	Envs []EnvV2               `json:"envs"`
+	ActiveEnv string           `json:"activeEnv"`
+	LastId int                 `json:"lastId"`
 
 	/// ----
 	WebServerPort int `json:"webServerPort"`
@@ -30,12 +30,12 @@ type LocalConfiguration struct {
 	Domain string `json:"domain"`
 }
 
-type EnvVo struct {
-	Name string `json:"name"`
-	Hostnames []HostnameVo `json:"hostnames,omitempty"`
+type EnvV2 struct {
+	Name string            `json:"name"`
+	Hostnames []HostnameV2 `json:"hostnames,omitempty"`
 }
 
-type HostnameVo struct {
+type HostnameV2 struct {
 	Id int `json:"id"`
 	Hostname string `json:"hostname"`
 	Ip [4]byte `json:"ip"` // hostname ip when type=A
@@ -46,11 +46,11 @@ type HostnameVo struct {
 }
 
 
-func ValueOf(c *localvo.Configuration) *LocalConfiguration {
+func ValueOf(c *localvo.Configuration) *ConfigurationV2 {
 	panic("unsupported operation")
 }
 
-func (c *LocalConfiguration) ToConfig() *localvo.Configuration {
+func (c *ConfigurationV2) ToConfig() *localvo.Configuration {
 	return &localvo.Configuration{
 		Version:2,
 		ActiveEnv:c.ActiveEnv,
@@ -67,7 +67,7 @@ func (c *LocalConfiguration) ToConfig() *localvo.Configuration {
 	}
 }
 
-func toEnvs(v2Envs []EnvVo) []localvo.Env {
+func toEnvs(v2Envs []EnvV2) []localvo.Env {
 	envs := make([]localvo.Env, len(v2Envs))
 	for i, env := range envs {
 		v2Env := v2Envs[i]
@@ -79,7 +79,7 @@ func toEnvs(v2Envs []EnvVo) []localvo.Env {
 	return envs
 }
 
-func fillHostname(hostname *localvo.Hostname, v2Hostname *HostnameVo) {
+func fillHostname(hostname *localvo.Hostname, v2Hostname *HostnameV2) {
 	hostname.Env = v2Hostname.Env
 	hostname.Hostname = v2Hostname.Hostname
 	hostname.Ip = v2Hostname.Ip

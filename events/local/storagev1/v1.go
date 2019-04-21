@@ -4,16 +4,15 @@ import (
 	"github.com/mageddo/dns-proxy-server/events/local/localvo"
 )
 
-type Configuration struct {
+type ConfigurationV1 struct {
 	/**
 	 * The remote servers to ask when, DPS can not solve from docker or local file,
 	 * it will try one by one in order, if no one is specified then 8.8.8.8 is used by default
 	 * DO NOT call this variable directly, use GetRemoteDnsServers instead
 	 */
 	RemoteDnsServers [][4]byte `json:"remoteDnsServers"`
-	Envs []Env                 `json:"envs"`
+	Envs []EnvV1               `json:"envs"`
 	ActiveEnv string           `json:"activeEnv"`
-	LastId int                 `json:"lastId"`
 
 	/// ----
 	WebServerPort int `json:"webServerPort"`
@@ -30,7 +29,7 @@ type Configuration struct {
 	Domain string `json:"domain"`
 }
 
-type Env struct {
+type EnvV1 struct {
 	Name string            `json:"name"`
 	Hostnames []HostnameV1 `json:"hostnames,omitempty"`
 }
@@ -45,22 +44,32 @@ type HostnameV1 struct {
 }
 
 
-func ValueOf(c *localvo.Configuration) *Configuration {
-	return &Configuration{
+func ValueOf(c *localvo.Configuration) *ConfigurationV1 {
+	return &ConfigurationV1{
 		Envs: toV1Envs(c.Envs),
+		WebServerPort:c.WebServerPort,
+		RemoteDnsServers:c.RemoteDnsServers,
+		RegisterContainerNames:c.RegisterContainerNames,
+		LogLevel:c.LogLevel,
+		LogFile:c.LogFile,
+		HostMachineHostname:c.HostMachineHostname,
+		Domain:c.Domain,
+		DnsServerPort:c.DnsServerPort,
+		DefaultDns:c.DefaultDns,
+		ActiveEnv:c.ActiveEnv,
 	}
 }
 
-func toV1Envs(envs []localvo.Env) []Env {
-	v1Envs := make([]Env, len(envs))
+func toV1Envs(envs []localvo.Env) []EnvV1 {
+	v1Envs := make([]EnvV1, len(envs))
 	for i, env := range envs {
 		v1Envs[i] = fromEnv(env)
 	}
 	return v1Envs
 }
 
-func fromEnv(env localvo.Env) Env {
-	return Env{
+func fromEnv(env localvo.Env) EnvV1 {
+	return EnvV1{
 		Name:env.Name,
 		Hostnames: toV1Hostnames(env.Hostnames),
 	}
@@ -85,7 +94,7 @@ func fromHostname(hostname localvo.Hostname) HostnameV1 {
 	}
 }
 
-func (c *Configuration) ToConfig() *localvo.Configuration {
+func (c *ConfigurationV1) ToConfig() *localvo.Configuration {
 	return &localvo.Configuration{
 		Version:1,
 		ActiveEnv:c.ActiveEnv,
@@ -102,7 +111,7 @@ func (c *Configuration) ToConfig() *localvo.Configuration {
 	}
 }
 
-func toEnvs(v1Envs []Env) []localvo.Env {
+func toEnvs(v1Envs []EnvV1) []localvo.Env {
 	envs := make([]localvo.Env, len(v1Envs))
 	for i, env := range envs {
 		v1Env := v1Envs[i]

@@ -31,15 +31,15 @@ func LoadConfiguration() (*localvo.Configuration, error){
 		}
 		switch readVersion(confBytes) {
 		case 1:
-			v1Config := &storagev1.Configuration{
-				Envs: make([]storagev1.Env, 0),
+			v1Config := &storagev1.ConfigurationV1{
+				Envs: make([]storagev1.EnvV1, 0),
 				RemoteDnsServers: make([][4]byte, 0),
 			}
 			err := json.Unmarshal(confBytes, v1Config)
 			return v1Config.ToConfig(), err
 		case 2:
-			v2Config := &storagev2.LocalConfiguration {
-				Envs: make([]storagev2.EnvVo, 0),
+			v2Config := &storagev2.ConfigurationV2{
+				Envs: make([]storagev2.EnvV2, 0),
 				RemoteDnsServers: make([][4]byte, 0),
 			}
 			err := json.Unmarshal(confBytes, v2Config)
@@ -47,11 +47,13 @@ func LoadConfiguration() (*localvo.Configuration, error){
 		}
 		logging.Debugf("status=success-loaded-file, path=%s", confPath)
 	} else {
-		storeDefaultConfig(&localvo.Configuration{
-			Version:1,
+		defaultConfig := &localvo.Configuration{
+			Version:          1,
 			Envs:             make([]localvo.Env, 0),
 			RemoteDnsServers: make([][4]byte, 0),
-		})
+		}
+		storeDefaultConfig(defaultConfig)
+		return defaultConfig, nil
 	}
 	return nil, errors.New("unrecognized version")
 }
