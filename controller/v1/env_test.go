@@ -12,11 +12,16 @@ import (
 )
 
 func TestGetActiveEnvSuccess(t *testing.T) {
+	// arrange
 
+	local.ResetConf()
 	s := httptest.NewServer(nil)
 	defer s.Close()
 
+	// act
 	r, err := resty.R().Get(s.URL + ENV_ACTIVE)
+
+	// assert
 	assert.Nil(t, err)
 	assert.Equal(t, 200, r.StatusCode())
 	assert.Equal(t, `{"name":""}`, r.String())

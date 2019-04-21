@@ -28,9 +28,11 @@ func LoadConfiguration() (*localvo.Configuration, error){
 	if _, err := os.Stat(confPath); err == nil {
 		confBytes, err := ioutil.ReadFile(confPath)
 		if err != nil {
+			logging.Error("status=can't-read-conf-file, file=%s", confPath)
 			return nil, err
 		}
 		if configuration, err := LoadVersionedConfiguration(confBytes); err != nil {
+			logging.Error("status=can't-read-conf-file-version, file=%s", confPath)
 			return nil, err
 		} else {
 			setHostnameIds(configuration)
@@ -125,8 +127,21 @@ func NewEmptyEnv() []localvo.Env {
 	return []localvo.Env{{Hostnames: []localvo.Hostname{}, Name:""}}
 }
 
+func Exists(name string) (bool, error) {
+	_, err := os.Stat(name)
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+	return err == nil, err
+}
+
 func ResetConf() {
-	os.Remove(confPath)
+	if exists, _ := Exists(confPath); exists {
+		if err := os.Remove(confPath); err != nil {
+			logging.Errorf("failed to reset conf", err)
+			os.Exit(-1)
+		}
+	}
 	store.GetInstance().Clear()
 }
 

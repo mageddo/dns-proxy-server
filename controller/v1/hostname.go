@@ -21,7 +21,7 @@ func init(){
 
 	Get(HOSTNAME, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
 		res.Header().Add("Content-Type", "application/json")
-		if conf, _ := local.LoadConfiguration(); conf != nil {
+		if conf, err := local.LoadConfiguration(); conf != nil {
 			envName := req.URL.Query().Get("env")
 			if env, _ := conf.GetEnv(envName);  env != nil {
 				json.NewEncoder(res).Encode(vo.FromEnv(env))
@@ -29,13 +29,14 @@ func init(){
 			}
 			BadRequest(res, fmt.Sprintf("Env %s not found", envName))
 			return
+		} else {
+			confLoadError(res, err)
 		}
-		confLoadError(res)
 	})
 
 	Get(HOSTNAME_FIND, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
 		res.Header().Add("Content-Type", "application/json")
-		if conf, _ := local.LoadConfiguration(); conf != nil {
+		if conf, err := local.LoadConfiguration(); conf != nil {
 			env := req.URL.Query().Get("env")
 			hostname := req.URL.Query().Get("hostname")
 			var err error
@@ -46,8 +47,9 @@ func init(){
 			}
 			BadRequest(res, fmt.Sprintf(err.Error()))
 			return
+		} else {
+			confLoadError(res, err)
 		}
-		confLoadError(res)
 	})
 
 	Post(HOSTNAME, func(ctx context.Context, res http.ResponseWriter, req *http.Request){

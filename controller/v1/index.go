@@ -16,10 +16,11 @@ func init(){
 
 	Get("/configuration/", func(ctx context.Context, res http.ResponseWriter, req *http.Request){
 		res.Header().Add("Content-Type", "application/json")
-		if conf, _ := local.LoadConfiguration(); conf != nil {
+		if conf, err := local.LoadConfiguration(); conf != nil {
 			utils.GetJsonEncoder(res).Encode(conf)
 			return
+		} else {
+			confLoadError(res, err)
 		}
-		confLoadError(res)
 	})
 }

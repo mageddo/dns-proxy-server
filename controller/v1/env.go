@@ -24,11 +24,11 @@ func init(){
 
 	Get(ENV_ACTIVE, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
 		res.Header().Add("Content-Type", "application/json")
-		if conf, _ := local.LoadConfiguration(); conf != nil {
+		if conf, err := local.LoadConfiguration(); conf != nil {
 			utils.GetJsonEncoder(res).Encode(vo.EnvV1{Name: conf.ActiveEnv})
-			return
+		} else {
+			confLoadError(res, err)
 		}
-		confLoadError(res)
 	})
 
 	Put(ENV_ACTIVE, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
@@ -49,11 +49,12 @@ func init(){
 
 	Get(ENV, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
 		res.Header().Add("Content-Type", "application/json")
-		if conf, _ := local.LoadConfiguration(); conf != nil {
+		if conf, err := local.LoadConfiguration(); conf != nil {
 			utils.GetJsonEncoder(res).Encode(vo.FromEnvs(conf.Envs))
 			return
+		} else {
+			confLoadError(res, err)
 		}
-		confLoadError(res)
 	})
 
 	Post(ENV, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
@@ -89,6 +90,7 @@ func init(){
 	})
 }
 
-func confLoadError(res http.ResponseWriter){
+func confLoadError(res http.ResponseWriter, err error){
+	logging.Errorf("could-not-load-conf, err=%+v", err, err)
 	BadRequest(res, "Could not load conf")
 }
