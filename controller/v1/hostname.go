@@ -99,16 +99,13 @@ func init(){
 		var hostname vo.HostnameV1
 		json.NewDecoder(req.Body).Decode(&hostname)
 		logging.Infof("m=/hostname/, status=parsed-host, action=delete-hostname, host=%+v", hostname)
-		if conf, _ := local.LoadConfiguration(); conf != nil {
-			if err := conf.RemoveHostnameByEnvAndHostname(hostname.Env, hostname.Hostname);  err != nil {
+			if err := local.RemoveHostnameByEnvAndHostname(hostname.Env, hostname.Hostname);  err != nil {
 				logging.Infof("m=/hostname/, status=error, action=delete-hostname, err=%+v", err)
 				res.Header().Add("Content-Type", "application/json")
 				BadRequest(res, err.Error())
 				return
-			}
+		} else {
 			logging.Infof("m=/hostname/, status=success, action=delete-hostname")
-			return
 		}
-		confLoadError(res)
 	})
 }

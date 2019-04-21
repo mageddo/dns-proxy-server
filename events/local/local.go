@@ -169,3 +169,16 @@ func RemoveEnvByName(ctx context.Context, env string) error {
 		return err
 	}
 }
+
+func RemoveHostnameByEnvAndHostname(env, hostname string) error {
+	if conf, err := LoadConfiguration(); err == nil {
+		if err := conf.RemoveHostnameByEnvAndHostname(env, hostname); err == nil {
+			SaveConfiguration(conf)
+			return nil
+		} else {
+			return err
+		}
+	} else {
+		return err
+	}
+}
