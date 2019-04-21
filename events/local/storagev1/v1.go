@@ -4,16 +4,16 @@ import (
 	"github.com/mageddo/dns-proxy-server/events/local/localvo"
 )
 
-type LocalConfiguration struct {
+type Configuration struct {
 	/**
 	 * The remote servers to ask when, DPS can not solve from docker or local file,
 	 * it will try one by one in order, if no one is specified then 8.8.8.8 is used by default
 	 * DO NOT call this variable directly, use GetRemoteDnsServers instead
 	 */
 	RemoteDnsServers [][4]byte `json:"remoteDnsServers"`
-	Envs []EnvVo `json:"envs"`
-	ActiveEnv string `json:"activeEnv"`
-	LastId int `json:"lastId"`
+	Envs []Env                 `json:"envs"`
+	ActiveEnv string           `json:"activeEnv"`
+	LastId int                 `json:"lastId"`
 
 	/// ----
 	WebServerPort int `json:"webServerPort"`
@@ -30,13 +30,12 @@ type LocalConfiguration struct {
 	Domain string `json:"domain"`
 }
 
-type EnvVo struct {
-	Name string `json:"name"`
-	Hostnames []HostnameVo `json:"hostnames,omitempty"`
+type Env struct {
+	Name string            `json:"name"`
+	Hostnames []HostnameV1 `json:"hostnames,omitempty"`
 }
 
-type HostnameVo struct {
-	Id int `json:"id"`
+type HostnameV1 struct {
 	Hostname string `json:"hostname"`
 	Ip [4]byte `json:"ip"` // hostname ip when type=A
 	Target string `json:"target"` // target hostname when type=CNAME
@@ -46,11 +45,47 @@ type HostnameVo struct {
 }
 
 
-func ValueOf(c *localvo.Configuration) *LocalConfiguration {
-	panic("unsupported operation")
+func ValueOf(c *localvo.Configuration) *Configuration {
+	return &Configuration{
+		Envs: toV1Envs(c.Envs),
+	}
 }
 
-func (c *LocalConfiguration) ToConfig() *localvo.Configuration {
+func toV1Envs(envs []localvo.Env) []Env {
+	v1Envs := make([]Env, len(envs))
+	for i, env := range envs {
+		v1Envs[i] = fromEnv(env)
+	}
+	return v1Envs
+}
+
+func fromEnv(env localvo.Env) Env {
+	return Env{
+		Name:env.Name,
+		Hostnames: toV1Hostnames(env.Hostnames),
+	}
+}
+
+func toV1Hostnames(hostnames []localvo.Hostname) []HostnameV1 {
+	v1Hostnames := make([]HostnameV1, len(hostnames))
+	for i, hostname := range hostnames {
+		v1Hostnames[i] = fromHostname(hostname)
+	}
+	return v1Hostnames
+}
+
+func fromHostname(hostname localvo.Hostname) HostnameV1 {
+	return HostnameV1{
+		Hostname:hostname.Hostname,
+		Env:hostname.Env,
+		Type:hostname.Type,
+		Ttl:hostname.Ttl,
+		Target:hostname.Target,
+		Ip:hostname.Ip,
+	}
+}
+
+func (c *Configuration) ToConfig() *localvo.Configuration {
 	return &localvo.Configuration{
 		Version:1,
 		ActiveEnv:c.ActiveEnv,
@@ -67,7 +102,7 @@ func (c *LocalConfiguration) ToConfig() *localvo.Configuration {
 	}
 }
 
-func toEnvs(v1Envs []EnvVo) []localvo.Env {
+func toEnvs(v1Envs []Env) []localvo.Env {
 	envs := make([]localvo.Env, len(v1Envs))
 	for i, env := range envs {
 		v1Env := v1Envs[i]
@@ -79,10 +114,9 @@ func toEnvs(v1Envs []EnvVo) []localvo.Env {
 	return envs
 }
 
-func fillHostname(hostname *localvo.Hostname, v1Hostname *HostnameVo) {
+func fillHostname(hostname *localvo.Hostname, v1Hostname *HostnameV1) {
 	hostname.Env = v1Hostname.Env
 	hostname.Hostname = v1Hostname.Hostname
-	hostname.Id = v1Hostname.Id
 	hostname.Ip = v1Hostname.Ip
 	hostname.Target = v1Hostname.Target
 	hostname.Ttl = v1Hostname.Ttl

@@ -31,8 +31,8 @@ func LoadConfiguration() (*localvo.Configuration, error){
 		}
 		switch readVersion(confBytes) {
 		case 1:
-			v1Config := &storagev1.LocalConfiguration {
-				Envs: make([]storagev1.EnvVo, 0),
+			v1Config := &storagev1.Configuration{
+				Envs: make([]storagev1.Env, 0),
 				RemoteDnsServers: make([][4]byte, 0),
 			}
 			err := json.Unmarshal(confBytes, v1Config)

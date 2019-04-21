@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/mageddo/dns-proxy-server/cache/lru"
 	"github.com/mageddo/dns-proxy-server/events/local"
+	"github.com/mageddo/dns-proxy-server/events/local/localvo"
 	"github.com/miekg/dns"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -18,7 +19,7 @@ func TestLocalDnsSolver_Solve(t *testing.T) {
 	assert.Nil(t, err, "failed to load configuration")
 
 	expectedHostname := "github.com"
-	host := local.HostnameVo{Hostname: expectedHostname, Type: local.A, Env: "", Ttl: 50, Ip: [4]byte{192, 168, 0, 1}}
+	host := localvo.Hostname{Hostname: expectedHostname, Type: localvo.A, Env: "", Ttl: 50, Ip: [4]byte{192, 168, 0, 1}}
 	assert.Nil(t, conf.AddHostname( "", host))
 
 	question := new(dns.Question)
@@ -59,7 +60,7 @@ func TestLocalDnsSolver_SolvingByWildcardFirstLevel(t *testing.T) {
 	conf, err := local.LoadConfiguration()
 	assert.Nil(t, err, "failed to load configuration")
 
-	host := local.HostnameVo{Hostname: ".github.com", Type:local.A, Env: "", Ttl: 2, Ip: [4]byte{192, 168, 0, 1}}
+	host := localvo.Hostname{Hostname: ".github.com", Type:localvo.A, Env: "", Ttl: 2, Ip: [4]byte{192, 168, 0, 1}}
 	assert.Nil(t, conf.AddHostname( "", host))
 
 	question := new(dns.Question)
@@ -84,7 +85,7 @@ func TestLocalDnsSolver_SolvingByWildcardSecondLevel(t *testing.T) {
 	conf, err := local.LoadConfiguration()
 	assert.Nil(t, err, "failed to load configuration")
 
-	host := local.HostnameVo{Hostname: ".github.com", Type:local.A, Env: "", Ttl: 2, Ip: [4]byte{192, 168, 0, 1}}
+	host := localvo.Hostname{Hostname: ".github.com", Type: localvo.A, Env: "", Ttl: 2, Ip: [4]byte{192, 168, 0, 1}}
 	assert.Nil(t, conf.AddHostname( "", host))
 
 	question := new(dns.Question)
@@ -110,7 +111,7 @@ func TestShouldSolveCname(t *testing.T) {
 	conf, err := local.LoadConfiguration()
 	assert.Nil(t, err, "failed to load configuration")
 
-	host := local.HostnameVo{Hostname: "mageddo.github.com", Type:local.CNAME, Env: "", Ttl: 2, Target:"github.com"}
+	host := localvo.Hostname{Hostname: "mageddo.github.com", Type: localvo.CNAME, Env: "", Ttl: 2, Target: "github.com"}
 	assert.Nil(t, conf.AddHostname( "", host))
 
 	question := new(dns.Question)
@@ -135,7 +136,7 @@ func TestLocalDnsSolver_WildcardRegisteredButNotMatched(t *testing.T) {
 	conf, err := local.LoadConfiguration()
 	assert.Nil(t, err, "failed to load configuration")
 
-	host := local.HostnameVo{Hostname: ".github.com", Env: "", Ttl: 2, Ip: [4]byte{192, 168, 0, 1}}
+	host := localvo.Hostname{Hostname: ".github.com", Env: "", Ttl: 2, Ip: [4]byte{192, 168, 0, 1}}
 	conf.AddHostname( "", host)
 
 	question := new(dns.Question)

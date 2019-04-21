@@ -44,7 +44,6 @@ const (
 )
 
 type Hostname struct {
-	Id int
 	Hostname string
 	Ip [4]byte // hostname ip when type=A
 	Target string // target hostname when type=CNAME
@@ -63,19 +62,19 @@ func (lc *Configuration) GetEnv(envName string) (*Env, int) {
 	return nil, -1
 }
 
-func (foundEnv *Env) AddHostname(hostname *Hostname) error {
+func (env *Env) AddHostname(hostname *Hostname) error {
 
-	logging.Infof("status=begin, env=%s, hostname=%+v", foundEnv.Name, hostname)
-	if foundEnv == nil {
+	logging.Infof("status=begin, env=%s, hostname=%+v", env.Name, hostname)
+	if env == nil {
 		return errors.New("env not found")
 	}
-	foundHost, _ := foundEnv.GetHostname(hostname.Hostname)
+	foundHost, _ := env.GetHostname(hostname.Hostname)
 	if foundHost != nil {
 		return errors.New(fmt.Sprintf("The host '%s' already exists", hostname.Hostname))
 	}
 
-	(*foundEnv).Hostnames = append(foundEnv.Hostnames, *hostname)
-	logging.Infof("status=success, foundEnv=%s", foundEnv.Name)
+	(*env).Hostnames = append(env.Hostnames, *hostname)
+	logging.Infof("status=success, foundEnv=%s", env.Name)
 	return nil
 }
 
@@ -117,10 +116,10 @@ func(lc *Configuration) FindHostnameByNameAndEnv(ctx context.Context, envName, h
 	return env.FindHostnameByName(ctx, hostname), nil
 }
 
-func(env *Env) GetHostnameById(id int) (*Hostname, int) {
+func(env *Env) GetHostnameByName(name string) (*Hostname, int) {
 	for i := range env.Hostnames {
 		host := &env.Hostnames[i]
-		if (*host).Id == id {
+		if (*host).Hostname == name {
 			return host, i
 		}
 	}
@@ -197,7 +196,7 @@ func (lc *Configuration) UpdateHostname(envName string, hostname Hostname) error
 
 func (env *Env) UpdateHostname(hostname Hostname) error {
 
-	foundHostname, _ := env.GetHostnameById(hostname.Id)
+	foundHostname, _ := env.GetHostnameByName(hostname.Hostname)
 	if foundHostname == nil {
 		return errors.New("not hostname found: " + hostname.Hostname)
 	}
