@@ -3,6 +3,7 @@ package v1
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/mageddo/dns-proxy-server/controller/v1/vo"
 	"github.com/mageddo/dns-proxy-server/events/local"
 	"github.com/mageddo/dns-proxy-server/events/local/localvo"
 	. "github.com/mageddo/go-httpmap"
@@ -51,7 +52,7 @@ func init(){
 
 	Post(HOSTNAME, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
 		logging.Infof("m=/hostname/, status=begin, action=create-hostname")
-		var hostname localvo.Hostname
+		var hostname vo.HostnameV1
 		if err := json.NewDecoder(req.Body).Decode(&hostname); err != nil {
 			res.Header().Add("Content-Type", "application/json")
 			BadRequest(res, "Invalid JSON")
@@ -59,7 +60,7 @@ func init(){
 		}
 		logging.Infof("m=/hostname/, status=parsed-host, host=%+v", hostname)
 		if conf, _ := local.LoadConfiguration(); conf != nil {
-			if err := conf.AddHostname(hostname.Env, hostname); err != nil {
+			if err := conf.AddHostname(hostname.Env, hostname.ToHostname()); err != nil {
 				logging.Infof("m=/hostname/, status=error, action=create-hostname, err=%+v", err)
 				BadRequest(res, err.Error())
 				return
@@ -73,7 +74,7 @@ func init(){
 
 	Put(HOSTNAME, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
 		logging.Infof("m=/hostname/, status=begin, action=update-hostname")
-		var hostname localvo.Hostname
+		var hostname vo.HostnameV1
 		if err := json.NewDecoder(req.Body).Decode(&hostname); err != nil {
 			res.Header().Add("Content-Type", "application/json")
 			BadRequest(res, "Invalid JSON")
@@ -81,7 +82,7 @@ func init(){
 		}
 		logging.Infof("m=/hostname/, status=parsed-host, host=%+v", hostname)
 		if conf, _ := local.LoadConfiguration(); conf != nil {
-			if err := conf.UpdateHostname(hostname.Env, hostname);  err != nil {
+			if err := conf.UpdateHostname(hostname.Env, hostname.ToHostname());  err != nil {
 				logging.Infof("m=/hostname/, status=error, action=update-hostname, err=%+v", err)
 				res.Header().Add("Content-Type", "application/json")
 				BadRequest(res, err.Error())
@@ -95,7 +96,7 @@ func init(){
 
 	Delete(HOSTNAME, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
 		logging.Infof("m=/hostname/, status=begin, action=delete-hostname")
-		var hostname localvo.Hostname
+		var hostname vo.HostnameV1
 		json.NewDecoder(req.Body).Decode(&hostname)
 		logging.Infof("m=/hostname/, status=parsed-host, action=delete-hostname, host=%+v", hostname)
 		if conf, _ := local.LoadConfiguration(); conf != nil {

@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/mageddo/dns-proxy-server/conf"
-	_ "github.com/mageddo/dns-proxy-server/controller"
+	_ "github.com/mageddo/dns-proxy-server/controller/v1"
 	"github.com/mageddo/dns-proxy-server/events/docker"
 	"github.com/mageddo/dns-proxy-server/events/local"
 	_ "github.com/mageddo/dns-proxy-server/log"

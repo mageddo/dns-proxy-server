@@ -44,12 +44,12 @@ const (
 )
 
 type Hostname struct {
+	Id       int64
 	Hostname string
-	Ip [4]byte // hostname ip when type=A
-	Target string // target hostname when type=CNAME
-	Ttl int
-	Env string // apenas para o post do rest,
-	Type EntryType
+	Ip       [4]byte // hostname ip when type=A
+	Target   string  // target hostname when type=CNAME
+	Ttl      int
+	Type     EntryType
 }
 
 func (lc *Configuration) GetEnv(envName string) (*Env, int) {
@@ -137,14 +137,14 @@ func (lc *Configuration) AddEnv(ctx context.Context, env Env) error {
 	return nil
 }
 
-func (lc *Configuration) RemoveEnvByName(name string) error {
-	logging.Infof("status=begin, env=%s", name)
+func (lc *Configuration) RemoveEnvByName(ctx context.Context, name string) error {
+	logging.Infof("status=begin, env=%s", ctx, name)
 	env, i := lc.GetEnv(name)
 	if env == nil {
 		return errors.New(fmt.Sprintf("The env '%s' was not found", name))
 	}
 	lc.RemoveEnv(i)
-	logging.Infof("status=success, env=%s", name)
+	logging.Infof("status=success, env=%s", ctx, name)
 	return nil
 }
 

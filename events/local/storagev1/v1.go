@@ -35,12 +35,13 @@ type EnvV1 struct {
 }
 
 type HostnameV1 struct {
-	Hostname string `json:"hostname"`
-	Ip [4]byte `json:"ip"` // hostname ip when type=A
-	Target string `json:"target"` // target hostname when type=CNAME
-	Ttl int `json:"ttl"`
-	Env string `json:"env,omitempty"` // apenas para o post do rest,
-	Type localvo.EntryType `json:"type"`
+	Id       int64             `json:"id"`
+	Hostname string            `json:"hostname"`
+	Ip       [4]byte           `json:"ip"`     // hostname ip when type=A
+	Target   string            `json:"target"` // target hostname when type=CNAME
+	Ttl      int               `json:"ttl"`
+	Env      string            `json:"env,omitempty"` // apenas para o post do rest,
+	Type     localvo.EntryType `json:"type"`
 }
 
 
@@ -85,12 +86,12 @@ func toV1Hostnames(hostnames []localvo.Hostname) []HostnameV1 {
 
 func fromHostname(hostname localvo.Hostname) HostnameV1 {
 	return HostnameV1{
-		Hostname:hostname.Hostname,
-		Env:hostname.Env,
-		Type:hostname.Type,
-		Ttl:hostname.Ttl,
-		Target:hostname.Target,
-		Ip:hostname.Ip,
+		Id:       hostname.Id,
+		Hostname: hostname.Hostname,
+		Type:     hostname.Type,
+		Ttl:      hostname.Ttl,
+		Target:   hostname.Target,
+		Ip:       hostname.Ip,
 	}
 }
 
@@ -113,19 +114,22 @@ func (c *ConfigurationV1) ToConfig() *localvo.Configuration {
 
 func toEnvs(v1Envs []EnvV1) []localvo.Env {
 	envs := make([]localvo.Env, len(v1Envs))
-	for i := range envs {
-		v1Env := v1Envs[i]
+	for i := range v1Envs {
+		v1Env := &v1Envs[i]
 		env := &envs[i]
 		env.Name = v1Env.Name
-		for i := range env.Hostnames {
-			fillHostname(&env.Hostnames[i], &v1Env.Hostnames[i])
+		if v1Env.Hostnames != nil {
+			env.Hostnames = make([]localvo.Hostname, len(v1Env.Hostnames))
+			for i := range v1Env.Hostnames {
+				fillHostname(&env.Hostnames[i], &v1Env.Hostnames[i])
+			}
 		}
 	}
 	return envs
 }
 
 func fillHostname(hostname *localvo.Hostname, v1Hostname *HostnameV1) {
-	hostname.Env = v1Hostname.Env
+	hostname.Id = v1Hostname.Id
 	hostname.Hostname = v1Hostname.Hostname
 	hostname.Ip = v1Hostname.Ip
 	hostname.Target = v1Hostname.Target

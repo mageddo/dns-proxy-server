@@ -2,6 +2,7 @@ package local
 
 import (
 	"bufio"
+	"context"
 	"encoding/json"
 	"errors"
 	"github.com/mageddo/dns-proxy-server/cache/store"
@@ -133,6 +134,32 @@ func storeToFile(confFileVO interface{}){
 func SetActiveEnv(env localvo.Env) error {
 	if conf, err := LoadConfiguration(); err == nil {
 		if err := conf.SetActiveEnv(env); err == nil {
+			SaveConfiguration(conf)
+			return nil
+		} else {
+			return err
+		}
+	} else {
+		return err
+	}
+}
+
+func AddEnv(ctx context.Context, env localvo.Env) error {
+	if conf, err := LoadConfiguration(); err == nil {
+		if err := conf.AddEnv(ctx, env); err == nil {
+			SaveConfiguration(conf)
+			return nil
+		} else {
+			return err
+		}
+	} else {
+		return err
+	}
+}
+
+func RemoveEnvByName(ctx context.Context, env string) error {
+	if conf, err := LoadConfiguration(); err == nil {
+		if err := conf.RemoveEnvByName(ctx, env); err == nil {
 			SaveConfiguration(conf)
 			return nil
 		} else {

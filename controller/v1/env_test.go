@@ -1,13 +1,14 @@
 package v1
 
 import (
-	"testing"
-	"net/http/httptest"
 	"github.com/go-resty/resty"
-	"github.com/stretchr/testify/assert"
 	"github.com/mageddo/dns-proxy-server/events/local"
-	"github.com/mageddo/dns-proxy-server/utils"
 	"github.com/mageddo/dns-proxy-server/flags"
+	"github.com/mageddo/dns-proxy-server/utils"
+	"github.com/stretchr/testify/assert"
+	"net/http/httptest"
+	"regexp"
+	"testing"
 )
 
 func TestGetActiveEnvSuccess(t *testing.T) {
@@ -104,9 +105,12 @@ func TestPostEnvSuccess(t *testing.T) {
 	r, err = resty.R().Get(s.URL + ENV)
 	assert.Nil(t, err)
 	assert.Equal(t, 200, r.StatusCode())
+	resultBody := r.String()
+	c, _ := regexp.Compile("(id\"):\\d+")
+	resultBody = c.ReplaceAllString(resultBody, "$1:1555875892516162667")
 	assert.Equal(t,
-		`[{"name":""},{"name":"ThirdEnv","hostnames":[{"id":1,"hostname":"github.com","ip":[1,2,3,4],"target":"","ttl":30,"type":"A"}]}]`,
-		r.String(),
+		`[{"name":""},{"name":"ThirdEnv","hostnames":[{"id":1555875892516162667,"hostname":"github.com","ip":[1,2,3,4],"target":"","ttl":30,"type":"A"}]}]`,
+		resultBody,
 	)
 }
 

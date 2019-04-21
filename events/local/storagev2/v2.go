@@ -80,7 +80,6 @@ func toEnvs(v2Envs []EnvV2) []localvo.Env {
 }
 
 func fillHostname(hostname *localvo.Hostname, v2Hostname *HostnameV2) {
-	hostname.Env = v2Hostname.Env
 	hostname.Hostname = v2Hostname.Hostname
 	hostname.Ip = v2Hostname.Ip
 	hostname.Target = v2Hostname.Target
