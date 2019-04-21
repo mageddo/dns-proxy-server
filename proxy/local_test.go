@@ -15,12 +15,9 @@ func TestLocalDnsSolver_Solve(t *testing.T) {
 
 	defer local.ResetConf()
 
-	conf, err := local.LoadConfiguration()
-	assert.Nil(t, err, "failed to load configuration")
-
 	expectedHostname := "github.com"
 	host := localvo.Hostname{Hostname: expectedHostname, Type: localvo.A, Ttl: 50, Ip: [4]byte{192, 168, 0, 1}}
-	assert.Nil(t, conf.AddHostname( "", host))
+	assert.Nil(t, local.AddHostname( "", host))
 
 	question := new(dns.Question)
 	question.Name = expectedHostname + "."
@@ -57,11 +54,9 @@ func TestLocalDnsSolver_SolvingByWildcardFirstLevel(t *testing.T) {
 	solver := NewLocalDNSSolver()
 
 	defer local.ResetConf()
-	conf, err := local.LoadConfiguration()
-	assert.Nil(t, err, "failed to load configuration")
 
 	host := localvo.Hostname{Hostname: ".github.com", Type:localvo.A, Ttl: 2, Ip: [4]byte{192, 168, 0, 1}}
-	assert.Nil(t, conf.AddHostname( "", host))
+	assert.Nil(t, local.AddHostname( "", host))
 
 	question := new(dns.Question)
 	question.Name = "server1.github.com."
@@ -82,11 +77,9 @@ func TestLocalDnsSolver_SolvingByWildcardSecondLevel(t *testing.T) {
 	solver := NewLocalDNSSolver()
 
 	defer local.ResetConf()
-	conf, err := local.LoadConfiguration()
-	assert.Nil(t, err, "failed to load configuration")
 
 	host := localvo.Hostname{Hostname: ".github.com", Type: localvo.A, Ttl: 2, Ip: [4]byte{192, 168, 0, 1}}
-	assert.Nil(t, conf.AddHostname( "", host))
+	assert.Nil(t, local.AddHostname( "", host))
 
 	question := new(dns.Question)
 	question.Name = "site.server1.github.com."
@@ -108,11 +101,9 @@ func TestShouldSolveCname(t *testing.T) {
 	solver := NewLocalDNSSolver()
 
 	defer local.ResetConf()
-	conf, err := local.LoadConfiguration()
-	assert.Nil(t, err, "failed to load configuration")
 
 	host := localvo.Hostname{Hostname: "mageddo.github.com", Type: localvo.CNAME, Ttl: 2, Target: "github.com"}
-	assert.Nil(t, conf.AddHostname( "", host))
+	assert.Nil(t, local.AddHostname( "", host))
 
 	question := new(dns.Question)
 	question.Name = "mageddo.github.com."
