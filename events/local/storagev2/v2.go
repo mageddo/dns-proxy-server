@@ -1,4 +1,4 @@
-package v2
+package storagev2
 
 import (
 	"github.com/mageddo/dns-proxy-server/events/local/localvo"

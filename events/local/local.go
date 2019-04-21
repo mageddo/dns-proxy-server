@@ -6,8 +6,8 @@ import (
 	"errors"
 	"github.com/mageddo/dns-proxy-server/cache/store"
 	"github.com/mageddo/dns-proxy-server/events/local/localvo"
-	"github.com/mageddo/dns-proxy-server/events/local/storage/v1"
-	"github.com/mageddo/dns-proxy-server/events/local/storage/v2"
+	"github.com/mageddo/dns-proxy-server/events/local/storagev1"
+	"github.com/mageddo/dns-proxy-server/events/local/storagev2"
 	"github.com/mageddo/dns-proxy-server/flags"
 	"github.com/mageddo/dns-proxy-server/utils"
 	"github.com/mageddo/go-logging"
@@ -31,15 +31,15 @@ func LoadConfiguration() (*localvo.LocalConfiguration, error){
 		}
 		switch readVersion(confBytes) {
 		case 1:
-			v1Config := &v1.LocalConfiguration {
-				Envs: make([]v1.EnvVo, 0),
+			v1Config := &storagev1.LocalConfiguration {
+				Envs: make([]storagev1.EnvVo, 0),
 				RemoteDnsServers: make([][4]byte, 0),
 			}
 			err := json.Unmarshal(confBytes, v1Config)
 			return v1Config.ToConfig(), err
 		case 2:
-			v2Config := &v2.LocalConfiguration {
-				Envs: make([]v2.EnvVo, 0),
+			v2Config := &storagev2.LocalConfiguration {
+				Envs: make([]storagev2.EnvVo, 0),
 				RemoteDnsServers: make([][4]byte, 0),
 			}
 			err := json.Unmarshal(confBytes, v2Config)
@@ -76,9 +76,9 @@ func SaveConfiguration(c *localvo.LocalConfiguration) {
 	var confVO interface{}
 	switch c.Version {
 	case 2:
-		confVO = v2.ValueOf(c)
+		confVO = storagev2.ValueOf(c)
 	default:
-		confVO = v1.ValueOf(c)
+		confVO = storagev1.ValueOf(c)
 	}
 	storeToFile(confVO)
 }
