@@ -54,8 +54,10 @@ func setHostnameIds(configuration *localvo.Configuration) {
 	atLeastOneUpdated := false
 	for _, env := range configuration.Envs {
 		for i := range env.Hostnames {
-			if env.Hostnames[i].Id == 0 {
-				env.Hostnames[i].Id = time.Now().UnixNano()
+			host := &env.Hostnames[i]
+			if host.Id == 0 {
+				logging.Infof("status=without-id, hostname=%s, id=%d", host.Hostname, host.Id)
+				host.Id = time.Now().UnixNano()
 				atLeastOneUpdated = true
 			}
 		}
