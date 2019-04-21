@@ -94,6 +94,18 @@ func storeDefaultConfig(configuration *localvo.Configuration) error {
 	return nil
 }
 
+func NewEmptyEnv() []localvo.Env {
+	return []localvo.Env{{Hostnames: []localvo.Hostname{}, Name:""}}
+}
+
+func ResetConf() {
+	if err := os.Remove(confPath); err != nil {
+		logging.Errorf("reset=failed, err=%v", err)
+		os.Exit(-1)
+	}
+	store.GetInstance().Clear()
+}
+
 func storeToFile(confFileVO interface{}){
 	now := time.Now()
 	logging.Debugf("status=save, confPath=%s", confPath)
@@ -114,16 +126,4 @@ func storeToFile(confFileVO interface{}){
 	}
 	store.GetInstance().Clear()
 	logging.Infof("status=success, confPath=%s, time=%d", confPath, utils.DiffMillis(now, time.Now()))
-}
-
-func NewEmptyEnv() []localvo.Env {
-	return []localvo.Env{{Hostnames: []localvo.Hostname{}, Name:""}}
-}
-
-func ResetConf() {
-	if err := os.Remove(confPath); err != nil {
-		logging.Errorf("reset=failed, err=%v", err)
-		os.Exit(-1)
-	}
-	store.GetInstance().Clear()
 }
