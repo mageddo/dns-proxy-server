@@ -1,15 +1,14 @@
 package v1
 
 import (
-	"regexp"
-	"testing"
 	"github.com/go-resty/resty"
-	"net/http/httptest"
-	"github.com/stretchr/testify/assert"
-	"net/http"
 	"github.com/mageddo/dns-proxy-server/events/local"
 	"github.com/mageddo/dns-proxy-server/flags"
 	"github.com/mageddo/dns-proxy-server/utils"
+	"github.com/stretchr/testify/assert"
+	"net/http"
+	"net/http/httptest"
+	"testing"
 )
 
 func TestGetHostnamesByEnv(t *testing.T) {
@@ -31,10 +30,14 @@ func TestGetHostnamesByEnv(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, http.StatusOK, r.StatusCode())
 
-	resultBody := r.String()
-	pattern, _ := regexp.Compile("(id\"):\\d+")
-	resultBody = pattern.ReplaceAllString(resultBody, "$1:1")
-	assert.Equal(t, `{"name":"MyEnv","hostnames":[{"id":1,"hostname":"github.io","ip":[1,2,3,4],"target":"","ttl":55,"type":""}]}`, resultBody)
+	assert.Equal(
+		t,
+		utils.Replace(
+			`{"name":"MyEnv","hostnames":[{"id":$1,"hostname":"github.io","ip":[1,2,3,4],"target":"","ttl":55,"type":""}]}`,
+			r.String(), `id":(\d+)`,
+		),
+		r.String(),
+	)
 
 }
 
