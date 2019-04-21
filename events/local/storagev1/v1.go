@@ -46,12 +46,12 @@ type HostnameVo struct {
 }
 
 
-func ValueOf(c *localvo.LocalConfiguration) *LocalConfiguration {
+func ValueOf(c *localvo.Configuration) *LocalConfiguration {
 	panic("unsupported operation")
 }
 
-func (c *LocalConfiguration) ToConfig() *localvo.LocalConfiguration {
-	return &localvo.LocalConfiguration{
+func (c *LocalConfiguration) ToConfig() *localvo.Configuration {
+	return &localvo.Configuration{
 		Version:1,
 		ActiveEnv:c.ActiveEnv,
 		DefaultDns:c.DefaultDns,
@@ -67,8 +67,8 @@ func (c *LocalConfiguration) ToConfig() *localvo.LocalConfiguration {
 	}
 }
 
-func toEnvs(v1Envs []EnvVo) []localvo.EnvVo {
-	envs := make([]localvo.EnvVo, len(v1Envs))
+func toEnvs(v1Envs []EnvVo) []localvo.Env {
+	envs := make([]localvo.Env, len(v1Envs))
 	for i, env := range envs {
 		v1Env := v1Envs[i]
 		env.Name = v1Env.Name
@@ -79,7 +79,7 @@ func toEnvs(v1Envs []EnvVo) []localvo.EnvVo {
 	return envs
 }
 
-func fillHostname(hostname *localvo.HostnameVo, v1Hostname *HostnameVo) {
+func fillHostname(hostname *localvo.Hostname, v1Hostname *HostnameVo) {
 	hostname.Env = v1Hostname.Env
 	hostname.Hostname = v1Hostname.Hostname
 	hostname.Id = v1Hostname.Id

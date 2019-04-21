@@ -8,7 +8,7 @@ import (
 	"regexp"
 )
 
-type LocalConfiguration struct {
+type Configuration struct {
 	Version int
 	/**
 	 * The remote servers to ask when, DPS can not solve from docker or local file,
@@ -16,7 +16,7 @@ type LocalConfiguration struct {
 	 * DO NOT call this variable directly, use GetRemoteDnsServers instead
 	 */
 	RemoteDnsServers [][4]byte
-	Envs []EnvVo
+	Envs []Env
 	ActiveEnv string
 	WebServerPort int
 	DnsServerPort int
@@ -32,9 +32,9 @@ type LocalConfiguration struct {
 	Domain string
 }
 
-type EnvVo struct {
+type Env struct {
 	Name string
-	Hostnames []HostnameVo
+	Hostnames []Hostname
 }
 
 type EntryType string
@@ -43,7 +43,7 @@ const (
 	CNAME EntryType = "CNAME"
 )
 
-type HostnameVo struct {
+type Hostname struct {
 	Id int
 	Hostname string
 	Ip [4]byte // hostname ip when type=A
@@ -53,7 +53,7 @@ type HostnameVo struct {
 	Type EntryType
 }
 
-func (lc *LocalConfiguration) GetEnv(envName string) (*EnvVo, int) {
+func (lc *Configuration) GetEnv(envName string) (*Env, int) {
 	for i := range lc.Envs {
 		env := &lc.Envs[i]
 		if (*env).Name == envName {
@@ -63,7 +63,7 @@ func (lc *LocalConfiguration) GetEnv(envName string) (*EnvVo, int) {
 	return nil, -1
 }
 
-func (foundEnv *EnvVo) AddHostname(hostname *HostnameVo) error {
+func (foundEnv *Env) AddHostname(hostname *Hostname) error {
 
 	logging.Infof("status=begin, env=%s, hostname=%+v", foundEnv.Name, hostname)
 	if foundEnv == nil {
@@ -79,11 +79,11 @@ func (foundEnv *EnvVo) AddHostname(hostname *HostnameVo) error {
 	return nil
 }
 
-func (lc *LocalConfiguration) GetActiveEnv() (*EnvVo, int) {
+func (lc *Configuration) GetActiveEnv() (*Env, int) {
 	return lc.GetEnv(lc.ActiveEnv)
 }
 
-func(env *EnvVo) GetHostname(hostname string) (*HostnameVo, int) {
+func(env *Env) GetHostname(hostname string) (*Hostname, int) {
 	for i := range env.Hostnames {
 		host := &env.Hostnames[i]
 		if (*host).Hostname == hostname {
@@ -95,9 +95,9 @@ func(env *EnvVo) GetHostname(hostname string) (*HostnameVo, int) {
 	return nil, -1
 }
 
-func(env *EnvVo) FindHostnameByName(ctx context.Context, hostname string) *[]HostnameVo {
+func(env *Env) FindHostnameByName(ctx context.Context, hostname string) *[]Hostname {
 	logging.Infof("status=begin, hostname=%s", hostname)
-	hostList := []HostnameVo{}
+	hostList := []Hostname{}
 	for _, host := range env.Hostnames {
 		if matched, _ := regexp.MatchString(fmt.Sprintf(".*%s.*", hostname), host.Hostname); matched {
 			hostList = append(hostList, host)
@@ -107,7 +107,7 @@ func(env *EnvVo) FindHostnameByName(ctx context.Context, hostname string) *[]Hos
 	return &hostList
 }
 
-func(lc *LocalConfiguration) FindHostnameByNameAndEnv(ctx context.Context, envName, hostname string) (*[]HostnameVo, error) {
+func(lc *Configuration) FindHostnameByNameAndEnv(ctx context.Context, envName, hostname string) (*[]Hostname, error) {
 	logging.Infof("status=begin, envName=%s, hostname=%s", envName, hostname)
 	env,_ := lc.GetEnv(envName)
 	if env == nil {
@@ -117,7 +117,7 @@ func(lc *LocalConfiguration) FindHostnameByNameAndEnv(ctx context.Context, envNa
 	return env.FindHostnameByName(ctx, hostname), nil
 }
 
-func(env *EnvVo) GetHostnameById(id int) (*HostnameVo, int) {
+func(env *Env) GetHostnameById(id int) (*Hostname, int) {
 	for i := range env.Hostnames {
 		host := &env.Hostnames[i]
 		if (*host).Id == id {
@@ -127,7 +127,7 @@ func(env *EnvVo) GetHostnameById(id int) (*HostnameVo, int) {
 	return nil, -1
 }
 
-func (lc *LocalConfiguration) AddEnv(ctx context.Context, env EnvVo) error {
+func (lc *Configuration) AddEnv(ctx context.Context, env Env) error {
 	logging.Infof("status=begin, env=%s", env.Name)
 	foundEnv, _ := lc.GetEnv(env.Name)
 	if foundEnv != nil {
@@ -139,7 +139,7 @@ func (lc *LocalConfiguration) AddEnv(ctx context.Context, env EnvVo) error {
 	return nil
 }
 
-func (lc *LocalConfiguration) RemoveEnvByName(name string) error {
+func (lc *Configuration) RemoveEnvByName(name string) error {
 	logging.Infof("status=begin, env=%s", name)
 	env, i := lc.GetEnv(name)
 	if env == nil {
@@ -151,24 +151,24 @@ func (lc *LocalConfiguration) RemoveEnvByName(name string) error {
 	return nil
 }
 
-func (lc *LocalConfiguration) RemoveEnv(index int){
+func (lc *Configuration) RemoveEnv(index int){
 	logging.Infof("status=begin, index=%d", index)
 	lc.Envs = append(lc.Envs[:index], lc.Envs[index+1:]...)
 	//local.SaveConfiguration(lc)
 	logging.Infof("status=success, index=%d", index)
 }
 
-func (lc *LocalConfiguration) AddDns( dns [4]byte){
+func (lc *Configuration) AddDns( dns [4]byte){
 	lc.RemoteDnsServers = append(lc.RemoteDnsServers, dns)
 	//local.SaveConfiguration(lc)
 }
 
-func (lc *LocalConfiguration) RemoveDns(index int){
+func (lc *Configuration) RemoveDns(index int){
 	lc.RemoteDnsServers = append(lc.RemoteDnsServers[:index], lc.RemoteDnsServers[index+1:]...)
 	//local.SaveConfiguration(lc)
 }
 
-func (lc *LocalConfiguration) AddHostname(envName string, hostname HostnameVo) error {
+func (lc *Configuration) AddHostname(envName string, hostname Hostname) error {
 	if hostname.Type == "" {
 		return errors.New("Type is required")
 	}
@@ -186,7 +186,7 @@ func (lc *LocalConfiguration) AddHostname(envName string, hostname HostnameVo) e
 	return nil
 }
 
-func (lc *LocalConfiguration) UpdateHostname(envName string, hostname HostnameVo) error {
+func (lc *Configuration) UpdateHostname(envName string, hostname Hostname) error {
 	logging.Infof("status=begin, evnName=%s, hostname=%+v", envName, hostname)
 	env, _ := lc.GetEnv(envName)
 	if env == nil {
@@ -203,7 +203,7 @@ func (lc *LocalConfiguration) UpdateHostname(envName string, hostname HostnameVo
 	return nil
 }
 
-func (env *EnvVo) UpdateHostname(hostname HostnameVo) error {
+func (env *Env) UpdateHostname(hostname Hostname) error {
 
 	foundHostname, _ := env.GetHostnameById(hostname.Id)
 	if foundHostname == nil {
@@ -217,7 +217,7 @@ func (env *EnvVo) UpdateHostname(hostname HostnameVo) error {
 	return nil
 }
 
-func (lc *LocalConfiguration) RemoveHostnameByEnvAndHostname(envName string, hostname string) error {
+func (lc *Configuration) RemoveHostnameByEnvAndHostname(envName string, hostname string) error {
 	logging.Infof("status=begin, envName=%s, hostname=%s", envName, hostname)
 	env, envIndex := lc.GetEnv(envName)
 	if envIndex == -1 {
@@ -232,7 +232,7 @@ func (lc *LocalConfiguration) RemoveHostnameByEnvAndHostname(envName string, hos
 	return nil
 }
 
-func (lc *LocalConfiguration) RemoveHostname(envIndex int, hostIndex int){
+func (lc *Configuration) RemoveHostname(envIndex int, hostIndex int){
 
 	logging.Infof("status=begin, envIndex=%d, hostIndex=%d", envIndex, hostIndex)
 	env := &lc.Envs[envIndex]
@@ -242,7 +242,7 @@ func (lc *LocalConfiguration) RemoveHostname(envIndex int, hostIndex int){
 
 }
 
-func (lc *LocalConfiguration) SetActiveEnv(env EnvVo) error {
+func (lc *Configuration) SetActiveEnv(env Env) error {
 	logging.Infof("status=begin, envActive=%s", env.Name)
 	foundEnv, _ := lc.GetEnv(env.Name)
 	if foundEnv == nil {
@@ -255,7 +255,7 @@ func (lc *LocalConfiguration) SetActiveEnv(env EnvVo) error {
 	return nil
 }
 
-func (lc *LocalConfiguration) GetRemoteServers(ctx context.Context) [][4]byte {
+func (lc *Configuration) GetRemoteServers(ctx context.Context) [][4]byte {
 	if len(lc.RemoteDnsServers) == 0 {
 		lc.RemoteDnsServers = append(lc.RemoteDnsServers, [4]byte{8, 8, 8, 8})
 		logging.Infof("status=put-default-server")

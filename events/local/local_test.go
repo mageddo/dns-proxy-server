@@ -29,7 +29,7 @@ func TestSaveConfiguration_ClearCacheAfterChangeConfiguration(t *testing.T) {
 	assert.Nil(t, cache.Get(expectedHostname))
 
 	// changing value for the hostname at configuration database
-	hostname := localvo.HostnameVo{Ip: [4]byte{192,168,0,2}, Ttl:30, Env:"", Hostname: expectedHostname, Type:"A"}
+	hostname := localvo.Hostname{Ip: [4]byte{192,168,0,2}, Ttl:30, Env:"", Hostname: expectedHostname, Type:"A"}
 	assert.Nil(t, conf.AddHostname( "", hostname))
 
 	// cache must be clear after add a hostname in conf
@@ -49,7 +49,7 @@ func TestShouldSaveARecord(t *testing.T) {
 	assert.Nil(t, err, "could not load conf")
 
 	// act
-	assert.Nil(t, conf.AddHostname( "", localvo.HostnameVo{Ip: [4]byte{192,168,0,2}, Ttl:30, Env:"", Hostname: expectedHostname, Type:localvo.A}))
+	assert.Nil(t, conf.AddHostname( "", localvo.Hostname{Ip: [4]byte{192,168,0,2}, Ttl:30, Env:"", Hostname: expectedHostname, Type:localvo.A}))
 
 	// assert
 
@@ -71,7 +71,7 @@ func TestShouldSaveCnameRecord(t *testing.T) {
 	assert.Nil(t, err, "could not load conf")
 
 	// act
-	assert.Nil(t, conf.AddHostname( "", localvo.HostnameVo{Ip: [4]byte{192,168,0,2}, Ttl:30, Env:"", Hostname: expectedHostname, Type:localvo.CNAME}))
+	assert.Nil(t, conf.AddHostname( "", localvo.Hostname{Ip: [4]byte{192,168,0,2}, Ttl:30, Env:"", Hostname: expectedHostname, Type:localvo.CNAME}))
 
 	// assert
 

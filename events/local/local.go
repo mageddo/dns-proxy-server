@@ -23,7 +23,7 @@ func GetConfPath() string {
 	return utils.GetPath(*flags.ConfPath)
 }
 
-func LoadConfiguration() (*localvo.LocalConfiguration, error){
+func LoadConfiguration() (*localvo.Configuration, error){
 	if _, err := os.Stat(confPath); err == nil {
 		confBytes, err := ioutil.ReadFile(confPath)
 		if err != nil {
@@ -47,9 +47,9 @@ func LoadConfiguration() (*localvo.LocalConfiguration, error){
 		}
 		logging.Debugf("status=success-loaded-file, path=%s", confPath)
 	} else {
-		storeDefaultConfig(&localvo.LocalConfiguration{
+		storeDefaultConfig(&localvo.Configuration{
 			Version:1,
-			Envs:             make([]localvo.EnvVo, 0),
+			Envs:             make([]localvo.Env, 0),
 			RemoteDnsServers: make([][4]byte, 0),
 		})
 	}
@@ -67,7 +67,7 @@ func readVersion(confBytes []byte) int {
 	}
 }
 
-func SaveConfiguration(c *localvo.LocalConfiguration) {
+func SaveConfiguration(c *localvo.Configuration) {
 
 	if len(c.Envs) == 0 {
 		c.Envs = NewEmptyEnv()
@@ -83,7 +83,7 @@ func SaveConfiguration(c *localvo.LocalConfiguration) {
 	storeToFile(confVO)
 }
 
-func storeDefaultConfig(configuration *localvo.LocalConfiguration) error {
+func storeDefaultConfig(configuration *localvo.Configuration) error {
 	err := os.MkdirAll(confPath[:strings.LastIndex(confPath, "/")], 0755)
 	if err != nil {
 		logging.Errorf("status=error-to-create-conf-path, path=%s", confPath)
@@ -116,8 +116,8 @@ func storeToFile(confFileVO interface{}){
 	logging.Infof("status=success, confPath=%s, time=%d", confPath, utils.DiffMillis(now, time.Now()))
 }
 
-func NewEmptyEnv() []localvo.EnvVo {
-	return []localvo.EnvVo{{Hostnames:[]localvo.HostnameVo{}, Name:""}}
+func NewEmptyEnv() []localvo.Env {
+	return []localvo.Env{{Hostnames: []localvo.Hostname{}, Name:""}}
 }
 
 func ResetConf() {

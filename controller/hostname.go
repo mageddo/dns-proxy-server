@@ -38,7 +38,7 @@ func init(){
 			env := req.URL.Query().Get("env")
 			hostname := req.URL.Query().Get("hostname")
 			var err error
-			var hostnames *[]localvo.HostnameVo
+			var hostnames *[]localvo.Hostname
 			if hostnames, err = conf.FindHostnameByNameAndEnv(ctx, env, hostname);  err == nil {
 				json.NewEncoder(res).Encode(hostnames)
 				return
@@ -51,7 +51,7 @@ func init(){
 
 	Post(HOSTNAME, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
 		logging.Infof("m=/hostname/, status=begin, action=create-hostname")
-		var hostname localvo.HostnameVo
+		var hostname localvo.Hostname
 		if err := json.NewDecoder(req.Body).Decode(&hostname); err != nil {
 			res.Header().Add("Content-Type", "application/json")
 			BadRequest(res, "Invalid JSON")
@@ -73,7 +73,7 @@ func init(){
 
 	Put(HOSTNAME, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
 		logging.Infof("m=/hostname/, status=begin, action=update-hostname")
-		var hostname localvo.HostnameVo
+		var hostname localvo.Hostname
 		if err := json.NewDecoder(req.Body).Decode(&hostname); err != nil {
 			res.Header().Add("Content-Type", "application/json")
 			BadRequest(res, "Invalid JSON")
@@ -95,7 +95,7 @@ func init(){
 
 	Delete(HOSTNAME, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
 		logging.Infof("m=/hostname/, status=begin, action=delete-hostname")
-		var hostname localvo.HostnameVo
+		var hostname localvo.Hostname
 		json.NewDecoder(req.Body).Decode(&hostname)
 		logging.Infof("m=/hostname/, status=parsed-host, action=delete-hostname, host=%+v", hostname)
 		if conf, _ := local.LoadConfiguration(); conf != nil {

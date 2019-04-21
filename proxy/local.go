@@ -30,7 +30,7 @@ func NewLocalDNSSolver() *localDnsSolver {
 	return &localDnsSolver{}
 }
 
-func getCnameMsg(question dns.Question, hostname *localvo.HostnameVo) *dns.Msg{
+func getCnameMsg(question dns.Question, hostname *localvo.Hostname) *dns.Msg{
 	rr := &dns.CNAME{
 		Hdr: dns.RR_Header{Name: question.Name, Rrtype: dns.TypeCNAME, Class: 256, Ttl: uint32(hostname.Ttl)},
 		Target: hostname.Target + ".",
@@ -40,7 +40,7 @@ func getCnameMsg(question dns.Question, hostname *localvo.HostnameVo) *dns.Msg{
 	return m
 }
 
-func getAMsg(question dns.Question, hostname *localvo.HostnameVo) *dns.Msg{
+func getAMsg(question dns.Question, hostname *localvo.Hostname) *dns.Msg{
 	rr := &dns.A{
 		Hdr: dns.RR_Header{Name: question.Name, Rrtype: dns.TypeA, Class: dns.ClassINET, Ttl: uint32(hostname.Ttl)},
 		A:   net.IPv4(hostname.Ip[0], hostname.Ip[1], hostname.Ip[2], hostname.Ip[3]),

@@ -48,7 +48,7 @@ func GetResolvConf() string {
 	return GetString(os.Getenv(env.MG_RESOLVCONF), "/etc/resolv.conf")
 }
 
-func getConf() (*localvo.LocalConfiguration, error) {
+func getConf() (*localvo.Configuration, error) {
 	return local.LoadConfiguration()
 }
 
