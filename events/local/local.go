@@ -219,3 +219,16 @@ func AddHostname(env string, hostname localvo.Hostname) error {
 		return err
 	}
 }
+
+func UpdateHostname(env string, hostname localvo.Hostname) error {
+	if conf, err := LoadConfiguration(); err == nil {
+		if err := conf.UpdateHostname(env, hostname); err == nil {
+			SaveConfiguration(conf)
+			return nil
+		} else {
+			return err
+		}
+	} else {
+		return err
+	}
+}

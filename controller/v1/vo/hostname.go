@@ -32,7 +32,7 @@ func fromV1Hostnames(v1Hostnames []HostnameV1) []localvo.Hostname {
 }
 
 
-func fromHostnames(hostnames []localvo.Hostname) []HostnameV1 {
+func FromHostnames(hostnames []localvo.Hostname) []HostnameV1 {
 	v1Hostnames := make([]HostnameV1, len(hostnames))
 	for i, hostname := range hostnames {
 		v1Hostnames[i] = fromHostname(hostname)
