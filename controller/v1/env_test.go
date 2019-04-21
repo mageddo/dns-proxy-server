@@ -7,7 +7,6 @@ import (
 	"github.com/mageddo/dns-proxy-server/utils"
 	"github.com/stretchr/testify/assert"
 	"net/http/httptest"
-	"regexp"
 	"testing"
 )
 
@@ -116,12 +115,14 @@ func TestPostEnvSuccess(t *testing.T) {
 	r, err = resty.R().Get(s.URL + ENV)
 	assert.Nil(t, err)
 	assert.Equal(t, 200, r.StatusCode())
-	resultBody := r.String()
-	c, _ := regexp.Compile("(id\"):\\d+")
-	resultBody = c.ReplaceAllString(resultBody, "$1:1555875892516162667")
-	assert.Equal(t,
-		`[{"name":""},{"name":"ThirdEnv","hostnames":[{"id":1555875892516162667,"hostname":"github.com","ip":[1,2,3,4],"target":"","ttl":30,"type":"A","env":"ThirdEnv"}]}]`,
-		resultBody,
+	assert.Equal(
+		t,
+		utils.Replace(
+			`[{"name":""},{"name":"ThirdEnv","hostnames":[{"id":$1,"hostname":"github.com","ip":[1,2,3,4],"target":"","ttl":30,"type":"A","env":"ThirdEnv"}]}]`,
+			r.String(),
+			`"id":(\d+)`,
+		),
+		r.String(),
 	)
 }
 
