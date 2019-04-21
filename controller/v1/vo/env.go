@@ -17,10 +17,14 @@ func (env *EnvV1) ToEnv() localvo.Env {
 func FromEnvs(envs []localvo.Env) []EnvV1 {
 	v1Envs := make([]EnvV1, len(envs))
 	for i, env := range envs {
-		envV1 := &v1Envs[i]
-		envV1.Name = env.Name
-		envV1.Hostnames = fromHostnames(env.Hostnames)
+		v1Envs[i] = *FromEnv(&env)
 	}
 	return v1Envs
 }
 
+func FromEnv(env *localvo.Env) *EnvV1 {
+	var envV1 EnvV1
+	envV1.Name = env.Name
+	envV1.Hostnames = fromHostnames(env.Hostnames)
+	return &envV1
+}

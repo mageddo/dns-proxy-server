@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"regexp"
 	"testing"
 	"github.com/go-resty/resty"
 	"net/http/httptest"
@@ -29,7 +30,11 @@ func TestGetHostnamesByEnv(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.Equal(t, http.StatusOK, r.StatusCode())
-	assert.Equal(t, `{"name":"MyEnv","hostnames":[{"id":1,"hostname":"github.io","ip":[1,2,3,4],"target":"","ttl":55,"type":""}]}`, r.String())
+
+	resultBody := r.String()
+	pattern, _ := regexp.Compile("(id\"):\\d+")
+	resultBody = pattern.ReplaceAllString(resultBody, "$1:1")
+	assert.Equal(t, `{"name":"MyEnv","hostnames":[{"id":1,"hostname":"github.io","ip":[1,2,3,4],"target":"","ttl":55,"type":""}]}`, resultBody)
 
 }
 

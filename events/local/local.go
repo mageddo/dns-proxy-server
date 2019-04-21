@@ -30,23 +30,13 @@ func LoadConfiguration() (*localvo.Configuration, error){
 		if err != nil {
 			return nil, err
 		}
-		switch readVersion(confBytes) {
-		case 1:
-			v1Config := &storagev1.ConfigurationV1{
-				Envs: make([]storagev1.EnvV1, 0),
-				RemoteDnsServers: make([][4]byte, 0),
-			}
-			err := json.Unmarshal(confBytes, v1Config)
-			return v1Config.ToConfig(), err
-		case 2:
-			v2Config := &storagev2.ConfigurationV2{
-				Envs: make([]storagev2.EnvV2, 0),
-				RemoteDnsServers: make([][4]byte, 0),
-			}
-			err := json.Unmarshal(confBytes, v2Config)
-			return v2Config.ToConfig(), err
+		if configuration, err := LoadVersionedConfiguration(confBytes); err != nil {
+			return nil, err
+		} else {
+			setHostnameIds(configuration)
+			logging.Debugf("status=success-loaded-file, path=%s", confPath)
+			return configuration, nil
 		}
-		logging.Debugf("status=success-loaded-file, path=%s", confPath)
 	} else {
 		defaultConfig := &localvo.Configuration{
 			Version:          1,
@@ -55,6 +45,40 @@ func LoadConfiguration() (*localvo.Configuration, error){
 		}
 		storeDefaultConfig(defaultConfig)
 		return defaultConfig, nil
+	}
+}
+
+func setHostnameIds(configuration *localvo.Configuration) {
+	atLeastOneUpdated := false
+	for _, env := range configuration.Envs {
+		for i := range env.Hostnames {
+			if env.Hostnames[i].Id == 0 {
+				env.Hostnames[i].Id = time.Now().UnixNano()
+				atLeastOneUpdated = true
+			}
+		}
+	}
+	if atLeastOneUpdated {
+		SaveConfiguration(configuration)
+	}
+}
+
+func LoadVersionedConfiguration(confBytes []byte) (*localvo.Configuration, error) {
+	switch readVersion(confBytes) {
+	case 1:
+		v1Config := &storagev1.ConfigurationV1{
+			Envs: make([]storagev1.EnvV1, 0),
+			RemoteDnsServers: make([][4]byte, 0),
+		}
+		err := json.Unmarshal(confBytes, v1Config)
+		return v1Config.ToConfig(), err
+	case 2:
+		v2Config := &storagev2.ConfigurationV2{
+			Envs: make([]storagev2.EnvV2, 0),
+			RemoteDnsServers: make([][4]byte, 0),
+		}
+		err := json.Unmarshal(confBytes, v2Config)
+		return v2Config.ToConfig(), err
 	}
 	return nil, errors.New("unrecognized version")
 }

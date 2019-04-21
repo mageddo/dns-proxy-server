@@ -13,7 +13,6 @@ type ConfigurationV2 struct {
 	RemoteDnsServers [][4]byte `json:"remoteDnsServers"`
 	Envs []EnvV2               `json:"envs"`
 	ActiveEnv string           `json:"activeEnv"`
-	LastId int                 `json:"lastId"`
 
 	/// ----
 	WebServerPort int `json:"webServerPort"`

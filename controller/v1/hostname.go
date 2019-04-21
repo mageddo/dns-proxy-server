@@ -24,7 +24,7 @@ func init(){
 		if conf, _ := local.LoadConfiguration(); conf != nil {
 			envName := req.URL.Query().Get("env")
 			if env, _ := conf.GetEnv(envName);  env != nil {
-				json.NewEncoder(res).Encode(env)
+				json.NewEncoder(res).Encode(vo.FromEnv(env))
 				return
 			}
 			BadRequest(res, fmt.Sprintf("Env %s not found", envName))
