@@ -19,7 +19,7 @@ func TestLocalDnsSolver_Solve(t *testing.T) {
 	assert.Nil(t, err, "failed to load configuration")
 
 	expectedHostname := "github.com"
-	host := localvo.Hostname{Hostname: expectedHostname, Type: localvo.A, Env: "", Ttl: 50, Ip: [4]byte{192, 168, 0, 1}}
+	host := localvo.Hostname{Hostname: expectedHostname, Type: localvo.A, Ttl: 50, Ip: [4]byte{192, 168, 0, 1}}
 	assert.Nil(t, conf.AddHostname( "", host))
 
 	question := new(dns.Question)
@@ -60,7 +60,7 @@ func TestLocalDnsSolver_SolvingByWildcardFirstLevel(t *testing.T) {
 	conf, err := local.LoadConfiguration()
 	assert.Nil(t, err, "failed to load configuration")
 
-	host := localvo.Hostname{Hostname: ".github.com", Type:localvo.A, Env: "", Ttl: 2, Ip: [4]byte{192, 168, 0, 1}}
+	host := localvo.Hostname{Hostname: ".github.com", Type:localvo.A, Ttl: 2, Ip: [4]byte{192, 168, 0, 1}}
 	assert.Nil(t, conf.AddHostname( "", host))
 
 	question := new(dns.Question)
@@ -85,7 +85,7 @@ func TestLocalDnsSolver_SolvingByWildcardSecondLevel(t *testing.T) {
 	conf, err := local.LoadConfiguration()
 	assert.Nil(t, err, "failed to load configuration")
 
-	host := localvo.Hostname{Hostname: ".github.com", Type: localvo.A, Env: "", Ttl: 2, Ip: [4]byte{192, 168, 0, 1}}
+	host := localvo.Hostname{Hostname: ".github.com", Type: localvo.A, Ttl: 2, Ip: [4]byte{192, 168, 0, 1}}
 	assert.Nil(t, conf.AddHostname( "", host))
 
 	question := new(dns.Question)
@@ -111,7 +111,7 @@ func TestShouldSolveCname(t *testing.T) {
 	conf, err := local.LoadConfiguration()
 	assert.Nil(t, err, "failed to load configuration")
 
-	host := localvo.Hostname{Hostname: "mageddo.github.com", Type: localvo.CNAME, Env: "", Ttl: 2, Target: "github.com"}
+	host := localvo.Hostname{Hostname: "mageddo.github.com", Type: localvo.CNAME, Ttl: 2, Target: "github.com"}
 	assert.Nil(t, conf.AddHostname( "", host))
 
 	question := new(dns.Question)
@@ -136,7 +136,7 @@ func TestLocalDnsSolver_WildcardRegisteredButNotMatched(t *testing.T) {
 	conf, err := local.LoadConfiguration()
 	assert.Nil(t, err, "failed to load configuration")
 
-	host := localvo.Hostname{Hostname: ".github.com", Env: "", Ttl: 2, Ip: [4]byte{192, 168, 0, 1}}
+	host := localvo.Hostname{Hostname: ".github.com", Ttl: 2, Ip: [4]byte{192, 168, 0, 1}}
 	conf.AddHostname( "", host)
 
 	question := new(dns.Question)

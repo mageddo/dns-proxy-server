@@ -20,14 +20,12 @@ func TestShouldSolveCnameIp(t *testing.T){
 	question.Name = hostname + "."
 
 	defer local.ResetConf()
-	conf, err := local.LoadConfiguration()
-	assert.Nil(t, err, "failed to load configuration")
 
-	assert.Nil(t, conf.AddHostname( "", localvo.Hostname{
-		Hostname: hostname, Type:localvo.CNAME, Env: "", Ttl: 2, Target:"github.com",
+	assert.Nil(t, local.AddHostname( "", localvo.Hostname{
+		Hostname: hostname, Type:localvo.CNAME, Ttl: 2, Target:"github.com",
 	}))
-	assert.Nil(t, conf.AddHostname("", localvo.Hostname{
-		Hostname: "github.com", Type: localvo.A, Env: "", Ttl: 3, Ip: [4]byte{1, 2, 3, 4},
+	assert.Nil(t, local.AddHostname("", localvo.Hostname{
+		Hostname: "github.com", Type: localvo.A, Ttl: 3, Ip: [4]byte{1, 2, 3, 4},
 	}))
 
 	// act

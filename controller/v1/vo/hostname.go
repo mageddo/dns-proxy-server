@@ -32,15 +32,15 @@ func fromV1Hostnames(v1Hostnames []HostnameV1) []localvo.Hostname {
 }
 
 
-func FromHostnames(hostnames []localvo.Hostname) []HostnameV1 {
+func FromHostnames(env string, hostnames []localvo.Hostname) []HostnameV1 {
 	v1Hostnames := make([]HostnameV1, len(hostnames))
 	for i, hostname := range hostnames {
-		v1Hostnames[i] = fromHostname(hostname)
+		v1Hostnames[i] = fromHostname(env, hostname)
 	}
 	return v1Hostnames
 }
 
-func fromHostname(hostname localvo.Hostname) HostnameV1 {
+func fromHostname(env string,hostname localvo.Hostname) HostnameV1 {
 	return HostnameV1{
 		Id:hostname.Id,
 		Type:hostname.Type,
@@ -48,5 +48,6 @@ func fromHostname(hostname localvo.Hostname) HostnameV1 {
 		Target:hostname.Target,
 		Ip:hostname.Ip,
 		Hostname:hostname.Hostname,
+		Env: env,
 	}
 }

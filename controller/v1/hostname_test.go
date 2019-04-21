@@ -33,7 +33,7 @@ func TestGetHostnamesByEnv(t *testing.T) {
 	assert.Equal(
 		t,
 		utils.Replace(
-			`{"name":"MyEnv","hostnames":[{"id":$1,"hostname":"github.io","ip":[1,2,3,4],"target":"","ttl":55,"type":""}]}`,
+			`{"name":"MyEnv","hostnames":[{"id":$1,"hostname":"github.io","ip":[1,2,3,4],"target":"","ttl":55,"type":"","env":"MyEnv"}]}`,
 			r.String(), `id":(\d+)`,
 		),
 		r.String(),
@@ -60,7 +60,14 @@ func TestGetHostnamesByEnvAndHostname(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.Equal(t, http.StatusOK, r.StatusCode())
-	assert.Equal(t, `[{"id":1,"hostname":"github.io","ip":[1,2,3,4],"target":"","ttl":55,"type":""}]`, r.String())
+	assert.Equal(
+		t,
+		utils.Replace(
+			`[{"id":$1,"hostname":"github.io","ip":[1,2,3,4],"target":"","ttl":55,"type":"","env":"MyEnv"}]`,
+			r.String(), `"id":(\d+)`,
+		),
+		r.String(),
+	)
 
 }
 
@@ -90,7 +97,14 @@ func TestPostHostname(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.Equal(t, http.StatusOK, r.StatusCode())
-	assert.Equal(t, `[{"id":1,"hostname":"github.io","ip":[1,2,3,4],"target":"","ttl":55,"env":"MyOtherEnv","type":"A"}]`, r.String())
+	assert.Equal(
+		t,
+		utils.Replace(
+			`[{"id":$1,"hostname":"github.io","ip":[1,2,3,4],"target":"","ttl":55,"type":"A","env":"MyOtherEnv"}]`,
+			r.String(), `"id":(\d+)`,
+		),
+		r.String(),
+	)
 
 }
 
@@ -135,7 +149,7 @@ func TestPutHostname(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.Equal(t, http.StatusOK, r.StatusCode())
-	assert.Equal(t, `[{"id":999,"hostname":"github.io","ip":[4,3,2,1],"target":"","ttl":65,"type":""}]`, r.String())
+	assert.Equal(t, `[{"id":999,"hostname":"github.io","ip":[4,3,2,1],"target":"","ttl":65,"type":"","env":"MyEnv"}]`, r.String())
 
 }
 

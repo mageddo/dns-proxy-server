@@ -25,6 +25,6 @@ func FromEnvs(envs []localvo.Env) []EnvV1 {
 func FromEnv(env *localvo.Env) *EnvV1 {
 	var envV1 EnvV1
 	envV1.Name = env.Name
-	envV1.Hostnames = FromHostnames(env.Hostnames)
+	envV1.Hostnames = FromHostnames(env.Name, env.Hostnames)
 	return &envV1
 }

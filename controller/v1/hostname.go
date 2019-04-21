@@ -41,7 +41,7 @@ func init(){
 			var err error
 			var hostnames *[]localvo.Hostname
 			if hostnames, err = conf.FindHostnameByNameAndEnv(ctx, env, hostname);  err == nil {
-				json.NewEncoder(res).Encode(vo.FromHostnames(*hostnames))
+				json.NewEncoder(res).Encode(vo.FromHostnames(env, *hostnames))
 				return
 			}
 			BadRequest(res, fmt.Sprintf(err.Error()))
@@ -59,17 +59,13 @@ func init(){
 			return
 		}
 		logging.Infof("m=/hostname/, status=parsed-host, host=%+v", hostname)
-		if conf, _ := local.LoadConfiguration(); conf != nil {
-			if err := conf.AddHostname(hostname.Env, hostname.ToHostname()); err != nil {
-				logging.Infof("m=/hostname/, status=error, action=create-hostname, err=%+v", err)
-				BadRequest(res, err.Error())
-				return
-			}
+		if err := local.AddHostname(hostname.Env, hostname.ToHostname()); err != nil {
+			logging.Infof("m=/hostname/, status=error, action=create-hostname, err=%+v", err)
+			BadRequest(res, err.Error())
+		} else {
 			res.WriteHeader(201)
 			logging.Infof("m=/hostname/, status=success, action=create-hostname")
-			return
 		}
-		confLoadError(res)
 	})
 
 	Put(HOSTNAME, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
