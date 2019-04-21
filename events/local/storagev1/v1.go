@@ -113,11 +113,12 @@ func (c *ConfigurationV1) ToConfig() *localvo.Configuration {
 
 func toEnvs(v1Envs []EnvV1) []localvo.Env {
 	envs := make([]localvo.Env, len(v1Envs))
-	for i, env := range envs {
+	for i := range envs {
 		v1Env := v1Envs[i]
+		env := &envs[i]
 		env.Name = v1Env.Name
-		for i, hostname := range env.Hostnames {
-			fillHostname(&hostname, &v1Env.Hostnames[i])
+		for i := range env.Hostnames {
+			fillHostname(&env.Hostnames[i], &v1Env.Hostnames[i])
 		}
 	}
 	return envs

@@ -129,3 +129,16 @@ func storeToFile(confFileVO interface{}){
 	store.GetInstance().Clear()
 	logging.Infof("status=success, confPath=%s, time=%d", confPath, utils.DiffMillis(now, time.Now()))
 }
+
+func SetActiveEnv(env localvo.Env) error {
+	if conf, err := LoadConfiguration(); err == nil {
+		if err := conf.SetActiveEnv(env); err == nil {
+			SaveConfiguration(conf)
+			return nil
+		} else {
+			return err
+		}
+	} else {
+		return err
+	}
+}

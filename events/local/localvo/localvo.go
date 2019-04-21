@@ -233,14 +233,13 @@ func (lc *Configuration) RemoveHostname(envIndex int, hostIndex int){
 }
 
 func (lc *Configuration) SetActiveEnv(env Env) error {
-	logging.Infof("status=begin, envActive=%s", env.Name)
 	foundEnv, _ := lc.GetEnv(env.Name)
 	if foundEnv == nil {
 		logging.Warningf("status=env-not-found, envName=%s", env.Name)
 		return errors.New("Env not found: " + env.Name)
 	}
 	lc.ActiveEnv = env.Name
-	logging.Infof("status=success")
+	logging.Infof("status=success, activeEnv=%s", env.Name)
 	return nil
 }
 

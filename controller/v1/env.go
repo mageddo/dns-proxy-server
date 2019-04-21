@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"github.com/mageddo/dns-proxy-server/controller/v1/vo"
 	"github.com/mageddo/dns-proxy-server/events/local/localvo"
 	"net/http"
 	"github.com/mageddo/dns-proxy-server/events/local"
@@ -19,11 +20,10 @@ const (
 
 func init(){
 
-
 	Get(ENV_ACTIVE, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
 		res.Header().Add("Content-Type", "application/json")
 		if conf, _ := local.LoadConfiguration(); conf != nil {
-			utils.GetJsonEncoder(res).Encode(localvo.Env{Name: conf.ActiveEnv})
+			utils.GetJsonEncoder(res).Encode(vo.EnvV1{Name: conf.ActiveEnv})
 			return
 		}
 		confLoadError(res)
@@ -34,21 +34,15 @@ func init(){
 		logging.Infof("m=/env/active/, status=begin")
 		res.Header().Add("Content-Type", "application/json")
 
-		var envVo localvo.Env
+		var envVo vo.EnvV1
 		json.NewDecoder(req.Body).Decode(&envVo)
 		logging.Infof("m=/env/active/, status=parsed-host, env=%+v", envVo)
-
-		if conf, _ := local.LoadConfiguration(); conf != nil {
-			if err := conf.SetActiveEnv(envVo); err != nil {
-				logging.Infof("m=/env/, status=error, action=create-env, err=%+v", err)
-				BadRequest(res, err.Error())
-				return
-			}
+		if err := local.SetActiveEnv(envVo.ToEnv()); err == nil {
 			logging.Infof("m=/env/active/, status=success, action=active-env")
-			return
+		} else {
+			logging.Infof("m=/env/active, status=error, action=create-env, err=%+v", err)
+			BadRequest(res, err.Error())
 		}
-		confLoadError(res)
-
 	})
 
 	Get(ENV, func(ctx context.Context, res http.ResponseWriter, req *http.Request){
