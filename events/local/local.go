@@ -126,10 +126,7 @@ func NewEmptyEnv() []localvo.Env {
 }
 
 func ResetConf() {
-	if err := os.Remove(confPath); err != nil {
-		logging.Errorf("reset=failed, err=%v", err)
-		os.Exit(-1)
-	}
+	os.Remove(confPath)
 	store.GetInstance().Clear()
 }
 

@@ -9,7 +9,9 @@ import (
 
 func TestSaveConfiguration_ClearCacheAfterChangeConfiguration(t *testing.T) {
 
-	defer ResetConf()
+	// arrange
+
+	ResetConf()
 
 	expectedHostname := "github.io"
 
@@ -45,7 +47,8 @@ func TestSaveConfiguration_ClearCacheAfterChangeConfiguration(t *testing.T) {
 
 func TestShouldSaveARecord(t *testing.T) {
 
-	defer ResetConf()
+	// arrange
+	ResetConf()
 
 	expectedHostname := "github.io"
 
@@ -67,7 +70,9 @@ func TestShouldSaveARecord(t *testing.T) {
 
 func TestShouldSaveCnameRecord(t *testing.T) {
 
-	defer ResetConf()
+	// arrange
+
+	ResetConf()
 
 	expectedHostname := "github.io"
 

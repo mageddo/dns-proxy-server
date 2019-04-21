@@ -40,23 +40,25 @@ func TestPutChangeActiveEnvThatDoesNotExistsError(t *testing.T) {
 
 func TestPutChangeActiveEnvSuccess(t *testing.T) {
 
-	defer local.ResetConf()
-
-	local.LoadConfiguration()
+	// arrange
+	local.ResetConf()
 
 	err := utils.WriteToFile(`{
 		"remoteDnsServers": [], "envs": [{ "name": "testEnv" }]
 	}`, utils.GetPath(*flags.ConfPath))
-
 	assert.Nil(t, err)
+
 
 	s := httptest.NewServer(nil)
 	defer s.Close()
+
+	// act
 
 	r, err := resty.R().
 		SetBody(`{"name": "testEnv"}`).
 		Put(s.URL + ENV_ACTIVE)
 
+	// assert
 	assert.Nil(t, err)
 	assert.Equal(t, 200, r.StatusCode())
 	assert.Empty(t, r.String())
@@ -70,15 +72,19 @@ func TestPutChangeActiveEnvSuccess(t *testing.T) {
 
 func TestGetEnvsSuccess(t *testing.T) {
 
-	defer local.ResetConf()
-	local.LoadConfiguration()
+	// arrange
+	local.ResetConf()
+
 	err := utils.WriteToFile(`{ "remoteDnsServers": [], "envs": [{ "name": "SecondEnv" }]}`, utils.GetPath(*flags.ConfPath))
 	assert.Nil(t, err)
 
+	// act
 	s := httptest.NewServer(nil)
 	defer s.Close()
-
 	r, err := resty.R().Get(s.URL + ENV)
+
+
+	// assert
 	assert.Nil(t, err)
 	assert.Equal(t, 200, r.StatusCode())
 	assert.Equal(t, `[{"name":"SecondEnv"}]`, r.String())
@@ -87,7 +93,7 @@ func TestGetEnvsSuccess(t *testing.T) {
 
 func TestPostEnvSuccess(t *testing.T) {
 
-	defer local.ResetConf()
+	local.ResetConf()
 
 	s := httptest.NewServer(nil)
 	defer s.Close()
@@ -117,8 +123,8 @@ func TestPostEnvSuccess(t *testing.T) {
 
 func TestDeleteEnvSuccess(t *testing.T) {
 
-	defer local.ResetConf()
-	local.LoadConfiguration()
+	// arrange
+	local.ResetConf()
 
 	err := utils.WriteToFile(`{ "remoteDnsServers": [], "envs": [{ "name": "SecondEnv" }]}`, utils.GetPath(*flags.ConfPath))
 
@@ -130,7 +136,14 @@ func TestDeleteEnvSuccess(t *testing.T) {
 	assert.Equal(t, 200, r.StatusCode())
 	assert.Equal(t, `[{"name":"SecondEnv"}]`, r.String())
 
-	r, err = resty.R().SetBody(`{"name": "SecondEnv"}`).Delete(s.URL + ENV)
+	// act
+	r, err = resty.R().
+		SetBody(`{"name": "SecondEnv"}`).
+		Delete(s.URL + ENV)
+
+
+	// assert
+
 	assert.Nil(t, err)
 	assert.Equal(t, 200, r.StatusCode())
 	assert.Empty(t, r.String())

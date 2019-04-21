@@ -60,7 +60,7 @@ func init(){
 		}
 		logging.Infof("m=/hostname/, status=parsed-host, host=%+v", hostname)
 		if err := local.AddHostname(hostname.Env, hostname.ToHostname()); err != nil {
-			logging.Infof("m=/hostname/, status=error, action=create-hostname, err=%+v", err)
+			logging.Infof("m=/hostname/, status=error, action=create-hostname, hostname=%s", hostname.Hostname, err)
 			BadRequest(res, err.Error())
 		} else {
 			res.WriteHeader(201)

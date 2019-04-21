@@ -13,7 +13,8 @@ import (
 
 func TestLocalDnsSolver_Solve(t *testing.T) {
 
-	defer local.ResetConf()
+	// arrange
+	local.ResetConf()
 
 	expectedHostname := "github.com"
 	host := localvo.Hostname{Hostname: expectedHostname, Type: localvo.A, Ttl: 50, Ip: [4]byte{192, 168, 0, 1}}
@@ -35,7 +36,8 @@ func TestLocalDnsSolver_Solve(t *testing.T) {
 
 func TestLocalDnsSolver_SolveNotFoundHost(t *testing.T) {
 
-	defer local.ResetConf()
+	// arrange
+	local.ResetConf()
 
 	expectedHostname := "github.com"
 	question := new(dns.Question)
@@ -44,6 +46,8 @@ func TestLocalDnsSolver_SolveNotFoundHost(t *testing.T) {
 
 	// act
 	_, err := solver.Solve(testCtx, *question)
+
+	// assert
 	assert.NotNil(t, err, "Fail to solve")
 
 }
@@ -51,9 +55,9 @@ func TestLocalDnsSolver_SolveNotFoundHost(t *testing.T) {
 func TestLocalDnsSolver_SolvingByWildcardFirstLevel(t *testing.T) {
 
 	// arrange
-	solver := NewLocalDNSSolver()
+	local.ResetConf()
 
-	defer local.ResetConf()
+	solver := NewLocalDNSSolver()
 
 	host := localvo.Hostname{Hostname: ".github.com", Type:localvo.A, Ttl: 2, Ip: [4]byte{192, 168, 0, 1}}
 	assert.Nil(t, local.AddHostname( "", host))
@@ -74,9 +78,9 @@ func TestLocalDnsSolver_SolvingByWildcardFirstLevel(t *testing.T) {
 func TestLocalDnsSolver_SolvingByWildcardSecondLevel(t *testing.T) {
 
 	// arrange
-	solver := NewLocalDNSSolver()
+	local.ResetConf()
 
-	defer local.ResetConf()
+	solver := NewLocalDNSSolver()
 
 	host := localvo.Hostname{Hostname: ".github.com", Type: localvo.A, Ttl: 2, Ip: [4]byte{192, 168, 0, 1}}
 	assert.Nil(t, local.AddHostname( "", host))
@@ -98,9 +102,9 @@ func TestLocalDnsSolver_SolvingByWildcardSecondLevel(t *testing.T) {
 func TestShouldSolveCname(t *testing.T) {
 
 	// arrange
-	solver := NewLocalDNSSolver()
+	local.ResetConf()
 
-	defer local.ResetConf()
+	solver := NewLocalDNSSolver()
 
 	host := localvo.Hostname{Hostname: "mageddo.github.com", Type: localvo.CNAME, Ttl: 2, Target: "github.com"}
 	assert.Nil(t, local.AddHostname( "", host))
@@ -121,9 +125,10 @@ func TestShouldSolveCname(t *testing.T) {
 func TestLocalDnsSolver_WildcardRegisteredButNotMatched(t *testing.T) {
 
 	// arrange
+	local.ResetConf()
+
 	solver := NewLocalDNSSolver()
 
-	defer local.ResetConf()
 	conf, err := local.LoadConfiguration()
 	assert.Nil(t, err, "failed to load configuration")
 

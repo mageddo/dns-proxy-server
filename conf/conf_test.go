@@ -28,12 +28,14 @@ func TestFlagValuesFromArgs(t *testing.T) {
 
 func TestFlagValuesFromConf(t *testing.T) {
 
-	defer local.ResetConf()
-	local.LoadConfiguration()
+	// arrange
+	local.ResetConf()
 
+	// act
 	err := utils.WriteToFile(`{ "webServerPort": 8080, "dnsServerPort": 62, "defaultDns": false }`, utils.GetPath(*flags.ConfPath))
-	assert.Nil(t, err)
 
+	// assert
+	assert.Nil(t, err)
 	assert.Equal(t, 8080, WebServerPort())
 	assert.Equal(t, 62, DnsServerPort())
 	assert.Equal(t, false, SetupResolvConf())
@@ -47,6 +49,7 @@ func TestLogLevel_DefaultValue(t *testing.T) {
 func TestLogLevel_ReadFromConfig(t *testing.T) {
 
 	// arrange
+	local.ResetConf()
 	c, err := local.LoadConfiguration()
 	assert.Nil(t, err)
 	c.LogLevel = "INFO"

@@ -11,15 +11,12 @@ import (
 func TestShouldSolveCnameIp(t *testing.T){
 
 	// arrange
-
-	hostname := "mageddo.github.com"
+	local.ResetConf()
 
 	solverFactory := NewCnameDnsSolverFactory(&DefaultDnsSolverFactory{})
-
 	question := new(dns.Question)
+	hostname := "mageddo.github.com"
 	question.Name = hostname + "."
-
-	defer local.ResetConf()
 
 	assert.Nil(t, local.AddHostname( "", localvo.Hostname{
 		Hostname: hostname, Type:localvo.CNAME, Ttl: 2, Target:"github.com",
