@@ -20,7 +20,7 @@ services:
   tests:
     build:
       context: .
-      dockerfile: Dockerfile.builder
+      dockerfile: Dockerfile.go.builder
       target: GOLANG
     volumes:
       - ./:/app/src/github.com/mageddo/dns-proxy-server

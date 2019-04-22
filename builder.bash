@@ -28,8 +28,7 @@ upload_file(){
 }
 
 assemble(){
-	ls -lha
-	echo "> Testing ... $PWD"
+	echo "> Testing ..."
 	go test -race -cover -ldflags "-X github.com/mageddo/dns-proxy-server/flags.version=test" ./.../
 	echo "> Tests completed"
 
