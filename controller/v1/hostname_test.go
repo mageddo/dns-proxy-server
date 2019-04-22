@@ -144,7 +144,7 @@ func TestPutHostname(t *testing.T) {
 
 	// act
 	r, err := resty.R().
-		SetBody(`{"id": 999, "hostname": "github.io", "ip": [4,3,2,1], "ttl": 65, "env": "MyEnv"}`).
+		SetBody(`{"id": "999", "hostname": "github.io", "ip": [4,3,2,1], "ttl": 65, "env": "MyEnv"}`).
 		Put(s.URL + HOSTNAME)
 
 	assert.Nil(t, err)
@@ -159,7 +159,7 @@ func TestPutHostname(t *testing.T) {
 	// assert
 	assert.Nil(t, err)
 	assert.Equal(t, http.StatusOK, r.StatusCode())
-	assert.Equal(t, `[{"id":999,"hostname":"github.io","ip":[4,3,2,1],"target":"","ttl":65,"type":"","env":"MyEnv"}]`, r.String())
+	assert.Equal(t, `[{"id":"999","hostname":"github.io","ip":[4,3,2,1],"target":"","ttl":65,"type":"","env":"MyEnv"}]`, r.String())
 
 }
 

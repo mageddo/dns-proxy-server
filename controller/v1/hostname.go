@@ -74,6 +74,7 @@ func init(){
 		logging.Infof("m=/hostname/, status=begin, action=update-hostname")
 		var hostname vo.HostnameV1
 		if err := json.NewDecoder(req.Body).Decode(&hostname); err != nil {
+			logging.Warningf("m=/hostname/, status=invalid-json, host=%+v", hostname, err)
 			res.Header().Add("Content-Type", "application/json")
 			BadRequest(res, "Invalid JSON")
 			return
