@@ -1,6 +1,5 @@
-<p>
-	<a href="https://travis-ci.org/mageddo/dns-proxy-server"><img src="https://travis-ci.org/mageddo/dns-proxy-server.svg?branch=master" alt="Build Status" /></a>
-</p>
+<a href="https://travis-ci.org/mageddo/dns-proxy-server"><img src="https://travis-ci.org/mageddo/dns-proxy-server.svg?branch=master" alt="Build Status" /></a>&nbsp;&nbsp;
+[![help me to keep DPS up to date](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/donate/?token=i7T2s9MhF0xW1QVHxZoYMS9zpByRwytZ3ErSBQ7d5bfr21UPx6AG70tjZgyb8v0yF58ZqW&country.x=US&locale.x=US)
 
 ### Features
 
@@ -61,3 +60,15 @@ DNS  Proxy Server follow the below order to solve hostnames
 ### MAC Support
 Based on users feedback, DPS don't work on MAC, unfortunatly I don't have a MAC computer to work on that, 
 if you want to contribute please try to fix it then open a pull request, sorry for the inconvenience.
+
+### Donation
+Help me to keep DPS up to date
+
+Via PayPal
+
+[![](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/donate/?token=i7T2s9MhF0xW1QVHxZoYMS9zpByRwytZ3ErSBQ7d5bfr21UPx6AG70tjZgyb8v0yF58ZqW&country.x=US&locale.x=US)
+
+Or via QR code
+
+![](https://i.imgur.com/LmN7g2j.png)
+
