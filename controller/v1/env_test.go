@@ -118,9 +118,9 @@ func TestPostEnvSuccess(t *testing.T) {
 	assert.Equal(
 		t,
 		utils.Replace(
-			`[{"name":""},{"name":"ThirdEnv","hostnames":[{"id":$1,"hostname":"github.com","ip":[1,2,3,4],"target":"","ttl":30,"type":"A","env":"ThirdEnv"}]}]`,
+			`[{"name":""},{"name":"ThirdEnv","hostnames":[{"id":"$1","hostname":"github.com","ip":[1,2,3,4],"target":"","ttl":30,"type":"A","env":"ThirdEnv"}]}]`,
 			r.String(),
-			`"id":(\d+)`,
+			`"id":"(\d+)"`,
 		),
 		r.String(),
 	)

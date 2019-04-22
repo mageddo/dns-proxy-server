@@ -33,8 +33,8 @@ func TestGetHostnamesByEnv(t *testing.T) {
 	assert.Equal(
 		t,
 		utils.Replace(
-			`{"name":"MyEnv","hostnames":[{"id":$1,"hostname":"github.io","ip":[1,2,3,4],"target":"","ttl":55,"type":"","env":"MyEnv"}]}`,
-			r.String(), `id":(\d+)`,
+			`{"name":"MyEnv","hostnames":[{"id":"$1","hostname":"github.io","ip":[1,2,3,4],"target":"","ttl":55,"type":"","env":"MyEnv"}]}`,
+			r.String(), `id":"(\d+)"`,
 		),
 		r.String(),
 	)
@@ -67,8 +67,8 @@ func TestGetHostnamesByEnvAndHostname(t *testing.T) {
 	assert.Equal(
 		t,
 		utils.Replace(
-			`[{"id":$1,"hostname":"github.io","ip":[1,2,3,4],"target":"","ttl":55,"type":"","env":"MyEnv"}]`,
-			r.String(), `"id":(\d+)`,
+			`[{"id":"$1","hostname":"github.io","ip":[1,2,3,4],"target":"","ttl":55,"type":"","env":"MyEnv"}]`,
+			r.String(), `"id":"(\d+)"`,
 		),
 		r.String(),
 	)
@@ -107,8 +107,8 @@ func TestPostHostname(t *testing.T) {
 	assert.Equal(
 		t,
 		utils.Replace(
-			`[{"id":$1,"hostname":"github.io","ip":[1,2,3,4],"target":"","ttl":55,"type":"A","env":"MyOtherEnv"}]`,
-			r.String(), `"id":(\d+)`,
+			`[{"id":"$1","hostname":"github.io","ip":[1,2,3,4],"target":"","ttl":55,"type":"A","env":"MyOtherEnv"}]`,
+			r.String(), `"id":"(\d+)"`,
 		),
 		r.String(),
 	)
