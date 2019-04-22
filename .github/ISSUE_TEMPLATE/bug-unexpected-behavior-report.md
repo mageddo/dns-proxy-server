@@ -4,21 +4,18 @@ about: Create a report to help us improve
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+### What is expected
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Start DPS '...'
-2. Start container '....'
-3. Run `ping github.com` '....'
-4. Ping got timeout '...'
+Describe what you expected to happen and why
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+
+### What is Happening
+
+* Describe what is happening instead
+* Please also describe how to reproduce
 
 **Specs:**
- - OS: [e.g. Ubuntu 16]
-- Docker Version: docker version
-- DPS Version: `docker exec dns-proxy-server  /app/dns-proxy-server -version`
+- OS: [e.g. Ubuntu 16]
+- Docker Version: `docker version`
+- DPS Version: `docker exec dns-proxy-server /app/dns-proxy-server -version` or `./dns-proxy-server --version`
 - Please attach DPS Log file
