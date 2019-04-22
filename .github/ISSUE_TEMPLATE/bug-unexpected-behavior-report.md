@@ -8,7 +8,6 @@ about: Create a report to help us improve
 
 Describe what you expected to happen and why
 
-
 ### What is Happening
 
 * Describe what is happening instead

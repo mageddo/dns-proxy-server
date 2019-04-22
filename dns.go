@@ -49,7 +49,7 @@ func handleQuestion(respWriter dns.ResponseWriter, reqMsg *dns.Msg) {
 
 	solverFactory := proxy.NewCnameDnsSolverFactory(&proxy.DefaultDnsSolverFactory{})
 	msg, err := solverFactory.Solve(ctx, firstQuestion, getSolvers())
-	logging.Debugf("status=complete, question=%+v, answers=%+v, err=%+v", ctx, firstQuestion, msg.Answer, err)
+	logging.Debugf("status=complete, question=%+v, answers=%+v, err=%+v", ctx, firstQuestion, getAnswer(msg), err)
 	if err == nil {
 		msg.SetReply(reqMsg)
 		msg.Compress = conf.Compress()
@@ -57,6 +57,13 @@ func handleQuestion(respWriter dns.ResponseWriter, reqMsg *dns.Msg) {
 	} else {
 		respWriter.Close()
 	}
+}
+
+func getAnswer(msg *dns.Msg) []dns.RR {
+	if msg == nil {
+		return nil
+	}
+	return msg.Answer
 }
 
 var solversCreated int32 = 0

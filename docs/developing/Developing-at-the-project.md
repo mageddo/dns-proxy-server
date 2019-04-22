@@ -1,7 +1,6 @@
 ### Developing with docker
 
-
-	$ docker-compose rm -f && docker-compose up app-dps compiler-dps
+	$ docker-compose rm -f && docker-compose up --build app-dps compiler-dps
 
 Running the application 
 
