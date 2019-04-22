@@ -5,7 +5,7 @@ services:
 
 script:
   - 'if [ "$TRAVIS_BRANCH" = "master" ]; then ./builder.bash deploy-ci; fi'
-  - 'if [ "$TRAVIS_BRANCH" != "master" ]; then docker-compose rm -f && docker-compose up --build prod-build-binary-dps; fi'
+  - 'if [ "$TRAVIS_BRANCH" != "master" ]; then docker-compose rm -f && docker-compose up --build tests; fi'
 
 branches:
   only:

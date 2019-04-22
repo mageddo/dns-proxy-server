@@ -1,4 +1,4 @@
-version: '2.1'
+version: '2.3'
 services:
 
   # Base Image to build project
@@ -7,17 +7,24 @@ services:
       context: .
       dockerfile: Dockerfile.builder
     volumes:
-      - $PWD:/app/src/github.com/mageddo/dns-proxy-server
-      - $PWD/builder.bash:/bin/builder.bash
+      - ./:/app/src/github.com/mageddo/dns-proxy-server
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - TERM=xterm
-      - GOPATH=/app
-      - MG_WORK_DIR=/app/src/github.com/mageddo/dns-proxy-server
     networks:
       - dps_bridge
       - dps
     command: tail -f /dev/null
+
+  # Compile the project and run the tests
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.builder
+      target: GOLANG
+    volumes:
+      - ./:/app/src/github.com/mageddo/dns-proxy-server
+    command: bash -c "builder.bash assemble"
 
   app-dps:
     image: node:8.15-jessie

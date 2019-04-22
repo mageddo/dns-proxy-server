@@ -28,7 +28,8 @@ upload_file(){
 }
 
 assemble(){
-	echo "> Testing ..."
+	ls -lha
+	echo "> Testing ... $PWD"
 	go test -race -cover -ldflags "-X github.com/mageddo/dns-proxy-server/flags.version=test" ./.../
 	echo "> Tests completed"
 
@@ -91,6 +92,10 @@ case $1 in
 		sed -i -E "s/(dns-proxy-server.*)[0-9]+\.[0-9]+\.[0-9]+/\1$APP_VERSION/" docker-compose.yml
 		sed -i -E "s/[0-9]+\.[0-9]+\.[0-9]+/$APP_VERSION/g" Dockerfile*.hub
 
+	;;
+
+	assemble )
+		assemble
 	;;
 
 	build )
