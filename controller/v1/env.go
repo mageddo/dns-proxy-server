@@ -11,6 +11,7 @@ import (
 	. "github.com/mageddo/go-httpmap"
 	"github.com/mageddo/go-logging"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -64,7 +65,7 @@ func init(){
 		json.NewDecoder(req.Body).Decode(&envVo)
 		logging.Infof("m=/env/, status=parsed-host, env=%+v", envVo)
 		for i := range envVo.Hostnames {
-			envVo.Hostnames[i].Id = time.Now().UnixNano()
+			envVo.Hostnames[i].Id = strconv.FormatInt(time.Now().UnixNano(), 10)
 		}
 		if err := local.AddEnv(ctx, envVo.ToEnv()); err == nil {
 			logging.Infof("m=/env/, status=success, action=create-env")

@@ -1,9 +1,12 @@
 package vo
 
-import "github.com/mageddo/dns-proxy-server/events/local/localvo"
+import (
+	"github.com/mageddo/dns-proxy-server/events/local/localvo"
+	"strconv"
+)
 
 type HostnameV1 struct {
-	Id int64 `json:"id"`
+	Id string `json:"id"`
 	Hostname string `json:"hostname"`
 	Ip [4]byte `json:"ip"`
 	Target string `json:"target"`
@@ -14,13 +17,18 @@ type HostnameV1 struct {
 
 func (hostnameV1 HostnameV1) ToHostname() localvo.Hostname {
 	return localvo.Hostname{
-		Id:hostnameV1.Id,
+		Id: parseInt(hostnameV1.Id),
 		Hostname:hostnameV1.Hostname,
 		Ip:hostnameV1.Ip,
 		Target:hostnameV1.Target,
 		Ttl:hostnameV1.Ttl,
 		Type:hostnameV1.Type,
 	}
+}
+
+func parseInt(s string) int64 {
+	id, _ := strconv.ParseInt(s, 10, 64)
+	return id
 }
 
 func fromV1Hostnames(v1Hostnames []HostnameV1) []localvo.Hostname {
@@ -42,12 +50,12 @@ func FromHostnames(env string, hostnames []localvo.Hostname) []HostnameV1 {
 
 func fromHostname(env string,hostname localvo.Hostname) HostnameV1 {
 	return HostnameV1{
-		Id:hostname.Id,
-		Type:hostname.Type,
-		Ttl:hostname.Ttl,
-		Target:hostname.Target,
-		Ip:hostname.Ip,
-		Hostname:hostname.Hostname,
-		Env: env,
+		Id:       strconv.FormatInt(hostname.Id, 10),
+		Type:     hostname.Type,
+		Ttl:      hostname.Ttl,
+		Target:   hostname.Target,
+		Ip:       hostname.Ip,
+		Hostname: hostname.Hostname,
+		Env:      env,
 	}
 }

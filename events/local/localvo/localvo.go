@@ -196,9 +196,9 @@ func (lc *Configuration) UpdateHostname(envName string, hostname Hostname) error
 
 func (env *Env) UpdateHostname(hostname Hostname) error {
 
-	foundHostname, _ := env.GetHostnameByName(hostname.Hostname)
+	foundHostname, _ := env.GetHostnameById(hostname.Id)
 	if foundHostname == nil {
-		return errors.New("not hostname found: " + hostname.Hostname)
+		return errors.New(fmt.Sprintf("not hostname found with name=%s and id=%d", hostname.Hostname, hostname.Id))
 	}
 	foundHostname.Hostname = hostname.Hostname
 	foundHostname.Ttl = hostname.Ttl
@@ -206,6 +206,16 @@ func (env *Env) UpdateHostname(hostname Hostname) error {
 	foundHostname.Target = hostname.Target
 	foundHostname.Type = hostname.Type
 	return nil
+}
+
+func (env *Env) GetHostnameById(id int64) (*Hostname, int) {
+	for i := range env.Hostnames {
+		hostname := &env.Hostnames[i]
+		if hostname.Id == id {
+			return hostname, i
+		}
+	}
+	return nil, -1
 }
 
 func (lc *Configuration) RemoveHostnameByEnvAndHostname(envName string, hostname string) error {
