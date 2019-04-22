@@ -1,5 +1,6 @@
 ### 2.14.0
 * Making some refactoring facilitating to the feature requested at #121
+* Fixing nil pointer sometimes when the hostname were not found
 
 ### 2.13.2
 * Fixing broken answer when hostname is not found
