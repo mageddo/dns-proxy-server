@@ -3,8 +3,11 @@ sudo: required
 services:
   - docker
 
-script: ./builder.bash deploy-ci
+script:
+  - 'if [ "$TRAVIS_BRANCH" = "master" ]; then ./builder.bash deploy-ci; fi'
+  - 'if [ "$TRAVIS_BRANCH" != "master" ]; then docker-compose rm -f && docker-compose up --build prod-build-binary-dps; fi'
 
 branches:
   only:
   - master
+  - /^(feature|bugfix).*$/
