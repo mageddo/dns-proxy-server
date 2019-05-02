@@ -23,4 +23,4 @@ PING dns.mageddo (172.17.0.4) 56(84) bytes of data.
 64 bytes from 172.17.0.4: icmp_seq=3 ttl=64 time=0.064 ms
 ```
 
-[Click here]({{%relref "getting-started/running-it/_index.en.md" %}}) to see more details about run DPS
+[Click here]({{%relref "1-getting-started/running-it/_index.en.md" %}}) to see more details about run DPS

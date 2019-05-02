@@ -1,7 +1,9 @@
 ---
-title: Configuring log output
-weight: 4
+title: Configuring logs
+weight: 5
 ---
+
+## Configuring log output
 
 You can disable, log to console, log to default log file path or specify a log path at config file, environment or command line argument. Available options:
 
@@ -26,3 +28,34 @@ __Environment__
 __Command line argument__
 
 	go run dns.go  -log-file=console
+
+
+## Configuring log level
+
+You can change system log level using environment variable, config file, or command line argument, 
+DPS will consider the parameters in that order, first is more important.
+ 
+Available levels:
+
+* ERROR
+* WARNING
+* INFO
+* DEBUG (Default)
+
+__Environment__
+
+	export MG_LOG_LEVEL=DEBUG
+
+__Config file__
+
+```json
+{
+	...
+	"logLevel": "DEBUG"
+	...
+}
+```
+
+__Command line argument__
+
+	go run dns.go  -log-level=DEBUG
