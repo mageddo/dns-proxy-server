@@ -10,6 +10,7 @@ build
 *.tmp
 conf/config.json
 *.log
+*.old
 
 # dependencies
 node_modules
