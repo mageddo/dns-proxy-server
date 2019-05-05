@@ -34,7 +34,7 @@ pre: "<b>3. </b>"
 ```
 
 
-### Environment variables configurations
+### Environment variable configuration
 
 ### Terminal configuration
 
