@@ -10,7 +10,7 @@ __Version 2__
 
 ```json
 {
-  "version": "2",
+  "version": 2,
   // Remote DNS servers to be asked when can not solve from docker or local storage
   // If no one server was specified then the 8.8.8.8 will be used
   "remoteDnsServers": [ "8.8.8.8", "4.4.4.4:54" ],
