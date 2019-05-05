@@ -8,7 +8,7 @@ metaDataFormat = "yaml"
 defaultContentLanguageInSubdir= true
 
 [params]
-  editURL = "https://github.com/mageddo/dns-proxy-server/edit/master/docs/content"
+  editURL = "https://github.com/mageddo/dns-proxy-server/edit/master/docs/content/"
   description = "Documentation for DPS"
   author = "Elvis Souza"
   showVisitedLinks = true
