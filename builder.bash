@@ -85,6 +85,22 @@ case $1 in
 
 	;;
 
+	docs )
+
+	VERSION=$(cat VERSION | awk -F '.' '{ print $1"."$2}');
+	hugo --baseURL=http://mageddo.github.io/dns-proxy-server/${VERSION} \
+	--destination $PWD/../dns-proxy-server-docs/${VERSION} \
+	--source docs/
+
+	VERSION=latest
+	hugo --baseURL=http://mageddo.github.io/dns-proxy-server/${VERSION} \
+	--destination $PWD/../dns-proxy-server-docs/${VERSION} \
+	--source docs/
+
+
+
+	;;
+
 	apply-version )
 
 		# updating files version
