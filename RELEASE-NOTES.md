@@ -1,3 +1,6 @@
+### 2.14.3
+* Fixing log level wasn't being respected 
+
 ### 2.14.2
 * Ability to specify remote server port
 * Introducing storage api v2

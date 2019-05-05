@@ -11,9 +11,9 @@ import (
 
 func init(){
 	setup(os.Stdout)
-	logging.SetLevel(conf.LogLevel())
-	logging.Warningf("status=log-level-changed, log-level= %d", conf.LogLevel())
 	SetOutput(conf.LogFile())
+	logging.Warningf("status=log-level-changed, log-level= %d", conf.LogLevel())
+	logging.SetLevel(conf.LogLevel())
 }
 
 func setup(out io.Writer) {
