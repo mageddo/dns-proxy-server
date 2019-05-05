@@ -1,4 +1,7 @@
-### 2.14.3
+### 2.14.5
+* Fixing docker hub push
+
+### 2.14.4
 * Fixing log level wasn't being respected 
 
 ### 2.14.2
