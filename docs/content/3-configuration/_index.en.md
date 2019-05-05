@@ -6,8 +6,11 @@ pre: "<b>3. </b>"
 
 ### JSON configuration
 
+__Version 2__
+
 ```json
 {
+  "version": "2",
   // Remote DNS servers to be asked when can not solve from docker or local storage
   // If no one server was specified then the 8.8.8.8 will be used
   "remoteDnsServers": [ "8.8.8.8", "4.4.4.4:54" ],
@@ -34,6 +37,35 @@ pre: "<b>3. </b>"
   "logFile": "console" // where the log will be written,
   "registerContainerNames": false, // if should register container name / service name as a hostname
   "domain": "" // The container names domain
+}
+```
+
+__Version 1__
+
+```json
+{
+  "remoteDnsServers": [ [8,8,8,8], [4,4,4,4] ], // Remote DNS servers to be asked when can not solve from docker or local storage 
+                                                // If no one server was specified then the 8.8.8.8 will be used
+  "envs": [ // all existent environments 
+    {
+      "name": "", // empty string is the default
+      "hostnames": [ // all local hostnames entries
+        {
+          "id": 1,
+          "hostname": "github.com",
+          "ip": [192, 168, 0, 1],
+          "ttl": 255
+        }
+      ]
+    }
+  ],
+  "activeEnv": "", // the default env keyname 
+  "lastId": 1, // hostnames sequence, don't touch here
+  "webServerPort": 0, // web admin port, when 0 the default value is used, see --help option
+  "dnsServerPort": 8980, // dns server port, when 0 the default value is used
+  "logLevel": "DEBUG",
+  "logFile": "console" // where the log will be written,
+  "registerContainerNames": false // if should register container name / service name as a hostname
 }
 ```
 
