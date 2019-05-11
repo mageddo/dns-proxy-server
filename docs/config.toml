@@ -25,6 +25,11 @@ title = "DNS Proxy Server"
 weight = 1
 languageName = "English"
 
+[Languages.pt-br]
+title = "DNS Proxy Server"
+weight = 1
+languageName = "Português"
+
 [[Languages.en.menu.shortcuts]]
 name = "<i class='fab fa-fw fa-github'></i> Github repo"
 identifier = "ds"
