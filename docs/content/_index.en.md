@@ -16,6 +16,4 @@ docker containers hostnames:
 * Access container by it’s container name / service name
 * Specify from which network solve container IP 
 
-[checkout the full documentation](http://mageddo.github.io/dns-proxy-server/docs/)
-
 ![](https://i.imgur.com/aR9dl0O.png?width=60pc)

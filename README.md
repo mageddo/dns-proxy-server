@@ -40,7 +40,7 @@ PING dns.mageddo (172.17.0.4) 56(84) bytes of data.
 * [Full documentation](http://mageddo.github.io/dns-proxy-server/)
 * [Running it documentation](http://mageddo.github.io/dns-proxy-server/latest/en/1-getting-started/running-it/)
 * [Examples](https://github.com/mageddo/dns-proxy-server/tree/master/examples)
-* [Coding at the DPS](http://mageddo.github.io/dns-proxy-server/en/5-developing/)
+* [Coding at the DPS](http://mageddo.github.io/dns-proxy-server/latest/en/5-developing/)
 
 ### Donation
 Help me to keep DPS up to date
