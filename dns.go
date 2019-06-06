@@ -50,12 +50,10 @@ func handleQuestion(respWriter dns.ResponseWriter, reqMsg *dns.Msg) {
 	solverFactory := proxy.NewCnameDnsSolverFactory(&proxy.DefaultDnsSolverFactory{})
 	msg, err := solverFactory.Solve(ctx, firstQuestion, getSolvers())
 	logging.Debugf("status=complete, question=%+v, answers=%+v, err=%+v", ctx, firstQuestion, getAnswer(msg), err)
-	if err == nil {
+	if msg != nil {
 		msg.SetReply(reqMsg)
 		msg.Compress = conf.Compress()
 		respWriter.WriteMsg(msg)
-	} else {
-		respWriter.Close()
 	}
 }
 
