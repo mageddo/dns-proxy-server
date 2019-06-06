@@ -1,3 +1,6 @@
+### 2.14.6
+* Fixing ping slowness
+
 ### 2.14.5
 * Fixing docker hub push
 
