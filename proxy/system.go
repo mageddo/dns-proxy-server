@@ -3,6 +3,7 @@ package proxy
 import (
 	"errors"
 	"github.com/mageddo/dns-proxy-server/conf"
+	"github.com/mageddo/dns-proxy-server/docker/dockernetwork"
 	"github.com/mageddo/dns-proxy-server/resolvconf"
 	"github.com/mageddo/dns-proxy-server/utils"
 	"github.com/mageddo/go-logging"
@@ -21,16 +22,24 @@ func (s SystemDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns
 	questionName := question.Name[:len(question.Name)-1]
 	switch questionName {
 	case conf.GetHostname(), resolvconf.GetHostname(conf.GetHostname()):
-		ip, err, code := utils.Exec("sh", "-c", "ip r | awk '/default/{print $3}'")
-		if code == 0 {
-			clearedIP := regexp.MustCompile(`\s`).ReplaceAllLiteralString(string(ip), ``)
-			logging.Infof("status=solved, solver=system, question=%s, ip=%s", ctx, questionName, clearedIP)
-			return s.getMsg(questionName, clearedIP, question), nil
+		if ip, err := dockernetwork.FindNetworkGatewayIp(ctx, dockernetwork.DpsNetwork); err != nil {
+			ip, err = getLocalMachineIp(ctx, questionName)
+		} else {
+			logging.Infof("status=solved, solver=system, question=%s", ctx, questionName, err)
+			return s.getMsg(questionName, ip, question), err
 		}
-		logging.Warningf("status=not-solved, solver=system, question=%s", ctx, questionName, err)
-		return nil, err
 	}
 	return nil, errors.New("host not found")
+}
+
+func getLocalMachineIp(ctx context.Context, questionName string) (string, error) {
+	ip, err, code := utils.Exec("sh", "-c", "ip r | awk '/default/{print $3}'")
+	if code == 0 {
+		clearedIP := regexp.MustCompile(`\s`).ReplaceAllLiteralString(string(ip), ``)
+		logging.Infof("status=solved, solver=system, question=%s, ip=%s", ctx, questionName, clearedIP)
+		return clearedIP, nil
+	}
+	return "", err
 }
 
 func (s SystemDnsSolver) Name() string {

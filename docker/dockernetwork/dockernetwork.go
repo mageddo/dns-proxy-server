@@ -13,7 +13,13 @@ import (
 )
 
 const DpsNetwork = "dps"
-func CreateOrUpdateDpsNetwork(ctx context.Context, cli *client.Client) (types.NetworkCreateResponse, error) {
+var cli *client.Client
+
+func SetupClient(cli_ *client.Client){
+	cli = cli_
+}
+
+func CreateOrUpdateDpsNetwork(ctx context.Context) (types.NetworkCreateResponse, error) {
 	res, err := cli.NetworkCreate(ctx, DpsNetwork, types.NetworkCreate{
 		CheckDuplicate: true,
 		Driver:         "bridge",
@@ -23,7 +29,7 @@ func CreateOrUpdateDpsNetwork(ctx context.Context, cli *client.Client) (types.Ne
 			Config:  []network.IPAMConfig{{
 				Subnet:  "172.157.0.0/16",
 				IPRange: "172.157.5.3/24",
-				Gateway: "172.157.5.254",
+				Gateway: "172.157.5.1",
 			}},
 		},
 		Internal:       false,
@@ -43,11 +49,28 @@ func CreateOrUpdateDpsNetwork(ctx context.Context, cli *client.Client) (types.Ne
 	return res, err
 }
 
-//func findNetwork(ctx context.Context, client *client.Client, name string) types.NetworkCreateResponse {
-//	client.net
-//}
+func FindNetworkGatewayIp(ctx context.Context, name string) (string, error) {
+	if networkResource, err := FindDpsNetwork(ctx, name); err != nil {
+		return "", err
+	} else  {
+		return networkResource.IPAM.Config[0].Gateway, nil
+	}
+}
+func FindDpsNetwork(ctx context.Context, name string) (*types.NetworkResource, error) {
+	args, err := filters.ParseFlag(fmt.Sprintf("name=^%s$", name), filters.NewArgs())
+	if err != nil {
+		panic(errors.WithMessage(err, "can't parse args"))
+	}
+	networks, err := cli.NetworkList(ctx, types.NetworkListOptions{Filters: args})
+	if err != nil {
+		return nil, errors.WithMessage(err, "can't list networks")
+	} else if len(networks) == 1 {
+		return &networks[0], nil
+	}
+	return nil, errors.New("didn't found the specified network: " + name)
+}
 
-func NetworkConnect(ctx context.Context, cli *client.Client, networkId string, containerId string, networkIpAddress string) error {
+func NetworkConnect(ctx context.Context, networkId string, containerId string, networkIpAddress string) error {
 	//if err := cli.NetworkDisconnect(ctx, networkId, containerId, true);
 	//	err != nil &&
 	//	!strings.Contains(err.Error(), fmt.Sprintf("is not connected to network %s", DpsNetwork)) {
@@ -66,7 +89,7 @@ func NetworkConnect(ctx context.Context, cli *client.Client, networkId string, c
 	return err
 }
 
-func FindDpsContainer(ctx context.Context, cli *client.Client) (*types.Container, error) {
+func FindDpsContainer(ctx context.Context) (*types.Container, error) {
 	if args, err := filters.ParseFlag("label=dps.container=true", filters.NewArgs()); err != nil {
 		return nil, errors.WithMessage(err, "can't parse flags")
 	} else {
