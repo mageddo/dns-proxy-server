@@ -4,6 +4,7 @@ import (
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/container"
 	"github.com/docker/engine-api/types/network"
+	"github.com/mageddo/dns-proxy-server/reference"
 	"github.com/mageddo/dns-proxy-server/utils/env"
 	"github.com/stretchr/testify/assert"
 	"os"
@@ -99,7 +100,7 @@ func TestMustSolveIPFromDefaultConfiguredNetwork(t *testing.T){
 	inspect.NetworkSettings.Networks["network-3"] = createNetwork("192.168.0.3")
 
 	// act
-	putHostnames(ctx, []string{"acme.com"}, inspect)
+	putHostnames(reference.Context(), []string{"acme.com"}, inspect)
 
 	// assert
 	assert.Equal(t, "192.168.0.2", c.Get("acme.com"))
@@ -126,7 +127,7 @@ func TestMustSolveIPFromFirstContainerWhenDefaultNetworkIsNotSet(t *testing.T){
 	inspect.NetworkSettings.Networks["network-3"] = createNetwork("192.168.0.3")
 
 	// act
-	putHostnames(ctx, []string{"acme.com"}, inspect)
+	putHostnames(reference.Context(), []string{"acme.com"}, inspect)
 
 	// assert
 	assert.Contains(t, c.Get("acme.com"), "192.168.0")
