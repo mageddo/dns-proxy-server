@@ -40,10 +40,7 @@ func CreateOrUpdateDpsNetwork(ctx context.Context) (types.NetworkCreateResponse,
 			"version": flags.GetRawCurrentVersion(),
 		},
 	})
-	if err == nil {
-		return res, nil
-	} else if strings.Contains(err.Error(), fmt.Sprintf("network with name %s already exists", DpsNetwork)) {
-		//return findNetwork(ctx, cli, DpsNetwork), nil
+	if err == nil || alreadyCreated(err) {
 		return res, nil
 	}
 	return res, err
@@ -107,3 +104,32 @@ func FindDpsContainer(ctx context.Context) (*types.Container, error) {
 	}
 }
 
+func FindDpsContainerIP(ctx context.Context) (string, error) {
+	container, err := FindDpsContainer(ctx)
+	if err != nil {
+		return "", err
+	}
+	return FindBestIP(container), nil
+}
+
+func FindBestIP(container *types.Container) string {
+	var ip string
+	if ip = GetIPFromNetworksMap(container.NetworkSettings.Networks, DpsNetwork); ip != "" {
+		return ip
+	} else if ip = GetIPFromNetworksMap(container.NetworkSettings.Networks, "bridge"); ip != "" {
+		return ip
+	}
+	return ""
+}
+
+func GetIPFromNetworksMap(networks map[string]*network.EndpointSettings, key string) string {
+	theNetwork := networks[key]
+	if theNetwork == nil {
+		return ""
+	}
+	return theNetwork.IPAddress
+}
+
+func alreadyCreated(err error) bool {
+	return strings.Contains(err.Error(), fmt.Sprintf("network with name %s already exists", DpsNetwork))
+}

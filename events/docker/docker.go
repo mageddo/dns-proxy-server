@@ -131,7 +131,7 @@ func setupDpsContainerNetwork(ctx context.Context, cli *client.Client) {
 		panic(fmt.Sprintf("can't create dps network %+v", err))
 	}
 	if dpsContainer, err := dockernetwork.FindDpsContainer(ctx); err != nil {
-		logging.Warningf("can't-find-dps-container", ctx, err)
+		logging.Warningf("can't-find-dps-container, err=%+v", ctx, err)
 	} else {
 		if err := dockernetwork.NetworkConnect(ctx, dockernetwork.DpsNetwork, dpsContainer.ID, "172.157.5.249"); err != nil {
 			logging.Warningf("cant-setup-root-container-network, container=%+v", dpsContainer.Names, ctx, err)

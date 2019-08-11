@@ -3,9 +3,11 @@ package resolvconf
 import (
 	"bufio"
 	"bytes"
+	"context"
 	"fmt"
 	"github.com/mageddo/dns-proxy-server/cache/store"
 	"github.com/mageddo/dns-proxy-server/conf"
+	"github.com/mageddo/dns-proxy-server/docker/dockernetwork"
 	"github.com/mageddo/go-logging"
 	"github.com/pkg/errors"
 	"io/ioutil"
@@ -114,17 +116,13 @@ func getDnsEntryType(line string) DnsEntry {
 	}
 }
 
-func SetCurrentDNSServerToMachineAndLockIt() error {
-	err := SetCurrentDnsServerToMachine()
+func SetCurrentDnsServerToMachine(ctx context.Context) error {
+	ip, err := dockernetwork.FindDpsContainerIP(ctx)
+	logging.Debugf("status=container-ip-found", ctx)
 	if err != nil {
-		return err
+		logging.Debugf("status=container-ip-not-found, err=%+v", ctx, err)
+		ip, err = GetCurrentIpAddress()
 	}
-	return LockResolvConf()
-}
-
-func SetCurrentDnsServerToMachine() error {
-	ip, err := GetCurrentIpAddress()
-	// todo must try to find container ip on dps network before get current machine ip address
 	logging.Debugf("status=begin, ip=%s, err=%v", ip, err)
 	if err != nil {
 		return errors.WithMessage(err, "can't set dps dns server to host machine")
@@ -180,6 +178,7 @@ const(
 	Else            DnsEntry = "ELSE"
 )
 
+// deprecated: replaced by docker/dockernetwork#FindDpsContainerIP
 func GetCurrentIpAddress() (string, error) {
 
 	addrs, err := net.InterfaceAddrs()
