@@ -99,7 +99,7 @@ func TestMustSolveIPFromDefaultConfiguredNetwork(t *testing.T){
 	inspect.NetworkSettings.Networks["network-3"] = createNetwork("192.168.0.3")
 
 	// act
-	putHostnames([]string{"acme.com"}, inspect)
+	putHostnames(ctx, []string{"acme.com"}, inspect)
 
 	// assert
 	assert.Equal(t, "192.168.0.2", c.Get("acme.com"))
@@ -126,7 +126,7 @@ func TestMustSolveIPFromFirstContainerWhenDefaultNetworkIsNotSet(t *testing.T){
 	inspect.NetworkSettings.Networks["network-3"] = createNetwork("192.168.0.3")
 
 	// act
-	putHostnames([]string{"acme.com"}, inspect)
+	putHostnames(ctx, []string{"acme.com"}, inspect)
 
 	// assert
 	assert.Contains(t, c.Get("acme.com"), "192.168.0")

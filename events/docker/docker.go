@@ -1,6 +1,7 @@
 package docker
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -11,8 +12,9 @@ import (
 	"github.com/mageddo/dns-proxy-server/cache"
 	"github.com/mageddo/dns-proxy-server/cache/lru"
 	"github.com/mageddo/dns-proxy-server/conf"
+	"github.com/mageddo/dns-proxy-server/flags"
+	"github.com/mageddo/dns-proxy-server/reference"
 	"github.com/mageddo/go-logging"
-	"golang.org/x/net/context"
 	"io"
 	"strings"
 )
@@ -26,21 +28,26 @@ func HandleDockerEvents(){
 	// connecting to docker api
 	cli, err := client.NewClient("unix:///var/run/docker.sock", "v1.21", nil, nil)
 	if err != nil {
-		logging.Errorf("status=error-to-connect-at-host, solver=docker, err=%v", err)
+		logging.Warningf("status=error-to-connect-at-host, solver=docker, err=%v", err)
 		return
 	}
 
 	// more about list containers https://docs.docker.com/engine/reference/commandline/ps/
 	options := types.ContainerListOptions{}
-	ctx := context.Background()
+	ctx := reference.Context()
 
 	serverVersion, err := cli.ServerVersion(ctx)
-	logging.Infof("serverVersion=%+v, err=%v", serverVersion, err)
+	logging.Infof("status=connected, serverVersion=%+v, err=%v", ctx, serverVersion, err)
 
 	containers, err := cli.ContainerList(ctx, options)
 	if err != nil {
-		logging.Errorf("status=error-to-list-container, solver=docker, err=%v", err)
+		logging.Errorf("status=error-to-list-container, solver=docker, err=%v", ctx, err)
 		return
+	}
+	
+	if _, err = createDPSNetwork(ctx, cli); err != nil {
+		// todo disable dpsNetwork option here
+		panic(fmt.Sprintf("can't create dps network %+v", err))
 	}
 
 	// more about events here: http://docs-stage.docker.com/v1.10/engine/reference/commandline/events/
@@ -52,7 +59,7 @@ func HandleDockerEvents(){
 	// registering at events before get the list of actual containers, this way no one container will be missed #55
 	body, err := cli.Events(ctx, types.EventsOptions{ Filters: eventFilter })
 	if err != nil {
-		logging.Errorf("status=error-to-attach-at-events-handler, solver=docker, err=%v", err)
+		logging.Errorf("status=error-to-attach-at-events-handler, solver=docker, err=%v", ctx, err)
 		return
 	}
 
@@ -61,18 +68,18 @@ func HandleDockerEvents(){
 		cInspection, err := cli.ContainerInspect(ctx, c.ID)
 		logging.Infof("status=container-from-list-begin, container=%s", cInspection.Name)
 		if err != nil {
-			logging.Errorf("status=inspect-error-at-list, container=%s, err=%v", c.Names, err)
+			logging.Errorf("status=inspect-error-at-list, container=%s, err=%v", ctx, c.Names, err)
 		}
 		hostnames := getHostnames(cInspection)
-		putHostnames(hostnames, cInspection)
-		logging.Infof("status=container-from-list-success, container=%s, hostnames=%s", cInspection.Name, hostnames)
+		putHostnames(ctx, hostnames, cInspection)
+		logging.Infof("status=container-from-list-success, container=%s, hostnames=%s", ctx, cInspection.Name, hostnames)
 
 	}
 	
 	dec := json.NewDecoder(body)
 	for {
 
-		ctx := context.Background()
+		ctx := reference.Context()
 
 		var event events.Message
 		err := dec.Decode(&event)
@@ -82,7 +89,7 @@ func HandleDockerEvents(){
 
 		cInspection, err := cli.ContainerInspect(ctx, event.ID)
 		if err != nil {
-			logging.Warningf("status=inspect-error, id=%s, err=%v", event.ID, err)
+			logging.Warningf("status=inspect-error, id=%s, err=%v", ctx, event.ID, err)
 			continue
 		}
 		hostnames := getHostnames(cInspection)
@@ -90,11 +97,11 @@ func HandleDockerEvents(){
 		if len(action) == 0 {
 			action = event.Status
 		}
-		logging.Infof("status=resolved-hosts, action=%s, hostnames=%s", action, hostnames)
+		logging.Infof("status=resolved-hosts, action=%s, hostnames=%s", ctx, action, hostnames)
 
 		switch action {
 		case "start":
-			putHostnames(hostnames, cInspection)
+			putHostnames(ctx, hostnames, cInspection)
 			break
 
 		case "stop", "die":
@@ -106,6 +113,29 @@ func HandleDockerEvents(){
 		}
 	}
 
+}
+
+func createDPSNetwork(ctx context.Context, cli *client.Client) (types.NetworkCreateResponse, error) {
+	networkName := "dps"
+	res, err := cli.NetworkCreate(ctx, networkName, types.NetworkCreate{
+		CheckDuplicate: true,
+		Driver:         "bridge",
+		EnableIPv6:     false,
+		IPAM:           nil,
+		Internal:       false,
+		Attachable:     true,
+		Options:        nil,
+		Labels: map[string]string{
+			"description":"this is a Dns Proxy Server Network",
+			"version": flags.GetRawCurrentVersion(),
+		},
+	})
+	if err == nil {
+		return res, nil
+	} else if strings.Contains(err.Error(), fmt.Sprintf("network with name %s already exists", networkName)) {
+		return res, nil
+	}
+	return res, err
 }
 
 func GetCache() cache.Cache {
@@ -167,12 +197,12 @@ func getHostnameFromServiceName(inspect types.ContainerJSON) (string, error) {
 	return "", errors.New("service not found")
 }
 
-func putHostnames(hostnames []string, inspect types.ContainerJSON) error {
+func putHostnames(ctx context.Context, hostnames []string, inspect types.ContainerJSON) error {
 	for _, host := range hostnames {
 		networkName := inspect.Config.Labels[defaultNetworkLabel]
 		ip := ""
 		for actualNetwork, network := range inspect.NetworkSettings.Networks {
-			logging.Debugf("container=%s, defaultNetwork=%s, network=%s, ip=%s", inspect.Name, networkName, actualNetwork, network.IPAddress)
+			logging.Debugf("container=%s, defaultNetwork=%s, network=%s, ip=%s", ctx, inspect.Name, networkName, actualNetwork, network.IPAddress)
 			if len(networkName) == 0 || networkName == actualNetwork {
 				ip = network.IPAddress
 				break
@@ -186,7 +216,7 @@ func putHostnames(hostnames []string, inspect types.ContainerJSON) error {
 				return errors.New(err)
 			}
 		}
-		logging.Debugf("host=%s, ip=%s", host, ip)
+		logging.Debugf("host=%s, ip=%s", ctx, host, ip)
 		c.Put(host, ip)
 	}
 	return nil
