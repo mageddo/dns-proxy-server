@@ -12,6 +12,7 @@ import (
 	"github.com/mageddo/dns-proxy-server/cache"
 	"github.com/mageddo/dns-proxy-server/cache/lru"
 	"github.com/mageddo/dns-proxy-server/conf"
+	"github.com/mageddo/dns-proxy-server/docker/dockernetwork"
 	"github.com/mageddo/dns-proxy-server/flags"
 	"github.com/mageddo/dns-proxy-server/reference"
 	"github.com/mageddo/go-logging"
@@ -44,10 +45,9 @@ func HandleDockerEvents(){
 		logging.Errorf("status=error-to-list-container, solver=docker, err=%v", ctx, err)
 		return
 	}
-	
-	if _, err = createDPSNetwork(ctx, cli); err != nil {
-		// todo disable dpsNetwork option here
-		panic(fmt.Sprintf("can't create dps network %+v", err))
+
+	if flags.DpsNetwork() {
+		setupDpsContainerNetwork(ctx, cli)
 	}
 
 	// more about events here: http://docs-stage.docker.com/v1.10/engine/reference/commandline/events/
@@ -57,7 +57,7 @@ func HandleDockerEvents(){
 	eventFilter.Add("event", "stop")
 
 	// registering at events before get the list of actual containers, this way no one container will be missed #55
-	body, err := cli.Events(ctx, types.EventsOptions{ Filters: eventFilter })
+	body, err := cli.Events(ctx, types.EventsOptions{Filters: eventFilter})
 	if err != nil {
 		logging.Errorf("status=error-to-attach-at-events-handler, solver=docker, err=%v", ctx, err)
 		return
@@ -66,16 +66,25 @@ func HandleDockerEvents(){
 	for _, c := range containers {
 
 		cInspection, err := cli.ContainerInspect(ctx, c.ID)
-		logging.Infof("status=container-from-list-begin, container=%s", cInspection.Name)
 		if err != nil {
 			logging.Errorf("status=inspect-error-at-list, container=%s, err=%v", ctx, c.Names, err)
+			continue
 		}
+
 		hostnames := getHostnames(cInspection)
 		putHostnames(ctx, hostnames, cInspection)
-		logging.Infof("status=container-from-list-success, container=%s, hostnames=%s", ctx, cInspection.Name, hostnames)
+
+		if flags.DpsNetworkAutoConnect() {
+			if err := dockernetwork.NetworkConnect(ctx, cli, dockernetwork.DpsNetwork, c.ID, ""); err == nil {
+				logging.Infof("status=network-connected, network=%s, container=%s", ctx, dockernetwork.DpsNetwork, cInspection.Name)
+			} else {
+				logging.Warningf("status=can't-connect-to-dps-network, container=%s", ctx, cInspection.Name, err)
+			}
+		}
+		logging.Infof("status=running-container-processed, container=%s, hostnames=%s", ctx, cInspection.Name, hostnames)
 
 	}
-	
+
 	dec := json.NewDecoder(body)
 	for {
 
@@ -115,27 +124,18 @@ func HandleDockerEvents(){
 
 }
 
-func createDPSNetwork(ctx context.Context, cli *client.Client) (types.NetworkCreateResponse, error) {
-	networkName := "dps"
-	res, err := cli.NetworkCreate(ctx, networkName, types.NetworkCreate{
-		CheckDuplicate: true,
-		Driver:         "bridge",
-		EnableIPv6:     false,
-		IPAM:           nil,
-		Internal:       false,
-		Attachable:     true,
-		Options:        nil,
-		Labels: map[string]string{
-			"description":"this is a Dns Proxy Server Network",
-			"version": flags.GetRawCurrentVersion(),
-		},
-	})
-	if err == nil {
-		return res, nil
-	} else if strings.Contains(err.Error(), fmt.Sprintf("network with name %s already exists", networkName)) {
-		return res, nil
+func setupDpsContainerNetwork(ctx context.Context, cli *client.Client) {
+	if _, err := dockernetwork.CreateOrUpdateDpsNetwork(ctx, cli); err != nil {
+		// todo disable dpsNetwork option here
+		panic(fmt.Sprintf("can't create dps network %+v", err))
 	}
-	return res, err
+	if dpsContainer, err := dockernetwork.FindDpsContainer(ctx, cli); err != nil {
+		logging.Warningf("can't-find-dps-container", ctx, err)
+	} else {
+		if err := dockernetwork.NetworkConnect(ctx, cli, dockernetwork.DpsNetwork, dpsContainer.ID, "172.157.5.249"); err != nil {
+			logging.Warningf("cant-setup-root-container-network, container=%+v", dpsContainer.Names, ctx, err)
+		}
+	}
 }
 
 func GetCache() cache.Cache {
