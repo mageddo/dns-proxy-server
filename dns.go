@@ -144,7 +144,7 @@ func main() {
 		if conf.SetupResolvConf() {
 			for ; ; {
 				logging.Info("status=updating-resolv.conf")
-				err := resolvconf.SetCurrentDNSServerToMachine()
+				err := resolvconf.SetCurrentDnsServerToMachine()
 				if err != nil {
 					logging.Error("status=cant-turn-default-dns", err)
 					exitcodes.Exit(exitcodes.FAIL_SET_DNS_AS_DEFAULT)

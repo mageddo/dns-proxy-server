@@ -12,11 +12,11 @@ type setMachineDNSServerHandler struct {
 func (hd *setMachineDNSServerHandler) process(line string, entryType DnsEntry) *string {
 
 	switch entryType {
-	case PROXY:
+	case Proxy:
 		logging.Infof("status=found-dns-proxy-entry")
 		v := getDNSLine(hd.serverIP)
 		return &v
-	case SERVER:
+	case Server:
 		v := fmt.Sprintf("# %s # dps-comment", line)
 		return &v
 	default:

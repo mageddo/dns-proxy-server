@@ -9,12 +9,12 @@ type dnsServerCleanerHandler struct {
 func (hd dnsServerCleanerHandler) process(line string, entryType DnsEntry) *string {
 
 	switch entryType {
-	case PROXY:
+	case Proxy:
 		return nil
-	case COMMENTED_SERVER:
+	case CommentedServer:
 		v := line[2: strings.Index(line, " # dps-comment")]
 		return &v
-	case SERVER:
+	case Server:
 		return &line
 	default:
 		return &line

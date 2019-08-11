@@ -26,7 +26,7 @@ func TestSetMachineDNSServer_EmptyFileSuccess(t *testing.T) {
 
 	os.OpenFile(TMP_RESOLV_FILE, os.O_TRUNC | os.O_CREATE, 0666)
 	os.Setenv(env.MG_RESOLVCONF, TMP_RESOLV_FILE)
-	err := SetMachineDNSServer("9.9.9.9")
+	err := SetMachineDnsServer("9.9.9.9")
 	if err != nil {
 		t.Error(err)
 	}
@@ -48,7 +48,7 @@ func TestSetMachineDNSServer_WithPreviousDnsServerAndCommentSuccess(t *testing.T
 		t.Error(err)
 	}
 
-	err = SetMachineDNSServer("9.9.9.9")
+	err = SetMachineDnsServer("9.9.9.9")
 	if err != nil {
 		t.Error(err)
 	}
@@ -74,7 +74,7 @@ func TestSetMachineDNSServer_WithPreviousDnsProxyServerAndCommentSuccess(t *test
 		t.Error(err)
 	}
 
-	err = SetMachineDNSServer("9.9.9.9")
+	err = SetMachineDnsServer("9.9.9.9")
 	if err != nil {
 		t.Error(err)
 	}
