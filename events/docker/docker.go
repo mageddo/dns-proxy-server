@@ -194,11 +194,14 @@ func getHostnameFromServiceName(inspect types.ContainerJSON) (string, error) {
 
 func putHostnames(ctx context.Context, hostnames []string, inspect types.ContainerJSON) error {
 	for _, host := range hostnames {
-		networkName := inspect.Config.Labels[defaultNetworkLabel]
+		defaultNetworkName := inspect.Config.Labels[defaultNetworkLabel]
 		ip := ""
-		for actualNetwork, network := range inspect.NetworkSettings.Networks {
-			logging.Debugf("container=%s, defaultNetwork=%s, network=%s, ip=%s", ctx, inspect.Name, networkName, actualNetwork, network.IPAddress)
-			if len(networkName) == 0 || networkName == actualNetwork {
+		for networkName, network := range inspect.NetworkSettings.Networks {
+			logging.Debugf(
+				"container=%s, defaultNetwork=%s, network=%s, ip=%s",
+				ctx, inspect.Name, defaultNetworkName, networkName, network.IPAddress,
+			)
+			if len(defaultNetworkName) == 0 || defaultNetworkName == networkName {
 				ip = network.IPAddress
 				break
 			}
