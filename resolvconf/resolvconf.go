@@ -120,7 +120,7 @@ func SetCurrentDnsServerToMachine(ctx context.Context) error {
 	ip, err := dockernetwork.FindDpsContainerIP(ctx)
 	logging.Debugf("status=container-ip-found", ctx)
 	if err != nil {
-		logging.Debugf("status=container-ip-not-found, err=%+v", ctx, err)
+		logging.Debugf("status=container-ip-not-found, err=%+v", ctx, err.Error())
 		ip, err = GetCurrentIpAddress()
 	}
 	logging.Debugf("status=begin, ip=%s, err=%v", ip, err)
@@ -178,7 +178,6 @@ const(
 	Else            DnsEntry = "ELSE"
 )
 
-// deprecated: replaced by docker/dockernetwork#FindDpsContainerIP
 func GetCurrentIpAddress() (string, error) {
 
 	addrs, err := net.InterfaceAddrs()

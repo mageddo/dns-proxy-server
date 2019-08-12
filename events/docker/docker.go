@@ -190,7 +190,7 @@ func getHostnameFromServiceName(inspect types.ContainerJSON) (string, error) {
 		logging.Debugf("status=service-found, service=%s", v)
 		return fmt.Sprintf("%s.docker", v), nil
 	}
-	return "", errors.New("service not found")
+	return "", errors.New("service not found for container: " + inspect.Name)
 }
 
 func putHostnames(ctx context.Context, predefinedHosts []string, inspect types.ContainerJSON) {

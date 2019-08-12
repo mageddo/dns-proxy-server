@@ -5,5 +5,6 @@ RUN apt-get update && apt-get install --force-yes -y curl
 RUN curl -L https://github.com/mageddo/dns-proxy-server/releases/download/2.14.6/dns-proxy-server-linux-arm-2.14.6.tgz > $TMP_NAME && \
 	tar -xvf $TMP_NAME -C /app/ && rm -f $TMP_NAME && apt-get purge --force-yes -y curl
 
+LABEL dps.container=true
 VOLUME ["/var/run/docker.sock", "/var/run/docker.sock"]
 CMD ["bash", "-c", "/app/dns-proxy-server"]

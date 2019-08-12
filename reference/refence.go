@@ -8,7 +8,7 @@ import (
 const UUID = "UUID"
 
 func Context() context.Context {
-	return context.WithValue(context.Background(), UUID, uuid.UUID())
+	return context.WithValue(context.Background(), UUID, uuid.TruncatedUUID(10))
 }
 
 func getUUID(ctx context.Context) string {
