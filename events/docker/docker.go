@@ -32,6 +32,7 @@ func HandleDockerEvents(){
 		logging.Warningf("status=error-to-connect-at-host, solver=docker, err=%v", err)
 		return
 	}
+
 	dockernetwork.SetupClient(cli)
 
 	// more about list containers https://docs.docker.com/engine/reference/commandline/ps/
@@ -76,14 +77,9 @@ func HandleDockerEvents(){
 		putHostnames(ctx, hostnames, cInspection)
 
 		if flags.DpsNetworkAutoConnect() {
-			if err := dockernetwork.NetworkConnect(ctx, dockernetwork.DpsNetwork, c.ID, ""); err == nil {
-				logging.Infof("status=network-connected, network=%s, container=%s", ctx, dockernetwork.DpsNetwork, cInspection.Name)
-			} else {
-				logging.Warningf("status=can't-connect-to-dps-network, container=%s", ctx, cInspection.Name, err)
-			}
+			dockernetwork.MustNetworkConnect(ctx, dockernetwork.DpsNetwork, c.ID, "")
 		}
-		logging.Infof("status=running-container-processed, container=%s, hostnames=%s", ctx, cInspection.Name, hostnames)
-
+		logging.Infof("status=started-container-processed, container=%s, hostnames=%s", ctx, cInspection.Name, hostnames)
 	}
 
 	dec := json.NewDecoder(body)
@@ -133,9 +129,7 @@ func setupDpsContainerNetwork(ctx context.Context, cli *client.Client) {
 	if dpsContainer, err := dockernetwork.FindDpsContainer(ctx); err != nil {
 		logging.Warningf("can't-find-dps-container, err=%+v", ctx, err)
 	} else {
-		if err := dockernetwork.NetworkConnect(ctx, dockernetwork.DpsNetwork, dpsContainer.ID, "172.157.5.249"); err != nil {
-			logging.Warningf("cant-setup-root-container-network, container=%+v", dpsContainer.Names, ctx, err)
-		}
+		dockernetwork.MustNetworkConnect(ctx, dockernetwork.DpsNetwork, dpsContainer.ID, "172.157.5.249")
 	}
 }
 

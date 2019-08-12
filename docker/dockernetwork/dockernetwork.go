@@ -8,6 +8,7 @@ import (
 	"github.com/docker/engine-api/types/filters"
 	"github.com/docker/engine-api/types/network"
 	"github.com/mageddo/dns-proxy-server/flags"
+	"github.com/mageddo/go-logging"
 	"github.com/pkg/errors"
 	"strings"
 )
@@ -70,6 +71,8 @@ func FindDpsNetwork(ctx context.Context, name string) (*types.NetworkResource, e
 func MustNetworkConnect(ctx context.Context, networkId string, containerId string, networkIpAddress string) {
 	if err := NetworkConnect(ctx, networkId, containerId, networkIpAddress); err != nil {
 		panic(errors.WithMessage(err, fmt.Sprintf("can't connect container %s to network %s", containerId, networkId)))
+	} else {
+		logging.Infof("status=network-connected, network=%s, container=%s", ctx, networkId, containerId)
 	}
 }
 func NetworkConnect(ctx context.Context, networkId string, containerId string, networkIpAddress string) error {
