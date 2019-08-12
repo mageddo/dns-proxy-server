@@ -67,6 +67,11 @@ func FindDpsNetwork(ctx context.Context, name string) (*types.NetworkResource, e
 	return nil, errors.New("didn't found the specified network: " + name)
 }
 
+func MustNetworkConnect(ctx context.Context, networkId string, containerId string, networkIpAddress string) {
+	if err := NetworkConnect(ctx, networkId, containerId, networkIpAddress); err != nil {
+		panic(errors.WithMessage(err, fmt.Sprintf("can't connect container %s to network %s", containerId, networkId)))
+	}
+}
 func NetworkConnect(ctx context.Context, networkId string, containerId string, networkIpAddress string) error {
 	//if err := cli.NetworkDisconnect(ctx, networkId, containerId, true);
 	//	err != nil &&

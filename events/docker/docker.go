@@ -111,6 +111,7 @@ func HandleDockerEvents(){
 
 		switch action {
 		case "start":
+			dockernetwork.MustNetworkConnect(ctx, dockernetwork.DpsNetwork, cInspection.ID, "")
 			putHostnames(ctx, hostnames, cInspection)
 			break
 
@@ -119,7 +120,6 @@ func HandleDockerEvents(){
 				c.Remove(host)
 			}
 			break
-
 		}
 	}
 
