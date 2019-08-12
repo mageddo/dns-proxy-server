@@ -117,17 +117,24 @@ func FindDpsContainerIP(ctx context.Context) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return FindBestIP(container), nil
+	if containerJSON, err := cli.ContainerInspect(ctx, container.ID); err == nil {
+		return FindBestIP(containerJSON), nil
+	} else {
+		return "", errors.WithMessage(err, fmt.Sprintf("can't inspect container: %+v", container.Names))
+	}
 }
 
-func FindBestIP(container *types.Container) string {
-	var ip string
-	if ip = GetIPFromNetworksMap(container.NetworkSettings.Networks, DpsNetwork); ip != "" {
-		return ip
-	} else if ip = GetIPFromNetworksMap(container.NetworkSettings.Networks, "bridge"); ip != "" {
-		return ip
+func FindBestIP(container types.ContainerJSON) string {
+	return FindBestIPForNetworks(container, DpsNetwork, "bridge")
+}
+
+func FindBestIPForNetworks(container types.ContainerJSON, networks ... string) string {
+	for _, network := range networks {
+		if ip := GetIPFromNetworksMap(container.NetworkSettings.Networks, network); ip != "" {
+			return ip
+		}
 	}
-	return ""
+	return container.NetworkSettings.IPAddress
 }
 
 func GetIPFromNetworksMap(networks map[string]*network.EndpointSettings, key string) string {

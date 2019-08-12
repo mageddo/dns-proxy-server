@@ -137,6 +137,7 @@ func GetCache() cache.Cache {
 	return c
 }
 
+// retrieve hostnames which should be registered given the container
 func getHostnames(inspect types.ContainerJSON) []string {
 	hostnames := *new([]string)
 	if machineHostname, err := getMachineHostname(inspect); err == nil {
