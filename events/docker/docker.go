@@ -29,6 +29,7 @@ func HandleDockerEvents(){
 	// connecting to docker api
 	cli, err := client.NewClient("unix:///var/run/docker.sock", "v1.21", nil, nil)
 	if err != nil {
+		// todo set a mock client here this way dps will not fail
 		logging.Warningf("status=error-to-connect-at-host, solver=docker, err=%v", err)
 		return
 	}
@@ -129,7 +130,9 @@ func setupDpsContainerNetwork(ctx context.Context, cli *client.Client) {
 	if dpsContainer, err := dockernetwork.FindDpsContainer(ctx); err != nil {
 		logging.Warningf("can't-find-dps-container, err=%+v", ctx, err)
 	} else {
-		dockernetwork.MustNetworkConnect(ctx, dockernetwork.DpsNetwork, dpsContainer.ID, "172.157.5.249")
+		dpsContainerIP := "172.157.5.249"
+		dockernetwork.MustNetworkDisconnectForIp(ctx, dockernetwork.DpsNetwork, dpsContainerIP)
+		dockernetwork.MustNetworkConnect(ctx, dockernetwork.DpsNetwork, dpsContainer.ID, dpsContainerIP)
 	}
 }
 

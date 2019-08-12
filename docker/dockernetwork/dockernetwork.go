@@ -68,19 +68,38 @@ func FindDpsNetwork(ctx context.Context, name string) (*types.NetworkResource, e
 	return nil, errors.New("didn't found the specified network: " + name)
 }
 
+func MustNetworkDisconnectForIp(ctx context.Context, networkId string, containerIP string) {
+	if foundNetwork, err := FindDpsNetwork(ctx, networkId); err != nil {
+		panic(errors.WithMessage(err, fmt.Sprintf("can't find network=%s", networkId)))
+	} else {
+		for containerId, container := range foundNetwork.Containers {
+			if strings.Contains(container.IPv4Address, containerIP) {
+				logging.Infof("status=detaching-another-dps, ip=%s, old-container=%s", containerIP, container.Name)
+				MustNetworkDisconnect(ctx, networkId, containerId)
+			}
+		}
+	}
+}
+
+func MustNetworkDisconnect(ctx context.Context, networkId, containerId string){
+	if err := cli.NetworkDisconnect(ctx, networkId, containerId, true);
+		err != nil &&
+		!strings.Contains(err.Error(), fmt.Sprintf("is not connected to network %s", DpsNetwork)) {
+		panic(fmt.Sprintf("could not disconnect dps container from dps network: %+v", err))
+	}
+}
+
 func MustNetworkConnect(ctx context.Context, networkId string, containerId string, networkIpAddress string) {
 	if err := NetworkConnect(ctx, networkId, containerId, networkIpAddress); err != nil {
-		panic(errors.WithMessage(err, fmt.Sprintf("can't connect container %s to network %s", containerId, networkId)))
+		panic(errors.WithMessage(err, fmt.Sprintf(
+			"can't connect container %s to network %s, ip=%s", containerId, networkId, networkIpAddress,
+		)))
 	} else {
 		logging.Infof("status=network-connected, network=%s, container=%s", ctx, networkId, containerId)
 	}
 }
+
 func NetworkConnect(ctx context.Context, networkId string, containerId string, networkIpAddress string) error {
-	//if err := cli.NetworkDisconnect(ctx, networkId, containerId, true);
-	//	err != nil &&
-	//	!strings.Contains(err.Error(), fmt.Sprintf("is not connected to network %s", DpsNetwork)) {
-	//	panic(fmt.Sprintf("could not disconnect dps container from dps network: %+v", err))
-	//}
 	err := cli.NetworkConnect(ctx, networkId, containerId, &network.EndpointSettings{
 		NetworkID: networkId,
 		IPAddress: networkIpAddress,
@@ -98,6 +117,7 @@ func FindDpsContainer(ctx context.Context) (*types.Container, error) {
 	if args, err := filters.ParseFlag("label=dps.container=true", filters.NewArgs()); err != nil {
 		return nil, errors.WithMessage(err, "can't parse flags")
 	} else {
+		logging.Infof("cli=%+v", cli)
 		if containers, err := cli.ContainerList(ctx, types.ContainerListOptions{
 			Filter: args,
 		}); err != nil {
