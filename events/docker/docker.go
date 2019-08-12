@@ -140,7 +140,7 @@ func GetCache() cache.Cache {
 // retrieve hostnames which should be registered given the container
 func getHostnames(inspect types.ContainerJSON) []string {
 	hostnames := *new([]string)
-	if machineHostname, err := getMachineHostname(inspect); err == nil {
+	if machineHostname, err := getContainerHostname(inspect); err == nil {
 		hostnames = append(hostnames, machineHostname)
 	}
 	hostnames = append(hostnames, getHostnamesFromEnv(inspect)...)
@@ -169,7 +169,7 @@ func getHostnamesFromEnv(inspect types.ContainerJSON) ([]string){
 }
 
 // Returns current docker container machine hostname
-func getMachineHostname(inspect types.ContainerJSON) (string, error) {
+func getContainerHostname(inspect types.ContainerJSON) (string, error) {
 	if len(inspect.Config.Hostname) != 0 {
 		if len(inspect.Config.Domainname) != 0 {
 			return fmt.Sprintf("%s.%s", inspect.Config.Hostname, inspect.Config.Domainname), nil
@@ -193,30 +193,11 @@ func getHostnameFromServiceName(inspect types.ContainerJSON) (string, error) {
 	return "", errors.New("service not found")
 }
 
-func putHostnames(ctx context.Context, hostnames []string, inspect types.ContainerJSON) error {
-	for _, host := range hostnames {
-		defaultNetworkName := inspect.Config.Labels[defaultNetworkLabel]
-		ip := ""
-		for networkName, network := range inspect.NetworkSettings.Networks {
-			logging.Debugf(
-				"container=%s, defaultNetwork=%s, network=%s, ip=%s",
-				ctx, inspect.Name, defaultNetworkName, networkName, network.IPAddress,
-			)
-			if len(defaultNetworkName) == 0 || defaultNetworkName == networkName {
-				ip = network.IPAddress
-				break
-			}
-		}
-		if len(ip) == 0 {
-			ip = inspect.NetworkSettings.IPAddress
-			if len(ip) == 0 {
-				err := fmt.Sprintf("no network found to %s", inspect.Name)
-				logging.Error(err)
-				return errors.New(err)
-			}
-		}
-		logging.Debugf("host=%s, ip=%s", ctx, host, ip)
+func putHostnames(ctx context.Context, predefinedHosts []string, inspect types.ContainerJSON) {
+	preferredNetwork := inspect.Config.Labels[defaultNetworkLabel]
+	ip := dockernetwork.FindBestIPForNetworks(inspect, preferredNetwork, dockernetwork.DpsNetwork, "bridge")
+	for _, host := range predefinedHosts {
+		logging.Debugf("host=%s, ip=%s, preferredNetworkName=%s", ctx, host, ip, preferredNetwork)
 		c.Put(host, ip)
 	}
-	return nil
 }
