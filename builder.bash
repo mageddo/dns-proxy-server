@@ -146,7 +146,7 @@ case $1 in
 		export GOOS=$2
 		export GOARCH=$3
 		echo "> Compiling os=${GOOS}, arch=${GOARCH}"
-		go build -o $PWD/build/dns-proxy-server -ldflags "-X github.com/mageddo/dns-proxy-server/flags.version=$APP_VERSION"
+		CGO_ENABLED=0 go build -o $PWD/build/dns-proxy-server -ldflags "-s -w -X github.com/mageddo/dns-proxy-server/flags.version=$APP_VERSION"
 		TAR_FILE=dns-proxy-server-${GOOS}-${GOARCH}-${APP_VERSION}.tgz
 		cd $PWD/build/
 		tar --exclude=*.tgz -czf $TAR_FILE *
