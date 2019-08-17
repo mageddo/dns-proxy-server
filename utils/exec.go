@@ -42,7 +42,7 @@ func Exists(cmd string) bool {
 	case 0:
 		return true
 	case -255:
-		panic("Command verificator not exists")
+		panic("Command checker not exists")
 	default:
 		return false
 
