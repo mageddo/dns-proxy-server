@@ -122,6 +122,17 @@ func SetCurrentDnsServerToMachine(ctx context.Context) error {
 	}
 }
 
+func GetGatewayIP(ctx context.Context) (string, error) {
+	if dockernetwork.IsDockerConnected() {
+		if ip, err := dockernetwork.FindDpsNetworkGatewayIp(ctx); err == nil {
+			logging.Debugf("status=gateway-ip, ip=%s", ip)
+			return ip, nil
+		}
+	}
+	logging.Debugf("status=machine-ip")
+	return GetCurrentIpAddress()
+}
+
 func GetDpsIP(ctx context.Context) (string, error) {
 	if dockernetwork.IsDockerConnected() {
 		if ip, err := dockernetwork.FindDpsContainerIP(ctx); err == nil {
@@ -130,13 +141,10 @@ func GetDpsIP(ctx context.Context) (string, error) {
 		} else if ip, err = dockernetwork.FindDpsNetworkGatewayIp(ctx); err == nil {
 			logging.Debugf("status=gateway-ip, ip=%s", ip)
 			return ip, nil
-		} else {
-			logging.Debugf("status=machine-ip, ip=%s", ip)
-			return GetCurrentIpAddress()
 		}
-	} else {
-		return GetCurrentIpAddress()
 	}
+	logging.Debugf("status=machine-ip")
+	return GetCurrentIpAddress()
 }
 
 func LockResolvConf() error {

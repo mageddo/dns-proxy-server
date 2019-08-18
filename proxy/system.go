@@ -21,7 +21,7 @@ func (s SystemDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns
 	questionName := question.Name[:len(question.Name)-1]
 	switch questionName {
 	case conf.GetHostname(), resolvconf.GetHostname(conf.GetHostname()):
-		ip, err := resolvconf.GetDpsIP(ctx)
+		ip, err := resolvconf.GetGatewayIP(ctx)
 		return s.getMsg(questionName, ip, question), err
 	}
 	return nil, errors.New("host not found")
