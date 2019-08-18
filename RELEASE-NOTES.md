@@ -1,3 +1,7 @@
+### 2.15.0
+* Now DPS have your own network this way it can access and be accessed
+by all docker containers, this feature is enabled by default 
+
 ### 2.14.6
 * Fixing ping slowness
 
