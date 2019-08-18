@@ -29,8 +29,8 @@ var (
 	Version                = flag.Bool("version", false, "Current version")
 	HostMachineHostname    = flag.String("host-machine-hostname", "host.docker", "The hostname to get host machine IP")
 	Domain                 = flag.String("domain", "docker", "Domain utilized to solver containers and services hostnames")
-	dpsNetwork             = flag.Bool("dps-network", true, "Create a bridge network for DPS increasing compatibility")
-	dpsNetworkAutoConnect  = flag.Bool("dps-network-auto-connect", true, "Connect all running and new containers to the DPS network, this way you will probably not have resolution issues by acl")
+	dpsNetwork             = flag.Bool("dps-network", false, "Create a bridge network for DPS increasing compatibility")
+	dpsNetworkAutoConnect  = flag.Bool("dps-network-auto-connect", false, "Connect all running and new containers to the DPS network, this way you will probably not have resolution issues by acl (implies dps-network=true)")
 	Help                   = flag.Bool("help", false, "This message")
 )
 
@@ -76,7 +76,7 @@ func RegisterContainerNames() bool {
 }
 
 func DpsNetwork() bool {
-	return *dpsNetwork
+	return *dpsNetwork || DpsNetworkAutoConnect()
 }
 
 func DpsNetworkAutoConnect() bool {

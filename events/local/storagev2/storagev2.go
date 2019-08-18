@@ -29,8 +29,8 @@ type ConfigurationV2 struct {
 	// domain utilized to solve container names
 	Domain string `json:"domain"`
 
-	DpsNetwork *bool
-	DpsNetworkAutoConnect *bool
+	DpsNetwork *bool `json:"dpsNetwork"`
+	DpsNetworkAutoConnect *bool `json:"dpsNetworkAutoConnect"`
 }
 
 type EnvV2 struct {

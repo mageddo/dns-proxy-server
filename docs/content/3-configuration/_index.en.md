@@ -93,6 +93,10 @@ __Version 1__
     	This DNS server will be the default server for this machine (default true)
   -domain string
     	Domain utilized to solver containers and services hostnames (default "docker")
+  -dps-network
+    	Create a bridge network for DPS increasing compatibility
+  -dps-network-auto-connect
+    	Connect all running and new containers to the DPS network, this way you will probably not have resolution issues by acl (implies dps-network=true)
   -help
     	This message
   -host-machine-hostname string

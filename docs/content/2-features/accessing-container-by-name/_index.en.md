@@ -4,7 +4,7 @@ weight: 7
 ---
 
 ```bash
-$ docker run -rm nginx --name my-nginx
+$ docker run --rm --name my-nginx nginx
 ```
 
 ```bash

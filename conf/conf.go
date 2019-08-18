@@ -135,6 +135,10 @@ func GetDpsDomain() string {
 }
 
 func DpsNetwork() bool {
+	return DpsNetworkAutoConnect() || dpsNetwork0()
+}
+
+func dpsNetwork0() bool {
 	if v := os.Getenv(env.MG_DPS_NETWORK); len(strings.TrimSpace(v)) > 0 {
 		return v == "1"
 	}

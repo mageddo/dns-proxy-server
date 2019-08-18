@@ -40,13 +40,13 @@ func LoadConfiguration() (*localvo.Configuration, error){
 			return configuration, nil
 		}
 	} else {
-		ptrue := true
+		pfalse := false
 		defaultConfig := &localvo.Configuration{
 			Version:          2,
 			Envs:             make([]localvo.Env, 0),
 			RemoteDnsServers: make([]localvo.DNSServer, 0),
-			DpsNetwork: &ptrue,
-			DpsNetworkAutoConnect: &ptrue,
+			DpsNetwork: &pfalse,
+			DpsNetworkAutoConnect: &pfalse,
 		}
 		storeDefaultConfig(defaultConfig)
 		return defaultConfig, nil
