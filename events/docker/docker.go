@@ -12,7 +12,6 @@ import (
 	"github.com/mageddo/dns-proxy-server/cache/lru"
 	"github.com/mageddo/dns-proxy-server/conf"
 	"github.com/mageddo/dns-proxy-server/docker/dockernetwork"
-	"github.com/mageddo/dns-proxy-server/flags"
 	"github.com/mageddo/dns-proxy-server/reference"
 	"github.com/mageddo/go-logging"
 	"github.com/pkg/errors"
@@ -50,7 +49,7 @@ func HandleDockerEvents(){
 		return
 	}
 
-	if flags.DpsNetwork() && dockernetwork.IsDockerConnected() {
+	if conf.DpsNetwork() && dockernetwork.IsDockerConnected() {
 		setupDpsContainerNetwork(ctx)
 	}
 
@@ -69,7 +68,7 @@ func HandleDockerEvents(){
 
 	for _, c := range containers {
 
-		if flags.DpsNetworkAutoConnect() {
+		if conf.DpsNetworkAutoConnect() {
 			dockernetwork.MustNetworkConnect(ctx, dockernetwork.DpsNetwork, c.ID, "")
 		}
 
@@ -185,7 +184,7 @@ func getContainerHostname(inspect types.ContainerJSON) (string, error) {
 }
 
 func getHostnameFromContainerName(inspect types.ContainerJSON) string {
-	return fmt.Sprintf("%s.%s", inspect.Name[1:], conf.GetDPSDomain())
+	return fmt.Sprintf("%s.%s", inspect.Name[1:], conf.GetDpsDomain())
 }
 
 func getHostnameFromServiceName(inspect types.ContainerJSON) (string, error) {

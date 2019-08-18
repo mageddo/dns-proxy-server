@@ -16,14 +16,14 @@ type Configuration struct {
 	 * it will try one by one in order, if no one is specified then 8.8.8.8 is used by default
 	 * DO NOT call this variable directly, use GetRemoteDnsServers instead
 	 */
-	RemoteDnsServers []DNSServer
-	Envs []Env
-	ActiveEnv string
-	WebServerPort int
-	DnsServerPort int
-	DefaultDns *bool
-	LogLevel string
-	LogFile string
+	RemoteDnsServers       []DNSServer
+	Envs                   []Env
+	ActiveEnv              string
+	WebServerPort          int
+	DnsServerPort          int
+	DefaultDns             *bool
+	LogLevel               string
+	LogFile                string
 	RegisterContainerNames *bool
 
 	// hostname to solve host machine IP
@@ -31,6 +31,10 @@ type Configuration struct {
 
 	// domain utilized to solve container names
 	Domain string
+
+	// if dps should use his own network
+	DpsNetwork            *bool
+	DpsNetworkAutoConnect *bool
 }
 
 type Env struct {

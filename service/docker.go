@@ -16,7 +16,7 @@ func NewDockerScript() *Script {
 		`-v /etc/resolv.conf:/etc/resolv.conf ` +
 		`defreitas/dns-proxy-server:%s'`
 	script = fmt.Sprintf(
-		script, fmt.Sprintf("dns.mageddo,%s", conf.FormatDPSDomain("dns")),
+		script, fmt.Sprintf("dns.mageddo,%s", conf.FormatDpsDomain("dns")),
 		getExposedPort(), flags.GetRawCurrentVersion(),
 	)
 	return &Script{script}

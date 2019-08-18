@@ -101,8 +101,8 @@ func GetString(value, defaultValue string) string {
 }
 
 func ShouldRegisterContainerNames() bool {
-	if v := os.Getenv(env.MG_REGISTER_CONTAINER_NAMES); v == "1" {
-		return true
+	if v := os.Getenv(env.MG_REGISTER_CONTAINER_NAMES); len(strings.TrimSpace(v)) > 0 {
+		return v == "1"
 	}
 	if conf, _ := getConf(); conf != nil && conf.RegisterContainerNames != nil {
 		return *conf.RegisterContainerNames
@@ -120,10 +120,11 @@ func GetHostname() string {
 	return *flags.HostMachineHostname
 }
 
-func FormatDPSDomain(subdomain string) string {
-	return fmt.Sprintf("%s.%s", subdomain, GetDPSDomain())
+func FormatDpsDomain(subdomain string) string {
+	return fmt.Sprintf("%s.%s", subdomain, GetDpsDomain())
 }
-func GetDPSDomain() string {
+
+func GetDpsDomain() string {
 	if domain := os.Getenv(env.MG_DOMAIN); len(strings.TrimSpace(domain)) != 0 {
 		return domain
 	}
@@ -131,4 +132,24 @@ func GetDPSDomain() string {
 		return conf.Domain
 	}
 	return *flags.Domain
+}
+
+func DpsNetwork() bool {
+	if v := os.Getenv(env.MG_DPS_NETWORK); len(strings.TrimSpace(v)) > 0 {
+		return v == "1"
+	}
+	if conf, _ := getConf(); conf.DpsNetwork != nil {
+		return *conf.DpsNetwork
+	}
+	return flags.DpsNetwork()
+}
+
+func DpsNetworkAutoConnect() bool {
+	if v := os.Getenv(env.MG_DPS_NETWORK_AUTO_CONNECT); len(strings.TrimSpace(v)) > 0 {
+		return v == "1"
+	}
+	if conf, _ := getConf(); conf.DpsNetwork != nil {
+		return *conf.DpsNetworkAutoConnect
+	}
+	return flags.DpsNetworkAutoConnect()
 }
