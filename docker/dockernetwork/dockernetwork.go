@@ -52,13 +52,22 @@ func CreateOrUpdateDpsNetwork(ctx context.Context) (types.NetworkCreateResponse,
 }
 
 func FindNetworkGatewayIp(ctx context.Context, name string) (string, error) {
-	if networkResource, err := FindDpsNetwork(ctx, name); err != nil {
+	if networkResource, err := FindNetwork(ctx, name); err != nil {
 		return "", err
 	} else  {
 		return networkResource.IPAM.Config[0].Gateway, nil
 	}
 }
-func FindDpsNetwork(ctx context.Context, name string) (*types.NetworkResource, error) {
+
+func FindDpsNetworkGatewayIp(ctx context.Context) (string, error) {
+	return FindNetworkGatewayIp(ctx, DpsNetwork)
+}
+
+func FindDpsNetwork(ctx context.Context) (*types.NetworkResource, error) {
+	return FindNetwork(ctx, DpsNetwork)
+}
+
+func FindNetwork(ctx context.Context, name string) (*types.NetworkResource, error) {
 	args, err := filters.ParseFlag(fmt.Sprintf("name=^%s$", name), filters.NewArgs())
 	if err != nil {
 		panic(errors.WithMessage(err, "can't parse args"))
@@ -73,7 +82,7 @@ func FindDpsNetwork(ctx context.Context, name string) (*types.NetworkResource, e
 }
 
 func MustNetworkDisconnectForIp(ctx context.Context, networkId string, containerIP string) {
-	if foundNetwork, err := FindDpsNetwork(ctx, networkId); err != nil {
+	if foundNetwork, err := FindNetwork(ctx, networkId); err != nil {
 		panic(errors.WithMessage(err, fmt.Sprintf("can't find network=%s", networkId)))
 	} else {
 		for containerId, container := range foundNetwork.Containers {
@@ -118,21 +127,25 @@ func NetworkConnect(ctx context.Context, networkId string, containerId string, n
 }
 
 func FindDpsContainer(ctx context.Context) (*types.Container, error) {
-	if args, err := filters.ParseFlag("label=dps.container=true", filters.NewArgs()); err != nil {
-		return nil, errors.WithMessage(err, "can't parse flags")
+	logging.Debugf("cli=%+v", cli)
+	if containers, err := cli.ContainerList(ctx, types.ContainerListOptions {
+		Filter: mustParseDpsContainerFlags(),
+	}); err != nil {
+		return nil, errors.WithMessage(err, "can't list containers")
 	} else {
-		logging.Infof("cli=%+v", cli)
-		if containers, err := cli.ContainerList(ctx, types.ContainerListOptions{
-			Filter: args,
-		}); err != nil {
-			return nil, errors.WithMessage(err, "can't list containers")
+		if len(containers) == 1 {
+			return &containers[0], nil
 		} else {
-			if len(containers) == 1 {
-				return &containers[0], nil
-			} else {
-				return nil, errors.New(fmt.Sprintf("containers result must be exactly one but found: %d", len(containers)))
-			}
+			return nil, errors.New(fmt.Sprintf("containers result must be exactly one but found: %d", len(containers)))
 		}
+	}
+}
+
+func mustParseDpsContainerFlags() filters.Args {
+	if args, err := filters.ParseFlag("label=dps.container=true", filters.NewArgs()); err != nil {
+		panic(errors.WithMessage(err, "can't parse flags"))
+	} else {
+		return args
 	}
 }
 

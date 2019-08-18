@@ -129,7 +129,7 @@ func setupDpsContainerNetwork(ctx context.Context) {
 		panic(fmt.Sprintf("can't create dps network %+v", err))
 	}
 	if dpsContainer, err := dockernetwork.FindDpsContainer(ctx); err != nil {
-		logging.Warningf("can't-find-dps-container, err=%+v", ctx, err)
+		logging.Infof("status=can't-find-dps-container, err=%+v", ctx, err.Error())
 	} else {
 		dpsContainerIP := "172.157.5.249"
 		dockernetwork.MustNetworkDisconnectForIp(ctx, dockernetwork.DpsNetwork, dpsContainerIP)

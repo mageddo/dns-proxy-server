@@ -3,7 +3,6 @@ package proxy
 import (
 	"errors"
 	"github.com/mageddo/dns-proxy-server/conf"
-	"github.com/mageddo/dns-proxy-server/docker/dockernetwork"
 	"github.com/mageddo/dns-proxy-server/resolvconf"
 	"github.com/mageddo/dns-proxy-server/utils"
 	"github.com/mageddo/go-logging"
@@ -22,14 +21,8 @@ func (s SystemDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns
 	questionName := question.Name[:len(question.Name)-1]
 	switch questionName {
 	case conf.GetHostname(), resolvconf.GetHostname(conf.GetHostname()):
-		if dockernetwork.IsDockerConnected() {
-			ip, err := dockernetwork.FindNetworkGatewayIp(ctx, dockernetwork.DpsNetwork);
-			logging.Infof("status=solved, solver=system, question=%s", ctx, questionName, err)
-			return s.getMsg(questionName, ip, question), nil
-		} else {
-			ip, err := getLocalMachineIp(ctx, questionName)
-			return s.getMsg(questionName, ip, question), err
-		}
+		ip, err := resolvconf.GetDpsIP(ctx)
+		return s.getMsg(questionName, ip, question), err
 	}
 	return nil, errors.New("host not found")
 }

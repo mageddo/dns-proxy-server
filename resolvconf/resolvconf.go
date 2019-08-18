@@ -115,16 +115,25 @@ func getDnsEntryType(line string) DnsEntry {
 }
 
 func SetCurrentDnsServerToMachine(ctx context.Context) error {
-	if ip, err := getIP(ctx); err == nil {
+	if ip, err := GetDpsIP(ctx); err == nil {
 		return SetMachineDnsServer(ip)
 	} else {
 		return errors.WithMessage(err, "can't set dps dns server to host machine")
 	}
 }
 
-func getIP(ctx context.Context) (string, error) {
+func GetDpsIP(ctx context.Context) (string, error) {
 	if dockernetwork.IsDockerConnected() {
-		return dockernetwork.FindDpsContainerIP(ctx)
+		if ip, err := dockernetwork.FindDpsContainerIP(ctx); err == nil {
+			logging.Debugf("status=container-ip, ip=%s", ip)
+			return ip, nil
+		} else if ip, err = dockernetwork.FindDpsNetworkGatewayIp(ctx); err == nil {
+			logging.Debugf("status=gateway-ip, ip=%s", ip)
+			return ip, nil
+		} else {
+			logging.Debugf("status=machine-ip, ip=%s", ip)
+			return GetCurrentIpAddress()
+		}
 	} else {
 		return GetCurrentIpAddress()
 	}
