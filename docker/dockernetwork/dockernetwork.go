@@ -20,7 +20,7 @@ func GetCli() *client.Client {
 	return cli
 }
 
-func SetupCli(cli_ *client.Client){
+func SetCli(cli_ *client.Client){
 	cli = cli_
 }
 

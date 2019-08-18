@@ -40,7 +40,7 @@ func HandleDockerEvents(){
 	}
 	logging.Infof("status=connected, serverVersion=%+v, err=%v", ctx, serverVersion, err)
 
-	dockernetwork.SetupCli(cli)
+	dockernetwork.SetCli(cli)
 
 	// more about list containers https://docs.docker.com/engine/reference/commandline/ps/
 	options := types.ContainerListOptions{}
