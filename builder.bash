@@ -29,7 +29,7 @@ upload_file(){
 
 assemble(){
 	echo "> Testing ..."
-	go test -race -cover -ldflags "-X github.com/mageddo/dns-proxy-server/flags.version=test" ./.../
+	go test -cover -ldflags "-X github.com/mageddo/dns-proxy-server/flags.version=test" ./.../
 	echo "> Tests completed"
 
 	echo "> Building..."
