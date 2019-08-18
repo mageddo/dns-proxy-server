@@ -220,6 +220,22 @@ func GetIPFromNetworksMap(networks map[string]*network.EndpointSettings, key str
 	return theNetwork.IPAddress
 }
 
+func DisconnectNetworkContainers(ctx context.Context, networkId string) []error {
+	if networkResource, err := FindNetworkByID(ctx, networkId); err != nil {
+		return []error{errors.WithMessage(err, fmt.Sprintf("cant inspect network: %s", networkId))}
+	} else {
+		var errs []error
+		for cid := range networkResource.Containers {
+			if err := cli.NetworkDisconnect(ctx, networkId, cid, true); err != nil {
+				errs = append(errs, errors.WithMessage(err, fmt.Sprintf("cant disconnect container %s", cid)))
+			} else {
+				errs = append(errs, errors.New(fmt.Sprintf("success for %s", cid)))
+			}
+		}
+		return errs
+	}
+}
+
 func alreadyCreated(err error) bool {
 	return strings.Contains(err.Error(), fmt.Sprintf("network with name %s already exists", DpsNetwork))
 }
