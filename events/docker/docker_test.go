@@ -175,8 +175,8 @@ func TestMustSolveIPFromDpsNetworkWhenSet(t *testing.T){
 	inspect.Name = "/nginx-container"
 	inspect.NetworkSettings = new(types.NetworkSettings)
 	inspect.NetworkSettings.Networks = make(map[string]*network.EndpointSettings)
-	inspect.NetworkSettings.Networks[dockernetwork.DpsNetwork] = createNetwork("192.168.0.1", "123")
-	inspect.NetworkSettings.Networks["network-2"] = createNetwork("192.168.0.2", "124")
+	inspect.NetworkSettings.Networks["network-1"] = createNetwork("192.168.0.1", "123")
+	inspect.NetworkSettings.Networks[dockernetwork.DpsNetwork] = createNetwork("192.168.0.2", "124")
 	inspect.NetworkSettings.Networks["network-3"] = createNetwork("192.168.0.3", "125")
 
 	// act
@@ -184,7 +184,7 @@ func TestMustSolveIPFromDpsNetworkWhenSet(t *testing.T){
 	foundHostname := c.Get("acme.com")
 
 	// assert
-	assert.Equal(t, foundHostname, "192.168.0.1")
+	assert.Equal(t, foundHostname, "192.168.0.2")
 }
 
 func createNetwork(ip string, id string) *network.EndpointSettings {
