@@ -16,13 +16,13 @@ import (
 )
 
 const DpsNetwork = "dps"
-var cli *client.Client = nil
+var cli client.APIClient = nil
 
-func GetCli() *client.Client {
+func GetCli() client.APIClient {
 	return cli
 }
 
-func SetCli(cli_ *client.Client){
+func SetCli(cli_ client.APIClient){
 	cli = cli_
 }
 
@@ -82,7 +82,7 @@ func FindNetworkByID(ctx context.Context, id string) (*types.NetworkResource, er
 }
 
 func FindNetwork(ctx context.Context, args ... string) (*types.NetworkResource, error) {
-	networks, err := cli.NetworkList(ctx, types.NetworkListOptions{Filters: mustParseFlags(args...)})
+	networks, err := cli.NetworkList(ctx, types.NetworkListOptions{Filters: MustParseFlags(args...)})
 	if err != nil {
 		return nil, errors.WithMessage(err, "can't list networks")
 	} else if len(networks) == 1 {
@@ -142,7 +142,7 @@ func NetworkConnect(ctx context.Context, networkId string, containerId string, n
 func FindDpsContainer(ctx context.Context) (*types.Container, error) {
 	logging.Debugf("cli=%+v", cli)
 	if containers, err := cli.ContainerList(ctx, types.ContainerListOptions {
-		Filter: mustParseFlags("status=running", "label=dps.container=true"),
+		Filter: MustParseFlags("status=running", "label=dps.container=true"),
 	}); err != nil {
 		return nil, errors.WithMessage(err, "can't list containers")
 	} else {
@@ -167,7 +167,7 @@ func toContainerNames(containers []types.Container) []string {
 	return containersNames
 }
 
-func mustParseFlags(flags ... string) filters.Args {
+func MustParseFlags(flags ... string) filters.Args {
 	args := filters.NewArgs()
 	for _, filter := range flags {
 		var err error
