@@ -28,6 +28,9 @@ type ConfigurationV2 struct {
 
 	// domain utilized to solve container names
 	Domain string `json:"domain"`
+
+	DpsNetwork *bool
+	DpsNetworkAutoConnect *bool
 }
 
 type EnvV2 struct {
@@ -59,6 +62,8 @@ func ValueOf(c *localvo.Configuration) *ConfigurationV2 {
 		RemoteDnsServers:       localvo.ToIpsStringArray(c.RemoteDnsServers),
 		WebServerPort:          c.WebServerPort,
 		Envs:                   toV2Envs(c.Envs),
+		DpsNetwork:             c.DpsNetwork,
+		DpsNetworkAutoConnect:  c.DpsNetworkAutoConnect,
 	}
 }
 
@@ -114,6 +119,8 @@ func (c *ConfigurationV2) ToConfig() *localvo.Configuration {
 		RegisterContainerNames: c.RegisterContainerNames,
 		RemoteDnsServers:       localvo.StringArrayToDnsServer(c.RemoteDnsServers),
 		WebServerPort:          c.WebServerPort,
+		DpsNetwork:             c.DpsNetwork,
+		DpsNetworkAutoConnect:  c.DpsNetworkAutoConnect,
 	}
 }
 
