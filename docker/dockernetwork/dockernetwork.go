@@ -143,18 +143,36 @@ func FindDpsContainer(ctx context.Context) (*types.Container, error) {
 	} else {
 		if len(containers) == 1 {
 			return &containers[0], nil
+		} else if len(containers) > 1 {
+			logging.Warningf(
+				"status=multiple-dps-containers-found, action=using-the-first, containers=%+v", toContainerNames(containers),
+			)
+			return &containers[0], nil
 		} else {
 			return nil, errors.New(fmt.Sprintf("containers result must be exactly one but found: %d", len(containers)))
 		}
 	}
 }
 
-func mustParseDpsContainerFlags() filters.Args {
-	if args, err := filters.ParseFlag("label=dps.container=true", filters.NewArgs()); err != nil {
-		panic(errors.WithMessage(err, "can't parse flags"))
-	} else {
-		return args
+func toContainerNames(containers []types.Container) []string {
+	containersNames := make([]string, len(containers))
+	for i, container := range containers {
+		containersNames[i] = container.Names[0]
 	}
+	return containersNames
+}
+
+func mustParseDpsContainerFlags() filters.Args {
+	args := filters.NewArgs()
+	filterArgs := []string{"status=running", "label=dps.container=true"}
+
+	for _, filter := range filterArgs {
+		var err error
+		if args, err = filters.ParseFlag(filter, args); err != nil {
+			panic(errors.WithMessage(err, "can't parse flags"))
+		}
+	}
+	return args
 }
 
 func FindDpsContainerIP(ctx context.Context) (string, error) {

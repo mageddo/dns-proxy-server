@@ -5,7 +5,6 @@ import (
 	"errors"
 	"github.com/mageddo/go-logging"
 	"github.com/miekg/dns"
-	"reflect"
 )
 
 type DnsSolverFactory interface {
@@ -21,13 +20,20 @@ func (*DefaultDnsSolverFactory) Solve(ctx context.Context, question dns.Question
 		if msg != nil {
 			logging.Debugf(
 				"solver=%s, status=found, question=%+v, answers=%d",
-				ctx, reflect.TypeOf(solver).String(), question, len(msg.Answer),
+				ctx, getSolverName(solver), question, len(msg.Answer),
 			)
 			return msg, err
 		}
 	}
-	logging.Debugf("status=not-found, lastSolver=%s, question=%+v", ctx, reflect.TypeOf(solver).String(), question)
+	logging.Debugf("status=not-found, lastSolver=%s, question=%+v", ctx, getSolverName(solver), question)
 	return nil, errors.New("Not solver for the question " + question.Name)
+}
+
+func getSolverName(solver DnsSolver) string {
+	if solver == nil {
+		return ""
+	}
+	return solver.Name()
 }
 
 type CnameDnsSolverFactory struct {
