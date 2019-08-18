@@ -129,21 +129,8 @@ func NewEmptyEnv() []localvo.Env {
 	return []localvo.Env{{Hostnames: []localvo.Hostname{}, Name:""}}
 }
 
-func Exists(name string) (bool, error) {
-	_, err := os.Stat(name)
-	if os.IsNotExist(err) {
-		return false, nil
-	}
-	return err == nil, err
-}
-
 func ResetConf() {
-	if exists, _ := Exists(confPath); exists {
-		if err := os.Remove(confPath); err != nil {
-			logging.Errorf("failed to reset conf", err)
-			os.Exit(-1)
-		}
-	}
+	os.Remove(confPath)
 	store.GetInstance().Clear()
 }
 
