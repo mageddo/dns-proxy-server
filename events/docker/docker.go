@@ -195,9 +195,9 @@ func getHostnameFromServiceName(inspect types.ContainerJSON) (string, error) {
 
 func putHostnames(ctx context.Context, predefinedHosts []string, inspect types.ContainerJSON) {
 	preferredNetwork := inspect.Config.Labels[defaultNetworkLabel]
-	ip := dockernetwork.FindBestIPForNetworks(inspect, preferredNetwork, dockernetwork.DpsNetwork, "bridge")
+	ip := dockernetwork.FindBestIpForNetworks(ctx, inspect, preferredNetwork, dockernetwork.DpsNetwork, "bridge")
 	for _, host := range predefinedHosts {
-		logging.Debugf("host=%s, ip=%s, container=%s, preferredNetworkName=%s", ctx, host, ip, inspect.Name, preferredNetwork)
+		logging.Debugf("host=%s, ip=%s, container=%s, preferredNetwork=%s", ctx, host, ip, inspect.Name, preferredNetwork)
 		c.Put(host, ip)
 	}
 }
