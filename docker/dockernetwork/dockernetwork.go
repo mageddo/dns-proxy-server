@@ -153,7 +153,13 @@ func FindBestIP(container types.ContainerJSON) string {
 }
 
 func FindBestIPForNetworks(container types.ContainerJSON, networks ... string) string {
+	// first, find on preferred networks
 	for _, network := range networks {
+		if ip := GetIPFromNetworksMap(container.NetworkSettings.Networks, network); ip != "" {
+			return ip
+		}
+	}
+	for network, _ := range container.NetworkSettings.Networks {
 		if ip := GetIPFromNetworksMap(container.NetworkSettings.Networks, network); ip != "" {
 			return ip
 		}
