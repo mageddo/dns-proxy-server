@@ -3,7 +3,6 @@ package docker
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"github.com/docker/engine-api/client"
 	"github.com/docker/engine-api/types"
@@ -16,6 +15,7 @@ import (
 	"github.com/mageddo/dns-proxy-server/flags"
 	"github.com/mageddo/dns-proxy-server/reference"
 	"github.com/mageddo/go-logging"
+	"github.com/pkg/errors"
 	"io"
 	"strings"
 )
@@ -40,7 +40,7 @@ func HandleDockerEvents(){
 	}
 	logging.Infof("status=connected, serverVersion=%+v, err=%v", ctx, serverVersion, err)
 
-	dockernetwork.SetupClient(cli)
+	dockernetwork.SetupCli(cli)
 
 	// more about list containers https://docs.docker.com/engine/reference/commandline/ps/
 	options := types.ContainerListOptions{}
@@ -69,18 +69,14 @@ func HandleDockerEvents(){
 
 	for _, c := range containers {
 
-		cInspection, err := cli.ContainerInspect(ctx, c.ID)
-		if err != nil {
-			logging.Errorf("status=inspect-error-at-list, container=%s, err=%v", ctx, c.Names, err)
-			continue
-		}
-
-		hostnames := getHostnames(cInspection)
-		putHostnames(ctx, hostnames, cInspection)
-
 		if flags.DpsNetworkAutoConnect() {
 			dockernetwork.MustNetworkConnect(ctx, dockernetwork.DpsNetwork, c.ID, "")
 		}
+
+		cInspection := mustInspectContainer(ctx, c.ID)
+		hostnames := getHostnames(cInspection)
+		putHostnames(ctx, hostnames, cInspection)
+
 		logging.Infof("status=started-container-processed, container=%s, hostnames=%s", ctx, cInspection.Name, hostnames)
 	}
 
@@ -95,22 +91,18 @@ func HandleDockerEvents(){
 			break
 		}
 
-		cInspection, err := cli.ContainerInspect(ctx, event.ID)
-		if err != nil {
-			logging.Warningf("status=inspect-error, id=%s, err=%v", ctx, event.ID, err)
-			continue
-		}
+		cInspection := mustInspectContainer(ctx, event.ID)
 		hostnames := getHostnames(cInspection)
+
 		action := event.Action
 		if len(action) == 0 {
 			action = event.Status
 		}
 		logging.Infof("status=resolved-hosts, action=%s, hostnames=%s", ctx, action, hostnames)
-
 		switch action {
 		case "start":
 			dockernetwork.MustNetworkConnect(ctx, dockernetwork.DpsNetwork, cInspection.ID, "")
-			putHostnames(ctx, hostnames, cInspection)
+			putHostnames(ctx, hostnames, mustInspectContainer(ctx, event.ID))
 			break
 
 		case "stop", "die":
@@ -121,6 +113,14 @@ func HandleDockerEvents(){
 		}
 	}
 
+}
+
+func mustInspectContainer(ctx context.Context, containerID string) types.ContainerJSON {
+	if cInspection, err := dockernetwork.GetCli().ContainerInspect(ctx, containerID); err != nil {
+		panic(errors.WithMessage(err, fmt.Sprintf("status=inspect-error, id=%s", containerID)))
+	} else {
+		return cInspection
+	}
 }
 
 func setupDpsContainerNetwork(ctx context.Context) {
@@ -201,7 +201,7 @@ func putHostnames(ctx context.Context, predefinedHosts []string, inspect types.C
 	preferredNetwork := inspect.Config.Labels[defaultNetworkLabel]
 	ip := dockernetwork.FindBestIPForNetworks(inspect, preferredNetwork, dockernetwork.DpsNetwork, "bridge")
 	for _, host := range predefinedHosts {
-		logging.Debugf("host=%s, ip=%s, preferredNetworkName=%s", ctx, host, ip, preferredNetwork)
+		logging.Debugf("host=%s, ip=%s, container=%s, preferredNetworkName=%s", ctx, host, ip, inspect.Name, preferredNetwork)
 		c.Put(host, ip)
 	}
 }

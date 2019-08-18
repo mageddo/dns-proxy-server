@@ -16,7 +16,11 @@ import (
 const DpsNetwork = "dps"
 var cli *client.Client = nil
 
-func SetupClient(cli_ *client.Client){
+func GetCli() *client.Client {
+	return cli
+}
+
+func SetupCli(cli_ *client.Client){
 	cli = cli_
 }
 

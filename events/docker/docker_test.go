@@ -4,6 +4,7 @@ import (
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/container"
 	"github.com/docker/engine-api/types/network"
+	"github.com/mageddo/dns-proxy-server/docker/dockernetwork"
 	"github.com/mageddo/dns-proxy-server/reference"
 	"github.com/mageddo/dns-proxy-server/utils/env"
 	"github.com/stretchr/testify/assert"
@@ -106,7 +107,6 @@ func TestMustSolveIPFromDefaultConfiguredNetwork(t *testing.T){
 	assert.Equal(t, "192.168.0.2", c.Get("acme.com"))
 }
 
-
 func TestMustSolveIPFromFirstContainerWhenDefaultNetworkIsNotSet(t *testing.T){
 	// arrange
 	inspect := types.ContainerJSON{
@@ -132,6 +132,31 @@ func TestMustSolveIPFromFirstContainerWhenDefaultNetworkIsNotSet(t *testing.T){
 
 	// assert
 	assert.Contains(t, foundHostname, "192.168.0")
+}
+
+func TestMustSolveIPFromDpsNetworkWhenSet(t *testing.T){
+	// arrange
+	inspect := types.ContainerJSON{
+		Config: &container.Config{
+			Labels: map[string]string{
+				"com.docker.compose.service": "nginx-service",
+			},
+		},
+	}
+	inspect.ContainerJSONBase = new(types.ContainerJSONBase)
+	inspect.Name = "/nginx-container"
+	inspect.NetworkSettings = new(types.NetworkSettings)
+	inspect.NetworkSettings.Networks = make(map[string]*network.EndpointSettings)
+	inspect.NetworkSettings.Networks[dockernetwork.DpsNetwork] = createNetwork("192.168.0.1")
+	inspect.NetworkSettings.Networks["network-2"] = createNetwork("192.168.0.2")
+	inspect.NetworkSettings.Networks["network-3"] = createNetwork("192.168.0.3")
+
+	// act
+	putHostnames(reference.Context(), []string{"acme.com"}, inspect)
+	foundHostname := c.Get("acme.com")
+
+	// assert
+	assert.Equal(t, foundHostname, "192.168.0.1")
 }
 
 func createNetwork(ip string) *network.EndpointSettings {
