@@ -15,7 +15,7 @@ const (
 
 func init() {
 
-	Get(NetworkDisconnect, func(ctx context.Context, res http.ResponseWriter, req *http.Request) {
+	Delete(NetworkDisconnect, func(ctx context.Context, res http.ResponseWriter, req *http.Request) {
 		res.Header().Add("Content-Type", "application/json")
 		netId := req.URL.Query().Get("networkId")
 		errs := dockernetwork.DisconnectNetworkContainers(ctx, netId)

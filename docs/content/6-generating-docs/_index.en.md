@@ -1,7 +1,7 @@
 ---
 title: Generating the docs
 weight: 6
-pre: "<b>5. </b>"
+pre: "<b>6. </b>"
 ---
 
 ### Live docs preview
