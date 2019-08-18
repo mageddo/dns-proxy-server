@@ -36,7 +36,9 @@ __Version 2__
   "logLevel": "DEBUG",
   "logFile": "console" // where the log will be written,
   "registerContainerNames": false, // if should register container name / service name as a hostname
-  "domain": "" // The container names domain
+  "domain": "", // The container names domain
+  "dpsNetwork": false, // if should create a bridge network for dps container
+  "dpsNetworkAutoConnect": false // if should connect all containers to dps container
 }
 ```
 
