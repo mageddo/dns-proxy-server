@@ -52,8 +52,6 @@ func GetSearchDomainEntry() (string, error) {
 func ProcessResolvconf( handler DnsHandler ) error {
 
 	var newResolvConfBuff bytes.Buffer
-	logging.Infof("status=begin")
-
 	resolvconf := conf.GetResolvConf()
 	fileRead, err := os.Open(resolvconf)
 	if err != nil {
@@ -65,7 +63,7 @@ func ProcessResolvconf( handler DnsHandler ) error {
 		hasContent = false
 		foundDnsProxyEntry = false
 	)
-	logging.Infof("status=open-conf-file, file=%s", fileRead.Name())
+	logging.Debugf("status=open-conf-file, file=%s", fileRead.Name())
 	scanner := bufio.NewScanner(fileRead)
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -91,7 +89,7 @@ func ProcessResolvconf( handler DnsHandler ) error {
 	if err != nil {
 		return err
 	}
-	logging.Infof("status=success, buffLength=%d", length)
+	logging.Debugf("status=success, buffLength=%d", length)
 	return nil
 }
 
@@ -117,17 +115,19 @@ func getDnsEntryType(line string) DnsEntry {
 }
 
 func SetCurrentDnsServerToMachine(ctx context.Context) error {
-	ip, err := dockernetwork.FindDpsContainerIP(ctx)
-	logging.Debugf("status=container-ip-found", ctx)
-	if err != nil {
-		logging.Debugf("status=container-ip-not-found, err=%+v", ctx, err.Error())
-		ip, err = GetCurrentIpAddress()
-	}
-	logging.Debugf("status=begin, ip=%s, err=%v", ip, err)
-	if err != nil {
+	if ip, err := getIP(ctx); err == nil {
+		return SetMachineDnsServer(ip)
+	} else {
 		return errors.WithMessage(err, "can't set dps dns server to host machine")
 	}
-	return SetMachineDnsServer(ip)
+}
+
+func getIP(ctx context.Context) (string, error) {
+	if dockernetwork.IsDockerConnected() {
+		return dockernetwork.FindDpsContainerIP(ctx)
+	} else {
+		return GetCurrentIpAddress()
+	}
 }
 
 func LockResolvConf() error {

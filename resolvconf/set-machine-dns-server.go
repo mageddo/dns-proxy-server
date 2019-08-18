@@ -13,7 +13,7 @@ func (hd *setMachineDNSServerHandler) process(line string, entryType DnsEntry) *
 
 	switch entryType {
 	case Proxy:
-		logging.Infof("status=found-dns-proxy-entry")
+		logging.Debugf("status=found-dns-proxy-entry")
 		v := getDNSLine(hd.serverIP)
 		return &v
 	case Server:

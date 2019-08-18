@@ -22,10 +22,12 @@ func (s SystemDnsSolver) Solve(ctx context.Context, question dns.Question) (*dns
 	questionName := question.Name[:len(question.Name)-1]
 	switch questionName {
 	case conf.GetHostname(), resolvconf.GetHostname(conf.GetHostname()):
-		if ip, err := dockernetwork.FindNetworkGatewayIp(ctx, dockernetwork.DpsNetwork); err != nil {
-			ip, err = getLocalMachineIp(ctx, questionName)
-		} else {
+		if dockernetwork.IsDockerConnected() {
+			ip, err := dockernetwork.FindNetworkGatewayIp(ctx, dockernetwork.DpsNetwork);
 			logging.Infof("status=solved, solver=system, question=%s", ctx, questionName, err)
+			return s.getMsg(questionName, ip, question), nil
+		} else {
+			ip, err := getLocalMachineIp(ctx, questionName)
 			return s.getMsg(questionName, ip, question), err
 		}
 	}

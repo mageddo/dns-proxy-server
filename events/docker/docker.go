@@ -27,30 +27,31 @@ const defaultNetworkLabel = "dps.network"
 func HandleDockerEvents(){
 
 	// connecting to docker api
+	ctx := reference.Context()
 	cli, err := client.NewClient("unix:///var/run/docker.sock", "v1.21", nil, nil)
 	if err != nil {
-		// todo set a mock client here this way dps will not fail
+		logging.Warningf("status=error-parsing-host-url, err=%+v", err)
+		return
+	}
+	serverVersion, err := cli.ServerVersion(ctx)
+	if err != nil {
 		logging.Warningf("status=error-to-connect-at-host, solver=docker, err=%v", err)
 		return
 	}
+	logging.Infof("status=connected, serverVersion=%+v, err=%v", ctx, serverVersion, err)
 
 	dockernetwork.SetupClient(cli)
 
 	// more about list containers https://docs.docker.com/engine/reference/commandline/ps/
 	options := types.ContainerListOptions{}
-	ctx := reference.Context()
-
-	serverVersion, err := cli.ServerVersion(ctx)
-	logging.Infof("status=connected, serverVersion=%+v, err=%v", ctx, serverVersion, err)
-
 	containers, err := cli.ContainerList(ctx, options)
 	if err != nil {
 		logging.Errorf("status=error-to-list-container, solver=docker, err=%v", ctx, err)
 		return
 	}
 
-	if flags.DpsNetwork() {
-		setupDpsContainerNetwork(ctx, cli)
+	if flags.DpsNetwork() && dockernetwork.IsDockerConnected() {
+		setupDpsContainerNetwork(ctx)
 	}
 
 	// more about events here: http://docs-stage.docker.com/v1.10/engine/reference/commandline/events/
@@ -122,7 +123,7 @@ func HandleDockerEvents(){
 
 }
 
-func setupDpsContainerNetwork(ctx context.Context, cli *client.Client) {
+func setupDpsContainerNetwork(ctx context.Context) {
 	if _, err := dockernetwork.CreateOrUpdateDpsNetwork(ctx); err != nil {
 		// todo disable dpsNetwork option here
 		panic(fmt.Sprintf("can't create dps network %+v", err))

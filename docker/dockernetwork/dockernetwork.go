@@ -14,10 +14,14 @@ import (
 )
 
 const DpsNetwork = "dps"
-var cli *client.Client
+var cli *client.Client = nil
 
 func SetupClient(cli_ *client.Client){
 	cli = cli_
+}
+
+func IsDockerConnected() bool {
+	return cli != nil
 }
 
 func CreateOrUpdateDpsNetwork(ctx context.Context) (types.NetworkCreateResponse, error) {
