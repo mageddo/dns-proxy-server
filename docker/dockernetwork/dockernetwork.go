@@ -7,6 +7,7 @@ import (
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/filters"
 	"github.com/docker/engine-api/types/network"
+	"github.com/mageddo/dns-proxy-server/conf"
 	"github.com/mageddo/dns-proxy-server/flags"
 	"github.com/mageddo/go-logging"
 	"github.com/pkg/errors"
@@ -107,6 +108,9 @@ func MustNetworkDisconnect(ctx context.Context, networkId, containerId string){
 }
 
 func MustNetworkConnect(ctx context.Context, networkId string, containerId string, networkIpAddress string) {
+	if !conf.DpsNetworkAutoConnect() {
+		return
+	}
 	if err := NetworkConnect(ctx, networkId, containerId, networkIpAddress); err != nil {
 		panic(errors.WithMessage(err, fmt.Sprintf(
 			"can't connect container %s to network %s, ip=%s", containerId, networkId, networkIpAddress,

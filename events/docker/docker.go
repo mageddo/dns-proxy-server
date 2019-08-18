@@ -68,10 +68,7 @@ func HandleDockerEvents(){
 
 	for _, c := range containers {
 
-		if conf.DpsNetworkAutoConnect() {
-			dockernetwork.MustNetworkConnect(ctx, dockernetwork.DpsNetwork, c.ID, "")
-		}
-
+		dockernetwork.MustNetworkConnect(ctx, dockernetwork.DpsNetwork, c.ID, "")
 		cInspection := mustInspectContainer(ctx, c.ID)
 		hostnames := getHostnames(cInspection)
 		putHostnames(ctx, hostnames, cInspection)
