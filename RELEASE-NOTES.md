@@ -1,3 +1,6 @@
+### 2.17.1
+* Reducing docker image size by 20%~
+
 ### 2.17.0
 * Go version upgrade from 1.11 to 1.12
 
