@@ -1,3 +1,6 @@
+### 2.17.3
+* Separating the build image from final image, removing unnecessary bash command
+
 ### 2.17.2
 * Fixing docker build was using deprecated apt-get option
 
