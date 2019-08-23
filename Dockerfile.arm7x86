@@ -1,4 +1,4 @@
-FROM arm32v7/debian:7
+FROM arm32v7/debian:10-slim
 ADD build/dns-proxy-server-linux-arm-*.tgz /app/
 WORKDIR /app
 LABEL dps.container=true

@@ -1,3 +1,7 @@
+### 2.16.0
+* Upgrading docker images to debian-10-slim
+* Reducing up to 30% on image size
+
 ### 2.15.0
 * Decreasing chance of acl issues by giving priority to answer ip of bridge networks over overlay ones
 * Now DPS can have your own network this way it can access and be accessed

@@ -1,4 +1,4 @@
-FROM debian:8
+FROM debian:10-slim
 ADD build/dns-proxy-server-linux-amd64*.tgz /app/
 WORKDIR /app
 LABEL dps.container=true

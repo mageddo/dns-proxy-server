@@ -1,4 +1,4 @@
-FROM debian:8
+FROM debian:10-slim
 WORKDIR /app
 ENV TMP_NAME=/tmp/dns-proxy-server.tgz
 RUN apt-get update && apt-get install --force-yes -y curl
