@@ -1,3 +1,6 @@
+### 2.17.0
+* Go version upgrade from 1.11 to 1.12
+
 ### 2.16.0
 * Upgrading docker images to debian-10-slim
 * Reducing up to 30% on image size
