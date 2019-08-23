@@ -1,3 +1,6 @@
+### 2.17.2
+* Fixing docker build was using deprecated apt-get option
+
 ### 2.17.1
 * Reducing docker image size by 20%~
 
