@@ -4,7 +4,7 @@ ENV TMP_NAME=/tmp/dns-proxy-server.tgz
 RUN apt-get update && apt-get install --force-yes -y curl &&\
     curl -L https://github.com/mageddo/dns-proxy-server/releases/download/2.17.1/dns-proxy-server-linux-amd64-2.17.1.tgz > $TMP_NAME && \
     tar -xvf $TMP_NAME -C /app/ &&\
-    rm -r /tmp && apt-get purge --force-yes -y curl && apt-get clean
+    rm -r /tmp && apt-get purge -y curl && apt-get clean
 LABEL dps.container=true
 VOLUME ["/var/run/docker.sock", "/var/run/docker.sock"]
 CMD ["bash", "-c", "/app/dns-proxy-server"]
