@@ -1,3 +1,6 @@
+### 2.17.4
+* Clearing cache for resolvers when the config file is saved
+
 ### 2.17.3
 * Separating the build image from final image, removing unnecessary bash command
 
