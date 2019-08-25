@@ -134,7 +134,7 @@ func NewEmptyEnv() []localvo.Env {
 
 func ResetConf() {
 	os.Remove(confPath)
-	store.GetInstance().Clear()
+	store.ClearAllCaches()
 }
 
 func storeToFile(confFileVO interface{}){
@@ -155,7 +155,7 @@ func storeToFile(confFileVO interface{}){
 	if err != nil {
 		logging.Errorf("status=error-to-encode, error=%v", err)
 	}
-	store.GetInstance().Clear()
+	store.ClearAllCaches()
 	logging.Infof("status=success, confPath=%s, time=%d", confPath, utils.DiffMillis(now, time.Now()))
 }
 

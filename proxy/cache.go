@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/mageddo/dns-proxy-server/cache/lru"
+	"github.com/mageddo/dns-proxy-server/cache/store"
 	"github.com/mageddo/dns-proxy-server/cache/timed"
 	"github.com/mageddo/go-logging"
 	"github.com/miekg/dns"
@@ -72,5 +73,6 @@ func getHostnameKey(question dns.Question) string {
 }
 
 func NewCacheDnsSolver(delegate DnsSolver) DnsSolver {
-	return &CacheDnsSolver{timed.New(lru.New(4096), 30), delegate}
+	cache := store.RegisterCache(timed.New(lru.New(4096), 30)).(*timed.TimedCache)
+	return &CacheDnsSolver{cache, delegate}
 }
