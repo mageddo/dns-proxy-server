@@ -126,7 +126,7 @@ func TestPostHostnameInvalidPayloadError(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.Equal(t, http.StatusBadRequest, r.StatusCode())
-	assert.Equal(t, `{"code":400,"message":"Invalid JSON"}`, r.String())
+	assert.Equal(t, `{"code":400,"message":"Invalid JSON: unexpected EOF"}`, r.String())
 
 }
 
