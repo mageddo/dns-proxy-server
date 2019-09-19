@@ -36,7 +36,6 @@ func LoadConfiguration() (*localvo.Configuration, error){
 			return nil, err
 		} else {
 			setHostnameIds(configuration)
-			logging.Debugf("status=success-loaded-file, path=%s", confPath)
 			return configuration, nil
 		}
 	} else {
