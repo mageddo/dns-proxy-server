@@ -12,12 +12,13 @@ import (
 func init(){
 	setup(os.Stdout)
 	SetOutput(conf.LogFile())
-	logging.Warningf("status=log-level-changed, log-level= %d", conf.LogLevel())
-	logging.SetLevel(conf.LogLevel())
+	level := conf.LogLevel()
+	logging.Warningf("status=log-level-changed, log-level=%d", level)
+	logging.SetLevel(level)
 }
 
 func setup(out io.Writer) {
-	logging.SetLog(logging.New(native.NewGologPrinter(out, "", log.LstdFlags | log.Lmicroseconds), 4))
+	logging.SetLog(logging.New(native.NewGologPrinter(out, "", log.LstdFlags | log.Lmicroseconds), logging.INFO))
 }
 
 func SetOutput(f string) error {

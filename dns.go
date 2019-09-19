@@ -1,12 +1,12 @@
 package main
 
 import (
+	_ "github.com/mageddo/dns-proxy-server/log"
+	_ "github.com/mageddo/dns-proxy-server/controller/v1"
 	"fmt"
 	"github.com/mageddo/dns-proxy-server/conf"
-	_ "github.com/mageddo/dns-proxy-server/controller/v1"
 	"github.com/mageddo/dns-proxy-server/events/docker"
 	"github.com/mageddo/dns-proxy-server/events/local"
-	_ "github.com/mageddo/dns-proxy-server/log"
 	"github.com/mageddo/dns-proxy-server/proxy"
 	"github.com/mageddo/dns-proxy-server/reference"
 	"github.com/mageddo/dns-proxy-server/resolvconf"

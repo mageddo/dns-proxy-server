@@ -165,10 +165,10 @@
 			"revisionTime": "2018-05-06T17:23:18Z"
 		},
 		{
-			"checksumSHA1": "EVeHB3vgGz2p3on2+9GFgzwo/08=",
+			"checksumSHA1": "jAcRacBmM2oVzBWRBCG5QcYUv08=",
 			"path": "github.com/mageddo/go-logging",
-			"revision": "54aea4e81bd644b299b1117527eafae866a842e6",
-			"revisionTime": "2018-11-17T00:02:16Z"
+			"revision": "00f1d8a5501085bcbeae1fac8948997946dd6f07",
+			"revisionTime": "2019-09-19T02:36:52Z"
 		},
 		{
 			"checksumSHA1": "3a2Cl6bL2Q6uYapCm6w+t2gPrEQ=",
@@ -220,10 +220,10 @@
 			"revisionTime": "2015-09-28T12:21:52Z"
 		},
 		{
-			"checksumSHA1": "/kKwYqD04AkkDZFQhGwklKw3RFA=",
+			"checksumSHA1": "bae8IfDLNuW/wqEicyrKV8q7K7Y=",
 			"path": "github.com/stretchr/testify",
-			"revision": "890a5c3458b43e6104ff5da8dfa139d013d77544",
-			"revisionTime": "2017-07-05T02:17:15Z"
+			"revision": "85f2b59c4459e5bf57488796be8c3667cb8246d6",
+			"revisionTime": "2018-07-16T14:42:29Z"
 		},
 		{
 			"checksumSHA1": "mGbTYZ8dHVTiPTTJu3ktp+84pPI=",

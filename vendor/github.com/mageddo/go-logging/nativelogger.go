@@ -10,9 +10,9 @@ import (
 )
 
 type defaultLogger struct {
-	writer Printer
-	level int
-	logLevel int
+	writer          Printer
+	callerBackLevel int
+	logLevel        int
 }
 
 func New(p Printer, level ...int) *defaultLogger {
@@ -83,17 +83,15 @@ func transformErrorInStackTrace(args []interface{}, buf *bytes.Buffer) []interfa
 
 func (l *defaultLogger) fPrint(format string, args []interface{}, methodLevel int){
 	args, ctx := popContext(args)
-	vfmt := withFormat(withContextUUID(withCallerMethod(withLevel(new(bytes.Buffer), getLevelName(methodLevel)), l.level), ctx), format)
-	if l.level == ERROR {
-		args = transformErrorInStackTrace(args, vfmt)
-	}
+	vfmt := withFormat(withContextUUID(withCallerMethod(withLevel(new(bytes.Buffer), getLevelName(methodLevel)), l.callerBackLevel), ctx), format)
+	args = transformErrorInStackTrace(args, vfmt)
 	l.Printer().Printf(vfmt.String(), args...)
 }
 
 func (l *defaultLogger) print(args []interface{}, methodLevel int) {
 	args = transformErrorInStackTrace(args, nil)
 	args, ctx := popContext(args)
-	args = append([]interface{}{withContextUUID(withCallerMethod(withLevel(new(bytes.Buffer), getLevelName(methodLevel)), l.level), ctx).String()}, args...)
+	args = append([]interface{}{withContextUUID(withCallerMethod(withLevel(new(bytes.Buffer), getLevelName(methodLevel)), l.callerBackLevel), ctx).String()}, args...)
 	l.Printer().Println(args...)
 }
 
