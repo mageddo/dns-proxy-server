@@ -1,3 +1,6 @@
+### 2.18.1
+* Change log level before try to log something
+
 ### 2.18.0
 * Feature: Multiple environments, now you can setup a group of hostnames and save it to a environment, then you can 
 create a new environment and switch between them, very useful when working on different contexts switching from QA to PROD,
