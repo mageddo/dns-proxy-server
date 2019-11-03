@@ -1,3 +1,6 @@
+### 2.18.2
+* Fixing wrong mapping on `logLevel` property
+
 ### 2.18.1
 * Change log level before try to log something
 
