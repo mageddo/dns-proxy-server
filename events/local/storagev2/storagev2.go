@@ -57,7 +57,7 @@ func ValueOf(c *localvo.Configuration) *ConfigurationV2 {
 		DnsServerPort:          c.DnsServerPort,
 		Domain:                 c.Domain,
 		HostMachineHostname:    c.HostMachineHostname,
-		LogLevel:               c.LogFile,
+		LogLevel:               c.LogLevel,
 		RegisterContainerNames: c.RegisterContainerNames,
 		RemoteDnsServers:       localvo.ToIpsStringArray(c.RemoteDnsServers),
 		WebServerPort:          c.WebServerPort,
