@@ -188,7 +188,7 @@ func getHostnameFromServiceName(inspect types.ContainerJSON) (string, error) {
 	const serviceNameLabelKey = "com.docker.compose.service"
 	if v, ok := inspect.Config.Labels[serviceNameLabelKey]; ok {
 		logging.Debugf("status=service-found, service=%s", v)
-		return fmt.Sprintf("%s.docker", v), nil
+		return fmt.Sprintf("%s.%s", v, conf.GetDpsDomain()), nil
 	}
 	return "", errors.New("service not found for container: " + inspect.Name)
 }
