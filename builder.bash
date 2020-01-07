@@ -6,26 +6,6 @@ CUR_DIR=`pwd`
 APP_VERSION=$(cat VERSION)
 REPO_URL=mageddo/dns-proxy-server
 
-create_release(){
-	# release notes
-	DESC=$(cat RELEASE-NOTES.md | awk 'BEGIN {RS="|"} {print substr($0, 0, index(substr($0, 3), "###"))}' | sed ':a;N;$!ba;s/\n/\\r\\n/g') && \
-	PAYLOAD='{
-		"tag_name": "%s",
-		"target_commitish": "%s",
-		"name": "%s",
-		"body": "%s",
-		"draft": false,
-		"prerelease": true
-	}'
-	PAYLOAD=$(printf "$PAYLOAD" $APP_VERSION $CURRENT_BRANCH $APP_VERSION "$DESC")
-	TAG_ID=$(curl -i -s -f -X POST "https://api.github.com/repos/$REPO_URL/releases?access_token=$REPO_TOKEN" \
---data "$PAYLOAD" | grep -o -E 'id": [0-9]+'| awk '{print $2}' | head -n 1)
-}
-
-upload_file(){
-	curl --data-binary "@$SOURCE_FILE" -i -w '\n' -f -s -X POST -H 'Content-Type: application/octet-stream' \
-"https://uploads.github.com/repos/$REPO_URL/releases/$TAG_ID/assets?name=$TARGET_FILE&access_token=$REPO_TOKEN"
-}
 
 assemble(){
 	echo "> Testing ..."
@@ -58,37 +38,8 @@ case $1 in
 
 	upload-release )
 
-		if [ "$REPO_TOKEN" = "" ] ; then echo "REPO_TOKEN cannot be empty"; exit 1; fi
-
-		if [ "`git config user.email || echo ''`" = "" ]; then
-			echo '> custom config'
-			git config user.name `git config user.name || echo 'CI BOT'`
-			git config user.email `git config user.email || echo 'ci-bot@mageddo.com'`
-		fi
-		echo '> config'
-		git config -l
-		echo ''
-
-		REMOTE="https://${REPO_TOKEN}@github.com/${REPO_URL}.git"
-
-		git checkout -b build_branch ${CURRENT_BRANCH}
-		echo "> Repository added, currentBranch=${CURRENT_BRANCH}"
-
-		git commit -am "Releasing ${APP_VERSION}" || true
-		git tag ${APP_VERSION}
-		git push "$REMOTE" "build_branch:${CURRENT_BRANCH}"
-		git status
-		echo "> Branch pushed - Branch $CURRENT_BRANCH"
-
-		create_release
-		echo "> Release created with id $TAG_ID"
-
-		for SOURCE_FILE in $PWD/build/*.tgz; do
-			TARGET_FILE="$(basename $SOURCE_FILE)"
-			echo "> Source hash file=$TARGET_FILE"
-			md5sum $SOURCE_FILE && ls -lha $SOURCE_FILE
-			upload_file
-		done
+		DESC=$(cat RELEASE-NOTES.md | awk 'BEGIN {RS="|"} {print substr($0, 0, index(substr($0, 3), "###"))}' | sed ':a;N;$!ba;s/\n/\\r\\n/g')
+		github-cli release mageddo dns-proxy-server $APP_VERSION $CURRENT_BRANCH "${DESC}" $PWD/build/*.tgz
 
 	;;
 
