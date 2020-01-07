@@ -7,7 +7,9 @@ RUN npm install &&\
 	rm -f `find ./build -name *.map`
 
 FROM golang:1.12.9 AS GOLANG
-RUN curl -s -L https://github.com/mageddo-projects/github-cli/releases/download/v1.0/github-cli.sh > /usr/bin/github-cli &&\
+RUN apt update &&\
+	apt install -y jq &&\
+	curl -s -L https://github.com/mageddo-projects/github-cli/releases/download/v1.0/github-cli.sh > /usr/bin/github-cli &&\
 	chmod +x /usr/bin/github-cli
 ENV GOPATH=/app
 ENV MG_WORK_DIR=/app/src/github.com/mageddo/dns-proxy-server
