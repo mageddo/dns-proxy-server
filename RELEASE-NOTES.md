@@ -2,6 +2,7 @@
 * Resolving docker services using configured DPS domain
 * Fix presence check of config setting "domain"
 * Adding working around coordinates for resolv.conf at the docs
+* Fixing releasing
 
 ### 2.18.2
 * Fixing wrong mapping on `logLevel` property
