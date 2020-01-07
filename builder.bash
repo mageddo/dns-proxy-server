@@ -115,6 +115,8 @@ case $1 in
 	docker-compose up --force-recreate --abort-on-container-exit prod-ci-deploy || EC=$?
 	if [ "$EC" = "3" ]; then
 		exit 0
+	elif [ "$EC" -ne "0" ]; then
+		exit $EC
 	fi
 	docker-compose build prod-build-image-dps-arm7x86 prod-build-image-dps-arm8x64 &&\
 	echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&\
