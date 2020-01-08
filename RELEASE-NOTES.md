@@ -1,3 +1,8 @@
+### 2.18.5
+* Fixing unnecessary stacktraces were being logged
+* Answering NXDOMAIN when no answers were found
+* Fixing logging file trace
+
 ### 2.18.4
 * Bumping github-cli to fix releasing
 
