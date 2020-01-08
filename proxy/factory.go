@@ -16,8 +16,7 @@ type DefaultDnsSolverFactory struct {}
 func (*DefaultDnsSolverFactory) Solve(ctx context.Context, question dns.Question, solvers []DnsSolver) (*dns.Msg, error) {
 	var solver DnsSolver
 	for _, solver = range solvers {
-		msg, err := solver.Solve(ctx, question)
-		if msg != nil {
+		if msg, err := solver.Solve(ctx, question); msg != nil {
 			logging.Debugf(
 				"solver=%s, status=found, question=%+v, answers=%d",
 				ctx, getSolverName(solver), question, len(msg.Answer),

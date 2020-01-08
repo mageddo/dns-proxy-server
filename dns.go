@@ -49,9 +49,11 @@ func handleQuestion(respWriter dns.ResponseWriter, reqMsg *dns.Msg) {
 
 	solverFactory := proxy.NewCnameDnsSolverFactory(&proxy.DefaultDnsSolverFactory{})
 	if msg, err := solverFactory.Solve(ctx, firstQuestion, getSolvers()); msg != nil {
-	logging.Debugf("status=complete, question=%+v, answers=%+v", ctx, firstQuestion, getAnswer(msg))
+		rcode := msg.Rcode
+		logging.Debugf("status=writing-res, code=%d, question=%+v, answers=%+v", ctx, rcode, firstQuestion, getAnswer(msg))
 		msg.SetReply(reqMsg)
 		msg.Compress = conf.Compress()
+		msg.Rcode = rcode
 		respWriter.WriteMsg(msg)
 	} else {
 		logging.Errorf("status=complete, question=%+v, answers=%+v", ctx, firstQuestion, getAnswer(msg), err)

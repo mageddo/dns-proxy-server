@@ -18,7 +18,7 @@ func init(){
 }
 
 func setup(out io.Writer) {
-	logging.SetLog(logging.New(native.NewGologPrinter(out, "", log.LstdFlags | log.Lmicroseconds), 3))
+	logging.SetLog(logging.New(native.NewGologPrinter(out, "", log.LstdFlags | log.Lmicroseconds), 4))
 }
 
 func SetOutput(f string) error {
