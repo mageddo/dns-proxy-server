@@ -1,3 +1,6 @@
+### 2.18.4
+* Bumping github-cli to fix releasing
+
 ### 2.18.3
 * Resolving docker services using configured DPS domain
 * Fix presence check of config setting "domain"
