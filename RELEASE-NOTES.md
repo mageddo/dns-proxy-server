@@ -1,3 +1,6 @@
+### 2.18.7
+* Fixing docker image on latest version wasn't being updated
+
 ### 2.18.6
 * Fixing gateway IP resolution when not in DPS network (#186)
 
