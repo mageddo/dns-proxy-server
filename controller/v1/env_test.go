@@ -49,7 +49,7 @@ func TestPutChangeActiveEnvSuccess(t *testing.T) {
 
 	err := utils.WriteToFile(`{
 		"remoteDnsServers": [], "envs": [{ "name": "testEnv" }]
-	}`, utils.GetPath(*flags.ConfPath))
+	}`, utils.SolveRelativePath(*flags.ConfPath))
 	assert.Nil(t, err)
 
 
@@ -79,7 +79,7 @@ func TestGetEnvsSuccess(t *testing.T) {
 	// arrange
 	local.ResetConf()
 
-	err := utils.WriteToFile(`{ "remoteDnsServers": [], "envs": [{ "name": "SecondEnv" }]}`, utils.GetPath(*flags.ConfPath))
+	err := utils.WriteToFile(`{ "remoteDnsServers": [], "envs": [{ "name": "SecondEnv" }]}`, utils.SolveRelativePath(*flags.ConfPath))
 	assert.Nil(t, err)
 
 	// act
@@ -132,7 +132,7 @@ func TestDeleteEnvSuccess(t *testing.T) {
 	// arrange
 	local.ResetConf()
 
-	err := utils.WriteToFile(`{ "remoteDnsServers": [], "envs": [{ "name": "SecondEnv" }]}`, utils.GetPath(*flags.ConfPath))
+	err := utils.WriteToFile(`{ "remoteDnsServers": [], "envs": [{ "name": "SecondEnv" }]}`, utils.SolveRelativePath(*flags.ConfPath))
 
 	s := httptest.NewServer(nil)
 	defer s.Close()

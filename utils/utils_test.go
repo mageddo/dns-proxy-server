@@ -16,3 +16,39 @@ func TestDiffMillis(t *testing.T) {
 
 	assert.Equal(t, int64(86460000), DiffMillis(before, after))
 }
+
+func TestSolveRelativePath(t *testing.T) {
+	// arrange
+
+	// act
+	solvedPath := SolveRelativePath("/")
+
+
+	// assert
+	assert.Equal(t, GetCurrentPath() + "/", solvedPath)
+}
+
+
+func TestMustSolveRelativePath(t *testing.T) {
+	// arrange
+	relativePath := "subpath/thirdpath"
+
+	// act
+	solvedPath := GetPath(relativePath)
+
+
+	// assert
+	assert.Equal(t, GetCurrentPath() + "/" + relativePath, solvedPath)
+}
+
+func TestMustSolveAbsolutePath(t *testing.T) {
+	// arrange
+	path := "/data/somedir"
+
+	// act
+	solvedPath := GetPath(path)
+
+
+	// assert
+	assert.Equal(t, path, solvedPath)
+}

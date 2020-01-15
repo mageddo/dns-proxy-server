@@ -18,7 +18,7 @@ func TestGetHostnamesByEnv(t *testing.T) {
 
 	err := utils.WriteToFile(`{ "remoteDnsServers": [], "envs": [
 		{ "name": "MyEnv", "hostnames": [{"hostname": "github.io", "ip": [1,2,3,4], "ttl": 55}] }
-	]}`, utils.GetPath(*flags.ConfPath))
+	]}`, utils.SolveRelativePath(*flags.ConfPath))
 
 	s := httptest.NewServer(nil)
 	defer s.Close()
@@ -49,7 +49,7 @@ func TestGetHostnamesByEnvAndHostname(t *testing.T) {
 
 	err := utils.WriteToFile(`{ "remoteDnsServers": [], "envs": [
 		{ "name": "MyEnv", "hostnames": [{"hostname": "github.io", "ip": [1,2,3,4], "ttl": 55}] }
-	]}`, utils.GetPath(*flags.ConfPath))
+	]}`, utils.SolveRelativePath(*flags.ConfPath))
 
 	s := httptest.NewServer(nil)
 	defer s.Close()
@@ -80,7 +80,7 @@ func TestPostHostname(t *testing.T) {
 	// arrange
 	local.ResetConf()
 
-	err := utils.WriteToFile(`{ "remoteDnsServers": [], "envs": [{ "name": "MyOtherEnv" }]}`, utils.GetPath(*flags.ConfPath))
+	err := utils.WriteToFile(`{ "remoteDnsServers": [], "envs": [{ "name": "MyOtherEnv" }]}`, utils.SolveRelativePath(*flags.ConfPath))
 
 	s := httptest.NewServer(nil)
 	defer s.Close()
@@ -137,7 +137,7 @@ func TestPutHostname(t *testing.T) {
 
 	err := utils.WriteToFile(`{ "remoteDnsServers": [], "envs": [
 		{ "name": "MyEnv", "hostnames": [{"id": 999, "hostname": "github.io", "ip": [1,2,3,4], "ttl": 55}] }
-	]}`, utils.GetPath(*flags.ConfPath))
+	]}`, utils.SolveRelativePath(*flags.ConfPath))
 
 	s := httptest.NewServer(nil)
 	defer s.Close()
@@ -171,7 +171,7 @@ func TestDeleteHostname(t *testing.T) {
 
 	err := utils.WriteToFile(`{ "remoteDnsServers": [], "envs": [
 		{ "name": "MyEnv", "hostnames": [{"hostname": "github.io", "ip": [1,2,3,4], "ttl": 55}] }
-	]}`, utils.GetPath(*flags.ConfPath))
+	]}`, utils.SolveRelativePath(*flags.ConfPath))
 
 	s := httptest.NewServer(nil)
 	defer s.Close()

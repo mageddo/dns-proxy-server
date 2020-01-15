@@ -9,7 +9,7 @@ import (
 func init(){
 
 	http.HandleFunc("/static/", func(res http.ResponseWriter, req *http.Request){
-		staticPath := utils.GetPath("/")
+		staticPath := utils.SolveRelativePath("/")
 		logging.Infof("urlPath=%s", req.URL.Path)
 		hd := http.FileServer(http.Dir(staticPath))
 		hd.ServeHTTP(res, req)

@@ -165,15 +165,22 @@ func GetCurrentPath() string {
 
 }
 
-func GetPath(path string) string {
+func SolveRelativePath(path string) string {
 	if !strings.HasPrefix(path, "/") {
 		path = "/" + path
 	}
-	currentPath := GetCurrentPath();
+	currentPath := GetCurrentPath()
 	if strings.HasSuffix(currentPath, "/") {
 		currentPath = currentPath[0:len(currentPath)-1]
 	}
 	return currentPath + path
+}
+
+func GetPath(path string) string {
+	if strings.HasPrefix(path, "/") {
+		return path
+	}
+	return SolveRelativePath(path)
 }
 
 func GetJsonEncoder(w io.Writer) *json.Encoder {

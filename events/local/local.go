@@ -25,6 +25,7 @@ func GetConfPath() string {
 }
 
 func LoadConfiguration() (*localvo.Configuration, error){
+	logging.Debugf("status=loading, path=%s", confPath)
 	if _, err := os.Stat(confPath); err == nil {
 		confBytes, err := ioutil.ReadFile(confPath)
 		if err != nil {

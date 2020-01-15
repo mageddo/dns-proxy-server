@@ -5,5 +5,5 @@ import (
 )
 
 func NewNormalScript() (*Script) {
-	return &Script{utils.GetPath("/dns-proxy-server")}
+	return &Script{utils.SolveRelativePath("/dns-proxy-server")}
 }

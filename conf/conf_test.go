@@ -32,7 +32,7 @@ func TestFlagValuesFromConf(t *testing.T) {
 	local.ResetConf()
 
 	// act
-	err := utils.WriteToFile(`{ "webServerPort": 8080, "dnsServerPort": 62, "defaultDns": false }`, utils.GetPath(*flags.ConfPath))
+	err := utils.WriteToFile(`{ "webServerPort": 8080, "dnsServerPort": 62, "defaultDns": false }`, utils.SolveRelativePath(*flags.ConfPath))
 
 	// assert
 	assert.Nil(t, err)
