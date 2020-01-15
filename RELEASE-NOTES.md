@@ -1,3 +1,6 @@
+### 2.19.0
+* Support for absolute paths on config files (#188)
+
 ### 2.18.7
 * Fixing docker image on latest version wasn't being updated
 
