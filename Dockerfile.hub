@@ -1,7 +1,7 @@
 FROM debian:10-slim AS BUILDER
 ENV TMP_NAME=/tmp/dns-proxy-server.tgz
 RUN apt-get update && apt-get install -y curl &&\
-    curl -L https://github.com/mageddo/dns-proxy-server/releases/download/2.18.3/dns-proxy-server-linux-amd64-2.18.3.tgz > $TMP_NAME && \
+    curl -L https://github.com/mageddo/dns-proxy-server/releases/download/2.18.7/dns-proxy-server-linux-amd64-2.18.7.tgz > $TMP_NAME && \
     mkdir /app && tar -xvf $TMP_NAME -C /app
 
 FROM debian:10-slim
