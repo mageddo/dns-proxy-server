@@ -2,8 +2,6 @@ package flags
 
 import (
 	"flag"
-	"os"
-	"fmt"
 	"github.com/mageddo/dns-proxy-server/cache/store"
 )
 
@@ -33,19 +31,6 @@ var (
 	dpsNetworkAutoConnect  = flag.Bool("dps-network-auto-connect", false, "Connect all running and new containers to the DPS network, this way you will probably not have resolution issues by acl (implies dps-network=true)")
 	Help                   = flag.Bool("help", false, "This message")
 )
-
-func init(){
-
-	flag.Parse()
-	if *Help {
-		flag.PrintDefaults()
-		os.Exit(0)
-	} else if *Version {
-		fmt.Println(GetRawCurrentVersion())
-		os.Exit(0)
-	}
-
-}
 
 func PublishServicePort() bool {
 	return *publishServicePort

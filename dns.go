@@ -22,6 +22,8 @@ import (
 	"strings"
 	"sync/atomic"
 	"time"
+	"flag"
+	"github.com/mageddo/dns-proxy-server/flags"
 )
 
 func handleQuestion(respWriter dns.ResponseWriter, reqMsg *dns.Msg) {
@@ -100,6 +102,15 @@ func serve(net, name, secret string) {
 }
 
 func main() {
+
+	flag.Parse()
+	if *flags.Help {
+		flag.PrintDefaults()
+		os.Exit(0)
+	} else if *flags.Version {
+		fmt.Println(flags.GetRawCurrentVersion())
+		os.Exit(0)
+	}
 
 	service.NewService().Install()
 
