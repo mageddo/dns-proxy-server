@@ -2,12 +2,10 @@ package docker
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
-	"github.com/docker/engine-api/client"
-	"github.com/docker/engine-api/types"
-	"github.com/docker/engine-api/types/events"
-	"github.com/docker/engine-api/types/filters"
+	"github.com/docker/docker/client"
+	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/filters"
 	"github.com/mageddo/dns-proxy-server/cache"
 	"github.com/mageddo/dns-proxy-server/cache/lru"
 	"github.com/mageddo/dns-proxy-server/conf"
@@ -60,7 +58,7 @@ func HandleDockerEvents(){
 	eventFilter.Add("event", "stop")
 
 	// registering at events before get the list of actual containers, this way no one container will be missed #55
-	body, err := cli.Events(ctx, types.EventsOptions{Filters: eventFilter})
+	events, errs := cli.Events(ctx, types.EventsOptions{Filters: eventFilter})
 	if err != nil {
 		logging.Errorf("status=error-to-attach-at-events-handler, solver=docker, err=%v", ctx, err)
 		return
@@ -76,36 +74,35 @@ func HandleDockerEvents(){
 		logging.Infof("status=started-container-processed, container=%s, hostnames=%s", ctx, cInspection.Name, hostnames)
 	}
 
-	dec := json.NewDecoder(body)
 	for {
+		select {
+			case event := <-events:
+				ctx := reference.Context()
 
-		ctx := reference.Context()
-
-		var event events.Message
-		err := dec.Decode(&event)
-		if err != nil && err == io.EOF {
-			break
-		}
-
-		cInspection := mustInspectContainer(ctx, event.ID)
-		hostnames := getHostnames(cInspection)
-
-		action := event.Action
-		if len(action) == 0 {
-			action = event.Status
-		}
-		logging.Infof("status=resolved-hosts, action=%s, hostnames=%s", ctx, action, hostnames)
-		switch action {
-		case "start":
-			dockernetwork.MustNetworkConnect(ctx, dockernetwork.DpsNetwork, cInspection.ID, "")
-			putHostnames(ctx, hostnames, mustInspectContainer(ctx, event.ID))
-			break
-
-		case "stop", "die":
-			for _, host := range hostnames {
-				c.Remove(host)
-			}
-			break
+				cInspection := mustInspectContainer(ctx, event.ID)
+				hostnames := getHostnames(cInspection)
+		
+				action := event.Action
+				if len(action) == 0 {
+					action = event.Status
+				}
+				logging.Infof("status=resolved-hosts, action=%s, hostnames=%s", ctx, action, hostnames)
+				switch action {
+				case "start":
+					dockernetwork.MustNetworkConnect(ctx, dockernetwork.DpsNetwork, cInspection.ID, "")
+					putHostnames(ctx, hostnames, mustInspectContainer(ctx, event.ID))
+					break
+		
+				case "stop", "die":
+					for _, host := range hostnames {
+						c.Remove(host)
+					}
+					break
+				}	
+			case err := <-errs:
+				if err == io.EOF {
+					break
+				}
 		}
 	}
 

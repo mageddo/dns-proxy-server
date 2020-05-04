@@ -7,6 +7,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/docker/distribution v2.6.0-rc.1.0.20170929205102-bb49a1685d27+incompatible h1:Q8A10aaq9hgdo8AyfWN+iYolHbMZBrIeSonbNn/1qow=
 github.com/docker/distribution v2.6.0-rc.1.0.20170929205102-bb49a1685d27+incompatible/go.mod h1:J2gT2udsDAN96Uj4KfcMRqY0/ypR+oyYUYmja8H+y+w=
+github.com/docker/docker v1.13.1 h1:IkZjBSIc8hBjLpqeAbeE5mca5mNgeatLHBy3GO78BWo=
+github.com/docker/docker v1.13.1/go.mod h1:eEKB0N0r5NX/I1kEveEz05bcu8tLC/8azJZsviup8Sk=
 github.com/docker/engine-api v0.4.1-0.20160908232104-4290f40c0566 h1:S02HakxupRs+HZdHv6qfFfb6EDK+VZApNTYmVFppg7I=
 github.com/docker/engine-api v0.4.1-0.20160908232104-4290f40c0566/go.mod h1:xtQCpzf4YysNZCVFfIGIm7qfLvYbxtLkEVVfKhTVOvw=
 github.com/docker/go-connections v0.3.0 h1:3lOnM9cSzgGwx8VfK/NGOW5fLQ0GjIlCkaktF+n1M6o=

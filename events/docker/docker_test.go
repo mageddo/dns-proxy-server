@@ -2,9 +2,9 @@ package docker
 
 import (
 	"fmt"
-	"github.com/docker/engine-api/types"
-	"github.com/docker/engine-api/types/container"
-	"github.com/docker/engine-api/types/network"
+	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/network"
 	"github.com/mageddo/dns-proxy-server/docker/dockernetwork"
 	"github.com/mageddo/dns-proxy-server/reference"
 	"github.com/mageddo/dns-proxy-server/utils/env"
