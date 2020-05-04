@@ -157,3 +157,23 @@ func DpsNetworkAutoConnect() bool {
 	}
 	return flags.DpsNetworkAutoConnect()
 }
+
+func GetDockerHost() string {
+	if dockerHost := os.Getenv(env.MG_DOCKER_HOST); len(strings.TrimSpace(dockerHost)) != 0 {
+		return dockerHost
+	}
+	if conf, _ := getConf(); conf != nil &&  len(conf.DockerHost) != 0 {
+		return conf.DockerHost
+	}
+	return *flags.DockerHost
+}
+
+func GetDockerApiVersion() string {
+	if dockerApiVersion := os.Getenv(env.MG_DOCKER_API_VERSION); len(strings.TrimSpace(dockerApiVersion)) != 0 {
+		return dockerApiVersion
+	}
+	if conf, _ := getConf(); conf != nil &&  len(conf.DockerApiVersion) != 0 {
+		return conf.DockerApiVersion
+	}
+	return *flags.DockerApiVersion
+}

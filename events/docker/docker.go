@@ -25,7 +25,7 @@ func HandleDockerEvents(){
 
 	// connecting to docker api
 	ctx := reference.Context()
-	cli, err := client.NewClient("unix:///var/run/docker.sock", "v1.21", nil, nil)
+	cli, err := client.NewClient(conf.GetDockerHost(), conf.GetDockerApiVersion(), nil, nil)
 	if err != nil {
 		logging.Warningf("status=error-parsing-host-url, err=%+v", err)
 		return

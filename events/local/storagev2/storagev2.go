@@ -31,6 +31,9 @@ type ConfigurationV2 struct {
 
 	DpsNetwork *bool `json:"dpsNetwork"`
 	DpsNetworkAutoConnect *bool `json:"dpsNetworkAutoConnect"`
+
+	DockerHost string `json:"dockerHost"`
+	DockerApiVersion string `json:"dockerApiVersion"`
 }
 
 type EnvV2 struct {
@@ -64,6 +67,8 @@ func ValueOf(c *localvo.Configuration) *ConfigurationV2 {
 		Envs:                   toV2Envs(c.Envs),
 		DpsNetwork:             c.DpsNetwork,
 		DpsNetworkAutoConnect:  c.DpsNetworkAutoConnect,
+		DockerHost:             c.DockerHost,
+		DockerApiVersion:       c.DockerApiVersion,
 	}
 }
 
@@ -121,6 +126,8 @@ func (c *ConfigurationV2) ToConfig() *localvo.Configuration {
 		WebServerPort:          c.WebServerPort,
 		DpsNetwork:             c.DpsNetwork,
 		DpsNetworkAutoConnect:  c.DpsNetworkAutoConnect,
+		DockerHost:             c.DockerHost,
+		DockerApiVersion:       c.DockerApiVersion,
 	}
 }
 

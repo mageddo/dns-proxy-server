@@ -30,6 +30,8 @@ var (
 	dpsNetwork             = flag.Bool("dps-network", false, "Create a bridge network for DPS increasing compatibility")
 	dpsNetworkAutoConnect  = flag.Bool("dps-network-auto-connect", false, "Connect all running and new containers to the DPS network, this way you will probably not have resolution issues by acl (implies dps-network=true)")
 	Help                   = flag.Bool("help", false, "This message")
+	DockerHost             = flag.String("docker-host", "unix:///var/run/docker.sock", "URL to connect to docker daemon")
+	DockerApiVersion       = flag.String("docker-api-version", "v1.21", "Docker API version to use")
 )
 
 func PublishServicePort() bool {

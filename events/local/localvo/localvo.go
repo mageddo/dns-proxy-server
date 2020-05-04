@@ -35,6 +35,9 @@ type Configuration struct {
 	// if dps should use his own network
 	DpsNetwork            *bool
 	DpsNetworkAutoConnect *bool
+
+	DockerHost            string
+	DockerApiVersion      string
 }
 
 type Env struct {
