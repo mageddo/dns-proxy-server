@@ -1,0 +1,7 @@
+sudo: required
+services:
+  - docker
+script: docker-compose up --abort-on-container-exit ci-build-test
+branches:
+  only:
+  - master

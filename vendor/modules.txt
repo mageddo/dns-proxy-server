@@ -1,0 +1,81 @@
+# github.com/Microsoft/go-winio v0.4.14
+## explicit
+github.com/Microsoft/go-winio
+github.com/Microsoft/go-winio/pkg/guid
+# github.com/davecgh/go-spew v1.1.1
+github.com/davecgh/go-spew/spew
+# github.com/docker/distribution v2.6.0-rc.1.0.20170929205102-bb49a1685d27+incompatible
+## explicit
+github.com/docker/distribution/digestset
+github.com/docker/distribution/reference
+# github.com/docker/engine-api v0.4.1-0.20160908232104-4290f40c0566
+## explicit
+github.com/docker/engine-api/client
+github.com/docker/engine-api/client/transport
+github.com/docker/engine-api/client/transport/cancellable
+github.com/docker/engine-api/types
+github.com/docker/engine-api/types/blkiodev
+github.com/docker/engine-api/types/container
+github.com/docker/engine-api/types/events
+github.com/docker/engine-api/types/filters
+github.com/docker/engine-api/types/mount
+github.com/docker/engine-api/types/network
+github.com/docker/engine-api/types/reference
+github.com/docker/engine-api/types/registry
+github.com/docker/engine-api/types/strslice
+github.com/docker/engine-api/types/swarm
+github.com/docker/engine-api/types/time
+github.com/docker/engine-api/types/versions
+# github.com/docker/go-connections v0.3.0
+## explicit
+github.com/docker/go-connections/nat
+github.com/docker/go-connections/sockets
+github.com/docker/go-connections/tlsconfig
+# github.com/docker/go-units v0.3.2
+## explicit
+github.com/docker/go-units
+# github.com/go-resty/resty v0.4.2-0.20170925192930-9ac9c42358f7
+## explicit
+github.com/go-resty/resty
+# github.com/hashicorp/golang-lru v0.0.0-20160813221303-0a025b7e63ad
+## explicit
+github.com/hashicorp/golang-lru
+github.com/hashicorp/golang-lru/simplelru
+# github.com/mageddo/go-httpmap v0.0.0-20180506172318-51aa467628f6
+## explicit
+github.com/mageddo/go-httpmap
+# github.com/mageddo/go-logging v0.0.0-20190919023652-00f1d8a55010
+## explicit
+github.com/mageddo/go-logging
+github.com/mageddo/go-logging/native
+github.com/mageddo/go-logging/pkg/trace
+# github.com/miekg/dns v0.0.0-20170930185408-946bd9fbed05
+## explicit
+github.com/miekg/dns
+github.com/miekg/dns/internal/socket
+# github.com/opencontainers/go-digest v1.0.0-rc1
+## explicit
+github.com/opencontainers/go-digest
+# github.com/pkg/errors v0.8.1
+## explicit
+github.com/pkg/errors
+# github.com/pmezard/go-difflib v1.0.0
+## explicit
+github.com/pmezard/go-difflib/difflib
+# github.com/stretchr/objx v0.1.1
+github.com/stretchr/objx
+# github.com/stretchr/testify v1.4.1-0.20190904163530-85f2b59c4459
+## explicit
+github.com/stretchr/testify/assert
+github.com/stretchr/testify/mock
+# golang.org/x/net v0.0.0-20171004034648-a04bdaca5b32
+## explicit
+golang.org/x/net/context
+golang.org/x/net/proxy
+golang.org/x/net/publicsuffix
+# golang.org/x/sys v0.0.0-20190507160741-ecd444e8653b
+golang.org/x/sys/windows
+# golang.org/x/text v0.1.1-0.20171013141220-c01e4764d870
+## explicit
+# gopkg.in/yaml.v2 v2.2.2
+gopkg.in/yaml.v2

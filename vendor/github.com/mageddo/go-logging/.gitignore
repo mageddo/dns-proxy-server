@@ -1,0 +1,5 @@
+.idea
+*.iml
+*.out
+*.test
+cmd/
