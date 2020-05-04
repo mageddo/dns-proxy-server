@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -eo pipefail
+[[ "${MG_LOG_LEVEL}" == "DEBUG" ]] && set -x
+set -u
+
+if [[ "${MG_DOCKER_HOST:-x}" != "x" ]]; then
+  set +e
+  docker_host_name=$(echo "${MG_DOCKER_HOST}" | sed -r -e 's/^((tcp|tcps|http|https):\/\/)?([^\:]+)(:[[:digit:]]+)?$/\3/i')
+  docker_host_ip=$(echo "${docker_host_name}" | xargs getent hosts)
+  ret=$?
+  set -e
+  if [[ $ret -eq 0 ]]; then
+    # host ip found
+    docker_host_ip=$(echo "${docker_host_ip}" | cut -d ' ' -f 1)
+    export MG_DOCKER_HOST=$(echo "${MG_DOCKER_HOST}" | sed -r -e "s/^((tcp|tcps|http|https):\/\/)?([^\:]+)(:[[:digit:]]+)?$/\1${docker_host_ip}\4/i")
+  fi
+fi
+
+exec $@
