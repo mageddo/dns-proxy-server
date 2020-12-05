@@ -132,3 +132,68 @@ func TestLogFile_CustomPath(t *testing.T) {
 
 	os.Remove(local.GetConfPath())
 }
+
+
+const TEST_ENV_VAR_NAME = "DPS_TEST_ENV_VAR"
+
+func TestParseBooleanEnv_TrueValues(t *testing.T) {
+	trueValues := []string{"1", "t", "T", "TRUE", "true", "True"}
+	for _, s := range trueValues {
+		// arrange
+		os.Setenv(TEST_ENV_VAR_NAME, s)
+
+		// act
+		declared, value, err := parseBooleanEnv(TEST_ENV_VAR_NAME)
+
+		// assert
+		assert.True(t, declared)
+		assert.True(t, value, "Environment variable value: "+s)
+		assert.NoError(t, err)
+	}
+}
+
+func TestParseBooleanEnv_FalseValues(t *testing.T) {
+
+	falseValues := []string{"0", "f", "F", "FALSE", "false", "False"}
+	for _, s := range falseValues {
+		// arrange
+		os.Setenv(TEST_ENV_VAR_NAME, s)
+
+		// act
+		declared, value, err := parseBooleanEnv(TEST_ENV_VAR_NAME)
+
+		// assert
+		assert.True(t, declared)
+		assert.False(t, value)
+		assert.NoError(t, err)
+	}
+}
+
+func TestParseBooleanEnv_Error(t *testing.T) {
+
+	falseValues := []string{"x", "y"}
+	for _, s := range falseValues {
+		// arrange
+		os.Setenv(TEST_ENV_VAR_NAME, s)
+
+		// act
+		declared, _, err := parseBooleanEnv(TEST_ENV_VAR_NAME)
+
+		// assert
+		assert.True(t, declared)
+		assert.Error(t, err)
+	}
+}
+
+
+func TestParseBooleanEnv_NotDeclared(t *testing.T) {
+
+	// arrange
+
+	// act
+	declared, _, err := parseBooleanEnv("DPS_NOT_EXISTING_ENV_VAR")
+
+	// assert
+	assert.False(t, declared)
+	assert.NoError(t, err)
+}

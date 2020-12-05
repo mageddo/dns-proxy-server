@@ -1,6 +1,7 @@
 package conf
 
 import (
+	"errors"
 	"fmt"
 	"github.com/mageddo/dns-proxy-server/events/local"
 	"github.com/mageddo/dns-proxy-server/events/local/localvo"
@@ -8,6 +9,7 @@ import (
 	"github.com/mageddo/dns-proxy-server/utils/env"
 	"github.com/mageddo/go-logging"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -101,9 +103,12 @@ func GetString(value, defaultValue string) string {
 }
 
 func ShouldRegisterContainerNames() bool {
-	if v := os.Getenv(env.MG_REGISTER_CONTAINER_NAMES); len(strings.TrimSpace(v)) > 0 {
-		return v == "1"
+	if declared, value, err := parseBooleanEnv(env.MG_REGISTER_CONTAINER_NAMES); err != nil {
+		panic(err)
+	} else if declared {
+		return value
 	}
+
 	if conf, _ := getConf(); conf != nil && conf.RegisterContainerNames != nil {
 		return *conf.RegisterContainerNames
 	}
@@ -139,9 +144,12 @@ func DpsNetwork() bool {
 }
 
 func dpsNetwork0() bool {
-	if v := os.Getenv(env.MG_DPS_NETWORK); len(strings.TrimSpace(v)) > 0 {
-		return v == "1"
+	if declared, value, err := parseBooleanEnv(env.MG_DPS_NETWORK); err != nil {
+		panic(err)
+	} else if declared {
+		return value
 	}
+
 	if conf, _ := getConf(); conf.DpsNetwork != nil {
 		return *conf.DpsNetwork
 	}
@@ -149,11 +157,25 @@ func dpsNetwork0() bool {
 }
 
 func DpsNetworkAutoConnect() bool {
-	if v := os.Getenv(env.MG_DPS_NETWORK_AUTO_CONNECT); len(strings.TrimSpace(v)) > 0 {
-		return v == "1"
+	if declared, value, err := parseBooleanEnv(env.MG_DPS_NETWORK_AUTO_CONNECT); err != nil {
+		panic(err)
+	} else if declared {
+		return value
 	}
+
 	if conf, _ := getConf(); conf.DpsNetwork != nil {
 		return *conf.DpsNetworkAutoConnect
 	}
 	return flags.DpsNetworkAutoConnect()
+}
+
+func parseBooleanEnv(varName string) (bool, bool, error) {
+	if v := os.Getenv(varName); len(strings.TrimSpace(v)) > 0 {
+		if value, err := strconv.ParseBool(v); err != nil {
+			return true, false, errors.New("Expected value 1, t, T, TRUE, true, True, 0, f, F, FALSE, false or False in '"+varName+"', but got: "+v)
+		} else {
+			return true, value, nil
+		}
+	}
+	return false, false, nil
 }
