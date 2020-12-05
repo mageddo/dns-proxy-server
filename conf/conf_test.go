@@ -132,3 +132,28 @@ func TestLogFile_CustomPath(t *testing.T) {
 
 	os.Remove(local.GetConfPath())
 }
+
+func TestDockerClientOptions_DefaultValues(t *testing.T) {
+	assert.Equal(t, *flags.DockerHost, GetDockerHost())
+	assert.Equal(t, *flags.DockerApiVersion, GetDockerApiVersion())
+}
+
+func TestDockerClientOptions_FromArgs(t *testing.T) {
+	os.Args = []string{"cmd", "--docker-host=tcp://127.0.0.1:2375", "--docker-api-version=v1.24"}
+	flag.Parse()
+	assert.Equal(t, "tcp://127.0.0.1:2375", GetDockerHost())
+	assert.Equal(t, "v1.24", GetDockerApiVersion())
+}
+
+func TestDockerClientOptions_FromConf(t *testing.T) {
+	// arrange
+	local.ResetConf()
+
+	// act
+	err := utils.WriteToFile(`{ "dockerHost": "tcp://127.0.0.1:2375", "dockerApiVersion": "v1.24" }`, utils.SolveRelativePath(*flags.ConfPath))
+
+	// assert
+	assert.Nil(t, err)
+	assert.Equal(t, "tcp://127.0.0.1:2375", GetDockerHost())
+	assert.Equal(t, "v1.24", GetDockerApiVersion())
+}

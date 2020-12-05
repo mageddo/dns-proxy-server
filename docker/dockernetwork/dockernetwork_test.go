@@ -2,8 +2,8 @@ package dockernetwork
 
 import (
 	"fmt"
-	"github.com/docker/engine-api/types"
-	"github.com/docker/engine-api/types/network"
+	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/network"
 	"github.com/mageddo/dns-proxy-server/reference"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"

@@ -2,9 +2,9 @@ package dockernetwork
 
 import (
 	"context"
-	"github.com/docker/engine-api/client"
-	"github.com/docker/engine-api/types"
-	"github.com/docker/engine-api/types/network"
+	"github.com/docker/docker/client"
+	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/network"
 	"github.com/stretchr/testify/mock"
 )
 

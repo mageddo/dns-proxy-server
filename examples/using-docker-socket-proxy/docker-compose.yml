@@ -1,0 +1,50 @@
+version: '3.7'
+
+networks:
+  default:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.31.0.53/24"
+
+services:
+# https://medium.com/@containeroo/traefik-2-0-paranoid-about-mounting-var-run-docker-sock-22da9cb3e78c
+  socket-proxy:
+    image: tecnativa/docker-socket-proxy
+    hostname: socket-proxy.dev.test
+    networks:
+        aliases:
+          - socket-proxy.dev.test
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      LOG_LEVEL: "${DOCKER_SOCKET_PROXY_LOG_LEVEL:-debug}"
+# https://github.com/BretFisher/dogvscat/blob/master/stack-proxy-global.yml#L124    
+      NETWORKS: 1
+      #SERVICES: 1
+      CONTAINERS: 1
+      #SWARM: 1
+      #TASKS: 1
+
+  dns-proxy-server:
+    image: defreitas/dns-proxy-server:2.20.0
+    hostname: dns.dev.test
+#    volumes:
+#      - /etc/resolv.conf:/etc/resolv.conf
+    depends_on:
+      - socket-proxy
+    environment:
+      MG_LOG_LEVEL: "DEBUG"
+      MG_REGISTER_CONTAINER_NAMES: "1"
+      MG_DOMAIN: "example.org"
+      MG_DOCKER_HOST: "tcp://socket-proxy.dev.test:2375"
+      MG_DOCKER_API_VERSION: "v1.24"
+    networks:
+      default:
+        ipv4_address: 172.31.0.53
+    ports:
+      - "5380:5380"
+    labels:
+      traefik.enable: true
+      traefik.port: 5380        
+      traefik.frontend.rule: "Host:dns.external.test"

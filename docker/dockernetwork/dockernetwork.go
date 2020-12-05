@@ -3,10 +3,10 @@ package dockernetwork
 import (
 	"context"
 	"fmt"
-	"github.com/docker/engine-api/client"
-	"github.com/docker/engine-api/types"
-	"github.com/docker/engine-api/types/filters"
-	"github.com/docker/engine-api/types/network"
+	"github.com/docker/docker/client"
+	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/filters"
+	"github.com/docker/docker/api/types/network"
 	"github.com/mageddo/dns-proxy-server/conf"
 	"github.com/mageddo/dns-proxy-server/flags"
 	"github.com/mageddo/go-logging"
@@ -182,7 +182,7 @@ func NetworkConnect(ctx context.Context, networkId string, containerId string, n
 func FindDpsContainer(ctx context.Context) (*types.Container, error) {
 	logging.Debugf("cli=%+v", cli)
 	if containers, err := cli.ContainerList(ctx, types.ContainerListOptions {
-		Filter: MustParseFlags("status=running", "label=dps.container=true"),
+		Filters: MustParseFlags("status=running", "label=dps.container=true"),
 	}); err != nil {
 		return nil, errors.WithMessage(err, "can't list containers")
 	} else {

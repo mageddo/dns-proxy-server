@@ -38,7 +38,9 @@ __Version 2__
   "registerContainerNames": false, // if should register container name / service name as a hostname
   "domain": "", // The container names domain
   "dpsNetwork": false, // if should create a bridge network for dps container
-  "dpsNetworkAutoConnect": false // if should connect all containers to dps container
+  "dpsNetworkAutoConnect": false, // if should connect all containers to dps container
+  "dockerHost": "unix:///var/run/docker.sock", // URL to access docker host (e.g unix:///var/run/docker.sock, tcp://127.0.0.1:2375)
+  "dockerApiVersion": "v1.21" // Docker API version to use for the client that connects to the docker daemon
 }
 ```
 
@@ -73,14 +75,16 @@ __Version 1__
 
 ### Environment variable configuration
 
-| VARIBLE                     	| DESCRIPTION                                                                 	| DEFAULT VALUE    	|
-|-----------------------------	|-----------------------------------------------------------------------------	|------------------	|
-| MG_RESOLVCONF               	| Linux resolvconf path to set DPS as default DNS                             	| /etc/resolv.conf 	|
-| MG_LOG_LEVEL                	|                                                                             	| INFO             	|
-| MG_LOG_FILE                 	| Path where to logs will be stored                                           	| console          	|
-| MG_REGISTER_CONTAINER_NAMES 	| if should register container name / service name as a hostname              	| false            	|
-| MG_HOST_MACHINE_HOSTNAME    	| hostname to solve host machine IP                                           	| host.docker      	|
-| MG_DOMAIN                   	| The container names domain (requires MG_REGISTER_CONTINER_NAMES=TRUE) 	| .docker          	|
+| VARIBLE                     	| DESCRIPTION                                                                 	| DEFAULT VALUE             	|
+|-----------------------------	|-----------------------------------------------------------------------------	|------------------         	|
+| MG_RESOLVCONF               	| Linux resolvconf path to set DPS as default DNS                             	| /etc/resolv.conf          	|
+| MG_LOG_LEVEL                	|                                                                             	| INFO                      	|
+| MG_LOG_FILE                 	| Path where to logs will be stored                                           	| console                   	|
+| MG_REGISTER_CONTAINER_NAMES 	| if should register container name / service name as a hostname              	| false                     	|
+| MG_HOST_MACHINE_HOSTNAME    	| hostname to solve host machine IP                                           	| host.docker               	|
+| MG_DOMAIN                   	| The container names domain (requires MG_REGISTER_CONTINER_NAMES=TRUE) 	      | .docker          	          |
+| MG_DOCKER_HOST               	| URL to access docker host                                                   	| unix:///var/run/docker.sock	|
+| MG_DOCKER_API_VERSION        	| Docker API version to use for the client that connects to the docker daemon   | v1.21          	            |
 
 ### Terminal configuration
 
@@ -124,4 +128,8 @@ __Version 1__
     	Current version
   -web-server-port int
     	The web server port (default 5380)
+  -docker-host string
+      URL to access docker host (default unix:///var/run/docker.sock)
+  -docker-api-version string
+      Docker API version to use for the client that connects to the docker daemon (default v1.21)
 ```

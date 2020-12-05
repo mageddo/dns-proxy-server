@@ -6,7 +6,7 @@ RUN npm install &&\
 	npm run build &&\
 	rm -f `find ./build -name *.map`
 
-FROM golang:1.12.9 AS GOLANG
+FROM golang:1.14.2 AS GOLANG
 RUN apt update &&\
 	apt install -y jq &&\
 	curl -s -L https://github.com/mageddo-projects/github-cli/releases/download/v1.4/github-cli.sh > /usr/bin/github-cli &&\
