@@ -5,7 +5,7 @@ weight: 9
 
 At previous versions *DPS* had a caveat where you only would be able to access other docker containers, access host or 
 be accessed if they were at a bridge network, DPS inclusively, this bridge network also had to be the first defined
-on container networks to have sure *DPS* would solve to it's IP, since **2.15.0** *DPS* can do this job for you.
+on container networks to have sure *DPS* would solve to its IP, since **2.15.0** *DPS* can do this job for you.
 
 It is a really helpful behavior when you are in development but maybe a security issue when you are in production, this
 way you can enable or disable this feature if you want. 
@@ -36,7 +36,7 @@ MG_DPS_NETWORK_AUTO_CONNECT=1 ./dns-proxy-server
 We can simulate the issue by the following example:
 
 You have a container running on a overlay network, it means the container can not be accessed by the host or by 
- containers which are not on it's network
+ containers which are not on its network
 
 docker-compose.yml
 ```yaml
