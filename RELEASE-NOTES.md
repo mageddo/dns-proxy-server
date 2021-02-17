@@ -117,7 +117,7 @@ by all docker containers, **not** enabled by default [see the docs](http://maged
 * If your container have multiple networks you can specify which network to use when solving IP by specifying `dps.network` label
 
 ### 2.7.0
-* Now you can access your container by it's container / docker-compose service name, syntax is `<container-name>.docker`
+* Now you can access your container by its container / docker-compose service name, syntax is `<container-name>.docker`
 
 ### 2.6.1
 * Updating docs

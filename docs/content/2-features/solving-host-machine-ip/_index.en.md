@@ -38,5 +38,5 @@ Json configuration
 **Notes**:
 
 Be aware if you set the host machine hostname as the machine name then you will have to remove
-it's name from `/etc/hosts` since OS try to resolve names from hosts file first
+its name from `/etc/hosts` since OS try to resolve names from hosts file first
 then from DNS server 
