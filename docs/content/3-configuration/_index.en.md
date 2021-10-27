@@ -124,4 +124,6 @@ __Version 1__
     	Current version
   -web-server-port int
     	The web server port (default 5380)
+  -resolv-setup-sleep int
+    	Time to wait till next resolv.conf override (default 20)
 ```

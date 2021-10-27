@@ -151,7 +151,7 @@ func main() {
 					logging.Error("status=cant-turn-default-dns", err)
 					exitcodes.Exit(exitcodes.FAIL_SET_DNS_AS_DEFAULT)
 				}
-				time.Sleep(time.Duration(20) * time.Second)
+				time.Sleep(time.Duration(conf.GetResolvSetupSleepSecond()) * time.Second)
 			}
 		}
 	}()

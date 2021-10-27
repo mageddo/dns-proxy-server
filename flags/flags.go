@@ -31,6 +31,7 @@ var (
 	Domain                 = flag.String("domain", "docker", "Domain utilized to solver containers and services hostnames")
 	dpsNetwork             = flag.Bool("dps-network", false, "Create a bridge network for DPS increasing compatibility")
 	dpsNetworkAutoConnect  = flag.Bool("dps-network-auto-connect", false, "Connect all running and new containers to the DPS network, this way you will probably not have resolution issues by acl (implies dps-network=true)")
+	ResolvSetupSleepSecond = flag.Int("resolv-setup-sleep", 20, "Time to wait till next resolv.conf override")
 	Help                   = flag.Bool("help", false, "This message")
 )
 
