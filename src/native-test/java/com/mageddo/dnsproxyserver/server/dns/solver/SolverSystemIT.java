@@ -2,12 +2,12 @@ package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.github.dockerjava.api.model.Network;
 import com.mageddo.json.JsonUtils;
-import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.junit.QuarkusIntegrationTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@QuarkusTest
+@QuarkusIntegrationTest
 class SolverSystemIT {
 
   @Test
