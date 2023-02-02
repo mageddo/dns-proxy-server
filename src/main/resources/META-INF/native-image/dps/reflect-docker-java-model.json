@@ -1,0 +1,1568 @@
+[
+  {
+    "name" : "com.github.dockerjava.api.model.DockerObject",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ResponseItem",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.GenericResource",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ClusterInfo",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.NetworkSettings",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Node",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ServiceUpdateStatus",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Link",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SwarmOrchestration",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ServiceReplicatedModeOptions",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ServiceSpec",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SwarmNodeSpec",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.NetworkAttachmentConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.UpdateConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Ulimit",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.PidsStatsConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ResponseItem$AuxDetail",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.BlkioWeightDevice",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ConfigSpec",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.AuthConfigurations",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ContainerNetworkSettings",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.DeviceRequest",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Secret",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ContainerSpecPrivileges",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SwarmNodeEngineDescription",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ContainerNetwork$Ipam",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ExternalCA",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.EventActor",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Statistics",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Endpoint",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ContainerSpecSecret",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SwarmNodePlatform",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.WaitResponse",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.InfoRegistryConfig$IndexConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ContainerMount",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ContainerSpecFile",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Version",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.DriverStatus",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SwarmVersion",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Device",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ResourceSpecs",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SwarmNodePluginDescription",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ObjectVersion",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ResourceVersion",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ContainerConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.TmpfsOptions",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.EndpointVirtualIP",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.HostConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.StatisticNetworksConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SwarmNode",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.BlkioStatEntry",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Service",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ContainerHostConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ThrottlingDataConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.MemoryStatsConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ErrorDetail",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.VersionPlatform",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ServiceRestartPolicy",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SwarmCAConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SwarmNodeResources",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.VolumeBind",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Network",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Network$Ipam",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.StatsConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.TaskDefaults",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SwarmNodeVersion",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.InfoRegistryConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ContainerNetwork",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ResponseItem$ProgressDetail",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Ports$Binding",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Task",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.PortConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ServiceGlobalModeOptions",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Container",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SwarmNodeStatus",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SwarmSpec",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SwarmJoinTokens",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.PeerNode",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Mount",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SecretSpec",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.TaskSpec",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ServicePlacement",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Network$ContainerNetworkConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SwarmDispatcherConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.PortBinding",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Identifier",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.BlkioStatsConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ResourceRequirements",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ResponseItem$ErrorDetail",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SwarmNodeManagerStatus",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Network$Ipam$Config",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SwarmNodeDescription",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SearchItem",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.EndpointSpec",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.RestartPolicy",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.TaskStatus",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.HealthCheck",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Config",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ContainerPort",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Repository",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SwarmInfo",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Info",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Bind",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ChangeLog",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.VolumeOptions",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ServiceModeConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.VersionComponent",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.TaskStatusContainerStatus",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Frame",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.BindOptions",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Driver",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.AuthConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Event",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.BlkioRateDevice",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ContainerSpecPrivilegesSELinuxContext",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.LogConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.CpuUsageConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.CpuStatsConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ContainerDNSConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.AuthResponse",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Image",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ContainerSpec",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SwarmRaftConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ContainerSpecPrivilegesCredential",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ContainerSpecConfig",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.LxcConf",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.PruneResponse",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.BuildResponseItem",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.PullResponseItem",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.PushResponseItem",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.LoadResponseItem",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.UpdateContainerResponse",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ServiceRestartCondition",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SwarmNodeRole",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.EndpointResolutionMode",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.UpdateFailureAction",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.StreamType",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ExternalCAProtocol",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.PortConfigProtocol",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Reachability",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Isolation",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.PropagationMode",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.TaskState",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.InternetProtocol",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.UpdateOrder",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.LogConfig$LoggingType",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.MountType",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SELContext",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.AccessMode",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.BindPropagation",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SwarmNodeAvailability",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.SwarmNodeState",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.PruneType",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Capability",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.PortConfig$PublishMode",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ServiceMode",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.LocalNodeState",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.EventType",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ServiceUpdateState",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.NamedResourceSpec",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.DiscreteResourceSpec",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Swarm",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.VolumesRW",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.VolumesFrom",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ExposedPort",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Volumes",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Volume",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Links",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ExposedPorts",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.VolumeRW",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.VolumeBinds",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Ports",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.ErrorResponse",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  },
+  {
+    "name" : "com.github.dockerjava.api.model.Binds",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  }
+]

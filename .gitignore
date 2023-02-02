@@ -1,6 +1,7 @@
 /pkg
 /bin
 build
+out/
 .idea/
 *.iml
 /files

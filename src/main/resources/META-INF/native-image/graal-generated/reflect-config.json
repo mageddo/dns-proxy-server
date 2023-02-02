@@ -281,11 +281,6 @@
     "queryAllDeclaredMethods": true
   },
   {
-    "name": "com.github.dockerjava.api.model.Network",
-    "allDeclaredFields": true,
-    "queryAllDeclaredMethods": true
-  },
-  {
     "name": "com.github.dockerjava.api.model.Bind",
     "allDeclaredFields": true,
     "queryAllDeclaredMethods": true,
