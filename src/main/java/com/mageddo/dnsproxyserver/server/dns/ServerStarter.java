@@ -39,4 +39,8 @@ public class ServerStarter {
     log.info("status=startingDnsServer, port={}", port);
     return this;
   }
+
+  List<Solver> getSolvers() {
+    return solvers;
+  }
 }

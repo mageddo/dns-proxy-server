@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.dns.server.solver;
 
+import com.mageddo.dnsproxyserver.server.dns.Hostname;
 import org.junit.jupiter.api.Test;
 
 import static com.mageddo.dnsproxyserver.server.dns.Wildcards.buildHostAndWildcards;
@@ -9,7 +10,7 @@ class WildcardsTest {
   @Test
   void mustGenerateHostsAndWildcardsTo(){
     // arrange
-    final var hostname = "bookmarks.mageddo.com";
+    final var hostname = Hostname.of("bookmarks.mageddo.com");
 
     // act
     final var result = buildHostAndWildcards(hostname);
