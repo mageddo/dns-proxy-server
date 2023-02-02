@@ -46,5 +46,4 @@ class SolverSystemTest {
     verify(this.dockerRepository).findHostMachineIp();
   }
 
-
 }
