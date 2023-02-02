@@ -43,20 +43,12 @@ public class TestUtils {
   }
 
   public static String readAndSortJsonExcluding(Object o, String... excludingFields) {
-    final var tree = (ObjectNode) JsonUtils.instance().valueToTree(o);
-    for (String field : excludingFields) {
-      tree.remove(field);
-    }
-    return sortJson(tree);
+    return sortJsonExcluding(JsonUtils.writeValueAsString(o), excludingFields);
   }
 
   @SneakyThrows
   public static String readAndSortJsonExcluding(String path, String... excludingFields) {
-    final var tree = (ObjectNode) objectMapper.readTree(readString(path));
-    for (String field : excludingFields) {
-      tree.remove(field);
-    }
-    return sortJson(tree);
+    return sortJsonExcluding(readString(path), excludingFields);
   }
 
   @SneakyThrows
@@ -69,6 +61,19 @@ public class TestUtils {
     return objectMapper.writeValueAsString(objectMapper.treeToValue(objectMapper.readTree(json), Object.class));
   }
 
+  @SneakyThrows
+  public static String sortJsonExcluding(Object o, String ... excludingFields) {
+    return sortJsonExcluding(JsonUtils.writeValueAsString(o), excludingFields);
+  }
+
+  @SneakyThrows
+  public static String sortJsonExcluding(String json, String ... excludingFields) {
+    final var tree = (ObjectNode) JsonUtils.readTree(json);
+    for (String field : excludingFields) {
+      tree.remove(field);
+    }
+    return objectMapper.writeValueAsString(objectMapper.treeToValue(tree, Object.class));
+  }
 
   @SneakyThrows
   public static InputStream readAsStream(String path) {

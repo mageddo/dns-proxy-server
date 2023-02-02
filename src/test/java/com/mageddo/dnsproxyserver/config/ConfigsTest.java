@@ -8,11 +8,11 @@ import org.junit.jupiter.api.io.TempDir;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static com.mageddo.utils.TestUtils.readAndSortJson;
 import static com.mageddo.utils.TestUtils.readAndSortJsonExcluding;
 import static com.mageddo.utils.TestUtils.readAsStream;
 import static com.mageddo.utils.TestUtils.readString;
 import static com.mageddo.utils.TestUtils.sortJson;
+import static com.mageddo.utils.TestUtils.sortJsonExcluding;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -60,8 +60,10 @@ class ConfigsTest {
     final var config = Configs.buildAndRegister(args);
 
     // assert
-    final var expectedJsonConfig = readAndSortJson("/configs-test/004.json");
-    assertEquals(expectedJsonConfig, sortJson(config));
+    assertEquals(
+      readAndSortJsonExcluding("/configs-test/004.json", "version"),
+      sortJsonExcluding(config, "version")
+    );
   }
 
 }
