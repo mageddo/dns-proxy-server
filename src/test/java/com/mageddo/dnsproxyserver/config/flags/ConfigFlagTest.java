@@ -1,7 +1,6 @@
 package com.mageddo.dnsproxyserver.config.flags;
 
 import com.mageddo.dnsproxyserver.config.entrypoint.ConfigFlag;
-import com.mageddo.json.JsonUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.PrintWriter;
@@ -9,6 +8,7 @@ import java.io.StringWriter;
 
 import static com.mageddo.utils.TestUtils.readAndSortJson;
 import static com.mageddo.utils.TestUtils.readString;
+import static com.mageddo.utils.TestUtils.sortJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ConfigFlagTest {
@@ -25,7 +25,7 @@ class ConfigFlagTest {
     // assert
     assertEquals(
         readAndSortJson("/flags-test/001.json"),
-        JsonUtils.prettyInstance().writeValueAsString(config)
+        sortJson(config)
     );
   }
 
