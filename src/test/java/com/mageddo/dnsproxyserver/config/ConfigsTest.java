@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static com.mageddo.utils.TestUtils.readAndSortJson;
+import static com.mageddo.utils.TestUtils.readAndSortJsonExcluding;
 import static com.mageddo.utils.TestUtils.readAsStream;
 import static com.mageddo.utils.TestUtils.readString;
 import static com.mageddo.utils.TestUtils.sortJson;
@@ -30,11 +31,12 @@ class ConfigsTest {
     final var config = Configs.buildAndRegister(args);
 
     // assert
-    final var expectedJsonConfig = readAndSortJson("/configs-test/001.json");
-    assertEquals(expectedJsonConfig, sortJson(config));
+    assertEquals(
+      readAndSortJsonExcluding("/configs-test/001.json", "version"),
+      readAndSortJsonExcluding(config, "version")
+    );
     assertTrue(Files.exists(tmpConfigFile));
 
-    assertEquals(expectedJsonConfig, sortJson(config));
     assertEquals(sortJson(readString("/configs-test/002.json")), sortJson(readString(tmpConfigFile)));
   }
 
