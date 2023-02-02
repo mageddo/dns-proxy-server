@@ -34,4 +34,12 @@ public class Messages {
     res.addRecord(answer, Section.ANSWER);
     return res;
   }
+
+  public static String findFirstAnswerRecord(Message msg) {
+    final var section = msg.getSection(1);
+    if (section.isEmpty()) {
+      return null;
+    }
+    return section.get(0).toString();
+  }
 }

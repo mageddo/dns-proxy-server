@@ -39,6 +39,7 @@ dependencies {
   testCompileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.+'
   testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.+'
   testImplementation 'io.quarkus:quarkus-junit5'
+  testImplementation("io.quarkus:quarkus-junit5-mockito")
   testImplementation 'io.rest-assured:rest-assured'
   testImplementation(group: "org.mockito", name: "mockito-junit-jupiter", version: "4.2.+")
 
