@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 public class Priority {
-  public static final byte ZERO = 1;
+  public static final byte ZERO = 0;
 
   public static final byte ONE = 1;
   public static final byte TWO = 2;

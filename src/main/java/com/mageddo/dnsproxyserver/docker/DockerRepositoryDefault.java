@@ -3,11 +3,11 @@ package com.mageddo.dnsproxyserver.docker;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.mageddo.dnsproxyserver.server.dns.Hostname;
-import io.quarkus.arc.DefaultBean;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.StopWatch;
 
+import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Set;
@@ -19,7 +19,7 @@ import static com.mageddo.dnsproxyserver.docker.DockerNetworks.NETWORK_BRIDGE;
 
 @Slf4j
 @Singleton
-@DefaultBean
+@Default
 @AllArgsConstructor(onConstructor = @__({@Inject}))
 public class DockerRepositoryDefault implements DockerRepository {
 

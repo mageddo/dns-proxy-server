@@ -54,6 +54,7 @@ public class UDPServer {
 
       }
     } catch (IOException e) {
+      log.error("status=dnsServerStartFailed, port={}, msg={}", port, e.getMessage(), e);
       throw new UncheckedIOException(e);
     }
   }

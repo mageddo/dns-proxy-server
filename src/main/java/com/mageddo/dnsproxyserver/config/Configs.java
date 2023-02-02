@@ -39,10 +39,10 @@ public class Configs {
       .registerContainerNames(firstNonNullRequiring(
         env.getRegisterContainerNames(), json.getRegisterContainerNames(), flag.getRegisterContainerNames()
       ))
-      .hostMachineHostname(firstNonNullRequiring(
+      .hostMachineHostname(firstNonBlankRequiring(
         env.getHostMachineHostname(), json.getHostMachineHostname(), flag.getHostMachineHostname()
       ))
-      .domain(firstNonNullRequiring(
+      .domain(firstNonBlankRequiring(
         env.getDomain(), json.getDomain(), flag.getDomain()
       ))
       .dpsNetwork(firstNonNullRequiring(

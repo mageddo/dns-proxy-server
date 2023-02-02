@@ -6,16 +6,22 @@ import org.xbill.DNS.DClass;
 import org.xbill.DNS.Message;
 import org.xbill.DNS.Section;
 
+import java.util.Optional;
+
 public class Messages {
   public static String simplePrint(Message message) {
-    return message
-      .toString()
-      .substring(0, 10);
+    return Optional
+      .ofNullable(findQuestionHostname(message))
+      .map(Hostname::getName)
+      .orElse("N/A");
   }
 
   public static Hostname findQuestionHostname(Message m) {
-    final var hostname = m
-      .getQuestion()
+    final var question = m.getQuestion();
+    if (question == null) {
+      return null;
+    }
+    final var hostname = question
       .getName()
       .toString(true);
     return Hostname.of(hostname);
