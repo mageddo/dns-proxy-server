@@ -1,14 +1,14 @@
-package com.mageddo.dnsproxyserver.server.dns.solver;
+package com.mageddo.dnsproxyserver.server.dns;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Wildcards {
-  public static List<String> buildHostAndWildcards(String hostname) {
+  public static List<Hostname> buildHostAndWildcards(Hostname hostname) {
 
-    final var query = "." + hostname;
-    final var hostnames = new ArrayList<String>();
-    hostnames.add(query.substring(1));
+    final var query = "." + hostname.getName();
+    final var hostnames = new ArrayList<Hostname>();
+    hostnames.add(Hostname.of(query.substring(1)));
 
     int fromIndex = 0, actual = 0;
     while (true) {
@@ -18,7 +18,7 @@ public class Wildcards {
       if (actual == -1 || actual + 1 >= str.length()) {
         break;
       }
-      hostnames.add(str.substring(actual));
+      hostnames.add(Hostname.of(str.substring(actual)));
       fromIndex += actual + 1;
     }
     return hostnames;

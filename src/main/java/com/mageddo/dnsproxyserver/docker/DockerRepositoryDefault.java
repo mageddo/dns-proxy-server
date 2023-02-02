@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.docker;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.InspectContainerResponse;
+import com.mageddo.dnsproxyserver.server.dns.Hostname;
 import io.quarkus.arc.DefaultBean;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,12 +10,12 @@ import org.apache.commons.lang3.time.StopWatch;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 
 import static com.mageddo.dnsproxyserver.docker.Docker.findContainerHostname;
 import static com.mageddo.dnsproxyserver.docker.Docker.findHostnameFromEnv;
+import static com.mageddo.dnsproxyserver.docker.DockerNetworks.NETWORK_BRIDGE;
 
 @Slf4j
 @Singleton
@@ -26,7 +27,7 @@ public class DockerRepositoryDefault implements DockerRepository {
   private final DockerClient dockerClient;
 
   @Override
-  public String findHostIp(String host) {
+  public String findHostIp(Hostname host) {
     final var stopWatch = StopWatch.createStarted();
     final var activeContainers = this.dockerClient
       .listContainersCmd()
@@ -46,13 +47,27 @@ public class DockerRepositoryDefault implements DockerRepository {
     return foundIp;
   }
 
-  String[] buildNetworks(InspectContainerResponse c) {
-    return new String[]{"bridge"};
+  @Override
+  public String findHostMachineIp() {
+    return DockerNetworks.findIp(this.findBestNetwork());
   }
 
-  static Predicate<InspectContainerResponse> matchingHostName(String host) {
+  private com.github.dockerjava.api.model.Network findBestNetwork() {
+    return this.dockerClient.listNetworksCmd()
+      .exec()
+      .stream()
+      .min(NetworkComparator::compare)
+      .orElse(null);
+  }
+
+
+  String[] buildNetworks(InspectContainerResponse c) {
+    return new String[]{NETWORK_BRIDGE};
+  }
+
+  static Predicate<InspectContainerResponse> matchingHostName(Hostname host) {
     return it -> {
-      if (Objects.equals(findContainerHostname(it.getConfig()), host)) {
+      if (host.isEqualTo(findContainerHostname(it.getConfig()))) {
         return true;
       }
       return findHostnameFromEnv(it.getConfig().getEnv()).contains(host);

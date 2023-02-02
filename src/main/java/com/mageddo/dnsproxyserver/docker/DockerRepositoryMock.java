@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.docker;
 
+import com.mageddo.dnsproxyserver.server.dns.Hostname;
 import lombok.AllArgsConstructor;
 
 import javax.inject.Inject;
@@ -10,7 +11,7 @@ import java.util.Objects;
 @AllArgsConstructor(onConstructor = @__({@Inject}))
 public class DockerRepositoryMock implements DockerRepository {
   @Override
-  public String findHostIp(String host) {
+  public String findHostIp(Hostname host) {
     if (Objects.equals("acme.com", host)) {
       return "192.168.0.1";
     }

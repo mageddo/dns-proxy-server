@@ -1,13 +1,11 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.docker.DockerRepository;
-import com.mageddo.dnsproxyserver.utils.Ips;
+import com.mageddo.dnsproxyserver.server.dns.Messages;
+import com.mageddo.dnsproxyserver.server.dns.Wildcards;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.xbill.DNS.ARecord;
-import org.xbill.DNS.DClass;
 import org.xbill.DNS.Message;
-import org.xbill.DNS.Section;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -22,21 +20,13 @@ public class DockerSolver implements Solver {
   @Override
   public Message handle(Message reqMsg) {
 
-//    questionName := question.Name[:len(question.Name)-1]
-    final var question = reqMsg.getQuestion();
-    final var questionName = question.getName().toString(true);
-
-//    for _, host := range getAllHosts("." + questionName) {
-//      if s.c.ContainsKey(host) {
-//        return s.doSolve(ctx, host, question)
-//      }
-//    }
-    for (final var host : Wildcards.buildHostAndWildcards(questionName)) {
+    final var askedHost = Messages.findQuestionHostname(reqMsg);
+    for (final var host : Wildcards.buildHostAndWildcards(askedHost)) {
       final var ip = this.dockerRepository.findHostIp(host);
       if (ip == null) {
         return null;
       }
-      return this.toMsg(reqMsg, ip);
+      return Messages.aAnswer(reqMsg, ip);
     }
 
 
@@ -71,15 +61,7 @@ public class DockerSolver implements Solver {
     return null;
   }
 
-  Message toMsg(Message reqMsg, String ip) {
-    final var res = new Message(reqMsg.getHeader().getID());
-//     = Record.newRecord(reqMsg.getQuestion().getName(), Type.A, DClass.IN, 30, Ips.toBytes(ip));
-    final var answer = new ARecord(reqMsg.getQuestion().getName(), DClass.IN, 30L, Ips.toAddress(ip));
-    res.addRecord(answer, Section.ANSWER);
-    return res;
-  }
-
-//  func (s DockerDnsSolver) getMsg(key string, question dns.Question) *dns.Msg {
+  //  func (s DockerDnsSolver) getMsg(key string, question dns.Question) *dns.Msg {
 //    ip := s.c.Get(key).(string)
 //        ipArr := strings.Split(ip, ".")
 //    i1, _ := strconv.Atoi(ipArr[0])
@@ -100,6 +82,6 @@ public class DockerSolver implements Solver {
 
   @Override
   public byte priority() {
-    return Priority.ZERO;
+    return Priority.ONE;
   }
 }

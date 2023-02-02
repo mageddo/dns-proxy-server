@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.docker;
 
 import com.github.dockerjava.api.model.ContainerConfig;
+import com.mageddo.dnsproxyserver.server.dns.Hostname;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
@@ -24,7 +25,7 @@ public class Docker {
     return String.format("%s.%s", hostname, domainName);
   }
 
-  public static Set<String> findHostnameFromEnv(String[] envs) {
+  public static Set<Hostname> findHostnameFromEnv(String[] envs) {
     if (envs == null) {
       return Collections.emptySet();
     }
@@ -33,6 +34,7 @@ public class Docker {
         final var hosts = env.substring(HOSTNAME_ENV.length()).split("\s,\s");
         return Arrays
           .stream(hosts)
+          .map(Hostname::of)
           .collect(Collectors.toSet());
       }
     }
