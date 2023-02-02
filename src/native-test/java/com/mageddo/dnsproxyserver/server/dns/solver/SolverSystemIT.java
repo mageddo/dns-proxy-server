@@ -10,6 +10,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @QuarkusIntegrationTest
 class SolverSystemIT {
 
+  /**
+   * It won't validate reflection configuration, was expected.
+   */
   @Test
   void mustDeserializeNetworkVO(){
     // arrange
