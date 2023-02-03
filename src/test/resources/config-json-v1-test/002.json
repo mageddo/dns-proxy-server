@@ -9,5 +9,14 @@
   "logFile" : "console",
   "logLevel" : "DEBUG",
   "registerContainerNames" : false,
+  "remoteDnsServers" : [ {
+    "ip" : "8.8.8.8",
+    "port" : null,
+    "rawIP" : "8.8.8.8"
+  }, {
+    "ip" : "4.4.4.4",
+    "port" : null,
+    "rawIP" : "4.4.4.4"
+  } ],
   "webServerPort" : 0
 }

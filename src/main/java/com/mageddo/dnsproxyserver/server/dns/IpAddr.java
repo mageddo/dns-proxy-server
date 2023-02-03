@@ -48,6 +48,13 @@ public class IpAddr {
       .build();
   }
 
+  public static IpAddr of(IP ip) {
+    return IpAddr
+      .builder()
+      .ip(ip)
+      .build();
+  }
+
   public String getRawIP() {
     return this.ip.raw();
   }

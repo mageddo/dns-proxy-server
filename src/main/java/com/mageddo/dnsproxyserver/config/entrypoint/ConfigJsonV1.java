@@ -1,6 +1,8 @@
 package com.mageddo.dnsproxyserver.config.entrypoint;
 
+import com.mageddo.dnsproxyserver.server.dns.IP;
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
+import com.mageddo.utils.Bytes;
 import lombok.Data;
 
 import java.util.List;
@@ -19,6 +21,8 @@ public class ConfigJsonV1 implements ConfigJson {
   private String logFile;
 
   private Boolean registerContainerNames;
+
+  private List<Byte[]> remoteDnsServers;
 
 
   @Override
@@ -48,6 +52,13 @@ public class ConfigJsonV1 implements ConfigJson {
 
   @Override
   public List<IpAddr> getRemoteDnsServers() {
-    return null; // not supported
+    return this.remoteDnsServers
+      .stream()
+      .map(it -> toIpAddr(Bytes.toNative(it)))
+      .toList();
+  }
+
+  private IpAddr toIpAddr(byte[] ip) {
+    return IpAddr.of(IP.of(ip));
   }
 }
