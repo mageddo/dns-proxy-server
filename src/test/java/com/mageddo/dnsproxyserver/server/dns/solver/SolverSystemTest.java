@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
-import com.mageddo.dnsproxyserver.docker.DockerRepository;
+import com.mageddo.dnsproxyserver.docker.DockerDAO;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.templates.MessageTemplates;
 import io.quarkus.test.junit.QuarkusTest;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.verify;
 class SolverSystemTest {
 
   @InjectMock(convertScopes = true)
-  DockerRepository dockerRepository;
+  DockerDAO dockerDAO;
 
   @Inject
   SolverSystem solver;
@@ -31,7 +31,7 @@ class SolverSystemTest {
     final var query = MessageTemplates.buildAQuestionFor(hostname);
 
     doReturn( "192.168.0.1")
-      .when(this.dockerRepository)
+      .when(this.dockerDAO)
       .findHostMachineIp()
     ;
 
@@ -43,7 +43,7 @@ class SolverSystemTest {
     assertThat(answer, CoreMatchers.containsString(hostname));
     assertEquals("host.docker.\t\t30\tIN\tA\t192.168.0.1", answer);
 
-    verify(this.dockerRepository).findHostMachineIp();
+    verify(this.dockerDAO).findHostMachineIp();
   }
 
 }

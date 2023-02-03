@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.config.entrypoint;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.EntryType;
+import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -39,6 +40,13 @@ public class ConfigJsonV2 implements ConfigJson {
   private Boolean dpsNetwork;
 
   private Boolean dpsNetworkAutoConnect;
+
+  public List<IpAddr> getRemoteDnsServers(){
+    return this.remoteDnsServers
+      .stream()
+      .map(IpAddr::of)
+      .toList();
+  }
 
   @Data
   @Accessors(chain = true)

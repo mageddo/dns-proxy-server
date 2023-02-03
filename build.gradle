@@ -29,7 +29,6 @@ dependencies {
   compileOnly group: 'com.mageddo.nativeimage', name: 'reflection-config-generator', version: '2.4.3'
   annotationProcessor group: 'com.mageddo.nativeimage', name: 'reflection-config-generator', version: '2.4.3'
 
-
   implementation 'io.quarkus:quarkus-arc'
   implementation 'io.quarkus:quarkus-resteasy'
   implementation 'io.quarkus:quarkus-resteasy-jsonb'
@@ -40,6 +39,8 @@ dependencies {
   implementation group: 'com.github.docker-java', name: 'docker-java-transport-httpclient5', version: '3.2.14'
 
   implementation group: 'info.picocli', name: 'picocli', version: '4.7.1'
+
+  implementation 'com.mageddo.commons:commons-lang:0.1.4'
 
   testCompileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.+'
   testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.+'

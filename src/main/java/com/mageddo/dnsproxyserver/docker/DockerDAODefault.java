@@ -21,7 +21,7 @@ import static com.mageddo.dnsproxyserver.docker.DockerNetworks.NETWORK_BRIDGE;
 @Singleton
 @Default
 @AllArgsConstructor(onConstructor = @__({@Inject}))
-public class DockerRepositoryDefault implements DockerRepository {
+public class DockerDAODefault implements DockerDAO {
 
   public static final String RUNNING_STATUS = "running";
   private final DockerClient dockerClient;

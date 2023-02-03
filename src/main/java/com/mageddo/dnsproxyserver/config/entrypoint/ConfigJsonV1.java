@@ -1,6 +1,9 @@
 package com.mageddo.dnsproxyserver.config.entrypoint;
 
+import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class ConfigJsonV1 implements ConfigJson {
@@ -41,5 +44,10 @@ public class ConfigJsonV1 implements ConfigJson {
   @Override
   public Boolean getDpsNetworkAutoConnect() {
     return null;
+  }
+
+  @Override
+  public List<IpAddr> getRemoteDnsServers() {
+    return null; // not supported
   }
 }

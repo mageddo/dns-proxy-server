@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.docker;
 
 import com.mageddo.dnsproxyserver.server.dns.Hostname;
 
-public interface DockerRepository {
+public interface DockerDAO {
   /**
    *
    * @param host

@@ -28,7 +28,9 @@ $ ./gradlew shadowJar
 $ mkdir reflect &&\
   $JAVA_HOME/bin/java -agentlib:native-image-agent=config-output-dir=./reflect -jar build/libs/dns-proxy-server*all.jar
 
- /home/typer/Downloads/dns-proxy-server-linux-amd64-2.19.5/dns-proxy-server -default-dns=false -server-port=5481 --conf-path /tmp/xpto.json
+ /home/typer/Downloads/dns-proxy-server-linux-amd64-2.19.5/dns-proxy-server -default-dns=false -server-port=5481 -web-server-port=5381 
+ 
+ --conf-path /tmp/xpto.json
 
 ```
 

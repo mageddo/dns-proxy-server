@@ -6,6 +6,7 @@ import com.mageddo.dnsproxyserver.config.entrypoint.ConfigJson;
 import com.mageddo.dnsproxyserver.config.entrypoint.ConfigProps;
 import com.mageddo.dnsproxyserver.config.entrypoint.JsonConfigs;
 import com.mageddo.dnsproxyserver.config.entrypoint.LogLevel;
+import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import com.mageddo.dnsproxyserver.utils.Numbers;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
@@ -13,6 +14,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.List;
 
 import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonBlankRequiring;
 import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonNullRequiring;
@@ -51,7 +54,15 @@ public class Configs {
       .dpsNetworkAutoConnect(firstNonNullRequiring(
         env.getDpsNetworkAutoConnect(), json.getDpsNetworkAutoConnect(), flag.getDpsNetworkAutoConnect()
       ))
+      .remoteDnsServers(buildRemoteServers(json.getRemoteDnsServers()))
       .build();
+  }
+
+  static List<IpAddr> buildRemoteServers(List<IpAddr> servers) {
+    if (servers == null || servers.isEmpty()) {
+      return Collections.singletonList(IpAddr.of("8.8.8.8:53"));
+    }
+    return servers;
   }
 
   static LogLevel buildLogLevel(String logLevelName) {

@@ -11,7 +11,7 @@ import java.util.Objects;
 @Singleton
 @Alternative
 @AllArgsConstructor(onConstructor = @__({@Inject}))
-public class DockerRepositoryMock implements DockerRepository {
+public class DockerDAOMock implements DockerDAO {
   @Override
   public String findHostIp(Hostname host) {
     if (Objects.equals("acme.com", host)) {
