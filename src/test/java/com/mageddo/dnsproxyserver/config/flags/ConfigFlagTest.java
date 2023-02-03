@@ -1,10 +1,12 @@
 package com.mageddo.dnsproxyserver.config.flags;
 
+import com.mageddo.commons.lang.regex.Regexes;
 import com.mageddo.dnsproxyserver.config.entrypoint.ConfigFlag;
 import org.junit.jupiter.api.Test;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.regex.Pattern;
 
 import static com.mageddo.utils.TestUtils.readAndSortJson;
 import static com.mageddo.utils.TestUtils.readString;
@@ -59,10 +61,8 @@ class ConfigFlagTest {
     final var config = ConfigFlag.parse(args, new PrintWriter(sw));
 
     // assert
-    assertEquals(
-       "${version}",
-        sw.toString()
-    );
-
+    final var validVersion = Regexes.matcher(sw.toString(), Pattern.compile("\\d+\\.\\d+.\\d+.*")).matches();
+    assertTrue(validVersion, sw.toString());
+    assertTrue(config.isVersion());
   }
 }

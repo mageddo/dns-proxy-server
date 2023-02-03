@@ -90,7 +90,7 @@ public class Configs {
 
   public static Config buildAndRegister(String[] args) {
     final var config = ConfigFlag.parse(args);
-    if (config.getHelp()) {
+    if (config.getHelp() || config.isVersion()) {
       System.exit(0);
     }
     return buildAndRegister(config);
