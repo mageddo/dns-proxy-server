@@ -50,4 +50,13 @@ public class JsonConfigs {
       .prettyInstance()
       .writeValue(configPath.toFile(), config);
   }
+
+  @SneakyThrows
+  public static void write(Path configPath, ConfigJson config) {
+    JsonUtils
+      .instance()
+      .writeValue(configPath.toFile(), config)
+    ;
+    log.info("status=configWritten, file={}", configPath);
+  }
 }

@@ -106,7 +106,7 @@ public class Config {
     private Integer ttl;
 
     @NonNull
-    private EntryType type;
+    private Config.Entry.Type type;
 
     public static class EntryBuilder {
       public Entry build() {
@@ -117,5 +117,9 @@ public class Config {
       }
     }
 
+    public enum Type {
+      A,
+      CNAME
+    }
   }
 }

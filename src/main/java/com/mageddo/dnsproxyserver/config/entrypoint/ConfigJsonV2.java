@@ -3,7 +3,6 @@ package com.mageddo.dnsproxyserver.config.entrypoint;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.EntryType;
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import lombok.Data;
 import lombok.Getter;
@@ -77,7 +76,7 @@ public class ConfigJsonV2 implements ConfigJson {
     private String target; // target hostname when type=CNAME
 
     private Integer ttl;
-    private EntryType type;
+    private Config.Entry.Type type;
   }
 
 }

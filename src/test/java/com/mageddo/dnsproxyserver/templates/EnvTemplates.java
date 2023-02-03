@@ -1,7 +1,6 @@
 package com.mageddo.dnsproxyserver.templates;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.EntryType;
 
 public class EnvTemplates {
   public static Config.Env buildWithoutId(){
@@ -10,7 +9,7 @@ public class EnvTemplates {
         .builder()
         .ip("192.168.0.1")
         .ttl(30)
-        .type(EntryType.A)
+        .type(Config.Entry.Type.A)
         .hostname("mageddo.com")
         .build()
       );

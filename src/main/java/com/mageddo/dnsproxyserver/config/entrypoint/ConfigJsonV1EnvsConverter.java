@@ -1,7 +1,6 @@
 package com.mageddo.dnsproxyserver.config.entrypoint;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.EntryType;
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 
 import java.util.List;
@@ -32,7 +31,7 @@ public class ConfigJsonV1EnvsConverter {
       .id(entry.getId())
       .ttl(entry.getTtl())
       .ip(IpAddr.of(entry.getIp()).getRawIP())
-      .type(EntryType.A)
+      .type(Config.Entry.Type.A)
       .build();
   }
 

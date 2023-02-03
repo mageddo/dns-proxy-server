@@ -1,7 +1,6 @@
 package com.mageddo.dnsproxyserver.config.entrypoint;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.EntryType;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -37,14 +36,14 @@ public class ConfigJsonV2EnvsConverter {
       .build();
   }
 
-  private static EntryType buildType(ConfigJsonV2.Hostname hostname) {
+  private static Config.Entry.Type buildType(ConfigJsonV2.Hostname hostname) {
     if (hostname.getType() != null) {
       return hostname.getType();
     }
     if (StringUtils.isNotBlank(hostname.getIp())) {
-      return EntryType.A;
+      return Config.Entry.Type.A;
     } else if (StringUtils.isNotBlank(hostname.getTarget())) {
-      return EntryType.CNAME;
+      return Config.Entry.Type.CNAME;
     }
     throw new IllegalArgumentException("You must set the hostname type field, then fill target or ip field");
   }
