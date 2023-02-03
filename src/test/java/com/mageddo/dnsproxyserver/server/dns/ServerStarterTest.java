@@ -28,6 +28,6 @@ class Server0StarterTest {
 
 
     // assert
-    assertEquals("[SolverSystem, DockerSolver, RemoteSolver]", names.toString());
+    assertEquals("[SolverSystem, DockerSolver, SolverLocalDB, RemoteSolver]", names.toString());
   }
 }
