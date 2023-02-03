@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +68,9 @@ public class Config {
 
   @NonNull
   private Boolean dpsNetworkAutoConnect;
+
+  @NonNull
+  private Path configPath;
 
   public static SimpleServer.Protocol findDnsServerProtocol() {
     return SimpleServer.Protocol.BOTH;

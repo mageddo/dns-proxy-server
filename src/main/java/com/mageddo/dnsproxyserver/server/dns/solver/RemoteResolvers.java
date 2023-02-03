@@ -1,11 +1,10 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
-import com.mageddo.dnsproxyserver.utils.InetAddresses;
 import org.xbill.DNS.Resolver;
-import org.xbill.DNS.SimpleResolver;
 
 import java.util.List;
+import java.util.function.Function;
 
 public class RemoteResolvers {
 
@@ -15,10 +14,10 @@ public class RemoteResolvers {
     this.resolvers = resolvers;
   }
 
-  public static RemoteResolvers of(List<IpAddr> servers) {
+  public static RemoteResolvers of(List<IpAddr> servers, final Function<IpAddr, Resolver> resolverProvider) {
     final var resolvers = servers
       .stream()
-      .map(it -> (Resolver) new SimpleResolver(InetAddresses.toSocketAddress(it)))
+      .map(resolverProvider)
       .toList();
     return new RemoteResolvers(resolvers);
   }

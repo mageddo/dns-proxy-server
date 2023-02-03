@@ -8,12 +8,15 @@ import com.mageddo.dnsproxyserver.config.entrypoint.JsonConfigs;
 import com.mageddo.dnsproxyserver.config.entrypoint.LogLevel;
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import com.mageddo.dnsproxyserver.utils.Numbers;
+import com.mageddo.utils.Files;
+import com.mageddo.utils.Tests;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,11 +29,13 @@ public class Configs {
   private static Config instance;
 
   public static Config build(ConfigFlag configFlag) {
-    final var jsonConfig = JsonConfigs.loadConfig(toAbsolutePath(configFlag));
-    return build(configFlag, ConfigEnv.fromEnv(), jsonConfig);
+    final var configPath = toAbsolutePath(configFlag).toAbsolutePath();
+    final var jsonConfig = JsonConfigs.loadConfig(configPath);
+    log.info("status=configuring, configFile={}", configPath);
+    return build(configFlag, ConfigEnv.fromEnv(), jsonConfig, configPath);
   }
 
-  public static Config build(ConfigFlag flag, ConfigEnv env, ConfigJson json) {
+  public static Config build(ConfigFlag flag, ConfigEnv env, ConfigJson json, Path configPath) {
     return Config.builder()
       .version(ConfigProps.getVersion())
       .activeEnv(json.getActiveEnv())
@@ -55,6 +60,7 @@ public class Configs {
         env.getDpsNetworkAutoConnect(), json.getDpsNetworkAutoConnect(), flag.getDpsNetworkAutoConnect()
       ))
       .remoteDnsServers(buildRemoteServers(json.getRemoteDnsServers()))
+      .configPath(configPath)
       .build();
   }
 
@@ -95,7 +101,14 @@ public class Configs {
   }
 
   private static Path toAbsolutePath(ConfigFlag configFlag) {
+    if (runningInTestsAndNoCustomConfigPath(configFlag)) {
+      return Files.createTempFileExitOnExit("dns-proxy-server-junit", ".json");
+    }
     return Paths.get(configFlag.getConfigPath()); // todo precisa converter para absolute path?!
+  }
+
+  static boolean runningInTestsAndNoCustomConfigPath(ConfigFlag configFlag) {
+    return !Arrays.toString(configFlag.getArgs()).contains("--conf-path") && Tests.runningOnJunit();
   }
 
 }

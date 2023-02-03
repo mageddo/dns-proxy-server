@@ -133,6 +133,9 @@ public class ConfigFlag implements Callable<Boolean> {
   private Boolean help;
 
   @JsonIgnore
+  private String[] args;
+
+  @JsonIgnore
   private CommandLine commandLine;
 
   public static ConfigFlag parse(String[] args) {
@@ -148,6 +151,7 @@ public class ConfigFlag implements Callable<Boolean> {
     commandLine.setUsageHelpWidth(120);
 
     final var flags = (ConfigFlag) commandLine.getCommand();
+    flags.args = args;
     flags.commandLine = commandLine;
     Validate.isTrue(commandLine.execute(args) == 0, "Execution Failed");
 

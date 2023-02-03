@@ -3,10 +3,12 @@ package com.mageddo.dnsproxyserver.config.entrypoint;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.json.JsonUtils;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+@Slf4j
 public class JsonConfigs {
 
   /**
@@ -23,6 +25,10 @@ public class JsonConfigs {
 
     final var objectMapper = JsonUtils.instance();
     final var tree = objectMapper.readTree(configPath.toFile());
+    if (tree.isEmpty()) {
+      log.info("status=emptyConfigFile, action=usingDefault, file={}", configPath);
+      return new ConfigJsonV2();
+    }
     final var version = tree.at("/version").asInt(1);
 
     return switch (version) {
