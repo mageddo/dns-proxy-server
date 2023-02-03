@@ -9,7 +9,6 @@ import lombok.Value;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -75,12 +74,17 @@ public class Config {
     private String name;
     private List<Entry> entries;
 
+    public Env add(Entry entry){
+      this.entries.add(entry);
+      return this;
+    }
+
     public static Env of(String name, List<Entry> entries) {
       return new Env(name, entries);
     }
 
     public static Env theDefault() {
-      return new Env(DEFAULT_ENV, Collections.emptyList());
+      return new Env(DEFAULT_ENV, new ArrayList<>());
     }
 
   }

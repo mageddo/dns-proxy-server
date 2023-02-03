@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.config;
 
+import com.mageddo.dnsproxyserver.templates.EnvTemplates;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import static com.mageddo.utils.TestUtils.sortJson;
 import static com.mageddo.utils.TestUtils.sortJsonExcluding;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ConfigsTest {
@@ -67,6 +69,23 @@ class ConfigsTest {
       readAndSortJsonExcluding("/configs-test/004.json", excludingFields),
       sortJsonExcluding(config, excludingFields)
     );
+  }
+
+  @Test
+  void mustGenerateEnvHostnameIdWhenIsNull() {
+    // arrange
+
+    // act
+    final var env = EnvTemplates.buildWithoutId();
+    final var firstEntry = env
+      .getEntries()
+      .stream()
+      .findFirst()
+      .get();
+
+    // assert
+    assertNotNull(firstEntry.getId());
+    assertTrue(firstEntry.getId() > System.currentTimeMillis(), String.valueOf(firstEntry.getId()));
   }
 
 }
