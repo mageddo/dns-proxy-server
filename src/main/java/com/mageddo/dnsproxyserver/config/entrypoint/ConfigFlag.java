@@ -158,8 +158,7 @@ public class ConfigFlag implements Callable<Boolean> {
     final var shouldExit = (Boolean) flags.getCommandLine().getExecutionResult();
     if (shouldExit == null || shouldExit) {
       flags.getCommandLine().getOut().flush();
-      commandLine.getErr().write(String.format("%nexiting...%n"));
-      System.exit(0);
+      return flags;
     }
 
     return flags;

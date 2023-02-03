@@ -89,7 +89,11 @@ public class Configs {
   }
 
   public static Config buildAndRegister(String[] args) {
-    return buildAndRegister(ConfigFlag.parse(args));
+    final var config = ConfigFlag.parse(args);
+    if (config.getHelp()) {
+      System.exit(0);
+    }
+    return buildAndRegister(config);
   }
 
   public static Config buildAndRegister(ConfigFlag flag) {
