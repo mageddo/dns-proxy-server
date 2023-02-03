@@ -1,9 +1,12 @@
 package com.mageddo.dnsproxyserver.config.entrypoint;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.EntryType;
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
@@ -19,7 +22,9 @@ public class ConfigJsonV2 implements ConfigJson {
 
   private List<String> remoteDnsServers = new ArrayList<>(); // dns servers formatted like 192.168.0.1:53
 
-  private List<Env> envs = new ArrayList<>();
+  @Getter(onMethod_ = {@JsonGetter("envs")})
+  @Setter(onMethod_ = {@JsonGetter("envs")})
+  private List<Env> _envs = new ArrayList<>();
 
   private Integer webServerPort;
 
@@ -48,6 +53,11 @@ public class ConfigJsonV2 implements ConfigJson {
       .toList();
   }
 
+  @Override
+  public List<Config.Env> getEnvs() {
+    return ConfigJsonV2EnvsConverter.toDomainEnvs(this._envs);
+  }
+
   @Data
   @Accessors(chain = true)
   public static class Env {
@@ -58,6 +68,7 @@ public class ConfigJsonV2 implements ConfigJson {
   @Data
   @Accessors(chain = true)
   public static class Hostname {
+
     private Long id;
     private String hostname;
     private String ip;

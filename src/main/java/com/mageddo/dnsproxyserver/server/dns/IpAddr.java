@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.mageddo.commons.lang.regex.Regexes;
 import com.mageddo.dnsproxyserver.json.converter.IPConverter;
+import com.mageddo.utils.Bytes;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
@@ -53,6 +54,14 @@ public class IpAddr {
       .builder()
       .ip(ip)
       .build();
+  }
+
+  public static IpAddr of(Byte[] ip) {
+    return of(Bytes.toNative(ip));
+  }
+
+  public static IpAddr of(byte[] ip) {
+    return IpAddr.of(IP.of(ip));
   }
 
   public String getRawIP() {

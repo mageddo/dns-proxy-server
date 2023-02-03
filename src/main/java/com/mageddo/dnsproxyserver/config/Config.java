@@ -9,6 +9,7 @@ import lombok.Value;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,16 +29,6 @@ public class Config {
   @NonNull
   @Builder.Default
   private List<IpAddr> remoteDnsServers = new ArrayList<>();
-
-// fixme isso nao precisa estar aqui,
-//   soh precisa ficar no json para ser respondido quando o solver da base local perguntar
-//
-//  @NonNull
-//  @Builder.Default
-//  private List<Env> envs = new ArrayList<>();
-
-  @NonNull
-  private String activeEnv;
 
   @NonNull
   private Integer webServerPort;
@@ -82,12 +73,21 @@ public class Config {
     public static final String DEFAULT_ENV = "";
 
     private String name;
-    private List<Hostname> hostnames;
+    private List<Entry> entries;
+
+    public static Env of(String name, List<Entry> entries) {
+      return new Env(name, entries);
+    }
+
+    public static Env theDefault() {
+      return new Env(DEFAULT_ENV, Collections.emptyList());
+    }
+
   }
 
   @Value
-  @Builder
-  public static class Hostname {
+  @Builder(builderClassName = "EntryBuilder", buildMethodName = "_build")
+  public static class Entry {
     @NonNull
     private Long id;
 
@@ -95,6 +95,7 @@ public class Config {
     private String hostname;
 
     private String ip; // hostname ip when type=A
+
     private String target; // target hostname when type=CNAME
 
     @NonNull
@@ -102,5 +103,15 @@ public class Config {
 
     @NonNull
     private EntryType type;
+
+    public static class EntryBuilder {
+      public Entry build() {
+        if (this.id == null) {
+          this.id = System.nanoTime();
+        }
+        return this._build();
+      }
+    }
+
   }
 }

@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
+import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.utils.Ips;
 import org.xbill.DNS.ARecord;
 import org.xbill.DNS.DClass;
@@ -47,5 +48,9 @@ public class Messages {
   public static Message nxDomain(Message msg) {
     msg.getHeader().setRcode(Rcode.NXDOMAIN);
     return msg;
+  }
+
+  public static Message aAnswer(Message reqMsg, Config.Entry entry) {
+    return null;
   }
 }

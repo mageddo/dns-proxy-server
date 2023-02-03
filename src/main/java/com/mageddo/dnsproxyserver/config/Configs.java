@@ -39,7 +39,6 @@ public class Configs {
   public static Config build(ConfigFlag flag, ConfigEnv env, ConfigJson json, Path configPath) {
     return Config.builder()
       .version(ConfigProps.getVersion())
-      .activeEnv(json.getActiveEnv())
       .webServerPort(Numbers.positiveOrDefault(json.getWebServerPort(), flag.getWebServerPort()))
       .dnsServerPort(Numbers.positiveOrDefault(json.getDnsServerPort(), flag.getDnsServerPort()))
       .defaultDns(firstNonNullRequiring(json.getDefaultDns(), flag.getDefaultDns()))

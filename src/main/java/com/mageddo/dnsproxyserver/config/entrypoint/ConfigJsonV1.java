@@ -1,9 +1,11 @@
 package com.mageddo.dnsproxyserver.config.entrypoint;
 
-import com.mageddo.dnsproxyserver.server.dns.IP;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
-import com.mageddo.utils.Bytes;
 import lombok.Data;
+import lombok.NonNull;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
@@ -24,6 +26,8 @@ public class ConfigJsonV1 implements ConfigJson {
 
   private List<Byte[]> remoteDnsServers;
 
+  @JsonProperty("envs")
+  private List<Env> _envs;
 
   @Override
   public Boolean getDefaultDns() {
@@ -54,11 +58,39 @@ public class ConfigJsonV1 implements ConfigJson {
   public List<IpAddr> getRemoteDnsServers() {
     return this.remoteDnsServers
       .stream()
-      .map(it -> toIpAddr(Bytes.toNative(it)))
+      .map(IpAddr::of)
       .toList();
   }
 
-  private IpAddr toIpAddr(byte[] ip) {
-    return IpAddr.of(IP.of(ip));
+  @Override
+  public List<Config.Env> getEnvs() {
+    return ConfigJsonV1EnvsConverter.toDomainEnvs(this._envs);
   }
+
+
+  @Data
+  @Accessors(chain = true)
+  public static class Env {
+
+    private String name;
+
+    @JsonProperty("hostnames")
+    private List<Entry> entries;
+  }
+
+  @Data
+  @Accessors(chain = true)
+  public static class Entry {
+    private Long id;
+
+    @NonNull
+    private String hostname;
+
+    @NonNull
+    private Byte[] ip;
+
+    @NonNull
+    private Integer ttl;
+  }
+
 }

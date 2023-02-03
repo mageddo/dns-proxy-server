@@ -43,7 +43,7 @@ public class JsonConfigs {
     final var config = new ConfigJsonV2();
 
     config
-      .getEnvs()
+      .get_envs()
       .add(new ConfigJsonV2.Env().setName(Config.Env.DEFAULT_ENV));
 
     JsonUtils

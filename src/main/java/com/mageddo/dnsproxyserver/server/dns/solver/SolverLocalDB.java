@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
-import com.mageddo.dnsproxyserver.docker.DockerDAO;
+import com.mageddo.dnsproxyserver.config.ConfigDAO;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.server.dns.Wildcards;
 import lombok.AllArgsConstructor;
@@ -13,27 +13,29 @@ import javax.inject.Singleton;
 @Slf4j
 @Singleton
 @AllArgsConstructor(onConstructor = @__({@Inject}))
-public class DockerSolver implements Solver {
+public class SolverLocalDB implements Solver {
 
-  private final DockerDAO dockerDAO;
+  private final ConfigDAO configDAO;
 
   @Override
   public Message handle(Message reqMsg) {
 
     final var askedHost = Messages.findQuestionHostname(reqMsg);
     for (final var host : Wildcards.buildHostAndWildcards(askedHost)) {
-      final var ip = this.dockerDAO.findHostIp(host);
-      if (ip == null) {
+      final var entry = this.configDAO.findEntryForActiveEnv(host.getName());
+      if (entry == null) {
+        log.trace("status=partialNotFound, askedHost={}", askedHost);
         return null;
       }
-      return Messages.aAnswer(reqMsg, ip);
+      log.trace("status=found, askedHost={}", askedHost);
+      return Messages.aAnswer(reqMsg, entry);
     }
-
+    log.trace("status=notFound, askedHost={}", askedHost);
     return null;
   }
 
   @Override
   public byte priority() {
-    return Priority.ONE;
+    return Priority.TWO;
   }
 }
