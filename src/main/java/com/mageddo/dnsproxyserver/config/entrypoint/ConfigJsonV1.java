@@ -1,9 +1,11 @@
 package com.mageddo.dnsproxyserver.config.entrypoint;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.Accessors;
 
@@ -24,7 +26,7 @@ public class ConfigJsonV1 implements ConfigJson {
 
   private Boolean registerContainerNames;
 
-  private List<Byte[]> remoteDnsServers;
+  private List<Integer[]> remoteDnsServers;
 
   @JsonProperty("envs")
   private List<Env> _envs;
@@ -62,6 +64,7 @@ public class ConfigJsonV1 implements ConfigJson {
       .toList();
   }
 
+  @JsonIgnore
   @Override
   public List<Config.Env> getEnvs() {
     return ConfigJsonV1EnvsConverter.toDomainEnvs(this._envs);
@@ -80,6 +83,7 @@ public class ConfigJsonV1 implements ConfigJson {
 
   @Data
   @Accessors(chain = true)
+  @NoArgsConstructor
   public static class Entry {
     private Long id;
 
@@ -87,7 +91,7 @@ public class ConfigJsonV1 implements ConfigJson {
     private String hostname;
 
     @NonNull
-    private Byte[] ip;
+    private Integer[] ip;
 
     @NonNull
     private Integer ttl;

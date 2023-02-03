@@ -5,6 +5,15 @@
   "domain" : null,
   "dpsNetwork" : null,
   "dpsNetworkAutoConnect" : null,
+  "envs" : [ {
+    "hostnames" : [ {
+      "hostname" : "github.com",
+      "id" : 1,
+      "ip" : [ 192, 168, 0, 1 ],
+      "ttl" : 255
+    } ],
+    "name" : ""
+  } ],
   "hostMachineHostname" : null,
   "logFile" : "console",
   "logLevel" : "DEBUG",

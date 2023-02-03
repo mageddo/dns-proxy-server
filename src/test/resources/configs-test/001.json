@@ -1,5 +1,4 @@
 {
-  "activeEnv" : "",
   "defaultDns" : true,
   "dnsServerPort" : 53,
   "domain" : "docker",

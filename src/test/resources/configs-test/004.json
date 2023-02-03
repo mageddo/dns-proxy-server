@@ -1,5 +1,4 @@
 {
-  "activeEnv" : "MARROI",
   "defaultDns" : false,
   "dnsServerPort" : 5391,
   "domain" : "acme",

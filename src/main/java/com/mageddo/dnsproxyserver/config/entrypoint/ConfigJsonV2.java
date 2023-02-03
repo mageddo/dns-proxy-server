@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.config.entrypoint;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.EntryType;
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
@@ -53,6 +54,7 @@ public class ConfigJsonV2 implements ConfigJson {
       .toList();
   }
 
+  @JsonIgnore
   @Override
   public List<Config.Env> getEnvs() {
     return ConfigJsonV2EnvsConverter.toDomainEnvs(this._envs);

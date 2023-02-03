@@ -67,4 +67,8 @@ public class IpAddr {
   public String getRawIP() {
     return this.ip.raw();
   }
+
+  public static IpAddr of(Integer[] ip) {
+    return of(Bytes.toNative(ip));
+  }
 }
