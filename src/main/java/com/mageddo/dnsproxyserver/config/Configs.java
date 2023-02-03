@@ -11,6 +11,7 @@ import com.mageddo.dnsproxyserver.utils.Numbers;
 import com.mageddo.utils.Files;
 import com.mageddo.utils.Tests;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -90,7 +91,7 @@ public class Configs {
 
   public static Config buildAndRegister(String[] args) {
     final var config = ConfigFlag.parse(args);
-    if (config.getHelp() || config.isVersion()) {
+    if (BooleanUtils.isTrue(config.getHelp()) || config.isVersion()) {
       System.exit(0);
     }
     return buildAndRegister(config);
