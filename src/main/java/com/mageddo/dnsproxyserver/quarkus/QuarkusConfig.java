@@ -10,6 +10,7 @@ import org.xbill.DNS.SimpleResolver;
 
 import javax.enterprise.inject.Produces;
 
+import java.time.Duration;
 import java.util.function.Function;
 
 import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
@@ -26,7 +27,11 @@ public class QuarkusConfig {
 
   @Produces
   public Function<IpAddr, Resolver> getResolverProvider() {
-    return it -> (Resolver) new SimpleResolver(InetAddresses.toSocketAddress(it.getRawIP(), it.getPortOrDef(53)));
+    return it -> {
+      final var resolver = new SimpleResolver(InetAddresses.toSocketAddress(it.getRawIP(), it.getPortOrDef(53)));
+      resolver.setTimeout(Duration.ofMillis(300));
+      return resolver;
+    };
   }
 
   public static void setup(Config config) {
