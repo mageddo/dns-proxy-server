@@ -4,6 +4,7 @@ import com.mageddo.dnsproxyserver.utils.Ips;
 import org.xbill.DNS.ARecord;
 import org.xbill.DNS.DClass;
 import org.xbill.DNS.Message;
+import org.xbill.DNS.Rcode;
 import org.xbill.DNS.Section;
 
 import java.util.Optional;
@@ -41,5 +42,10 @@ public class Messages {
       return null;
     }
     return section.get(0).toString();
+  }
+
+  public static Message nxDomain(Message msg) {
+    msg.getHeader().setRcode(Rcode.NXDOMAIN);
+    return msg;
   }
 }

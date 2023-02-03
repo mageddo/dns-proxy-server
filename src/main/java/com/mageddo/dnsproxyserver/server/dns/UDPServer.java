@@ -4,6 +4,7 @@ import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
 import com.mageddo.dnsproxyserver.threads.ThreadPool;
 import com.mageddo.dnsproxyserver.utils.Classes;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.Validate;
 import org.xbill.DNS.Message;
 
@@ -73,10 +74,13 @@ public class UDPServer {
         log.debug("status=solved, solver={}, req={}, res={}", solverName, reqStr, simplePrint(res));
         return res;
       } catch (Exception e) {
-        log.warn("status=solverFailed, solver={}, msg={}", solverName, e.getMessage(), e);
+        log.warn(
+          "status=solverFailed, solver={}, eClass={}, msg={}",
+          solverName, ClassUtils.getSimpleName(e), e.getMessage(), e
+        );
       }
     }
-    return null;
+    return Messages.nxDomain(reqMsg); // if all failed and returned null, then return as can't find
   }
 
   void res(DatagramSocket server, Message handle, InetAddress address, int port) {
