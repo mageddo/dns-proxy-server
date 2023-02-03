@@ -21,12 +21,14 @@ public class ConfigDAOJson implements ConfigDAO {
       ;
     final var configJson = JsonConfigs.loadConfig(configPath);
     final var activeEnvKey = configJson.getActiveEnv();
-    return configJson
+    final var env = configJson
       .getEnvs()
       .stream()
       .filter(it -> Objects.equals(it.getName(), activeEnvKey))
       .findFirst()
       .orElse(Config.Env.theDefault());
+    log.debug("activeEnv={}", env.getName());
+    return env;
   }
 
   @Override

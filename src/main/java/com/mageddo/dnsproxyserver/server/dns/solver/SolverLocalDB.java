@@ -5,6 +5,7 @@ import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.server.dns.Wildcards;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.StopWatch;
 import org.xbill.DNS.Message;
 
 import javax.inject.Inject;
@@ -20,17 +21,24 @@ public class SolverLocalDB implements Solver {
   @Override
   public Message handle(Message reqMsg) {
 
+    final var stopWatch = StopWatch.createStarted();
     final var askedHost = Messages.findQuestionHostname(reqMsg);
+
     for (final var host : Wildcards.buildHostAndWildcards(askedHost)) {
+      stopWatch.split();
       final var entry = this.configDAO.findEntryForActiveEnv(host.getName());
       if (entry == null) {
-        log.trace("status=partialNotFound, askedHost={}", askedHost);
+        log.trace(
+          "status=partialNotFound, askedHost={}, time={}",
+          askedHost, stopWatch.getTime() - stopWatch.getSplitTime()
+        );
         return null;
       }
-      log.trace("status=found, askedHost={}", askedHost);
+      log.trace("status=found, askedHost={}, time={}", askedHost, stopWatch.getTime() - stopWatch.getSplitTime());
       return Messages.aAnswer(reqMsg, entry);
     }
-    log.trace("status=notFound, askedHost={}", askedHost);
+
+    log.trace("status=notFound, askedHost={}, totalTime={}", askedHost, stopWatch.getTime());
     return null;
   }
 
