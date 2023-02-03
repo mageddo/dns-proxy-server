@@ -3,7 +3,6 @@ package com.mageddo.dnsproxyserver.server.dns;
 public class IP {
 
   private final String ip;
-  private String value;
 
   public IP(String ip) {
     this.ip = ip;

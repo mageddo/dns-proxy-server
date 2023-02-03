@@ -23,6 +23,7 @@ class ConfigsTest {
   void mustParseDefaultConfigsAndCreateConfigFile(@TempDir Path tmpDir) {
 
     // arrange
+    final var excludeFields = new String[]{"version", "configPath"};
     final var tmpConfigFile = tmpDir.resolve("tmpfile.json");
     final var args = new String[]{"--conf-path", tmpConfigFile.toString()};
     assertFalse(Files.exists(tmpConfigFile));
@@ -32,8 +33,8 @@ class ConfigsTest {
 
     // assert
     assertEquals(
-      readAndSortJsonExcluding("/configs-test/001.json", "version"),
-      readAndSortJsonExcluding(config, "version")
+      readAndSortJsonExcluding("/configs-test/001.json", excludeFields),
+      readAndSortJsonExcluding(config, excludeFields)
     );
     assertTrue(Files.exists(tmpConfigFile));
 

@@ -1,6 +1,9 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.mageddo.commons.lang.regex.Regexes;
+import com.mageddo.dnsproxyserver.json.converter.IPConverter;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
@@ -17,9 +20,11 @@ public class IpAddr {
     Pattern.compile("^(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})((?::(\\d+)|))$");
 
   @NonNull
-  IP ip;
+  @JsonDeserialize(using = IPConverter.Deserializer.class)
+  @JsonSerialize(using = IPConverter.Serializer.class)
+  private IP ip;
 
-  Integer port;
+  private Integer port;
 
   public int getPortOrDef(int def) {
     return this.port == null ? def : this.port;
