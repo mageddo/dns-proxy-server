@@ -24,7 +24,7 @@ class RemoteSolverTest {
 
     // assert
     assertEquals(1, resolvers.size(), String.valueOf(resolvers));
-    assertEquals("[SimpleResolver [/8.8.8.8:53]]", resolvers);
+    assertEquals("[SimpleResolver [/8.8.8.8:53]]", resolvers.toString());
 
   }
 
