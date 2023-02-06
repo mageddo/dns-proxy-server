@@ -23,7 +23,6 @@ class ConfigsTest {
 
   static final String[] excludingFields = new String[]{"version", "configPath"};
 
-
   @Test
   void mustParseDefaultConfigsAndCreateConfigFile(@TempDir Path tmpDir) {
 

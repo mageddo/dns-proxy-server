@@ -32,8 +32,15 @@ public class IpAddr {
   }
 
   @Override
-  public String toString(){
+  public String toString() {
+    if (this.port == null) {
+      return this.getRawIP();
+    }
     return String.format("%s:%d", this.ip, this.port);
+  }
+
+  public String getRawIP() {
+    return this.ip.raw();
   }
 
   /***
@@ -67,10 +74,6 @@ public class IpAddr {
 
   public static IpAddr of(byte[] ip) {
     return IpAddr.of(IP.of(ip));
-  }
-
-  public String getRawIP() {
-    return this.ip.raw();
   }
 
   public static IpAddr of(Integer[] ip) {

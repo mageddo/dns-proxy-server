@@ -1,25 +1,33 @@
 {
-  "version" : 2,
-  "activeEnv" : "",
-  "webServerPort" : 0,
-  "dnsServerPort" : 8980,
-  "defaultDns" : null,
-  "logLevel" : "DEBUG",
-  "logFile" : "console",
-  "registerContainerNames" : null,
-  "hostMachineHostname" : null,
-  "domain" : null,
-  "dpsNetwork" : null,
-  "dpsNetworkAutoConnect" : null,
-  "envs" : [ {
-    "name" : "",
-    "hostnames" : [ {
-      "id" : 1,
-      "hostname" : "github.com",
-      "ip" : "192.168.0.1",
-      "target" : null,
-      "ttl" : 255,
-      "type" : "A"
-    } ]
-  } ]
+  "activeEnv": "",
+  "defaultDns": null,
+  "dnsServerPort": 8980,
+  "domain": null,
+  "dpsNetwork": null,
+  "dpsNetworkAutoConnect": null,
+  "envs": [
+    {
+      "hostnames": [
+        {
+          "hostname": "github.com",
+          "id": 1,
+          "ip": "192.168.0.1",
+          "target": null,
+          "ttl": 255,
+          "type": "A"
+        }
+      ],
+      "name": ""
+    }
+  ],
+  "hostMachineHostname": null,
+  "logFile": "console",
+  "logLevel": "DEBUG",
+  "registerContainerNames": null,
+  "remoteDnsServers": [
+    "8.8.8.8",
+    "4.4.4.4"
+  ],
+  "version": 2,
+  "webServerPort": 0
 }
