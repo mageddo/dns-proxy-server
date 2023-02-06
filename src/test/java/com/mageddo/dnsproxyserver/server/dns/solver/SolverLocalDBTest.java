@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @QuarkusTest
 class SolverLocalDBTest {
@@ -31,7 +32,7 @@ class SolverLocalDBTest {
     final var res = this.solver.handle(msg);
 
     // assert
-    assertNotNull(res);
+    assertNull(res);
 
   }
 
