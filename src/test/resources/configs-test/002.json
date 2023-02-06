@@ -4,7 +4,7 @@
   "remoteDnsServers" : [ ],
   "envs" : [ {
     "name" : "",
-    "hostnames" : null
+    "hostnames" : [ ]
   } ],
   "webServerPort" : null,
   "dnsServerPort" : null,
