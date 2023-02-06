@@ -53,13 +53,13 @@ public class ConfigDAOJson implements ConfigDAO {
       ;
 
     final var config = (ConfigJsonV2) JsonConfigs.loadConfig(configPath);
-    final var found = findEnvConcrete(env, config);
+    final var found = findOrBind(env, config);
     found.add(ConfigJsonV2.Hostname.from(entry));
     JsonConfigs.write(configPath, config);
 
   }
 
-  private ConfigJsonV2.Env findEnvConcrete(String envKey, ConfigJsonV2 configJson) {
+  ConfigJsonV2.Env findOrBind(String envKey, ConfigJsonV2 configJson) {
     for (final var env : configJson.get_envs()) {
       if (Objects.equals(env.getName(), envKey)) {
         log.debug("status=envFound, activeEnv={}", envKey);
@@ -67,7 +67,9 @@ public class ConfigDAOJson implements ConfigDAO {
       }
     }
     log.debug("status=notFound, action=usingDefaultEnv, activeEnv={}", Config.Env.DEFAULT_ENV);
-    return ConfigJsonV2.Env.from(Config.Env.theDefault());
+    final var def = ConfigJsonV2.Env.from(Config.Env.theDefault());
+    configJson.get_envs().add(def);
+    return def;
   }
 
   static Config.Env findEnv(String envKey, final ConfigJson configJson) {
