@@ -70,6 +70,31 @@ public class ConfigJsonV1 implements ConfigJson {
     return ConfigJsonV1EnvsConverter.toDomainEnvs(this._envs);
   }
 
+  public ConfigJsonV2 toConfigV2() {
+    return new ConfigJsonV2()
+      .setDomain(this.getDomain())
+      .setActiveEnv(this.getActiveEnv())
+      .setDefaultDns(this.getDefaultDns())
+      .setDpsNetwork(this.getDpsNetwork())
+      .setDnsServerPort(this.getDnsServerPort())
+      .setWebServerPort(this.getWebServerPort())
+      .setDpsNetworkAutoConnect(this.getDpsNetworkAutoConnect())
+      .setHostMachineHostname(this.getHostMachineHostname())
+      .setLogFile(this.getLogFile())
+      .setLogLevel(this.getLogLevel())
+      .setRemoteDnsServers(this
+        .getRemoteDnsServers()
+        .stream()
+        .map(IpAddr::toString).toList()
+      )
+      .set_envs(this.getEnvs()
+        .stream()
+        .map(ConfigJsonV2.Env::from)
+        .toList()
+      )
+      ;
+  }
+
 
   @Data
   @Accessors(chain = true)

@@ -31,6 +31,11 @@ public class IpAddr {
     return this.port == null ? def : this.port;
   }
 
+  @Override
+  public String toString(){
+    return String.format("%s:%d", this.ip, this.port);
+  }
+
   /***
    *
    * @param addr something like 192.168.0.1 or 192.168.0.1:4411

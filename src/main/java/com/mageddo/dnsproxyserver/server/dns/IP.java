@@ -11,6 +11,11 @@ public class IP {
     this.ip = ip;
   }
 
+  @Override
+  public String toString() {
+    return this.ip;
+  }
+
   public static IP of(String ip) {
     return new IP(ip);
   }

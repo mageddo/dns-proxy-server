@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.config.entrypoint;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.json.JsonUtils;
 import lombok.SneakyThrows;
@@ -7,9 +8,16 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 public class JsonConfigs {
+
+  public static final int VERSION_1 = 1;
+  public static final int VERSION_2 = 2;
+  public static List<Integer> supportedVersions = List.of(VERSION_1, VERSION_2);
 
   /**
    * Parser v1 or v2 config json then return the interface.
@@ -29,11 +37,14 @@ public class JsonConfigs {
       log.info("status=emptyConfigFile, action=usingDefault, file={}", configPath);
       return new ConfigJsonV2();
     }
-    final var version = tree.at("/version").asInt(1);
+    final var version = findVersion(tree);
 
     return switch (version) {
-      case 2 -> objectMapper.treeToValue(tree, ConfigJsonV2.class);
-      default -> objectMapper.treeToValue(tree, ConfigJsonV1.class);
+      case VERSION_2 -> objectMapper.treeToValue(tree, ConfigJsonV2.class);
+      case VERSION_1 -> objectMapper.treeToValue(tree, ConfigJsonV1.class).toConfigV2();
+      default -> throw new UnsupportedOperationException(String.format(
+        "unsupported config file version=%d, supported=%s", version, supportedVersions
+      ));
     };
 
   }
@@ -52,11 +63,34 @@ public class JsonConfigs {
   }
 
   @SneakyThrows
-  public static void write(Path configPath, ConfigJson config) {
+  public static void write(Path configPath, ConfigJsonV2 config) {
+    final var version = findVersion(configPath);
+    final var backupPath = Paths.get(configPath.toAbsolutePath() + ".bkp");
+    if (Objects.equals(version, VERSION_1)) {
+      log.warn("status=migratingFromVersion1To2, file={}, backup={}", configPath, backupPath);
+      Files.copy(configPath, backupPath);
+    }
     JsonUtils
       .instance()
       .writeValue(configPath.toFile(), config)
     ;
     log.info("status=configWritten, file={}", configPath);
   }
+
+  @SneakyThrows
+  static Integer findVersion(Path configPath) {
+    final var node = JsonUtils
+      .instance()
+      .readTree(configPath.toFile());
+    return findVersion(node);
+  }
+
+  static Integer findVersion(JsonNode tree) {
+    final var v = tree.at("/version").asInt(-1);
+    if (v != -1) {
+      return v;
+    }
+    return null;
+  }
+
 }

@@ -11,6 +11,7 @@ import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Accessors(chain = true)
@@ -62,8 +63,21 @@ public class ConfigJsonV2 implements ConfigJson {
   @Data
   @Accessors(chain = true)
   public static class Env {
+
     private String name;
-    private List<Hostname> hostnames;
+    private List<Hostname> hostnames = new ArrayList<>();
+
+    public Env add(Hostname env){
+      this.hostnames.add(env);
+      return this;
+    }
+
+    public static Env from(Config.Env from) {
+      return new Env()
+        .setName(from.getName())
+        .setHostnames(Hostname.from(from.getEntries()))
+        ;
+    }
   }
 
   @Data
@@ -77,6 +91,24 @@ public class ConfigJsonV2 implements ConfigJson {
 
     private Integer ttl;
     private Config.Entry.Type type;
+
+    public static Hostname from(Config.Entry entry) {
+      return new Hostname()
+        .setHostname(entry.getHostname())
+        .setId(entry.getId())
+        .setIp(entry.getIp())
+        .setTtl(entry.getTtl())
+        .setTarget(entry.getTarget())
+        .setType(entry.getType())
+        ;
+    }
+
+    public static List<Hostname> from(List<Config.Entry> entries) {
+      return entries
+        .stream()
+        .map(Hostname::from)
+        .collect(Collectors.toList());
+    }
   }
 
 }

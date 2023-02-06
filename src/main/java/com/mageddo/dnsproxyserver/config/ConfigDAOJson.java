@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.config;
 
 import com.mageddo.dnsproxyserver.config.entrypoint.ConfigJson;
+import com.mageddo.dnsproxyserver.config.entrypoint.ConfigJsonV2;
 import com.mageddo.dnsproxyserver.config.entrypoint.JsonConfigs;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,12 +51,23 @@ public class ConfigDAOJson implements ConfigDAO {
       .getInstance()
       .getConfigPath()
       ;
-    final var config = JsonConfigs.loadConfig(configPath);
-    final var found = findEnv(env, config);
-    found.add(entry);
 
+    final var config = (ConfigJsonV2) JsonConfigs.loadConfig(configPath);
+    final var found = findEnvConcrete(env, config);
+    found.add(ConfigJsonV2.Hostname.from(entry));
     JsonConfigs.write(configPath, config);
 
+  }
+
+  private ConfigJsonV2.Env findEnvConcrete(String envKey, ConfigJsonV2 configJson) {
+    for (final var env : configJson.get_envs()) {
+      if (Objects.equals(env.getName(), envKey)) {
+        log.debug("status=envFound, activeEnv={}", envKey);
+        return env;
+      }
+    }
+    log.debug("status=notFound, action=usingDefaultEnv, activeEnv={}", Config.Env.DEFAULT_ENV);
+    return ConfigJsonV2.Env.from(Config.Env.theDefault());
   }
 
   static Config.Env findEnv(String envKey, final ConfigJson configJson) {
@@ -70,3 +82,4 @@ public class ConfigDAOJson implements ConfigDAO {
   }
 
 }
+
