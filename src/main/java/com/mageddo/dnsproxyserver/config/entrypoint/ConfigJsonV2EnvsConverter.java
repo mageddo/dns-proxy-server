@@ -17,14 +17,14 @@ public class ConfigJsonV2EnvsConverter {
     return new Config.Env(env.getName(), ConfigJsonV2EnvsConverter.toDomainEntries(env.getHostnames()));
   }
 
-  static List<Config.Entry> toDomainEntries(List<ConfigJsonV2.Hostname> hostnames) {
+  static List<Config.Entry> toDomainEntries(List<ConfigJsonV2.Entry> hostnames) {
     return hostnames
       .stream()
       .map(ConfigJsonV2EnvsConverter::toDomainEntry)
       .toList();
   }
 
-  static Config.Entry toDomainEntry(ConfigJsonV2.Hostname hostname) {
+  static Config.Entry toDomainEntry(ConfigJsonV2.Entry hostname) {
     return Config.Entry
       .builder()
       .hostname(hostname.getHostname())
@@ -36,7 +36,7 @@ public class ConfigJsonV2EnvsConverter {
       .build();
   }
 
-  private static Config.Entry.Type buildType(ConfigJsonV2.Hostname hostname) {
+  private static Config.Entry.Type buildType(ConfigJsonV2.Entry hostname) {
     if (hostname.getType() != null) {
       return hostname.getType();
     }

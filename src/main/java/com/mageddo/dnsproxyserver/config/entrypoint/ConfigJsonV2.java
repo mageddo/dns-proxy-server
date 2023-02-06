@@ -47,6 +47,7 @@ public class ConfigJsonV2 implements ConfigJson {
 
   private Boolean dpsNetworkAutoConnect;
 
+  @JsonIgnore
   public List<IpAddr> getRemoteDnsServers(){
     return this.remoteDnsServers
       .stream()
@@ -65,9 +66,9 @@ public class ConfigJsonV2 implements ConfigJson {
   public static class Env {
 
     private String name;
-    private List<Hostname> hostnames = new ArrayList<>();
+    private List<Entry> hostnames = new ArrayList<>();
 
-    public Env add(Hostname env){
+    public Env add(Entry env){
       this.hostnames.add(env);
       return this;
     }
@@ -75,14 +76,14 @@ public class ConfigJsonV2 implements ConfigJson {
     public static Env from(Config.Env from) {
       return new Env()
         .setName(from.getName())
-        .setHostnames(Hostname.from(from.getEntries()))
+        .setHostnames(Entry.from(from.getEntries()))
         ;
     }
   }
 
   @Data
   @Accessors(chain = true)
-  public static class Hostname {
+  public static class Entry {
 
     private Long id;
     private String hostname;
@@ -92,8 +93,8 @@ public class ConfigJsonV2 implements ConfigJson {
     private Integer ttl;
     private Config.Entry.Type type;
 
-    public static Hostname from(Config.Entry entry) {
-      return new Hostname()
+    public static Entry from(Config.Entry entry) {
+      return new Entry()
         .setHostname(entry.getHostname())
         .setId(entry.getId())
         .setIp(entry.getIp())
@@ -103,10 +104,10 @@ public class ConfigJsonV2 implements ConfigJson {
         ;
     }
 
-    public static List<Hostname> from(List<Config.Entry> entries) {
+    public static List<Entry> from(List<Config.Entry> entries) {
       return entries
         .stream()
-        .map(Hostname::from)
+        .map(Entry::from)
         .collect(Collectors.toList());
     }
   }

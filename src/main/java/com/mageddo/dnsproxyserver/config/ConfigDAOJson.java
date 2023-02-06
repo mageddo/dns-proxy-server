@@ -54,7 +54,7 @@ public class ConfigDAOJson implements ConfigDAO {
 
     final var config = (ConfigJsonV2) JsonConfigs.loadConfig(configPath);
     final var found = findOrBind(env, config);
-    found.add(ConfigJsonV2.Hostname.from(entry));
+    found.add(ConfigJsonV2.Entry.from(entry));
     JsonConfigs.write(configPath, config);
 
   }

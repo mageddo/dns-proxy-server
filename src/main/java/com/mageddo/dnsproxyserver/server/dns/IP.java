@@ -26,7 +26,11 @@ public class IP {
       "Array of bytes is not a valid IP representation, size must be %d",
       IP_BYTES
     );
-    return of(String.format("%d.%d.%d.%d", data[0], data[1], data[2], data[3]));
+    return of(String.format(
+      "%d.%d.%d.%d",
+      Byte.toUnsignedInt(data[0]), Byte.toUnsignedInt(data[1]),
+      Byte.toUnsignedInt(data[2]), Byte.toUnsignedInt(data[3])
+    ));
   }
 
   public String raw() {

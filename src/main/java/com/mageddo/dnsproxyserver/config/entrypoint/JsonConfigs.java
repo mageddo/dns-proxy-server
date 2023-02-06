@@ -38,7 +38,6 @@ public class JsonConfigs {
       return new ConfigJsonV2();
     }
     final var version = findVersion(tree);
-
     return switch (version) {
       case VERSION_2 -> objectMapper.treeToValue(tree, ConfigJsonV2.class);
       case VERSION_1 -> objectMapper.treeToValue(tree, ConfigJsonV1.class).toConfigV2();
@@ -65,16 +64,20 @@ public class JsonConfigs {
   @SneakyThrows
   public static void write(Path configPath, ConfigJsonV2 config) {
     final var version = findVersion(configPath);
-    final var backupPath = Paths.get(configPath.toAbsolutePath() + ".bkp");
+    final var backupPath = buildBackupPath(configPath);
     if (Objects.equals(version, VERSION_1)) {
       log.warn("status=migratingFromVersion1To2, file={}, backup={}", configPath, backupPath);
       Files.copy(configPath, backupPath);
     }
     JsonUtils
-      .instance()
+      .prettyInstance()
       .writeValue(configPath.toFile(), config)
     ;
     log.info("status=configWritten, file={}", configPath);
+  }
+
+  public static Path buildBackupPath(Path configPath) {
+    return Paths.get(configPath.toAbsolutePath() + ".bkp");
   }
 
   @SneakyThrows
@@ -86,11 +89,7 @@ public class JsonConfigs {
   }
 
   static Integer findVersion(JsonNode tree) {
-    final var v = tree.at("/version").asInt(-1);
-    if (v != -1) {
-      return v;
-    }
-    return null;
+    return tree.at("/version").asInt(VERSION_1);
   }
 
 }
