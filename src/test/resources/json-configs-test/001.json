@@ -23,7 +23,7 @@
   "hostMachineHostname": null,
   "logFile": "console",
   "logLevel": "DEBUG",
-  "registerContainerNames": null,
+  "registerContainerNames": false,
   "remoteDnsServers": [
     "8.8.8.8",
     "4.4.4.4"
