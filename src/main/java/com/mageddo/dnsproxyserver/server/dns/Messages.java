@@ -34,8 +34,6 @@ public class Messages {
   }
 
   public static Message aAnswer(Message msg, String ip) {
-//    final var res = new Message(reqMsg.getHeader().getID());
-//     = Record.newRecord(reqMsg.getQuestion().getName(), Type.A, DClass.IN, 30, Ips.toBytes(ip));
     msg.getHeader().setRcode(Rcode.NOERROR);
     final var answer = new ARecord(msg.getQuestion().getName(), DClass.IN, 30L, Ips.toAddress(ip));
     msg.addRecord(answer, Section.ANSWER);
