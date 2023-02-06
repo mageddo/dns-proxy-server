@@ -1,13 +1,10 @@
 package com.mageddo.dnsproxyserver.config.entrypoint;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
@@ -25,8 +22,7 @@ public class ConfigJsonV2 implements ConfigJson {
   @JsonProperty("remoteDnsServers")
   private List<String> remoteDnsServers = new ArrayList<>(); // dns servers formatted like 192.168.0.1:53
 
-  @Getter(onMethod_ = {@JsonGetter("envs")})
-  @Setter(onMethod_ = {@JsonGetter("envs")})
+  @JsonProperty("envs")
   private List<Env> _envs = new ArrayList<>();
 
   private Integer webServerPort;
