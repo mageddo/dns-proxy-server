@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @QuarkusTest
@@ -49,6 +50,7 @@ class SolverLocalDBTest {
 
     // assert
     assertNotNull(res);
+    assertEquals("acme.com", Messages.simplePrint(res));
 
   }
 
