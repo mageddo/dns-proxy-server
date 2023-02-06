@@ -80,6 +80,7 @@ public class ConfigJsonV1 implements ConfigJson {
       .setWebServerPort(this.getWebServerPort())
       .setDpsNetworkAutoConnect(this.getDpsNetworkAutoConnect())
       .setHostMachineHostname(this.getHostMachineHostname())
+      .setRegisterContainerNames(this.getRegisterContainerNames())
       .setLogFile(this.getLogFile())
       .setLogLevel(this.getLogLevel())
       .setRemoteDnsServers(this
