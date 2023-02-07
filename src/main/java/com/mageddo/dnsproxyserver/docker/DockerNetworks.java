@@ -6,11 +6,15 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
 
+import static com.mageddo.dnsproxyserver.docker.domain.Network.BRIDGE;
+import static com.mageddo.dnsproxyserver.docker.domain.Network.DPS;
+
 @Slf4j
 public class DockerNetworks {
 
-  public static final String NETWORK_DPS = "dps";
-  public static final String NETWORK_BRIDGE = "bridge";
+  public static final String NETWORK_DPS = DPS.lowerName();
+  public static final String NETWORK_BRIDGE = BRIDGE.lowerName();
+
   public static final String DEFAULT_NETWORK_LABEL = "dps.network";
 
   public static String findBestIpMatching(InspectContainerResponse c, Collection<String> networksNames) {
