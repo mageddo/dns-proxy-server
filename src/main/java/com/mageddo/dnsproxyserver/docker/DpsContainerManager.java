@@ -22,6 +22,8 @@ import java.util.Objects;
 @AllArgsConstructor(onConstructor = @__({@Inject}))
 public class DpsContainerManager {
 
+  public static final String NETWORK_DPS = DockerNetworks.NETWORK_DPS;
+
   private final DockerClient dockerClient;
   private final DockerNetworkDAO dockerNetworkDAO;
 
@@ -36,13 +38,13 @@ public class DpsContainerManager {
   }
 
   void createWhereNotExists() {
-    if (this.dockerNetworkDAO.existsByName(DockerNetworks.NETWORK_DPS)) {
+    if (this.dockerNetworkDAO.existsByName(NETWORK_DPS)) {
       log.debug("status=dpsNetworkAlreadyExists");
       return;
     }
     final var currentVersion = Configs.getInstance().getVersion();
     final var res = this.dockerClient.createNetworkCmd()
-      .withName(DockerNetworks.NETWORK_DPS)
+      .withName(NETWORK_DPS)
       .withDriver(DockerNetworks.NETWORK_BRIDGE)
       .withCheckDuplicate(false)
       .withEnableIpv6(false)
@@ -95,20 +97,19 @@ public class DpsContainerManager {
   }
 
   void disconnectAnotherContainerWithSameIPFromDpsNetowrk(String containerId, String ip) {
-    final var dpsNetwork = DockerNetworks.NETWORK_DPS;
-    final var container = this.dockerNetworkDAO.findContainerWithIp(dpsNetwork, ip);
+    final var container = this.dockerNetworkDAO.findContainerWithIp(NETWORK_DPS, ip);
     if (container == null) {
-      this.dockerNetworkDAO.connect(dpsNetwork, containerId);
+      this.dockerNetworkDAO.connect(NETWORK_DPS, containerId);
     } else if (!Objects.equals(containerId, container.getKey())) {
       log.info(
         "status=detachingContainerUsingDPSIpFromDpsNetwork, ip={}, oldContainerId={}, newContainerId={}",
         ip, containerId, container.getKey()
       );
-      this.dockerNetworkDAO.disconnect(dpsNetwork, container.getKey());
+      this.dockerNetworkDAO.disconnect(NETWORK_DPS, container.getKey());
     } else {
       log.info(
         "status=dpsAlreadyConnectedToDpsNetwork, containerId={}, ip={}, network={}",
-        containerId, ip, dpsNetwork
+        containerId, ip, NETWORK_DPS
       );
     }
   }

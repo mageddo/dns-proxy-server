@@ -12,11 +12,11 @@ public interface DockerNetworkDAO {
 
   void disconnect(String networkId, String containerId);
 
-  void connect(String networkId, String containerId);
+  void connect(String networkNameOrId, String containerId);
 
-  void connect(String networkId, String containerId, String ip);
+  void connect(String networkNameOrId, String containerId, String ip);
 
-  void connectRunningContainers(String networkId);
+  void connectRunningContainers(String networkName);
 
   boolean exists(String networkId);
 

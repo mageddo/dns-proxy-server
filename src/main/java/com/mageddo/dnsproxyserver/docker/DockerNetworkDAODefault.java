@@ -11,7 +11,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.Collections;
 
 @Slf4j
 @Default
@@ -69,21 +68,21 @@ public class DockerNetworkDAODefault implements DockerNetworkDAO {
   }
 
   @Override
-  public void connect(String networkId, String containerId) {
+  public void connect(String networkNameOrId, String containerId) {
     this.dockerClient
       .connectToNetworkCmd()
-      .withNetworkId(networkId)
+      .withNetworkId(networkNameOrId)
       .withContainerId(containerId)
       .exec()
     ;
-    log.info("status=connected, networkId={}, containerId={}", networkId, containerId);
+    log.info("status=connected, networkNameOrId={}, containerId={}", networkNameOrId, containerId);
   }
 
   @Override
-  public void connect(String networkId, String containerId, String ip) {
+  public void connect(String networkNameOrId, String containerId, String ip) {
 
     final var builder = this.dockerClient.connectToNetworkCmd()
-      .withNetworkId(networkId)
+      .withNetworkId(networkNameOrId)
       .withContainerId(containerId);
 
     if (StringUtils.isNotBlank(ip)) {
@@ -91,21 +90,23 @@ public class DockerNetworkDAODefault implements DockerNetworkDAO {
       if (config != null) {
         config.withIpv4Address(ip);
       } else {
-        log.warn("status=couldntSetIp, networkId={}, ip={}", networkId, ip);
+        log.warn("status=couldntSetIp, networkNameOrId={}, ip={}", networkNameOrId, ip);
       }
     }
     builder.exec();
-    log.info("status=network-connected, network={}, container={}", networkId, containerId);
+    log.info("status=network-connected, network={}, container={}", networkNameOrId, containerId);
 
   }
 
   @Override
-  public void connectRunningContainers(String networkId) {
+  public void connectRunningContainers(String networkName) {
     this.dockerClient
       .listContainersCmd()
-      .withStatusFilter(Collections.singletonList("running"))
+      .withStatusFilter(Containers.RUNNING_STATUS_LIST)
       .exec()
-      .forEach(container -> this.connect(networkId, container.getId()))
+      .stream()
+      .filter(it -> !Containers.containsNetworkName(it, networkName))
+      .forEach(container -> this.connect(networkName, container.getId()))
     ;
   }
 
