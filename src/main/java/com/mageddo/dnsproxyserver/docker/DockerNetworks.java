@@ -20,6 +20,7 @@ public class DockerNetworks {
 
     for (final var name : networksNames) {
       if (!networks.containsKey(name)) {
+        log.debug("status=networkNotFoundForContainer, name={}", name);
         continue;
       }
       final var ip = networks.get(name).getIpAddress();
