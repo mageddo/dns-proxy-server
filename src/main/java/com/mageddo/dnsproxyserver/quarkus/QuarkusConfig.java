@@ -9,7 +9,6 @@ import org.xbill.DNS.Resolver;
 import org.xbill.DNS.SimpleResolver;
 
 import javax.enterprise.inject.Produces;
-
 import java.time.Duration;
 import java.util.function.Function;
 
@@ -36,7 +35,11 @@ public class QuarkusConfig {
 
   public static void setup(Config config) {
     System.setProperty("quarkus.http.port", String.valueOf(config.getWebServerPort()));
-    System.setProperty("quarkus.log.level", config.getLogLevel().name());
+
+    if (config.getLogLevel() != null) {
+      System.setProperty("quarkus.log.level", config.getLogLevel().name());
+    }
+
     final var logFile = Configs.parseLogFile(config.getLogFile());
     if (logFile == null) {
       System.setProperty("quarkus.log.console.enable", "false");

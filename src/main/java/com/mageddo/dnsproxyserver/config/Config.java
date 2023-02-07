@@ -38,7 +38,6 @@ public class Config {
   @NonNull
   private Boolean defaultDns;
 
-  @NonNull
   private LogLevel logLevel;
 
   @NonNull

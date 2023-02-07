@@ -72,12 +72,7 @@ public class Configs {
   }
 
   static LogLevel buildLogLevel(String logLevelName) {
-    final var logLevel = EnumUtils.getEnumIgnoreCase(LogLevel.class, logLevelName);
-    if (logLevel == null) {
-      log.warn("status=unrecognizedLogLevel, level={}, action=settingToDefault, default=INFO", logLevelName);
-      return LogLevel.INFO;
-    }
-    return logLevel;
+    return EnumUtils.getEnumIgnoreCase(LogLevel.class, logLevelName);
   }
 
   public static String parseLogFile(String v) {
