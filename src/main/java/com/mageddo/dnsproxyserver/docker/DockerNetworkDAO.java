@@ -6,8 +6,9 @@ import org.apache.commons.lang3.tuple.Pair;
 public interface DockerNetworkDAO {
 
   Network findNetwork(String id);
+  Network findByName(String networkName);
 
-  Pair<String, Network.ContainerNetworkConfig> findContainerWithIp(String networkId, String ip);
+  Pair<String, Network.ContainerNetworkConfig> findContainerWithIp(String networName, String ip);
 
   void disconnect(String networkId, String containerId);
 
@@ -16,4 +17,9 @@ public interface DockerNetworkDAO {
   void connect(String networkId, String containerId, String ip);
 
   void connectRunningContainers(String networkId);
+
+  boolean exists(String networkId);
+
+  boolean existsByName(String networkName);
+
 }

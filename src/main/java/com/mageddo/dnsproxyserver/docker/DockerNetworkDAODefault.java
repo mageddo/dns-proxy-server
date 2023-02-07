@@ -23,7 +23,8 @@ public class DockerNetworkDAODefault implements DockerNetworkDAO {
 
   @Override
   public Network findNetwork(String id) {
-    return this.dockerClient.listNetworksCmd().withIdFilter(id)
+    return this.dockerClient.listNetworksCmd()
+      .withIdFilter("^" + id)
       .exec()
       .stream()
       .findFirst()
@@ -32,9 +33,20 @@ public class DockerNetworkDAODefault implements DockerNetworkDAO {
   }
 
   @Override
-  public Pair<String, Network.ContainerNetworkConfig> findContainerWithIp(String networkId, String ip) {
-    final var network = this.findNetwork(networkId);
-    Validate.notNull(network, "network not found: %s", networkId);
+  public Network findByName(String networkName) {
+    return this.dockerClient.listNetworksCmd()
+      .withNameFilter(networkName)
+      .exec()
+      .stream()
+      .findFirst()
+      .orElse(null)
+      ;
+  }
+
+  @Override
+  public Pair<String, Network.ContainerNetworkConfig> findContainerWithIp(String networName, String ip) {
+    final var network = this.findByName(networName);
+    Validate.notNull(network, "network not found: %s", networName);
     final var containers = network.getContainers();
     for (final var containerId : containers.keySet()) {
       final var container = containers.get(containerId);
@@ -95,5 +107,15 @@ public class DockerNetworkDAODefault implements DockerNetworkDAO {
       .exec()
       .forEach(container -> this.connect(networkId, container.getId()))
     ;
+  }
+
+  @Override
+  public boolean exists(String networkId) {
+    return this.findNetwork(networkId) != null;
+  }
+
+  @Override
+  public boolean existsByName(String networkName) {
+    return this.findByName(networkName) != null;
   }
 }

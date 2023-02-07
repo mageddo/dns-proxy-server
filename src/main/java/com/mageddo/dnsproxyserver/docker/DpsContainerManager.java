@@ -11,6 +11,7 @@ import org.apache.commons.lang3.BooleanUtils;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
@@ -30,18 +31,23 @@ public class DpsContainerManager {
     if (!configureNetwork) {
       return;
     }
-    create();
+    createWhereNotExists();
     connectDpsContainer();
   }
 
-  void create() {
+  void createWhereNotExists() {
+    if (this.dockerNetworkDAO.existsByName(DockerNetworks.NETWORK_DPS)) {
+      log.debug("status=dpsNetworkAlreadyExists");
+      return;
+    }
     final var currentVersion = Configs.getInstance().getVersion();
-    this.dockerClient.createNetworkCmd()
+    final var res = this.dockerClient.createNetworkCmd()
+      .withName(DockerNetworks.NETWORK_DPS)
       .withDriver(DockerNetworks.NETWORK_BRIDGE)
       .withCheckDuplicate(false)
       .withEnableIpv6(false)
       .withIpam(
-        new com.github.dockerjava.api.model.Network.Ipam()
+        new Network.Ipam()
           .withConfig(
             new Network.Ipam.Config()
               .withSubnet("172.157.0.0/16")
@@ -55,7 +61,8 @@ public class DpsContainerManager {
         "description", "Dns Proxy Server Network: https://github.com/mageddo/dns-proxy-server",
         "version", currentVersion
       ))
-    ;
+      .exec();
+    log.info("status=networkCreated, id={}, warnings={}", res.getId(), Arrays.toString(res.getWarnings()));
   }
 
   void connectDpsContainer() {
