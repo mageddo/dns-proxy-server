@@ -29,28 +29,28 @@ public class DockerNetworks {
       .getNetworkSettings()
       .getNetworks();
 
-//    for (final var name : networksNames) {
-//      if (!networks.containsKey(name)) {
-//        log.debug("status=networkNotFoundForContainer, name={}", name);
-//        continue;
-//      }
-//      final var ip = networks.get(name).getIpAddress();
-//      log.debug("status=foundIp, network={}, container={}, ip={}", name, c.getName(), ip);
-//      return ip;
-//    }
+    for (final var name : networksNames) {
+      if (!networks.containsKey(name)) {
+        log.debug("status=networkNotFoundForContainer, name={}", name);
+        continue;
+      }
+      final var ip = networks.get(name).getIpAddress();
+      log.debug("status=foundIp, network={}, container={}, ip={}", name, c.getName(), ip);
+      return ip;
+    }
     log.debug(
       "status=predefinedNetworkNotFound, action=findSecondOption, searchedNetworks={}, container={}",
       networksNames, c.getName()
     );
 
-    for (final var name : networks.keySet()) {
-      for (final var wantedNetwork : networksNames) {
-        if (name.endsWith(wantedNetwork)) {
-          log.debug("status=patternMached, network={}, with={}", name, wantedNetwork);
-          return networks.get(name).getIpAddress();
-        }
-      }
-    }
+//    for (final var name : networks.keySet()) {
+//      for (final var wantedNetwork : networksNames) {
+//        if (name.endsWith(wantedNetwork)) {
+//          log.debug("status=patternMached, network={}, with={}", name, wantedNetwork);
+//          return networks.get(name).getIpAddress();
+//        }
+//      }
+//    }
 
     return networks
       .keySet()
