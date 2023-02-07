@@ -2,7 +2,6 @@ package com.mageddo.dnsproxyserver.docker;
 
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.ContainerConfig;
-import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.server.dns.Hostname;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -46,8 +45,7 @@ public class Docker {
     return Collections.emptySet();
   }
 
-  public static Set<Hostname> buildHostnamesFromServiceOrContainerNames(InspectContainerResponse container) {
-    final var domain = Configs.getInstance().getDomain();
+  static Set<Hostname> buildHostnamesFromServiceOrContainerNames(InspectContainerResponse container, String domain) {
     return Stream
       .of(
         buildFromContainerName(container, domain),

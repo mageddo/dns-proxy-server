@@ -8,7 +8,7 @@ public interface DockerDAO {
    * @param host
    * @return the host ip
    */
-  String findHostIp(Hostname host);
+  String findBestHostIP(Hostname host);
 
   String findHostMachineIp();
 

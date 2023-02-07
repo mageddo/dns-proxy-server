@@ -22,7 +22,7 @@ public class DockerSolver implements Solver {
 
     final var askedHost = Messages.findQuestionHostname(reqMsg);
     for (final var host : Wildcards.buildHostAndWildcards(askedHost)) {
-      final var ip = this.dockerDAO.findHostIp(host);
+      final var ip = this.dockerDAO.findBestHostIP(host);
       if (ip == null) {
         return null;
       }

@@ -13,7 +13,7 @@ import java.util.Objects;
 @AllArgsConstructor(onConstructor = @__({@Inject}))
 public class DockerDAOMock implements DockerDAO {
   @Override
-  public String findHostIp(Hostname host) {
+  public String findBestHostIP(Hostname host) {
     if (Objects.equals("acme.com", host)) {
       return "192.168.0.1";
     }

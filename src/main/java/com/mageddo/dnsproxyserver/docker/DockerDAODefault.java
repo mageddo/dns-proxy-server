@@ -3,27 +3,20 @@ package com.mageddo.dnsproxyserver.docker;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.Network;
-import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.server.dns.Hostname;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.time.StopWatch;
 
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.mageddo.dnsproxyserver.docker.Docker.buildHostnamesFromServiceOrContainerNames;
-import static com.mageddo.dnsproxyserver.docker.Docker.findContainerHostname;
-import static com.mageddo.dnsproxyserver.docker.Docker.findHostnamesFromEnv;
 import static com.mageddo.dnsproxyserver.docker.DockerNetworks.NETWORK_BRIDGE;
 import static com.mageddo.dnsproxyserver.docker.DockerNetworks.NETWORK_DPS;
 import static com.mageddo.dnsproxyserver.docker.Labels.DEFAULT_NETWORK_LABEL;
@@ -38,7 +31,7 @@ public class DockerDAODefault implements DockerDAO {
   private final DockerClient dockerClient;
 
   @Override
-  public String findHostIp(Hostname host) {
+  public String findBestHostIP(Hostname host) {
 
     final var stopWatch = StopWatch.createStarted();
     final var activeContainers = this.dockerClient
@@ -51,7 +44,7 @@ public class DockerDAODefault implements DockerDAO {
     final var foundIp = activeContainers
       .stream()
       .map(it -> this.dockerClient.inspectContainerCmd(it.getId()).exec())
-      .filter(matchingHostName(host))
+      .filter(ContainerHostnameMatcher.buildPredicate(host))
       .map(c -> DockerNetworks.findBestIpMatching(c, buildNetworks(c)))
       .findFirst()
       .orElse(null);
@@ -87,24 +80,5 @@ public class DockerDAODefault implements DockerDAO {
       .collect(Collectors.toCollection(LinkedHashSet::new));
   }
 
-  static Predicate<InspectContainerResponse> matchingHostName(Hostname host) {
-    return container -> {
 
-      final List<Predicate<InspectContainerResponse>> predicates = List.of(
-        (it) -> host.isEqualTo(findContainerHostname(it.getConfig())),
-        (it) -> findHostnamesFromEnv(it.getConfig().getEnv()).contains(host),
-        (it) -> isRegisterContainerNames() && buildHostnamesFromServiceOrContainerNames(container).contains(host)
-      );
-      for (Predicate<InspectContainerResponse> predicate : predicates) {
-        if(predicate.test(container)){
-          return true;
-        }
-      }
-      return false;
-    };
-  }
-
-  private static boolean isRegisterContainerNames() {
-    return BooleanUtils.isTrue(Configs.getInstance().getRegisterContainerNames());
-  }
 }
