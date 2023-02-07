@@ -14,17 +14,19 @@ import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.mageddo.dnsproxyserver.docker.Docker.buildHostnamesFromServiceOrContainerNames;
 import static com.mageddo.dnsproxyserver.docker.Docker.findContainerHostname;
 import static com.mageddo.dnsproxyserver.docker.Docker.findHostnamesFromEnv;
-import static com.mageddo.dnsproxyserver.docker.Labels.DEFAULT_NETWORK_LABEL;
 import static com.mageddo.dnsproxyserver.docker.DockerNetworks.NETWORK_BRIDGE;
 import static com.mageddo.dnsproxyserver.docker.DockerNetworks.NETWORK_DPS;
+import static com.mageddo.dnsproxyserver.docker.Labels.DEFAULT_NETWORK_LABEL;
 
 @Slf4j
 @Default
@@ -87,19 +89,22 @@ public class DockerDAODefault implements DockerDAO {
 
   static Predicate<InspectContainerResponse> matchingHostName(Hostname host) {
     return container -> {
-      if (host.isEqualTo(findContainerHostname(container.getConfig()))) {
-        return true;
-      }
-      final var matches = findHostnamesFromEnv(container.getConfig().getEnv()).contains(host);
-      if(matches){
-        return true;
-      }
 
-      final var registerContainerNames = BooleanUtils.isTrue(Configs.getInstance().getRegisterContainerNames());
-      if (registerContainerNames) {
-        return Docker.buildHostnamesFromServiceOrContainerNames(container).contains(host);
+      final List<Predicate<InspectContainerResponse>> predicates = List.of(
+        (it) -> host.isEqualTo(findContainerHostname(it.getConfig())),
+        (it) -> findHostnamesFromEnv(it.getConfig().getEnv()).contains(host),
+        (it) -> isRegisterContainerNames() && buildHostnamesFromServiceOrContainerNames(container).contains(host)
+      );
+      for (Predicate<InspectContainerResponse> predicate : predicates) {
+        if(predicate.test(container)){
+          return true;
+        }
       }
       return false;
     };
+  }
+
+  private static boolean isRegisterContainerNames() {
+    return BooleanUtils.isTrue(Configs.getInstance().getRegisterContainerNames());
   }
 }
