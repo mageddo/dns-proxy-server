@@ -41,6 +41,7 @@ public class EventListener {
       );
       return;
     }
+    this.dockerNetworkDAO.connectRunningContainers(DockerNetworks.NETWORK_DPS);
 
     final var callback = new ResultCallback<Event>() {
       @Override

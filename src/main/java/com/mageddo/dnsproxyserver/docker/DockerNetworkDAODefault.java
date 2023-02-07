@@ -11,6 +11,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.Collections;
 
 @Slf4j
 @Default
@@ -67,7 +68,7 @@ public class DockerNetworkDAODefault implements DockerNetworkDAO {
   }
 
   @Override
-  public void connet(String networkId, String containerId, String ip) {
+  public void connect(String networkId, String containerId, String ip) {
 
     final var builder = this.dockerClient.connectToNetworkCmd()
       .withNetworkId(networkId)
@@ -84,5 +85,15 @@ public class DockerNetworkDAODefault implements DockerNetworkDAO {
     builder.exec();
     log.info("status=network-connected, network={}, container={}", networkId, containerId);
 
+  }
+
+  @Override
+  public void connectRunningContainers(String networkId) {
+    this.dockerClient
+      .listContainersCmd()
+      .withStatusFilter(Collections.singletonList("running"))
+      .exec()
+      .forEach(container -> this.connect(networkId, container.getId()))
+    ;
   }
 }

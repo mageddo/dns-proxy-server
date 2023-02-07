@@ -13,5 +13,7 @@ public interface DockerNetworkDAO {
 
   void connect(String networkId, String containerId);
 
-  void connet(String networkId, String containerId, String ip);
+  void connect(String networkId, String containerId, String ip);
+
+  void connectRunningContainers(String networkId);
 }
