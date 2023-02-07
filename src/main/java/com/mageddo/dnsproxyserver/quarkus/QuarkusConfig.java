@@ -37,7 +37,7 @@ public class QuarkusConfig {
     System.setProperty("quarkus.http.port", String.valueOf(config.getWebServerPort()));
 
     if (config.getLogLevel() != null) {
-      System.setProperty("quarkus.log.level", config.getLogLevel().name());
+      System.setProperty("quarkus.log.category.\"com.mageddo\".level", config.getLogLevel().name());
     }
 
     final var logFile = Configs.parseLogFile(config.getLogFile());
