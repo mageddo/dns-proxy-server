@@ -18,8 +18,8 @@ import static com.mageddo.dnsproxyserver.docker.Docker.findHostnameFromEnv;
 import static com.mageddo.dnsproxyserver.docker.DockerNetworks.NETWORK_BRIDGE;
 
 @Slf4j
-@Singleton
 @Default
+@Singleton
 @AllArgsConstructor(onConstructor = @__({@Inject}))
 public class DockerDAODefault implements DockerDAO {
 
@@ -28,6 +28,7 @@ public class DockerDAODefault implements DockerDAO {
 
   @Override
   public String findHostIp(Hostname host) {
+
     final var stopWatch = StopWatch.createStarted();
     final var activeContainers = this.dockerClient
       .listContainersCmd()
@@ -50,6 +51,11 @@ public class DockerDAODefault implements DockerDAO {
   @Override
   public String findHostMachineIp() {
     return DockerNetworks.findIp(this.findBestNetwork());
+  }
+
+  @Override
+  public boolean isConnected() {
+    return true; // fixme implement the right logic
   }
 
   private com.github.dockerjava.api.model.Network findBestNetwork() {

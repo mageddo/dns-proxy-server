@@ -24,4 +24,9 @@ public class DockerDAOMock implements DockerDAO {
   public String findHostMachineIp() {
     return "127.0.0.1";
   }
+
+  @Override
+  public boolean isConnected() {
+    return true;
+  }
 }

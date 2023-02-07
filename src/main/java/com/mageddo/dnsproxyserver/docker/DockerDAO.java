@@ -11,4 +11,6 @@ public interface DockerDAO {
   String findHostIp(Hostname host);
 
   String findHostMachineIp();
+
+  boolean isConnected();
 }
