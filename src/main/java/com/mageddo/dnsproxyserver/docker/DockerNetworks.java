@@ -15,8 +15,6 @@ public class DockerNetworks {
   public static final String NETWORK_DPS = DPS.lowerName();
   public static final String NETWORK_BRIDGE = BRIDGE.lowerName();
 
-  public static final String DEFAULT_NETWORK_LABEL = "dps.network";
-
   public static String findBestIpMatching(InspectContainerResponse c, Collection<String> networksNames) {
     final var networks = c
       .getNetworkSettings()

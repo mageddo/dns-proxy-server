@@ -3,9 +3,11 @@ package com.mageddo.dnsproxyserver.docker;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.Network;
+import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.server.dns.Hostname;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.time.StopWatch;
 
 import javax.enterprise.inject.Default;
@@ -19,8 +21,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.mageddo.dnsproxyserver.docker.Docker.findContainerHostname;
-import static com.mageddo.dnsproxyserver.docker.Docker.findHostnameFromEnv;
-import static com.mageddo.dnsproxyserver.docker.DockerNetworks.DEFAULT_NETWORK_LABEL;
+import static com.mageddo.dnsproxyserver.docker.Docker.findHostnamesFromEnv;
+import static com.mageddo.dnsproxyserver.docker.Labels.DEFAULT_NETWORK_LABEL;
 import static com.mageddo.dnsproxyserver.docker.DockerNetworks.NETWORK_BRIDGE;
 import static com.mageddo.dnsproxyserver.docker.DockerNetworks.NETWORK_DPS;
 
@@ -84,21 +86,20 @@ public class DockerDAODefault implements DockerDAO {
   }
 
   static Predicate<InspectContainerResponse> matchingHostName(Hostname host) {
-    return it -> {
-      if (host.isEqualTo(findContainerHostname(it.getConfig()))) {
+    return container -> {
+      if (host.isEqualTo(findContainerHostname(container.getConfig()))) {
         return true;
       }
-      return findHostnameFromEnv(it.getConfig().getEnv()).contains(host);
+      final var matches = findHostnamesFromEnv(container.getConfig().getEnv()).contains(host);
+      if(matches){
+        return true;
+      }
 
-      // todo find hostname by container name or service name Config.registerContainerNames
-      //      usar o Config.domain como dominio para o nome do service ou do container.
-
-      // 	if conf.ShouldRegisterContainerNames() {
-      //		hostnames = append(hostnames, getHostnameFromContainerName(inspect))
-      //		if hostnameFromServiceName, err := getHostnameFromServiceName(inspect); err == nil {
-      //			hostnames = append(hostnames, hostnameFromServiceName)
-      //		}
-      //	}
+      final var registerContainerNames = BooleanUtils.isTrue(Configs.getInstance().getRegisterContainerNames());
+      if (registerContainerNames) {
+        return Docker.buildHostnamesFromServiceOrContainerNames(container).contains(host);
+      }
+      return false;
     };
   }
 }
