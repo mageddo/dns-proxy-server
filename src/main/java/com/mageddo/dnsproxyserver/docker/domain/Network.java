@@ -7,6 +7,7 @@ public enum Network {
 
   DPS,
   BRIDGE,
+  HOST,
   OTHER;
 
   public static Network of(String name) {

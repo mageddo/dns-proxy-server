@@ -45,7 +45,7 @@ public class DockerDAODefault implements DockerDAO {
       .stream()
       .map(it -> this.dockerClient.inspectContainerCmd(it.getId()).exec())
       .filter(ContainerHostnameMatcher.buildPredicate(host))
-      .map(c -> DockerNetworks.findBestIpMatching(c, buildNetworks(c)))
+      .map(c -> DockerNetworks.findBestIpMatching(c, buildNetworks(c), this::findHostMachineIp))
       .findFirst()
       .orElse(null);
     log.debug("status=findDone, host={}, found={}, time={}", host, foundIp, stopWatch.getTime());

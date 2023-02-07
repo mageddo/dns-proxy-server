@@ -161,6 +161,7 @@
     "OnBuild": null,
     "Labels": {
       "dps.network": "shibata",
+      "com.docker.compose.service": "nginx-service",
       "maintainer": "NGINX Docker Maintainers <docker-maint@nginx.com>"
     },
     "StopSignal": "SIGTERM"

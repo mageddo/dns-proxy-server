@@ -79,7 +79,7 @@ class ContainerHostnameMatcherTest {
   void mustSolveFromServiceName(){
     // arrange
     final var inspect = InspectContainerResponseTemplates.build();
-    final var hostname = Hostname.of("shibata.docker");
+    final var hostname = Hostname.of("nginx-service.docker");
     final var config = Configs.buildAndRegister(new String[]{"--register-container-names"});
 
     // act

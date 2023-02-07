@@ -105,6 +105,7 @@ public class DockerNetworkDAODefault implements DockerNetworkDAO {
       .withStatusFilter(Containers.RUNNING_STATUS_LIST)
       .exec()
       .stream()
+      .filter(it -> Boolean.FALSE.equals(DockerNetworks.isHostNetwork(it)))
       .filter(it -> !Containers.containsNetworkName(it, networkName))
       .forEach(container -> this.connect(networkName, container.getId()))
     ;
