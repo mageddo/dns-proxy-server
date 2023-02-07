@@ -65,6 +65,6 @@ public class Docker {
   }
 
   static String buildFromContainerName(InspectContainerResponse container, String domain) {
-    return String.format("%s.%s", container.getName(), domain);
+    return String.format("%s.%s", StringUtils.substring(container.getName(), 1), domain);
   }
 }

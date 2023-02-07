@@ -9,6 +9,7 @@ import org.apache.commons.lang3.BooleanUtils;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static com.mageddo.dnsproxyserver.docker.Docker.buildHostnamesFromServiceOrContainerNames;
 import static com.mageddo.dnsproxyserver.docker.Docker.findContainerHostname;
 import static com.mageddo.dnsproxyserver.docker.Docker.findHostnamesFromEnv;
 
@@ -27,9 +28,9 @@ public class ContainerHostnameMatcher {
 
       final List<Predicate<InspectContainerResponse>> predicates = List.of(
         (it) -> host.isEqualTo(findContainerHostname(it.getConfig())),
-        (it) -> findHostnamesFromEnv(it.getConfig().getEnv()).contains(host)
-//        (it) -> isRegisterContainerNames(config)
-//          && buildHostnamesFromServiceOrContainerNames(it, config.getDomain()).contains(host)
+        (it) -> findHostnamesFromEnv(it.getConfig().getEnv()).contains(host),
+        (it) -> isRegisterContainerNames(config)
+          && buildHostnamesFromServiceOrContainerNames(it, config.getDomain()).contains(host)
       );
       for (final var predicate : predicates) {
         if (predicate.test(container)) {
