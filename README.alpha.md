@@ -41,5 +41,12 @@ nslookup -po=8053 google.com 127.0.0.1
 
 docker network create -d bridge shibata
 
+com.github.dockerjava.core.command.ConnectToNetworkCmdImpl
+```
+
+Configurar reflection de classes third party
+```
+./gradlew build -Dquarkus.package.type=uber-jar
+java  -cp './build/dns-proxy-server-3.0.0-alpha-runner.jar:../annotation-processing-tools/reflection-config-generator/build/libs/reflection-config-generator-2.4.3-all.jar' nativeimage.core.thirdparty.Main 'com.github.dockerjava.core.command' tmp.json
 
 ```
