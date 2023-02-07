@@ -6,6 +6,7 @@ import org.apache.commons.lang3.tuple.Pair;
 public interface DockerNetworkDAO {
 
   Network findNetwork(String id);
+
   Network findByName(String networkName);
 
   Pair<String, Network.ContainerNetworkConfig> findContainerWithIp(String networName, String ip);

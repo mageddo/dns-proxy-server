@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.docker;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.InspectContainerResponse;
+import com.github.dockerjava.api.model.Network;
 import com.mageddo.dnsproxyserver.server.dns.Hostname;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +65,7 @@ public class DockerDAODefault implements DockerDAO {
     return true; // fixme implement the right logic
   }
 
-  com.github.dockerjava.api.model.Network findBestNetwork() {
+  Network findBestNetwork() {
     return this.dockerClient.listNetworksCmd()
       .exec()
       .stream()
