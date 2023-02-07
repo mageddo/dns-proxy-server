@@ -25,13 +25,7 @@ public class App {
 
     // todo setup as default dns
 
-    // todo criar o system solver para resolver a variável Config.hostMachineHostname
-
     // todo install as service
-
-    // todo criar network bridge quando Config.dpsNetwork = true,
-    //  e quando Config.dpsNetworkAutoConnect = true criar e conectar todos os containers nessa bridge
-    //  assim todos resolverao uma mesma network e poderao se comunicar
 
     // start webserver
     // start dns server
