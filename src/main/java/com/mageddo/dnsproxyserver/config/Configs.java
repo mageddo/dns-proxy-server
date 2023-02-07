@@ -99,6 +99,10 @@ public class Configs {
     return instance != null ? instance : buildAndRegister(new String[]{});
   }
 
+  public static void clear(){
+    instance = null;
+  }
+
   private static Path toAbsolutePath(ConfigFlag configFlag) {
     if (runningInTestsAndNoCustomConfigPath(configFlag)) {
       return Files.createTempFileExitOnExit("dns-proxy-server-junit", ".json");
