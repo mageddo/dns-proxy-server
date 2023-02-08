@@ -61,7 +61,10 @@ class SolverLocalDBTest {
 
     // assert
     assertNotNull(res);
-    assertEquals("acme.com.    45  IN  A  10.10.0.1", Messages.simplePrint(res));
+    assertEquals(
+        "acme.com.    45  IN  A  10.10.0.1",
+        Messages.detailedPrint(res)
+    );
 
   }
 

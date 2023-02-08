@@ -48,9 +48,9 @@ public class SolverLocalDB implements Solver {
       );
 
       if (entry.getType() == Entry.Type.A) {
-        return Messages.aAnswer(reqMsg, entry.getIp());
+        return Messages.aAnswer(reqMsg, entry.getIp(), entry.getTtl());
       }
-     this.solverDelegate.solve(reqMsg, entry);
+      return this.solverDelegate.solve(reqMsg, entry);
     }
 
     log.trace("status=notFound, askedHost={}, totalTime={}", askedHost, stopWatch.getTime());
