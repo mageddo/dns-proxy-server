@@ -6,6 +6,7 @@ import com.github.dockerjava.api.model.Network;
 import com.mageddo.dnsproxyserver.server.dns.Hostname;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.time.StopWatch;
 
 import javax.enterprise.inject.Default;
@@ -28,6 +29,7 @@ import static com.mageddo.dnsproxyserver.docker.Labels.DEFAULT_NETWORK_LABEL;
 public class DockerDAODefault implements DockerDAO {
 
   public static final String RUNNING_STATUS = "running";
+  public static final String LINUX_DISCONNECTED_ERROR = "LastErrorException: [2] No such file or directory";
   private final DockerClient dockerClient;
 
   @Override
@@ -59,7 +61,19 @@ public class DockerDAODefault implements DockerDAO {
 
   @Override
   public boolean isConnected() {
-    return true; // fixme implement the right logic
+    try {
+      this.dockerClient
+        .versionCmd()
+        .exec();
+      return true;
+    } catch (Throwable e) {
+      final var knownError = ExceptionUtils.getRootCauseMessage(e)
+        .contains(LINUX_DISCONNECTED_ERROR);
+      if (!knownError) {
+        log.warn("status=cant-connect-to-dockerm msg={}", e.getMessage(), e);
+      }
+      return false;
+    }
   }
 
   Network findBestNetwork() {
