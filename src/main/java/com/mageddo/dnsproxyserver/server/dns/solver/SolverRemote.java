@@ -27,7 +27,7 @@ public class SolverRemote implements Solver {
       final Resolver resolver = this.delegate.resolvers().get(i);
       try {
         final var res = resolver.send(req);
-          if (res.getRcode() == Rcode.NOERROR) {
+        if (res.getRcode() == Rcode.NOERROR) {
           log.debug("status=found, i={}, req={}, res={}, server={}", i, simplePrint(req), simplePrint(res), resolver);
           return res;
         } else {
@@ -36,8 +36,8 @@ public class SolverRemote implements Solver {
         }
       } catch (IOException e) {
         log.warn(
-          "status=failed, i={}, req={}, server={}, errClass={}, msg={}",
-          i, simplePrint(req), resolver, ClassUtils.getSimpleName(e), e.getMessage(), e
+            "status=failed, i={}, req={}, server={}, errClass={}, msg={}",
+            i, simplePrint(req), resolver, ClassUtils.getSimpleName(e), e.getMessage(), e
         );
       }
     }
