@@ -16,7 +16,7 @@ import static com.mageddo.dnsproxyserver.server.dns.Messages.simplePrint;
 @Slf4j
 @Singleton
 @AllArgsConstructor(onConstructor = @__({@Inject}))
-public class RemoteSolver implements Solver {
+public class SolverRemote implements Solver {
 
   private final RemoteResolvers delegate;
 

@@ -13,7 +13,7 @@ import javax.inject.Singleton;
 @Slf4j
 @Singleton
 @AllArgsConstructor(onConstructor = @__({@Inject}))
-public class DockerSolver implements Solver {
+public class SolverDocker implements Solver {
 
   private final DockerDAO dockerDAO;
 

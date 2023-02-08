@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @QuarkusTest
-class RemoteSolverTest {
+class SolverRemoteTest {
 
   @Inject
   RemoteResolvers remoteResolvers;
