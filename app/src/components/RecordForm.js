@@ -90,8 +90,9 @@ export class RecordForm extends React.Component {
 			contentType: 'application/json',
 			data: JSON.stringify({
 				...this.state.form,
-				env: this.props.env
-			}),
+				env: this.props.env,
+        ip: this.state.form.type === 'A' ? this.state.form.ip : null
+      }),
 		})
 		.done(function(){
 			window.$.notify({

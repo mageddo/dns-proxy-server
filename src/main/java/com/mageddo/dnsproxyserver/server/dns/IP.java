@@ -22,7 +22,14 @@ public class IP {
     return new IP(ip);
   }
 
+  public static IP of(Short[] ip) {
+    return of(Bytes.toNative(ip));
+  }
+
   public static IP of(byte[] data) {
+    if (data == null) {
+      return null;
+    }
     Validate.isTrue(
       data.length == IP_BYTES,
       "Array of bytes is not a valid IP representation, size must be %d",
@@ -39,7 +46,7 @@ public class IP {
     return this.ip;
   }
 
-  public byte[] toByteArray(){
+  public byte[] toByteArray() {
     return Ips.toBytes(this.raw());
   }
 
