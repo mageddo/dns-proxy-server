@@ -94,7 +94,7 @@ public class Config {
   }
 
   @Value
-  @Builder
+  @Builder(builderClassName = "EntryBuilder", buildMethodName = "_build")
   public static class Entry {
     @NonNull
     private Long id;
@@ -111,6 +111,15 @@ public class Config {
 
     @NonNull
     private Config.Entry.Type type;
+
+    public static class EntryBuilder {
+      public Entry build() {
+        if (this.id == null) {
+          this.id = System.nanoTime();
+        }
+        return this._build();
+      }
+    }
 
     public enum Type {
       A,
