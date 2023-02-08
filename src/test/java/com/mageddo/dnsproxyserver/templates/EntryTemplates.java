@@ -13,4 +13,15 @@ public class EntryTemplates {
       .build()
       ;
   }
+
+  public static Config.Entry cname(String from, String to) {
+    return Config.Entry
+      .builder()
+      .hostname(from)
+      .target(to)
+      .ttl(45)
+      .type(Config.Entry.Type.CNAME)
+      .build()
+      ;
+  }
 }

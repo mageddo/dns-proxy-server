@@ -39,7 +39,7 @@ class SolverSystemTest {
     final var res = this.solver.handle(query);
 
     // assert
-    final var answer = Messages.findFirstAnswerRecord(res);
+    final var answer = Messages.findFirstAnswerRecordStr(res);
     assertThat(answer, CoreMatchers.containsString(hostname));
     assertEquals("host.docker.\t\t30\tIN\tA\t192.168.0.1", answer);
 

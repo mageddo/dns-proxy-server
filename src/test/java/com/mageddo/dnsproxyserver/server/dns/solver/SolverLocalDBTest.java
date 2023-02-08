@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 
+import static com.mageddo.dnsproxyserver.server.dns.Hostnames.toAbsoluteName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -44,14 +45,34 @@ class SolverLocalDBTest {
     final var entry = EntryTemplates.build(host);
     this.configDAO.addEntry(Config.Env.DEFAULT_ENV, entry);
 
-    final var msg = Messages.aQuestion(host + ".");
+    final var msg = Messages.aQuestion(toAbsoluteName(host));
 
     // act
     final var res = this.solver.handle(msg);
 
     // assert
     assertNotNull(res);
-    assertEquals("acme.com", Messages.simplePrint(res));
+    assertEquals("acme.com.    45  IN  A  10.10.0.1", Messages.simplePrint(res));
+
+  }
+
+  @Test
+  void mustSolveCnameFromLocalDB(){
+
+    // arrange
+    final var from = "www.acme.com";
+    final var to = "acme.com";
+    final var entry = EntryTemplates.cname(from, to);
+    this.configDAO.addEntry(Config.Env.DEFAULT_ENV, entry);
+
+    final var msg = Messages.aQuestion(toAbsoluteName(from));
+
+    // act
+    final var res = this.solver.handle(msg);
+
+    // assert
+    assertNotNull(res);
+    assertEquals("www.acme.com.    45  IN  CNAME  acme.com.", Messages.simplePrint(res));
 
   }
 

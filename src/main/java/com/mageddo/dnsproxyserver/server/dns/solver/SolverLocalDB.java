@@ -35,10 +35,10 @@ public class SolverLocalDB implements Solver {
         return null;
       }
       log.trace(
-        "status=found, askedHost={}, time={}, totalTime={}",
-        askedHost, stopWatch.getTime() - stopWatch.getSplitTime(), stopWatch.getTime()
+        "status=found, type={}, askedHost={}, time={}, totalTime={}",
+        entry.getType(), askedHost, stopWatch.getTime() - stopWatch.getSplitTime(), stopWatch.getTime()
       );
-      return Messages.aAnswer(reqMsg, entry);
+      return Messages.answer(reqMsg, entry);
     }
 
     log.trace("status=notFound, askedHost={}, totalTime={}", askedHost, stopWatch.getTime());
