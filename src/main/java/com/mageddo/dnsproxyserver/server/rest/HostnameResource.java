@@ -1,37 +1,33 @@
 package com.mageddo.dnsproxyserver.server.rest;
 
 import com.mageddo.dnsproxyserver.config.ConfigDAO;
+import com.mageddo.dnsproxyserver.server.rest.reqres.HostnameV1;
 import lombok.AllArgsConstructor;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import java.util.Map;
 
-@Path("/env")
+@Path("/hostname")
 @AllArgsConstructor(onConstructor = @__({@Inject}))
-public class EnvResource {
+public class HostnameResource {
 
   private final ConfigDAO configDAO;
 
   @GET
-  @Path("/active")
+  @Path("/find")
   @Produces(MediaType.APPLICATION_JSON)
-  public Object getActive() {
-    return Map.of("name", this.configDAO.findActiveEnv().getName());
-  }
-
-  @GET
-  @Path("/")
-  @Produces(MediaType.APPLICATION_JSON)
-  public Object findEnvs() {
-    return this.configDAO.findEnvs()
+  public Object findHostnames(@QueryParam("env") String env, @QueryParam("hostname") String hostname) {
+    final var hostnames = this.configDAO.findHostnamesBy(env, hostname);
+    if (hostnames == null) {
+      return new Object[]{};
+    }
+    return hostnames
       .stream()
-      .map(it -> Map.of("name", it.getName()))
+      .map(HostnameV1::of)
       .toList();
   }
-
-
 }

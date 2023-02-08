@@ -5,9 +5,11 @@ import com.mageddo.dnsproxyserver.config.entrypoint.ConfigJsonV2;
 import com.mageddo.dnsproxyserver.config.entrypoint.JsonConfigs;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -16,12 +18,8 @@ import java.util.Objects;
 public class ConfigDAOJson implements ConfigDAO {
 
   @Override
-  public Config.Env findActiveEnv(){
-    final var configPath = Configs
-      .getInstance()
-      .getConfigPath()
-      ;
-    final var configJson = JsonConfigs.loadConfig(configPath);
+  public Config.Env findActiveEnv() {
+    final var configJson = findConfigJson();
     return findEnv(configJson.getActiveEnv(), configJson);
   }
 
@@ -29,8 +27,7 @@ public class ConfigDAOJson implements ConfigDAO {
   public Config.Env findEnv(String envKey) {
     final var configPath = Configs
       .getInstance()
-      .getConfigPath()
-      ;
+      .getConfigPath();
     return findEnv(envKey, JsonConfigs.loadConfig(configPath));
   }
 
@@ -49,14 +46,33 @@ public class ConfigDAOJson implements ConfigDAO {
 
     final var configPath = Configs
       .getInstance()
-      .getConfigPath()
-      ;
+      .getConfigPath();
 
     final var config = (ConfigJsonV2) JsonConfigs.loadConfig(configPath);
     final var found = findOrBind(env, config);
     found.add(ConfigJsonV2.Entry.from(entry));
     JsonConfigs.write(configPath, config);
 
+  }
+
+  @Override
+  public List<Config.Env> findEnvs() {
+    return findConfigJson().getEnvs();
+  }
+
+  @Override
+  public List<Config.Entry> findHostnamesBy(String env, String hostname) {
+    final var foundEnv = this.findEnv(env);
+    if (foundEnv == null) {
+      return null;
+    }
+    if(StringUtils.isBlank(hostname)){
+      return foundEnv.getEntries();
+    }
+    return foundEnv.getEntries()
+      .stream()
+      .filter(it -> it.getHostname().matches(String.format(".*%s.*", hostname)))
+      .toList();
   }
 
   ConfigJsonV2.Env findOrBind(String envKey, ConfigJsonV2 configJson) {
@@ -83,5 +99,11 @@ public class ConfigDAOJson implements ConfigDAO {
     return env;
   }
 
+  static ConfigJson findConfigJson() {
+    final var configPath = Configs
+      .getInstance()
+      .getConfigPath();
+    return JsonConfigs.loadConfig(configPath);
+  }
 }
 

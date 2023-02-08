@@ -16,4 +16,12 @@ public class Bytes {
     }
     return newarr;
   }
+
+  public static Short[] toUnsignedShortArray(byte[] source) {
+    final var target = new Short[source.length];
+    for (int i = 0; i < target.length; i++) {
+      target[i] = (short) Byte.toUnsignedInt(source[i]);
+    }
+    return target;
+  }
 }
