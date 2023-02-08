@@ -84,7 +84,7 @@ public class Config {
     }
 
     public static Env of(String name, List<Entry> entries) {
-      return new Env(name.replaceAll("[^-_\\w]+", ""), entries);
+      return new Env(name.replaceAll("[^-_\\w\\s]+", ""), entries);
     }
 
     public static Env theDefault() {

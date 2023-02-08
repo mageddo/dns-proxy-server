@@ -97,7 +97,7 @@ public class ConfigDAOJson implements ConfigDAO {
     final var alreadyExists = config
       .get_envs()
       .stream()
-      .anyMatch(JsonEnvPredicate.byName(env.getName()).negate());
+      .anyMatch(JsonEnvPredicate.byName(env.getName()));
 
     Validate.isTrue(!alreadyExists, "The '%s' env already exists", env.getName());
 
@@ -111,10 +111,13 @@ public class ConfigDAOJson implements ConfigDAO {
   @Override
   public void deleteEnv(String name) {
     final var config = loadConfigJson();
-    final var alreadyExists = config
+    final var filtered = config
       .get_envs()
       .stream()
-      .filter(JsonEnvPredicate.byName(name).negate());
+      .filter(JsonEnvPredicate.nameIsNot(name))
+      .toList();
+    config.set_envs(filtered);
+    save(config);
   }
 
   @Override

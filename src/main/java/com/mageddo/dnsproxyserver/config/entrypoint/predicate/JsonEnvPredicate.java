@@ -9,4 +9,8 @@ public class JsonEnvPredicate {
   public static Predicate<ConfigJsonV2.Env> byName(String name) {
     return (it) -> StringUtils.equalsIgnoreCase(it.getName(), name);
   }
+
+  public static Predicate<ConfigJsonV2.Env> nameIsNot(String name) {
+    return byName(name).negate();
+  }
 }
