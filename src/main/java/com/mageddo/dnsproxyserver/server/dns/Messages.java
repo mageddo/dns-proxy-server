@@ -17,7 +17,7 @@ import java.util.Optional;
 public class Messages {
 
   public static String simplePrint(Message message) {
-   final var answer = findFirstAnswerRecord(message);
+    final var answer = findFirstAnswerRecord(message);
     if (answer == null) {
       return Optional
           .ofNullable(findQuestionHostname(message))
@@ -25,6 +25,16 @@ public class Messages {
           .orElse("N/A");
     }
     return String.format("%s", simplePrint(answer));
+  }
+
+  public static String detailedPrint(Message msg) {
+    final var sb = new StringBuilder();
+    for (final var record : msg.getSection(1)) {
+      sb.append(simplePrint(record));
+      sb.append(" | ");
+    }
+    sb.delete(sb.length() - 3, sb.length());
+    return sb.toString();
   }
 
   public static String simplePrint(Record r) {
@@ -90,14 +100,15 @@ public class Messages {
 
   @SneakyThrows
   public static Message cnameAnswer(Message msg, Integer ttl, String hostname) {
-    msg.getHeader().setRcode(Rcode.NOERROR);
+    final var newMsg = new Message(msg.toWire());
+    newMsg.getHeader().setRcode(Rcode.NOERROR);
     final var answer = new CNAMERecord(
-        msg.getQuestion().getName(),
+        newMsg.getQuestion().getName(),
         DClass.IN, ttl,
         Name.fromString(Hostnames.toAbsoluteName(hostname))
     );
-    msg.addRecord(answer, Section.ANSWER);
-    return msg;
+    newMsg.addRecord(answer, Section.ANSWER);
+    return newMsg;
   }
 
   @SneakyThrows
@@ -107,4 +118,30 @@ public class Messages {
     msg.addRecord(q, Section.QUESTION);
     return msg;
   }
+
+  public static Integer findQuestionTypeCode(Message msg) {
+    return Optional
+        .ofNullable(msg.getQuestion())
+        .map(Record::getType)
+        .orElse(null)
+        ;
+  }
+
+  public static Config.Entry.Type findQuestionType(Message msg) {
+    return Config.Entry.Type.of(findQuestionTypeCode(msg));
+  }
+
+  public static Message combine(Message source, Message target) {
+    for (int i = 1; ; i++) {
+      final var section = source.getSection(i);
+      if (section.isEmpty()) {
+        break;
+      }
+      for (final var record : section) {
+        target.addRecord(record, 1);
+      }
+    }
+    return target;
+  }
+
 }

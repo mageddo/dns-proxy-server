@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
+import com.mageddo.dnsproxyserver.config.Config.Entry;
 import com.mageddo.dnsproxyserver.config.ConfigDAO;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.server.dns.Wildcards;
@@ -17,28 +18,39 @@ import javax.inject.Singleton;
 public class SolverLocalDB implements Solver {
 
   private final ConfigDAO configDAO;
+  private final SolverDelegate solverDelegate;
 
   @Override
   public Message handle(Message reqMsg) {
 
     final var stopWatch = StopWatch.createStarted();
-    final var askedHost = Messages.findQuestionHostname(reqMsg);
 
+    final var type = Messages.findQuestionTypeCode(reqMsg);
+    if (Entry.Type.isNot(type, Entry.Type.A, Entry.Type.CNAME)) {
+      log.debug("status=typeNotSupported, action=continue, type={}, time={}", type, stopWatch.getTime());
+      return null;
+    }
+
+    final var askedHost = Messages.findQuestionHostname(reqMsg);
     for (final var host : Wildcards.buildHostAndWildcards(askedHost)) {
       stopWatch.split();
       final var entry = this.configDAO.findEntryForActiveEnv(host.getName());
       if (entry == null) {
         log.trace(
-          "status=partialNotFound, askedHost={}, time={}",
-          askedHost, stopWatch.getTime() - stopWatch.getSplitTime()
+            "status=partialNotFound, askedHost={}, time={}",
+            askedHost, stopWatch.getTime() - stopWatch.getSplitTime()
         );
         return null;
       }
       log.trace(
-        "status=found, type={}, askedHost={}, time={}, totalTime={}",
-        entry.getType(), askedHost, stopWatch.getTime() - stopWatch.getSplitTime(), stopWatch.getTime()
+          "status=found, type={}, askedHost={}, time={}, totalTime={}",
+          entry.getType(), askedHost, stopWatch.getTime() - stopWatch.getSplitTime(), stopWatch.getTime()
       );
-      return Messages.answer(reqMsg, entry);
+
+      if (entry.getType() == Entry.Type.A) {
+        return Messages.aAnswer(reqMsg, entry.getIp());
+      }
+     this.solverDelegate.solve(reqMsg, entry);
     }
 
     log.trace("status=notFound, askedHost={}, totalTime={}", askedHost, stopWatch.getTime());

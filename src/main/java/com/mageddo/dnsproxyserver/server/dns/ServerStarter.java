@@ -2,11 +2,9 @@ package com.mageddo.dnsproxyserver.server.dns;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Configs;
-import com.mageddo.dnsproxyserver.quarkus.Instances;
 import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
-import com.mageddo.dnsproxyserver.server.dns.solver.Solvers;
+import com.mageddo.dnsproxyserver.server.dns.solver.SolverProvider;
 import lombok.Getter;
-import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.enterprise.inject.Instance;
@@ -17,14 +15,14 @@ import java.util.List;
 @Slf4j
 @Getter
 @Singleton
-@Accessors(fluent = true)
 public class ServerStarter {
+
   private final List<Solver> solvers;
   private final SimpleServer server;
 
   @Inject
   public ServerStarter(Instance<Solver> solvers, SimpleServer server) {
-    this.solvers = Solvers.sorted(Instances.toSet(solvers));
+    this.solvers = new SolverProvider(solvers).getSolvers();
     this.server = server;
   }
 
@@ -40,7 +38,7 @@ public class ServerStarter {
     return this;
   }
 
-  List<Solver> getSolvers() {
-    return solvers;
+  List<Solver> getSolver() {
+    return this.solvers;
   }
 }

@@ -5,12 +5,17 @@ import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import lombok.Builder;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Domain object which owns the configs.
@@ -121,9 +126,47 @@ public class Config {
       }
     }
 
+    @RequiredArgsConstructor
     public enum Type {
-      A,
-      CNAME
+
+      A(1),
+      CNAME(5),
+      ;
+
+      /**
+       * See {@link org.xbill.DNS.Type}
+       */
+      private final int type;
+
+      public static Type of(Integer code) {
+        for (final var t : values()) {
+          if (Objects.equals(t.type, code)) {
+            return t;
+          }
+        }
+        return null;
+      }
+
+      public static Set<Type> asSet(){
+        return Stream.of(values()).collect(Collectors.toSet());
+      }
+
+      public static boolean contains(Type type) {
+        return asSet().contains(type);
+      }
+
+      public static boolean contains(Integer type) {
+        return contains(of(type));
+      }
+
+      public static boolean isNot(Integer code, Type ... types) {
+        final var type = of(code);
+        return !Stream
+            .of(types)
+            .collect(Collectors.toSet())
+            .contains(type)
+            ;
+      }
     }
   }
 }

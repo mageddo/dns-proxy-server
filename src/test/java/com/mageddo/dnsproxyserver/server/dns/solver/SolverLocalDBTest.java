@@ -4,7 +4,9 @@ import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.ConfigDAO;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.templates.EntryTemplates;
+import com.mageddo.utils.templates.SolverTemplates;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.junit.mockito.InjectMock;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -13,6 +15,9 @@ import static com.mageddo.dnsproxyserver.server.dns.Hostnames.toAbsoluteName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 @QuarkusTest
 class SolverLocalDBTest {
@@ -23,8 +28,11 @@ class SolverLocalDBTest {
   @Inject
   ConfigDAO configDAO;
 
+  @InjectMock(convertScopes = true)
+  SolverProvider solverProvider;
+
   @Test
-  void mustNotSolveFromLocalDBWhenNoJsonIsConfigured(){
+  void mustNotSolveFromLocalDBWhenNoJsonIsConfigured() {
 
     // arrange
     final var msg = Messages.aQuestion("acme.com.");
@@ -34,11 +42,12 @@ class SolverLocalDBTest {
 
     // assert
     assertNull(res);
+    verify(this.solverProvider, never()).getSolversExcludingLocalDB();
 
   }
 
   @Test
-  void mustSolveFromLocalDB(){
+  void mustSolveFromLocalDB() {
 
     // arrange
     final var host = "acme.com";
@@ -57,13 +66,18 @@ class SolverLocalDBTest {
   }
 
   @Test
-  void mustSolveCnameFromLocalDB(){
+  void mustSolveCnameFromLocalDB() {
 
     // arrange
     final var from = "www.acme.com";
     final var to = "acme.com";
     final var entry = EntryTemplates.cname(from, to);
     this.configDAO.addEntry(Config.Env.DEFAULT_ENV, entry);
+
+    doReturn(SolverTemplates.mockTo192())
+        .when(this.solverProvider)
+        .getSolversExcludingLocalDB()
+    ;
 
     final var msg = Messages.aQuestion(toAbsoluteName(from));
 
@@ -72,7 +86,10 @@ class SolverLocalDBTest {
 
     // assert
     assertNotNull(res);
-    assertEquals("www.acme.com.    45  IN  CNAME  acme.com.", Messages.simplePrint(res));
+    assertEquals(
+        "www.acme.com.    45  IN  CNAME  acme.com. | www.acme.com.    30  IN  A  192.168.1.8",
+        Messages.detailedPrint(res)
+    );
 
   }
 
