@@ -21,4 +21,8 @@ public interface ConfigDAO {
   boolean updateEntry(String env, Config.Entry entry);
 
   boolean removeEntry(String env, String hostname);
+
+  void createEnv(Config.Env env);
+
+  void deleteEnv(String name);
 }
