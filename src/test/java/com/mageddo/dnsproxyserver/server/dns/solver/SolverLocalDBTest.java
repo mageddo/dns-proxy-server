@@ -90,7 +90,7 @@ class SolverLocalDBTest {
     // assert
     assertNotNull(res);
     assertEquals(
-        "www.acme.com.    45  IN  CNAME  acme.com. | www.acme.com.    30  IN  A  192.168.1.8",
+        "www.acme.com.    45  IN  CNAME  acme.com. | acme.com.    30  IN  A  192.168.1.8",
         Messages.detailedPrint(res)
     );
 
