@@ -19,7 +19,7 @@ public class ConfigDAOJson implements ConfigDAO {
 
   @Override
   public Config.Env findActiveEnv() {
-    final var configJson = findConfigJson();
+    final var configJson = loadConfigJson();
     return findEnv(configJson.getActiveEnv(), configJson);
   }
 
@@ -43,21 +43,15 @@ public class ConfigDAOJson implements ConfigDAO {
 
   @Override
   public void addEntry(String env, Config.Entry entry) {
-
-    final var configPath = Configs
-      .getInstance()
-      .getConfigPath();
-
-    final var config = (ConfigJsonV2) JsonConfigs.loadConfig(configPath);
+    final var config = loadConfigJson();
     final var found = findOrBind(env, config);
     found.add(ConfigJsonV2.Entry.from(entry));
-    JsonConfigs.write(configPath, config);
-
+    save(config);
   }
 
   @Override
   public List<Config.Env> findEnvs() {
-    return findConfigJson().getEnvs();
+    return loadConfigJson().getEnvs();
   }
 
   @Override
@@ -73,6 +67,14 @@ public class ConfigDAOJson implements ConfigDAO {
       .stream()
       .filter(it -> it.getHostname().matches(String.format(".*%s.*", hostname)))
       .toList();
+  }
+
+  @Override
+  public void changeActiveEnv(String name) {
+    final var config = loadConfigJson()
+      .setActiveEnv(name)
+      ;
+    save(config);
   }
 
   ConfigJsonV2.Env findOrBind(String envKey, ConfigJsonV2 configJson) {
@@ -99,11 +101,19 @@ public class ConfigDAOJson implements ConfigDAO {
     return env;
   }
 
-  static ConfigJson findConfigJson() {
+  static ConfigJsonV2 loadConfigJson() {
     final var configPath = Configs
       .getInstance()
       .getConfigPath();
-    return JsonConfigs.loadConfig(configPath);
+    return (ConfigJsonV2) JsonConfigs.loadConfig(configPath);
   }
+
+  static void save(ConfigJsonV2 config) {
+    final var configPath = Configs
+      .getInstance()
+      .getConfigPath();
+    JsonConfigs.write(configPath, config);
+  }
+
 }
 

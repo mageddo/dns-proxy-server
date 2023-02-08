@@ -15,4 +15,6 @@ public interface ConfigDAO {
   List<Config.Env> findEnvs();
 
   List<Config.Entry> findHostnamesBy(String env, String hostname);
+
+  void changeActiveEnv(String name);
 }

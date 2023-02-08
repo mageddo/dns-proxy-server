@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.config.entrypoint;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.json.JsonUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
