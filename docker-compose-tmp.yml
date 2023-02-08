@@ -4,3 +4,4 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.java
+    network_mode: bridge

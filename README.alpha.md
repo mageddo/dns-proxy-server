@@ -50,3 +50,6 @@ Configurar reflection de classes third party
 java  -cp './build/dns-proxy-server-3.0.0-alpha-runner.jar:../annotation-processing-tools/reflection-config-generator/build/libs/reflection-config-generator-2.4.3-all.jar' nativeimage.core.thirdparty.Main 'com.github.dockerjava.core.command' tmp.json
 
 ```
+
+
+docker-compose -f docker-compose-tmp.yml up --build
