@@ -50,6 +50,27 @@ public class ConfigDAOJson implements ConfigDAO {
   }
 
   @Override
+  public boolean updateEntry(String env, Config.Entry entry) {
+    final var config = loadConfigJson();
+    final var found = findOrBind(env, config);
+    final var hostnames = found.getHostnames();
+    if (hostnames.isEmpty()) {
+      return false;
+    }
+    final var toUpdate = ConfigJsonV2.Entry.from(entry);
+    for (int i = 0; i < hostnames.size(); i++) {
+      final var foundEntry = hostnames.get(i);
+      if (Objects.equals(foundEntry.getId(), toUpdate.getId())) {
+        hostnames.set(i, toUpdate);
+        save(config);
+        log.debug("status=updated, env={}, entry={}", env, entry.getId());
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @Override
   public List<Config.Env> findEnvs() {
     return loadConfigJson().getEnvs();
   }
@@ -60,7 +81,7 @@ public class ConfigDAOJson implements ConfigDAO {
     if (foundEnv == null) {
       return null;
     }
-    if(StringUtils.isBlank(hostname)){
+    if (StringUtils.isBlank(hostname)) {
       return foundEnv.getEntries();
     }
     return foundEnv.getEntries()
@@ -72,8 +93,7 @@ public class ConfigDAOJson implements ConfigDAO {
   @Override
   public void changeActiveEnv(String name) {
     final var config = loadConfigJson()
-      .setActiveEnv(name)
-      ;
+      .setActiveEnv(name);
     save(config);
   }
 

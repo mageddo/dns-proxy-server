@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -36,7 +37,14 @@ public class HostnameResource {
   @POST
   @Path("/")
   @Consumes(MediaType.APPLICATION_JSON)
-  public void save(HostnameV1 hostname) {
+  public void create(HostnameV1 hostname) {
     this.configDAO.addEntry(hostname.getEnv(), hostname.toEntry());
+  }
+
+  @PUT
+  @Path("/")
+  @Consumes(MediaType.APPLICATION_JSON)
+  public void update(HostnameV1 hostname) {
+    this.configDAO.updateEntry(hostname.getEnv(), hostname.toEntry());
   }
 }
