@@ -21,7 +21,7 @@ class Server0StarterTest {
     // arrange
 
     // act
-    final var names = this.serverStarter.getSolver()
+    final var names = this.serverStarter.getSolvers()
       .stream()
       .map(ClassUtils::getSimpleName)
       .toList();

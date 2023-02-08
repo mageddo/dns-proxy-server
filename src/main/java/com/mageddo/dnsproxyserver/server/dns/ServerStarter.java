@@ -38,7 +38,4 @@ public class ServerStarter {
     return this;
   }
 
-  List<Solver> getSolver() {
-    return this.solvers;
-  }
 }
