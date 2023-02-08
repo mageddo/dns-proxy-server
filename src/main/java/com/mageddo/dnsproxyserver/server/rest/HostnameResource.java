@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -46,5 +47,12 @@ public class HostnameResource {
   @Consumes(MediaType.APPLICATION_JSON)
   public void update(HostnameV1 hostname) {
     this.configDAO.updateEntry(hostname.getEnv(), hostname.toEntry());
+  }
+
+  @DELETE
+  @Path("/")
+  @Consumes(MediaType.APPLICATION_JSON)
+  public void delete(HostnameV1 hostname) {
+    this.configDAO.removeEntry(hostname.getEnv(), hostname.getHostname());
   }
 }

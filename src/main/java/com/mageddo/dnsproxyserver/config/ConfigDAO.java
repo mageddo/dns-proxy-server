@@ -19,4 +19,6 @@ public interface ConfigDAO {
   void changeActiveEnv(String name);
 
   boolean updateEntry(String env, Config.Entry entry);
+
+  boolean removeEntry(String env, String hostname);
 }

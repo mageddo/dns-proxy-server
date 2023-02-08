@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.config;
 import com.mageddo.dnsproxyserver.config.entrypoint.ConfigJson;
 import com.mageddo.dnsproxyserver.config.entrypoint.ConfigJsonV2;
 import com.mageddo.dnsproxyserver.config.entrypoint.JsonConfigs;
+import io.smallrye.mutiny.tuples.Functions;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -11,6 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 @Slf4j
 @Singleton
@@ -57,17 +59,28 @@ public class ConfigDAOJson implements ConfigDAO {
     if (hostnames.isEmpty()) {
       return false;
     }
-    final var toUpdate = ConfigJsonV2.Entry.from(entry);
-    for (int i = 0; i < hostnames.size(); i++) {
-      final var foundEntry = hostnames.get(i);
-      if (Objects.equals(foundEntry.getId(), toUpdate.getId())) {
-        hostnames.set(i, toUpdate);
-        save(config);
-        log.debug("status=updated, env={}, entry={}", env, entry.getId());
-        return true;
-      }
+    return findHostname(entry.getId(), hostnames, (foundEntry, i, entries) -> {
+      entries.set(i, ConfigJsonV2.Entry.from(entry));
+      save(config);
+    });
+  }
+
+  @Override
+  public boolean removeEntry(String env, String hostname) {
+    final var config = loadConfigJson();
+    final var found = findOrBind(env, config);
+    final var hostnames = found.getHostnames();
+    if (hostnames.isEmpty()) {
+      return false;
     }
-    return false;
+    return findHostname(
+      entry -> Objects.equals(entry.getHostname(), hostname),
+      hostnames,
+      (foundEntry, i, entries) -> {
+        entries.remove((int) i);
+        save(config);
+      }
+    );
   }
 
   @Override
@@ -133,6 +146,31 @@ public class ConfigDAOJson implements ConfigDAO {
       .getInstance()
       .getConfigPath();
     JsonConfigs.write(configPath, config);
+  }
+
+
+  static boolean findHostname(
+    Long id,
+    List<ConfigJsonV2.Entry> hostnames,
+    Functions.TriConsumer<ConfigJsonV2.Entry, Integer, List<ConfigJsonV2.Entry>> c
+  ) {
+    return findHostname(entry -> Objects.equals(entry.getId(), id), hostnames, c);
+  }
+
+  static boolean findHostname(
+    Predicate<ConfigJsonV2.Entry> p,
+    List<ConfigJsonV2.Entry> hostnames,
+    Functions.TriConsumer<ConfigJsonV2.Entry, Integer, List<ConfigJsonV2.Entry>> c
+  ) {
+    for (int i = 0; i < hostnames.size(); i++) {
+      final var foundEntry = hostnames.get(i);
+      if (p.test(foundEntry)) {
+        c.accept(foundEntry, i, hostnames);
+        log.debug("status=found, entryId={}, hostname={}", foundEntry.getId(), foundEntry.getHostname());
+        return true;
+      }
+    }
+    return false;
   }
 
 }
