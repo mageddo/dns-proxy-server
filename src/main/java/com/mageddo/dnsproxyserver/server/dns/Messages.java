@@ -113,10 +113,8 @@ public class Messages {
 
   @SneakyThrows
   public static Message aQuestion(String host) {
-    final var msg = new Message();
     final var q = Record.newRecord(Name.fromString(host), org.xbill.DNS.Type.A, DClass.IN, 0);
-    msg.addRecord(q, Section.QUESTION);
-    return msg;
+    return Message.newQuery(q);
   }
 
   public static Integer findQuestionTypeCode(Message msg) {
@@ -144,4 +142,13 @@ public class Messages {
     return target;
   }
 
+  @SneakyThrows
+  public static Message copyQuestionWithNewName(Message msg, String hostname) {
+    final var newMsg = Message.newQuery(msg
+        .getQuestion()
+        .withName(Name.fromString(hostname))
+    );
+    newMsg.getHeader().setID(msg.getHeader().getID());
+    return newMsg;
+  }
 }

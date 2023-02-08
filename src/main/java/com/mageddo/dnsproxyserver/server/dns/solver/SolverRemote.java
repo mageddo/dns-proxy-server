@@ -27,7 +27,7 @@ public class SolverRemote implements Solver {
       final Resolver resolver = this.delegate.resolvers().get(i);
       try {
         final var res = resolver.send(req);
-        if (res.getRcode() == Rcode.NOERROR) {
+          if (res.getRcode() == Rcode.NOERROR) {
           log.debug("status=found, i={}, req={}, res={}, server={}", i, simplePrint(req), simplePrint(res), resolver);
           return res;
         } else {
