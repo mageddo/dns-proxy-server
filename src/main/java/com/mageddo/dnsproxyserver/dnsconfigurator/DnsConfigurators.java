@@ -7,10 +7,12 @@ import io.quarkus.runtime.StartupEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.OS;
+import org.apache.commons.lang3.ClassUtils;
 
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -27,15 +29,27 @@ public class DnsConfigurators {
     if (!Boolean.TRUE.equals(config.getDefaultDns())) {
       return;
     }
+
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+      log.debug("status=restoringResolvConf, path={}", config.getResolvConfPath());
+      this.getInstance().restore(config.getResolvConfPath());
+    }));
+
     ThreadPool
       .main()
       .scheduleWithFixedDelay(() -> {
         try {
-          this.linuxConfigurator.configure(this.ipDiscover.findDpsIP(), config.getResolvConfPath());
+          this.getInstance().configure(this.ipDiscover.findDpsIP(), config.getResolvConfPath());
         } catch (Exception e) {
-          log.warn("status=failedToConfigureAsDefaultDns, path={}, msg={}", config.getResolvConfPath(), e.getMessage(), e);
+          if (e instanceof IOException) {
+            log.warn(
+              "status=failedToConfigureAsDefaultDns, path={}, msg={}:{}",
+              config.getResolvConfPath(), ClassUtils.getName(e), e.getMessage()
+            );
+          } else {
+            log.warn("status=failedToConfigureAsDefaultDns, path={}, msg={}", config.getResolvConfPath(), e.getMessage(), e);
+          }
         }
-
       }, 5, 20, TimeUnit.SECONDS);
   }
 

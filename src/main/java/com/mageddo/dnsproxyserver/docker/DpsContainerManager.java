@@ -120,6 +120,9 @@ public class DpsContainerManager {
 
   public IP findDpsContainerIP() {
     final var container = this.findDpsContainer();
+    if (container == null) {
+      return null;
+    }
     final var containerInsp = this.dockerDAO.inspect(container.getId());
     final var ip = this.dockerService.findBestIpMatch(containerInsp);
     if (StringUtils.isBlank(ip)) {

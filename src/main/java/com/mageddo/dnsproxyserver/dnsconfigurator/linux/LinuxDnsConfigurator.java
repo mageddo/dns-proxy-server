@@ -25,6 +25,7 @@ public class LinuxDnsConfigurator implements DnsConfigurator {
   @Override
   public void restore(Path conf) {
     ResolvConfParser.process(conf, new DnsServerCleanerHandler());
+    log.debug("status=restoredResolvConf, path={}", conf);
   }
 
 }
