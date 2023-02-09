@@ -21,7 +21,7 @@ public class SolverSystem implements Solver {
   public Message handle(Message reqMsg) {
     final var hostname = Messages.findQuestionHostname(reqMsg);
     final var config = Configs.getInstance();
-    if (hostname.isEqualTo(config.getHostMachineHostname())) {
+    if (hostname.isEqualTo(config.getHostMachineHostname())) { // fixme fazer case com hostname + search domain
       final var ip = this.dockerDAO.findHostMachineIp();
       if (ip == null) {
         log.debug("status=hostMachineIpNotFound, host={}", hostname);

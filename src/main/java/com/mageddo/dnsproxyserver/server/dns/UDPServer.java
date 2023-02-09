@@ -6,6 +6,7 @@ import com.mageddo.dnsproxyserver.utils.Classes;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.time.StopWatch;
 import org.xbill.DNS.Message;
 
 import java.io.IOException;
@@ -61,22 +62,31 @@ public class UDPServer {
   }
 
   Message solve(Message reqMsg) {
+    final var stopWatch = StopWatch.createStarted();
     for (final var solver : this.solvers) {
+      stopWatch.split();
       final var solverName = Classes.findSimpleName(solver);
       try {
         final var reqStr = simplePrint(reqMsg);
         log.debug("status=trySolve, solver={}, req={}", solverName, reqStr);
         final var res = solver.handle(reqMsg);
-        if(res == null){
-          log.debug("status=notSolved, solver={}, req={}", solverName, reqStr);
+        if (res == null) {
+          log.debug(
+            "status=notSolved, currentSolverTime={}, totalTime={}, solver={}, req={}",
+            stopWatch.getTime() - stopWatch.getSplitTime(), stopWatch.getTime(), solverName, reqStr
+          );
           continue;
         }
-        log.debug("status=solved, solver={}, req={}, res={}", solverName, reqStr, simplePrint(res));
+        log.debug(
+          "status=solved, currentSolverTime={}, totalTime={}, solver={}, req={}, res={}",
+          stopWatch.getTime() - stopWatch.getSplitTime(), stopWatch.getTime(), solverName, reqStr, simplePrint(res)
+        );
         return res;
       } catch (Exception e) {
         log.warn(
-          "status=solverFailed, solver={}, eClass={}, msg={}",
-          solverName, ClassUtils.getSimpleName(e), e.getMessage(), e
+          "status=solverFailed, currentSolverTime={}, totalTime={}, solver={}, eClass={}, msg={}",
+          stopWatch.getTime() - stopWatch.getSplitTime(), stopWatch.getTime(), solverName,
+          ClassUtils.getSimpleName(e), e.getMessage(), e
         );
       }
     }
