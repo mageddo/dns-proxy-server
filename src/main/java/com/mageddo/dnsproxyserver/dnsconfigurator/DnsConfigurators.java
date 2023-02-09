@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator;
 
 import com.mageddo.dnsproxyserver.config.Configs;
+import com.mageddo.dnsproxyserver.dnsconfigurator.linux.LinuxDnsConfigurator;
 import com.mageddo.dnsproxyserver.threads.ThreadPool;
 import io.quarkus.runtime.StartupEvent;
 import lombok.AllArgsConstructor;

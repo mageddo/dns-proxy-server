@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator;
 
+import com.mageddo.dnsproxyserver.dnsconfigurator.linux.LinuxDnsConfigurator;
 import com.mageddo.dnsproxyserver.server.dns.IP;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -70,6 +71,33 @@ class LinuxDnsConfiguratorTest {
         # nameserver 8.8.8.8 # dps-comment
         nameserver 10.10.0.1 # dps-entry
         """,
+      Files.readString(resolvFile)
+    );
+
+  }
+
+  @Test
+  void mustRestoreOriginalResolvconf(@TempDir Path tmpDir) throws Exception {
+
+    // arrrange
+    final var resolvFile = tmpDir.resolve("resolv.conf");
+    Files.writeString(resolvFile, """
+      # Provided by test
+      # nameserver 7.7.7.7
+      # nameserver 8.8.8.8 # dps-comment
+      nameserver 9.9.9.9 # dps-entry
+      """);
+
+    // act
+    this.configurator.restore(resolvFile);
+
+    // assert
+    assertEquals(
+      """
+       # Provided by test
+       # nameserver 7.7.7.7
+       nameserver 8.8.8.8
+       """,
       Files.readString(resolvFile)
     );
 

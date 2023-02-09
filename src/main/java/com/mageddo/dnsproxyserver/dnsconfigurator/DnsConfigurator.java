@@ -6,4 +6,5 @@ import java.nio.file.Path;
 
 public interface DnsConfigurator {
   void configure(IP ip, Path conf);
+  void restore(Path conf);
 }
