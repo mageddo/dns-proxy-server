@@ -23,8 +23,6 @@ public class App {
     // setup quarkus configs
     QuarkusConfig.setup(config);
 
-    // todo setup as default dns
-
     // todo install as service
 
     // start webserver

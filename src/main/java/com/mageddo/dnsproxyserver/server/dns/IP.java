@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.server.dns;
 
 import com.mageddo.dnsproxyserver.utils.Ips;
 import com.mageddo.utils.Bytes;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 public class IP {
@@ -19,6 +20,9 @@ public class IP {
   }
 
   public static IP of(String ip) {
+    if (StringUtils.isBlank(ip)) {
+      return null;
+    }
     return new IP(ip);
   }
 

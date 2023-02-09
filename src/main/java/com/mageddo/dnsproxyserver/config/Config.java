@@ -67,6 +67,9 @@ public class Config {
   @NonNull
   private Path configPath;
 
+  @NonNull
+  private Path resolvConfPath;
+
   public static SimpleServer.Protocol findDnsServerProtocol() {
     return SimpleServer.Protocol.BOTH;
   }

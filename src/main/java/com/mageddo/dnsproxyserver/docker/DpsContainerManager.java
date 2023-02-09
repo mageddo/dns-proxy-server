@@ -4,9 +4,11 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Network;
 import com.mageddo.dnsproxyserver.config.Configs;
+import com.mageddo.dnsproxyserver.server.dns.IP;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
@@ -24,6 +26,8 @@ public class DpsContainerManager {
 
   public static final String NETWORK_DPS = DockerNetworks.NETWORK_DPS;
 
+  private final DockerService dockerService;
+  private final DockerDAO dockerDAO;
   private final DockerClient dockerClient;
   private final DockerNetworkDAO dockerNetworkDAO;
 
@@ -114,5 +118,13 @@ public class DpsContainerManager {
     }
   }
 
-
+  public IP findDpsContainerIP() {
+    final var container = this.findDpsContainer();
+    final var containerInsp = this.dockerDAO.inspect(container.getId());
+    final var ip = this.dockerService.findBestIpMatch(containerInsp);
+    if (StringUtils.isBlank(ip)) {
+      return null;
+    }
+    return IP.of(ip);
+  }
 }

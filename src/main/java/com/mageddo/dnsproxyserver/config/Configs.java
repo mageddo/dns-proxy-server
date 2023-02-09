@@ -61,6 +61,7 @@ public class Configs {
       ))
       .remoteDnsServers(buildRemoteServers(json.getRemoteDnsServers()))
       .configPath(configPath)
+      .resolvConfPath(env.getResolvConfPath())
       .build();
   }
 
