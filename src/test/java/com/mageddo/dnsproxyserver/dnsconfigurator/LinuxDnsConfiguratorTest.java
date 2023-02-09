@@ -31,4 +31,47 @@ class LinuxDnsConfiguratorTest {
     );
 
   }
+
+  @Test
+  void mustCommentExistingServerAndSetupPassedConf(@TempDir Path tmpDir) throws Exception {
+
+    // arrrange
+    final var resolvFile = tmpDir.resolve("resolv.conf");
+    Files.writeString(resolvFile, "nameserver 8.8.8.8");
+
+    // act
+    this.configurator.configure(IP.of("10.10.0.1"), resolvFile);
+
+    // assert
+    assertEquals(
+      """
+        # nameserver 8.8.8.8 # dps-comment
+        nameserver 10.10.0.1 # dps-entry
+        """,
+      Files.readString(resolvFile)
+    );
+
+  }
+
+
+  @Test
+  void mustUseAlreadyExistentDpsServerLine(@TempDir Path tmpDir) throws Exception {
+
+    // arrrange
+    final var resolvFile = tmpDir.resolve("resolv.conf");
+    Files.writeString(resolvFile, "nameserver 8.8.8.8\nnameserver 4.4.4.4 # dps-entry");
+
+    // act
+    this.configurator.configure(IP.of("10.10.0.1"), resolvFile);
+
+    // assert
+    assertEquals(
+      """
+        # nameserver 8.8.8.8 # dps-comment
+        nameserver 10.10.0.1 # dps-entry
+        """,
+      Files.readString(resolvFile)
+    );
+
+  }
 }
