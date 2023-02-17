@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.docker.DockerDAO;
+import com.mageddo.dnsproxyserver.server.dns.IP;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.templates.MessageTemplates;
 import io.quarkus.test.junit.QuarkusTest;
@@ -30,7 +31,7 @@ class SolverSystemTest {
     final var hostname = "host.docker.";
     final var query = MessageTemplates.buildAQuestionFor(hostname);
 
-    doReturn( "192.168.0.1")
+    doReturn(IP.of("192.168.0.1"))
       .when(this.dockerDAO)
       .findHostMachineIp()
     ;
