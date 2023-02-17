@@ -13,5 +13,6 @@
     "port" : 53,
     "rawIP" : "8.8.8.8"
   } ],
-  "webServerPort" : 9393
+  "webServerPort" : 9393,
+  "resolvConfPath" : "file:///etc/resolv.conf"
 }
