@@ -14,16 +14,18 @@ import java.util.List;
 @AllArgsConstructor(onConstructor = @__({@Inject}))
 public class SimpleServer {
 
-  public SimpleServer start(
+  private final UDPServer udpServer;
+
+  public void start(
       int port, Protocol protocol, List<Solver> solvers, InetAddress bindAddress
   ) {
 
-    // fixme create tcp server
-    final var udpServer = new UDPServer();
-    solvers.forEach(udpServer::bind);
-    udpServer.start(port, bindAddress);
+    solvers.forEach(this.udpServer::bind);
 
-    return new SimpleServer();
+    // fixme create tcp server
+
+    this.udpServer.start(port, bindAddress);
+
   }
 
   public enum Protocol {

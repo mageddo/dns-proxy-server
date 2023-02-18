@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
 import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
+import com.mageddo.dnsproxyserver.server.dns.solver.SolversCache;
 import com.mageddo.dnsproxyserver.threads.ThreadPool;
 import com.mageddo.dnsproxyserver.utils.Classes;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,8 @@ import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.StopWatch;
 import org.xbill.DNS.Message;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.DatagramPacket;
@@ -21,12 +24,18 @@ import java.util.concurrent.ExecutorService;
 import static com.mageddo.dnsproxyserver.server.dns.Messages.simplePrint;
 
 @Slf4j
+@Singleton
 public class UDPServer {
+
   public static final short BUFFER_SIZE = 512;
+
   private final List<Solver> solvers;
   private final ExecutorService pool;
+  private final SolversCache cache;
 
-  public UDPServer() {
+  @Inject
+  public UDPServer(SolversCache cache) {
+    this.cache = cache;
     this.solvers = new ArrayList<>();
     this.pool = ThreadPool.create(5);
   }
@@ -62,6 +71,10 @@ public class UDPServer {
   }
 
   Message solve(Message reqMsg) {
+    return this.cache.handle(reqMsg, this::solve0);
+  }
+
+  Message solve0(Message reqMsg) {
     final var stopWatch = StopWatch.createStarted();
     for (final var solver : this.solvers) {
       stopWatch.split();

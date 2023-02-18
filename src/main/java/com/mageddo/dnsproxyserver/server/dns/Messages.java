@@ -12,6 +12,7 @@ import org.xbill.DNS.Rcode;
 import org.xbill.DNS.Record;
 import org.xbill.DNS.Section;
 
+import java.time.Duration;
 import java.util.Optional;
 
 public class Messages {
@@ -150,5 +151,10 @@ public class Messages {
     );
     newMsg.getHeader().setID(msg.getHeader().getID());
     return newMsg;
+  }
+
+  public static Duration findTTL(Message res) {
+    throw new UnsupportedOperationException();
+
   }
 }

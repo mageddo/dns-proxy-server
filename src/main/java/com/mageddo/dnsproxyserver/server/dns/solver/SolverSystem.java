@@ -33,8 +33,4 @@ public class SolverSystem implements Solver {
     return null;
   }
 
-  @Override
-  public byte priority() {
-    return Priority.ZERO;
-  }
 }
