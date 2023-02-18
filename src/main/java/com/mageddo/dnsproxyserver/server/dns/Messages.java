@@ -165,6 +165,13 @@ public class Messages {
   }
 
   public static Message copyAnswers(Message req, Message res) {
-    return combine(res, req);
+    return combine(res, clone(req));
+  }
+
+  static Message clone(Message req) {
+    if (req == null) {
+      return null;
+    }
+    return req.clone();
   }
 }
