@@ -28,7 +28,7 @@ public class QuarkusConfig {
   public Function<IpAddr, Resolver> getResolverProvider() {
     return it -> {
       final var resolver = new SimpleResolver(InetAddresses.toSocketAddress(it.getRawIP(), it.getPortOrDef(53)));
-      resolver.setTimeout(Duration.ofMillis(50));
+      resolver.setTimeout(Duration.ofMillis(200));
       return resolver;
     };
   }

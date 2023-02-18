@@ -132,8 +132,9 @@ public class Config {
     @RequiredArgsConstructor
     public enum Type {
 
-      A(1),
-      CNAME(5),
+      A(org.xbill.DNS.Type.A),
+      CNAME(org.xbill.DNS.Type.CNAME),
+      AAAA(org.xbill.DNS.Type.AAAA),
       ;
 
       /**

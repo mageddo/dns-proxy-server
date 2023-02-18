@@ -22,13 +22,14 @@ public class SolversCache {
 
   public Message handle(Message reqMsg, Function<Message, Message> delegate) {
     final var key = buildKey(reqMsg);
-    return this.cache.computeIfAbsent0(key, (k) -> {
+    final var res = this.cache.computeIfAbsent0(key, (k) -> {
       log.debug("status=lookup, key={}, req={}", key, Messages.simplePrint(reqMsg));
-      final var res = delegate.apply(reqMsg);
-      final var ttl = Messages.findTTL(res);
+      final var _res = delegate.apply(reqMsg);
+      final var ttl = Messages.findTTL(_res);
       log.debug("status=hotLoad, k={}, ttl={}, simpleMsg={}", k, ttl, Messages.simplePrint(reqMsg));
-      return Pair.of(res, ttl);
+      return Pair.of(_res, ttl);
     });
+    return Messages.copyAnswers(reqMsg, res);
   }
 
   static String buildKey(Message reqMsg) {

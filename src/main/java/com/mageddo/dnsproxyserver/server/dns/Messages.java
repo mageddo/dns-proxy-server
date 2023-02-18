@@ -140,7 +140,7 @@ public class Messages {
         break;
       }
       for (final var record : section) {
-        target.addRecord(record, 1);
+        target.addRecord(record, i);
       }
     }
     return target;
@@ -162,5 +162,9 @@ public class Messages {
       return Duration.ZERO;
     }
     return Duration.ofSeconds(answer.getTTL());
+  }
+
+  public static Message copyAnswers(Message req, Message res) {
+    return combine(res, req);
   }
 }
