@@ -134,16 +134,17 @@ public class Messages {
   }
 
   public static Message combine(Message source, Message target) {
+    final var clone = clone(target);
     for (int i = 1; ; i++) {
       final var section = source.getSection(i);
       if (section.isEmpty()) {
         break;
       }
       for (final var record : section) {
-        target.addRecord(record, i);
+        clone.addRecord(record, i);
       }
     }
-    return target;
+    return clone;
   }
 
   @SneakyThrows
@@ -165,7 +166,7 @@ public class Messages {
   }
 
   public static Message copyAnswers(Message req, Message res) {
-    return combine(res, clone(req));
+    return combine(res, req);
   }
 
   static Message clone(Message req) {
