@@ -39,8 +39,4 @@ public class SolverDocker implements Solver {
     return null;
   }
 
-  @Override
-  public byte priority() {
-    return Priority.ONE;
-  }
 }

@@ -18,12 +18,15 @@ import java.util.Optional;
 public class Messages {
 
   public static String simplePrint(Message message) {
+    if (message == null) {
+      return null;
+    }
     final var answer = findFirstAnswerRecord(message);
     if (answer == null) {
       return Optional
-          .ofNullable(findQuestionHostname(message))
-          .map(Hostname::getName)
-          .orElse("N/A");
+        .ofNullable(findQuestionHostname(message))
+        .map(Hostname::getName)
+        .orElse("N/A");
     }
     return String.format("%s", simplePrint(answer));
   }
@@ -43,9 +46,9 @@ public class Messages {
       return null;
     }
     return r
-        .toString()
-        .replaceAll("\\t", "  ")
-        ;
+      .toString()
+      .replaceAll("\\t", "  ")
+      ;
   }
 
   public static Hostname findQuestionHostname(Message m) {
@@ -54,8 +57,8 @@ public class Messages {
       return null;
     }
     final var hostname = question
-        .getName()
-        .toString(true);
+      .getName()
+      .toString(true);
     return Hostname.of(hostname);
   }
 
@@ -104,9 +107,9 @@ public class Messages {
     final var newMsg = new Message(msg.toWire());
     newMsg.getHeader().setRcode(Rcode.NOERROR);
     final var answer = new CNAMERecord(
-        newMsg.getQuestion().getName(),
-        DClass.IN, ttl,
-        Name.fromString(Hostnames.toAbsoluteName(hostname))
+      newMsg.getQuestion().getName(),
+      DClass.IN, ttl,
+      Name.fromString(Hostnames.toAbsoluteName(hostname))
     );
     newMsg.addRecord(answer, Section.ANSWER);
     return newMsg;
@@ -120,10 +123,10 @@ public class Messages {
 
   public static Integer findQuestionTypeCode(Message msg) {
     return Optional
-        .ofNullable(msg.getQuestion())
-        .map(Record::getType)
-        .orElse(null)
-        ;
+      .ofNullable(msg.getQuestion())
+      .map(Record::getType)
+      .orElse(null)
+      ;
   }
 
   public static Config.Entry.Type findQuestionType(Message msg) {
@@ -146,15 +149,18 @@ public class Messages {
   @SneakyThrows
   public static Message copyQuestionWithNewName(Message msg, String hostname) {
     final var newMsg = Message.newQuery(msg
-        .getQuestion()
-        .withName(Name.fromString(hostname))
+      .getQuestion()
+      .withName(Name.fromString(hostname))
     );
     newMsg.getHeader().setID(msg.getHeader().getID());
     return newMsg;
   }
 
   public static Duration findTTL(Message res) {
-    throw new UnsupportedOperationException();
-
+    final var answer = Messages.findFirstAnswerRecord(res);
+    if (answer == null) {
+      return Duration.ZERO;
+    }
+    return Duration.ofSeconds(answer.getTTL());
   }
 }

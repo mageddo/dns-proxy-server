@@ -71,7 +71,18 @@ public class UDPServer {
   }
 
   Message solve(Message reqMsg) {
-    return this.cache.handle(reqMsg, this::solve0);
+    final var stopWatch = StopWatch.createStarted();
+    try {
+      final var r = this.cache.handle(reqMsg, this::solve0);
+      log.debug("status=solved, time={}, res={}", stopWatch.getTime(), simplePrint(r));
+      return r;
+    } catch (Exception e){
+      log.warn(
+        "status=solverFailed, totalTime={}, eClass={}, msg={}",
+        stopWatch.getTime(), ClassUtils.getSimpleName(e), e.getMessage(), e
+      );
+      return this.buildDefaultRes(reqMsg);
+    }
   }
 
   Message solve0(Message reqMsg) {
@@ -103,6 +114,10 @@ public class UDPServer {
         );
       }
     }
+    return this.buildDefaultRes(reqMsg);
+  }
+
+  Message buildDefaultRes(Message reqMsg) {
     return Messages.nxDomain(reqMsg); // if all failed and returned null, then return as can't find
   }
 

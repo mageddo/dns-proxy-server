@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.server.dns;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.mageddo.commons.lang.regex.Regexes;
+import com.mageddo.commons.regex.Regexes;
 import com.mageddo.dnsproxyserver.json.converter.IPConverter;
 import com.mageddo.utils.Bytes;
 import lombok.Builder;
