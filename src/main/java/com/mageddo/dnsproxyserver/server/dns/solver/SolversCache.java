@@ -19,7 +19,7 @@ import static com.mageddo.dnsproxyserver.server.dns.Messages.findQuestionType;
 @Singleton
 public class SolversCache {
 
-  private final LruTTLCache cache = new LruTTLCache(2048, Duration.ofSeconds(5), false);
+  private final LruTTLCache cache = new LruTTLCache(2048, Duration.ofSeconds(5), true);
 
   public Message handle(Message reqMsg, Function<Message, Message> delegate) {
     final var key = buildKey(reqMsg);
@@ -28,7 +28,7 @@ public class SolversCache {
       final var _res = delegate.apply(reqMsg);
       if (_res == null) {
         log.debug("status=noAnswer, k={}", k);
-        return null;
+        return Pair.of(null, Duration.ofSeconds(10));
       }
       final var ttl = Messages.findTTL(_res);
       log.debug("status=hotload, k={}, ttl={}, simpleMsg={}", k, ttl, Messages.simplePrint(reqMsg));
