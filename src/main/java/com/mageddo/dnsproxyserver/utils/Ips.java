@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.utils;
 
+import com.mageddo.dnsproxyserver.server.dns.IP;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
@@ -31,5 +32,9 @@ public class Ips {
     } catch (UnknownHostException e) {
       throw new UncheckedIOException(e);
     }
+  }
+
+  public static InetAddress toAddress(IP ip) {
+    return toAddress(ip.raw());
   }
 }

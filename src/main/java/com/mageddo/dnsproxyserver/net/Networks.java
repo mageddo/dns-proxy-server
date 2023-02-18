@@ -12,7 +12,7 @@ public class Networks {
     return NetworkInterface
       .networkInterfaces()
       .flatMap(NetworkInterface::inetAddresses)
-      .filter(it -> it.getAddress().length == IP.IP_BYTES)
+      .filter(it -> it.getAddress().length == IP.BYTES)
       .map(it -> IP.of(it.getHostAddress()))
       .filter(it -> !it.raw().startsWith("127"))
       .findFirst()

@@ -81,7 +81,8 @@ public class DpsContainerManager {
     disconnectAnotherContainerWithSameIPFromDpsNetowrk(container.getId(), dpsContainerIP);
   }
 
-  Container findDpsContainer() {
+  public Container findDpsContainer() {
+
     final var containers = this.dockerClient
       .listContainersCmd()
       .withStatusFilter(Collections.singletonList("running"))
@@ -129,5 +130,9 @@ public class DpsContainerManager {
       return null;
     }
     return IP.of(ip);
+  }
+
+  public boolean isDpsRunningInsideContainer() {
+    return this.dockerDAO.isConnected() && this.findDpsContainer() != null;
   }
 }

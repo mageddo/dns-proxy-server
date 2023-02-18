@@ -20,7 +20,7 @@ public class DpsIpDiscover {
   private final DpsContainerManager dpsContainerManager;
 
   public IP findDpsIP() {
-    if (this.dockerDAO.isConnected()) {
+    if (this.dpsContainerManager.isDpsRunningInsideContainer()) {
       return Optional
         .ofNullable(this.dpsContainerManager.findDpsContainerIP())
         .orElseGet(this.dockerDAO::findHostMachineIp);

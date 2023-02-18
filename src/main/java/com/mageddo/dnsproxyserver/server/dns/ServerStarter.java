@@ -2,8 +2,10 @@ package com.mageddo.dnsproxyserver.server.dns;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Configs;
+import com.mageddo.dnsproxyserver.dnsconfigurator.DpsIpDiscover;
 import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
 import com.mageddo.dnsproxyserver.server.dns.solver.SolverProvider;
+import com.mageddo.dnsproxyserver.utils.Ips;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,11 +21,13 @@ public class ServerStarter {
 
   private final List<Solver> solvers;
   private final SimpleServer server;
+  private final DpsIpDiscover dpsIpDiscover;
 
   @Inject
-  public ServerStarter(Instance<Solver> solvers, SimpleServer server) {
+  public ServerStarter(Instance<Solver> solvers, SimpleServer server, DpsIpDiscover dpsIpDiscover) {
     this.solvers = new SolverProvider(solvers).getSolvers();
     this.server = server;
+    this.dpsIpDiscover = dpsIpDiscover;
   }
 
   public ServerStarter start() {
@@ -32,7 +36,7 @@ public class ServerStarter {
       port,
       Config.findDnsServerProtocol(),
       this.solvers,
-      null
+      Ips.toAddress(this.dpsIpDiscover.findDpsIP())
     );
     log.info("status=startingDnsServer, port={}", port);
     return this;

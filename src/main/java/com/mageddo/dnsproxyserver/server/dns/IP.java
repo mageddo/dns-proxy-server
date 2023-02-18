@@ -7,7 +7,7 @@ import org.apache.commons.lang3.Validate;
 
 public class IP {
 
-  public static final int IP_BYTES = 4;
+  public static final int BYTES = 4;
   private final String ip;
 
   public IP(String ip) {
@@ -35,9 +35,9 @@ public class IP {
       return null;
     }
     Validate.isTrue(
-      data.length == IP_BYTES,
+      data.length == BYTES,
       "Array of bytes is not a valid IP representation, size must be %d",
-      IP_BYTES
+      BYTES
     );
     return of(String.format(
       "%d.%d.%d.%d",
