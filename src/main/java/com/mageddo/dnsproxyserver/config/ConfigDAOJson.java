@@ -150,7 +150,7 @@ public class ConfigDAOJson implements ConfigDAO {
   ConfigJsonV2.Env findOrBind(String envKey, ConfigJsonV2 configJson) {
     for (final var env : configJson.get_envs()) {
       if (Objects.equals(env.getName(), envKey)) {
-        log.debug("status=envFound, activeEnv={}", envKey);
+        log.trace("status=envFound, activeEnv={}", envKey);
         return env;
       }
     }
