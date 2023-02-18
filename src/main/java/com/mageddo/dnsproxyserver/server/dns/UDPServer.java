@@ -12,8 +12,6 @@ import org.xbill.DNS.Message;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -55,19 +53,33 @@ public class UDPServer {
   private void start0(int port, InetAddress bindAddress) {
     try {
       final var server = new DatagramSocket(port, bindAddress);
-      final byte[] buff = new byte[BUFFER_SIZE];
       while (!server.isClosed()) {
 
-        final var in = new DatagramPacket(buff, 0, buff.length);
-        server.receive(in);
-        final var reqMsg = new Message(in.getData());
+        final var datagram = new DatagramPacket(new byte[BUFFER_SIZE], 0, BUFFER_SIZE);
+        server.receive(datagram);
 
-        this.pool.submit(() -> this.res(server, this.solve(reqMsg), in.getAddress(), in.getPort()));
+        this.pool.submit(() -> this.handle(server, datagram));
 
       }
-    } catch (IOException e) {
+    } catch (Exception e) {
       log.error("status=dnsServerStartFailed, port={}, msg={}", port, e.getMessage(), e);
-      throw new UncheckedIOException(e);
+      throw new RuntimeException(e);
+    }
+  }
+
+  void handle(DatagramSocket server, DatagramPacket datagram) {
+    try {
+      final var reqMsg = new Message(datagram.getData());
+
+      final var resData = this.solve(reqMsg).toWire();
+
+      final var out = new DatagramPacket(resData, resData.length);
+      out.setAddress(datagram.getAddress());
+      out.setPort(datagram.getPort());
+      server.send(out);
+
+    } catch (Exception e) {
+      log.warn("status=messageHandleFailed, msg={}", e.getMessage(), e);
     }
   }
 
@@ -124,17 +136,4 @@ public class UDPServer {
     return Messages.nxDomain(reqMsg); // if all failed and returned null, then return as can't find
   }
 
-  void res(DatagramSocket server, Message handle, InetAddress address, int port) {
-    try {
-      final var response = handle.toWire();
-      final var out = new DatagramPacket(response, response.length);
-      out.setAddress(address);
-      out.setPort(port);
-
-      server.send(out);
-
-    } catch (IOException e) {
-      throw new UncheckedIOException(e);
-    }
-  }
 }

@@ -35,9 +35,13 @@ public class SolverRemote implements Solver {
           log.debug("status=notFound, i={}, req={}, res={}, server={}", i, simplePrint(req), simplePrint(res), resolver);
         }
       } catch (IOException e) {
+        if (e.getMessage().contains("Timed out while trying")) {
+          log.info("status=timedOut, req={}", simplePrint(req));
+          continue;
+        }
         log.warn(
-            "status=failed, i={}, req={}, server={}, errClass={}, msg={}",
-            i, simplePrint(req), resolver, ClassUtils.getSimpleName(e), e.getMessage(), e
+          "status=failed, i={}, req={}, server={}, errClass={}, msg={}",
+          i, simplePrint(req), resolver, ClassUtils.getSimpleName(e), e.getMessage(), e
         );
       }
     }

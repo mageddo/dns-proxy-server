@@ -53,3 +53,6 @@ java  -cp './build/dns-proxy-server-3.0.0-alpha-runner.jar:../annotation-process
 
 
 docker-compose -f docker-compose-tmp.yml up --build
+
+
+Implementing: https://www.ietf.org/rfc/rfc1035.txt 
