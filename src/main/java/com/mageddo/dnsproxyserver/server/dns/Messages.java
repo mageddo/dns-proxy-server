@@ -79,7 +79,15 @@ public class Messages {
   }
 
   public static Record findFirstAnswerRecord(Message msg) {
-    final var section = msg.getSection(1);
+    return getFirstRecord(msg, Section.ANSWER);
+  }
+
+  public static Record findFirstAuthorityRecord(Message msg) {
+    return getFirstRecord(msg, Section.AUTHORITY);
+  }
+
+  public static Record getFirstRecord(Message msg, final int sectionType) {
+    final var section = msg.getSection(sectionType);
     if (section.isEmpty()) {
       return null;
     }
@@ -135,11 +143,8 @@ public class Messages {
 
   public static Message combine(Message source, Message target) {
     final var clone = clone(target);
-    for (int i = 1; ; i++) {
+    for (int i = 1; i < 4; i++) {
       final var section = source.getSection(i);
-      if (section.isEmpty()) {
-        break;
-      }
       for (final var record : section) {
         clone.addRecord(record, i);
       }
@@ -157,8 +162,11 @@ public class Messages {
     return newMsg;
   }
 
-  public static Duration findTTL(Message res) {
-    final var answer = Messages.findFirstAnswerRecord(res);
+  public static Duration findTTL(Message m) {
+    final var answer = Optional
+      .ofNullable(Messages.findFirstAnswerRecord(m))
+      .orElseGet(() -> Messages.findFirstAuthorityRecord(m))
+      ;
     if (answer == null) {
       return Duration.ZERO;
     }

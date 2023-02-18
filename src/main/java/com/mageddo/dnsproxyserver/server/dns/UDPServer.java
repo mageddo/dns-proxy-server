@@ -19,6 +19,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 
 import static com.mageddo.dnsproxyserver.server.dns.Messages.simplePrint;
@@ -73,15 +74,17 @@ public class UDPServer {
   Message solve(Message reqMsg) {
     final var stopWatch = StopWatch.createStarted();
     try {
-      final var r = this.cache.handle(reqMsg, this::solve0);
+      final var r = Optional
+        .ofNullable(this.cache.handle(reqMsg, this::solve0))
+        .orElseGet(() -> buildDefaultRes(reqMsg));
       log.debug("status=solved, time={}, res={}", stopWatch.getTime(), simplePrint(r));
       return r;
-    } catch (Exception e){
+    } catch (Exception e) {
       log.warn(
         "status=solverFailed, totalTime={}, eClass={}, msg={}",
         stopWatch.getTime(), ClassUtils.getSimpleName(e), e.getMessage(), e
       );
-      return this.buildDefaultRes(reqMsg);
+      return buildDefaultRes(reqMsg);
     }
   }
 
@@ -114,10 +117,10 @@ public class UDPServer {
         );
       }
     }
-    return this.buildDefaultRes(reqMsg);
+    return null;
   }
 
-  Message buildDefaultRes(Message reqMsg) {
+  public static Message buildDefaultRes(Message reqMsg) {
     return Messages.nxDomain(reqMsg); // if all failed and returned null, then return as can't find
   }
 
