@@ -23,7 +23,7 @@ public class SolverDocker implements Solver {
   public Message handle(Message reqMsg) {
 
     if (!this.dockerDAO.isConnected()) {
-      log.debug("status=dockerDisconnected");
+      log.trace("status=dockerDisconnected");
       return null;
     }
 

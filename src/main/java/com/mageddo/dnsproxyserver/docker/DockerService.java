@@ -37,7 +37,7 @@ public class DockerService {
       .map(this::findBestIpMatch)
       .findFirst()
       .orElse(null);
-    log.debug("status=findDone, host={}, found={}, time={}", host, foundIp, stopWatch.getTime());
+    log.trace("status=findDone, host={}, found={}, time={}", host, foundIp, stopWatch.getTime());
     return foundIp;
   }
 

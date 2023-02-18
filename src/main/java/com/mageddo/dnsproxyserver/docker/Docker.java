@@ -57,7 +57,7 @@ public class Docker {
 
   static String buildFromServiceName(InspectContainerResponse container, String domain) {
     final var serviceName = Labels.findLabelValue(container, Labels.SERVICE_NAME_LABEL);
-    log.debug("status=serviceFindResult, service={}", serviceName);
+    log.trace("status=serviceFindResult, service={}", serviceName);
     if (StringUtils.isBlank(serviceName)) {
       return null;
     }

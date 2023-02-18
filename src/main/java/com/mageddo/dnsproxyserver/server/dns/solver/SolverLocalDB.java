@@ -27,7 +27,7 @@ public class SolverLocalDB implements Solver {
 
     final var type = Messages.findQuestionTypeCode(reqMsg);
     if (Entry.Type.isNot(type, Entry.Type.A, Entry.Type.CNAME)) {
-      log.debug("status=typeNotSupported, action=continue, type={}, time={}", type, stopWatch.getTime());
+      log.trace("status=typeNotSupported, action=continue, type={}, time={}", type, stopWatch.getTime());
       return null;
     }
 

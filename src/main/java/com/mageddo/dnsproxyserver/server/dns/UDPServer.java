@@ -107,10 +107,10 @@ public class UDPServer {
       final var solverName = Classes.findSimpleName(solver);
       try {
         final var reqStr = simplePrint(reqMsg);
-        log.debug("status=trySolve, solver={}, req={}", solverName, reqStr);
+        log.trace("status=trySolve, solver={}, req={}", solverName, reqStr);
         final var res = solver.handle(reqMsg);
         if (res == null) {
-          log.debug(
+          log.trace(
             "status=notSolved, currentSolverTime={}, totalTime={}, solver={}, req={}",
             stopWatch.getTime() - stopWatch.getSplitTime(), stopWatch.getTime(), solverName, reqStr
           );

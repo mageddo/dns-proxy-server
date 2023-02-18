@@ -24,7 +24,7 @@ public class SolversCache {
   public Message handle(Message reqMsg, Function<Message, Message> delegate) {
     final var key = buildKey(reqMsg);
     final var res = this.cache.computeIfAbsent0(key, (k) -> {
-      log.debug("status=lookup, key={}, req={}", key, Messages.simplePrint(reqMsg));
+      log.trace("status=lookup, key={}, req={}", key, Messages.simplePrint(reqMsg));
       final var _res = delegate.apply(reqMsg);
       if (_res == null) {
         log.debug("status=noAnswer, k={}", k);

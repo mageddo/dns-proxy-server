@@ -28,15 +28,15 @@ public class SolverRemote implements Solver {
       try {
         final var res = resolver.send(req);
         if (res.getRcode() == Rcode.NOERROR) {
-          log.debug("status=found, i={}, req={}, res={}, server={}", i, simplePrint(req), simplePrint(res), resolver);
+          log.trace("status=found, i={}, req={}, res={}, server={}", i, simplePrint(req), simplePrint(res), resolver);
           return res;
         } else {
           lastErrorMsg = res;
-          log.debug("status=notFound, i={}, req={}, res={}, server={}", i, simplePrint(req), simplePrint(res), resolver);
+          log.trace("status=notFound, i={}, req={}, res={}, server={}", i, simplePrint(req), simplePrint(res), resolver);
         }
       } catch (IOException e) {
         if (e.getMessage().contains("Timed out while trying")) {
-          log.info("status=timedOut, req={}", simplePrint(req));
+          log.info("status=timedOut, req={}, msg={}", simplePrint(req), e.getMessage());
           continue;
         }
         log.warn(
