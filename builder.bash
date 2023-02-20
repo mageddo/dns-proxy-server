@@ -107,7 +107,7 @@ case $1 in
     echo "> Uploading ..."
     git add ${LATEST_VERSION} ${MINOR_VERSION}
     git commit -m "${MINOR_VERSION} docs"
-    git push origin gh-pags
+    git push origin gh-pages
   ;;
 
 esac
