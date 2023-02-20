@@ -3,21 +3,26 @@
 
 ### Main features
 
-DPS is a end user(developers, Server Administrators) DNS server tool to develop systems with docker solving
-docker containers hostnames:
+DPS is a lightweight end user (Developers, Server Administrators) DNS server tool 
+which make it easy to develop systems with one single hostname and multiple environments to solve it, will:
 
 * Solve hostnames from local configuration database
 * Solve hostnames from docker containers using docker **hostname** option or **HOSTNAMES** env
-* Solve hostnames from a list of configured DNS servers(as a proxy) if no answer of two above
+* Solve hostnames from a list of configured remote DNS servers(as a proxy) if no answer of two above
 * Solve hostnames using wildcards
 * Graphic interface to Create/List/Update/Delete **A/CNAME** records
 * Solve host machine IP using `host.docker` hostname
-* Access container by it’s container name / service name
+* Access container by its container name / service name
 * Specify from which network solve container IP 
 
 ![](https://i.imgur.com/aR9dl0O.png)
 
-### Basic running it
+### Basic running it 
+
+You can run DPS as native binary downloading the latest [binaries releases][2] 
+or via docker looking at [Dockerhub images][3]
+
+Basic usecase using docker
 
 ```bash
 $ docker run --rm --hostname dns.mageddo \
@@ -55,3 +60,5 @@ Or via QR code
 ![](https://i.imgur.com/LmN7g2j.png)
 
 [1]: https://www.ietf.org/rfc/rfc1035.txt 
+[2]: https://github.com/mageddo/dns-proxy-server/releases
+[3]: https://hub.docker.com/r/defreitas/dns-proxy-server
