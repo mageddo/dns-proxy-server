@@ -84,13 +84,17 @@ case $1 in
 
   deploy-docs )
 
-    echo "> Deploy the Docs"
+    echo "> Docs build"
     P="${REPO_DIR}/build/hugo"
 
     echo "> Generating in ${P} ..."
 
     MINOR_VERSION=$(echo $APP_VERSION | awk -F '.' '{ print $1"."$2}');
     rm -r "${P}/docs" || echo "> build dir already clear"
+
+    # generating link for the current doc version
+    txt="* [${MINOR_VERSION}](http://mageddo.github.io/dns-proxy-server/${MINOR_VERSION})" &&\
+    sed -i "8i ${txt}" docs/content/versions/_index.en.md
 
     TARGET="${P}/docs/${MINOR_VERSION}"
     generateDocs ${MINOR_VERSION} ${TARGET}
