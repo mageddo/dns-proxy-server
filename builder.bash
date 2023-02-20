@@ -46,7 +46,7 @@ case $1 in
 
   if [ "$CURRENT_BRANCH" != "master" ]; then
     echo "> refusing to go ahead outside the master branch"
-#    exit 8
+    exit 8
   fi
 
   echo "> Building frontend files..."
