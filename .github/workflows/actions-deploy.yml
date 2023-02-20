@@ -27,7 +27,7 @@ jobs:
           fetch-depth: '0'
 
       - name: Deploy
-        run: docker-compose -f docker-compose-deploy.yml up deploy --force-recreate --exit-code-from deploy
+        run: docker-compose -f docker-compose-deploy.yml up --force-recreate --exit-code-from deploy deploy
         env:
           # github token to deploy the binary
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
