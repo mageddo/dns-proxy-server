@@ -1,3 +1,4 @@
+
 ## Build project
 
 Binary using Native Image
@@ -5,6 +6,22 @@ Binary using Native Image
 $ ./gradlew build -Dquarkus.package.type=native &&\
    ./build/dns-proxy-server-*-runner --server-port 8053
 ```
+
+CD
+```
+docker-compose build build-frontend
+```
+
+
+## Generate binaries 
+```
+ native-image -H:+ReportExceptionStackTraces -H:Class=com.mageddo.dnsproxyserver.App  build/dns-proxy-server-3.0.0-alpha.jar 
+
+```
+libfreetype-dev
+sudo apt-get install build-essential
+
+
 
 # Drafts
 
@@ -55,4 +72,3 @@ java  -cp './build/dns-proxy-server-3.0.0-alpha-runner.jar:../annotation-process
 docker-compose -f docker-compose-tmp.yml up --build
 
 
-Implementing: https://www.ietf.org/rfc/rfc1035.txt 

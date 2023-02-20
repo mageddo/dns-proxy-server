@@ -1,0 +1,11 @@
+FROM node:12-alpine AS FRONTEND
+COPY app /app
+WORKDIR /app
+ENV PUBLIC_URL=/static
+RUN npm install &&\
+  npm run build &&\
+  rm -f `find ./build -name *.map`
+
+FROM scratch AS ARTIFACTS
+COPY --from=FRONTEND /app/build /static
+ENTRYPOINT cat

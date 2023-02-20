@@ -41,6 +41,7 @@ PING dns.mageddo (172.17.0.4) 56(84) bytes of data.
 * [Running it documentation](http://mageddo.github.io/dns-proxy-server/latest/en/1-getting-started/running-it/)
 * [Examples](https://github.com/mageddo/dns-proxy-server/tree/master/examples)
 * [Coding at the DPS](http://mageddo.github.io/dns-proxy-server/latest/en/5-developing/)
+* [RFC1035][1]
 
 ### Donation
 Help me to keep DPS up to date
@@ -52,3 +53,5 @@ Via PayPal
 Or via QR code
 
 ![](https://i.imgur.com/LmN7g2j.png)
+
+[1]: https://www.ietf.org/rfc/rfc1035.txt 

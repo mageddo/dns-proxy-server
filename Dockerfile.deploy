@@ -1,0 +1,4 @@
+FROM docker.io/defreitas/tools-generic-cd:0.2.1
+COPY . /app
+COPY ./builder.bash /bin/builder.bash
+WORKDIR /app

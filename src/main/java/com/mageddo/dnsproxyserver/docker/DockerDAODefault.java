@@ -4,14 +4,18 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Network;
+import com.mageddo.dnsproxyserver.quarkus.DockerConfig;
 import com.mageddo.dnsproxyserver.server.dns.IP;
+import com.mageddo.os.linux.LinuxFiles;
+import com.sun.jna.Platform;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Slf4j
@@ -20,7 +24,6 @@ import java.util.List;
 @AllArgsConstructor(onConstructor = @__({@Inject}))
 public class DockerDAODefault implements DockerDAO {
 
-  public static final String LINUX_DISCONNECTED_ERROR = "LastErrorException: [2] No such file or directory";
   private final DockerClient dockerClient;
 
   @Override
@@ -35,19 +38,11 @@ public class DockerDAODefault implements DockerDAO {
 
   @Override
   public boolean isConnected() {
-    try {
-      this.dockerClient
-        .versionCmd()
-        .exec();
-      return true;
-    } catch (Throwable e) {
-      final var knownError = ExceptionUtils.getRootCauseMessage(e)
-        .contains(LINUX_DISCONNECTED_ERROR);
-      if (!knownError) {
-        log.warn("status=cant-connect-to-dockerm msg={}", e.getMessage(), e);
-      }
-      return false;
+    if (!Platform.isLinux()) {
+      return false; // todo not supporting windows and mac for now
     }
+    final var path = Paths.get(DockerConfig.DOCKER_HOST_ADDRESS.getPath());
+    return Files.exists(path) && LinuxFiles.isUnixSocket(path);
   }
 
   @Override

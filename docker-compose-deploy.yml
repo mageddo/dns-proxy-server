@@ -1,0 +1,15 @@
+version: '2.3'
+services:
+  deploy:
+    build:
+      context: .
+      dockerfile: Dockerfile.deploy
+    command: /bin/builder.bash deploy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker:/var/lib/docker
+    environment:
+      - CURRENT_BRANCH=${CURRENT_BRANCH}
+      - REPO_TOKEN=${REPO_TOKEN}
+      - DOCKER_USERNAME=${DOCKER_USERNAME}
+      - DOCKER_PASSWORD=${DOCKER_PASSWORD}

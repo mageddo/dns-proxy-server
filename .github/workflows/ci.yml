@@ -2,14 +2,20 @@ name: CI
 on:
   pull_request:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-      - name: Explain
-        run: |
-          echo "This workflow will run the basic tests on pull requests, merges into master and all tags."
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Run tests
-        run: docker-compose rm -f && docker-compose up --build tests
+      - uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '19'
+          distribution: 'adopt'
+      - name: Build and Tests
+        run: ./gradlew build test -i
+

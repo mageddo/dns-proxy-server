@@ -6,14 +6,17 @@ import com.github.dockerjava.core.DockerClientImpl;
 import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 
 import javax.enterprise.inject.Produces;
+import java.net.URI;
 import java.time.Duration;
 
 public class DockerConfig {
 
+  public static final URI DOCKER_HOST_ADDRESS = URI.create("unix:///var/run/docker.sock");
+
   @Produces
   public DockerClient dockerClient() {
     final var config = DefaultDockerClientConfig.createDefaultConfigBuilder()
-      .withDockerHost("unix:///var/run/docker.sock")
+      .withDockerHost(DOCKER_HOST_ADDRESS.toString())
       .withDockerTlsVerify(false)
 //      .withDockerCertPath("/home/user/.docker")
 //      .withRegistryUsername(registryUser)

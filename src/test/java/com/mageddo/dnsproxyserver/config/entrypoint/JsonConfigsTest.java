@@ -12,6 +12,7 @@ import static com.mageddo.utils.TestUtils.readAndSortJson;
 import static com.mageddo.utils.TestUtils.readAsStream;
 import static com.mageddo.utils.TestUtils.sortJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class JsonConfigsTest {
@@ -51,6 +52,19 @@ class JsonConfigsTest {
     assertTrue(configJson instanceof ConfigJsonV2, ClassUtils.getSimpleName(configJson));
     assertEquals(JsonConfigs.VERSION_2, findVersion(tempConfig));
 
+  }
+
+  @Test
+  void mustCreateDefaultConfigFileEvenWhenDirectoryDoesntExists(@TempDir Path tempDir){
+    // arrange
+    final var tempConfig = tempDir.resolve("some-random-dir").resolve("config.tmp.json");
+
+    // act
+    final var configJson = JsonConfigs.loadConfig(tempConfig);
+
+    // assert
+    assertNotNull(configJson);
+    assertTrue(Files.exists(tempConfig));
   }
 
 }

@@ -1,89 +1,33 @@
 version: '2.3'
 services:
 
-  # Base Image to build project
-  compiler-dps:
+  # tag:build
+  build-frontend:
     build:
       context: .
-      dockerfile: Dockerfile.builder
-    volumes:
-      - ./:/app/src/github.com/mageddo/dns-proxy-server
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - TERM=xterm
-    networks:
-      - dps_bridge
-      - dps
-    command: tail -f /dev/null
+      dockerfile: Dockerfile.builder.frontend
+    image: defreitas/dns-proxy-server-build-frontend:${VERSION:-snapshot}
 
-  # Compile the project and run the tests
-  tests:
-    build:
-      context: .
-      dockerfile: Dockerfile.go.builder
-      target: GOLANG
-    volumes:
-      - ./:/app/src/github.com/mageddo/dns-proxy-server
-    command: bash -c "builder.bash assemble"
-
-  app-dps:
-    image: node:12-alpine
-    volumes:
-      - ./app:/app
-    working_dir: /app
-    networks:
-      - dps_bridge
-      - dps
-    ports:
-      - 5381:3000
-    command: tail -f /dev/null
-    links:
-      - compiler-dps
-
-      # Run from docker image
-  prod-dps:
-    image: defreitas/dns-proxy-server:2.19.5
-    hostname: dns.mageddo
-    volumes:
-      - /opt/dns-proxy-server/conf:/app/conf
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /etc/resolv.conf:/etc/resolv.conf
-    network_mode: bridge
-
-  # Build the project and generate binary at build folder
-  prod-build-binary-dps:
-    extends: compiler-dps
-    command: bash -c "builder.bash build"
-
-  # Build project and generate docker image you will need to run prod-build-binary-dps first
-  prod-build-image-dps:
+  build-linux-amd64:
+    image: defreitas/dns-proxy-server:${VERSION:-snapshot}
     build:
       context: .
       dockerfile: Dockerfile
-    image: defreitas/dns-proxy-server:2.19.5
+
+  # end:build
+
+  # tag:development
+
+  # end:development
 
   prod-build-image-dps-arm7x86:
     build:
       context: .
       dockerfile: Dockerfile.arm7x86
-    image: defreitas/dns-proxy-server:2.19.5-arm7x86
+    image: defreitas/dns-proxy-server:${VERSION:-snapshot}-arm7x86
 
   prod-build-image-dps-arm8x64:
     build:
       context: .
       dockerfile: Dockerfile.arm8x64
-    image: defreitas/dns-proxy-server:2.19.5-arm8x64
-
-  # build the project and make the github release
-  prod-ci-deploy:
-    container_name: prod-ci-deploy
-    extends: compiler-dps
-    command: bash -c "builder.bash release"
-    environment:
-      - CURRENT_BRANCH=${CURRENT_BRANCH} # current branch name
-      - REPO_TOKEN=${GITHUB_TOKEN} # github token to deploy the binary
-
-networks:
-  dps:
-  dps_bridge:
-    driver: bridge
+    image: defreitas/dns-proxy-server:${VERSION:-snapshot}-arm8x64

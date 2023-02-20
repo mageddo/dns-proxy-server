@@ -1,3 +1,7 @@
+### 3.0.1-beta
+* DPS has your code totally refactored by maintaining the previous features, it's a structuring for new features
+ See details at [DNS Proxy Server 3 #267](https://github.com/mageddo/dns-proxy-server/issues/267)
+
 ### 2.19.0
 * Support for absolute paths on config files (#188)
 
