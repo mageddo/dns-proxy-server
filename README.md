@@ -4,7 +4,8 @@
 ### Main features
 
 DPS is a lightweight end user (Developers, Server Administrators) DNS server tool 
-which make it easy to develop systems with one single hostname and multiple environments to solve it, will:
+which make it easy to develop in systems where one hostname can solve to different IPs based 
+on the configured environment, so you can:
 
 * Solve hostnames from local configuration database
 * Solve hostnames from docker containers using docker **hostname** option or **HOSTNAMES** env
