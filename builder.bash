@@ -92,9 +92,12 @@ case $1 in
     MINOR_VERSION=$(echo $APP_VERSION | awk -F '.' '{ print $1"."$2}');
     rm -r "${P}/docs" || echo "> build dir already clear"
 
-    # generating link for the current doc version
-    txt="* [${MINOR_VERSION}](http://mageddo.github.io/dns-proxy-server/${MINOR_VERSION})" &&\
-    sed -i "8i ${txt}" docs/content/versions/_index.en.md
+    # Generate link for generated docs versions
+    versionsFile=docs/content/versions/_index.en.md
+    { git ls-tree origin/gh-pages | grep -E -o '[0-9]+\.[0-9]+'; echo "${APP_VERSION}"; } |\
+    sort -h -r |\
+    while read -r v; do echo "* [${v}](http://mageddo.github.io/dns-proxy-server/${v})"; done |\
+    cat >> $versionsFile
 
     TARGET="${P}/docs/${MINOR_VERSION}"
     generateDocs ${MINOR_VERSION} ${TARGET}
