@@ -18,3 +18,4 @@ jobs:
           distribution: 'adopt'
       - name: Build and Tests
         run: ./gradlew build test -i
+
