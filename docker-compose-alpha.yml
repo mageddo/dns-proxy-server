@@ -1,7 +1,0 @@
-version: '3.3'
-services:
-  arm7x86:
-    platform: linux/arm32v7
-    build:
-      context: .
-      dockerfile: Dockerfile.arm7x86.build

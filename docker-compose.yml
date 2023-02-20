@@ -35,21 +35,4 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.aarch64
-
   # end:image
-
-  # tag:development
-
-  # end:development
-
-  prod-build-image-dps-arm7x86:
-    build:
-      context: .
-      dockerfile: Dockerfile.arm7x86
-    image: defreitas/dns-proxy-server:${VERSION:-snapshot}-arm7x86
-
-  prod-build-image-dps-arm8x64:
-    build:
-      context: .
-      dockerfile: Dockerfile.aarch64
-    image: defreitas/dns-proxy-server:${VERSION:-snapshot}-arm8x64
