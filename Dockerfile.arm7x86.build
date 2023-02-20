@@ -1,5 +1,0 @@
-FROM arm32v7/debian:10-slim
-COPY ./ /building
-WORKDIR /building
-RUN ./gradlew build nativeImage
-ENTRYPOINT "/bin/sh"
