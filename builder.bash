@@ -107,7 +107,7 @@ case $1 in
     generateDocs ${LATEST_VERSION} ${TARGET_LATEST}
 
     echo "> Preparing new files ..."
-    git checkout gh-pages
+    git checkout -f gh-pages
     rsync -t --info=ALL4 --recursive ${P}/docs/ ./
     git status
 
