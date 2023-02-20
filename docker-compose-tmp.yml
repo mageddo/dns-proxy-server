@@ -1,7 +1,0 @@
-version: '3.3'
-services:
-  run-jar:
-    build:
-      context: .
-      dockerfile: Dockerfile.java
-    network_mode: bridge
