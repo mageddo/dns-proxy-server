@@ -104,7 +104,7 @@ case $1 in
     git checkout gh-pages
     rsync -t --info=ALL4 --recursive ${P}/docs/ ./
     git add ${LATEST_VERSION} ${MINOR_VERSION}
-    git commit -m "${LATEST_VERSION} docs"
+    git commit -m "${MINOR_VERSION} docs"
     git push origin gh-pags
   ;;
 
