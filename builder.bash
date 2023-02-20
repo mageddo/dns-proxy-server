@@ -42,7 +42,7 @@ case $1 in
   deploy )
 
   echo "> Deploy started , current branch=$CURRENT_BRANCH"
-  ./builder.bash validate-release
+  ./builder.bash validate-release || exit 0
 
   if [ "$CURRENT_BRANCH" != "master" ]; then
     echo "> refusing to go ahead outside the master branch"
