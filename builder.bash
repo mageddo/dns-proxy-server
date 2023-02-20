@@ -94,7 +94,7 @@ case $1 in
 
     # Generate link for generated docs versions
     versionsFile=docs/content/versions/_index.en.md
-    { git ls-tree origin/gh-pages | grep -E -o '[0-9]+\.[0-9]+'; echo "${APP_VERSION}"; } |\
+    { git ls-tree origin/gh-pages | grep -E -o '[0-9]+\.[0-9]+'; echo "${MINOR_VERSION}"; } |\
     sort -h -r |\
     while read -r v; do echo "* [${v}](http://mageddo.github.io/dns-proxy-server/${v})"; done |\
     cat >> $versionsFile
