@@ -3,6 +3,12 @@ name: Docs
 on:
   pull_request:
 
+
+#on:
+#  push:
+#    tags:
+#      - '*'
+
 permissions:
   contents: write
 
