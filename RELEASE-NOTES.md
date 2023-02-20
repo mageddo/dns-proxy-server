@@ -1,3 +1,8 @@
+### 3.0.4-beta
+* Generating new distributions binaries
+  * aarch64 aside docker image
+  * uber jar, target jvm = 17 for now
+
 ### 3.0.2-beta
 * Fixed home page was pointing to wrong place
 
