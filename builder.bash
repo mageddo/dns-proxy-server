@@ -51,6 +51,7 @@ case $1 in
 
   echo "> Building frontend files..."
   docker-compose build --progress=plain build-frontend
+  rm -rf ./src/main/resources/META-INF/resources/static
   copyFileFromService build-frontend /static ./src/main/resources/META-INF/resources/static
 
   echo "> Build, test and generate the binaries"
