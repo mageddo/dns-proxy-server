@@ -22,7 +22,7 @@ public class HostnameV1 {
     return new HostnameV1()
       .setHostname(entry.getHostname())
       .setId(String.valueOf(entry.getId()))
-      .setIp(IP.of(entry.getIp()).toShortArray())
+      .setIp(IP.toShortArray(entry.getIp()))
       .setTtl(entry.getTtl())
       .setTarget(entry.getTarget())
       .setType(entry.getType())

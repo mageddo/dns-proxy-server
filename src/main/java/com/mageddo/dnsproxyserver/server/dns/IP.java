@@ -19,6 +19,18 @@ public class IP {
     return this.ip;
   }
 
+  public String raw() {
+    return this.ip;
+  }
+
+  public byte[] toByteArray() {
+    return Ips.toBytes(this.raw());
+  }
+
+  public Short[] toShortArray() {
+    return Bytes.toUnsignedShortArray(this.toByteArray());
+  }
+
   public static IP of(String ip) {
     if (StringUtils.isBlank(ip)) {
       return null;
@@ -46,15 +58,10 @@ public class IP {
     ));
   }
 
-  public String raw() {
-    return this.ip;
-  }
-
-  public byte[] toByteArray() {
-    return Ips.toBytes(this.raw());
-  }
-
-  public Short[] toShortArray() {
-    return Bytes.toUnsignedShortArray(this.toByteArray());
+  public static Short[] toShortArray(String ip) {
+    if (StringUtils.isBlank(ip)) {
+      return null;
+    }
+    return IP.of(ip).toShortArray();
   }
 }
