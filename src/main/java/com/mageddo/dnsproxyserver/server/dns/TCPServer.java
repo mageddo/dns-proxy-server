@@ -27,6 +27,7 @@ public class TCPServer {
   private final List<SocketClient> clients = new ArrayList<>();
 
   public void start(int port, InetAddress address, SocketClientMessageHandler handler) {
+    log.info("status=startingTcpServer, port={}", port);
     this.pool.submit(() -> this.start0(port, address, handler));
     this.pool.scheduleWithFixedDelay(this::watchDog, MAX_CLIENT_ALIVE_SECS, MAX_CLIENT_ALIVE_SECS, TimeUnit.SECONDS);
   }
@@ -50,9 +51,11 @@ public class TCPServer {
       final var client = itr.next();
       if (client.isClosed()) {
         itr.remove();
+        log.debug("status=removedAlreadyClosed, runningTime={}", client.getRunningTime());
       } else if (runningForTooLong(client)) {
         client.forceClose();
         itr.remove();
+        log.debug("status=forcedRemove, runningTime={}", client.getRunningTime());
       }
     }
   }
