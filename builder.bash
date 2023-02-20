@@ -92,10 +92,10 @@ case $1 in
     cd ${ARTIFACTS_DIR}
 
     ls ${ARTIFACTS_DIR} | grep -v "native-image-source" |\
-    while read -r f ; do
-      tgz="${COMPRESSED_ARTIFACTS_DIR}/dns-proxy-server-${f}.tgz"
-      tar -czvf ${tgz} ${f}
-      echo "> compressed ${f} to ${tgz} ..."
+    while read -r artPath ; do
+      tgz="${COMPRESSED_ARTIFACTS_DIR}/dns-proxy-server-${artPath}-${APP_VERSION}.tgz"
+      tar -czvf ${tgz} -C ${artPath} .
+      echo "> compressed ${artPath} to ${tgz} ..."
     done
 
     echo "> Uploading the release artifacts"
@@ -154,7 +154,7 @@ case $1 in
     generateDocs ${LATEST_VERSION} ${TARGET_LATEST}
 
     echo "> Preparing new files ..."
-    git checkout -f gh-pages
+    git checkout -artPath gh-pages
     rsync -t --info=ALL4 --recursive ${P}/docs/ ./
     git status
 
