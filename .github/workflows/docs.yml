@@ -16,7 +16,7 @@ env:
   CURRENT_BRANCH: ${{ github.head_ref || github.ref_name }}
 
 jobs:
-  cd:
+  docs-update:
     runs-on: ubuntu-latest
     steps:
 

@@ -99,10 +99,12 @@ case $1 in
     TARGET_LATEST="${P}/docs/${LATEST_VERSION}"
     generateDocs ${LATEST_VERSION} ${TARGET_LATEST}
 
-    echo "> Uploading ..."
-
+    echo "> Preparing new files ..."
     git checkout gh-pages
     rsync -t --info=ALL4 --recursive ${P}/docs/ ./
+    git status
+
+    echo "> Uploading ..."
     git add ${LATEST_VERSION} ${MINOR_VERSION}
     git commit -m "${MINOR_VERSION} docs"
     git push origin gh-pags
