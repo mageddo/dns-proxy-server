@@ -7,17 +7,6 @@ APP_VERSION=$(cat gradle.properties | grep -oP 'version=\K(.+)')
 
 echo "> builder.bash version=${APP_VERSION}, path=${REPO_DIR}"
 
-copyFileFromService(){
-
-  serviceName=$1
-  from=$2
-  to=$3
-
-  docker-compose up --no-start --build --force-recreate $serviceName 1>&2
-  id=$(docker ps -a | grep $serviceName | awk '{print $1}')
-  docker cp "$id:$from" "$to"
-}
-
 generateDocs(){
   echo "> Generating docs version=${1}, target=${2}"
   mkdir -p "${2}"
@@ -27,6 +16,17 @@ generateDocs(){
 
   echo "> Generated docs version=$1, out files:"
   ls -lha $2
+}
+
+copyFileFromService(){
+
+  serviceName=$1
+  from=$2
+  to=$3
+
+  docker-compose up --no-start --build --force-recreate $serviceName 1>&2
+  id=$(docker ps -a | grep $serviceName | awk '{print $1}')
+  docker cp "$id:$from" "$to"
 }
 
 case $1 in
@@ -80,22 +80,62 @@ case $1 in
 #	docker-compose push prod-build-image-dps prod-build-image-dps-arm7x86 prod-build-image-dps-arm8x64 &&
 #	docker push defreitas/dns-proxy-server:latest
 
-
-  echo "> Generate the docs"
-#  P=${2:-${PWD}/build}
-#  echo "> Docs ${P}"
-#
-#  MINOR_VERSION=$(echo $APP_VERSION | awk -F '.' '{ print $1"."$2}');
-#  rm -r "$2/docs" || echo "> build dir already clear"
-#
-#  TARGET="$2/docs/${MINOR_VERSION}"
-#  generateDocs ${MINOR_VERSION} ${TARGET}
-#
-#  MINOR_VERSION=latest
-#  TARGET="$2/docs/${MINOR_VERSION}"
-#  generateDocs ${MINOR_VERSION} ${TARGET}
-
   ;;
 
+  deploy-docs )
+
+    echo "> Deploy the Docs"
+    P="${REPO_DIR}/build/hugo"
+
+    echo "> Generating in ${P} ..."
+
+    MINOR_VERSION=$(echo $APP_VERSION | awk -F '.' '{ print $1"."$2}');
+    rm -r "${P}/docs" || echo "> build dir already clear"
+
+    TARGET="${P}/docs/${MINOR_VERSION}"
+    generateDocs ${MINOR_VERSION} ${TARGET}
+
+    LATEST_VERSION=latest
+    TARGET_LATEST="${P}/docs/${LATEST_VERSION}"
+    generateDocs ${LATEST_VERSION} ${TARGET_LATEST}
+
+    echo "> Uploading ..."
+
+    git checkout gh-pages
+    rsync -t --info=ALL4 --recursive ${P}/docs/ ./
+    git add ${LATEST_VERSION} ${MINOR_VERSION}
+    git commit -m "${LATEST_VERSION} docs"
+    git push origin gh-pags
+  ;;
 
 esac
+
+
+#
+#      - name: Docs Generate
+#        id: docs_generate
+#        uses: peaceiris/actions-hugo@v2
+#        with:
+#          hugo-version: '0.91.2'
+#      - name: Build docs
+#        run: |
+#          ./builder.bash docs /tmp/build &&\
+#          echo "VERSION=$(cat VERSION | awk -F '.' '{ print $1"."$2}')" >> "${GITHUB_OUTPUT}"
+#
+#      - name: Docs Deploy - Latest
+#        uses: peaceiris/actions-gh-pages@v3
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          publish_dir: ./build/docs/latest
+#          destination_dir: latest
+#          keep_files: true
+#          commit_message: Releasing the docs for latest
+#
+#      - name: Docs Deploy - Minor
+#        uses: peaceiris/actions-gh-pages@v3
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          publish_dir: './build/docs/${{ steps.docs_generate.outputs.VERSION }}'
+#          destination_dir: '${{ steps.docs_generate.outputs.VERSION }}'
+#          keep_files: true
+#          commit_message: 'Releasing the docs: ${{ steps.docs_generate.outputs.VERSION }}'
