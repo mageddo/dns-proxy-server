@@ -25,8 +25,8 @@ jobs:
         with:
           fetch-depth: '0'
 
-      - name: Deploy
-        run: docker-compose -f docker-compose-deploy.yml run deploy --rm deploy /bin/builder.bash deploy-docs
+      - name: Docs Update
+        run: docker-compose -f docker-compose-deploy.yml run --rm deploy /bin/builder.bash deploy-docs
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
