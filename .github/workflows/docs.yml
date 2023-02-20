@@ -1,13 +1,9 @@
 name: Docs
 
 on:
-  pull_request:
-
-
-#on:
-#  push:
-#    tags:
-#      - '*'
+  push:
+    tags:
+      - '*'
 
 permissions:
   contents: write
