@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo 'counting...'
-LINES=$(wc -l `find -name "*.go" -not -path './vendor/*'` | tail -n1 | awk '{print $1}')
+LINES=$(wc -l `find -name "*.java" -not -path './vendor/*'` | tail -n1 | awk '{print $1}')
 COMMITS=$(git log --oneline | wc -l)
 
 echo "$LINES lines of code, $COMMITS commits, Congrats!!!"
