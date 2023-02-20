@@ -15,12 +15,13 @@ import java.util.List;
 public class SimpleServer {
 
   private final UDPServer udpServer;
+  private final RequestHandler requestHandler;
 
   public void start(
       int port, Protocol protocol, List<Solver> solvers, InetAddress bindAddress
   ) {
 
-    solvers.forEach(this.udpServer::bind);
+    solvers.forEach(this.requestHandler::bind);
 
     // fixme create tcp server
 
