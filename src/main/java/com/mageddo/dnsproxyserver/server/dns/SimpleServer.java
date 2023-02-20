@@ -15,18 +15,27 @@ import java.util.List;
 public class SimpleServer {
 
   private final UDPServer udpServer;
+  private final TCPServer tcpServer;
   private final RequestHandler requestHandler;
 
   public void start(
-      int port, Protocol protocol, List<Solver> solvers, InetAddress bindAddress
+    int port, Protocol protocol, List<Solver> solvers, InetAddress bindAddress
   ) {
 
     solvers.forEach(this.requestHandler::bind);
+    this.start0(port, protocol, bindAddress);
 
-    // fixme create tcp server
+  }
 
-    this.udpServer.start(port, bindAddress);
-
+  void start0(int port, Protocol protocol, InetAddress bindAddress) {
+    switch (protocol) {
+      case UDP -> this.udpServer.start(port, bindAddress);
+      case TCP -> this.tcpServer.start(port, bindAddress);
+      default -> {
+        this.udpServer.start(port, bindAddress);
+        this.tcpServer.start(port, bindAddress);
+      }
+    }
   }
 
   public enum Protocol {

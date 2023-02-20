@@ -13,7 +13,7 @@ plugins {
 repositories {
   mavenLocal()
   mavenCentral()
-//  maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+  maven { url "https://oss.sonatype.org/service/local/repositories/releases/content" }
 }
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -45,7 +45,7 @@ dependencies {
 
   implementation group: 'info.picocli', name: 'picocli', version: '4.7.1'
 
-  implementation 'com.mageddo.commons:commons-lang:0.1.5'
+  implementation 'com.mageddo.commons:commons-lang:0.1.6'
   implementation 'org.apache.commons:commons-exec:1.3'
 
   testCompileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.+'
