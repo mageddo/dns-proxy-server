@@ -111,33 +111,3 @@ case $1 in
   ;;
 
 esac
-
-
-#
-#      - name: Docs Generate
-#        id: docs_generate
-#        uses: peaceiris/actions-hugo@v2
-#        with:
-#          hugo-version: '0.91.2'
-#      - name: Build docs
-#        run: |
-#          ./builder.bash docs /tmp/build &&\
-#          echo "VERSION=$(cat VERSION | awk -F '.' '{ print $1"."$2}')" >> "${GITHUB_OUTPUT}"
-#
-#      - name: Docs Deploy - Latest
-#        uses: peaceiris/actions-gh-pages@v3
-#        with:
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
-#          publish_dir: ./build/docs/latest
-#          destination_dir: latest
-#          keep_files: true
-#          commit_message: Releasing the docs for latest
-#
-#      - name: Docs Deploy - Minor
-#        uses: peaceiris/actions-gh-pages@v3
-#        with:
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
-#          publish_dir: './build/docs/${{ steps.docs_generate.outputs.VERSION }}'
-#          destination_dir: '${{ steps.docs_generate.outputs.VERSION }}'
-#          keep_files: true
-#          commit_message: 'Releasing the docs: ${{ steps.docs_generate.outputs.VERSION }}'
