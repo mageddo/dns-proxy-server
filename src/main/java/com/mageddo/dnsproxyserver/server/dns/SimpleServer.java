@@ -1,6 +1,5 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
-import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,8 +66,9 @@ public class SimpleServer {
         while (client.isOpen()) {
           final var available = client.getIn().available();
           if (available == 0) {
-            Threads.sleep(SocketClient.FPS_60);
-            continue;
+//            Threads.sleep(SocketClient.FPS_60);
+//            continue;
+            break;
           }
 
           final var read = client.getIn().read(buff, 0, Math.min(available, buff.length));

@@ -1,7 +1,10 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
 import com.mageddo.commons.concurrent.Threads;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.StopWatch;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,16 +13,21 @@ import java.io.UncheckedIOException;
 import java.net.Socket;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Slf4j
+@EqualsAndHashCode(of = "id")
+@ToString(of = "id")
 public class SocketClient implements Runnable, AutoCloseable {
 
   public static final long FPS_60 = (long) (1_000 / 60.0);
+  private final UUID id;
   private final Socket socket;
   private final LocalDateTime createdAt;
   private final SocketClientMessageHandler handler;
 
   public SocketClient(Socket socket, SocketClientMessageHandler handler) {
+    this.id = UUID.randomUUID();
     this.socket = socket;
     this.handler = handler;
     this.createdAt = LocalDateTime.now();
@@ -38,10 +46,10 @@ public class SocketClient implements Runnable, AutoCloseable {
     return this.socket.isClosed();
   }
 
-  public void forceClose() {
+  public void silentClose() {
     try {
       this.close();
-      log.info("status=force-closed, ranFor={}", this.getRunningTime());
+      log.info("status=silent-closed, ranFor={}", this.getRunningTime());
     } catch (Exception e) {
       log.warn("status=couldnt-close-client, msg={}", e.getMessage(), e);
     }
@@ -65,11 +73,17 @@ public class SocketClient implements Runnable, AutoCloseable {
 
   @Override
   public void run() {
+    final var stopWatch = StopWatch.createStarted();
     try (final var in = this.socket.getInputStream()) {
       this.read(in);
     } catch (IOException e) {
-      log.warn("status=unespected-client-close, msg={}", e.getMessage(), e);
-      this.forceClose();
+      log.warn(
+        "status=unespected-client-close, client={}, runTime={}, msg={}",
+        this, stopWatch.getTime(), e.getMessage(), e
+      );
+    } finally {
+      log.debug("status=finalize-client, client={}, runTime={}", this, stopWatch.getTime());
+      this.silentClose();
     }
   }
 
@@ -107,4 +121,7 @@ public class SocketClient implements Runnable, AutoCloseable {
       && !this.socket.isInputShutdown();
   }
 
+  public UUID getId() {
+    return id;
+  }
 }

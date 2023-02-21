@@ -8,12 +8,13 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.lang.ref.WeakReference;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -24,7 +25,7 @@ public class TCPServer {
 
   public static final int MAX_CLIENT_ALIVE_SECS = 5;
   private final ScheduledExecutorService pool = ThreadPool.create(10);
-  private final List<SocketClient> clients = new ArrayList<>();
+  private final Set<WeakReference<SocketClient>> clients = new LinkedHashSet<>();
 
   public void start(int port, InetAddress address, SocketClientMessageHandler handler) {
     log.info("status=startingTcpServer, port={}", port);
@@ -37,7 +38,9 @@ public class TCPServer {
 
       Socket socket;
       while (!server.isClosed() && (socket = server.accept()) != null) {
-        this.pool.submit(new SocketClient(socket, handler));
+        final var client = new SocketClient(socket, handler);
+        this.clients.add(new WeakReference<>(client));
+        this.pool.submit(client);
       }
 
     } catch (IOException e) {
@@ -46,17 +49,32 @@ public class TCPServer {
   }
 
   void watchDog() {
-    final var itr = this.clients.iterator();
-    while (itr.hasNext()) {
-      final var client = itr.next();
-      if (client.isClosed()) {
-        itr.remove();
-        log.debug("status=removedAlreadyClosed, runningTime={}", client.getRunningTime());
-      } else if (runningForTooLong(client)) {
-        client.forceClose();
-        itr.remove();
-        log.debug("status=forcedRemove, runningTime={}", client.getRunningTime());
+    try {
+      final var itr = this.clients.iterator();
+      if (this.clients.isEmpty()) {
+        log.debug("status=no-clients");
+        return;
       }
+      final var clientsBefore = this.clients.size();
+      while (itr.hasNext()) {
+        final var client = itr.next().get();
+        if (client == null) {
+          log.debug("status=clientIsGone");
+        } else if (client.isClosed()) {
+          itr.remove();
+          log.debug("status=removedAlreadyClosed, runningTime={}", client.getRunningTime());
+        } else if (runningForTooLong(client)) {
+          client.silentClose();
+          itr.remove();
+          log.debug("status=forcedRemove, runningTime={}", client.getRunningTime());
+        }
+      }
+      log.debug(
+        "status=watchdog, removed={}, clientsBefore={}, after={}",
+        clientsBefore - this.clients.size(), clientsBefore, this.clients.size()
+      );
+    } catch (Throwable e){
+      log.error("status=watchdogFailed, msg={}", e.getMessage(), e);
     }
   }
 
