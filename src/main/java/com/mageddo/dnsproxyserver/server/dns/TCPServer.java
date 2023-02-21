@@ -52,7 +52,7 @@ public class TCPServer {
     try {
       final var itr = this.clients.iterator();
       if (this.clients.isEmpty()) {
-        log.debug("status=no-clients");
+        log.trace("status=no-clients");
         return;
       }
       final var clientsBefore = this.clients.size();
