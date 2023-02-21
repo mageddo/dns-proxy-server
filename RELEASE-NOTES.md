@@ -1,3 +1,6 @@
+### 3.1.1-beta
+* Fixing reponse warning `;; Warning: query response not set`
+
 ### 3.1.0-beta
 * TCP Protocol support
 
