@@ -30,10 +30,11 @@ public class Configs {
   private static Config instance;
 
   public static Config build(ConfigFlag configFlag) {
-    final var configPath = toAbsolutePath(configFlag).toAbsolutePath();
+    final var configEnv = ConfigEnv.fromEnv();
+    final var configPath = buildConfigPath(configFlag, configEnv.getCurrentPath());
     final var jsonConfig = JsonConfigs.loadConfig(configPath);
     log.info("status=configuring, configFile={}", configPath);
-    return build(configFlag, ConfigEnv.fromEnv(), jsonConfig, configPath);
+    return build(configFlag, configEnv, jsonConfig, configPath);
   }
 
   public static Config build(ConfigFlag flag, ConfigEnv env, ConfigJson json, Path configPath) {
@@ -100,15 +101,23 @@ public class Configs {
     return instance != null ? instance : buildAndRegister(new String[]{});
   }
 
-  public static void clear(){
+  public static void clear() {
     instance = null;
   }
 
-  private static Path toAbsolutePath(ConfigFlag configFlag) {
+  static Path buildConfigPath(ConfigFlag configFlag, Path currentPath) {
     if (runningInTestsAndNoCustomConfigPath(configFlag)) {
       return Files.createTempFileExitOnExit("dns-proxy-server-junit", ".json");
     }
-    return Paths.get(configFlag.getConfigPath()); // todo precisa converter para absolute path?!
+    if (currentPath != null) {
+      return currentPath
+        .resolve(configFlag.getConfigPath())
+        .toAbsolutePath()
+        ;
+    }
+    return Paths
+      .get(configFlag.getConfigPath())
+      .toAbsolutePath();
   }
 
   static boolean runningInTestsAndNoCustomConfigPath(ConfigFlag configFlag) {

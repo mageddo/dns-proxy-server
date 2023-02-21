@@ -75,21 +75,19 @@ public class SocketClient implements Runnable, AutoCloseable {
       }
       final var read = in.read(buff, 0, Math.min(available, buff.length));
       if (read == -1) {
-        log.debug("status=stream-end, time={}", this.getRunningTime());
+        log.debug("status=streamEnded, time={}", this.getRunningTime());
         return;
       }
-      this.handler.handle(buff, this);
+      this.handler.handle(buff, read, this);
     }
   }
 
-
-  private boolean isOpen() {
+  public boolean isOpen() {
     return !Thread.currentThread().isInterrupted()
       && this.socket.isConnected()
       && !this.socket.isClosed()
       && !this.socket.isInputShutdown()
       && !this.socket.isInputShutdown();
   }
-
 
 }

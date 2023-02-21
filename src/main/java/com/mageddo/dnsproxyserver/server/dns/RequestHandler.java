@@ -11,6 +11,7 @@ import org.apache.commons.lang3.time.StopWatch;
 import org.xbill.DNS.Message;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,14 +19,15 @@ import java.util.Optional;
 import static com.mageddo.dnsproxyserver.server.dns.Messages.simplePrint;
 
 @Slf4j
+@Singleton
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class RequestHandler {
 
   private final SolversCache cache;
   private final List<Solver> solvers = new ArrayList<>();
 
-  public Message handle(Message message){
-    return this.solve(message);
+  public Message handle(Message message, String kind){
+    return this.solve(message, kind);
   }
 
   public RequestHandler bind(Solver solver) {
@@ -33,7 +35,7 @@ public class RequestHandler {
     return this;
   }
 
-  Message solve(Message reqMsg) {
+  Message solve(Message reqMsg, String kind) {
 
     Validate.isTrue(!this.solvers.isEmpty(), "At least one solver is required");
 
@@ -42,7 +44,7 @@ public class RequestHandler {
       final var r = Optional
         .ofNullable(this.cache.handle(reqMsg, this::solve0))
         .orElseGet(() -> buildDefaultRes(reqMsg));
-      log.debug("status=solved, time={}, res={}", stopWatch.getTime(), simplePrint(r));
+      log.debug("status=solved, kind={}, time={}, res={}", kind, stopWatch.getTime(), simplePrint(r));
       return r;
     } catch (Exception e) {
       log.warn(

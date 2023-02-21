@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.net.InetAddress;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -52,6 +53,8 @@ public class SimpleServer {
   static class TCPHandler implements SocketClientMessageHandler {
 
     private final RequestHandler handler;
+    private final byte[] buff = new byte[1024];
+    private int offset = 0;
 
     TCPHandler(RequestHandler handler) {
       this.handler = handler;
@@ -60,11 +63,23 @@ public class SimpleServer {
     @Override
     public void handle(byte[] data, int length, SocketClient client) {
       try {
-        final var reqMsg = new Message(ByteBuffer.wrap(data, 0, length));
-        final var res = this.handler.handle(reqMsg).toWire();
+
+        System.arraycopy(data, 0, this.buff, this.offset, length);
+        this.offset += length;
+        log.debug("status=append, length={}, offset={}", length, offset);
+
+        final var reqMsg = new Message(ByteBuffer.wrap(this.buff, 0, this.offset));
+        final var res = this.handler.handle(reqMsg, "tcp").toWire();
         client.getOut().write(res);
+        client.getOut().flush();
+        log.debug("status=success, req={}", Messages.simplePrint(reqMsg));
       } catch (Exception e) {
-        log.warn("status=request-failed, msg={}", e.getMessage(), e);
+        log.warn(
+          "status=request-failed, length={}, req={}, array={}, msg={}",
+          length, new String(data, 0, length), Arrays.toString(data), e.getMessage(), e
+        );
+      } finally {
+//        client.forceClose();
       }
 
     }

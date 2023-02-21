@@ -1,4 +1,7 @@
-
+## Developing
+```bash
+MG_WORK_DIR=$PWD ./gradlew quarkusDev
+```
 ## Build project
 
 Binary using Native Image

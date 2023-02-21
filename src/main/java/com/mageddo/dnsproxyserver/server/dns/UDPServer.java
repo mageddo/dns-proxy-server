@@ -9,6 +9,7 @@ import javax.inject.Singleton;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 
 @Slf4j
@@ -28,7 +29,7 @@ public class UDPServer {
 
   public void start(int port, InetAddress bindAddress) {
     this.pool.submit(() -> this.start0(port, bindAddress));
-    log.info("status=starting.., port={}, bindAddress={}", port, bindAddress);
+    log.info("status=startingUdpServer, port={}, bindAddress={}", port, bindAddress);
   }
 
   private void start0(int port, InetAddress bindAddress) {
@@ -51,13 +52,16 @@ public class UDPServer {
   void handle(DatagramSocket server, DatagramPacket datagram) {
     try {
       final var reqMsg = new Message(datagram.getData());
-      final var resData = this.requestHandler.handle(reqMsg).toWire();
+      final var resData = this.requestHandler.handle(reqMsg, "udp").toWire();
 
       final var out = new DatagramPacket(resData, resData.length);
       out.setAddress(datagram.getAddress());
       out.setPort(datagram.getPort());
       server.send(out);
-
+      log.debug(
+        "status=success, buffSize={}, length={}, msg={}, data={}",
+        datagram.getData(), datagram.getLength(), new String(datagram.getData()), Arrays.toString(datagram.getData())
+      );
     } catch (Exception e) {
       log.warn("status=messageHandleFailed, msg={}", e.getMessage(), e);
     }
