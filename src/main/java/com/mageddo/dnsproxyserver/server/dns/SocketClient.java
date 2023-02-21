@@ -78,7 +78,7 @@ public class SocketClient implements Runnable, AutoCloseable {
       this.read(in);
     } catch (IOException e) {
       log.warn(
-        "status=unespected-client-close, client={}, runTime={}, msg={}",
+        "status=unexpected-client-close, client={}, runTime={}, msg={}",
         this, stopWatch.getTime(), e.getMessage(), e
       );
     } finally {
