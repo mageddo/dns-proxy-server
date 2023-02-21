@@ -14,4 +14,8 @@ public class MessageTemplates {
     return Message.newQuery(r);
   }
 
+  public static Message acmeAQuery() {
+    return buildAQuestionFor("acme.com.");
+  }
+
 }

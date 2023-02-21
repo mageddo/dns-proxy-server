@@ -6,6 +6,7 @@ import lombok.SneakyThrows;
 import org.xbill.DNS.ARecord;
 import org.xbill.DNS.CNAMERecord;
 import org.xbill.DNS.DClass;
+import org.xbill.DNS.Flags;
 import org.xbill.DNS.Message;
 import org.xbill.DNS.Name;
 import org.xbill.DNS.Rcode;
@@ -66,11 +67,16 @@ public class Messages {
     return aAnswer(msg, ip, 30L);
   }
 
-  public static Message aAnswer(Message msg, String ip, final long ttl) {
-    msg.getHeader().setRcode(Rcode.NOERROR);
-    final var answer = new ARecord(msg.getQuestion().getName(), DClass.IN, ttl, Ips.toAddress(ip));
-    msg.addRecord(answer, Section.ANSWER);
-    return msg;
+  public static Message aAnswer(Message req, String ip, final long ttl) {
+    final var res = req.clone();
+    final var header = res.getHeader();
+    header.setFlag(Flags.QR);
+    header.setRcode(Rcode.NOERROR);
+
+    final var answer = new ARecord(res.getQuestion().getName(), DClass.IN, ttl, Ips.toAddress(ip));
+    res.addRecord(answer, Section.ANSWER);
+
+    return res;
   }
 
   public static String findFirstAnswerRecordStr(Message msg) {
