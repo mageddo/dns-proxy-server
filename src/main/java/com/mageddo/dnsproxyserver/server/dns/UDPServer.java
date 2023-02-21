@@ -9,7 +9,6 @@ import javax.inject.Singleton;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 
 @Slf4j
@@ -59,8 +58,8 @@ public class UDPServer {
       out.setPort(datagram.getPort());
       server.send(out);
       log.debug(
-        "status=success, buffSize={}, length={}, msg={}, data={}",
-        datagram.getData(), datagram.getLength(), new String(datagram.getData()), Arrays.toString(datagram.getData())
+        "status=success, dataLength={}, datagramLength={}, msg={}, data={}",
+        datagram.getData().length, datagram.getLength(), new String(datagram.getData()), datagram.getData()
       );
     } catch (Exception e) {
       log.warn("status=messageHandleFailed, msg={}", e.getMessage(), e);

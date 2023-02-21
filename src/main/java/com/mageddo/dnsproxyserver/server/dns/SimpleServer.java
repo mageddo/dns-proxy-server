@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
+import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,9 +8,10 @@ import org.xbill.DNS.Message;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.InetAddress;
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -53,36 +55,64 @@ public class SimpleServer {
   static class TCPHandler implements SocketClientMessageHandler {
 
     private final RequestHandler handler;
-    private final byte[] buff = new byte[1024];
-    private int offset = 0;
 
     TCPHandler(RequestHandler handler) {
       this.handler = handler;
     }
 
     @Override
-    public void handle(byte[] data, int length, SocketClient client) {
+    public void handle(SocketClient client) {
       try {
+        final var buff = new byte[512];
+        while (client.isOpen()) {
+          final var available = client.getIn().available();
+          if (available == 0) {
+            Threads.sleep(SocketClient.FPS_60);
+            continue;
+          }
 
-        System.arraycopy(data, 0, this.buff, this.offset, length);
-        this.offset += length;
-        log.debug("status=append, length={}, offset={}", length, offset);
+          final var read = client.getIn().read(buff, 0, Math.min(available, buff.length));
+          if (read == -1) {
+            log.debug("status=streamEnded, time={}", client.getRunningTime());
+            return;
+          }
 
-        final var reqMsg = new Message(ByteBuffer.wrap(this.buff, 0, this.offset));
-        final var res = this.handler.handle(reqMsg, "tcp").toWire();
-        client.getOut().write(res);
-        client.getOut().flush();
-        log.debug("status=success, req={}", Messages.simplePrint(reqMsg));
-      } catch (Exception e) {
-        log.warn(
-          "status=request-failed, length={}, req={}, array={}, msg={}",
-          length, new String(data, 0, length), Arrays.toString(data), e.getMessage(), e
-        );
-      } finally {
-//        client.forceClose();
+          final var msgSize = ByteBuffer
+            .wrap(buff, 0, 2)
+            .getShort();
+
+          if (msgSize != read - 2) {
+            log.warn("status=headerMsgSizeDifferentFromReadBytes!, haderMsgSize={}, read={}", msgSize, read - 2);
+          }
+          try {
+            final var msgBuff = ByteBuffer.wrap(buff, 2, msgSize);
+            final var reqMsg = new Message(msgBuff);
+            final var res = this.handler.handle(reqMsg, "tcp").toWire();
+            final var sizeArr = ByteBuffer
+              .allocate(2)
+              .putShort((short) res.length)
+              .array();
+            client.getOut().write(sizeArr);
+            client.getOut().write(res);
+            client.getOut().flush();
+
+            log.debug(
+              "status=success, reqMsgSize={}, resMsgSize={}, req={}",
+              msgSize, res.length, Messages.simplePrint(reqMsg)
+            );
+
+          } catch (Exception e) {
+            log.warn(
+              "status=request-failed, length={}, msg={}",
+              msgSize, e.getMessage(), e
+            );
+          }
+        }
+      } catch (IOException e) {
+        throw new UncheckedIOException(e);
       }
-
     }
+
   }
 
 }

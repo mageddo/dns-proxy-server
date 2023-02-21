@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Slf4j
 public class SocketClient implements Runnable, AutoCloseable {
 
-  public static final long FPS = (long) (1_000 / 60.0);
+  public static final long FPS_60 = (long) (1_000 / 60.0);
   private final Socket socket;
   private final LocalDateTime createdAt;
   private final SocketClientMessageHandler handler;
@@ -55,6 +55,14 @@ public class SocketClient implements Runnable, AutoCloseable {
     }
   }
 
+  public InputStream getIn() {
+    try {
+      return this.socket.getInputStream();
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
+  }
+
   @Override
   public void run() {
     try (final var in = this.socket.getInputStream()) {
@@ -66,11 +74,20 @@ public class SocketClient implements Runnable, AutoCloseable {
   }
 
   void read(InputStream in) throws IOException {
+    try {
+      this.handler.handle(this);
+    } catch (UnsupportedOperationException e) {
+      this.readAsBytes(in);
+    }
+  }
+
+  void readAsBytes(InputStream in) throws IOException {
+
     final var buff = new byte[512];
     while (this.isOpen()) {
       final var available = in.available();
       if (available == 0) {
-        Threads.sleep(FPS);
+        Threads.sleep(FPS_60);
         continue;
       }
       final var read = in.read(buff, 0, Math.min(available, buff.length));
