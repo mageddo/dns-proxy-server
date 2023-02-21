@@ -1,3 +1,6 @@
+### 3.1.0-beta
+* TCP Protocol support
+
 ### 3.0.4-beta
 * Generating new distributions binaries
   * aarch64 aside docker image
