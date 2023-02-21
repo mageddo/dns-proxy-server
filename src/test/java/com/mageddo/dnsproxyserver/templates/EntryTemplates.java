@@ -3,7 +3,8 @@ package com.mageddo.dnsproxyserver.templates;
 import com.mageddo.dnsproxyserver.config.Config;
 
 public class EntryTemplates {
-  public static Config.Entry build(String host) {
+
+  public static Config.Entry a(String host) {
     return Config.Entry
       .builder()
       .hostname(host)

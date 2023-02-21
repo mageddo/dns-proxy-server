@@ -24,6 +24,7 @@ configurations.all {
     force 'net.java.dev.jna:jna:5.13.0'
   }
 }
+
 dependencies {
 
   compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.+'
@@ -59,6 +60,10 @@ dependencies {
 
 test {
   systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
+  useJUnitPlatform()
+  testLogging {
+    events "passed", "skipped", "failed"
+  }
 }
 
 compileJava {

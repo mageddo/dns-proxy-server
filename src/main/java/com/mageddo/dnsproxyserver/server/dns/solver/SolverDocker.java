@@ -20,20 +20,20 @@ public class SolverDocker implements Solver {
   private final DockerDAO dockerDAO;
 
   @Override
-  public Message handle(Message reqMsg) {
+  public Message handle(Message query) {
 
     if (!this.dockerDAO.isConnected()) {
       log.trace("status=dockerDisconnected");
       return null;
     }
 
-    final var askedHost = Messages.findQuestionHostname(reqMsg);
+    final var askedHost = Messages.findQuestionHostname(query);
     for (final var host : Wildcards.buildHostAndWildcards(askedHost)) {
       final var ip = this.dockerService.findBestHostIP(host);
       if (ip == null) {
         return null;
       }
-      return Messages.aAnswer(reqMsg, ip);
+      return Messages.aAnswer(query, ip);
     }
 
     return null;

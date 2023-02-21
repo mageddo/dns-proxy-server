@@ -6,7 +6,7 @@ import java.util.List;
 public class Wildcards {
   public static List<Hostname> buildHostAndWildcards(Hostname hostname) {
 
-    final var query = "." + hostname.getName();
+    final var query = "." + hostname.getValue();
     final var hostnames = new ArrayList<Hostname>();
     hostnames.add(Hostname.of(query.substring(1)));
 

@@ -51,7 +51,7 @@ class SolverLocalDBTest {
 
     // arrange
     final var host = "acme.com";
-    final var entry = EntryTemplates.build(host);
+    final var entry = EntryTemplates.a(host);
     this.configDAO.addEntry(Config.Env.DEFAULT_ENV, entry);
 
     final var msg = Messages.aQuestion(toAbsoluteName(host));

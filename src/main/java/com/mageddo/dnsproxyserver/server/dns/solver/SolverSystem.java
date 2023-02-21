@@ -18,8 +18,8 @@ public class SolverSystem implements Solver {
   private final DockerDAO dockerDAO;
 
   @Override
-  public Message handle(Message reqMsg) {
-    final var hostname = Messages.findQuestionHostname(reqMsg);
+  public Message handle(Message query) {
+    final var hostname = Messages.findQuestionHostname(query);
     final var config = Configs.getInstance();
     if (hostname.isEqualTo(config.getHostMachineHostname())) { // fixme fazer case com hostname + search domain
       final var ip = this.dockerDAO.findHostMachineIp();
@@ -28,7 +28,7 @@ public class SolverSystem implements Solver {
         return null;
       }
       log.debug("status=solvingHostMachineName, host={}, ip={}", hostname, ip);
-      return Messages.aAnswer(reqMsg, ip.raw());
+      return Messages.aAnswer(query, ip.raw());
     }
     return null;
   }

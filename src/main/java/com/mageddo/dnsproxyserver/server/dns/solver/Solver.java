@@ -4,7 +4,8 @@ import org.apache.commons.lang3.ClassUtils;
 import org.xbill.DNS.Message;
 
 public interface Solver {
-  Message handle(Message reqMsg);
+
+  Message handle(Message query);
 
   default String name() {
     return ClassUtils.getSimpleName(getClass());

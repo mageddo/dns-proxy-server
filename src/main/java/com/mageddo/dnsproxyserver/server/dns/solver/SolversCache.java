@@ -36,7 +36,7 @@ public class SolversCache {
     });
     return Optional
       .ofNullable(res)
-      .map(it -> Messages.copyAnswers(reqMsg, it))
+      .map(it -> Messages.matchId(reqMsg, it))
       .orElse(null);
   }
 

@@ -21,27 +21,27 @@ public class SolverRemote implements Solver {
   private final RemoteResolvers delegate;
 
   @Override
-  public Message handle(Message req) {
+  public Message handle(Message query) {
     Message lastErrorMsg = null;
     for (int i = 0; i < this.delegate.resolvers().size(); i++) {
       final Resolver resolver = this.delegate.resolvers().get(i);
       try {
-        final var res = resolver.send(req);
+        final var res = resolver.send(query);
         if (res.getRcode() == Rcode.NOERROR) {
-          log.trace("status=found, i={}, req={}, res={}, server={}", i, simplePrint(req), simplePrint(res), resolver);
+          log.trace("status=found, i={}, req={}, res={}, server={}", i, simplePrint(query), simplePrint(res), resolver);
           return res;
         } else {
           lastErrorMsg = res;
-          log.trace("status=notFound, i={}, req={}, res={}, server={}", i, simplePrint(req), simplePrint(res), resolver);
+          log.trace("status=notFound, i={}, req={}, res={}, server={}", i, simplePrint(query), simplePrint(res), resolver);
         }
       } catch (IOException e) {
         if (e.getMessage().contains("Timed out while trying")) {
-          log.info("status=timedOut, req={}, msg={}", simplePrint(req), e.getMessage());
+          log.info("status=timedOut, req={}, msg={}", simplePrint(query), e.getMessage());
           continue;
         }
         log.warn(
           "status=failed, i={}, req={}, server={}, errClass={}, msg={}",
-          i, simplePrint(req), resolver, ClassUtils.getSimpleName(e), e.getMessage(), e
+          i, simplePrint(query), resolver, ClassUtils.getSimpleName(e), e.getMessage(), e
         );
       }
     }

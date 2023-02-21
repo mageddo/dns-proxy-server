@@ -21,20 +21,20 @@ public class SolverLocalDB implements Solver {
   private final SolverDelegate solverDelegate;
 
   @Override
-  public Message handle(Message reqMsg) {
+  public Message handle(Message query) {
 
     final var stopWatch = StopWatch.createStarted();
 
-    final var type = Messages.findQuestionTypeCode(reqMsg);
+    final var type = Messages.findQuestionTypeCode(query);
     if (Entry.Type.isNot(type, Entry.Type.A, Entry.Type.CNAME)) {
       log.trace("status=typeNotSupported, action=continue, type={}, time={}", type, stopWatch.getTime());
       return null;
     }
 
-    final var askedHost = Messages.findQuestionHostname(reqMsg);
+    final var askedHost = Messages.findQuestionHostname(query);
     for (final var host : Wildcards.buildHostAndWildcards(askedHost)) {
       stopWatch.split();
-      final var entry = this.configDAO.findEntryForActiveEnv(host.getName());
+      final var entry = this.configDAO.findEntryForActiveEnv(host.getValue());
       if (entry == null) {
         log.trace(
             "status=partialNotFound, askedHost={}, time={}",
@@ -48,9 +48,9 @@ public class SolverLocalDB implements Solver {
       );
 
       if (entry.getType() == Entry.Type.A) {
-        return Messages.aAnswer(reqMsg, entry.getIp(), entry.getTtl());
+        return Messages.aAnswer(query, entry.getIp(), entry.getTtl());
       }
-      return this.solverDelegate.solve(reqMsg, entry);
+      return this.solverDelegate.solve(query, entry);
     }
 
     log.trace("status=notFound, askedHost={}, totalTime={}", askedHost, stopWatch.getTime());

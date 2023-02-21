@@ -5,13 +5,13 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
 
-@EqualsAndHashCode(of = "name")
+@EqualsAndHashCode(of = "value")
 public class Hostname {
 
-  private final String name;
+  private final String value;
 
-  public Hostname(String name) {
-    this.name = StringUtils.lowerCase(name);
+  public Hostname(String value) {
+    this.value = StringUtils.lowerCase(value);
   }
 
   public boolean isEqualTo(String cname) {
@@ -19,16 +19,16 @@ public class Hostname {
   }
 
   public boolean isEqualTo(Hostname hostname) {
-    return Objects.equals(this.name, hostname.name);
+    return Objects.equals(this.value, hostname.value);
   }
 
-  public String getName() {
-    return this.name;
+  public String getValue() {
+    return this.value;
   }
 
   @Override
   public String toString() {
-    return this.name;
+    return this.value;
   }
 
   public static Hostname of(String hostname){

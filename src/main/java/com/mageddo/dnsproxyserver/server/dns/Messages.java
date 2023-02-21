@@ -26,7 +26,7 @@ public class Messages {
     if (answer == null) {
       return Optional
         .ofNullable(findQuestionHostname(message))
-        .map(Hostname::getName)
+        .map(Hostname::getValue)
         .orElse("N/A");
     }
     return String.format("%s", simplePrint(answer));
@@ -63,16 +63,12 @@ public class Messages {
     return Hostname.of(hostname);
   }
 
-  public static Message aAnswer(Message msg, String ip) {
-    return aAnswer(msg, ip, 30L);
+  public static Message aAnswer(Message query, String ip) {
+    return aAnswer(query, ip, 30L);
   }
 
-  public static Message aAnswer(Message req, String ip, final long ttl) {
-    final var res = req.clone();
-    final var header = res.getHeader();
-    header.setFlag(Flags.QR);
-    header.setRcode(Rcode.NOERROR);
-
+  public static Message aAnswer(Message query, String ip, final long ttl) {
+    final var res = withNoErrorResponse(query.clone());
     final var answer = new ARecord(res.getQuestion().getName(), DClass.IN, ttl, Ips.toAddress(ip));
     res.addRecord(answer, Section.ANSWER);
 
@@ -105,28 +101,16 @@ public class Messages {
     return msg;
   }
 
-  public static Message answer(Message msg, Config.Entry entry) {
-    if (entry.getType() == Config.Entry.Type.A) {
-      return aAnswer(msg, entry.getIp(), entry.getTtl());
-    }
-    return cnameAnswer(msg, entry);
-  }
-
-  public static Message cnameAnswer(Message msg, Config.Entry entry) {
-    return cnameAnswer(msg, entry.getTtl(), entry.getTarget());
-  }
-
   @SneakyThrows
-  public static Message cnameAnswer(Message msg, Integer ttl, String hostname) {
-    final var newMsg = new Message(msg.toWire());
-    newMsg.getHeader().setRcode(Rcode.NOERROR);
+  public static Message cnameResponse(Message query, Integer ttl, String hostname) {
+    final var res = withNoErrorResponse(query.clone());
     final var answer = new CNAMERecord(
-      newMsg.getQuestion().getName(),
+      res.getQuestion().getName(),
       DClass.IN, ttl,
       Name.fromString(Hostnames.toAbsoluteName(hostname))
     );
-    newMsg.addRecord(answer, Section.ANSWER);
-    return newMsg;
+    res.addRecord(answer, Section.ANSWER);
+    return res;
   }
 
   @SneakyThrows
@@ -147,6 +131,10 @@ public class Messages {
     return Config.Entry.Type.of(findQuestionTypeCode(msg));
   }
 
+  /**
+   * Add records from source to target for all sections
+   * @return a clone with the combination.
+   */
   public static Message combine(Message source, Message target) {
     final var clone = clone(target);
     for (int i = 1; i < 4; i++) {
@@ -159,7 +147,7 @@ public class Messages {
   }
 
   @SneakyThrows
-  public static Message copyQuestionWithNewName(Message msg, String hostname) {
+  public static Message copyQuestionForNowHostname(Message msg, String hostname) {
     final var newMsg = Message.newQuery(msg
       .getQuestion()
       .withName(Name.fromString(hostname))
@@ -179,14 +167,28 @@ public class Messages {
     return Duration.ofSeconds(answer.getTTL());
   }
 
-  public static Message copyAnswers(Message req, Message res) {
-    return combine(res, req);
+  /**
+   * Set the id of the query into the response, se the response will match if the query;
+   */
+  public static Message matchId(Message req, Message res) {
+    final var reqId = req.getHeader().getID();
+    res.getHeader().setID(reqId);
+    return res;
   }
 
-  static Message clone(Message req) {
-    if (req == null) {
+  static Message clone(Message msg) {
+    if (msg == null) {
       return null;
     }
-    return req.clone();
+    return msg.clone();
   }
+
+  static Message withNoErrorResponse(Message res) {
+    final var header = res.getHeader();
+    header.setFlag(Flags.QR);
+    header.setRcode(Rcode.NOERROR);
+    return res;
+  }
+
+
 }
