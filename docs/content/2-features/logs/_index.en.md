@@ -15,20 +15,23 @@ You can disable, log to console, log to default log file path or specify a log p
 __Config File__
 ```json
 {
-	...
-	"logFile": "console"
-	...
+  ...
+  "logFile": "console"
+  ...
 }
 ```
 
 __Environment__
 
-	export MG_LOG_FILE=console
+```bash
+export MG_LOG_FILE=console
+```
 
 __Command line argument__
 
-	go run dns.go  -log-file=console
-
+```bash
+./dns-proxy-server  -log-file=console
+```
 
 ## Configuring log level
 
@@ -39,23 +42,27 @@ Available levels:
 
 * ERROR
 * WARNING
-* INFO
-* DEBUG (Default)
+* INFO (Default)
+* DEBUG
 
 __Environment__
 
-	export MG_LOG_LEVEL=DEBUG
+```bash
+export MG_LOG_LEVEL=DEBUG
+```
 
 __Config file__
 
 ```json
 {
-	...
-	"logLevel": "DEBUG"
-	...
+  ...
+  "logLevel": "DEBUG"
+  ...
 }
 ```
 
 __Command line argument__
 
-	go run dns.go  -log-level=DEBUG
+```
+./dns-proxy-server -log-level=DEBUG
+```
