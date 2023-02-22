@@ -4,6 +4,9 @@ weight: 6
 pre: "<b>6. </b>"
 ---
 
+### Requirements
+* Hugo 0.55.4
+
 ### Live docs preview
 
 To se the current docs just type
