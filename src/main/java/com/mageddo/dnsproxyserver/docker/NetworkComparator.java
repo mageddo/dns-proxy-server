@@ -2,12 +2,17 @@ package com.mageddo.dnsproxyserver.docker;
 
 import com.github.dockerjava.api.model.Network;
 
+import static com.mageddo.dnsproxyserver.docker.domain.Network.OTHER;
 import static com.mageddo.dnsproxyserver.docker.domain.Network.of;
 
 public class NetworkComparator {
 
   static int toPriorityOrder(Network n) {
-    return of(n.getName()).ordinal();
+    final var network = of(n.getName());
+    if(network == OTHER){
+      return of(n.getDriver()).ordinal();
+    }
+    return network.ordinal();
   }
 
   public static int compare(String a, String b) {

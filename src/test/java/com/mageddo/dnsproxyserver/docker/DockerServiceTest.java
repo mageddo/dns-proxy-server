@@ -62,7 +62,7 @@ class DockerServiceTest {
     final var overlayNetwork = "shibata";
 
     final var inspect = InspectContainerResponseTemplates.withCustomBridgeAndOverylayNetwork();
-    doReturn(NetworkTemplates.withOverlayDriver(bridgeNetwork))
+    doReturn(NetworkTemplates.withOverlayDriver(overlayNetwork))
       .when(this.dockerNetworkDAO)
       .findNetwork(eq(overlayNetwork))
     ;
