@@ -1,3 +1,11 @@
+### 3.1.2-beta
+DPS 3 -  Minor fixes
+
+* Timed out remote servers responses are being cached, it cant happen, when its a timeout cant cache but when the record really dont exists, like AAAA for bookmarks.mageddo.com must cache.
+* Must read conf from dps binary path not the current os path where dps was called
+* Log level not being respected, at least no when running in native image binary
+* Removed quarkus splash logo
+
 ### 3.1.1-beta
 * Fixing reponse warning `;; Warning: query response not set`
 
