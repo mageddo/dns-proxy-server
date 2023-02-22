@@ -14,7 +14,7 @@ public enum Network {
     return EnumUtils.getEnumIgnoreCase(Network.class, name, OTHER);
   }
 
-  public String lowerName() {
+  public String lowerCaseName() {
     return StringUtils.lowerCase(this.name());
   }
 }

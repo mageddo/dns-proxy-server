@@ -15,8 +15,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.mageddo.dnsproxyserver.docker.DockerNetworks.NETWORK_BRIDGE;
-import static com.mageddo.dnsproxyserver.docker.DockerNetworks.NETWORK_DPS;
+import static com.mageddo.dnsproxyserver.docker.DockerNetworkService.NETWORK_BRIDGE;
+import static com.mageddo.dnsproxyserver.docker.DockerNetworkService.NETWORK_DPS;
 import static com.mageddo.dnsproxyserver.docker.Labels.DEFAULT_NETWORK_LABEL;
 
 @Slf4j
@@ -26,6 +26,7 @@ import static com.mageddo.dnsproxyserver.docker.Labels.DEFAULT_NETWORK_LABEL;
 public class DockerService {
 
   private final DockerDAO dockerDAO;
+  private final DockerNetworkService dockerNetworkService;
 
   public String findBestHostIP(Hostname host) {
     final var stopWatch = StopWatch.createStarted();
@@ -42,7 +43,7 @@ public class DockerService {
   }
 
   public String findBestIpMatch(InspectContainerResponse inspect) {
-    return DockerNetworks.findBestIpMatching(inspect, buildNetworks(inspect), this.dockerDAO::findHostMachineIpRaw);
+    return this.dockerNetworkService.findBestIpMatch(inspect, buildNetworks(inspect), this.dockerDAO::findHostMachineIpRaw);
   }
 
   static Set<String> buildNetworks(InspectContainerResponse c) {

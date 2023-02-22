@@ -24,7 +24,7 @@ import java.util.Objects;
 @AllArgsConstructor(onConstructor = @__({@Inject}))
 public class DpsContainerManager {
 
-  public static final String NETWORK_DPS = DockerNetworks.NETWORK_DPS;
+  public static final String NETWORK_DPS = DockerNetworkService.NETWORK_DPS;
 
   private final DockerService dockerService;
   private final DockerDAO dockerDAO;
@@ -49,7 +49,7 @@ public class DpsContainerManager {
     final var currentVersion = Configs.getInstance().getVersion();
     final var res = this.dockerClient.createNetworkCmd()
       .withName(NETWORK_DPS)
-      .withDriver(DockerNetworks.NETWORK_BRIDGE)
+      .withDriver(DockerNetworkService.NETWORK_BRIDGE)
       .withCheckDuplicate(false)
       .withEnableIpv6(false)
       .withIpam(

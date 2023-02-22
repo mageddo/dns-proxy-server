@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.docker;
 
 import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.server.dns.Hostname;
-import com.mageddo.utils.templates.InspectContainerResponseTemplates;
+import com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

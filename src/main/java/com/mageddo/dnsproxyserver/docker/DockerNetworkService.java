@@ -3,9 +3,12 @@ package com.mageddo.dnsproxyserver.docker;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Network;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
@@ -13,15 +16,20 @@ import java.util.function.Supplier;
 
 import static com.mageddo.dnsproxyserver.docker.domain.Network.BRIDGE;
 import static com.mageddo.dnsproxyserver.docker.domain.Network.DPS;
+import static com.mageddo.dnsproxyserver.docker.domain.Network.HOST;
 
 @Slf4j
-public class DockerNetworks {
+@Singleton
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+public class DockerNetworkService {
 
-  public static final String NETWORK_DPS = DPS.lowerName();
-  public static final String NETWORK_BRIDGE = BRIDGE.lowerName();
-  public static final String NETWORK_MODE_HOST = "host";
+  public static final String NETWORK_DPS = DPS.lowerCaseName();
+  public static final String NETWORK_BRIDGE = BRIDGE.lowerCaseName();
+  public static final String NETWORK_MODE_HOST = HOST.lowerCaseName();
 
-  public static String findBestIpMatching(
+  private final DockerNetworkDAO dockerNetworkDAO;
+
+  public String findBestIpMatch(
     InspectContainerResponse c, Collection<String> networksNames, Supplier<String> hostMachineSup
   ) {
 
@@ -43,22 +51,15 @@ public class DockerNetworks {
       networksNames, c.getName()
     );
 
-//    for (final var name : networks.keySet()) {
-//      for (final var wantedNetwork : networksNames) {
-//        if (name.endsWith(wantedNetwork)) {
-//          log.debug("status=patternMached, network={}, with={}", name, wantedNetwork);
-//          return networks.get(name).getIpAddress();
-//        }
-//      }
-//    }
-
       return networks
       .keySet()
       .stream()
+      .map(this.dockerNetworkDAO::findNetwork)
       .min(NetworkComparator::compare)
-      .map(name -> {
+      .map(network -> {
+        final var name = network.getName();
         final var ip = networks.get(name).getIpAddress();
-        log.debug("status=foundIp, network={}, ip={}", name, ip);
+        log.debug("status=foundIp, network={}, driver={}, ip={}", name, network.getDriver(), ip);
         return StringUtils.trimToNull(ip);
       })
       .filter(StringUtils::isNotBlank)

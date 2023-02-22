@@ -1,4 +1,4 @@
-package com.mageddo.utils.templates;
+package com.mageddo.dnsproxyserver.templates.docker;
 
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.server.dns.solver.Solver;

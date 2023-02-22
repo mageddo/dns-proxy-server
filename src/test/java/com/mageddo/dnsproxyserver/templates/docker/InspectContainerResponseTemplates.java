@@ -1,4 +1,4 @@
-package com.mageddo.utils.templates;
+package com.mageddo.dnsproxyserver.templates.docker;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.dockerjava.api.command.InspectContainerResponse;
@@ -8,21 +8,35 @@ import lombok.SneakyThrows;
 
 public class InspectContainerResponseTemplates {
 
+  public static final String NGINX = "/templates/nginx.json";
+
   public static InspectContainerResponse buildWithHostnameAndWithoutDomain() {
     return build();
   }
 
   public static InspectContainerResponse buildWithHostnameAndDomain(String hostname, String domain) {
-    final var tree = buildTree();
+    final var tree = buildTree(NGINX);
     final var config = (ObjectNode) tree.at("/Config");
     config.put("Hostname", hostname);
     config.put("Domainname", domain);
     return parse(tree);
   }
 
+  public static InspectContainerResponse withDpsLabel() {
+    return build();
+  }
+
+  public static InspectContainerResponse withCustomBridgeAndOverylayNetwork() {
+    return parse(buildTree("/templates/002.json"));
+  }
+
   @SneakyThrows
   public static InspectContainerResponse build() {
-    return parse(buildTree());
+    return parse();
+  }
+
+  private static InspectContainerResponse parse() {
+    return parse(buildTree(NGINX));
   }
 
   @SneakyThrows
@@ -32,8 +46,8 @@ public class InspectContainerResponseTemplates {
       .treeToValue(tree, InspectContainerResponse.class);
   }
 
-  static ObjectNode buildTree() {
-    return (ObjectNode) JsonUtils.readTree(TestUtils.readAsStream("/templates/nginx.json"));
+  static ObjectNode buildTree(final String path) {
+    return (ObjectNode) JsonUtils.readTree(TestUtils.readAsStream(path));
   }
 
 }

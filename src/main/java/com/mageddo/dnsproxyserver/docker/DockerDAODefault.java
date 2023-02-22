@@ -33,7 +33,7 @@ public class DockerDAODefault implements DockerDAO {
 
   @Override
   public String findHostMachineIpRaw() {
-    return DockerNetworks.findIp(this.findBestNetwork());
+    return DockerNetworkService.findIp(this.findBestNetwork());
   }
 
   @Override

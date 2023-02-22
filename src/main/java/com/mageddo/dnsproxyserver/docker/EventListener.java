@@ -41,7 +41,7 @@ public class EventListener {
       );
       return;
     }
-    this.dockerNetworkDAO.connectRunningContainers(DockerNetworks.NETWORK_DPS);
+    this.dockerNetworkDAO.connectRunningContainers(DockerNetworkService.NETWORK_DPS);
 
     final var callback = new ResultCallback<Event>() {
       @Override
@@ -59,7 +59,7 @@ public class EventListener {
           event.getId(), event.getAction(), event.getType(), event.getStatus(), event
         );
         if (StringUtils.equals(event.getAction(), "start")) {
-          dockerNetworkDAO.connect(DockerNetworks.NETWORK_DPS, event.getId());
+          dockerNetworkDAO.connect(DockerNetworkService.NETWORK_DPS, event.getId());
           return;
         }
         log.debug("status=eventIgnore, event={}", event);
