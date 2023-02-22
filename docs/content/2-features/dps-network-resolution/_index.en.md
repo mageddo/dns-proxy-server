@@ -63,8 +63,7 @@ $ curl --connect-timeout 2 nginx-1.app
 curl: (7) Failed to connect to nginx-1.app port 80: Connection timed out
 ```
 
-The solution for this is to specify a bridge network on the **docker-compose.yml** and also specify 
-that you wanna solve the ip of the bridge network instead of the overlay one
+The solution for it can be use `dps` network or specify a bridge network on the **docker-compose.yml** 
 
 docker-compose.yml
 ```yaml
@@ -77,8 +76,6 @@ services:
     networks:
       - nginx-network
       - nginx-network-bridge
-    labels:
-      dps.network: yml_nginx-network-bridge
 
 networks:
   nginx-network:
