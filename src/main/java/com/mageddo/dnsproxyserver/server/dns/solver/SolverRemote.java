@@ -36,7 +36,10 @@ public class SolverRemote implements Solver {
         }
       } catch (IOException e) {
         if (e.getMessage().contains("Timed out while trying")) {
-          log.info("status=timedOut, req={}, msg={}", simplePrint(query), e.getMessage());
+          log.info(
+            "status=timedOut, req={}, msg={} class={}",
+            simplePrint(query), e.getMessage(), ClassUtils.getSimpleName(e)
+          );
           continue;
         }
         log.warn(

@@ -19,24 +19,24 @@ import static com.mageddo.dnsproxyserver.server.dns.Messages.findQuestionType;
 @Singleton
 public class SolversCache {
 
-  private final LruTTLCache cache = new LruTTLCache(2048, Duration.ofSeconds(5), true);
+  private final LruTTLCache cache = new LruTTLCache(2048, Duration.ofSeconds(5), false);
 
-  public Message handle(Message reqMsg, Function<Message, Message> delegate) {
-    final var key = buildKey(reqMsg);
+  public Message handle(Message query, Function<Message, Message> delegate) {
+    final var key = buildKey(query);
     final var res = this.cache.computeIfAbsent0(key, (k) -> {
-      log.trace("status=lookup, key={}, req={}", key, Messages.simplePrint(reqMsg));
-      final var _res = delegate.apply(reqMsg);
+      log.trace("status=lookup, key={}, req={}", key, Messages.simplePrint(query));
+      final var _res = delegate.apply(query);
       if (_res == null) {
         log.debug("status=noAnswer, k={}", k);
-        return Pair.of(null, Duration.ofSeconds(10));
+        return null;
       }
       final var ttl = Messages.findTTL(_res);
-      log.debug("status=hotload, k={}, ttl={}, simpleMsg={}", k, ttl, Messages.simplePrint(reqMsg));
+      log.debug("status=hotload, k={}, ttl={}, simpleMsg={}", k, ttl, Messages.simplePrint(query));
       return Pair.of(_res, ttl);
     });
     return Optional
       .ofNullable(res)
-      .map(it -> Messages.matchId(reqMsg, it))
+      .map(it -> Messages.matchId(query, it))
       .orElse(null);
   }
 
