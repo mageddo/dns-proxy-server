@@ -3,6 +3,10 @@ title: Access container by its container name / service name
 weight: 7
 ---
 
+It's possible solve containers by their container or service name, consider the following sample, 
+the container `my-nginx` can be solved by querying the hostname `my-nginx.docker`, the `.docker` domain is also 
+configurable by the [`domain` configuration]({{%relref "3-configuration/_index.md" %}}) json property. 
+
 ```bash
 $ docker run --rm --name my-nginx nginx
 ```
