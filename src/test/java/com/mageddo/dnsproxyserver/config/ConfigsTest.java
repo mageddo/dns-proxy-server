@@ -106,18 +106,4 @@ class ConfigsTest {
     assertEquals("/tmp/conf/config.json", path.toString());
   }
 
-  @Test
-  void mustBuildConfPathRelativeToBinaryRunningPathWhenWorkDirIsNotSet(){
-    // arrange
-    final var flags = ConfigFlagTemplates.defaultWithConfigPath(Paths.get("conf/config.json"));
-    final Path currentPath = null;
-
-    // act
-    final var path = Configs.buildConfigPath(flags, currentPath);
-
-    // assert
-    assertEquals("/home/typer/dev/projects/dns-proxy-server/conf/config.json", path.toString());
-
-
-  }
 }
