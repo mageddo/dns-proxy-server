@@ -16,6 +16,8 @@ import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 
 public class QuarkusConfig {
 
+  public static final String DPS_LOG_LEVEL_KEY = "quarkus.log.category.\"com.mageddo\".level";
+
   @Produces
   public RemoteResolvers remoteResolvers(Function<IpAddr, Resolver> resolverProvider) {
     final var servers = Configs
@@ -37,7 +39,7 @@ public class QuarkusConfig {
     System.setProperty("quarkus.http.port", String.valueOf(config.getWebServerPort()));
 
     if (config.getLogLevel() != null) {
-      System.setProperty("quarkus.log.category.\"com.mageddo\".level", config.getLogLevel().name());
+      System.setProperty(DPS_LOG_LEVEL_KEY, config.getLogLevel().getSlf4jName());
     }
 
     final var logFile = Configs.parseLogFile(config.getLogFile());
