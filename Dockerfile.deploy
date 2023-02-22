@@ -1,4 +1,4 @@
-FROM docker.io/defreitas/tools-generic-cd:0.2.2
+FROM docker.io/defreitas/tools-generic-cd:0.2.3
 COPY . /app
 COPY ./builder.bash /bin/builder.bash
 WORKDIR /app
