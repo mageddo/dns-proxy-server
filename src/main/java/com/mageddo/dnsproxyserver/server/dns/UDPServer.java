@@ -58,8 +58,8 @@ public class UDPServer {
       out.setPort(datagram.getPort());
       server.send(out);
       log.debug(
-        "status=success, dataLength={}, datagramLength={}, msg={}, data={}",
-        datagram.getData().length, datagram.getLength(), new String(datagram.getData()), datagram.getData()
+        "status=success, dataLength={}, datagramLength={}",
+        datagram.getData().length, datagram.getLength()
       );
     } catch (Exception e) {
       log.warn("status=messageHandleFailed, msg={}", e.getMessage(), e);
