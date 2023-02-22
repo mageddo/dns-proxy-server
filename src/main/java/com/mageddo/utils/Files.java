@@ -14,4 +14,8 @@ public class Files {
       throw new UncheckedIOException(e);
     }
   }
+
+  public static boolean exists(Path p) {
+    return java.nio.file.Files.exists(p);
+  }
 }

@@ -9,6 +9,7 @@ import com.mageddo.dnsproxyserver.config.entrypoint.LogLevel;
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import com.mageddo.dnsproxyserver.utils.Numbers;
 import com.mageddo.utils.Files;
+import com.mageddo.utils.Runtime;
 import com.mageddo.utils.Tests;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
@@ -115,8 +116,14 @@ public class Configs {
         .toAbsolutePath()
         ;
     }
-    return Paths
+    final var confRelativeToCurrDir = Paths
       .get(configFlag.getConfigPath())
+      .toAbsolutePath();
+    if (Files.exists(confRelativeToCurrDir)) {
+      return confRelativeToCurrDir;
+    }
+    return Runtime.getRunningDir()
+      .resolve(configFlag.getConfigPath())
       .toAbsolutePath();
   }
 
