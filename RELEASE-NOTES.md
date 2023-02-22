@@ -1,7 +1,8 @@
 ### 3.1.3-beta
-* Doc updates
+* Doc adjustments
+* Fixing doc broken pages due hugo previous upgrade
 * Fixing docker container wildcard solving
-* Prioritize to solve bridge networks over overlay ones
+* Prioritize to [solve bridge networks over overlay ones](https://github.com/mageddo/dns-proxy-server/blob/cce3926837add0ea661648cd534c9a1192d171e1/src/test/java/com/mageddo/dnsproxyserver/docker/DockerServiceTest.java#L52)
 
 ### 3.1.2-beta
 DPS 3 -  Minor fixes
@@ -228,3 +229,4 @@ If you register a hostname with `.` at start, then all subdomains will solve to 
 
 ### 2.0.18
 * Making it compatible with docker 1.8 api v1.20
+
