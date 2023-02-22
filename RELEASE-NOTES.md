@@ -1,3 +1,7 @@
+### 3.1.3-beta
+* Docs updates
+* Fixing docker container wildcard solving
+
 ### 3.1.2-beta
 DPS 3 -  Minor fixes
 
