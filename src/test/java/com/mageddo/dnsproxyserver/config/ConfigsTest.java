@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.config;
 
+import com.mageddo.dnsproxyserver.config.entrypoint.LogLevel;
 import com.mageddo.dnsproxyserver.templates.ConfigFlagTemplates;
 import com.mageddo.dnsproxyserver.templates.EnvTemplates;
 import lombok.SneakyThrows;
@@ -106,4 +107,15 @@ class ConfigsTest {
     assertEquals("/tmp/conf/config.json", path.toString());
   }
 
+  @Test
+  void mustParseLowerCaseLogLevel(){
+    // arrange
+    final var args = new String[]{"--log-level", "warning"};
+
+    // act
+    final var config = Configs.buildAndRegister(args);
+
+    // assert
+    assertEquals(LogLevel.WARNING, config.getLogLevel());
+  }
 }

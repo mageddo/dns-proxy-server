@@ -7,6 +7,11 @@ import java.nio.file.Paths;
 
 public class ConfigTemplates {
   public static Config withoutId() {
+    return defaultBuilder()
+      .build();
+  }
+
+  private static Config.ConfigBuilder defaultBuilder() {
     return Config
       .builder()
       .logFile("/tmp/dps.log")
@@ -21,7 +26,8 @@ public class ConfigTemplates {
       .dnsServerPort(53)
       .domain("com")
       .logLevel(LogLevel.WARNING)
-      .resolvConfPath(Paths.get("/etc/resolv.conf"))
-      .build();
+      .resolvConfPath(Paths.get("/etc/resolv.conf"));
   }
+
+
 }

@@ -18,4 +18,6 @@ class QuarkusConfigTest {
     // assert
     assertEquals(System.getProperty(DPS_LOG_LEVEL_KEY), "WARN");
   }
+
+
 }
