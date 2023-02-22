@@ -9,7 +9,7 @@ Creating a container with two networks attached to
 ```bash
 $ docker network create --attachable network1
 $ docker network create --attachable network2
-$ docker run --name nginx1 --rm --label dps.network=network2 --hostname server1.acme.com --network network1 nginx
+$ docker run --name nginx1 --rm --label dps.network=network1 --hostname server1.acme.com --network network1 nginx
 $ docker network connect network2 nginx1
 ```
 
@@ -22,7 +22,7 @@ $ docker network inspect -f "{{ .IPAM.Config }}" network2
 [{192.168.16.0/20  192.168.16.1 map[]}]
 ```
 
-Solving container IP checking that solved IP will be the respective to configured `dps.network` label
+Solving container and checking that the solved IP will be respective to the configured network at `dps.network` label
 ```bash
 $ nslookup server1.acme.com
 Server:		172.17.0.3

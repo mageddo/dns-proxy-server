@@ -52,7 +52,7 @@ public class DockerNetworks {
 //      }
 //    }
 
-    return networks
+      return networks
       .keySet()
       .stream()
       .min(NetworkComparator::compare)
