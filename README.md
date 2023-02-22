@@ -16,6 +16,8 @@ on the configured environment, so you can:
 * Access container by its container name / service name
 * Specify from which network solve container IP 
 
+Checkout the [full list of features][4] with examples
+
 ![](https://i.imgur.com/aR9dl0O.png)
 
 ### Basic running it 
@@ -63,3 +65,4 @@ Or via QR code
 [1]: https://www.ietf.org/rfc/rfc1035.txt 
 [2]: https://github.com/mageddo/dns-proxy-server/releases
 [3]: https://hub.docker.com/r/defreitas/dns-proxy-server
+[4]: http://mageddo.github.io/dns-proxy-server/latest/en/2-features/
