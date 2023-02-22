@@ -30,10 +30,9 @@ public class SolverDocker implements Solver {
     final var askedHost = Messages.findQuestionHostname(query);
     for (final var host : Wildcards.buildHostAndWildcards(askedHost)) {
       final var ip = this.dockerService.findBestHostIP(host);
-      if (ip == null) {
-        return null;
+      if (ip != null) {
+        return Messages.aAnswer(query, ip);
       }
-      return Messages.aAnswer(query, ip);
     }
 
     return null;
