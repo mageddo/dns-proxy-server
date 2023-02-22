@@ -11,6 +11,7 @@ Backend
 ```bash
 $ ./gradlew quarkusDev
 ```
+Make your DNS queries to IP and TCP/UDP ports indicated at the console log.
 
 Front end app (optional)
 
@@ -18,26 +19,5 @@ Front end app (optional)
 $ cd app && npm start
 ```
 
-### Developing with docker
-
-	$ docker-compose rm -f && docker-compose up --build app-dps compiler-dps
-
-Running the application 
-
-```
-$ docker-compose exec compiler-dps bash
-$ go run dns.go
-```
-
-Running the GUI
-
-```
-$ docker-compose exec app-dps sh
-$ npm start
-```
-
-Running unit tests
-
-	$ go test -cover=false ./.../
-
+Then access http://localhost:3000/ , front end will proxy to http://localhost:5380 backend.
 
