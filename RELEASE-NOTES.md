@@ -1,6 +1,7 @@
 ### 3.1.3-beta
-* Docs updates
+* Doc updates
 * Fixing docker container wildcard solving
+* Prioritize to solve bridge networks over overlay ones
 
 ### 3.1.2-beta
 DPS 3 -  Minor fixes
