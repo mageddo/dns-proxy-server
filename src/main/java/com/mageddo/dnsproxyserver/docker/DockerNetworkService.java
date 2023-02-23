@@ -30,6 +30,7 @@ public class DockerNetworkService {
   public static final String NETWORK_MODE_HOST = HOST.lowerCaseName();
 
   private final DockerNetworkDAO networkDAO;
+  private final ContainerDAO containerDAO;
 
   public String findBestIpMatch(
     InspectContainerResponse c, Collection<String> networksNames, Supplier<String> hostMachineSup
@@ -106,17 +107,17 @@ public class DockerNetworkService {
     return Objects.equals(networkMode, NETWORK_MODE_HOST);
   }
 
-  public List<String> disconnect(String id) {
-    final var containers = new ArrayList<String>();
+  public List<String> disconnectContainers(String id) {
+    final var removedContainers = new ArrayList<String>();
     final var network = this.networkDAO.findNetwork(id);
     if (network == null) {
       return null;
     }
-    final var container = network.getContainers();
-    for (final var containerId : container.keySet()) {
-      this.networkDAO.disconnect(id, containerId);
-      containers.add(containerId);
+    final var containers = this.containerDAO.findNetworkContainers(id);
+    for (final var container : containers) {
+      this.networkDAO.disconnect(id, container.getId());
+      removedContainers.add(container.getId());
     }
-    return containers;
+    return removedContainers;
   }
 }

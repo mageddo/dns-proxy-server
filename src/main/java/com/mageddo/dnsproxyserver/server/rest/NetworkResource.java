@@ -22,7 +22,7 @@ public class NetworkResource {
   @Path("/disconnect-containers")
   @Produces(MediaType.APPLICATION_JSON)
   public List<String> delete(@QueryParam("networkId") String id) {
-    final var containers = this.networkService.disconnect(id);
+    final var containers = this.networkService.disconnectContainers(id);
     if (containers == null) {
       return Collections.singletonList("Network not found");
     }
