@@ -5,7 +5,6 @@ import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.dnsconfigurator.DpsIpDiscover;
 import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
 import com.mageddo.dnsproxyserver.server.dns.solver.SolverProvider;
-import com.mageddo.dnsproxyserver.utils.Ips;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,8 +34,7 @@ public class ServerStarter {
     this.server.start(
       port,
       Config.findDnsServerProtocol(),
-      this.solvers,
-      Ips.toAddress(this.dpsIpDiscover.findDpsIP())
+      this.solvers
     );
     log.info("status=startingDnsServer, port={}", port);
     return this;

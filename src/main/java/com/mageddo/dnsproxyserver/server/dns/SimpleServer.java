@@ -9,7 +9,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.InetAddress;
 import java.nio.ByteBuffer;
 import java.util.List;
 
@@ -22,25 +21,23 @@ public class SimpleServer {
   private final TCPServer tcpServer;
   private final RequestHandler requestHandler;
 
-  public void start(
-    int port, Protocol protocol, List<Solver> solvers, InetAddress bindAddress
-  ) {
+  public void start(int port, Protocol protocol, List<Solver> solvers) {
 
     solvers.forEach(this.requestHandler::bind);
-    this.start0(port, protocol, bindAddress);
+    this.start0(port, protocol);
 
   }
 
-  void start0(int port, Protocol protocol, InetAddress bindAddress) {
+  void start0(int port, Protocol protocol) {
     final var tcpHandler = new TCPHandler(this.requestHandler);
     switch (protocol) {
-      case UDP -> this.udpServer.start(port, bindAddress);
+      case UDP -> this.udpServer.start(port);
       case TCP -> {
-        this.tcpServer.start(port, bindAddress, tcpHandler);
+        this.tcpServer.start(port, null, tcpHandler);
       }
       default -> {
-        this.udpServer.start(port, bindAddress);
-        this.tcpServer.start(port, bindAddress, tcpHandler);
+        this.udpServer.start(port);
+        this.tcpServer.start(port, null, tcpHandler);
       }
     }
   }

@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.util.concurrent.ExecutorService;
 
 @Slf4j
@@ -26,12 +25,12 @@ public class UDPServer {
     this.pool = ThreadPool.create();
   }
 
-  public void start(int port, InetAddress bindAddress) {
-    this.pool.submit(() -> this.start0(port, bindAddress));
-    log.info("status=startingUdpServer, port={}, bindAddress={}", port, bindAddress);
+  public void start(int port) {
+    this.pool.submit(() -> this.start0(port));
+    log.info("status=startingUdpServer, port={}", port);
   }
 
-  private void start0(int port, InetAddress bindAddress) {
+  private void start0(int port) {
     try {
       final var server = new DatagramSocket(port);
       while (!server.isClosed()) {
