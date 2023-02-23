@@ -33,7 +33,7 @@ public class UDPServer {
 
   private void start0(int port, InetAddress bindAddress) {
     try {
-      final var server = new DatagramSocket(port, bindAddress);
+      final var server = new DatagramSocket(port);
       while (!server.isClosed()) {
 
         final var datagram = new DatagramPacket(new byte[BUFFER_SIZE], 0, BUFFER_SIZE);
