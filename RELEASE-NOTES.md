@@ -1,3 +1,7 @@
+### 3.1.4-beta
+* Binding UDP server to any interface on the machine
+* Fallback to 127.0.0.1 interface when the real one is missing
+
 ### 3.1.3-beta
 * Doc adjustments
 * Fixing doc broken pages due hugo previous upgrade
