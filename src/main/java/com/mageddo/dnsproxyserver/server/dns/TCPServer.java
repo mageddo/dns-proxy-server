@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.server.dns;
 import com.mageddo.commons.concurrent.ThreadPool;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -57,23 +58,30 @@ public class TCPServer {
       }
       final var clientsBefore = this.clients.size();
       while (itr.hasNext()) {
-        final var client = itr.next().get();
-        if (client == null) {
-          log.debug("status=clientWasGarbageCollected");
-        } else if (client.isClosed()) {
-          itr.remove();
-          log.debug("status=removedAlreadyClosed, runningTime={}", client.getRunningTime());
-        } else if (runningForTooLong(client)) {
-          client.silentClose();
-          itr.remove();
-          log.debug("status=forcedRemove, runningTime={}", client.getRunningTime());
+        try {
+          final var client = itr.next().get();
+          if (client == null) {
+            log.debug("status=clientWasGarbageCollected");
+            continue;
+          }
+          MDC.put("clientId", String.valueOf(client.getId()));
+          if (client.isClosed()) {
+            itr.remove();
+            log.debug("status=removedAlreadyClosed, runningTime={}", client.getRunningTime());
+          } else if (runningForTooLong(client)) {
+            client.silentClose();
+            itr.remove();
+            log.debug("status=forcedRemove, runningTime={}", client.getRunningTime());
+          }
+        } finally {
+          MDC.clear();
         }
       }
       log.debug(
         "status=watchdog, removed={}, clientsBefore={}, after={}",
         clientsBefore - this.clients.size(), clientsBefore, this.clients.size()
       );
-    } catch (Throwable e){
+    } catch (Throwable e) {
       log.error("status=watchdogFailed, msg={}", e.getMessage(), e);
     }
   }
