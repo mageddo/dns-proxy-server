@@ -34,3 +34,29 @@ jobs:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  windows-release:
+    name: Windows Release
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          version: '22.3.0'
+          java-version: '17'
+          components: 'native-image'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          native-image-job-reports: 'true'
+
+      - name: Build and run HelloWorld.java
+        run: |
+          echo 'public class HelloWorld { public static void main(String[] args) { System.out.println("Hello, World!"); } }' > HelloWorld.java
+          javac HelloWorld.java
+          native-image HelloWorld
+          ./helloworld
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: helloworld-${{ matrix.os }}
+          path: helloworld*
