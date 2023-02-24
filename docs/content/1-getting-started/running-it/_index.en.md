@@ -59,6 +59,7 @@ pictures below
 
 Uncheck IPV6 because Windows can try to solve hostnames by using a IPV6 DNS server,
 then requests won't be sent to DPS, actually DPS doesn't support IPV6.
+
 ![Screenshot](https://i.imgur.com/DGPdFRD.png?width=10pc&classes=shadow)
 
 ![screenshot](https://i.imgur.com/EcZF6mG.png?width=10pc&classes=shadow)
