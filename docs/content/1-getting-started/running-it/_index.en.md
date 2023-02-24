@@ -52,12 +52,18 @@ docker run --name dns-proxy-server -p 5380:5380 -p 53:53/udp \
 2. Change your default internet adapter DNS to `127.0.0.1`
 
 * Press `Windows + R` and type `ncpa.cpl` then press **enter** or go to your network interfaces Window
-* Change your default internet adapterDNS to `127.0.0.1` by following the below 
-pictures (sorry they are in portuguese)
+* Change your default internet adapter DNS to `127.0.0.1` by following the 
+pictures below
 
-![Screenshot](https://i.imgur.com/1goUHp0.png?width=10pc&classes=shadow)
-![Screenshot](https://i.imgur.com/XKM7JwN.png?width=10pc&classes=shadow)
-![Screenshot](https://i.imgur.com/EFno6F6.png?width=10pc&classes=shadow)
+![Screenshot](https://i.imgur.com/UAVUgLf.png?width=10pc&classes=shadow)
+
+Uncheck IPV6 because Windows can try to solve hostnames by using a IPV6 DNS server,
+then requests won't be sent to DPS, actually DPS doesn't support IPV6.
+![Screenshot](https://i.imgur.com/DGPdFRD.png?width=10pc&classes=shadow)
+
+![screenshot](https://i.imgur.com/EcZF6mG.png?width=10pc&classes=shadow)
+
+![Screenshot](https://i.imgur.com/0bxASqd.png?width=10pc&classes=shadow)
 
 ### Testing the DNS server
 
@@ -94,4 +100,8 @@ Address: 172.217.29.206
 
 Start the server at [custom port](#configure-your-dns) and solving from it
 
-	nslookup -port=8980 google.com 127.0.0.1
+```bash
+$ nslookup -port=8980 google.com 127.0.0.1
+```
+
+[1]: https://imgur.com/a/LlDH8AM
