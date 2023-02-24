@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class UDPServerPool {
 
-  private final RequestHandlerDefault requestHandler;
+  private final RequestHandler requestHandler;
   private List<UDPServer> servers = new ArrayList<>();
 
   public void start(int port) {

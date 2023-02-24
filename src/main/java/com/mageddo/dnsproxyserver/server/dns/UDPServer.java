@@ -16,7 +16,7 @@ public class UDPServer {
 
   private final ExecutorService pool;
   private final SocketAddress address;
-  private final RequestHandlerDefault requestHandler;
+  private final RequestHandler requestHandler;
 
   public UDPServer(SocketAddress address, RequestHandlerDefault requestHandler) {
     this.address = address;
