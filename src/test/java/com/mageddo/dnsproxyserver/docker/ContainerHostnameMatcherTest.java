@@ -64,7 +64,7 @@ class ContainerHostnameMatcherTest {
     // arrange
     final var inspect = InspectContainerResponseTemplates.build();
     final var hostname = Hostname.of("laughing_swanson.docker");
-    final var config = Configs.buildAndRegister(new String[]{"--register-container-names"});
+    final var config = Configs.build(new String[]{"--register-container-names"});
 
     // act
     final var test = ContainerHostnameMatcher.test(inspect, hostname, config);
@@ -80,7 +80,7 @@ class ContainerHostnameMatcherTest {
     // arrange
     final var inspect = InspectContainerResponseTemplates.build();
     final var hostname = Hostname.of("nginx-service.docker");
-    final var config = Configs.buildAndRegister(new String[]{"--register-container-names"});
+    final var config = Configs.build(new String[]{"--register-container-names"});
 
     // act
     final var test = ContainerHostnameMatcher.test(inspect, hostname, config);

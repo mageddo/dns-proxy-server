@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.config;
 
+import com.mageddo.commons.lang.Singletons;
 import com.mageddo.dnsproxyserver.config.entrypoint.ConfigEnv;
 import com.mageddo.dnsproxyserver.config.entrypoint.ConfigFlag;
 import com.mageddo.dnsproxyserver.config.entrypoint.ConfigJson;
@@ -27,16 +28,6 @@ import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonNullRequiring
 
 @Slf4j
 public class Configs {
-
-  private static Config instance;
-
-  public static Config build(ConfigFlag configFlag) {
-    final var configEnv = ConfigEnv.fromEnv();
-    final var configPath = buildConfigPath(configFlag, configEnv.getCurrentPath());
-    final var jsonConfig = JsonConfigs.loadConfig(configPath);
-    log.info("status=configuring, configFile={}", configPath);
-    return build(configFlag, configEnv, jsonConfig, configPath);
-  }
 
   public static Config build(ConfigFlag flag, ConfigEnv env, ConfigJson json, Path configPath) {
     return Config.builder()
@@ -86,24 +77,32 @@ public class Configs {
     };
   }
 
-  public static Config buildAndRegister(String[] args) {
+  public static Config getInstance() {
+    return getInstance(new String[]{});
+  }
+
+  public static Config getInstance(String[] args) {
+    final Config v = Singletons.get(Config.class);
+    if (v != null) {
+      return v;
+    } else {
+      return Singletons.createOrGet(Config.class, () -> build(args));
+    }
+  }
+
+  public static void clear() {
+    Singletons.clear(Config.class);
+  }
+
+  /**
+   * @see #getInstance(String[])
+   */
+  public static Config build(String[] args) {
     final var config = ConfigFlag.parse(args);
     if (BooleanUtils.isTrue(config.getHelp()) || config.isVersion()) {
       System.exit(0);
     }
-    return buildAndRegister(config);
-  }
-
-  public static Config buildAndRegister(ConfigFlag flag) {
-    return instance = build(flag);
-  }
-
-  public static Config getInstance() {
-    return instance != null ? instance : buildAndRegister(new String[]{});
-  }
-
-  public static void clear() {
-    instance = null;
+    return build(config);
   }
 
   static Path buildConfigPath(ConfigFlag configFlag, Path workDir) {
@@ -127,8 +126,17 @@ public class Configs {
       .toAbsolutePath();
   }
 
+  static Config build(ConfigFlag configFlag) {
+    final var configEnv = ConfigEnv.fromEnv();
+    final var configPath = buildConfigPath(configFlag, configEnv.getCurrentPath());
+    final var jsonConfig = JsonConfigs.loadConfig(configPath);
+    log.info("status=configuring, configFile={}", configPath);
+    return build(configFlag, configEnv, jsonConfig, configPath);
+  }
+
   static boolean runningInTestsAndNoCustomConfigPath(ConfigFlag configFlag) {
     return !Arrays.toString(configFlag.getArgs()).contains("--conf-path") && Tests.runningOnJunit();
   }
+
 
 }

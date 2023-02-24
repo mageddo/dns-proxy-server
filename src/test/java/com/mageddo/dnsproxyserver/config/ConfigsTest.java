@@ -35,7 +35,7 @@ class ConfigsTest {
     assertFalse(Files.exists(tmpConfigFile));
 
     // act
-    final var config = Configs.buildAndRegister(args);
+    final var config = Configs.build(args);
 
     // assert
     assertEquals(
@@ -64,7 +64,7 @@ class ConfigsTest {
     final var args = new String[]{"--conf-path", tmpConfigFile.toString()};
 
     // act
-    final var config = Configs.buildAndRegister(args);
+    final var config = Configs.build(args);
 
     // assert
     assertEquals(
@@ -114,7 +114,7 @@ class ConfigsTest {
     final var args = new String[]{"--log-level", "warning"};
 
     // act
-    final var config = Configs.buildAndRegister(args);
+    final var config = Configs.build(args);
 
     // assert
     assertEquals(LogLevel.WARNING, config.getLogLevel());

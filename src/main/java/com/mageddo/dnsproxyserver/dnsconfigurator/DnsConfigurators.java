@@ -54,7 +54,7 @@ public class DnsConfigurators {
       }, 5, 20, TimeUnit.SECONDS);
   }
 
-  public DnsConfigurator getInstance() {
+  DnsConfigurator getInstance() {
     if (OS.isFamilyUnix() && !OS.isFamilyMac()) {
       return this.linuxConfigurator;
     }

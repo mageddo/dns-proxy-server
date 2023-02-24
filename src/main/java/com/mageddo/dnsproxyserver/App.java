@@ -18,7 +18,7 @@ public class App {
   public static void main(String[] args) {
 
     // configurations
-    final var config = Configs.buildAndRegister(args);
+    final var config = Configs.getInstance(args);
 
     // setup quarkus configs
     QuarkusConfig.setup(config);
