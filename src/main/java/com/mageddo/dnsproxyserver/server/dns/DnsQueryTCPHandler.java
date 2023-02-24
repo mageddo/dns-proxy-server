@@ -89,7 +89,9 @@ class DnsQueryTCPHandler implements SocketClientMessageHandler {
       for (int i = 0; i < msgSizeBuf.limit(); i++) {
         final byte read = (byte) in.read();
         if (read == -1) {
-          log.info("status=incompleteHeader, bytes={}", i + 1);
+          if(i >= 1){
+            log.info("status=incompleteHeader, bytes={}", i + 1);
+          }
           return -1;
         }
         msgSizeBuf.put(i, read);
