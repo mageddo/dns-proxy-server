@@ -6,6 +6,7 @@ import com.mageddo.dnsproxyserver.dnsconfigurator.linux.LinuxDnsConfigurator;
 import com.mageddo.dnsproxyserver.server.dns.IP;
 import io.quarkus.runtime.StartupEvent;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.OS;
 import org.apache.commons.lang3.ClassUtils;
@@ -18,11 +19,13 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Singleton
-@AllArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class DnsConfigurators {
 
   private final LinuxDnsConfigurator linuxConfigurator;
   private final DpsIpDiscover ipDiscover;
+
+  private volatile DnsConfigurator instance;
 
   void onStart(@Observes StartupEvent ev) {
     final var config = Configs.getInstance();
@@ -55,6 +58,10 @@ public class DnsConfigurators {
   }
 
   DnsConfigurator getInstance() {
+    return this.instance != null ? this.instance : (this.instance = getInstance0());
+  }
+
+  private DnsConfigurator getInstance0() {
     if (OS.isFamilyUnix() && !OS.isFamilyMac()) {
       return this.linuxConfigurator;
     }
@@ -62,6 +69,7 @@ public class DnsConfigurators {
     return new DnsConfigurator() {
       public void configure(IP ip) {
       }
+
       public void restore() {
       }
     };
