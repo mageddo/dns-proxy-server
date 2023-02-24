@@ -5,6 +5,6 @@ import com.mageddo.dnsproxyserver.server.dns.IP;
 import java.nio.file.Path;
 
 public interface DnsConfigurator {
-  void configure(IP ip, Path conf);
-  void restore(Path conf);
+  void configure(IP ip);
+  void restore();
 }

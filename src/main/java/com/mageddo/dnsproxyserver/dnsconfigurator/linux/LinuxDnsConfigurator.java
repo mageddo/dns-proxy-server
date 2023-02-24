@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
+import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.dnsconfigurator.DnsConfigurator;
 import com.mageddo.dnsproxyserver.resolvconf.ResolvConfParser;
 import com.mageddo.dnsproxyserver.server.dns.IP;
@@ -18,14 +19,18 @@ import java.nio.file.Path;
 public class LinuxDnsConfigurator implements DnsConfigurator {
 
   @Override
-  public void configure(IP ip, Path conf) {
-    ResolvConfParser.process(conf, new SetMachineDNSServerHandler(ip.raw()));
+  public void configure(IP ip) {
+    ResolvConfParser.process(this.getConfPath(), new SetMachineDNSServerHandler(ip.raw()));
   }
 
   @Override
-  public void restore(Path conf) {
+  public void restore() {
+    final var conf = this.getConfPath();
     ResolvConfParser.process(conf, new DnsServerCleanerHandler());
     log.debug("status=restoredResolvConf, path={}", conf);
   }
 
+  Path getConfPath() {
+    return Configs.getInstance().getResolvConfPath();
+  }
 }

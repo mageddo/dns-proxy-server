@@ -1,6 +1,5 @@
-package com.mageddo.dnsproxyserver.dnsconfigurator;
+package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
-import com.mageddo.dnsproxyserver.dnsconfigurator.linux.LinuxDnsConfigurator;
 import com.mageddo.dnsproxyserver.server.dns.IP;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -9,19 +8,25 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
 
 class LinuxDnsConfiguratorTest {
 
-  LinuxDnsConfigurator configurator = new LinuxDnsConfigurator();
+  LinuxDnsConfigurator configurator = spy(new LinuxDnsConfigurator());
 
   @Test
   void mustConfigureDpsServerOnEmptyFile(@TempDir Path tmpDir) throws Exception {
 
     // arrrange
     final var resolvFile = Files.createTempFile(tmpDir, "resolv", ".conf");
+    doReturn(resolvFile)
+      .when(this.configurator)
+      .getConfPath()
+    ;
 
     // act
-    this.configurator.configure(IP.of("10.10.0.1"), resolvFile);
+    this.configurator.configure(IP.of("10.10.0.1"));
 
     // assert
     assertEquals(
@@ -39,9 +44,13 @@ class LinuxDnsConfiguratorTest {
     // arrrange
     final var resolvFile = tmpDir.resolve("resolv.conf");
     Files.writeString(resolvFile, "nameserver 8.8.8.8");
+    doReturn(resolvFile)
+      .when(this.configurator)
+      .getConfPath()
+    ;
 
     // act
-    this.configurator.configure(IP.of("10.10.0.1"), resolvFile);
+    this.configurator.configure(IP.of("10.10.0.1"));
 
     // assert
     assertEquals(
@@ -61,9 +70,13 @@ class LinuxDnsConfiguratorTest {
     // arrrange
     final var resolvFile = tmpDir.resolve("resolv.conf");
     Files.writeString(resolvFile, "nameserver 8.8.8.8\nnameserver 4.4.4.4 # dps-entry");
+    doReturn(resolvFile)
+      .when(this.configurator)
+      .getConfPath()
+    ;
 
     // act
-    this.configurator.configure(IP.of("10.10.0.1"), resolvFile);
+    this.configurator.configure(IP.of("10.10.0.1"));
 
     // assert
     assertEquals(
@@ -87,9 +100,13 @@ class LinuxDnsConfiguratorTest {
       # nameserver 8.8.8.8 # dps-comment
       nameserver 9.9.9.9 # dps-entry
       """);
+    doReturn(resolvFile)
+      .when(this.configurator)
+      .getConfPath()
+    ;
 
     // act
-    this.configurator.restore(resolvFile);
+    this.configurator.restore();
 
     // assert
     assertEquals(

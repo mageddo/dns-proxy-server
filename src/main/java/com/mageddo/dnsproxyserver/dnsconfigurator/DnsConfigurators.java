@@ -32,14 +32,14 @@ public class DnsConfigurators {
 
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
       log.debug("status=restoringResolvConf, path={}", config.getResolvConfPath());
-      this.getInstance().restore(config.getResolvConfPath());
+      this.getInstance().restore();
     }));
 
     ThreadPool
       .def()
       .scheduleWithFixedDelay(() -> {
         try {
-          this.getInstance().configure(this.ipDiscover.findDpsIP(), config.getResolvConfPath());
+          this.getInstance().configure(this.ipDiscover.findDpsIP());
         } catch (Exception e) {
           if (e instanceof IOException) {
             log.warn(
