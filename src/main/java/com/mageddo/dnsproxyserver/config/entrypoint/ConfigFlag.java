@@ -149,6 +149,7 @@ public class ConfigFlag implements Callable<Boolean> {
       commandLine.setOut(writer);
     }
     commandLine.setUsageHelpWidth(120);
+    commandLine.setColorScheme(CommandLine.Help.defaultColorScheme(CommandLine.Help.Ansi.OFF));
 
     final var flags = (ConfigFlag) commandLine.getCommand();
     flags.args = args;
