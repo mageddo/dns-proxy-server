@@ -1,9 +1,13 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
+import com.mageddo.utils.Shorts;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.Validate;
 import org.xbill.DNS.Message;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 
@@ -19,57 +23,58 @@ class DnsQueryTCPHandler implements SocketClientMessageHandler {
   @Override
   public void handle(SocketClient client) {
     try {
-      final var buff = new byte[512];
       while (client.isOpen()) {
-        final var available = client.getIn().available();
-        if (available == 0) {
-//            Threads.sleep(SocketClient.FPS_60);
-//            continue;
-          break;
-        }
 
-        final var read = client.getIn().read(buff, 0, Math.min(available, buff.length));
-        if (read == -1) {
-          log.debug("status=streamEnded, time={}", client.getRunningTime());
-          return;
-        }
+        final var in = client.getIn();
+        final var msgSize = readHeaderAndValidate(in);
+        final var buff = readBodyAndValidate(in, msgSize);
 
-        final var msgSize = ByteBuffer
-          .wrap(buff, 0, 2)
-          .getShort();
+        final var query = new Message(buff);
+        final var res = this.handler.handle(query, "tcp")
+          .toWire();
 
-        if (msgSize != read - 2) {
-          log.warn("status=headerMsgSizeDifferentFromReadBytes!, haderMsgSize={}, read={}", msgSize, read - 2);
-        }
-        try {
-          final var msgBuff = ByteBuffer.wrap(buff, 2, msgSize);
-          final var reqMsg = new Message(msgBuff);
-          final var res = this.handler
-            .handle(reqMsg, "tcp")
-            .toWire()
-            ;
-          final var sizeArr = ByteBuffer
-            .allocate(2)
-            .putShort((short) res.length)
-            .array();
-          client.getOut().write(sizeArr);
-          client.getOut().write(res);
-          client.getOut().flush();
+        final var out = client.getOut();
+        out.write(Shorts.toBytes((short) res.length));
+        out.write(res);
+        out.flush();
 
-          log.debug(
-            "status=success, reqMsgSize={}, resMsgSize={}, req={}",
-            msgSize, res.length, Messages.simplePrint(reqMsg)
-          );
+        log.debug(
+          "status=success, queryMsgSize={}, resMsgSize={}, req={}",
+          msgSize, res.length, Messages.simplePrint(query)
+        );
 
-        } catch (Exception e) {
-          log.warn(
-            "status=request-failed, length={}, msg={}",
-            msgSize, e.getMessage(), e
-          );
-        }
       }
+    } catch (Exception e) {
+      log.warn("status=request-failed, msg={}", e.getMessage(), e);
+    }
+  }
+
+  static byte[] readBodyAndValidate(InputStream in, short msgSize) {
+    try {
+      final var buff = new byte[msgSize];
+      final var read = in.read(buff, 0, msgSize);
+      Validate.isTrue(
+        msgSize == read,
+        "status=headerMsgSizeDifferentFromReadBytes!, haderMsgSize=%d, read=%d",
+        msgSize, read
+      );
+      return buff;
     } catch (IOException e) {
       throw new UncheckedIOException(e);
+    }
+  }
+
+  static short readHeaderAndValidate(InputStream in) {
+    try {
+      final var msgSizeBuf = ByteBuffer.allocate(2);
+      final int read = in.read(msgSizeBuf.array(), 0, msgSizeBuf.limit());
+      Validate.isTrue(
+        read == msgSizeBuf.limit(),
+        "Must read the exactly header size, read=%d, expected=%d", read, msgSizeBuf.limit()
+      );
+      return msgSizeBuf.getShort();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 

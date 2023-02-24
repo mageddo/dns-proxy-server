@@ -5,12 +5,8 @@ import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dnsproxyserver.templates.MessageTemplates;
 import com.mageddo.dnsproxyserver.templates.SocketClientTemplates;
 import com.mageddo.utils.Shorts;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.xbill.DNS.Message;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -40,7 +36,13 @@ class DnsQueryTCPHandlerTest {
     ThreadPool
       .def()
       .schedule(
-        () -> writeMsgHeaderSlowly(query, queryOut),
+        () -> {
+          writeMsgHeaderSlowly(queryOut, (short) query.numBytes());
+
+          final var data = query.toWire();
+          writeQueryMsgSlowly(out, data);
+
+        },
         50,
         TimeUnit.MILLISECONDS
       );
@@ -59,9 +61,16 @@ class DnsQueryTCPHandlerTest {
 
   }
 
-  static void writeMsgHeaderSlowly(Message query, OutputStream out) {
+  static void writeQueryMsgSlowly(ByteArrayOutputStream out, byte[] data) {
+    final var middleIndex = data.length / 2;
+    out.write(data, 0, middleIndex);
+    Threads.sleep(30);
+    out.write(data, middleIndex, data.length - middleIndex);
+  }
+
+  static void writeMsgHeaderSlowly(OutputStream out, short numBytes) {
     try {
-      final var bytes = Shorts.toBytes((short) query.numBytes());
+      final var bytes = Shorts.toBytes(numBytes);
       out.write(bytes[0]);
       Threads.sleep(30);
       out.write(bytes[1]);
