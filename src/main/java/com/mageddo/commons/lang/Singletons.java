@@ -19,7 +19,7 @@ public class Singletons {
   public static <T> T createOrGet(String key, Supplier<T> sup) {
     return (T) store.computeIfAbsent(key, _k -> sup.get());
   }
-
+// https://stackoverflow.com/questions/15156840/singleton-class-with-several-different-classloaders
 //  public static <T> T createOrGet(String key, Supplier<T> sup) {
 //    // There should be just one system class loader object in the whole JVM.
 //    synchronized (ClassLoader.getSystemClassLoader()) {
