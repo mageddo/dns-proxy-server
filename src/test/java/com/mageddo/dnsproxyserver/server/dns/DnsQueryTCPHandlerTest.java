@@ -5,6 +5,7 @@ import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dnsproxyserver.templates.MessageTemplates;
 import com.mageddo.dnsproxyserver.templates.SocketClientTemplates;
 import com.mageddo.utils.Shorts;
+import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -13,9 +14,11 @@ import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.UncheckedIOException;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
 class DnsQueryTCPHandlerTest {
@@ -25,22 +28,27 @@ class DnsQueryTCPHandlerTest {
   DnsQueryTCPHandler queryHandler = new DnsQueryTCPHandler(this.handler);
 
   @Test
-  void mustReadEntireMessageBeforeHandleIt() throws IOException {
+  void mustReadEntireMessageBeforeHandleIt() throws Exception {
     // arrange
     final var query = MessageTemplates.acmeAQuery();
+    final var querySize = query.toWire().length;
     final var out = new ByteArrayOutputStream();
 
     final var in = new PipedInputStream();
     final var queryOut = new PipedOutputStream(in);
 
+
     ThreadPool
       .def()
       .schedule(
         () -> {
-          writeMsgHeaderSlowly(queryOut, (short) query.numBytes());
+
+          writeMsgHeaderSlowly(queryOut, (short) querySize);
 
           final var data = query.toWire();
-          writeQueryMsgSlowly(out, data);
+          writeQueryMsgSlowly(queryOut, data);
+
+          IOUtils.closeQuietly(queryOut);
 
         },
         50,
@@ -53,19 +61,26 @@ class DnsQueryTCPHandlerTest {
     this.queryHandler.handle(client);
 
     // assert
+    final var actualSize = out.size() - Short.BYTES;
+    assertEquals(querySize, actualSize);
+    assertEquals(querySize, Shorts.fromBytes(out.toByteArray(), 0));
     assertArrayEquals(
       query.toWire(),
-      out.toByteArray(),
+      Arrays.copyOfRange(out.toByteArray(), 2, out.size()),
       String.format("%s <> %s", query, out)
     );
 
   }
 
-  static void writeQueryMsgSlowly(ByteArrayOutputStream out, byte[] data) {
-    final var middleIndex = data.length / 2;
-    out.write(data, 0, middleIndex);
-    Threads.sleep(30);
-    out.write(data, middleIndex, data.length - middleIndex);
+  static void writeQueryMsgSlowly(OutputStream out, byte[] data) {
+    try {
+      final var middleIndex = data.length / 2;
+      out.write(data, 0, middleIndex);
+      Threads.sleep(30);
+      out.write(data, middleIndex, data.length - middleIndex);
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
   }
 
   static void writeMsgHeaderSlowly(OutputStream out, short numBytes) {

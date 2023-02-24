@@ -10,4 +10,10 @@ public class Shorts {
       .array()
       ;
   }
+
+  public static short fromBytes(byte[] array, int from) {
+    return ByteBuffer
+      .wrap(array)
+      .getShort(from);
+  }
 }
