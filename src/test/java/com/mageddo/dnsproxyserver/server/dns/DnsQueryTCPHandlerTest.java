@@ -47,6 +47,8 @@ class DnsQueryTCPHandlerTest {
           final var data = query.toWire();
           writeQueryMsgSlowly(queryOut, data);
 
+          // wait some time before "timeout"
+          Threads.sleep(50);
           IOUtils.closeQuietly(queryOut);
 
         },
