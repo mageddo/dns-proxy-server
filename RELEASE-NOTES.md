@@ -1,3 +1,6 @@
+### 3.1.7-beta
+* TCP Server Partially message read fix, fixing `status=headerMsgSizeDifferentFromReadBytes!` message
+
 ### 3.1.6-beta
 * Work only with up interfaces
 * Re-activate loopback interfaces
