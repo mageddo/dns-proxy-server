@@ -1,3 +1,7 @@
+### 3.1.6-beta
+* Work only with up interfaces
+* Re-activate loopback interfaces
+
 ### 3.1.5-beta
 * Fixing UDP binding server to any interface on the machine wasn't working for some clients
  
