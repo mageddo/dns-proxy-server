@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.dnsconfigurator;
 import com.mageddo.commons.concurrent.ThreadPool;
 import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.LinuxDnsConfigurator;
+import com.mageddo.dnsproxyserver.server.dns.IP;
 import io.quarkus.runtime.StartupEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +58,12 @@ public class DnsConfigurators {
     if (OS.isFamilyUnix() && !OS.isFamilyMac()) {
       return this.linuxConfigurator;
     }
-    log.debug("status=unsupported-platform-to-set-as-default-dns-automatically, os={}", System.getProperty("os.name"));
-    return null;
+    log.info("status=unsupported-platform-to-set-as-default-dns-automatically, os={}", System.getProperty("os.name"));
+    return new DnsConfigurator() {
+      public void configure(IP ip) {
+      }
+      public void restore() {
+      }
+    };
   }
 }
