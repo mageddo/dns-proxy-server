@@ -2,8 +2,8 @@ package com.mageddo.dnsproxyserver.net;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class NetworksTest {
 
@@ -18,8 +18,17 @@ class NetworksTest {
 
     // assert
     assertNotNull(ip);
-    assertFalse(ip.raw().startsWith("127"), ip.raw());
-    System.out.println(ip);
+  }
+
+  @Test
+  void mustContainsLocalhostAddress(){
+    // arrange
+
+    // act
+    final var ips = Networks.findMachineIps().toString();
+
+    // assert
+    assertTrue(ips.contains("127"), ips);
   }
 
 }

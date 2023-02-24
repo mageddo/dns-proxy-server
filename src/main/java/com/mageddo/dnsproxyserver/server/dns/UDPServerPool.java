@@ -23,6 +23,7 @@ public class UDPServerPool {
   public void start(int port) {
     this.servers = Networks
       .findMachineIps()
+      .stream()
       .map(it -> new UDPServer(Ips.toSocketAddress(it.raw(), port), this.requestHandler))
       .peek(UDPServer::start)
       .toList();
