@@ -18,7 +18,7 @@ public class UDPServer {
   private final SocketAddress address;
   private final RequestHandler requestHandler;
 
-  public UDPServer(SocketAddress address, RequestHandlerDefault requestHandler) {
+  public UDPServer(SocketAddress address, RequestHandler requestHandler) {
     this.address = address;
     this.requestHandler = requestHandler;
     this.pool = ThreadPool.create();
