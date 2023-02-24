@@ -1,5 +1,6 @@
 ### 3.2.0-beta
 * Better error treating and log formatting
+* TCP Server: Ensure will read the header before go to next step
 
 ### 3.1.7-beta
 * TCP Server Partially message read fix, fixing `status=headerMsgSizeDifferentFromReadBytes!` message
