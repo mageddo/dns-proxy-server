@@ -2,7 +2,9 @@ package com.mageddo.dnsproxyserver.server.dns;
 
 import com.mageddo.utils.Shorts;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.Validate;
+import org.slf4j.MDC;
 import org.xbill.DNS.Message;
 
 import java.io.IOException;
@@ -26,6 +28,7 @@ class DnsQueryTCPHandler implements SocketClientMessageHandler {
   @Override
   public void handle(SocketClient client) {
     try {
+      MDC.put("clientId", String.valueOf(client.getId()));
       while (client.isOpen()) {
 
         final var in = client.getIn();
@@ -34,15 +37,22 @@ class DnsQueryTCPHandler implements SocketClientMessageHandler {
           return;
         }
         final var buff = readBodyAndValidate(in, msgSize);
-
         final var query = new Message(buff);
         final var res = this.handler.handle(query, "tcp")
           .toWire();
 
-        final var out = client.getOut();
-        out.write(Shorts.toBytes((short) res.length));
-        out.write(res);
-        out.flush();
+        try {
+          final var out = client.getOut();
+          out.write(Shorts.toBytes((short) res.length));
+          out.write(res);
+          out.flush();
+        } catch (IOException e) {
+          log.info(
+            "status=outIsClosed, query={}, msg={}, class={}",
+            Messages.simplePrint(query), e.getMessage(), ClassUtils.getSimpleName(e)
+          );
+          continue;
+        }
 
         log.debug(
           "status=success, queryMsgSize={}, resMsgSize={}, req={}",
@@ -52,6 +62,8 @@ class DnsQueryTCPHandler implements SocketClientMessageHandler {
       }
     } catch (Exception e) {
       log.warn("status=request-failed, msg={}", e.getMessage(), e);
+    } finally {
+      MDC.clear();
     }
   }
 
