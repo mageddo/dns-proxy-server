@@ -48,13 +48,16 @@ public class UDPServer {
 
   void handle(DatagramSocket server, DatagramPacket datagram) {
     try {
-      final var reqMsg = new Message(datagram.getData());
-      final var resData = this.requestHandler.handle(reqMsg, "udp").toWire();
+      final var query = new Message(datagram.getData());
+      final var res = this.requestHandler.handle(query, "udp");
+      final var resData = res.toWire();
 
       server.send(new DatagramPacket(resData, resData.length, datagram.getSocketAddress()));
+
       log.debug(
-        "status=success, dataLength={}, datagramLength={}, serverAddr={}, clientAddr={}",
-        datagram.getData().length, datagram.getLength(), server.getLocalAddress(), datagram.getSocketAddress()
+        "status=success, query={}, res={}, serverAddr={}, clientAddr={}, dataLength={}, datagramLength={}",
+        Messages.simplePrint(query), Messages.simplePrint(res),
+        server.getLocalAddress(), datagram.getSocketAddress(), datagram.getData().length, datagram.getLength()
       );
     } catch (Exception e) {
       log.warn("status=messageHandleFailed, msg={}", e.getMessage(), e);
