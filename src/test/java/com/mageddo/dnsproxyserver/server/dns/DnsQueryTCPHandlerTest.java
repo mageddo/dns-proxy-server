@@ -1,13 +1,23 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
+import com.mageddo.commons.concurrent.ThreadPool;
+import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dnsproxyserver.templates.MessageTemplates;
 import com.mageddo.dnsproxyserver.templates.SocketClientTemplates;
+import com.mageddo.utils.Shorts;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.xbill.DNS.Message;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.UncheckedIOException;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.mockito.Mockito.mock;
@@ -19,11 +29,22 @@ class DnsQueryTCPHandlerTest {
   DnsQueryTCPHandler queryHandler = new DnsQueryTCPHandler(this.handler);
 
   @Test
-  void mustReadEntireMessageBeforeHandleIt() {
+  void mustReadEntireMessageBeforeHandleIt() throws IOException {
     // arrange
     final var query = MessageTemplates.acmeAQuery();
-    final var in = new ByteArrayInputStream(query.toWire());
     final var out = new ByteArrayOutputStream();
+
+    final var in = new PipedInputStream();
+    final var queryOut = new PipedOutputStream(in);
+
+    ThreadPool
+      .def()
+      .schedule(
+        () -> writeMsgHeaderSlowly(query, queryOut),
+        50,
+        TimeUnit.MILLISECONDS
+      );
+
     final var client = SocketClientTemplates.buildWith(in, out);
 
     // act
@@ -36,5 +57,16 @@ class DnsQueryTCPHandlerTest {
       String.format("%s <> %s", query, out)
     );
 
+  }
+
+  static void writeMsgHeaderSlowly(Message query, OutputStream out) {
+    try {
+      final var bytes = Shorts.toBytes((short) query.numBytes());
+      out.write(bytes[0]);
+      Threads.sleep(30);
+      out.write(bytes[1]);
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
   }
 }
