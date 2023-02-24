@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
 /**
- * Lead at treat client messages.
+ * Lead and treat TCP Socket Client messages to something useful.
  */
 public interface SocketClientMessageHandler {
 
