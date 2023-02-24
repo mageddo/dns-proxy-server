@@ -106,12 +106,12 @@ public class Configs {
     instance = null;
   }
 
-  static Path buildConfigPath(ConfigFlag configFlag, Path currentPath) {
+  static Path buildConfigPath(ConfigFlag configFlag, Path workDir) {
     if (runningInTestsAndNoCustomConfigPath(configFlag)) {
       return Files.createTempFileExitOnExit("dns-proxy-server-junit", ".json");
     }
-    if (currentPath != null) {
-      return currentPath
+    if (workDir != null) {
+      return workDir
         .resolve(configFlag.getConfigPath())
         .toAbsolutePath()
         ;

@@ -95,16 +95,17 @@ class ConfigsTest {
   }
 
   @Test
-  void mustBuildConfPathRelativeToWorkDir(){
+  void mustBuildConfPathRelativeToWorkDir(@TempDir Path tmpDir){
     // arrange
     final var flags = ConfigFlagTemplates.defaultWithConfigPath(Paths.get("conf/config.json"));
-    final var currentPath = Paths.get("/tmp/");
+    final var workDir = tmpDir.resolve("custom-work-dir");
 
     // act
-    final var path = Configs.buildConfigPath(flags, currentPath);
+    final var configPath = Configs.buildConfigPath(flags, workDir);
 
     // assert
-    assertEquals("/tmp/conf/config.json", path.toString());
+    assertEquals("config.json", configPath.getFileName().toString());
+    assertEquals(workDir.getFileName().toString(), configPath.getParent().getParent().getFileName().toString());
   }
 
   @Test
