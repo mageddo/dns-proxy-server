@@ -59,7 +59,7 @@ public class TCPServer {
       while (itr.hasNext()) {
         final var client = itr.next().get();
         if (client == null) {
-          log.debug("status=clientIsGone");
+          log.debug("status=clientWasGarbageCollected");
         } else if (client.isClosed()) {
           itr.remove();
           log.debug("status=removedAlreadyClosed, runningTime={}", client.getRunningTime());

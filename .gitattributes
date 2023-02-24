@@ -1,0 +1,28 @@
+# https://help.github.com/articles/dealing-with-line-endings/
+
+*.java text eol=lf
+*.md text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.properties text eol=lf
+*.txt text eol=lf
+*.log text eol=lf
+*.gradle text eol=lf
+*.jenkinsfile text eol=lf
+gradlew text eol=lf
+*.xml eol=lf
+*.md eol=lf
+*.sql eol=lf
+.gitignore eol=lf
+.env eol=lf
+.gitattributes eol=lf
+
+
+*.bat text eol=crlf
+
+*.so binary
+*.dll binary
+*.exe binary
+*.jar binary
+*.png binary
+*.jpg binary
