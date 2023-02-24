@@ -11,6 +11,9 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 
+/**
+ * Handles a TCP packet to a DNS query then sends the response back.
+ */
 @Slf4j
 class DnsQueryTCPHandler implements SocketClientMessageHandler {
 
