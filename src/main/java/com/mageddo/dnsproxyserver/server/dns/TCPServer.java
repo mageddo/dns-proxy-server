@@ -62,6 +62,7 @@ public class TCPServer {
           final var client = itr.next().get();
           if (client == null) {
             log.debug("status=clientWasGarbageCollected");
+            itr.remove();
             continue;
           }
           MDC.put("clientId", String.valueOf(client.getId()));
