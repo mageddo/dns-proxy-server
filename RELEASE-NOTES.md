@@ -1,3 +1,7 @@
+### 3.2.1-beta
+* Respecting OS to configure as default DNS
+
+
 ### 3.2.0-beta
 * Better error treating and log formatting
 * TCP Server: Ensure will read the header before go to next step
