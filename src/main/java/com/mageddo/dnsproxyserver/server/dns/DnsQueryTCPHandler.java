@@ -86,14 +86,14 @@ class DnsQueryTCPHandler implements SocketClientMessageHandler {
   static short readHeaderAndValidate(InputStream in) {
     try {
       final var msgSizeBuf = ByteBuffer.allocate(2);
-      final int read = in.read(msgSizeBuf.array(), 0, msgSizeBuf.limit());
-      if (read == -1) {
-        return -1;
+      for (int i = 0; i < msgSizeBuf.limit(); i++) {
+        final byte read = (byte) in.read();
+        if (read == -1) {
+          log.info("status=incompleteHeader, bytes={}", i + 1);
+          return -1;
+        }
+        msgSizeBuf.put(i, read);
       }
-      Validate.isTrue(
-        read == msgSizeBuf.limit(),
-        "Must read the exactly header size, read=%d, expected=%d", read, msgSizeBuf.limit()
-      );
       return msgSizeBuf.getShort();
     } catch (IOException e) {
       throw new RuntimeException(e);
