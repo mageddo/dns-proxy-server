@@ -15,7 +15,7 @@ public class SimpleServer {
 
   private final UDPServerPool udpServerPool;
   private final TCPServer tcpServer;
-  private final RequestHandler requestHandler;
+  private final RequestHandlerDefault requestHandler;
 
   public void start(int port, Protocol protocol, List<Solver> solvers) {
 
