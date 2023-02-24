@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor(onConstructor = @__({@Inject}))
 public class SimpleServer {
 
-  private final UDPServer udpServer;
+  private final UDPServerPool udpServerPool;
   private final TCPServer tcpServer;
   private final RequestHandler requestHandler;
 
@@ -31,12 +31,12 @@ public class SimpleServer {
   void start0(int port, Protocol protocol) {
     final var tcpHandler = new TCPHandler(this.requestHandler);
     switch (protocol) {
-      case UDP -> this.udpServer.start(port);
+      case UDP -> this.udpServerPool.start(port);
       case TCP -> {
         this.tcpServer.start(port, null, tcpHandler);
       }
       default -> {
-        this.udpServer.start(port);
+        this.udpServerPool.start(port);
         this.tcpServer.start(port, null, tcpHandler);
       }
     }

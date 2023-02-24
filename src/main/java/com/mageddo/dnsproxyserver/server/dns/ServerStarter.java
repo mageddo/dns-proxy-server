@@ -36,7 +36,7 @@ public class ServerStarter {
       Config.findDnsServerProtocol(),
       this.solvers
     );
-    log.info("status=startingDnsServer, port={}", port);
+    log.trace("status=startingDnsServer, port={}", port);
     return this;
   }
 

@@ -4,35 +4,34 @@ import com.mageddo.commons.concurrent.ThreadPool;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.Message;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.SocketAddress;
 import java.util.concurrent.ExecutorService;
 
 @Slf4j
-@Singleton
 public class UDPServer {
 
   public static final short BUFFER_SIZE = 512;
 
   private final ExecutorService pool;
+  private final SocketAddress address;
   private final RequestHandler requestHandler;
 
-  @Inject
-  public UDPServer(RequestHandler requestHandler) {
+  public UDPServer(SocketAddress address, RequestHandler requestHandler) {
+    this.address = address;
     this.requestHandler = requestHandler;
     this.pool = ThreadPool.create();
   }
 
-  public void start(int port) {
-    this.pool.submit(() -> this.start0(port));
-    log.info("status=startingUdpServer, port={}", port);
+  public void start() {
+    this.pool.submit(this::start0);
+    log.trace("status=startingUdpServer, address={}", this.address);
   }
 
-  private void start0(int port) {
+  private void start0() {
     try {
-      final var server = new DatagramSocket(port);
+      final var server = new DatagramSocket(this.address);
       while (!server.isClosed()) {
 
         final var datagram = new DatagramPacket(new byte[BUFFER_SIZE], 0, BUFFER_SIZE);
@@ -42,7 +41,7 @@ public class UDPServer {
 
       }
     } catch (Exception e) {
-      log.error("status=dnsServerStartFailed, port={}, msg={}", port, e.getMessage(), e);
+      log.error("status=dnsServerStartFailed, address={}, msg={}", address, e.getMessage(), e);
       throw new RuntimeException(e);
     }
   }
@@ -52,17 +51,17 @@ public class UDPServer {
       final var reqMsg = new Message(datagram.getData());
       final var resData = this.requestHandler.handle(reqMsg, "udp").toWire();
 
-      final var out = new DatagramPacket(resData, resData.length);
-      out.setAddress(datagram.getAddress());
-      out.setPort(datagram.getPort());
-      server.send(out);
+      server.send(new DatagramPacket(resData, resData.length, datagram.getSocketAddress()));
       log.debug(
-        "status=success, dataLength={}, datagramLength={}",
-        datagram.getData().length, datagram.getLength()
+        "status=success, dataLength={}, datagramLength={}, serverAddr={}, clientAddr={}",
+        datagram.getData().length, datagram.getLength(), server.getLocalAddress(), datagram.getSocketAddress()
       );
     } catch (Exception e) {
       log.warn("status=messageHandleFailed, msg={}", e.getMessage(), e);
     }
   }
 
+  public SocketAddress getAddress() {
+    return this.address;
+  }
 }

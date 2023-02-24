@@ -6,6 +6,8 @@ import org.apache.commons.lang3.Validate;
 
 import java.io.UncheckedIOException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.net.UnknownHostException;
 
 public class Ips {
@@ -36,5 +38,9 @@ public class Ips {
 
   public static InetAddress toAddress(IP ip) {
     return toAddress(ip.raw());
+  }
+
+  public static SocketAddress toSocketAddress(String ip, int port) {
+    return new InetSocketAddress(Ips.toAddress(ip), port);
   }
 }
