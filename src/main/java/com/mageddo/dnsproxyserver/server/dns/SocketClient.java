@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -121,7 +123,12 @@ public class SocketClient implements Runnable, AutoCloseable {
       && !this.socket.isInputShutdown();
   }
 
-  public UUID getId() {
-    return id;
+  public String getId() {
+    return String.valueOf(this.id).substring(0, 8) + this.getSocketAddress();
   }
+
+  public SocketAddress getSocketAddress() {
+    return this.socket.getRemoteSocketAddress();
+  }
+
 }

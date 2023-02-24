@@ -28,7 +28,7 @@ class DnsQueryTCPHandler implements SocketClientMessageHandler {
   @Override
   public void handle(SocketClient client) {
     try {
-      MDC.put("clientId", String.valueOf(client.getId()));
+      MDC.put("clientId", client.getId());
       while (client.isOpen()) {
 
         final var in = client.getIn();
@@ -44,6 +44,7 @@ class DnsQueryTCPHandler implements SocketClientMessageHandler {
         try {
           final var out = client.getOut();
           out.write(Shorts.toBytes((short) res.length));
+          out.flush();
           out.write(res);
           out.flush();
         } catch (IOException e) {
@@ -51,7 +52,7 @@ class DnsQueryTCPHandler implements SocketClientMessageHandler {
             "status=outIsClosed, query={}, msg={}, class={}",
             Messages.simplePrint(query), e.getMessage(), ClassUtils.getSimpleName(e)
           );
-          continue;
+          break;
         }
 
         log.debug(
