@@ -1,3 +1,12 @@
+### 3.3.0-beta
+#### MG_RESOLVCONF will now accept more than one value
+They will separate by comma , DPS will look for each value, try to use it and stops when finds a valid value, some path which is able to configure (an existing path, with the right read and write permissions and parseable by DPS)
+
+#### The default value of MG_RESOLVCONF was changed to
+```
+/host/etc/resolv.conf,/etc/resolv.conf
+```
+
 ### 3.2.5-beta
 * Be able to run in docker container in network host mode
 * When finding network by name must find with the exact name
