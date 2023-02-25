@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
 import com.mageddo.dnsproxyserver.config.entrypoint.ConfigEnv;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.ResolvFile.Type;
-import com.mageddo.dnsproxyserver.server.dns.IP;
+import com.mageddo.dnsproxyserver.templates.IpTemplates;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -21,23 +21,76 @@ class LinuxDnsConfiguratorTest {
   LinuxDnsConfigurator configurator = spy(new LinuxDnsConfigurator());
 
   @Test
-  void mustConfigureDpsServerOnEmptyFile(@TempDir Path tmpDir) throws Exception {
+  void mustConfigureDpsServerOnEmptyFileAsResolvconf(@TempDir Path tmpDir) throws Exception {
 
     // arrrange
     final var resolvFile = Files.createTempFile(tmpDir, "resolv", ".conf");
+    final var ip = IpTemplates.local();
+
     doReturn(Collections.singletonList(resolvFile))
       .when(this.configurator)
       .buildConfPaths()
     ;
 
     // act
-    this.configurator.configure(IP.of("10.10.0.1"));
+    this.configurator.configure(ip);
 
     // assert
     assertEquals(
       """
-      nameserver 10.10.0.1 # dps-entry
-      """,
+        nameserver 10.10.0.1 # dps-entry
+        """,
+      Files.readString(resolvFile)
+    );
+
+  }
+
+  @Test
+  void mustConfigureDpsServerOnEmptyFileAsResolved(@TempDir Path tmpDir) throws Exception {
+
+    // arrrange
+    final var resolvFile = Files.createFile(tmpDir.resolve("resolved.conf"));
+    final var ip = IpTemplates.local();
+
+    doReturn(Collections.singletonList(resolvFile))
+      .when(this.configurator)
+      .buildConfPaths()
+    ;
+
+    // act
+    this.configurator.configure(ip);
+
+    // assert
+    assertEquals(
+      """
+        DNS=10.10.0.1 # dps-entry
+        """,
+      Files.readString(resolvFile)
+    );
+
+  }
+
+  @Test
+  void shouldntConfigureResolvedTwice(@TempDir Path tmpDir) throws Exception {
+
+    // arrrange
+    final var resolvFile = Files.createFile(tmpDir.resolve("resolved.conf"));
+    final var ip = IpTemplates.local();
+
+    doReturn(Collections.singletonList(resolvFile))
+      .when(this.configurator)
+      .buildConfPaths()
+    ;
+
+    // act
+    this.configurator.configure(ip);
+    this.configurator.configure(IpTemplates.loopback());
+
+    // assert
+    assertEquals(
+      """
+        DNS=10.10.0.1 # dps-entry
+        """,
       Files.readString(resolvFile)
     );
 

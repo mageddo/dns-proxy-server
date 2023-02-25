@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.dnsconfigurator.DnsConfigurator;
+import com.mageddo.dnsproxyserver.dnsconfigurator.linux.ResolvFile.Type;
 import com.mageddo.dnsproxyserver.server.dns.IP;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,15 +15,19 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.mageddo.dnsproxyserver.utils.Splits.splitToPaths;
+import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 
 @Slf4j
 @Default
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class LinuxDnsConfigurator implements DnsConfigurator {
+
+  private final AtomicBoolean resolvedConfigured = new AtomicBoolean();
 
   private volatile AtomicReference<ResolvFile> confFile;
 
@@ -38,7 +43,9 @@ public class LinuxDnsConfigurator implements DnsConfigurator {
     if (confFile.isResolvconf()) {
       ResolvconfConfigurator.process(confFile.getPath(), ip);
     } else if (confFile.isResolved()) {
-      ResolvedConfigurator.configure(confFile.getPath(), ip);
+      if (this.resolvedConfigured.compareAndSet(false, true)) {
+        ResolvedConfigurator.configure(confFile.getPath(), ip);
+      }
     } else {
       throw newUnsupportedConfType(confFile);
     }
@@ -100,12 +107,12 @@ public class LinuxDnsConfigurator implements DnsConfigurator {
   }
 
   ResolvFile toResolvFile(Path path) {
-    return ResolvFile.of(path, LinuxResolverConfDetector.detect(path));
+    return ResolvFile.of(path, firstNonNull(LinuxResolverConfDetector.detect(path), Type.RESOLVCONF));
   }
 
   void init() {
     if (this.confFile == null) {
-      this.confFile = new AtomicReference<>(findBestConfFile());
+      this.confFile = new AtomicReference<>(this.findBestConfFile());
       log.info("status=using, configFile={}", this.getConfFile());
     }
   }
