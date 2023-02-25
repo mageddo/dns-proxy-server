@@ -24,6 +24,7 @@ import static com.mageddo.dnsproxyserver.docker.Labels.DEFAULT_NETWORK_LABEL;
 @Default
 @Singleton
 @AllArgsConstructor(onConstructor = @__({@Inject}))
+// todo rename to ContainerSolvingService
 public class DockerService {
 
   private final DockerDAO dockerDAO;

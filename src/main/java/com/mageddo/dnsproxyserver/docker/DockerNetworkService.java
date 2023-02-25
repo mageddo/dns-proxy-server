@@ -24,6 +24,7 @@ import static com.mageddo.dnsproxyserver.docker.domain.Network.HOST;
 @Slf4j
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
+// fixme merge this service with @com.mageddo.dnsproxyserver.docker.DockerService
 public class DockerNetworkService {
 
   public static final String NETWORK_DPS = DPS.lowerCaseName();
@@ -59,9 +60,9 @@ public class DockerNetworkService {
       .keySet()
       .stream()
       .map(nId -> {
-        final var network = this.networkDAO.findNetwork(nId);
+        final var network = this.networkDAO.findByName(nId);
         if (network == null) {
-          log.info("status=networkIsNull, id={}", nId);
+          log.warn("status=networkIsNull, id={}", nId);
         }
         return network;
       })

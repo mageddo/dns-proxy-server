@@ -12,8 +12,11 @@ import javax.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 @QuarkusTest
 class DockerServiceTest {
@@ -64,11 +67,11 @@ class DockerServiceTest {
     final var inspect = InspectContainerResponseTemplates.withCustomBridgeAndOverylayNetwork();
     doReturn(NetworkTemplates.withOverlayDriver(overlayNetwork))
       .when(this.dockerNetworkDAO)
-      .findNetwork(eq(overlayNetwork))
+      .findByName(eq(overlayNetwork))
     ;
     doReturn(NetworkTemplates.withBridgeDriver(bridgeNetwork))
       .when(this.dockerNetworkDAO)
-      .findNetwork(eq(bridgeNetwork))
+      .findByName(eq(bridgeNetwork))
     ;
 
     // act
@@ -77,6 +80,7 @@ class DockerServiceTest {
     // assert
     assertNotNull(ip);
     assertEquals("172.17.0.4", ip);
+    verify(this.dockerNetworkDAO, never()).findNetwork(anyString());
 
   }
 }
