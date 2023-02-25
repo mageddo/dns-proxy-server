@@ -10,7 +10,7 @@ no distinction if the client is another container or not.
 You can [click here][1] to see a pratical working sample.
 
 The following table describles the possible scenarios involving docker container networks, this is an automatic decision
-made by DPS if you want to enforce some network resolution you can use `dps.network`
+made by DPS, if you want to enforce some network resolution you can use `dps.network`
 [label]({{%relref "2-features/specify-from-which-network-solve-container/_index.md" %}}) .
 
 | DPS Network          | Client Container Network | Target Container Network | Result | Description                                                                                                                                                                                                                                                                                                                                                             |
