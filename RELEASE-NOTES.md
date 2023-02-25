@@ -1,5 +1,5 @@
 ### 3.2.3-beta
-* Fixed docker container wasn't solving from env where the names weren't separated by ` , ` 
+* Fixed docker container wasn't solving from env when the names weren't separated by ` , ` 
  (spaces before and after the comma)
 
 ### 3.2.2-beta
