@@ -1,5 +1,6 @@
 ### 3.2.1-beta
 * Respecting OS to configure as default DNS
+* Other minor fixes 
 
 ### 3.2.0-beta
 * Better error treating and log formatting
