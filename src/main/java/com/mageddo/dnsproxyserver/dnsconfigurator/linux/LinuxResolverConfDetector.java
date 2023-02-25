@@ -18,10 +18,25 @@ public class LinuxResolverConfDetector {
           return Type.SYSTEMD_RESOLVED;
         }
       }
-      if(isSystemdResolved(path)){
+      if (isSystemdResolved(path)) {
         return Type.SYSTEMD_RESOLVED;
+      } else if (isResolvConf(path)) {
+        return Type.RESOLVCONF;
       }
       return null;
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
+  }
+
+  static boolean isResolvConf(Path path) {
+    try {
+      for (String line : Files.readAllLines(path)) {
+        if (line.startsWith("nameserver ")) {
+          return true;
+        }
+      }
+      return false;
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
