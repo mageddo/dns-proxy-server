@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ConfigsTest {
 
-  static final String[] excludingFields = new String[]{"version", "configPath", "resolvConfPath"};
+  static final String[] excludingFields = new String[]{"version", "configPath", "resolvConfPaths"};
 
   @Test
   void mustParseDefaultConfigsAndCreateConfigFile(@TempDir Path tmpDir) {
