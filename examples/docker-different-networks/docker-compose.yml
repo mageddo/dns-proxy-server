@@ -1,0 +1,19 @@
+version: '3'
+services:
+  dps:
+    image: defreitas/dns-proxy-server:3.2.4-beta
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/resolv.conf:/etc/resolv.conf
+    hostname: dns.mageddo
+    networks:
+      dns:
+  nginx:
+    image: nginx:1.22
+    hostname: nginx.app
+    networks:
+      test:
+
+networks:
+  dns:
+  test:
