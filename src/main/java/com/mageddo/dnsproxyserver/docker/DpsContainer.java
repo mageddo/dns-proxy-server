@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.docker;
 
 import com.mageddo.dnsproxyserver.server.dns.Hostname;
+import com.mageddo.dnsproxyserver.utils.Splits;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,7 +19,7 @@ public class DpsContainer {
     }
     for (String env : envs) {
       if (env.startsWith(HOSTNAME_ENV)) {
-        final var hosts = env.substring(HOSTNAME_ENV.length()).split("\s?,\s?");
+        final var hosts = env.substring(HOSTNAME_ENV.length()).split(Splits.COMMA_SEPARATED);
         return Arrays
           .stream(hosts)
           .map(Hostname::of)

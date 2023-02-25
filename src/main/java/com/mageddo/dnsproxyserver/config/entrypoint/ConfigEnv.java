@@ -6,7 +6,6 @@ import lombok.Value;
 import org.apache.commons.lang3.StringUtils;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Value
 @Builder
@@ -27,10 +26,11 @@ public class ConfigEnv {
   public static final String MG_DOMAIN = "MG_DOMAIN";
   public static final String MG_DPS_NETWORK = "MG_DPS_NETWORK";
   public static final String MG_DPS_NETWORK_AUTO_CONNECT = "MG_DPS_NETWORK_AUTO_CONNECT";
-  public static final Path DEFAULT_RESOLV_CONF_PATH = Paths.get("/etc/resolv.conf");
+  public static final String DEFAULT_RESOLV_CONF_PATH = "/etc/resolv.conf";
+//  public static final String DEFAULT_RESOLV_CONF_PATH = "/host/etc/resolv.conf,/etc/resolv.conf";
 
   private Path currentPath;
-  private Path resolvConfPath;
+  private String resolvConfPath;
   private String logFile;
   private String logLevel;
   private Boolean registerContainerNames;
@@ -43,7 +43,7 @@ public class ConfigEnv {
     return ConfigEnv
       .builder()
       .currentPath(Envs.getPathOrNull(MG_WORK_DIR))
-      .resolvConfPath(Envs.getPathOrDefault(MG_RESOLVCONF, DEFAULT_RESOLV_CONF_PATH))
+      .resolvConfPath(Envs.getStringOrDefault(MG_RESOLVCONF, DEFAULT_RESOLV_CONF_PATH))
       .logFile(findLogFilePath())
       .logLevel(Envs.getStringOrNull(MG_LOG_LEVEL))
       .registerContainerNames(Envs.getBooleanOrNull(MG_REGISTER_CONTAINER_NAMES))

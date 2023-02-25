@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
+package com.mageddo.dnsproxyserver.dnsconfigurator.linux.resolvconf;
 
 import com.mageddo.dnsproxyserver.resolvconf.DnsEntryType;
 import com.mageddo.dnsproxyserver.resolvconf.ResolvConfParser;

@@ -34,7 +34,7 @@ public class DnsConfigurators {
     }
 
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-      log.debug("status=restoringResolvConf, path={}", config.getResolvConfPath());
+      log.debug("status=restoringResolvConf, path={}", config.getResolvConfPaths());
       this.getInstance().restore();
     }));
 
@@ -49,10 +49,10 @@ public class DnsConfigurators {
           if (e instanceof IOException) {
             log.warn(
               "status=failedToConfigureAsDefaultDns, path={}, msg={}:{}",
-              config.getResolvConfPath(), ClassUtils.getName(e), e.getMessage()
+              config.getResolvConfPaths(), ClassUtils.getName(e), e.getMessage()
             );
           } else {
-            log.warn("status=failedToConfigureAsDefaultDns, path={}, msg={}", config.getResolvConfPath(), e.getMessage(), e);
+            log.warn("status=failedToConfigureAsDefaultDns, path={}, msg={}", config.getResolvConfPaths(), e.getMessage(), e);
           }
         }
       }, 5, 20, TimeUnit.SECONDS);

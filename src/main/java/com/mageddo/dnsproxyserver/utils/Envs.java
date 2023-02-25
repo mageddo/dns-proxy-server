@@ -38,4 +38,8 @@ public class Envs {
     }
     return Objects.equals(v, "1");
   }
+
+  public static String getStringOrDefault(String env, String def) {
+    return StringUtils.defaultIfBlank(System.getenv(env), def);
+  }
 }

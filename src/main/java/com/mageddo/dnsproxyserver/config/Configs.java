@@ -54,7 +54,7 @@ public class Configs {
       ))
       .remoteDnsServers(buildRemoteServers(json.getRemoteDnsServers()))
       .configPath(configPath)
-      .resolvConfPath(env.getResolvConfPath())
+      .resolvConfPaths(env.getResolvConfPath())
       .build();
   }
 
@@ -107,7 +107,7 @@ public class Configs {
 
   static Path buildConfigPath(ConfigFlag configFlag, Path workDir) {
     if (runningInTestsAndNoCustomConfigPath(configFlag)) {
-      return Files.createTempFileExitOnExit("dns-proxy-server-junit", ".json");
+      return Files.createTempFileDeleteOnExit("dns-proxy-server-junit", ".json");
     }
     if (workDir != null) {
       return workDir

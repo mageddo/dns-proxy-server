@@ -26,7 +26,7 @@ public class ConfigTemplates {
       .dnsServerPort(53)
       .domain("com")
       .logLevel(LogLevel.WARNING)
-      .resolvConfPath(Paths.get("/etc/resolv.conf"));
+      .resolvConfPaths(Paths.get("/etc/resolv.conf"));
   }
 
 

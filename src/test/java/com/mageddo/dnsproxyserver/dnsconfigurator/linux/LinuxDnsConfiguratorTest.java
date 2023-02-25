@@ -22,7 +22,7 @@ class LinuxDnsConfiguratorTest {
     final var resolvFile = Files.createTempFile(tmpDir, "resolv", ".conf");
     doReturn(resolvFile)
       .when(this.configurator)
-      .getConfPath()
+      .getConfPaths()
     ;
 
     // act
@@ -46,7 +46,7 @@ class LinuxDnsConfiguratorTest {
     Files.writeString(resolvFile, "nameserver 8.8.8.8");
     doReturn(resolvFile)
       .when(this.configurator)
-      .getConfPath()
+      .getConfPaths()
     ;
 
     // act
@@ -72,7 +72,7 @@ class LinuxDnsConfiguratorTest {
     Files.writeString(resolvFile, "nameserver 8.8.8.8\nnameserver 4.4.4.4 # dps-entry");
     doReturn(resolvFile)
       .when(this.configurator)
-      .getConfPath()
+      .getConfPaths()
     ;
 
     // act
@@ -102,7 +102,7 @@ class LinuxDnsConfiguratorTest {
       """);
     doReturn(resolvFile)
       .when(this.configurator)
-      .getConfPath()
+      .getConfPaths()
     ;
 
     // act
