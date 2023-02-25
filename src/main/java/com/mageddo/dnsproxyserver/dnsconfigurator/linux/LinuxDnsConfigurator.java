@@ -27,7 +27,7 @@ import static com.mageddo.dnsproxyserver.utils.Splits.splitToPaths;
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class LinuxDnsConfigurator implements DnsConfigurator {
 
-  private AtomicReference<ResolvFile> confFile;
+  private volatile AtomicReference<ResolvFile> confFile;
 
   @Override
   public void configure(IP ip) {
