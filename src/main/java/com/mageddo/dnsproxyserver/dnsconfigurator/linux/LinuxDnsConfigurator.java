@@ -5,6 +5,7 @@ import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.dnsconfigurator.DnsConfigurator;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.ResolvFile.Type;
 import com.mageddo.dnsproxyserver.server.dns.IP;
+import com.mageddo.dnsproxyserver.systemd.ResolvedService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,9 +44,7 @@ public class LinuxDnsConfigurator implements DnsConfigurator {
     if (confFile.isResolvconf()) {
       ResolvconfConfigurator.process(confFile.getPath(), ip);
     } else if (confFile.isResolved()) {
-      if (this.resolvedConfigured.compareAndSet(false, true)) {
-        ResolvedConfigurator.configure(confFile.getPath(), ip);
-      }
+      this.configureResolved(ip, confFile);
     } else {
       throw newUnsupportedConfType(confFile);
     }
@@ -64,6 +63,7 @@ public class LinuxDnsConfigurator implements DnsConfigurator {
       ResolvconfConfigurator.restore(confFile.getPath());
     } else if (confFile.isResolved()) {
       ResolvedConfigurator.restore(confFile.getPath());
+      tryRestartResolved();
     } else {
       throw newUnsupportedConfType(confFile);
     }
@@ -119,6 +119,25 @@ public class LinuxDnsConfigurator implements DnsConfigurator {
 
   private RuntimeException newUnsupportedConfType(ResolvFile confFile) {
     return new UnsupportedOperationException(String.format("conf file not supported: %s", confFile));
+  }
+
+  private void configureResolved(IP ip, ResolvFile confFile) {
+    if (this.resolvedConfigured.compareAndSet(false, true)) {
+      ResolvedConfigurator.configure(confFile.getPath(), ip);
+      tryRestartResolved();
+    }
+  }
+
+  static void tryRestartResolved() {
+    try {
+      ResolvedService.restart();
+    } catch (Throwable e) {
+      log.warn(
+        "status=can't restart resolved service, please run: "
+          + "'service systemd-resolved restart' to apply DPS as default DNS.\n{}",
+        e.getMessage()
+      );
+    }
   }
 
 }
