@@ -1,11 +1,13 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
+import com.mageddo.dnsproxyserver.dnsconfigurator.linux.ResolvFile.Type;
 import com.mageddo.utils.Files;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.nio.file.Path;
 
+import static java.nio.file.Files.writeString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LinuxResolverConfDetectorTest {
@@ -15,10 +17,10 @@ class LinuxResolverConfDetectorTest {
     final var conf = Files.createIfNotExists(tmpDir.resolve("resolv.conf"));
 
     // act
-    final var type = LinuxResolverConfDetector.build(conf);
+    final var type = LinuxResolverConfDetector.detect(conf);
 
     // assert
-    assertEquals(ResolvFile.Type.RESOLVCONF, type);
+    assertEquals(Type.RESOLVCONF, type);
   }
 
   @Test
@@ -27,9 +29,31 @@ class LinuxResolverConfDetectorTest {
     final var conf = Files.createIfNotExists(tmpDir.resolve("resolved.conf"));
 
     // act
-    final var type = LinuxResolverConfDetector.build(conf);
+    final var type = LinuxResolverConfDetector.detect(conf);
 
     // assert
-    assertEquals(ResolvFile.Type.SYSTEMD_RESOLVED, type);
+    assertEquals(Type.SYSTEMD_RESOLVED, type);
+  }
+
+  @Test
+  void mustDetectResolvedFile(@TempDir Path tmpDir) throws Exception {
+    // arrange
+    final var conf = tmpDir.resolve("xpto.conf");
+    writeString(
+      conf,
+      """
+        [Resolve]
+        # Some examples of DNS servers which may be used for DNS= and FallbackDNS=:
+        # Cloudflare: 1.1.1.1
+        # Google:     8.8.8.8
+        # Quad9:      9.9.9.9
+        DNS=
+        """
+    );
+    // act
+    final var type = LinuxResolverConfDetector.detect(conf);
+
+    // assert
+    assertEquals(Type.SYSTEMD_RESOLVED, type);
   }
 }

@@ -87,7 +87,7 @@ public class LinuxDnsConfigurator implements DnsConfigurator {
   }
 
   ResolvFile toResolvFile(Path path) {
-    return ResolvFile.of(path, LinuxResolverConfDetector.build(path));
+    return ResolvFile.of(path, LinuxResolverConfDetector.detect(path));
   }
 
   void init() {
