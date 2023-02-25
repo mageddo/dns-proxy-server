@@ -37,8 +37,8 @@ public class DpsContainerManager {
     if (!configureNetwork) {
       return;
     }
-    createWhereNotExists();
-    connectDpsContainer();
+    this.createWhereNotExists();
+    this.connectDpsContainer();
   }
 
   void createWhereNotExists() {

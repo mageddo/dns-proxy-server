@@ -1,5 +1,7 @@
 package com.mageddo.dnsproxyserver.net;
 
+import com.github.dockerjava.api.model.Container;
+import com.github.dockerjava.api.model.ContainerNetwork;
 import com.mageddo.dnsproxyserver.server.dns.IP;
 import lombok.SneakyThrows;
 
@@ -39,5 +41,23 @@ public class Networks {
     } catch (SocketException e) {
       throw new UncheckedIOException(e);
     }
+  }
+
+  public static String findIpv4Address(String networkName, Container container) {
+    final var containerNetwork = findContainerNetwork(networkName, container);
+    if (containerNetwork == null) {
+      return null;
+    }
+    return containerNetwork.getIpAddress();
+  }
+
+  public static ContainerNetwork findContainerNetwork(String networkName, Container container) {
+    final var settings = container.getNetworkSettings();
+    if (settings == null) {
+      return null;
+    }
+    return settings
+      .getNetworks()
+      .get(networkName);
   }
 }

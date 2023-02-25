@@ -9,19 +9,14 @@ assignees: ''
 
 ### What is Happening
 
-* Describe what is happening instead
-* Please also describe how to reproduce
+Please describe how to reproduce the issue with a minimal example
 
 ### What is expected
 
 Describe what you expected to happen and why
 
-### Steps to Reproduce
-
-Describe which steps should be followed to reproduce the issue
-
-**Specs:**
+### Specs
 - OS: [e.g. Ubuntu 16]
 - Docker Version: `docker version`
 - DPS Version: `docker exec dns-proxy-server /app/dns-proxy-server -version` or `./dns-proxy-server --version`
-- Please attach DPS Log file
+- Attach DPS Log file

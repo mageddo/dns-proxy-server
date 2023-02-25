@@ -57,7 +57,14 @@ public class DockerNetworkService {
     return networks
       .keySet()
       .stream()
-      .map(this.networkDAO::findNetwork)
+      .map(nId -> {
+        final var network = this.networkDAO.findNetwork(nId);
+        if (network == null) {
+          log.info("status=networkIsNull, id={}", nId);
+        }
+        return network;
+      })
+      .filter(Objects::nonNull)
       .min(NetworkComparator::compare)
       .map(network -> {
         final var name = network.getName();

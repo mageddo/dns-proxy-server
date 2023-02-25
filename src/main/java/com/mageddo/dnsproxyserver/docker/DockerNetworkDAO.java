@@ -1,7 +1,12 @@
 package com.mageddo.dnsproxyserver.docker;
 
+import com.github.dockerjava.api.model.Container;
+import com.github.dockerjava.api.model.ContainerNetwork;
 import com.github.dockerjava.api.model.Network;
 import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.List;
+import java.util.function.Predicate;
 
 public interface DockerNetworkDAO {
 
@@ -9,7 +14,9 @@ public interface DockerNetworkDAO {
 
   Network findByName(String networkName);
 
-  Pair<String, Network.ContainerNetworkConfig> findContainerWithIp(String networName, String ip);
+  Pair<String, ContainerNetwork> findContainerWithIp(String networkName, String ip);
+
+  List<Container> findNetworkContainers(String networkId);
 
   void disconnect(String networkId, String containerId);
 
@@ -18,6 +25,8 @@ public interface DockerNetworkDAO {
   void connect(String networkNameOrId, String containerId, String ip);
 
   void connectRunningContainers(String networkName);
+
+  void connectRunningContainers(String networkName, Predicate<Container> p);
 
   boolean exists(String networkId);
 

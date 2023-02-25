@@ -1,0 +1,27 @@
+version: '2'
+services:
+
+  dps:
+#    image: defreitas/dns-proxy-server:3.1.6-beta
+    image: defreitas/dns-proxy-server:3.2.0-beta
+    networks:
+      dps:
+        ipv4_address: 192.169.0.10
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - MG_LOG_LEVEL=DEBUG
+  nginx:
+    image: nginx:1.22
+    environment:
+      - HOSTNAMES=.localhost.com
+    depends_on:
+      - dps
+    dns:
+      - 192.169.0.10
+
+networks:
+  dps:
+    ipam:
+      config:
+        - subnet: 192.169.0.0/24
