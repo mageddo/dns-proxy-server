@@ -1,8 +1,9 @@
-package com.mageddo.dnsproxyserver.dnsconfigurator.linux.systemdresolved;
+package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
 import com.mageddo.conf.parser.Entry;
 import com.mageddo.conf.parser.Transformer;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.DpsTokens;
+import com.mageddo.dnsproxyserver.dnsconfigurator.linux.EntryTypes;
 
 public class CleanerHandler implements Transformer {
 

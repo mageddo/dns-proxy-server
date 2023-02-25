@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.dnsconfigurator.linux.systemdresolved;
+package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
 import com.mageddo.conf.parser.EntryType;
 

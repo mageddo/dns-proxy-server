@@ -1,8 +1,7 @@
-package com.mageddo.dnsproxyserver.dnsconfigurator.linux.systemdresolved;
+package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
 import com.mageddo.conf.parser.ConfParser;
 import com.mageddo.conf.parser.EntryType;
-import com.mageddo.dnsproxyserver.dnsconfigurator.linux.DpsTokens;
 import com.mageddo.dnsproxyserver.server.dns.IP;
 
 import java.nio.file.Path;
@@ -14,7 +13,7 @@ public class ResolvedConfigurator {
     ConfParser.process(
       confFile,
       createParser(),
-      new ConfigureDPSHandler(ip.raw())
+      new ConfigureDPSHandler(() -> "DNS=" + ip.raw() + " # dps-entry")
     );
   }
 
