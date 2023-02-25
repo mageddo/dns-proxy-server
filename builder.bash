@@ -77,7 +77,7 @@ case $1 in
 
     tmpDir=$(mktemp)
     echo "> copying artifacts to ${tmpDir}..."
-    copyFileFromService ${BUILD_SERVICE_NAME} /app/build/artifacts tmpDir
+    copyFileFromService ${BUILD_SERVICE_NAME} /app/build/artifacts $tmpDir
     mv -v ${tmpDir}/artifacts/* ${ARTIFACTS_DIR}
 
     echo "> Building image ${IMAGE_SERVICE_NAME} ..."
