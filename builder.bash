@@ -69,14 +69,14 @@ case $1 in
     IMAGE_SERVICE_NAME="image-${OS}-${ARCH}"
     ARTIFACTS_DIR="${REPO_DIR}/build/artifacts"
 
-    echo "> building backend to: os=${OS}, arch=${ARCH}"
+    echo "> Building backend to: os=${OS}, arch=${ARCH}"
 
     mkdir -p ${ARTIFACTS_DIR}
 
     docker-compose build --no-cache --progress=plain ${BUILD_SERVICE_NAME}
 
-    tmpDir=$(mktemp)
-    echo "> copying artifacts to ${tmpDir}..."
+    tmpDir=$(mktemp -d)
+    echo "> Copying artifacts to ${tmpDir}..."
     copyFileFromService ${BUILD_SERVICE_NAME} /app/build/artifacts $tmpDir
     mv -v ${tmpDir}/artifacts/* ${ARTIFACTS_DIR}
 
