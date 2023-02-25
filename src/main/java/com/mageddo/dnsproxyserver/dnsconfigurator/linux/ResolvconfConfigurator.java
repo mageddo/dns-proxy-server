@@ -1,11 +1,7 @@
-package com.mageddo.dnsproxyserver.dnsconfigurator.linux.resolvconf;
+package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
 import com.mageddo.conf.parser.ConfParser;
 import com.mageddo.conf.parser.EntryType;
-import com.mageddo.dnsproxyserver.dnsconfigurator.linux.CleanerHandler;
-import com.mageddo.dnsproxyserver.dnsconfigurator.linux.ConfigureDPSHandler;
-import com.mageddo.dnsproxyserver.dnsconfigurator.linux.DpsTokens;
-import com.mageddo.dnsproxyserver.dnsconfigurator.linux.EntryTypes;
 import com.mageddo.dnsproxyserver.server.dns.IP;
 
 import java.nio.file.Path;

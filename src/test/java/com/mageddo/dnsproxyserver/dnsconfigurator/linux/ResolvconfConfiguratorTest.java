@@ -1,6 +1,5 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
-import com.mageddo.dnsproxyserver.dnsconfigurator.linux.resolvconf.ResolvconfConfigurator;
 import com.mageddo.dnsproxyserver.server.dns.IP;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
