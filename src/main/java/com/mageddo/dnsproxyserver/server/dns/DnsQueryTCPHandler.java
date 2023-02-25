@@ -9,7 +9,6 @@ import org.xbill.DNS.Message;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 
@@ -71,9 +70,15 @@ class DnsQueryTCPHandler implements SocketClientMessageHandler {
   static byte[] readBodyAndValidate(InputStream in, short msgSize) {
     try {
       final var buff = new byte[msgSize];
-      final var read = in.read(buff, 0, msgSize);
+      int offset = 0, read = 0;
+      while (read != -1 && offset != msgSize) {
+        final int left = msgSize - offset;
+        read = in.read(buff, offset, left);
+        offset += Math.max(read, 0);
+      }
+
       Validate.isTrue(
-        msgSize == read,
+        msgSize == offset,
         "status=headerMsgSizeDifferentFromReadBytes!, haderMsgSize=%d, read=%d",
         msgSize, read
       );
@@ -89,7 +94,7 @@ class DnsQueryTCPHandler implements SocketClientMessageHandler {
       for (int i = 0; i < msgSizeBuf.limit(); i++) {
         final byte read = (byte) in.read();
         if (read == -1) {
-          if(i >= 1){
+          if (i >= 1) {
             log.info("status=incompleteHeader, bytes={}", i + 1);
           }
           return -1;

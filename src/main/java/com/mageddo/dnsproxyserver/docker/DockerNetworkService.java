@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import static com.mageddo.dnsproxyserver.docker.DpsContainerManager.isDpsContainer;
 import static com.mageddo.dnsproxyserver.docker.domain.Network.BRIDGE;
 import static com.mageddo.dnsproxyserver.docker.domain.Network.DPS;
 import static com.mageddo.dnsproxyserver.docker.domain.Network.HOST;
@@ -126,5 +127,13 @@ public class DockerNetworkService {
       removedContainers.add(container.getId());
     }
     return removedContainers;
+  }
+
+  public void connect(String networkName, String containerId) {
+    if (isDpsContainer(this.containerDAO.findById(containerId))) {
+      log.info("status=won't connect dps container using conventional mode, containerId={}", containerId);
+      return;
+    }
+    this.networkDAO.connect(networkName, containerId);
   }
 }

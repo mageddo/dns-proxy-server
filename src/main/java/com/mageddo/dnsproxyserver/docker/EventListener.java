@@ -14,6 +14,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.Closeable;
 
+import static com.mageddo.dnsproxyserver.docker.DockerNetworkService.NETWORK_DPS;
+
 @Slf4j
 @Singleton
 @AllArgsConstructor(onConstructor = @__({@Inject}))
@@ -23,6 +25,7 @@ public class EventListener {
   private final DockerDAO dockerDAO;
   private final DpsContainerManager dpsContainerManager;
   private final DockerNetworkDAO dockerNetworkDAO;
+  private final DockerNetworkService networkService;
 
   void onStart(@Observes StartupEvent ev) {
 
@@ -41,7 +44,7 @@ public class EventListener {
       );
       return;
     }
-    this.dockerNetworkDAO.connectRunningContainers(DockerNetworkService.NETWORK_DPS, );
+    this.dockerNetworkDAO.connectRunningContainers(NETWORK_DPS, DpsContainerManager::isNotDpsContainer);
 
     final var callback = new ResultCallback<Event>() {
       @Override
@@ -59,7 +62,7 @@ public class EventListener {
           event.getId(), event.getAction(), event.getType(), event.getStatus(), event
         );
         if (StringUtils.equals(event.getAction(), "start")) {
-          dockerNetworkDAO.connect(DockerNetworkService.NETWORK_DPS, event.getId());
+          networkService.connect(NETWORK_DPS, event.getId());
           return;
         }
         log.debug("status=eventIgnore, event={}", event);

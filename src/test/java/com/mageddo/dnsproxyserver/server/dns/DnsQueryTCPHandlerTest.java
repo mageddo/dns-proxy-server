@@ -36,7 +36,6 @@ class DnsQueryTCPHandlerTest {
     final var in = new PipedInputStream();
     final var queryOut = new PipedOutputStream(in);
 
-
     ThreadPool
       .def()
       .schedule(
@@ -77,7 +76,7 @@ class DnsQueryTCPHandlerTest {
     try {
       final var middleIndex = data.length / 2;
       out.write(data, 0, middleIndex);
-      Threads.sleep(30);
+      Threads.sleep(100);
       out.write(data, middleIndex, data.length - middleIndex);
     } catch (IOException e) {
       throw new UncheckedIOException(e);

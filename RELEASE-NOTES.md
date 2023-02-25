@@ -1,3 +1,6 @@
+### 3.2.2-beta
+* Fixed DPS container was connecting to DPS network with wrong IP 
+
 ### 3.2.1-beta
 * Respecting OS to configure as default DNS
 * Other minor fixes 
