@@ -6,16 +6,12 @@ import com.mageddo.dnsproxyserver.server.dns.Hostname;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Slf4j
 public class Docker {
-
-  public static final String HOSTNAME_ENV = "HOSTNAMES=";
 
   public static String findContainerHostname(ContainerConfig config) {
     final var hostname = config.getHostName();
@@ -27,22 +23,6 @@ public class Docker {
       return hostname;
     }
     return String.format("%s.%s", hostname, domainName);
-  }
-
-  public static Set<Hostname> findHostnamesFromEnv(String[] envs) {
-    if (envs == null) {
-      return Collections.emptySet();
-    }
-    for (String env : envs) {
-      if (env.startsWith(HOSTNAME_ENV)) {
-        final var hosts = env.substring(HOSTNAME_ENV.length()).split("\s,\s");
-        return Arrays
-          .stream(hosts)
-          .map(Hostname::of)
-          .collect(Collectors.toSet());
-      }
-    }
-    return Collections.emptySet();
   }
 
   static Set<Hostname> buildHostnamesFromServiceOrContainerNames(InspectContainerResponse container, String domain) {
