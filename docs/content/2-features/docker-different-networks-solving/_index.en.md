@@ -1,6 +1,11 @@
+---
+title: Different Docker Networks Solving
+weight: 3
+---
+
 DPS can lead with docker containers with different networks, it will find the target container best matching IP, 
 best matching means the IP which have the most chances of be accessible from the client, 
-no distinction with client is another container or not.
+no distinction if the client is another container or not.
 
 You can click here to see a [pratical working sample][1].
 
