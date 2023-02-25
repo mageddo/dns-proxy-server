@@ -117,7 +117,7 @@ public class DpsContainerManager {
       log.info("status=dpsContainerConnectedToDpsNetwork, containerId={}, ip={}", container.getId(), ip);
     } else if (!Objects.equals(foundIp, ip)) {
       this.dockerNetworkDAO.disconnect(NETWORK_DPS, container.getId());
-      this.dockerNetworkDAO.connect(NETWORK_DPS, container.getId());
+      this.dockerNetworkDAO.connect(NETWORK_DPS, container.getId(), ip);
       log.info(
         "status=dpsWasConnectedWithWrongIp, action=fixing, foundIp={}, rightIp={}, container={}",
         foundIp, ip, container.getId()

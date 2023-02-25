@@ -99,15 +99,18 @@ public class DockerNetworkDAODefault implements DockerNetworkDAO {
       .withContainerId(containerId);
 
     if (StringUtils.isNotBlank(ip)) {
-      final var config = builder.getContainerConfig();
-      if (config != null) {
-        config.withIpv4Address(ip);
-      } else {
-        log.warn("status=couldntSetIp, networkNameOrId={}, ip={}", networkNameOrId, ip);
-      }
+      builder
+        .withContainerNetwork(
+          new ContainerNetwork()
+            .withIpamConfig(new ContainerNetwork
+              .Ipam()
+              .withIpv4Address(ip)
+            )
+            .withIpv4Address(ip)
+        );
     }
     builder.exec();
-    log.info("status=network-connected, network={}, container={}", networkNameOrId, containerId);
+    log.info("status=network-connected, network={}, container={}, ip={}", networkNameOrId, containerId, ip);
 
   }
 
