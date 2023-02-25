@@ -5,6 +5,7 @@ import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.ContainerNetwork;
 import com.github.dockerjava.api.model.Network;
 import com.google.common.base.Predicates;
+import com.mageddo.commons.lang.Objects;
 import com.mageddo.dnsproxyserver.net.Networks;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,13 +40,14 @@ public class DockerNetworkDAODefault implements DockerNetworkDAO {
 
   @Override
   public Network findByName(String networkName) {
-    return this.dockerClient.listNetworksCmd()
-      .withNameFilter(networkName)
+    final var network = this.dockerClient.listNetworksCmd()
+      .withNameFilter("^" + networkName + "$")
       .exec()
       .stream()
       .findFirst()
-      .orElse(null)
-      ;
+      .orElse(null);
+    log.debug("queryName={}, foundName={}", networkName, Objects.mapOrNull(network, Network::getName));
+    return network;
   }
 
   @Override

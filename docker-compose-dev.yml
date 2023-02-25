@@ -1,0 +1,17 @@
+version: '3'
+services:
+  backend:
+    image: openjdk:17-jdk
+    environment:
+      - MG_LOG_LEVEL=DEBUG
+      - MG_REGISTER_CONTAINER_NAMES=1
+      - MG_RESOLVCONF=/host/etc/resolv.conf
+    labels:
+      - dps.container=true
+    volumes:
+      - ./build:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /run/systemd/resolve/:/host/etc/
+    working_dir: /app
+    command: java -jar dns-proxy-server.jar --default-dns=false
+    network_mode: host

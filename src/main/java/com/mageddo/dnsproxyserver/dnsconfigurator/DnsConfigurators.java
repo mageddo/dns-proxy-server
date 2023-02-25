@@ -5,7 +5,6 @@ import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.LinuxDnsConfigurator;
 import com.mageddo.dnsproxyserver.server.dns.IP;
 import io.quarkus.runtime.StartupEvent;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.OS;
@@ -43,7 +42,9 @@ public class DnsConfigurators {
       .def()
       .scheduleWithFixedDelay(() -> {
         try {
-          this.getInstance().configure(this.ipDiscover.findDpsIP());
+          final var ip = this.ipDiscover.findDpsIP();
+          log.trace("status=configuringAsDefaultDns, ip={}", ip);
+          this.getInstance().configure(ip);
         } catch (Exception e) {
           if (e instanceof IOException) {
             log.warn(

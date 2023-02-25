@@ -95,8 +95,13 @@ public class DpsContainerManager {
 
     if (containers.size() > 1) {
       log.warn("status=multiple-dps-containers-found, action=using-the-first, containers={}", Containers.toNames(containers));
+    } else {
+      log.debug("dpsContainersFound={}", containers.size());
     }
-    return containers.stream().findFirst().orElse(null);
+    return containers
+      .stream()
+      .findFirst()
+      .orElse(null);
   }
 
   public IP findDpsContainerIP() {

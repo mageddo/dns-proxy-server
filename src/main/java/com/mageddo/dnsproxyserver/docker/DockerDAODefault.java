@@ -4,6 +4,7 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Network;
+import com.mageddo.commons.lang.Objects;
 import com.mageddo.dnsproxyserver.quarkus.DockerConfig;
 import com.mageddo.dnsproxyserver.server.dns.IP;
 import com.mageddo.os.linux.LinuxFiles;
@@ -62,11 +63,17 @@ public class DockerDAODefault implements DockerDAO {
   }
 
   Network findBestNetwork() {
-    return this.dockerClient.listNetworksCmd()
+    final var network = this.dockerClient.listNetworksCmd()
       .exec()
       .stream()
       .min(NetworkComparator::compare)
       .orElse(null);
+    log.debug(
+      "status=bestNetwork, network={}, ip={}",
+      Objects.mapOrNull(network, Network::getName),
+      DockerNetworkService.findIp(network)
+    );
+    return network;
   }
 
 
