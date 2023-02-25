@@ -8,7 +8,7 @@ public class DnsServerCleanerHandler implements ResolvConfParser.Handler {
   @Override
   public String handle(String line, DnsEntryType entryType) {
     return switch (entryType) {
-      case PROXY -> null;
+      case DPS_SERVER -> null;
       case COMMENTED_SERVER -> line.substring(2, line.indexOf(" # dps-comment"));
       default -> line;
     };

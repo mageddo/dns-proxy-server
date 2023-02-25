@@ -16,7 +16,7 @@ public class SetMachineDNSServerHandler implements ResolvConfParser.Handler {
   @Override
   public String handle(String line, DnsEntryType entryType) {
     return switch (entryType) {
-      case PROXY -> buildDNSLine(this.serverIP);
+      case DPS_SERVER -> buildDNSLine(this.serverIP);
       case SERVER -> String.format("# %s # dps-comment", line);
       default -> line;
     };

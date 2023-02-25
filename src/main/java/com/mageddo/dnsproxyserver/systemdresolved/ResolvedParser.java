@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.resolvconf;
+package com.mageddo.dnsproxyserver.systemdresolved;
 
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
@@ -8,17 +8,17 @@ import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static com.mageddo.dnsproxyserver.resolvconf.DnsEntryType.COMMENT;
-import static com.mageddo.dnsproxyserver.resolvconf.DnsEntryType.COMMENTED_SERVER;
-import static com.mageddo.dnsproxyserver.resolvconf.DnsEntryType.ELSE;
-import static com.mageddo.dnsproxyserver.resolvconf.DnsEntryType.DPS_SERVER;
-import static com.mageddo.dnsproxyserver.resolvconf.DnsEntryType.SEARCH;
-import static com.mageddo.dnsproxyserver.resolvconf.DnsEntryType.SERVER;
+import static com.mageddo.dnsproxyserver.systemdresolved.DnsEntryType.COMMENT;
+import static com.mageddo.dnsproxyserver.systemdresolved.DnsEntryType.COMMENTED_SERVER;
+import static com.mageddo.dnsproxyserver.systemdresolved.DnsEntryType.DPS_SERVER;
+import static com.mageddo.dnsproxyserver.systemdresolved.DnsEntryType.ELSE;
+import static com.mageddo.dnsproxyserver.systemdresolved.DnsEntryType.SERVER;
 
-public class ResolvConfParser {
 
-  public static void process(Path resolvConfPath, Handler h) {
-    process(resolvConfPath, resolvConfPath, h);
+public class ResolvedParser {
+
+  public static void process(Path conf, Handler h) {
+    process(conf, conf, h);
   }
 
   @SneakyThrows
@@ -68,14 +68,12 @@ public class ResolvConfParser {
   static DnsEntryType getDnsEntryType(String line) {
     if (line.endsWith("# dps-entry")) {
       return DPS_SERVER;
-    } else if (line.startsWith("# nameserver ") && line.endsWith("# dps-comment")) {
+    } else if (line.startsWith("# DNS=") && line.endsWith("# dps-comment")) {
       return COMMENTED_SERVER;
     } else if (line.startsWith("#")) {
       return COMMENT;
-    } else if (line.startsWith("nameserver")) {
+    } else if (line.startsWith("DNS=")) {
       return SERVER;
-    } else if (line.startsWith("search")) {
-      return SEARCH;
     } else {
       return ELSE;
     }
