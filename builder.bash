@@ -76,11 +76,14 @@ case $1 in
     docker-compose build --no-cache --progress=plain ${BUILD_SERVICE_NAME}
 
     tmpDir=$(mktemp)
+    echo "> copying artifacts to ${tmpDir}..."
     copyFileFromService ${BUILD_SERVICE_NAME} /app/build/artifacts $mktemp
     mv -v ${tmpDir}/artifacts/* ${ARTIFACTS_DIR}
 
+    echo "> Building image ${IMAGE_SERVICE_NAME} ..."
     docker-compose build --no-cache --progress=plain "${IMAGE_SERVICE_NAME}"
 
+    echo "> Backend build done ${IMAGE_SERVICE_NAME}"
   ;;
 
   compress-upload-artifacts )
