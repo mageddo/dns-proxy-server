@@ -69,4 +69,60 @@ class ResolvedConfiguratorTest {
     );
   }
 
+
+  @Test
+  void mustChangeActiveDNS(@TempDir Path tmpDir) throws Exception {
+    // arrange
+    final var confFile = Files.writeString(
+      tmpDir.resolve("file.conf"),
+      """
+        [Resolve]
+        DNS=8.8.8.8
+        FallbackDNS=
+        Domains=
+        """
+    );
+    final var localIp = IpTemplates.local();
+
+    // act
+    ResolvedConfigurator.configure(confFile, localIp);
+
+    // assert
+    assertEquals(
+      """
+        [Resolve]
+        # DNS=8.8.8.8 # dps-comment
+        FallbackDNS=
+        Domains=
+        DNS=10.10.0.1 # dps-entry
+        """,
+      Files.readString(confFile)
+    );
+  }
+
+  @Test
+  void mustReuseDPSDNSLine(@TempDir Path tmpDir) throws Exception {
+    // arrange
+    final var confFile = Files.writeString(
+      tmpDir.resolve("file.conf"),
+      """
+        [Resolve]
+        DNS=192.168.0.1 # dps-entry
+        """
+    );
+    final var localIp = IpTemplates.local();
+
+    // act
+    ResolvedConfigurator.configure(confFile, localIp);
+
+    // assert
+    assertEquals(
+      """
+        [Resolve]
+        DNS=10.10.0.1 # dps-entry
+        """,
+      Files.readString(confFile)
+    );
+  }
+
 }
