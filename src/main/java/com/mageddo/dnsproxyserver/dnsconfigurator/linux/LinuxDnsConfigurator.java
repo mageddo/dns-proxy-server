@@ -75,9 +75,15 @@ public class LinuxDnsConfigurator implements DnsConfigurator {
 
   List<Path> buildConfPaths() {
     return Objects.firstNonNull(
-      splitToPaths(Configs.getInstance().getResolvConfPaths()),
+      splitToPaths(getConfigResolvPaths()),
       Collections.emptyList()
     );
+  }
+
+  String getConfigResolvPaths() {
+    return Configs.getInstance()
+      .getResolvConfPaths()
+      ;
   }
 
   ResolvFile toResolvFile(Path path) {

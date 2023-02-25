@@ -30,4 +30,8 @@ public class Files {
       throw new UncheckedIOException(e);
     }
   }
+
+  public static String getPathName(Path path) {
+    return path.getFileName().toString();
+  }
 }

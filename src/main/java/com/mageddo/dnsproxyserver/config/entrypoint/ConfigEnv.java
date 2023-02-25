@@ -26,8 +26,7 @@ public class ConfigEnv {
   public static final String MG_DOMAIN = "MG_DOMAIN";
   public static final String MG_DPS_NETWORK = "MG_DPS_NETWORK";
   public static final String MG_DPS_NETWORK_AUTO_CONNECT = "MG_DPS_NETWORK_AUTO_CONNECT";
-  public static final String DEFAULT_RESOLV_CONF_PATH = "/etc/resolv.conf";
-//  public static final String DEFAULT_RESOLV_CONF_PATH = "/host/etc/resolv.conf,/etc/resolv.conf";
+  public static final String DEFAULT_RESOLV_CONF_PATH = "/host/etc/resolv.conf,/etc/resolv.conf";
 
   private Path currentPath;
   private String resolvConfPath;
