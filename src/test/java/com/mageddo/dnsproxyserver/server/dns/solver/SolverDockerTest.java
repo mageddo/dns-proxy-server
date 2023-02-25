@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.docker.DockerDAO;
-import com.mageddo.dnsproxyserver.docker.DockerService;
+import com.mageddo.dnsproxyserver.docker.ContainerSolvingService;
 import com.mageddo.dnsproxyserver.server.dns.Hostname;
 import com.mageddo.dnsproxyserver.templates.MessageTemplates;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.doReturn;
 class SolverDockerTest {
 
   @Mock(strictness = Strictness.WARN)
-  DockerService dockerService;
+  ContainerSolvingService containerSolvingService;
 
   @Mock
   DockerDAO dockerDAO;
@@ -29,7 +29,7 @@ class SolverDockerTest {
 
   @BeforeEach
   void beforeEach() {
-    this.solver = new SolverDocker(this.dockerService, this.dockerDAO);
+    this.solver = new SolverDocker(this.containerSolvingService, this.dockerDAO);
   }
 
   @Test
@@ -45,7 +45,7 @@ class SolverDockerTest {
       .isConnected()
     ;
     doReturn(ip)
-      .when(this.dockerService)
+      .when(this.containerSolvingService)
       .findBestHostIP(eq(hostname));
 
     // act
@@ -71,7 +71,7 @@ class SolverDockerTest {
       .isConnected()
     ;
     doReturn(ip)
-      .when(this.dockerService)
+      .when(this.containerSolvingService)
       .findBestHostIP(eq(hostname));
 
     // act

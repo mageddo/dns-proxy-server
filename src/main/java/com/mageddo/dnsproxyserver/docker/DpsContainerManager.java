@@ -19,15 +19,16 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.mageddo.dnsproxyserver.docker.ContainerSolvingService.NETWORK_BRIDGE;
+import static com.mageddo.dnsproxyserver.docker.ContainerSolvingService.NETWORK_DPS;
+
 @Slf4j
 @Default
 @Singleton
 @AllArgsConstructor(onConstructor = @__({@Inject}))
 public class DpsContainerManager {
 
-  public static final String NETWORK_DPS = DockerNetworkService.NETWORK_DPS;
-
-  private final DockerService dockerService;
+  private final ContainerSolvingService containerSolvingService;
   private final DockerDAO dockerDAO;
   private final DockerClient dockerClient;
   private final DockerNetworkDAO dockerNetworkDAO;
@@ -51,7 +52,7 @@ public class DpsContainerManager {
     final var res = this.dockerClient
       .createNetworkCmd()
       .withName(NETWORK_DPS)
-      .withDriver(DockerNetworkService.NETWORK_BRIDGE)
+      .withDriver(NETWORK_BRIDGE)
       .withCheckDuplicate(false)
       .withEnableIpv6(false)
       .withIpam(
@@ -104,7 +105,7 @@ public class DpsContainerManager {
       return null;
     }
     final var containerInsp = this.dockerDAO.inspect(container.getId());
-    final var ip = this.dockerService.findBestIpMatch(containerInsp);
+    final var ip = this.containerSolvingService.findBestIpMatch(containerInsp);
     if (StringUtils.isBlank(ip)) {
       return null;
     }

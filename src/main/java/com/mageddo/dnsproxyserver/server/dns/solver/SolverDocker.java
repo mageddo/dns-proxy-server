@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.docker.DockerDAO;
-import com.mageddo.dnsproxyserver.docker.DockerService;
+import com.mageddo.dnsproxyserver.docker.ContainerSolvingService;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.server.dns.Wildcards;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import javax.inject.Singleton;
 @AllArgsConstructor(onConstructor = @__({@Inject}))
 public class SolverDocker implements Solver {
 
-  private final DockerService dockerService;
+  private final ContainerSolvingService containerSolvingService;
   private final DockerDAO dockerDAO;
 
   @Override
@@ -29,7 +29,7 @@ public class SolverDocker implements Solver {
 
     final var askedHost = Messages.findQuestionHostname(query);
     for (final var host : Wildcards.buildHostAndWildcards(askedHost)) {
-      final var ip = this.dockerService.findBestHostIP(host);
+      final var ip = this.containerSolvingService.findBestHostIP(host);
       if (ip != null) {
         return Messages.aAnswer(query, ip);
       }

@@ -19,7 +19,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @QuarkusTest
-class DockerServiceTest {
+class ContainerSolvingServiceTest {
 
   @InjectMock
   DockerDAO dockerDAO;
@@ -28,7 +28,7 @@ class DockerServiceTest {
   DockerNetworkDAO dockerNetworkDAO;
 
   @Inject
-  DockerService dockerService;
+  ContainerSolvingService containerSolvingService;
 
   @BeforeEach
   void beforeEach() {
@@ -44,7 +44,7 @@ class DockerServiceTest {
     final var inspect = InspectContainerResponseTemplates.withDpsLabel();
 
     // act
-    final var ip = this.dockerService.findBestIpMatch(inspect);
+    final var ip = this.containerSolvingService.findBestIpMatch(inspect);
 
     // assert
     assertNotNull(ip);
@@ -75,7 +75,7 @@ class DockerServiceTest {
     ;
 
     // act
-    final var ip = this.dockerService.findBestIpMatch(inspect);
+    final var ip = this.containerSolvingService.findBestIpMatch(inspect);
 
     // assert
     assertNotNull(ip);
