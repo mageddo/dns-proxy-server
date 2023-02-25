@@ -14,4 +14,10 @@ services:
       - /run/systemd/resolve/:/host/etc/
     working_dir: /app
     command: java -jar dns-proxy-server.jar --default-dns=false
+#    ports:
+#      - "172.17.0.1:53:53/udp"
+#      - "192.168.0.128:53:53/udp"
+#      - "192.168.0.128:53:53/tcp"
+#      - "127.0.0.1:53:53/udp"
+#      - "127.0.0.1:53:53/tcp"
     network_mode: host
