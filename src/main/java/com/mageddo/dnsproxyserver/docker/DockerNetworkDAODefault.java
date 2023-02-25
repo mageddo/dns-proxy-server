@@ -27,7 +27,7 @@ public class DockerNetworkDAODefault implements DockerNetworkDAO {
   private final DockerClient dockerClient;
 
   @Override
-  public Network findNetwork(String id) {
+  public Network findById(String id) {
     return this.dockerClient.listNetworksCmd()
       .withIdFilter("^" + id)
       .exec()
@@ -135,7 +135,7 @@ public class DockerNetworkDAODefault implements DockerNetworkDAO {
 
   @Override
   public boolean exists(String networkId) {
-    return this.findNetwork(networkId) != null;
+    return this.findById(networkId) != null;
   }
 
   @Override

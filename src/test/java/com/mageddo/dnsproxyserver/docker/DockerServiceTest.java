@@ -80,7 +80,7 @@ class DockerServiceTest {
     // assert
     assertNotNull(ip);
     assertEquals("172.17.0.4", ip);
-    verify(this.dockerNetworkDAO, never()).findNetwork(anyString());
+    verify(this.dockerNetworkDAO, never()).findById(anyString());
 
   }
 }

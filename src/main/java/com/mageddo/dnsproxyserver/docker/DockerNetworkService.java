@@ -118,7 +118,7 @@ public class DockerNetworkService {
 
   public List<String> disconnectContainers(String id) {
     final var removedContainers = new ArrayList<String>();
-    final var network = this.networkDAO.findNetwork(id);
+    final var network = this.networkDAO.findById(id);
     if (network == null) {
       return null;
     }

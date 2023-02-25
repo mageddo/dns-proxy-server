@@ -10,7 +10,7 @@ import java.util.function.Predicate;
 
 public interface DockerNetworkDAO {
 
-  Network findNetwork(String id);
+  Network findById(String id);
 
   Network findByName(String networkName);
 
