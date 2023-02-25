@@ -32,10 +32,7 @@ public class LinuxDnsConfigurator implements DnsConfigurator {
   @Override
   public void configure(IP ip) {
 
-    if (this.confFile == null) {
-      this.confFile = new AtomicReference<>(findBestConfFile());
-      log.info("status=using, configFile={}", this.getConfFile());
-    }
+    this.init();
     if (this.confFile.get() == null) {
       return;
     }
@@ -45,6 +42,7 @@ public class LinuxDnsConfigurator implements DnsConfigurator {
 
   @Override
   public void restore() {
+    this.init();
     if (this.confFile.get() == null) {
       return;
     }
@@ -84,6 +82,13 @@ public class LinuxDnsConfigurator implements DnsConfigurator {
 
   ResolvFile toResolvFile(Path path) {
     return ResolvFile.of(path, LinuxResolverConfDetector.build(path));
+  }
+
+  void init() {
+    if (this.confFile == null) {
+      this.confFile = new AtomicReference<>(findBestConfFile());
+      log.info("status=using, configFile={}", this.getConfFile());
+    }
   }
 
 }
