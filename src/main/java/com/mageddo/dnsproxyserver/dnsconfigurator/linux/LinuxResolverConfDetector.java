@@ -9,24 +9,20 @@ import java.nio.file.Path;
 
 public class LinuxResolverConfDetector {
   public static Type detect(Path path) {
-    try {
-      if (Files.size(path) == 0) {
-        final var fileName = path.getFileName().toString();
-        if (fileName.equals("resolv.conf")) {
-          return Type.RESOLVCONF;
-        } else if (fileName.equals("resolved.conf")) {
-          return Type.SYSTEMD_RESOLVED;
-        }
-      }
-      if (isSystemdResolved(path)) {
-        return Type.SYSTEMD_RESOLVED;
-      } else if (isResolvConf(path)) {
-        return Type.RESOLVCONF;
-      }
-      return null;
-    } catch (IOException e) {
-      throw new UncheckedIOException(e);
+
+    if (isSystemdResolved(path)) {
+      return Type.SYSTEMD_RESOLVED;
+    } else if (isResolvConf(path)) {
+      return Type.RESOLVCONF;
     }
+
+    final var fileName = path.getFileName().toString();
+    if (fileName.equals("resolv.conf")) {
+      return Type.RESOLVCONF;
+    } else if (fileName.equals("resolved.conf")) {
+      return Type.SYSTEMD_RESOLVED;
+    }
+    return null;
   }
 
   static boolean isResolvConf(Path path) {
