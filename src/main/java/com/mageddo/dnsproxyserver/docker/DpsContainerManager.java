@@ -54,21 +54,21 @@ public class DpsContainerManager {
       .withDriver(DockerNetworkService.NETWORK_BRIDGE)
       .withCheckDuplicate(false)
       .withEnableIpv6(false)
-      .withIpam(new Network.Ipam()
-        .withConfig(new Network.Ipam.Config()
-          .withSubnet("172.157.0.0/16")
-          .withIpRange("172.157.5.3/24")
-          .withGateway("172.157.5.1")
-        )
+      .withIpam(
+        new Network.Ipam()
+          .withConfig(
+            new Network.Ipam.Config()
+              .withSubnet("172.157.0.0/16")
+              .withIpRange("172.157.5.3/24")
+              .withGateway("172.157.5.1")
+          )
       )
       .withInternal(false)
       .withAttachable(true)
-      .withLabels(
-        Map.of(
-          "description", "Dns Proxy Server Network: https://github.com/mageddo/dns-proxy-server",
-          "version", currentVersion
-        )
-      )
+      .withLabels(Map.of(
+        "description", "Dns Proxy Server Network: https://github.com/mageddo/dns-proxy-server",
+        "version", currentVersion
+      ))
       .exec();
     log.info("status=networkCreated, id={}, warnings={}", res.getId(), Arrays.toString(res.getWarnings()));
   }
