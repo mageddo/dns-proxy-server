@@ -30,7 +30,7 @@ public class ResolvedConfigurator {
     return line -> {
       if (line.endsWith(DpsTokens.DPS_ENTRY_COMMENT)) {
         return EntryTypes.DPS_SERVER_TYPE;
-      } else if (line.startsWith("# DNS=") && line.endsWith(DpsTokens.DPS_ENTRY_COMMENT)) {
+      } else if (line.startsWith("# DNS=") && line.endsWith(DpsTokens.COMMENT_END)) {
         return EntryTypes.COMMENTED_SERVER_TYPE;
       } else if (line.startsWith(DpsTokens.COMMENT)) {
         return EntryTypes.COMMENT_TYPE;
