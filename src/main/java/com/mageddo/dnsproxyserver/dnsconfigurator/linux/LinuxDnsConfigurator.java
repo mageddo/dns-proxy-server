@@ -33,7 +33,16 @@ public class LinuxDnsConfigurator implements DnsConfigurator {
     if (this.confFile.get() == null) {
       return;
     }
-    ResolvconfConfigurator.process(this.getConfFile(), ip);
+
+    final var confFile = this.getConfFile();
+    if (confFile.isResolvconf()) {
+      ResolvconfConfigurator.process(confFile.getPath(), ip);
+    } else if (confFile.isResolved()) {
+      ResolvedConfigurator.configure(confFile.getPath(), ip);
+    } else {
+      throw newUnsupportedConfType(confFile);
+    }
+    log.debug("status=configured, path={}", this.getConfFile());
   }
 
   @Override
@@ -42,12 +51,20 @@ public class LinuxDnsConfigurator implements DnsConfigurator {
     if (this.confFile.get() == null) {
       return;
     }
-    ResolvconfConfigurator.restore(this.getConfFile());
-    log.debug("status=restoredResolvConf, path={}", this.getConfFile());
+
+    final var confFile = this.getConfFile();
+    if (confFile.isResolvconf()) {
+      ResolvconfConfigurator.restore(confFile.getPath());
+    } else if (confFile.isResolved()) {
+      ResolvedConfigurator.restore(confFile.getPath());
+    } else {
+      throw newUnsupportedConfType(confFile);
+    }
+    log.debug("status=restored, path={}", this.getConfFile());
   }
 
-  Path getConfFile() {
-    return this.confFile.get().getPath();
+  ResolvFile getConfFile() {
+    return this.confFile.get();
   }
 
   ResolvFile findBestConfFile() {
@@ -91,6 +108,10 @@ public class LinuxDnsConfigurator implements DnsConfigurator {
       this.confFile = new AtomicReference<>(findBestConfFile());
       log.info("status=using, configFile={}", this.getConfFile());
     }
+  }
+
+  private RuntimeException newUnsupportedConfType(ResolvFile confFile) {
+    return new UnsupportedOperationException(String.format("conf file not supported: %s", confFile));
   }
 
 }

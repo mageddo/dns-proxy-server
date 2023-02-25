@@ -14,9 +14,26 @@ public class ResolvFile {
     return new ResolvFile(path, type);
   }
 
+  public boolean isResolvconf() {
+    return this.type.isResolvconf();
+  }
+
+  public boolean isResolved() {
+    return this.type.isResolved();
+  }
+
   public enum Type {
+
     RESOLVCONF,
-    SYSTEMD_RESOLVED
+    SYSTEMD_RESOLVED;
+
+    public boolean isResolvconf() {
+       return this == RESOLVCONF;
+    }
+
+    public boolean isResolved() {
+      return this == SYSTEMD_RESOLVED;
+    }
   }
 
 }
