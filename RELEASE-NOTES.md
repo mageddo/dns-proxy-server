@@ -1,6 +1,6 @@
 ### 3.2.3-beta
 * Fixed docker container wasn't solving from env when the names weren't separated by ` , ` 
- (spaces before and after the comma)
+ (spaces before and after the comma were needed)
 
 ### 3.2.2-beta
 * Fixed DPS container was connecting to DPS network with wrong IP 
