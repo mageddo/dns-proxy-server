@@ -7,7 +7,7 @@ DPS can lead with docker containers with different networks, it will find the ta
 best matching means the IP which have the most chances of be accessible from the client, 
 no distinction if the client is another container or not.
 
-You can click here to see a [pratical working sample][1].
+You can [click here][1] to see a pratical working sample.
 
 The following table describle the possible scenarios involving docker container networks, this is an automatic decision
 made by DPS if you want to enforce some network resolution you can use `dps.network`
