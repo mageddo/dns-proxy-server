@@ -1,3 +1,7 @@
+### 3.2.5-beta
+* Be able to run in docker container in network host mode
+* When finding network by name must find with the exact name
+
 ### 3.2.3-beta
 * Fixed docker container wasn't solving from env when the names weren't separated by ` , ` 
  (spaces before and after the comma were needed)
