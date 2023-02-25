@@ -3,7 +3,7 @@ package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.dnsconfigurator.DnsConfigurator;
-import com.mageddo.dnsproxyserver.dnsconfigurator.linux.resolvconf.DpsResolvConfParser;
+import com.mageddo.dnsproxyserver.dnsconfigurator.linux.resolvconf.ResolvconfConfigurator;
 import com.mageddo.dnsproxyserver.server.dns.IP;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class LinuxDnsConfigurator implements DnsConfigurator {
     if (this.confFile.get() == null) {
       return;
     }
-    DpsResolvConfParser.process(this.getConfFile(), ip);
+    ResolvconfConfigurator.process(this.getConfFile(), ip);
   }
 
   @Override
@@ -43,7 +43,7 @@ public class LinuxDnsConfigurator implements DnsConfigurator {
     if (this.confFile.get() == null) {
       return;
     }
-    DpsResolvConfParser.restore(this.getConfFile());
+    ResolvconfConfigurator.restore(this.getConfFile());
     log.debug("status=restoredResolvConf, path={}", this.getConfFile());
   }
 

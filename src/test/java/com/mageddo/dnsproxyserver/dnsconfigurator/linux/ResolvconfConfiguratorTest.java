@@ -1,6 +1,6 @@
-package com.mageddo.resolvconf;
+package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
-import com.mageddo.dnsproxyserver.dnsconfigurator.linux.resolvconf.DpsResolvConfParser;
+import com.mageddo.dnsproxyserver.dnsconfigurator.linux.resolvconf.ResolvconfConfigurator;
 import com.mageddo.dnsproxyserver.server.dns.IP;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -10,7 +10,7 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class DpsResolvConfParserTest {
+class ResolvconfConfiguratorTest {
 
   @Test
   void mustConfigureDpsServerOnEmptyFile(@TempDir Path tmpDir) throws Exception {
@@ -19,7 +19,7 @@ class DpsResolvConfParserTest {
     final var resolvFile = Files.createTempFile(tmpDir, "resolv", ".conf");
 
     // act
-    DpsResolvConfParser.process(resolvFile, IP.of("10.10.0.1"));
+    ResolvconfConfigurator.process(resolvFile, IP.of("10.10.0.1"));
 
     // assert
     assertEquals(
@@ -40,7 +40,7 @@ class DpsResolvConfParserTest {
     Files.writeString(resolvFile, "nameserver 8.8.8.8");
 
     // act
-    DpsResolvConfParser.process(resolvFile, ip);
+    ResolvconfConfigurator.process(resolvFile, ip);
 
     // assert
     assertEquals(
@@ -63,7 +63,7 @@ class DpsResolvConfParserTest {
     Files.writeString(resolvFile, "nameserver 8.8.8.8\nnameserver 4.4.4.4 # dps-entry");
 
     // act
-    DpsResolvConfParser.process(resolvFile, ip);
+    ResolvconfConfigurator.process(resolvFile, ip);
     // assert
     assertEquals(
       """
@@ -89,7 +89,7 @@ class DpsResolvConfParserTest {
       """);
 
     // act
-    DpsResolvConfParser.restore(resolvFile);
+    ResolvconfConfigurator.restore(resolvFile);
 
     // assert
     assertEquals(
