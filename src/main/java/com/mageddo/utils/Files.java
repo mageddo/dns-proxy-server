@@ -18,4 +18,16 @@ public class Files {
   public static boolean exists(Path p) {
     return java.nio.file.Files.exists(p);
   }
+
+  public static Path createIfNotExists(Path path) {
+    if (Files.exists(path)) {
+      return path;
+    }
+    try {
+      java.nio.file.Files.createFile(path);
+      return path;
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
+  }
 }

@@ -75,14 +75,15 @@ public class LinuxDnsConfigurator implements DnsConfigurator {
       ;
   }
 
-  ResolvFile toResolvFile(Path path) {
-    throw new UnsupportedOperationException();
-  }
-
   List<Path> buildConfPaths() {
     return Objects.firstNonNull(
       splitToPaths(Configs.getInstance().getResolvConfPaths()),
       Collections.emptyList()
     );
   }
+
+  ResolvFile toResolvFile(Path path) {
+    return ResolvFile.of(path, LinuxResolverConfDetector.build(path));
+  }
+
 }
