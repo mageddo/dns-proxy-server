@@ -64,7 +64,10 @@ public class DpsContainerManager {
       .withInternal(false)
       .withAttachable(true)
       .withLabels(
-        Map.of("description", "Dns Proxy Server Network: https://github.com/mageddo/dns-proxy-server", "version", currentVersion)
+        Map.of(
+          "description", "Dns Proxy Server Network: https://github.com/mageddo/dns-proxy-server",
+          "version", currentVersion
+        )
       )
       .exec();
     log.info("status=networkCreated, id={}, warnings={}", res.getId(), Arrays.toString(res.getWarnings()));
