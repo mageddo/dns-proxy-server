@@ -14,7 +14,7 @@ class ResolvedConfiguratorTest {
   @Test
   void mustConfigureDnsServerOnEmptyFile(@TempDir Path tmpDir) throws Exception {
     // arrange
-    final var confFile = Files.createTempFile(tmpDir, "f", ".conf");
+    final var confFile = Files.createTempFile(tmpDir, "file", ".conf");
     final var localIp = IpTemplates.local();
 
     // act
@@ -23,8 +23,48 @@ class ResolvedConfiguratorTest {
     // assert
     assertEquals(
       """
-      DNS=10.10.0.1 # dps-entry
-      """,
+        DNS=10.10.0.1 # dps-entry
+        """,
+      Files.readString(confFile)
+    );
+  }
+
+  @Test
+  void mustConfigureDnsServerOnAlreadyExstingFile(@TempDir Path tmpDir) throws Exception {
+    // arrange
+    final var confFile = Files.writeString(
+      tmpDir.resolve("file.conf"),
+      """
+        #  This file is part of systemd.
+        #
+        [Resolve]
+        #DNS=
+        #DNS=172.157.5.1
+        DNS=127.0.0.1
+        #DNS=192.168.0.128
+        #FallbackDNS=
+        #Domains=
+        """
+    );
+    final var localIp = IpTemplates.local();
+
+    // act
+    ResolvedConfigurator.configure(confFile, localIp);
+
+    // assert
+    assertEquals(
+      """
+        #  This file is part of systemd.
+        #
+        [Resolve]
+        #DNS=
+        #DNS=172.157.5.1
+        # DNS=127.0.0.1 # dps-comment
+        #DNS=192.168.0.128
+        #FallbackDNS=
+        #Domains=
+        DNS=10.10.0.1 # dps-entry
+        """,
       Files.readString(confFile)
     );
   }

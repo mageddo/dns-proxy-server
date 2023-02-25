@@ -7,6 +7,7 @@ import java.io.StringReader;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -43,11 +44,16 @@ public class ConfParser {
   }
 
   public static void process(Path source, Path target, Function<String, EntryType> parser, Transformer t) {
-    try (
-      var reader = Files.newBufferedReader(source);
-      var writer = Files.newBufferedWriter(target)
-    ) {
-      writeToOut(reader, writer, parser, t);
+    try {
+      final var tmpFile = Files.createTempFile("dps", ".conf");
+      try (
+        var reader = Files.newBufferedReader(source);
+        var writer = Files.newBufferedWriter(tmpFile)
+      ) {
+        writeToOut(reader, writer, parser, t);
+      }
+      Files.copy(tmpFile, target, StandardCopyOption.REPLACE_EXISTING);
+      Files.delete(tmpFile);
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
