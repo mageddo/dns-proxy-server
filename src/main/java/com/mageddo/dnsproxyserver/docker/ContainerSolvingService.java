@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.docker;
 
 import com.github.dockerjava.api.command.InspectContainerResponse;
+import com.mageddo.dnsproxyserver.net.Networks;
 import com.mageddo.dnsproxyserver.server.dns.Hostname;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -90,9 +91,12 @@ public class ContainerSolvingService {
       .filter(Objects::nonNull)
       .min(NetworkComparator::compare)
       .map(network -> {
-        final var name = network.getName();
-        final var ip = networks.get(name).getIpAddress();
-        log.debug("status=foundIp, network={}, driver={}, ip={}", name, network.getDriver(), ip);
+        final var networkName = network.getName();
+        final var ip = Networks.findIpv4Address(networks.get(networkName));
+        log.debug(
+          "status=foundIp, networks={}, networkName={}, driver={}, foundIp={}",
+          networks.keySet(), networkName, network.getDriver(), ip
+        );
         return StringUtils.trimToNull(ip);
       })
       .filter(StringUtils::isNotBlank)
