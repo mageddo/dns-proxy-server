@@ -86,7 +86,11 @@ public class DpsContainerManager {
 
   public Container findDpsContainer() {
 
-    final var containers = this.dockerClient.listContainersCmd().withStatusFilter(Collections.singletonList("running")).withLabelFilter(Collections.singletonList("dps.container=true")).exec();
+    final var containers = this.dockerClient
+      .listContainersCmd()
+      .withStatusFilter(Collections.singletonList("running"))
+      .withLabelFilter(Collections.singletonList("dps.container=true"))
+      .exec();
 
     if (containers.size() > 1) {
       log.warn("status=multiple-dps-containers-found, action=using-the-first, containers={}", Containers.toNames(containers));
