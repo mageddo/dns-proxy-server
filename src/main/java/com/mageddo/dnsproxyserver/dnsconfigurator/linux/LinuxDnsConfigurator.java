@@ -7,7 +7,7 @@ import com.mageddo.dnsproxyserver.dnsconfigurator.linux.resolvconf.DnsServerClea
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.resolvconf.SetMachineDNSServerHandler;
 import com.mageddo.dnsproxyserver.resolvconf.ResolvConfParser;
 import com.mageddo.dnsproxyserver.server.dns.IP;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.enterprise.inject.Default;
@@ -24,7 +24,7 @@ import static com.mageddo.dnsproxyserver.utils.Splits.splitToPaths;
 @Slf4j
 @Default
 @Singleton
-@AllArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class LinuxDnsConfigurator implements DnsConfigurator {
 
   private AtomicReference<ResolvFile> confFile;
