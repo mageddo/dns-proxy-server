@@ -1,5 +1,5 @@
 ---
-title: Solving hostnames using wildcards
+title: Wildcards hostnames Solving
 weight: 3
 ---
 
