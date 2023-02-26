@@ -1,8 +1,13 @@
 package com.mageddo.utils;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
+
+import static java.nio.file.Files.newInputStream;
+import static java.nio.file.Files.newOutputStream;
 
 public class Files {
   public static Path createTempFileDeleteOnExit(final String prefix, final String suffix) {
@@ -33,5 +38,20 @@ public class Files {
 
   public static String getPathName(Path path) {
     return path.getFileName().toString();
+  }
+
+  /**
+   * Copy content but don't touch on the file permissions, java.nio.file.Files.copy() with REPLACE_EXISTING will change
+   * the file permissions.
+   *
+   * @param source
+   * @param target
+   */
+  public static void copyContent(Path source, Path target) {
+    try (var in = newInputStream(source); var out = newOutputStream(target)) {
+      IOUtils.copy(in, out);
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
   }
 }

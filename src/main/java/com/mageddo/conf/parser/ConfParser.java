@@ -7,12 +7,13 @@ import java.io.StringReader;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static com.mageddo.utils.Files.copyContent;
 
 
 public class ConfParser {
@@ -52,7 +53,7 @@ public class ConfParser {
       ) {
         writeToOut(reader, writer, parser, t);
       }
-      Files.copy(tmpFile, target, StandardCopyOption.REPLACE_EXISTING);
+      copyContent(tmpFile, target);
       Files.delete(tmpFile);
     } catch (IOException e) {
       throw new UncheckedIOException(e);
