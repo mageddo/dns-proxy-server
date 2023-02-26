@@ -135,7 +135,7 @@ public class Configs {
   }
 
   static boolean runningInTestsAndNoCustomConfigPath(ConfigFlag configFlag) {
-    return !Arrays.toString(configFlag.getArgs()).contains("--conf-path") && Tests.runningOnJunit();
+    return !Arrays.toString(configFlag.getArgs()).contains("--conf-path") && Tests.inTest();
   }
 
 

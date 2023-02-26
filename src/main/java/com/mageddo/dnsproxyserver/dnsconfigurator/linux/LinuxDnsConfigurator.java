@@ -6,6 +6,7 @@ import com.mageddo.dnsproxyserver.dnsconfigurator.DnsConfigurator;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.ResolvFile.Type;
 import com.mageddo.dnsproxyserver.server.dns.IP;
 import com.mageddo.dnsproxyserver.systemd.ResolvedService;
+import com.mageddo.utils.Tests;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -130,6 +131,10 @@ public class LinuxDnsConfigurator implements DnsConfigurator {
 
   static void tryRestartResolved() {
     try {
+      if (Tests.inTest()) {
+        log.warn("status=wont-restart-service-while-testing");
+        return;
+      }
       ResolvedService.restart();
     } catch (Throwable e) {
       log.warn(
