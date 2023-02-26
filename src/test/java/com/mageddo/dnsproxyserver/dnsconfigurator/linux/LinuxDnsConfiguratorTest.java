@@ -108,7 +108,10 @@ class LinuxDnsConfiguratorTest {
     final var paths = this.configurator.buildConfPaths();
 
     // assert
-    assertEquals("[/host/etc/resolv.conf, /etc/resolv.conf]", paths.toString());
+    assertEquals(
+      "[/host/etc/systemd/resolved.conf, /host/etc/resolv.conf, /etc/systemd/resolved.conf, /etc/resolv.conf]",
+      paths.toString()
+    );
   }
 
   @Test
