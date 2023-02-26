@@ -2,7 +2,7 @@ version: '2'
 services:
 
   dps:
-    image: docker.io/defreitas/dns-proxy-server:3.2.1-beta
+    image: docker.io/defreitas/dns-proxy-server
     networks:
       dps:
         ipv4_address: 192.169.0.10
@@ -14,8 +14,8 @@ services:
     image: nginx:1.22
     environment:
       - HOSTNAMES=.localhost,.subdomain
-#    depends_on:
-#      - dps
+   depends_on:
+     - dps
     dns:
       - 192.169.0.10
     networks:
