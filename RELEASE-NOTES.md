@@ -1,3 +1,12 @@
+### 3.4.0-beta
+
+* DPS will detect and configure systemd-resolved when available
+* The default value of MG_RESOLVCONF was changed to
+```
+/host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf
+```
+See issue [#321](https://github.com/mageddo/dns-proxy-server/issues/321) for more details.
+
 ### 3.3.0-beta
 #### MG_RESOLVCONF will now accept more than one value
 They will separate by comma , DPS will look for each value, try to use it and stops when finds a valid value, some path which is able to configure (an existing path, with the right read and write permissions and parseable by DPS)
