@@ -14,15 +14,15 @@ __Version 2__
   // Remote DNS servers to be asked when can not solve from docker or local storage
   // If no one server was specified then the 8.8.8.8 will be used
   "remoteDnsServers": [ "8.8.8.8", "4.4.4.4:54" ],
-  
+
   // all existent environments  
-  "envs": [  
+  "envs": [
     {
       "name": "", // empty string is the default enviroment
       "hostnames": [ // all local hostnames entries
         {
           // (optional) used to control it will be automatically generated if not passed
-          "id": 1, 
+          "id": 1,
           "hostname": "github.com",
           "ip": "192.168.0.1",
           "ttl": 255 // how many seconds cache this entry
@@ -47,7 +47,7 @@ __Version 1__
 ```json
 {
   "remoteDnsServers": [ [8,8,8,8], [4,4,4,4] ], // Remote DNS servers to be asked when can not solve from docker or local storage 
-                                                // If no one server was specified then the 8.8.8.8 will be used
+  // If no one server was specified then the 8.8.8.8 will be used
   "envs": [ // all existent environments 
     {
       "name": "", // empty string is the default
@@ -73,14 +73,14 @@ __Version 1__
 
 ### Environment variable configuration
 
-| VARIBLE                     	| DESCRIPTION                                                                 	| DEFAULT VALUE    	|
-|-----------------------------	|-----------------------------------------------------------------------------	|------------------	|
-| MG_RESOLVCONF               	| Linux resolvconf path to set DPS as default DNS                             	| /etc/resolv.conf 	|
-| MG_LOG_LEVEL                	|                                                                             	| INFO             	|
-| MG_LOG_FILE                 	| Path where to logs will be stored                                           	| console          	|
-| MG_REGISTER_CONTAINER_NAMES 	| if should register container name / service name as a hostname              	| false            	|
-| MG_HOST_MACHINE_HOSTNAME    	| hostname to solve host machine IP                                           	| host.docker      	|
-| MG_DOMAIN                   	| The container names domain (requires MG_REGISTER_CONTINER_NAMES=TRUE) 	| .docker          	|
+| VARIBLE                     | DESCRIPTION                                                           | DEFAULT VALUE                                                                                     |
+|-----------------------------|-----------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
+| MG_RESOLVCONF               | Linux resolvconf path to set DPS as default DNS                       | /host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf |
+| MG_LOG_LEVEL                |                                                                       | INFO                                                                                              |
+| MG_LOG_FILE                 | Path where to logs will be stored                                     | console                                                                                           |
+| MG_REGISTER_CONTAINER_NAMES | if should register container name / service name as a hostname        | false                                                                                             |
+| MG_HOST_MACHINE_HOSTNAME    | hostname to solve host machine IP                                     | host.docker                                                                                       |
+| MG_DOMAIN                   | The container names domain (requires MG_REGISTER_CONTINER_NAMES=TRUE) | .docker                                                                                           |
 
 ### Terminal configuration
 
