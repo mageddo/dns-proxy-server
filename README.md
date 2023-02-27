@@ -1,5 +1,5 @@
 [![CI](https://github.com/mageddo/dns-proxy-server/actions/workflows/ci.yml/badge.svg)](https://github.com/mageddo/dns-proxy-server/actions/workflows/ci.yml)
-[![help me to keep DPS up to date](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PYFAZCXL442B6&source=url)
+[![help me to keep DPS up to date][7]][6]
 
 ### Main features
 
@@ -23,40 +23,45 @@ Checkout the [full list of features][4] with examples
 ### Basic running it 
 
 You can run DPS as native binary downloading the latest [binaries releases][2] 
-or via docker looking at [Dockerhub images][3]
+or via docker looking at [Dockerhub images][3].
 
-Basic usecase using docker
-
+Basic running it on Linux
 ```bash
-$ docker run --rm --hostname dns.mageddo \
--v /var/run/docker.sock:/var/run/docker.sock \
--v /etc/resolv.conf:/etc/resolv.conf \
-defreitas/dns-proxy-server
+$ curl -s -L https://github.com/mageddo/dns-proxy-server/releases/download/3.4.0-beta/dns-proxy-server-linux-amd64-3.4.0-beta.tgz | tar -vzx &&\
+sudo ./dns-proxy-server
 ```
 
-then try it out
-
+Then you can solve pre-configured entries (conf/config.json): 
 ```bash
-$ ping dns.mageddo
-PING dns.mageddo (172.17.0.4) 56(84) bytes of data.
+$ ping dps-sample.local
+.......
+```
+
+Also solve Docker containers:
+```bash
+$ docker run --rm --hostname nginx.dev nginx
+$ ping nginx.dev
+PING nginx.dev (172.17.0.4) 56(84) bytes of data.
 64 bytes from 172.17.0.4: icmp_seq=1 ttl=64 time=0.063 ms
 64 bytes from 172.17.0.4: icmp_seq=2 ttl=64 time=0.074 ms
 64 bytes from 172.17.0.4: icmp_seq=3 ttl=64 time=0.064 ms
 ```
 
+See [complete running it][5] documentation for more use cases, like running on Docker, Windows, etc.
+
 ### Documents
 * [Full documentation](http://mageddo.github.io/dns-proxy-server/)
-* [Running it documentation](http://mageddo.github.io/dns-proxy-server/latest/en/1-getting-started/running-it/)
+* [Running it documentation][5]
 * [Examples](https://github.com/mageddo/dns-proxy-server/tree/master/examples)
 * [Coding at the DPS](http://mageddo.github.io/dns-proxy-server/latest/en/5-developing/)
-* [RFC1035][1]
+* [RFC-1035][1]
 
 ### Donation
 Help me to keep DPS up to date
 
 Via PayPal
 
-[![](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PYFAZCXL442B6&source=url)
+[![][7]][6]
 
 Or via QR code
 
@@ -66,3 +71,6 @@ Or via QR code
 [2]: https://github.com/mageddo/dns-proxy-server/releases
 [3]: https://hub.docker.com/r/defreitas/dns-proxy-server
 [4]: http://mageddo.github.io/dns-proxy-server/latest/en/2-features/
+[5]: http://mageddo.github.io/dns-proxy-server/latest/en/1-getting-started/running-it/
+[6]: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PYFAZCXL442B6&source=url
+[7]: https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif
