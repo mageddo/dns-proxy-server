@@ -1,46 +1,58 @@
----
+  ---
 title: Running it
 weight: 1
 ---
 
 ### Running on Linux
 
+#### Standalone run (Recommended)
+
+Download the [latest release][3], extract and run:
+```bash
+$ sudo ./dns-proxy-server
+```
+Now DNS Proxy Server is your DNS server, to back everything to original state just press <kbd>CTRL</kbd> + <kbd>C</kbd>;
+
 #### On Docker
 
-```bash
-$ docker run --rm --hostname dns.mageddo --name dns-proxy-server -p 5380:5380 \
-  -v /opt/dns-proxy-server/conf:/app/conf \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  -v /etc/resolv.conf:/etc/resolv.conf \
-  defreitas/dns-proxy-server
-```
-
-If your system is periodically recreating `/etc/resolv.conf` (like `dhclient` does) and DPS stops working
-after a while you may need to try the following variant instead (see
-[issue 166](https://github.com/mageddo/dns-proxy-server/issues/166) for why this is):
+Actually I recomend you to run DPS using standalone run because an additional command on the host
+will be necessary to set DPS as default DNS,
+when running DPS on docker if you're using `system-resolved`:
 
 ```bash
 $ docker run --rm --hostname dns.mageddo --name dns-proxy-server -p 5380:5380 \
-  -v /opt/dns-proxy-server/conf:/app/conf \
+  --network host \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  -v /etc:/host/etc \
-  -e MG_RESOLVCONF=/host/etc/resolv.conf \
+  -v /etc/systemd/:/host/etc/systemd \
+  -v /etc/:/host/etc \
   defreitas/dns-proxy-server
 ```
 
-#### Standalone run
+If you're using `system-resolved` then run command below to restart systemd-resolved service
+and make DPS as default DNS changes to take effect.
 
-Download the [latest version](https://github.com/mageddo/dns-proxy-server/releases), extract and run
+```bash
+$ service systemd-resolved restart
+```
 
-	$ sudo ./dns-proxy-server
+Explaining: 
 
-Dns Proxy Server is now your current DNS server, to back everything to original state just press `CTRL + C`
+`--network host`: Running on host mode make it possible to DPS use host network interface addresses to bind the 
+DNS server, this way all containers will have access to DPS address 
+and use DPS features as a DNS server. 
+If you don't want to use that option then you can consider use [DPS Network feature][2].
+
+`/var/run/docker.sock`: Docker socket, so DPS can query about the running containers and solve their IP when asked.
+
+`/etc/systemd/:/host/etc/systemd` / `/etc/:/host/etc`: Depending on your distro you may are using system-resolved or 
+vanila resolv.conf to configure available DNS Servers, DPS will look at both and choose the best to be configured.
 
 ### Running on Windows
 
-> We have [cases](https://github.com/mageddo/dns-proxy-server/issues/66) of people got DPS running on Windows,
-below the information we have of how to run DPS on these OS, if you confirm that or have some information that
-would be helpful to archieve this please contribute creating a pull request or issue documenting that
+You can run DPS on Windows host without any problems except by two features
+
+* DPS won't be able to be set as default DNS automatically (instructions below)
+* DPS isn't capable yet ([see backlog issue][4]) to connect to docker API and solve containers 
 
 1. Start up DPS
 ```bash
@@ -105,4 +117,14 @@ Start the server at [custom port](#configure-your-dns) and solving from it
 $ nslookup -port=8980 google.com 127.0.0.1
 ```
 
+### Running on MAC
+
+MAC isn't fully supported yet but as of DPS 3 we are one step closer to solve this issue, stay tight on
+[the discussion][5] to keep up to date.
+
+
 [1]: https://imgur.com/a/LlDH8AM
+[2]: {{%relref "2-features/dps-network-resolution/_index.md" %}}
+[3]: https://github.com/mageddo/dns-proxy-server/releases
+[4]: https://github.com/mageddo/dns-proxy-server/issues/314
+[5]: https://github.com/mageddo/dns-proxy-server/issues/158
