@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.config.entrypoint;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -46,7 +47,7 @@ public class ConfigJsonV2 implements ConfigJson {
   private Boolean dpsNetworkAutoConnect;
 
   @JsonIgnore
-  public List<IpAddr> getRemoteDnsServers(){
+  public List<IpAddr> getRemoteDnsServers() {
     return this.remoteDnsServers
       .stream()
       .map(IpAddr::of)
@@ -66,7 +67,7 @@ public class ConfigJsonV2 implements ConfigJson {
     private String name;
     private List<Entry> hostnames = new ArrayList<>();
 
-    public Env add(Entry env){
+    public Env add(Entry env) {
       this.hostnames.add(env);
       return this;
     }
@@ -89,7 +90,7 @@ public class ConfigJsonV2 implements ConfigJson {
     private String target; // target hostname when type=CNAME
 
     private Integer ttl;
-    private Config.Entry.Type type;
+    private Type type;
 
     public static Entry from(Config.Entry entry) {
       return new Entry()
@@ -107,6 +108,17 @@ public class ConfigJsonV2 implements ConfigJson {
         .stream()
         .map(Entry::from)
         .collect(Collectors.toList());
+    }
+
+    public static Entry sample() {
+      return Entry.from(Config.Entry
+        .builder()
+        .type(Type.A)
+        .hostname("dps-sample.local")
+        .ip("192.168.0.254")
+        .ttl(30)
+        .build()
+      );
     }
   }
 

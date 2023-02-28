@@ -2,6 +2,8 @@ package com.mageddo.dnsproxyserver.config.entrypoint;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.entrypoint.ConfigJsonV2.Entry;
+import com.mageddo.dnsproxyserver.config.entrypoint.ConfigJsonV2.Env;
 import com.mageddo.json.JsonUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -56,7 +59,11 @@ public class JsonConfigs {
 
     config
       .get_envs()
-      .add(new ConfigJsonV2.Env().setName(Config.Env.DEFAULT_ENV));
+      .add(
+        new Env()
+          .setName(Config.Env.DEFAULT_ENV)
+          .setHostnames(Collections.singletonList(Entry.sample()))
+      );
 
     JsonUtils
       .prettyInstance()
