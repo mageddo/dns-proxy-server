@@ -8,6 +8,8 @@ buildscript {
 plugins {
   id "java"
   id 'io.quarkus'
+  id 'net.researchgate.release' version '3.0.2'
+
 }
 
 repositories {
