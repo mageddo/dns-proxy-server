@@ -88,8 +88,8 @@ processResources {
 
 release {
   project.ext.set("release.useAutomaticVersion", true)
-  project.ext.set("release.releaseVersion", version)
-  project.ext.set("release.newVersion", version)
+//  project.ext.set("release.releaseVersion", version)
+//  project.ext.set("release.newVersion", version)
   git {
     requireBranch.set("")
     pushToRemote.set('origin')
