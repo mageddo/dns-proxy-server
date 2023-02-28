@@ -5,12 +5,13 @@ buildscript {
     gradlePluginPortal()
   }
 }
+
 plugins {
   id "java"
   id 'io.quarkus'
   id 'net.researchgate.release' version '3.0.2'
-
 }
+project.ext.set("versionBefore", version)
 
 repositories {
   mavenLocal()
@@ -98,7 +99,6 @@ release {
   buildTasks = []
 }
 
-project.ext.set("versionBefore", version)
 confirmReleaseVersion {
   doLast {
     updateVersion("README.md", project.ext.get("versionBefore"))
