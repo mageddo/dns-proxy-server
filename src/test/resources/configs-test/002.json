@@ -1,19 +1,26 @@
 {
-  "version" : 2,
   "activeEnv" : "",
-  "remoteDnsServers" : [ ],
-  "envs" : [ {
-    "name" : "",
-    "hostnames" : [ ]
-  } ],
-  "webServerPort" : null,
-  "dnsServerPort" : null,
   "defaultDns" : null,
-  "logLevel" : null,
-  "logFile" : null,
-  "registerContainerNames" : null,
-  "hostMachineHostname" : null,
+  "dnsServerPort" : null,
   "domain" : null,
   "dpsNetwork" : null,
-  "dpsNetworkAutoConnect" : null
+  "dpsNetworkAutoConnect" : null,
+  "envs" : [ {
+    "hostnames" : [ {
+      "hostname" : "dps-sample.local",
+      "id" : 1,
+      "ip" : "192.168.0.254",
+      "target" : null,
+      "ttl" : 30,
+      "type" : "A"
+    } ],
+    "name" : ""
+  } ],
+  "hostMachineHostname" : null,
+  "logFile" : null,
+  "logLevel" : null,
+  "registerContainerNames" : null,
+  "remoteDnsServers" : [ ],
+  "version" : 2,
+  "webServerPort" : null
 }

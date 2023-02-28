@@ -117,6 +117,7 @@ public class ConfigJsonV2 implements ConfigJson {
         .hostname("dps-sample.local")
         .ip("192.168.0.254")
         .ttl(30)
+        .id(1L)
         .build()
       );
     }
