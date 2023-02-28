@@ -99,13 +99,15 @@ release {
 }
 
 confirmReleaseVersion {
+  doFirst {
+    def versionBefore = "${version}"
+  }
   doLast {
-    updateVersion("README.md")
+    updateVersion("README.md", versionBefore)
   }
 }
 
-def versionBefore = "${version}"
-def updateVersion(fileName) {
+def updateVersion(fileName, versionBefore) {
   def f = file("${rootDir}/$fileName")
   def text = f.text
   f.withWriter { w ->
