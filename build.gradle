@@ -100,7 +100,7 @@ release {
 
 confirmReleaseVersion {
   doFirst {
-    def versionBefore = "${version}"
+    versionBefore = "${version}"
   }
   doLast {
     updateVersion("README.md", versionBefore)
