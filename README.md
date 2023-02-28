@@ -34,17 +34,17 @@ sudo ./dns-proxy-server
 Then you can solve pre-configured entries (conf/config.json): 
 ```bash
 $ ping dps-sample.dev
-.......
+PING dps-sample.dev (192.168.0.254) 56(84) bytes of data.
 ```
 
 Also solve Docker containers:
 ```bash
 $ docker run --rm --hostname nginx.dev nginx
+
 $ ping nginx.dev
 PING nginx.dev (172.17.0.4) 56(84) bytes of data.
-64 bytes from 172.17.0.4: icmp_seq=1 ttl=64 time=0.063 ms
-64 bytes from 172.17.0.4: icmp_seq=2 ttl=64 time=0.074 ms
-64 bytes from 172.17.0.4: icmp_seq=3 ttl=64 time=0.064 ms
+64 bytes from 172.17.0.4 (172.17.0.4): icmp_seq=1 ttl=64 time=0.043 ms
+64 bytes from 172.17.0.4 (172.17.0.4): icmp_seq=2 ttl=64 time=0.022 ms
 ```
 
 See [complete running it][5] documentation for more use cases, like running on Docker, Windows, etc.
