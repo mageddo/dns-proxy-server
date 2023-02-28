@@ -98,10 +98,8 @@ release {
   buildTasks = []
 }
 
+project.ext.set("versionBefore", version)
 confirmReleaseVersion {
-  doFirst {
-    project.ext.set("versionBefore", version)
-  }
   doLast {
     updateVersion("README.md", project.ext.get("versionBefore"))
   }
