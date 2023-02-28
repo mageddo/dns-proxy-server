@@ -108,6 +108,7 @@ confirmReleaseVersion {
 }
 
 def updateVersion(fileName, versionBefore) {
+  println("> file=${fileName}, from=${versionBefore}, to=${version}")
   def f = file("${rootDir}/$fileName")
   def text = f.text
   f.withWriter { w ->
