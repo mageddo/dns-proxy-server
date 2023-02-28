@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
-import com.mageddo.dnsproxyserver.config.Config.Entry;
+import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.config.ConfigDAO;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.server.dns.Wildcards;
@@ -26,7 +26,7 @@ public class SolverLocalDB implements Solver {
     final var stopWatch = StopWatch.createStarted();
 
     final var type = Messages.findQuestionTypeCode(query);
-    if (Entry.Type.isNot(type, Entry.Type.A, Entry.Type.CNAME)) {
+    if (Type.isNot(type, Type.A, Type.CNAME, Type.AAAA)) {
       log.trace("status=typeNotSupported, action=continue, type={}, time={}", type, stopWatch.getTime());
       return null;
     }
@@ -47,7 +47,7 @@ public class SolverLocalDB implements Solver {
           entry.getType(), askedHost, stopWatch.getTime() - stopWatch.getSplitTime(), stopWatch.getTime()
       );
 
-      if (entry.getType() == Entry.Type.A) {
+      if (Type.is(entry.getType(), Type.A, Type.AAAA)) {
         return Messages.aAnswer(query, entry.getIp(), entry.getTtl());
       }
       return this.solverDelegate.solve(query, entry);

@@ -96,4 +96,25 @@ class SolverLocalDBTest {
 
   }
 
+
+  @Test
+  void mustSolveAAARecordAsAFromLocalDB() {
+
+    // arrange
+    this.configDAO.addEntry(Config.Env.DEFAULT_ENV, EntryTemplates.acmeAAAA());
+    final var msg = Messages.quadAQuestion(toAbsoluteName(EntryTemplates.ACME_COM));
+
+    // act
+    final var res = this.solver.handle(msg);
+
+    // assert
+    assertNotNull(res);
+    assertEquals(
+      "acme.com.    45  IN  A  10.10.0.1",
+      Messages.detailedPrint(res)
+    );
+
+  }
+
+
 }

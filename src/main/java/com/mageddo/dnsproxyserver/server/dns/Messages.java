@@ -12,6 +12,7 @@ import org.xbill.DNS.Name;
 import org.xbill.DNS.Rcode;
 import org.xbill.DNS.Record;
 import org.xbill.DNS.Section;
+import org.xbill.DNS.Type;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -113,10 +114,17 @@ public class Messages {
     return res;
   }
 
-  @SneakyThrows
   public static Message aQuestion(String host) {
-    final var q = Record.newRecord(Name.fromString(host), org.xbill.DNS.Type.A, DClass.IN, 0);
-    return Message.newQuery(q);
+    return Message.newQuery(query(host, Type.A));
+  }
+
+  public static Message quadAQuestion(String host) {
+    return Message.newQuery(query(host, Type.AAAA));
+  }
+
+  @SneakyThrows
+  public static Record query(String host, final int type) {
+    return Record.newRecord(Name.fromString(host), type, DClass.IN, 0);
   }
 
   public static Integer findQuestionTypeCode(Message msg) {
@@ -189,6 +197,5 @@ public class Messages {
     header.setRcode(Rcode.NOERROR);
     return res;
   }
-
 
 }

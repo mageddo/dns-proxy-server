@@ -102,7 +102,7 @@ public class Config {
   }
 
   @Value
-  @Builder(builderClassName = "EntryBuilder", buildMethodName = "_build")
+  @Builder(builderClassName = "EntryBuilder", buildMethodName = "_build", toBuilder = true)
   public static class Entry {
     @NonNull
     private Long id;
@@ -151,7 +151,7 @@ public class Config {
         return null;
       }
 
-      public static Set<Type> asSet(){
+      public static Set<Type> asSet() {
         return Stream.of(values()).collect(Collectors.toSet());
       }
 
@@ -163,13 +163,15 @@ public class Config {
         return contains(of(type));
       }
 
-      public static boolean isNot(Integer code, Type ... types) {
-        final var type = of(code);
-        return !Stream
-            .of(types)
-            .collect(Collectors.toSet())
-            .contains(type)
-            ;
+      public static boolean isNot(Integer code, Type... types) {
+        return !is(of(code), types);
+      }
+
+      public static boolean is(Type current, Type... possible) {
+        return Stream
+          .of(possible)
+          .collect(Collectors.toSet())
+          .contains(current);
       }
     }
   }
