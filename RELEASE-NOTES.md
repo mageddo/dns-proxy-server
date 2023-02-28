@@ -1,3 +1,7 @@
+### 3.5.0
+* Final release
+* Add local entry `dps-sample.local` so people can better understand how this feature works
+
 ### 3.4.0-beta
 
 * DPS will detect and configure systemd-resolved when available
