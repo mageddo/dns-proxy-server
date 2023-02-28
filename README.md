@@ -33,7 +33,7 @@ sudo ./dns-proxy-server
 
 Then you can solve pre-configured entries (conf/config.json): 
 ```bash
-$ ping dps-sample.local
+$ ping dps-sample.dev
 .......
 ```
 

@@ -36,15 +36,15 @@ public class RequestHandlerDefault implements RequestHandler {
     return this;
   }
 
-  Message solve(Message reqMsg, String kind) {
+  Message solve(Message query, String kind) {
 
     Validate.isTrue(!this.solvers.isEmpty(), "At least one solver is required");
 
     final var stopWatch = StopWatch.createStarted();
     try {
       final var r = Optional
-        .ofNullable(this.cache.handle(reqMsg, this::solve0))
-        .orElseGet(() -> buildDefaultRes(reqMsg));
+        .ofNullable(this.cache.handle(query, this::solve0))
+        .orElseGet(() -> buildDefaultRes(query));
       log.debug("status=solved, kind={}, time={}, res={}", kind, stopWatch.getTime(), simplePrint(r));
       return r;
     } catch (Exception e) {
@@ -52,7 +52,7 @@ public class RequestHandlerDefault implements RequestHandler {
         "status=solverFailed, totalTime={}, eClass={}, msg={}",
         stopWatch.getTime(), ClassUtils.getSimpleName(e), e.getMessage(), e
       );
-      return buildDefaultRes(reqMsg);
+      return buildDefaultRes(query);
     }
   }
 
