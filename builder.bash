@@ -112,7 +112,7 @@ case $1 in
 
   docker-push )
     echo "> Push docker images to docker hub"
-#    docker tag defreitas/dns-proxy-server:${APP_VERSION} defreitas/dns-proxy-server:latest &&\
+    docker tag defreitas/dns-proxy-server:${APP_VERSION} defreitas/dns-proxy-server:latest &&\
     echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&\
     docker-compose push image-linux-amd64 image-linux-aarch64
   ;;
