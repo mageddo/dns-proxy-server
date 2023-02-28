@@ -100,7 +100,7 @@ release {
 
 confirmReleaseVersion {
   doFirst {
-    project.ex.set("versionBefore", version)
+    project.ext.set("versionBefore", version)
   }
   doLast {
     updateVersion("README.md", project.ext.get("versionBefore"))
