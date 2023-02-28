@@ -1,4 +1,4 @@
-  ---
+---
 title: Running it
 weight: 1
 ---
@@ -15,9 +15,9 @@ Now DNS Proxy Server is your DNS server, to back everything to original state ju
 
 #### On Docker
 
-Actually I recomend you to run DPS using standalone run because an additional command on the host
-will be necessary to set DPS as default DNS,
-when running DPS on docker if you're using `system-resolved`:
+> Actually I recomend you to run DPS using standalone method because an additional command on the host
+will be necessary to set DPS as default DNS
+when running DPS on docker if you're using **system-resolved**:
 
 ```bash
 $ docker run --rm --hostname dns.mageddo --name dns-proxy-server -p 5380:5380 \
@@ -28,7 +28,7 @@ $ docker run --rm --hostname dns.mageddo --name dns-proxy-server -p 5380:5380 \
   defreitas/dns-proxy-server
 ```
 
-If you're using `system-resolved` then run command below to restart systemd-resolved service
+If you're using **system-resolved** then run command below to restart systemd-resolved service
 and make DPS as default DNS changes to take effect.
 
 ```bash
@@ -37,12 +37,12 @@ $ service systemd-resolved restart
 
 Explaining: 
 
-`--network host`: Running on host mode make it possible to DPS use host network interface addresses to bind the 
-DNS server, this way all containers will have access to DPS address 
-and use DPS features as a DNS server. 
+`--network host`: Running on host mode make it possible to DPS bind the 
+DNS server port to the host network interface, this way all containers will have access to DPS address 
+and use DPS features. 
 If you don't want to use that option then you can consider use [DPS Network feature][2].
 
-`/var/run/docker.sock`: Docker socket, so DPS can query about the running containers and solve their IP when asked.
+`/var/run/docker.sock`: Docker socket, so DPS can query the running containers and solve their IP when asked.
 
 `/etc/systemd/:/host/etc/systemd` / `/etc/:/host/etc`: Depending on your distro you may are using system-resolved or 
 vanila resolv.conf to configure available DNS Servers, DPS will look at both and choose the best to be configured.
