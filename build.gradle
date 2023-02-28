@@ -83,3 +83,30 @@ processResources {
       .orElse(String.valueOf(project.version))
   }
 }
+
+release {
+  project.ext.set("release.useAutomaticVersion", true)
+  git {
+    requireBranch.set("")
+  }
+  failOnCommitNeeded = true
+  failOnPublishNeeded = true
+  failOnUnversionedFiles = true
+  buildTasks = []
+}
+
+confirmReleaseVersion {
+  doLast {
+    updateVersion("README.md")
+  }
+}
+
+def versionBefore = "${version}"
+def updateVersion(fileName) {
+  def f = file("${rootDir}/$fileName")
+  def text = f.text
+  f.withWriter { w ->
+    w << text.replaceAll("${versionBefore}", "\$1${version}")
+//    w << text.replaceAll("(.)\\d+\\.\\d+\\.\\d+", "\$1${version}")
+  }
+}
