@@ -106,10 +106,18 @@ createReleaseTag.enabled = false
 
 confirmReleaseVersion {
   doLast {
+    // codigo com a versao atual...
+  }
+}
+
+tasks.register("updateNewVersion") {
+  doLast {
     updateVersion("README.md", "/\\d+\\.\\d+\\.\\d+/", "/${version}/")
     updateVersion("README.md", "\\d+\\.\\d+\\.\\d+\\.tgz", "${version}.tgz")
   }
 }
+tasks["updateVersion"].finalizedBy("updateNewVersion")
+
 
 def updateVersion(fileName, pattern, version) {
   println("> file=${fileName}, pattern=${pattern}, to=${version}")
