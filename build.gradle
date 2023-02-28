@@ -90,6 +90,7 @@ release {
   project.ext.set("release.useAutomaticVersion", true)
   git {
     requireBranch.set("")
+    pushToRemote.set('origin')
   }
   failOnCommitNeeded = true
   failOnPublishNeeded = true
