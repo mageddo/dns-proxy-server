@@ -112,6 +112,6 @@ def updateVersion(fileName, versionBefore) {
   def text = f.text
   f.withWriter { w ->
     w << text.replaceAll("${versionBefore}", "\$1${version}")
-//    w << text.replaceAll("(.)\\d+\\.\\d+\\.\\d+", "\$1${version}")
+//    w << text.replaceAll("(: )\\d+\\.\\d+\\.\\d+", "\$1${version}")
   }
 }
