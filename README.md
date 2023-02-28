@@ -27,14 +27,14 @@ or via docker looking at [Dockerhub images][3].
 
 Basic running it on Linux
 ```bash
-$ curl -s -L https://github.com/mageddo/dns-proxy-server/releases/download/3.5.5/dns-proxy-server-linux-amd64-3.5.5.tgz | tar -vzx &&\
+$ curl -s -L https://github.com/mageddo/dns-proxy-server/releases/download/3.5.0/dns-proxy-server-linux-amd64-3.5.0.tgz | tar -vzx &&\
 sudo ./dns-proxy-server
 ```
 
 Then you can solve from pre-configured entries (conf/config.json): 
 ```bash
 $ ping dps-sample.dev
-PING dps-sample.dev (3.5.5.254) 56(84) bytes of data.
+PING dps-sample.dev (192.168.0.254) 56(84) bytes of data.
 ```
 
 Also solve Docker containers:
@@ -42,9 +42,9 @@ Also solve Docker containers:
 $ docker run --rm --hostname nginx.dev nginx
 
 $ ping nginx.dev
-PING nginx.dev (3.5.5.4) 56(84) bytes of data.
-64 bytes from 3.5.5.4 (3.5.5.4): icmp_seq=1 ttl=64 time=0.043 ms
-64 bytes from 3.5.5.4 (3.5.5.4): icmp_seq=2 ttl=64 time=0.022 ms
+PING nginx.dev (172.17.0.4) 56(84) bytes of data.
+64 bytes from 172.17.0.4 (172.17.0.4): icmp_seq=1 ttl=64 time=0.043 ms
+64 bytes from 172.17.0.4 (172.17.0.4): icmp_seq=2 ttl=64 time=0.022 ms
 ```
 
 See [complete running it][5] documentation for more use cases, like running on Docker, Windows, etc.
