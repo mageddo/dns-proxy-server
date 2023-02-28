@@ -98,6 +98,10 @@ release {
   buildTasks = []
 }
 
+// don't create tags as github-cli will do that
+preTagCommit.enabled = false
+createReleaseTag.enabled = false
+
 confirmReleaseVersion {
   doLast {
     updateVersion("README.md", "/\\d+\\.\\d+\\.\\d+/", "/${version}/")
