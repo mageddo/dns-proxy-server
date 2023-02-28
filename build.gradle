@@ -11,7 +11,6 @@ plugins {
   id 'io.quarkus'
   id 'net.researchgate.release' version '3.0.2'
 }
-project.ext.set("versionBefore", version)
 
 repositories {
   mavenLocal()
@@ -110,7 +109,6 @@ def updateVersion(fileName, versionBefore) {
   def f = file("${rootDir}/$fileName")
   def text = f.text
   f.withWriter { w ->
-    w << text.replaceAll("${versionBefore}", "${version}")
-//    w << text.replaceAll("(: )\\d+\\.\\d+\\.\\d+", "\$1${version}")
+    w << text.replaceAll("\\d+\\.\\d+\\.\\d+", "${version}")
   }
 }
