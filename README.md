@@ -31,7 +31,7 @@ $ curl -s -L https://github.com/mageddo/dns-proxy-server/releases/download/3.5.0
 sudo ./dns-proxy-server
 ```
 
-Then you can solve pre-configured entries (conf/config.json): 
+Then you can solve from pre-configured entries (conf/config.json): 
 ```bash
 $ ping dps-sample.dev
 PING dps-sample.dev (192.168.0.254) 56(84) bytes of data.
