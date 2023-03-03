@@ -6,6 +6,8 @@ import com.mageddo.dnsproxyserver.config.entrypoint.JsonConfigs;
 import com.mageddo.dnsproxyserver.config.entrypoint.predicate.JsonEnvPredicate;
 import com.mageddo.dnsproxyserver.config.predicate.EntryPredicate;
 import com.mageddo.dnsproxyserver.config.predicate.EnvPredicate;
+import com.mageddo.dnsproxyserver.server.dns.Hostname;
+import com.mageddo.dnsproxyserver.server.dns.Hostnames;
 import io.smallrye.mutiny.tuples.Functions;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,11 +40,11 @@ public class ConfigDAOJson implements ConfigDAO {
   }
 
   @Override
-  public Config.Entry findEntryForActiveEnv(String hostname) {
+  public Config.Entry findEntryForActiveEnv(Hostname hostname) {
     final var env = this.findActiveEnv();
     return env.getEntries()
       .stream()
-      .filter(it -> Objects.equals(it.getHostname(), hostname))
+      .filter(it -> Hostnames.matches(hostname, it.getHostname()))
       .findFirst()
       .orElse(null);
   }

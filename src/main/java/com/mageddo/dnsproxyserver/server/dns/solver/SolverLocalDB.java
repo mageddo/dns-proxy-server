@@ -60,7 +60,7 @@ public class SolverLocalDB implements Solver {
   }
 
   Config.Entry findEntryTo(Hostname host) {
-    return this.configDAO.findEntryForActiveEnv(host.getValue());
+    return this.configDAO.findEntryForActiveEnv(host);
   }
 
 }

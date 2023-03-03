@@ -15,4 +15,7 @@ public class Hostnames {
     return s + HOSTNAME_TERMINATE_CHAR;
   }
 
+  public static boolean matches(Hostname expected, String actual) {
+    return expected.isEqualTo(actual);
+  }
 }
