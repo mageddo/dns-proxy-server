@@ -78,7 +78,7 @@ public class DnsConfigurators {
   }
 
   int getInitialDelay() {
-    return 5_00;
+    return 5_000;
   }
 
   int getMaxErrors() {
