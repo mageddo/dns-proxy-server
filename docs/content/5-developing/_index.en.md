@@ -34,3 +34,15 @@ or
 $ ./gradlew build -Dquarkus.package.type=uber-jar -i -x check
 $ docker-compose -f docker-compose-dev.yml run --rm -it backend bash
 ```
+
+## Releasing
+
+Patch version
+```bash
+$ ./gradlew release
+```
+
+Major version
+```bash
+$ ./gradlew release -Prelease.releaseVersion=3.6.0 -Prelease.newVersion=3.6.0
+```

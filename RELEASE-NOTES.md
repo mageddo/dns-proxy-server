@@ -1,3 +1,7 @@
+### 3.6.0
+* Configure DPS at system-resolved with a custom port when is necessary
+* Auto DNS configurator will give up to configure after 3 failures
+
 ### 3.5.3
 * LocalSolverDB Wildcards fix: wasn't working
 * LocalSolverDB Case sensitive query fixes: camelCase hostnames weren't being solved
