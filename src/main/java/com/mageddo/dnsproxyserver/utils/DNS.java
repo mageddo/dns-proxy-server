@@ -15,4 +15,8 @@ public class DNS {
   public static boolean isDefaultPort(Integer port) {
     return Objects.equals(DEFAULT_PORT, port);
   }
+
+  public static boolean isDefaultPortOrNull(IpAddr addr) {
+    return isDefaultPort(addr) || !addr.hasPort();
+  }
 }
