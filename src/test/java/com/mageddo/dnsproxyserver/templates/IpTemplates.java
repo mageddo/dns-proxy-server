@@ -3,8 +3,11 @@ package com.mageddo.dnsproxyserver.templates;
 import com.mageddo.dnsproxyserver.server.dns.IP;
 
 public class IpTemplates {
+
+  public static final String LOCAL = "10.10.0.1";
+
   public static IP local(){
-    return IP.of("10.10.0.1");
+    return IP.of(LOCAL);
   }
 
   public static IP loopback(){

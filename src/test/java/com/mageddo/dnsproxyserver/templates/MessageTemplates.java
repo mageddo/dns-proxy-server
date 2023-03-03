@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.templates;
 
+import com.mageddo.dnsproxyserver.server.dns.Messages;
 import lombok.SneakyThrows;
 import org.xbill.DNS.DClass;
 import org.xbill.DNS.Message;
@@ -21,5 +22,7 @@ public class MessageTemplates {
     return buildAQuestionFor(ACME_HOSTNAME + ".");
   }
 
-
+  public static Message buildAAnswer(Message m) {
+    return Messages.aAnswer(m, IpTemplates.LOCAL);
+  }
 }
