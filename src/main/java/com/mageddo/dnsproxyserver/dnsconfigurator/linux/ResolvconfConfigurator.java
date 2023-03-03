@@ -16,8 +16,8 @@ public class ResolvconfConfigurator {
 
     Validate.isTrue(
       Objects.equals(addr.getPort(), DNS.DEFAULT_PORT),
-      "Resolvconf requires server to be %s",
-      DNS.DEFAULT_PORT
+      "Resolvconf requires dns server port to be=%s, passedPort=%d",
+      DNS.DEFAULT_PORT, addr.getPort()
     );
 
     ConfParser.process(

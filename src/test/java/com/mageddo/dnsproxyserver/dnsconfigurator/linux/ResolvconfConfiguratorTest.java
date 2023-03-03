@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ResolvconfConfiguratorTest {
 
@@ -99,6 +101,23 @@ class ResolvconfConfiguratorTest {
         """,
       Files.readString(resolvFile)
     );
+
+  }
+
+  @Test
+  void wontConfigurePortsDifferentFrom53(@TempDir Path tmpDir) throws Exception {
+
+    // arrrange
+    final var addr = IpAddrTemplates.localPort54();
+    final var resolvFile = tmpDir.resolve("resolv.conf");
+
+    // act
+    final var ex = assertThrows(IllegalArgumentException.class, () -> {
+      ResolvconfConfigurator.process(resolvFile, addr);
+    });
+
+    // assert
+    assertTrue(ex.getMessage().contains("requires dns server port to"), ex.getMessage());
 
   }
 }
