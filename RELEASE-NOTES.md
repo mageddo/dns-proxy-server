@@ -1,3 +1,7 @@
+### 3.5.3
+* LocalSolverDB Wildcards fix: wasn't working
+* LocalSolverDB Case sensitive query fixes: camelCase hostnames weren't being solved
+
 ### 3.5.0
 * Final release
 * Add local entry `dps-sample.dev` so people can better understand how this feature works
