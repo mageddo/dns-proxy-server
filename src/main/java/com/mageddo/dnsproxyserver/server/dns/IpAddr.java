@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 public class IpAddr {
 
   public static final Pattern IP_ADDR_REGEX =
-    Pattern.compile("^(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})((?::(\\d+)|))$");
+      Pattern.compile("^(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})((?::(\\d+)|))$");
 
   @NonNull
   @JsonDeserialize(using = IPConverter.Deserializer.class)
@@ -50,15 +50,15 @@ public class IpAddr {
    */
   public static IpAddr of(String addr) {
     Validate.isTrue(
-      Regexes.matcher(StringUtils.trimToEmpty(addr), IP_ADDR_REGEX).matches(),
-      "Need to pass a valid addr: actual=%s", addr
+        Regexes.matcher(StringUtils.trimToEmpty(addr), IP_ADDR_REGEX).matches(),
+        "Need to pass a valid addr: actual=%s", addr
     );
     final var groups = Regexes.groups(addr, IP_ADDR_REGEX);
     return IpAddr
-      .builder()
-      .ip(IP.of(groups.get(1)))
-      .port(groups.get(3, s -> StringUtils.isBlank(s) ? null : Integer.parseInt(s)))
-      .build();
+        .builder()
+        .ip(IP.of(groups.get(1)))
+        .port(groups.get(3, s -> StringUtils.isBlank(s) ? null : Integer.parseInt(s)))
+        .build();
   }
 
   public static IpAddr of(IP ip) {
@@ -67,10 +67,10 @@ public class IpAddr {
 
   public static IpAddr of(IP ip, Integer port) {
     return IpAddr
-      .builder()
-      .ip(ip)
-      .port(port)
-      .build();
+        .builder()
+        .ip(ip)
+        .port(port)
+        .build();
   }
 
   public static IpAddr of(Byte[] ip) {
@@ -83,5 +83,9 @@ public class IpAddr {
 
   public static IpAddr of(Integer[] ip) {
     return of(Bytes.toNative(ip));
+  }
+
+  public boolean hasPort() {
+    return this.port != null && this.port > 0;
   }
 }

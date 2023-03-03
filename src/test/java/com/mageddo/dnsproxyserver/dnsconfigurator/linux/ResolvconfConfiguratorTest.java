@@ -117,7 +117,8 @@ class ResolvconfConfiguratorTest {
     });
 
     // assert
-    assertTrue(ex.getMessage().contains("requires dns server port to"), ex.getMessage());
+    final var msg = ex.getMessage();
+    assertTrue(msg.contains("requires dns server port to"), msg);
 
   }
 }

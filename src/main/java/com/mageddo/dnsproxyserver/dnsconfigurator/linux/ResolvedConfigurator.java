@@ -19,7 +19,7 @@ public class ResolvedConfigurator {
   }
 
   private static String formatAddr(IpAddr addr) {
-    if (DNS.isDefaultPort(addr)) {
+    if (DNS.isDefaultPort(addr) || !addr.hasPort()) {
       return addr.getRawIP();
     }
     return String.format("%s:%s", addr.getRawIP(), addr.getPort());
