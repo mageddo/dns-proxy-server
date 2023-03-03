@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
 import com.mageddo.dnsproxyserver.config.entrypoint.ConfigEnv;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.ResolvFile.Type;
-import com.mageddo.dnsproxyserver.templates.IpTemplates;
+import com.mageddo.dnsproxyserver.templates.IpAddrTemplates;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -25,7 +25,7 @@ class LinuxDnsConfiguratorTest {
 
     // arrrange
     final var resolvFile = Files.createTempFile(tmpDir, "resolv", ".conf");
-    final var ip = IpTemplates.local();
+    final var ip = IpAddrTemplates.local();
 
     doReturn(Collections.singletonList(resolvFile))
       .when(this.configurator)
@@ -50,7 +50,7 @@ class LinuxDnsConfiguratorTest {
 
     // arrrange
     final var resolvFile = Files.createFile(tmpDir.resolve("resolved.conf"));
-    final var ip = IpTemplates.local();
+    final var ip = IpAddrTemplates.local();
 
     doReturn(Collections.singletonList(resolvFile))
       .when(this.configurator)
@@ -75,7 +75,7 @@ class LinuxDnsConfiguratorTest {
 
     // arrrange
     final var resolvFile = Files.createFile(tmpDir.resolve("resolved.conf"));
-    final var ip = IpTemplates.local();
+    final var ip = IpAddrTemplates.local();
 
     doReturn(Collections.singletonList(resolvFile))
       .when(this.configurator)
@@ -84,7 +84,7 @@ class LinuxDnsConfiguratorTest {
 
     // act
     this.configurator.configure(ip);
-    this.configurator.configure(IpTemplates.loopback());
+    this.configurator.configure(IpAddrTemplates.loopback());
 
     // assert
     assertEquals(

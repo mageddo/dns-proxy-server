@@ -1,9 +1,10 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator;
 
 import com.mageddo.commons.concurrent.ThreadPool;
+import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.LinuxDnsConfigurator;
-import com.mageddo.dnsproxyserver.server.dns.IP;
+import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import io.quarkus.runtime.StartupEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @Singleton
@@ -23,6 +25,7 @@ public class DnsConfigurators {
 
   private final LinuxDnsConfigurator linuxConfigurator;
   private final DpsIpDiscover ipDiscover;
+  private final AtomicInteger failures = new AtomicInteger();
 
   private volatile DnsConfigurator instance;
 
@@ -33,19 +36,20 @@ public class DnsConfigurators {
       return;
     }
 
-    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-      log.debug("status=restoringResolvConf, path={}", config.getResolvConfPaths());
-      this.getInstance().restore();
-    }));
+    this.configureShutdownHook(config);
+    this.configurationHook(config);
+  }
 
+  private void configurationHook(Config config) {
     ThreadPool
       .def()
       .scheduleWithFixedDelay(() -> {
         try {
-          final var ip = this.ipDiscover.findDpsIP();
-          log.trace("status=configuringAsDefaultDns, ip={}", ip);
-          this.getInstance().configure(ip);
-        } catch (Exception e) {
+          final var addr = this.findIpAddr();
+          log.trace("status=configuringAsDefaultDns, addr={}", addr);
+          this.configure(addr);
+        } catch (Throwable e) {
+          this.failures.incrementAndGet();
           if (e instanceof IOException) {
             log.warn(
               "status=failedToConfigureAsDefaultDns, path={}, msg={}:{}",
@@ -54,8 +58,46 @@ public class DnsConfigurators {
           } else {
             log.warn("status=failedToConfigureAsDefaultDns, path={}, msg={}", config.getResolvConfPaths(), e.getMessage(), e);
           }
+          if (this.failures.get() >= this.getMaxErrors()) {
+            log.warn("status=too-many-failures, action=stopping-default-dns-configuration, failures={}", this.failures.get());
+            throw new RuntimeException(e);
+          }
         }
-      }, 5, 20, TimeUnit.SECONDS);
+      }, this.getInitialDelay(), this.getDelay(), TimeUnit.MILLISECONDS);
+  }
+
+  IpAddr findIpAddr() {
+    return IpAddr.of(
+      this.ipDiscover.findDpsIP(),
+      Configs.getInstance().getDnsServerPort()
+    );
+  }
+
+  int getDelay() {
+    return 20_000;
+  }
+
+  int getInitialDelay() {
+    return 5_00;
+  }
+
+  int getMaxErrors() {
+    return 3;
+  }
+
+  int getFailures() {
+    return failures.get();
+  }
+
+  void configureShutdownHook(Config config) {
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+      log.debug("status=restoringResolvConf, path={}", config.getResolvConfPaths());
+      this.getInstance().restore();
+    }));
+  }
+
+  void configure(IpAddr addr) {
+    this.getInstance().configure(addr);
   }
 
   DnsConfigurator getInstance() {
@@ -68,11 +110,12 @@ public class DnsConfigurators {
     }
     log.info("status=unsupported-platform-to-set-as-default-dns-automatically, os={}", System.getProperty("os.name"));
     return new DnsConfigurator() {
-      public void configure(IP ip) {
+      public void configure(IpAddr addr) {
       }
 
       public void restore() {
       }
     };
   }
+
 }

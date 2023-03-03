@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator.linux.systemdresolved;
 
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.ResolvedConfigurator;
+import com.mageddo.dnsproxyserver.templates.IpAddrTemplates;
 import com.mageddo.dnsproxyserver.templates.IpTemplates;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -16,7 +17,7 @@ class ResolvedConfiguratorTest {
   void mustConfigureDnsServerOnEmptyFile(@TempDir Path tmpDir) throws Exception {
     // arrange
     final var confFile = Files.createTempFile(tmpDir, "file", ".conf");
-    final var localIp = IpTemplates.local();
+    final var localIp = IpAddrTemplates.local();
 
     // act
     ResolvedConfigurator.configure(confFile, localIp);
@@ -43,7 +44,7 @@ class ResolvedConfiguratorTest {
       #FallbackDNS=
       #Domains=
       """);
-    final var localIp = IpTemplates.local();
+    final var localIp = IpAddrTemplates.local();
 
     // act
     ResolvedConfigurator.configure(confFile, localIp);
@@ -73,7 +74,7 @@ class ResolvedConfiguratorTest {
       FallbackDNS=
       Domains=
       """);
-    final var localIp = IpTemplates.local();
+    final var localIp = IpAddrTemplates.local();
 
     // act
     ResolvedConfigurator.configure(confFile, localIp);
@@ -95,7 +96,7 @@ class ResolvedConfiguratorTest {
       [Resolve]
       DNS=192.168.0.1 # dps-entry
       """);
-    final var localIp = IpTemplates.local();
+    final var localIp = IpAddrTemplates.local();
 
     // act
     ResolvedConfigurator.configure(confFile, localIp);

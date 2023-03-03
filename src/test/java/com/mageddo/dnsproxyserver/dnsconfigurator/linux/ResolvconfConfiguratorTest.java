@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
-import com.mageddo.dnsproxyserver.server.dns.IP;
+import com.mageddo.dnsproxyserver.templates.IpAddrTemplates;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -18,7 +18,7 @@ class ResolvconfConfiguratorTest {
     final var resolvFile = Files.createTempFile(tmpDir, "resolv", ".conf");
 
     // act
-    ResolvconfConfigurator.process(resolvFile, IP.of("10.10.0.1"));
+    ResolvconfConfigurator.process(resolvFile, IpAddrTemplates.local());
 
     // assert
     assertEquals(
@@ -35,7 +35,7 @@ class ResolvconfConfiguratorTest {
 
     // arrrange
     final var resolvFile = tmpDir.resolve("resolv.conf");
-    final var ip = IP.of("10.10.0.1");
+    final var ip = IpAddrTemplates.local();
     Files.writeString(resolvFile, "nameserver 8.8.8.8");
 
     // act
@@ -58,7 +58,7 @@ class ResolvconfConfiguratorTest {
 
     // arrrange
     final var resolvFile = tmpDir.resolve("resolv.conf");
-    final var ip = IP.of("10.10.0.1");
+    final var ip = IpAddrTemplates.local();
     Files.writeString(resolvFile, "nameserver 8.8.8.8\nnameserver 4.4.4.4 # dps-entry");
 
     // act

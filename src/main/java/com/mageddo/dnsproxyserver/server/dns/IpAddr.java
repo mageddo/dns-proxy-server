@@ -62,9 +62,14 @@ public class IpAddr {
   }
 
   public static IpAddr of(IP ip) {
+    return of(ip, null);
+  }
+
+  public static IpAddr of(IP ip, Integer port) {
     return IpAddr
       .builder()
       .ip(ip)
+      .port(port)
       .build();
   }
 

@@ -1,10 +1,11 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator;
 
-import com.mageddo.dnsproxyserver.server.dns.IP;
-
-import java.nio.file.Path;
+import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 
 public interface DnsConfigurator {
-  void configure(IP ip);
+
+  void configure(IpAddr addr);
+
   void restore();
+
 }

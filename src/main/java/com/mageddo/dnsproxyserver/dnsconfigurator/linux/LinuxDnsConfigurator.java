@@ -4,7 +4,7 @@ import com.mageddo.commons.lang.Objects;
 import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.dnsconfigurator.DnsConfigurator;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.ResolvFile.Type;
-import com.mageddo.dnsproxyserver.server.dns.IP;
+import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import com.mageddo.dnsproxyserver.systemd.ResolvedService;
 import com.mageddo.utils.Tests;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ public class LinuxDnsConfigurator implements DnsConfigurator {
   private volatile AtomicReference<ResolvFile> confFile;
 
   @Override
-  public void configure(IP ip) {
+  public void configure(IpAddr addr) {
 
     this.init();
     if (this.confFile.get() == null) {
@@ -43,9 +43,9 @@ public class LinuxDnsConfigurator implements DnsConfigurator {
 
     final var confFile = this.getConfFile();
     if (confFile.isResolvconf()) {
-      ResolvconfConfigurator.process(confFile.getPath(), ip);
+      ResolvconfConfigurator.process(confFile.getPath(), addr);
     } else if (confFile.isResolved()) {
-      this.configureResolved(ip, confFile);
+      this.configureResolved(addr, confFile);
     } else {
       throw newUnsupportedConfType(confFile);
     }
@@ -122,9 +122,9 @@ public class LinuxDnsConfigurator implements DnsConfigurator {
     return new UnsupportedOperationException(String.format("conf file not supported: %s", confFile));
   }
 
-  private void configureResolved(IP ip, ResolvFile confFile) {
+  private void configureResolved(IpAddr addr, ResolvFile confFile) {
     if (this.resolvedConfigured.compareAndSet(false, true)) {
-      ResolvedConfigurator.configure(confFile.getPath(), ip);
+      ResolvedConfigurator.configure(confFile.getPath(), addr);
       tryRestartResolved();
     }
   }
