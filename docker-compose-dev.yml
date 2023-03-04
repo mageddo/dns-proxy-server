@@ -29,4 +29,4 @@ services:
       - ./docs:/src
     ports:
       - 1313:1313
-    command: "hugo server --source /src"
+    command: "hugo server --bind 0.0.0.0 --source /src"
