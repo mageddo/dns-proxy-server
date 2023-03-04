@@ -1,3 +1,6 @@
+### 3.7.0
+* Support to configure DPS as default DNS Server on MacOS, [see the docs]()
+
 ### 3.6.0
 * Configure DPS at system-resolved with a custom port when is necessary
 * Auto DNS configurator will give up to configure after 3 failures

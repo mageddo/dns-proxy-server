@@ -21,3 +21,12 @@ services:
 #      - "127.0.0.1:53:53/udp"
 #      - "127.0.0.1:53:53/tcp"
     network_mode: host
+
+  # https://github.com/gohugoio/hugo/releases/tag/v0.55.4
+  docs:
+    image: docker.io/defreitas/tools-generic-cd:0.2.4
+    volumes:
+      - ./docs:/src
+    ports:
+      - 1313:1313
+    command: "hugo server --source /src"
