@@ -161,8 +161,11 @@ If you need to remove the configured DNS server then it will use your network pr
 $ networksetup -setdnsservers Wi-Fi Empty
 ```
 
+See [this thread][6] with more use cases.
+
 [1]: https://imgur.com/a/LlDH8AM
 [2]: {{%relref "2-features/dps-network-resolution/_index.md" %}}
 [3]: https://github.com/mageddo/dns-proxy-server/releases
 [4]: https://github.com/mageddo/dns-proxy-server/issues/314
 [5]: https://docs.docker.com/desktop/networking/#there-is-no-docker0-bridge-on-the-host
+[6]: https://github.com/mageddo/dns-proxy-server/issues/44#issuecomment-1454379761
