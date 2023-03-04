@@ -44,5 +44,5 @@ $ ./gradlew release
 
 Major version
 ```bash
-$ ./gradlew release -Prelease.releaseVersion=3.6.0 -Prelease.newVersion=3.6.0
+$ VERSION=3.7.0 && ./gradlew release -Prelease.releaseVersion=${VERSION} -Prelease.newVersion=${VERSION}
 ```
