@@ -106,6 +106,12 @@ public class DnsConfigurators {
   }
 
   private DnsConfigurator getInstance0() {
+    final var instance = this.getInstance1();
+    log.info("usingDnsConfigurator={}", ClassUtils.getSimpleName(instance));
+    return instance;
+  }
+
+  private DnsConfigurator getInstance1() {
     if (OS.isFamilyMac()) {
       return this.osxConfigurator;
     } else if (OS.isFamilyUnix()) {
