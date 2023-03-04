@@ -77,4 +77,11 @@ public class Networks {
     return e.result().getExitCode() == 4 && e.getMessage().contains(networkName);
   }
 
+  public static boolean updateDnsServers(String network, List<String> servers) {
+    if (servers.isEmpty()) {
+      return Networks.clearDns(network);
+    } else {
+      return updateDnsServers(network, servers.toArray(new String[0]));
+    }
+  }
 }
