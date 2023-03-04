@@ -33,6 +33,10 @@ public class Envs {
 
   public static Boolean getBooleanOrNull(String env) {
     final var v = StringUtils.trimToEmpty(System.getenv(env));
+    return parseBoolean(v);
+  }
+
+  static Boolean parseBoolean(String v) {
     if(StringUtils.isBlank(v)){
       return null;
     }
