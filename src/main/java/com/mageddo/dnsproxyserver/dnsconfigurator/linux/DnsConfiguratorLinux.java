@@ -27,7 +27,7 @@ import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 @Default
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
-public class LinuxDnsConfigurator implements DnsConfigurator {
+public class DnsConfiguratorLinux implements DnsConfigurator {
 
   private final AtomicBoolean resolvedConfigured = new AtomicBoolean();
 

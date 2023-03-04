@@ -16,9 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
-class LinuxDnsConfiguratorTest {
+class DnsConfiguratorLinuxTest {
 
-  LinuxDnsConfigurator configurator = spy(new LinuxDnsConfigurator());
+  DnsConfiguratorLinux configurator = spy(new DnsConfiguratorLinux());
 
   @Test
   void mustConfigureDpsServerOnEmptyFileAsResolvconf(@TempDir Path tmpDir) throws Exception {
