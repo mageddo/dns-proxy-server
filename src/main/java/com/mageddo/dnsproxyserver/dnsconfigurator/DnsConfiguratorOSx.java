@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator;
 
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
-import com.mageddo.dnsproxyserver.utils.DNS;
+import com.mageddo.dnsproxyserver.utils.Dns;
 import com.mageddo.os.osx.Networks;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ public class DnsConfiguratorOSx implements DnsConfigurator {
 
   @Override
   public void configure(IpAddr addr) {
-    DNS.validateIsDefaultPort(addr);
+    Dns.validateIsDefaultPort(addr);
     for (final String network : this.findNetworks()) {
       final var serversBefore = this.findNetworkDnsServers(network);
       if (serversBefore != null) {

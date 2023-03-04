@@ -5,7 +5,7 @@ import org.apache.commons.lang3.Validate;
 
 import java.util.Objects;
 
-public class DNS {
+public class Dns {
 
   public static int DEFAULT_PORT = 53;
 
@@ -23,9 +23,9 @@ public class DNS {
 
   public static void validateIsDefaultPort(IpAddr addr) {
     Validate.isTrue(
-      DNS.isDefaultPortOrNull(addr),
+      Dns.isDefaultPortOrNull(addr),
       "Resolvconf requires dns server port to be=%s, passedPort=%d",
-      DNS.DEFAULT_PORT, addr.getPort()
+      Dns.DEFAULT_PORT, addr.getPort()
     );
   }
 }
