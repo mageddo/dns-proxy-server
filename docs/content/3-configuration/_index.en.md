@@ -73,9 +73,13 @@ __Version 1__
 
 ### Environment variable configuration
 
+Boolean values
+> You can use `1` or `true` (case insensitive) to specify which the flag is activated, any other
+value will be considered false.
+
 | VARIBLE                     | DESCRIPTION                                                           | DEFAULT VALUE                                                                                     |
 |-----------------------------|-----------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
-| MG_RESOLVCONF               | Linux resolvconf path to set DPS as default DNS                       | /host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf |
+| MG_RESOLVCONF               | Linux resolvconf or systemd-resolved path to set DPS as default DNS   | /host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf |
 | MG_LOG_LEVEL                |                                                                       | INFO                                                                                              |
 | MG_LOG_FILE                 | Path where to logs will be stored                                     | console                                                                                           |
 | MG_REGISTER_CONTAINER_NAMES | if should register container name / service name as a hostname        | false                                                                                             |

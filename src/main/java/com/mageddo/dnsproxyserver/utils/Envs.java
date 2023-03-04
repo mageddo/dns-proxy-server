@@ -36,7 +36,7 @@ public class Envs {
     if(StringUtils.isBlank(v)){
       return null;
     }
-    return Objects.equals(v, "1");
+    return Objects.equals(v, "1") || StringUtils.equalsIgnoreCase(v, "true");
   }
 
   public static String getStringOrDefault(String env, String def) {
