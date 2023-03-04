@@ -7,7 +7,7 @@
   "dpsNetworkAutoConnect" : null,
   "envs" : [ {
     "hostnames" : [ {
-      "hostname" : "dps-sample.local",
+      "hostname" : "dps-sample.dev",
       "id" : 1,
       "ip" : "192.168.0.254",
       "target" : null,
