@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,11 +23,11 @@ public class DnsConfiguratorOSx implements DnsConfigurator {
   @Override
   public void configure(IpAddr addr) {
     DNS.validateIsDefaultPort(addr);
-    for (final String network : Networks.findNetworksNames()) {
-      final var serversBefore = Networks.findNetworkDnsServers(network);
+    for (final String network : this.findNetworks()) {
+      final var serversBefore = this.findNetworkDnsServers(network);
       if (serversBefore != null) {
         this.serversBefore.put(network, serversBefore);
-        final var success = Networks.updateDnsServers(network, addr.getRawIP());
+        final var success = this.updateDnsServers(network, Collections.singletonList(addr.getRawIP()));
         log.debug("status=configuring, network={}, serversBefore={}, success={}", network, serversBefore, success);
       }
     }
@@ -35,8 +36,21 @@ public class DnsConfiguratorOSx implements DnsConfigurator {
   @Override
   public void restore() {
     this.serversBefore.forEach((network, servers) -> {
-      final var success = Networks.updateDnsServers(network, servers);
+      final var success = this.updateDnsServers(network, servers);
       log.debug("status=restoring, network={}, servers={}, success={}", network, servers, success);
     });
   }
+
+  boolean updateDnsServers(String network, List<String> servers) {
+    return Networks.updateDnsServers(network, servers);
+  }
+
+  List<String> findNetworkDnsServers(String network) {
+    return Networks.findNetworkDnsServers(network);
+  }
+
+  List<String> findNetworks() {
+    return Networks.findNetworksNames();
+  }
+
 }
