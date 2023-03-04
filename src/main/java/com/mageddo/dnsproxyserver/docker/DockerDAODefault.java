@@ -39,11 +39,12 @@ public class DockerDAODefault implements DockerDAO {
 
   @Override
   public boolean isConnected() {
-    if (!Platform.isLinux()) {
-      return false; // todo not supporting windows and mac for now
+    if (!Platform.isLinux() || Platform.isMac()) {
+      final var path = Paths.get(DockerConfig.DOCKER_HOST_ADDRESS.getPath());
+      return Files.exists(path) && LinuxFiles.isUnixSocket(path);
     }
-    final var path = Paths.get(DockerConfig.DOCKER_HOST_ADDRESS.getPath());
-    return Files.exists(path) && LinuxFiles.isUnixSocket(path);
+    log.warn("docker features still not supported on this platform :/ , hold tight I'm working hard fix it someday :D");
+    return false; // todo support all plataforms...
   }
 
   @Override
