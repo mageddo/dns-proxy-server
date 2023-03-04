@@ -1,5 +1,8 @@
+### 3.8.0
+* Now you're able to activate flags by using `1` or `true` (case insenstive), [see the docs](http://mageddo.github.io/dns-proxy-server/latest/en/3-configuration/#environment-variable-configuration).
+
 ### 3.7.0
-* Support to configure DPS as default DNS Server on MacOS, [see the docs]()
+* Support to configure DPS as default DNS Server on MacOS, [see the docs](http://mageddo.github.io/dns-proxy-server/latest/en/1-getting-started/running-it/#running-on-mac)
 
 ### 3.6.0
 * Configure DPS at system-resolved with a custom port when is necessary
