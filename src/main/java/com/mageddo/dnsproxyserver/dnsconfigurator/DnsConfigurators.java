@@ -52,10 +52,7 @@ public class DnsConfigurators {
         } catch (Throwable e) {
           this.failures.incrementAndGet();
           if (e instanceof IOException) {
-            log.warn(
-              "status=failedToConfigureAsDefaultDns, path={}, msg={}:{}",
-              config.getResolvConfPaths(), ClassUtils.getName(e), e.getMessage()
-            );
+            log.warn("status=failedToConfigureAsDefaultDns, msg={}:{}", ClassUtils.getName(e), e.getMessage());
           } else {
             log.warn("status=failedToConfigureAsDefaultDns, path={}, msg={}", config.getResolvConfPaths(), e.getMessage(), e);
           }
