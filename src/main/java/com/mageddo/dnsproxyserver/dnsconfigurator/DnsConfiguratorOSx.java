@@ -35,9 +35,10 @@ public class DnsConfiguratorOSx implements DnsConfigurator {
 
   @Override
   public void restore() {
+    log.info("status=restoringPreviousDnsServers...");
     this.serversBefore.forEach((network, servers) -> {
       final var success = this.updateDnsServers(network, servers);
-      log.debug("status=restoring, network={}, servers={}, success={}", network, servers, success);
+      log.info("status=restoring, network={}, servers={}, success={}", network, servers, success);
     });
   }
 

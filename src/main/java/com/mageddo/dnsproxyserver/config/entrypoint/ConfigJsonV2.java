@@ -114,7 +114,7 @@ public class ConfigJsonV2 implements ConfigJson {
       return Entry.from(Config.Entry
         .builder()
         .type(Type.A)
-        .hostname("dps-sample.local")
+        .hostname("dps-sample.dev")
         .ip("192.168.0.254")
         .ttl(30)
         .id(1L)
