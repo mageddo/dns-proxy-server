@@ -2,7 +2,6 @@ package com.mageddo.os.osx;
 
 import com.mageddo.commons.exec.CommandLines;
 import com.mageddo.commons.exec.ExecutionValidationFailedException;
-import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
@@ -48,21 +47,34 @@ public class Networks {
     try {
       return findNetworkDnsServers(networkName);
     } catch (ExecutionValidationFailedException e) {
-      if (e.result().getExitCode() == 4 && e.getMessage().contains(networkName)) { // probably is not a recognized network service
+      if (isUnrecognizedNetwork(networkName, e)) { // probably is not a recognized network service
         return null;
       }
       throw e;
     }
   }
 
-  public static void main(String[] args) {
-    System.out.println("Networks: " + findNetworksNames());
-    for (String networkName : findNetworksNames()) {
-      try {
-        System.out.printf("n=%s, dns=%s%n", networkName, findNetworkDnsServersOrNull(networkName));
-      } catch (Exception e) {
-        System.out.println(ClassUtils.getSimpleName(e) + ": " + e.getMessage());
+  public static boolean clearDns(String networkName) {
+    return updateDnsServers(networkName, "Empty");
+  }
+
+  public static boolean updateDnsServers(String networkName, String... dnsServers) {
+    final var serversParam = String.join(" ", dnsServers);
+    try {
+      CommandLines
+        .exec("networksetup -setdnsservers \"%s\" %s", networkName, serversParam)
+        .checkExecution();
+      return true;
+    } catch (ExecutionValidationFailedException e) {
+      if (isUnrecognizedNetwork(networkName, e)) {
+        return false;
       }
+      throw e;
     }
   }
+
+  static boolean isUnrecognizedNetwork(String networkName, ExecutionValidationFailedException e) {
+    return e.result().getExitCode() == 4 && e.getMessage().contains(networkName);
+  }
+
 }
