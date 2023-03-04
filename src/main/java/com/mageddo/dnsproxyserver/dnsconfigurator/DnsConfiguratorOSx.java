@@ -53,4 +53,7 @@ public class DnsConfiguratorOSx implements DnsConfigurator {
     return Networks.findNetworksNames();
   }
 
+  Map<String, List<String>> getServersBefore() {
+    return this.serversBefore;
+  }
 }
