@@ -119,8 +119,8 @@ $ nslookup -port=8980 google.com 127.0.0.1
 
 ### Running on MAC
 
-DPS actually works on MAC except by docker features. Despite on this,
-there is no additional configuration to run DPS on docker, you can do just like [on Linux](#running-on-linux).
+DPS actually is fully supported on MAC except by [docker limitation features][5]. Despite on this,
+there is no additional configuration to run DPS on Mac, you can do just like [on Linux](#running-on-linux).
 
 Download the [latest release][3], extract and run:
 ```bash
@@ -165,3 +165,4 @@ $ networksetup -setdnsservers Wi-Fi Empty
 [2]: {{%relref "2-features/dps-network-resolution/_index.md" %}}
 [3]: https://github.com/mageddo/dns-proxy-server/releases
 [4]: https://github.com/mageddo/dns-proxy-server/issues/314
+[5]: https://docs.docker.com/desktop/networking/#there-is-no-docker0-bridge-on-the-host
