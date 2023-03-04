@@ -46,7 +46,7 @@ public class DnsConfiguratorOSx implements DnsConfigurator {
   }
 
   List<String> findNetworkDnsServers(String network) {
-    return Networks.findNetworkDnsServers(network);
+    return Networks.findNetworkDnsServersOrNull(network);
   }
 
   List<String> findNetworks() {
