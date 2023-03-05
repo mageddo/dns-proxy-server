@@ -42,4 +42,4 @@ or [set as default DNS automatically feature docker limitations][4] for more det
 [1]: https://github.com/mageddo/dns-proxy-server/issues/326
 [2]: https://github.com/mageddo/dns-proxy-server/releases
 [3]: #specific-instructions
-[4]: {{%relref "2-features/auto-configuration-as-default-dns/_index.md#docker-limitation" %}}
+[4]: {{%relref "2-features/auto-configuration-as-default-dns/_index.md#docker-limitations" %}}
