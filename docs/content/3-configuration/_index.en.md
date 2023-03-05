@@ -74,6 +74,7 @@ __Version 1__
 ### Environment variable configuration
 
 Boolean values
+
 > You can use `1` or `true` (case insensitive) to specify which the flag is activated, any other
 value will be considered false.
 

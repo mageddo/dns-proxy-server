@@ -17,6 +17,8 @@ $ sudo ./dns-proxy-server
 When running on standalone mode (not on docker container) DPS will be able to auto-configure itself as OSX default DNS,
 after 5 seconds you see something like `usingDnsConfigurator=DnsConfiguratorOSx` at the logs.
 
+### Configuring DPS as default DNS manually
+
 If by some reason it doesn't work or you want to configure it manually because are running DPS on a docker conainer,
 then check the instructions bellow:
 
