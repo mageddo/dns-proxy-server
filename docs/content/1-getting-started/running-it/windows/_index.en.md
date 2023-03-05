@@ -7,7 +7,7 @@ weight: 1
 
 You can run DPS on Windows host without any problems except by two features
 
-* DPS won't be able to be set as default DNS automatically (instructions below)
+* DPS won't be able to be set as [default DNS automatically][2] (instructions below)
 * DPS isn't capable yet ([see backlog issue][4]) to connect to docker API and solve containers
 
 1. Start up DPS
@@ -73,4 +73,5 @@ Start the server at [custom port](#configure-your-dns) and solving from it
 $ nslookup -port=8980 google.com 127.0.0.1
 ```
 [1]: https://imgur.com/a/LlDH8AM
+[2]: https://github.com/mageddo/dns-proxy-server/issues/326
 [4]: https://github.com/mageddo/dns-proxy-server/issues/314
