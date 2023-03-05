@@ -8,7 +8,7 @@ import com.sun.jna.win32.StdCallLibrary;
  * @see https://learn.microsoft.com/en-us/windows/win32/api/iphlpapi/
  * @see https://stackoverflow.com/questions/17876758/jna-getiftable-error
  */
-public interface IPHelperApi extends StdCallLibrary {
+interface IPHelperApi extends StdCallLibrary {
 
   IPHelperApi INSTANCE = Native.loadLibrary("IpHlpAPI", IPHelperApi.class);
 

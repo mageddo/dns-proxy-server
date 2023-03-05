@@ -5,6 +5,9 @@ import com.sun.jna.Structure;
 
 import java.util.List;
 
+/**
+ * https://learn.microsoft.com/en-us/windows/win32/api/ifmib/ns-ifmib-mib_ifrow
+ */
 public class MIB_IFROW extends Structure {
 
   public char wszName[] = new char[256];

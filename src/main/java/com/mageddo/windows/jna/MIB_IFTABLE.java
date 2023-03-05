@@ -5,6 +5,9 @@ import com.sun.jna.Structure;
 
 import java.util.List;
 
+/**
+ * https://learn.microsoft.com/en-us/windows/win32/api/ifmib/ns-ifmib-mib_iftable
+ */
 public class MIB_IFTABLE extends Structure {
 
   public static final int DEFAULT_SIZE = 10;

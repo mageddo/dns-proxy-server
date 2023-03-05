@@ -2,21 +2,13 @@ package com.mageddo.windows;
 
 import com.mageddo.commons.exec.CommandLines;
 import com.mageddo.commons.exec.ExecutionValidationFailedException;
-import com.mageddo.jna.ExecutionException;
-import com.mageddo.windows.jna.IPHelperApi;
-import com.mageddo.windows.jna.MIB_IFTABLE;
-import com.sun.jna.ptr.IntByReference;
+import com.mageddo.windows.jna.IpHelper;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Stream;
-
-import static com.mageddo.jna.WindowsConstants.ERROR_INSUFFICIENT_BUFFER;
-import static com.mageddo.jna.WindowsConstants.NO_ERROR;
 
 public class Networks {
 
@@ -25,43 +17,11 @@ public class Networks {
   private Networks() {
   }
 
-  public static Pair<MIB_IFTABLE, Integer> findNetworkInterfaces0(int tableSizeInBytes) {
-    final var ipHlpApi = IPHelperApi.INSTANCE;
-    final var table = MIB_IFTABLE.fromBytesSize(tableSizeInBytes);
-    final var inOutTableSize = new IntByReference(table.size());
-    final int status = ipHlpApi.GetIfTable(table, inOutTableSize, false);
-    if (status == NO_ERROR) {
-      return Pair.of(table, null);
-    } else if (status == ERROR_INSUFFICIENT_BUFFER) {
-      return Pair.of(table, inOutTableSize.getValue() - 4);
-    }
-    throw new ExecutionException(status);
-  }
-
-  public static MIB_IFTABLE findNetworkInterfaces() {
-    final var r = findNetworkInterfaces0(-1);
-    if (r.getValue() == null) {
-      return r.getKey();
-    }
-    final var r2 = findNetworkInterfaces0(r.getValue());
-    Validate.isTrue(!Objects.equals(r2.getValue(), ERROR_INSUFFICIENT_BUFFER), "Can't get error insufficient twice");
-    return r2.getKey();
-  }
-
-
   public static List<String> findNetworksNames() {
-    final var lines = CommandLines
-      .exec("netsh interface ipv4 show interfaces")
-      .checkExecution()
-      .getOutAsString();
-    System.out.println(lines);
-//      .split(LINE_BREAK_REGEX);
-    return null;
-//    return Stream.of(lines)
-//      .skip(1)
-//      .filter(it -> !it.contains("*"))
-//      .toList()
-//      ;
+    return Stream
+      .of(IpHelper.findNetworkInterfaces().table)
+      .map(it -> new String(Hex.encodeHexString(it.bPhysAddr)) + " : "+ new String(it.wszName) + new String(it.bDescr))
+      .toList();
   }
 
   public static List<String> findNetworkDnsServers(String networkServiceName) {
@@ -125,7 +85,7 @@ public class Networks {
 
   public static void main(String[] args) {
 
-    com.mageddo.dnsproxyserver.net.Networks.findInterfaces().forEach(it -> System.out.println(it.getName()));
+    com.mageddo.dnsproxyserver.net.Networks.findInterfaces().forEach(it -> System.out.println(it.getDisplayName()));
 
     System.out.println("------------------");
 
