@@ -1,3 +1,6 @@
+### 3.8.1
+* Fixing `SIGTERM` signal wasn't being respected at Linux image
+
 ### 3.8.0
 * Now you're able to activate flags by using `1` or `true` (case insenstive), [see the docs](http://mageddo.github.io/dns-proxy-server/latest/en/3-configuration/#environment-variable-configuration).
 
