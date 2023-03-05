@@ -1,5 +1,5 @@
 ---
-title: Linux running Instructions
+title: Linux running instructions
 weight: 1
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: MacOSx running Instructions
+title: MacOSX running instructions
 weight: 1
 ---
 

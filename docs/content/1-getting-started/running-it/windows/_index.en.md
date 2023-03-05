@@ -1,5 +1,5 @@
 ---
-title: Windows running Instructions
+title: Windows running instructions
 weight: 1
 ---
 
