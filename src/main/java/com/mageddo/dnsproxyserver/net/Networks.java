@@ -23,6 +23,17 @@ public class Networks {
   }
 
   public static List<IP> findMachineIps() {
+    return findInterfaces()
+      .stream()
+      .flatMap(NetworkInterface::inetAddresses)
+      .filter(it -> it.getAddress().length == IP.BYTES)
+      .map(it -> IP.of(it.getHostAddress()))
+      .sorted(Comparator.comparing(it -> it.raw().startsWith("127") ? Integer.MAX_VALUE : 0))
+      .toList()
+      ;
+  }
+
+  public static List<NetworkInterface> findInterfaces() {
     try {
       return NetworkInterface
         .networkInterfaces()
@@ -33,12 +44,7 @@ public class Networks {
             return false;
           }
         })
-        .flatMap(NetworkInterface::inetAddresses)
-        .filter(it -> it.getAddress().length == IP.BYTES)
-        .map(it -> IP.of(it.getHostAddress()))
-        .sorted(Comparator.comparing(it -> it.raw().startsWith("127") ? Integer.MAX_VALUE : 0))
-        .toList()
-        ;
+        .toList();
     } catch (SocketException e) {
       throw new UncheckedIOException(e);
     }
