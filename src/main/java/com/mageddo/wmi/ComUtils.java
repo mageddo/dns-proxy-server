@@ -1,12 +1,14 @@
 package com.mageddo.wmi;
 
 import com.jacob.com.Variant;
-import org.apache.commons.lang3.Validate;
+import com.mageddo.commons.lang.ExecutionException;
 
 public class ComUtils {
   public static Variant checkRC(Variant v){
     final var r = v.toInt();
-    Validate.isTrue(r == 0, "Execution failed, int=%d, hex=%x", r, r);
+    if(r != 0){
+      throw new ExecutionException(r);
+    }
     return v;
   }
 }

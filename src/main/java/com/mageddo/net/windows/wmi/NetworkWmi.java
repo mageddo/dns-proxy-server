@@ -6,6 +6,7 @@ import com.jacob.com.EnumVariant;
 import com.jacob.com.Variant;
 import com.mageddo.commons.lang.CloseQueue;
 import com.mageddo.wmi.ComUtils;
+import com.mageddo.commons.lang.ExecutionException;
 import com.mageddo.wmi.SafeArrayUtils;
 
 import java.util.ArrayList;
@@ -22,29 +23,39 @@ public class NetworkWmi implements AutoCloseable {
     this.connection = this.connect();
   }
 
-  public void updateInterfaceDns(String dnsServer){
+  public int updateInterfaceDns(String dnsServer) {
+    try {
       this.forEachInterface(item -> {
         ComUtils.checkRC(Dispatch.call(item, "SetDNSServerSearchOrder", SafeArrayUtils.fromStringArray(dnsServer)));
         ComUtils.checkRC(Dispatch.call(item, "SetDynamicDNSRegistration", new Variant(false)));
       });
+    } catch (ExecutionException e) {
+      return e.getCode();
+    }
+    return 0;
   }
 
-  public void activateDynamicRegistration(){
-    this.forEachInterface(item -> {
-      ComUtils.checkRC(Dispatch.call(item, "SetDynamicDNSRegistration", new Variant(true)));
-    });
+  public int activateDynamicRegistration() {
+    try {
+      this.forEachInterface(item -> {
+        ComUtils.checkRC(Dispatch.call(item, "SetDynamicDNSRegistration", new Variant(true)));
+      });
+    } catch (ExecutionException e) {
+      return e.getCode();
+    }
+    return 0;
   }
 
   public List<NetworkInterface> findInterfaces() {
     final var results = new ArrayList<NetworkInterface>();
     this.forEachInterface(item -> results.add(NetworkInterface
-            .builder()
-            .id(Dispatch.call(item, "SettingID").toString())
-            .caption(Dispatch.call(item, "Caption").toString())
-            .description(Dispatch.call(item, "Description").toString())
-            .dnsServers(List.of(Dispatch.call(item, "DNSServerSearchOrder").toString()))
-            .dynamicDnsRegistration(Dispatch.call(item, "DynamicDNSRegistration").toBoolean())
-            .build()
+        .builder()
+        .id(Dispatch.call(item, "SettingID").toString())
+        .caption(Dispatch.call(item, "Caption").toString())
+        .description(Dispatch.call(item, "Description").toString())
+        .dnsServers(List.of(Dispatch.call(item, "DNSServerSearchOrder").toString()))
+        .dynamicDnsRegistration(Dispatch.call(item, "DynamicDNSRegistration").toBoolean())
+        .build()
     ));
     return results;
   }
