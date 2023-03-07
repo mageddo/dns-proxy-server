@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.net;
+package com.mageddo.net;
 
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.ContainerNetwork;

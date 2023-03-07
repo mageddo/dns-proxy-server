@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.docker;
 
 import com.github.dockerjava.api.command.InspectContainerResponse;
-import com.mageddo.dnsproxyserver.net.Networks;
+import com.mageddo.net.Networks;
 import com.mageddo.dnsproxyserver.server.dns.Hostname;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

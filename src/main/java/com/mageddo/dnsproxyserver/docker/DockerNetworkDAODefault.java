@@ -6,7 +6,7 @@ import com.github.dockerjava.api.model.ContainerNetwork;
 import com.github.dockerjava.api.model.Network;
 import com.google.common.base.Predicates;
 import com.mageddo.commons.lang.Objects;
-import com.mageddo.dnsproxyserver.net.Networks;
+import com.mageddo.net.Networks;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

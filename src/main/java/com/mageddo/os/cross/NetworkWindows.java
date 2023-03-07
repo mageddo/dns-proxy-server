@@ -1,6 +1,6 @@
 package com.mageddo.os.cross;
 
-import com.mageddo.windows.Networks;
+import com.mageddo.net.windows.Networks;
 
 import java.util.List;
 

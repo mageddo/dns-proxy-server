@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.dnsconfigurator;
 
 import com.mageddo.dnsproxyserver.docker.DockerDAO;
 import com.mageddo.dnsproxyserver.docker.DpsContainerManager;
-import com.mageddo.dnsproxyserver.net.Networks;
+import com.mageddo.net.Networks;
 import com.mageddo.dnsproxyserver.server.dns.IP;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

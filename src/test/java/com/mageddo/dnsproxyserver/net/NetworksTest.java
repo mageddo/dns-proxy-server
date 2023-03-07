@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.net;
 
+import com.mageddo.net.Networks;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;

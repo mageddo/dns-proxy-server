@@ -4,7 +4,7 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Network;
 import com.mageddo.dnsproxyserver.config.Configs;
-import com.mageddo.dnsproxyserver.net.Networks;
+import com.mageddo.net.Networks;
 import com.mageddo.dnsproxyserver.server.dns.IP;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

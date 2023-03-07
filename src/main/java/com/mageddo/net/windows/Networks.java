@@ -1,9 +1,7 @@
-package com.mageddo.windows;
+package com.mageddo.net.windows;
 
 import com.mageddo.commons.exec.CommandLines;
 import com.mageddo.commons.exec.ExecutionValidationFailedException;
-import com.mageddo.windows.jna.IpHelper;
-import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
@@ -18,10 +16,11 @@ public class Networks {
   }
 
   public static List<String> findNetworksNames() {
-    return Stream
-      .of(IpHelper.findNetworkInterfaces().table)
-      .map(it -> new String(Hex.encodeHexString(it.bPhysAddr)) + " : "+ new String(it.wszName) + new String(it.bDescr))
-      .toList();
+//    return Stream
+//      .of(IpHelper.findNetworkInterfaces().table)
+//      .map(it -> new String(Hex.encodeHexString(it.bPhysAddr)) + " : "+ new String(it.wszName) + new String(it.bDescr))
+//      .toList();
+    throw new UnsupportedOperationException();
   }
 
   public static List<String> findNetworkDnsServers(String networkServiceName) {
@@ -85,7 +84,7 @@ public class Networks {
 
   public static void main(String[] args) {
 
-    com.mageddo.dnsproxyserver.net.Networks.findInterfaces().forEach(it -> System.out.println(it.getDisplayName()));
+    com.mageddo.net.Networks.findInterfaces().forEach(it -> System.out.println(it.getDisplayName()));
 
     System.out.println("------------------");
 
