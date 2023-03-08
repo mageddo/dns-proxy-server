@@ -28,9 +28,11 @@ public class DnsConfiguratorDefault implements DnsConfigurator {
       if (!this.serversBefore.containsKey(network)) {
         final var serversBefore = this.findNetworkDnsServers(network);
         this.serversBefore.put(network, serversBefore);
+        final var success = this.updateDnsServers(network, Collections.singletonList(addr.getRawIP()));
+        log.debug("status=configuring, network={}, serversBefore={}, success={}", network, this.serversBefore, success);
+      } else {
+        log.debug("status=alreadyConfigured, network={}", network);
       }
-      final var success = this.updateDnsServers(network, Collections.singletonList(addr.getRawIP()));
-      log.debug("status=configuring, network={}, serversBefore={}, success={}", network, this.serversBefore, success);
     }
   }
 

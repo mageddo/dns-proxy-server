@@ -12,6 +12,7 @@ import java.util.List;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
@@ -79,7 +80,7 @@ class DnsConfiguratorDefaultTest {
     this.configurator.configure(addr);
 
     // assert
-    verify(this.configurator, times(2)).updateDnsServers(eq(network), eq(singletonList(addr.getRawIP())));
+    verify(this.configurator, times(1)).updateDnsServers(anyString(), any());
     verify(this.configurator, times(1)).findNetworkDnsServers(any());
     assertEquals("{WI-FI=[8.8.8.8]}", this.configurator.getServersBefore().toString());
   }
