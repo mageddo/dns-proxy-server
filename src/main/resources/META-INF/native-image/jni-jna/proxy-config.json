@@ -1,4 +1,6 @@
 [
   ["com.sun.jna.Library"],
-  ["com.sun.jna.Callback"]
+  ["com.sun.jna.Callback"],
+  ["com.sun.jna.platform.win32.Advapi32"],
+  ["com.sun.jna.win32.StdCallLibrary"]
 ]
