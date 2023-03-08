@@ -3,6 +3,8 @@ package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 import com.mageddo.dnsproxyserver.config.entrypoint.ConfigEnv;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.ResolvFile.Type;
 import com.mageddo.dnsproxyserver.templates.IpAddrTemplates;
+import org.apache.commons.exec.OS;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -13,12 +15,18 @@ import java.util.Collections;
 import static com.mageddo.utils.Files.createIfNotExists;
 import static com.mageddo.utils.Files.getPathName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
 class DnsConfiguratorLinuxTest {
 
   DnsConfiguratorLinux configurator = spy(new DnsConfiguratorLinux());
+
+  @BeforeEach
+  void beforeEach(){
+    assumeTrue(OS.isFamilyUnix());
+  }
 
   @Test
   void mustConfigureDpsServerOnEmptyFileAsResolvconf(@TempDir Path tmpDir) throws Exception {
