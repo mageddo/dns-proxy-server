@@ -2,7 +2,7 @@ package com.mageddo.net;
 
 import com.mageddo.net.osx.NetworkOSX;
 import com.mageddo.net.windows.NetworkWindows;
-import com.sun.jna.Platform;
+import com.mageddo.os.Platform;
 
 import java.util.List;
 

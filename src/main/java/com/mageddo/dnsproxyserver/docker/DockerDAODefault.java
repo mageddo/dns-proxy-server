@@ -7,8 +7,8 @@ import com.github.dockerjava.api.model.Network;
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.dnsproxyserver.quarkus.DockerConfig;
 import com.mageddo.dnsproxyserver.server.dns.IP;
+import com.mageddo.os.Platform;
 import com.mageddo.os.linux.LinuxFiles;
-import com.sun.jna.Platform;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

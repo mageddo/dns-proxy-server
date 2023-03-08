@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator;
 
-import com.sun.jna.Platform;
+import com.mageddo.os.Platform;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
