@@ -24,7 +24,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class DnsConfigurators {
 
   private final DnsConfiguratorLinux linuxConfigurator;
-  private final DnsConfiguratorDefault osxConfigurator;
+  private final DnsConfiguratorOSX osxConfigurator;
+  private final DnsConfiguratorDefault configuratorDefault;
   private final DpsIpDiscover ipDiscover;
   private final AtomicInteger failures = new AtomicInteger();
 
@@ -113,6 +114,8 @@ public class DnsConfigurators {
       return this.osxConfigurator;
     } else if (OS.isFamilyUnix()) {
       return this.linuxConfigurator;
+    } else if (OS.isFamilyWindows()) {
+      return this.configuratorDefault;
     }
     log.info("status=unsupported-platform-to-set-as-default-dns-automatically, os={}", System.getProperty("os.name"));
     return new DnsConfigurator() {
