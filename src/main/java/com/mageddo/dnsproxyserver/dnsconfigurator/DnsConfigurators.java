@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class DnsConfigurators {
 
   private final DnsConfiguratorLinux linuxConfigurator;
-  private final DnsConfiguratorOSx osxConfigurator;
+  private final DnsConfiguratorDefault osxConfigurator;
   private final DpsIpDiscover ipDiscover;
   private final AtomicInteger failures = new AtomicInteger();
 

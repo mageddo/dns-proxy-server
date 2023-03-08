@@ -1,4 +1,4 @@
-package com.mageddo.os.osx;
+package com.mageddo.net.osx;
 
 import com.mageddo.commons.exec.CommandLines;
 import com.mageddo.commons.exec.ExecutionValidationFailedException;

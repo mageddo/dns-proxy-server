@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.dnsconfigurator;
 
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import com.mageddo.dnsproxyserver.utils.Dns;
-import com.mageddo.os.osx.Networks;
+import com.mageddo.net.Network;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,9 +16,10 @@ import java.util.Map;
 @Slf4j
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
-public class DnsConfiguratorOSx implements DnsConfigurator {
+public class DnsConfiguratorDefault implements DnsConfigurator {
 
   private final Map<String, List<String>> serversBefore = new HashMap<>();
+  private final Network delegate = Network.getInstance();
 
   @Override
   public void configure(IpAddr addr) {
@@ -43,15 +44,15 @@ public class DnsConfiguratorOSx implements DnsConfigurator {
   }
 
   boolean updateDnsServers(String network, List<String> servers) {
-    return Networks.updateDnsServers(network, servers);
+    return this.delegate.updateDnsServers(network, servers);
   }
 
   List<String> findNetworkDnsServers(String network) {
-    return Networks.findNetworkDnsServersOrNull(network);
+    return this.delegate.findNetworkDnsServers(network);
   }
 
   List<String> findNetworks() {
-    return Networks.findNetworksNames();
+    return this.delegate.findNetworks();
   }
 
   Map<String, List<String>> getServersBefore() {

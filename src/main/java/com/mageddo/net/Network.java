@@ -1,4 +1,8 @@
-package com.mageddo.os.cross;
+package com.mageddo.net;
+
+import com.mageddo.net.osx.NetworkOSX;
+import com.mageddo.net.windows.NetworkWindows;
+import com.sun.jna.Platform;
 
 import java.util.List;
 
@@ -20,4 +24,13 @@ public interface Network {
    * Network is using a DNS provided the Router or Modem.
    */
   List<String> findNetworkDnsServers(String network);
+
+  static Network getInstance() {
+    if (Platform.isMac()) {
+      return new NetworkOSX();
+    } else if (Platform.isWindows()) {
+      return new NetworkWindows();
+    }
+    throw new UnsupportedOperationException("Unsupported platform: " + System.getProperty("os.name"));
+  }
 }

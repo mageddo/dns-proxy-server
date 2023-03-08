@@ -1,5 +1,6 @@
 package com.mageddo.os.osx;
 
+import com.mageddo.net.osx.Networks;
 import org.apache.commons.exec.OS;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

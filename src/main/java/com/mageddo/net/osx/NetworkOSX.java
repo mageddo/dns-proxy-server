@@ -1,6 +1,6 @@
-package com.mageddo.os.cross;
+package com.mageddo.net.osx;
 
-import com.mageddo.os.osx.Networks;
+import com.mageddo.net.Network;
 
 import java.util.List;
 
@@ -17,6 +17,6 @@ public class NetworkOSX implements Network {
 
   @Override
   public List<String> findNetworkDnsServers(String network) {
-    return Networks.findNetworkDnsServers(network);
+    return Networks.findNetworkDnsServersOrNull(network);
   }
 }

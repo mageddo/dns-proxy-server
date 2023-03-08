@@ -6,6 +6,7 @@ import com.sun.jna.platform.win32.Win32Exception;
 import com.sun.jna.platform.win32.WinError;
 import com.sun.jna.platform.win32.WinReg;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.Validate;
 
 import java.util.List;
 import java.util.Set;
@@ -33,6 +34,15 @@ public class NetworkRegistry {
     return Stream
       .of(str.split(","))
       .toList();
+  }
+
+  public static List<String> findNetworksWithIpIds() {
+    return NetworkRegistry
+      .findNetworksWithIp()
+      .stream()
+      .map(NetworkInterface::getId)
+      .toList()
+      ;
   }
 
   public static Set<String> findNetworksIds() {
@@ -87,9 +97,10 @@ public class NetworkRegistry {
     }
   }
 
-  public static void changeDnsServer(String networkId, String dnsServer){
+  public static void updateDnsServer(String networkId, List<String> dnsServer) {
+    Validate.isTrue(dnsServer.size() <= 2, "You can configure almost to 2 servers, current=%d", dnsServer.size());
     final var key = buildKey(networkId);
-    registrySetStringValue(HKEY_LOCAL_MACHINE, key, DNS_SERVER_ATTR, dnsServer);
+    registrySetStringValue(HKEY_LOCAL_MACHINE, key, DNS_SERVER_ATTR, String.join(",", dnsServer));
   }
 
   private static String findNetworkFirstArrValue(final String networkId, final String property) {
@@ -109,13 +120,5 @@ public class NetworkRegistry {
   private static String buildKey(String networkId) {
     return String.format("SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces\\%s", networkId);
   }
-
-
-  public static void main(String[] args) {
-
-    findNetworksWithIp().forEach(it -> System.out.println(it));
-
-  }
-
 
 }

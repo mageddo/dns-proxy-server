@@ -23,7 +23,7 @@ class DnsConfiguratorOSxTest {
 
   @Spy
   @InjectMocks
-  DnsConfiguratorOSx configurator;
+  DnsConfiguratorDefault configurator;
 
   @Captor
   ArgumentCaptor<List<String>> stringListCaptor;
