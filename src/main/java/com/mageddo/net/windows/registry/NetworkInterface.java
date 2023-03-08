@@ -11,7 +11,9 @@ import java.util.List;
 @Builder
 public class NetworkInterface {
 
+  @NonNull
   private String id;
+
   private String staticIp;
   private String dhcpIp;
 

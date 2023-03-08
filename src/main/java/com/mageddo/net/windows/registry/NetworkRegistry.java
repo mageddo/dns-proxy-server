@@ -65,6 +65,7 @@ public class NetworkRegistry {
   public static NetworkInterface findNetworkInterface(String networkId) {
     try {
       return NetworkInterface.builder()
+        .id(networkId)
         .staticIp(findIpAddress(networkId))
         .dhcpIp(findDhcpIpAddress(networkId))
         .staticDnsServers(findStaticDnsServers(networkId))
