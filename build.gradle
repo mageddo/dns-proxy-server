@@ -44,7 +44,6 @@ dependencies {
   implementation 'io.quarkus:quarkus-resteasy-jsonb'
 
   implementation group: 'net.java.dev.jna', name: 'jna-platform', version: '5.13.0'
-  implementation fileTree("${projectDir}/lib")
 
   implementation group: 'dnsjava', name: 'dnsjava', version: '3.5.2'
 
