@@ -1,6 +1,8 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator;
 
 import com.mageddo.dnsproxyserver.templates.IpAddrTemplates;
+import com.sun.jna.Platform;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,6 +13,7 @@ import java.util.List;
 
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -24,6 +27,11 @@ class DnsConfiguratorDefaultTest {
   @Spy
   @InjectMocks
   DnsConfiguratorDefault configurator;
+
+  @BeforeEach
+  void beforeEach() {
+    assumeTrue(Platform.isWindows() || Platform.isMac());
+  }
 
   @Test
   void mustConfigureDNSServer() {
@@ -55,7 +63,7 @@ class DnsConfiguratorDefaultTest {
   }
 
   @Test
-  void mustStoreServersBeforeOnceAndNotReplaceByOtherValues(){
+  void mustStoreServersBeforeOnceAndNotReplaceByOtherValues() {
     // arrange
     final var addr = IpAddrTemplates.local();
     final var network = "WI-FI";
