@@ -35,7 +35,7 @@ class NetworkRegistryTest {
 
 
   @Test
-  void mustFindInterfaceChangeDnsThenRestoreIt() {
+  void mustFindInterfaceAndFailOnChangeDnsDuePermission() {
     // arrange
     final var nid = NetworkRegistry.findNetworksWithIpIds()
       .stream()
