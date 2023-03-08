@@ -12,12 +12,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 class NetworkRegistryTest {
 
   @BeforeEach
   void beforeEach() {
-    assertTrue(Platform.isWindows());
+    assumeTrue(Platform.isWindows());
   }
 
   @Test
