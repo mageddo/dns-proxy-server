@@ -3,8 +3,6 @@ package com.mageddo.dnsproxyserver.dnsconfigurator;
 import com.mageddo.dnsproxyserver.templates.IpAddrTemplates;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -16,17 +14,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class DnsConfiguratorOSxTest {
+class DnsConfiguratorDefaultTest {
 
   @Spy
   @InjectMocks
   DnsConfiguratorDefault configurator;
-
-  @Captor
-  ArgumentCaptor<List<String>> stringListCaptor;
 
   @Test
   void mustConfigureDNSServer() {
@@ -54,6 +50,37 @@ class DnsConfiguratorOSxTest {
 
     // assert
     verify(this.configurator).updateDnsServers(eq(network), eq(singletonList(addr.getRawIP())));
+    assertEquals("{WI-FI=[8.8.8.8]}", this.configurator.getServersBefore().toString());
+  }
+
+  @Test
+  void mustStoreServersBeforeOnceAndNotReplaceByOtherValues(){
+    // arrange
+    final var addr = IpAddrTemplates.local();
+    final var network = "WI-FI";
+
+    doReturn(true)
+      .when(this.configurator)
+      .updateDnsServers(any(), any())
+    ;
+
+    doReturn(List.of("8.8.8.8"))
+      .when(this.configurator)
+      .findNetworkDnsServers(eq(network))
+    ;
+
+    doReturn(singletonList(network))
+      .when(this.configurator)
+      .findNetworks()
+    ;
+
+    // act
+    this.configurator.configure(addr);
+    this.configurator.configure(addr);
+
+    // assert
+    verify(this.configurator, times(2)).updateDnsServers(eq(network), eq(singletonList(addr.getRawIP())));
+    verify(this.configurator, times(1)).findNetworkDnsServers(any());
     assertEquals("{WI-FI=[8.8.8.8]}", this.configurator.getServersBefore().toString());
   }
 

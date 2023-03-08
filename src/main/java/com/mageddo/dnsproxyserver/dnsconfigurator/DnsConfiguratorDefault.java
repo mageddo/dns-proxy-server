@@ -25,12 +25,12 @@ public class DnsConfiguratorDefault implements DnsConfigurator {
   public void configure(IpAddr addr) {
     Dns.validateIsDefaultPort(addr);
     for (final String network : this.findNetworks()) {
-      final var serversBefore = this.findNetworkDnsServers(network);
-      if (serversBefore != null) {
+      if (!this.serversBefore.containsKey(network)) {
+        final var serversBefore = this.findNetworkDnsServers(network);
         this.serversBefore.put(network, serversBefore);
-        final var success = this.updateDnsServers(network, Collections.singletonList(addr.getRawIP()));
-        log.debug("status=configuring, network={}, serversBefore={}, success={}", network, serversBefore, success);
       }
+      final var success = this.updateDnsServers(network, Collections.singletonList(addr.getRawIP()));
+      log.debug("status=configuring, network={}, serversBefore={}, success={}", network, this.serversBefore, success);
     }
   }
 
