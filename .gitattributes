@@ -1,3 +1,4 @@
+# version: 1.0.1
 # https://help.github.com/articles/dealing-with-line-endings/
 
 *.java text eol=lf
@@ -16,7 +17,10 @@ gradlew text eol=lf
 .gitignore eol=lf
 .env eol=lf
 .gitattributes eol=lf
-
+.editorconfig eol=lf
+Dockerfile eol=lf
+*.Dockerfile eol=lf
+Dockerfile.* eol=lf
 
 *.bat text eol=crlf
 

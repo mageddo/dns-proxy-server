@@ -19,10 +19,16 @@ public class NetworkInterface {
   @NonNull
   private String id;
 
+  /**
+   * DNS servers configured, can be servers obtained by the Network DHCP or set manually.
+   */
   @NonNull
   private List<String> dnsServers;
 
+  /**
+   * Filled when manually dns are configured.
+   */
   @NonNull
-  private Boolean dynamicDnsRegistration;
+  private List<String> staticDnsServers;
 
 }

@@ -24,6 +24,7 @@ targetCompatibility = JavaVersion.VERSION_17
 configurations.all {
   resolutionStrategy {
     force 'net.java.dev.jna:jna:5.13.0'
+    force 'net.java.dev.jna:jna-platform:5.13.0'
     force 'org.mockito:mockito-core:5.1.1'
   }
 }
@@ -42,8 +43,10 @@ dependencies {
   implementation 'io.quarkus:quarkus-resteasy'
   implementation 'io.quarkus:quarkus-resteasy-jsonb'
 
-  implementation group: 'dnsjava', name: 'dnsjava', version: '3.5.2'
+  implementation group: 'net.java.dev.jna', name: 'jna-platform', version: '5.13.0'
   implementation fileTree("${projectDir}/lib")
+
+  implementation group: 'dnsjava', name: 'dnsjava', version: '3.5.2'
 
   implementation group: 'com.github.docker-java', name: 'docker-java-core', version: '3.2.14'
   implementation group: 'com.github.docker-java', name: 'docker-java-transport-httpclient5', version: '3.2.14'
