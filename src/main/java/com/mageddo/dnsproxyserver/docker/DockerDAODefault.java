@@ -46,7 +46,7 @@ public class DockerDAODefault implements DockerDAO {
       final var path = Paths.get(DockerConfig.DOCKER_HOST_ADDRESS.getPath());
       return Files.exists(path) && !Files.isDirectory(path) && Files.isReadable(path);
     }
-    log.warn("docker features still not supported on this platform :/ , hold tight I'm working hard fix it someday :D");
+    log.warn("docker features still not supported on this platform :/ , hold tight I'm working hard to fix it someday :D");
     return false; // todo support all plataforms...
   }
 
