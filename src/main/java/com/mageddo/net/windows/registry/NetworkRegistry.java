@@ -21,7 +21,6 @@ import static com.sun.jna.platform.win32.Advapi32Util.registrySetStringValue;
 public class NetworkRegistry {
 
   public static final String DNS_SERVER_ATTR = "NameServer";
-  public static final WinReg.HKEY HKEY_LOCAL_MACHINE = WinReg.HKEY_LOCAL_MACHINE;
 
   /**
    * @param networkId something like {ab01ba7a-f236-4f47-933f-46b48affecd4}
@@ -46,7 +45,7 @@ public class NetworkRegistry {
 
   public static Set<String> findNetworksIds() {
     return Stream.of(Advapi32Util.registryGetKeys(
-        HKEY_LOCAL_MACHINE,
+        WinReg.HKEY_LOCAL_MACHINE,
         "SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces"
       ))
       .collect(Collectors.toSet());
@@ -100,15 +99,15 @@ public class NetworkRegistry {
   public static void updateDnsServer(String networkId, List<String> dnsServer) {
     Validate.isTrue(dnsServer.size() <= 2, "You can configure almost to 2 servers, current=%d", dnsServer.size());
     final var key = buildKey(networkId);
-    registrySetStringValue(HKEY_LOCAL_MACHINE, key, DNS_SERVER_ATTR, String.join(",", dnsServer));
+    registrySetStringValue(WinReg.HKEY_LOCAL_MACHINE, key, DNS_SERVER_ATTR, String.join(",", dnsServer));
   }
 
   private static String findNetworkFirstArrValue(final String networkId, final String property) {
-    return findFirstOrNull(registryGetStringArray(HKEY_LOCAL_MACHINE, buildKey(networkId), property));
+    return findFirstOrNull(registryGetStringArray(WinReg.HKEY_LOCAL_MACHINE, buildKey(networkId), property));
   }
 
   private static String findNetworkStringValue(final String networkId, final String property) {
-    return registryGetStringValue(HKEY_LOCAL_MACHINE, buildKey(networkId), property);
+    return registryGetStringValue(WinReg.HKEY_LOCAL_MACHINE, buildKey(networkId), property);
   }
 
   private static String findFirstOrNull(final String[] arr) {
