@@ -25,7 +25,6 @@ public class NetworkRegistry {
 
   /**
    * @param networkId something like {ab01ba7a-f236-4f47-933f-46b48affecd4}
-   * @return
    * @see https://stackoverflow.com/a/17819465/2979435
    * https://stackoverflow.com/questions/62289/read-write-to-windows-registry-using-java
    */
