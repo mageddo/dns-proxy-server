@@ -1,3 +1,7 @@
+### 3.9.0
+* Support to configure DPS as default DNS Server on Windows.
+* Fixed previous DNS servers restore on Mac.
+
 ### 3.8.1
 * Fixing `SIGTERM` signal wasn't being respected at Linux image
 
