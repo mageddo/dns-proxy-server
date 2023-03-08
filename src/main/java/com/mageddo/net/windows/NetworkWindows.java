@@ -3,11 +3,11 @@ package com.mageddo.net.windows;
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.net.Network;
 import com.mageddo.net.windows.registry.NetworkInterface;
-import com.mageddo.net.windows.registry.NetworkRegistry;
+import com.mageddo.jna.net.windows.registry.NetworkRegistry;
 
 import java.util.List;
 
-import static com.mageddo.net.windows.registry.NetworkRegistry.findNetworkInterface;
+import static com.mageddo.jna.net.windows.registry.NetworkRegistry.findNetworkInterface;
 
 public class NetworkWindows implements Network {
 

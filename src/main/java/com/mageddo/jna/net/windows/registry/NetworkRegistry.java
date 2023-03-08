@@ -1,6 +1,7 @@
-package com.mageddo.net.windows.registry;
+package com.mageddo.jna.net.windows.registry;
 
 import com.mageddo.jna.Exceptions;
+import com.mageddo.net.windows.registry.NetworkInterface;
 import com.sun.jna.platform.win32.Advapi32Util;
 import com.sun.jna.platform.win32.Win32Exception;
 import com.sun.jna.platform.win32.WinError;
