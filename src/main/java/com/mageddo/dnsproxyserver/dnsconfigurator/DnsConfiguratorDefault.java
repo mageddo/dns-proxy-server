@@ -3,10 +3,8 @@ package com.mageddo.dnsproxyserver.dnsconfigurator;
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import com.mageddo.dnsproxyserver.utils.Dns;
 import com.mageddo.net.Network;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,14 +13,20 @@ import java.util.Map;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class DnsConfiguratorDefault implements DnsConfigurator {
 
-  private final Map<String, List<String>> serversBefore = new HashMap<>();
-  private final Network delegate = Network.getInstance();
+  private final Map<String, List<String>> serversBefore;
+  private final Network delegate;
+  private RuntimeException error;
+
+  public DnsConfiguratorDefault() {
+    this.serversBefore = new HashMap<>();
+    this.delegate = createInstance();
+  }
 
   @Override
   public void configure(IpAddr addr) {
+    this.validatePlatformIsSupported();
     Dns.validateIsDefaultPort(addr);
     for (final String network : this.findNetworks()) {
       if (!this.serversBefore.containsKey(network)) {
@@ -38,6 +42,7 @@ public class DnsConfiguratorDefault implements DnsConfigurator {
 
   @Override
   public void restore() {
+    this.validatePlatformIsSupported();
     log.info("status=restoringPreviousDnsServers...");
     this.serversBefore.forEach((network, servers) -> {
       final var success = this.updateDnsServers(network, servers);
@@ -60,4 +65,20 @@ public class DnsConfiguratorDefault implements DnsConfigurator {
   Map<String, List<String>> getServersBefore() {
     return this.serversBefore;
   }
+
+  Network createInstance() {
+    try {
+      return Network.getInstance();
+    } catch (UnsupportedOperationException e) {
+      this.error = e;
+      return null;
+    }
+  }
+
+  void validatePlatformIsSupported() {
+    if (this.error != null) {
+      throw this.error;
+    }
+  }
+
 }
