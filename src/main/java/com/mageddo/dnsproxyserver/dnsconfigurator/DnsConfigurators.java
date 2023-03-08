@@ -57,7 +57,7 @@ public class DnsConfigurators {
           } else {
             log.warn("status=failedToConfigureAsDefaultDns, path={}, msg={}", config.getResolvConfPaths(), e.getMessage(), e);
           }
-          if (this.failures.get() >= this.getMaxErrors()) {
+          if (this.tooManyFailures()) {
             log.warn("status=too-many-failures, action=stopping-default-dns-configuration, failures={}", this.failures.get());
             throw new RuntimeException(e);
           }
@@ -90,6 +90,10 @@ public class DnsConfigurators {
 
   void configureShutdownHook(Config config) {
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+      if (this.tooManyFailures()) {
+        log.debug("status=won't try to restore as it has failed to configure");
+        return;
+      }
       log.debug("status=restoringResolvConf, path={}", config.getResolvConfPaths());
       this.getInstance().restore();
     }));
@@ -107,6 +111,10 @@ public class DnsConfigurators {
     final var instance = this.getInstance1();
     log.info("usingDnsConfigurator={}", ClassUtils.getSimpleName(instance));
     return instance;
+  }
+
+  private boolean tooManyFailures() {
+    return this.failures.get() >= this.getMaxErrors();
   }
 
   private DnsConfigurator getInstance1() {
