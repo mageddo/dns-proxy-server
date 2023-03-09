@@ -20,6 +20,7 @@ RUN uname -m && ls -lha &&\
   -J--add-exports=org.graalvm.nativeimage.builder/com.oracle.svm.core.jdk=ALL-UNNAMED \
   --exclude-config io\.netty\.netty-codec /META-INF/native-image/io\.netty/netty-codec/generated/handlers/reflect-config\.json \
   --exclude-config io\.netty\.netty-handler /META-INF/native-image/io\.netty/netty-handler/generated/handlers/reflect-config\.json dns-proxy-server \
+  --trace-class-initialization=com.sun.jna.win32.W32APITypeMapper,com.sun.jna.Platform,com.sun.jna.CallbackReference$AttachOptions,com.sun.jna.CallbackReference,com.sun.jna.Native,com.sun.jna.Callback,com.sun.jna.Structure,com.sun.jna.win32.W32APIOptions,com.sun.jna.NativeLibrary,com.sun.jna.platform.win32.Advapi32Util \
   -jar dns-proxy-server.jar
 
 RUN ls -lha &&\
