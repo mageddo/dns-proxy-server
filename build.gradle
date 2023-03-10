@@ -8,7 +8,6 @@ buildscript {
 
 plugins {
   id "java"
-  id 'io.quarkus'
   id 'net.researchgate.release' version '3.0.2'
 }
 
@@ -21,51 +20,37 @@ repositories {
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
-configurations.all {
-  resolutionStrategy {
-    force 'net.java.dev.jna:jna:5.13.0'
-    force 'net.java.dev.jna:jna-platform:5.13.0'
-    force 'org.mockito:mockito-core:5.1.1'
-  }
-}
-
 dependencies {
 
-  compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.+'
-  annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.+'
+  compileOnly('org.projectlombok:lombok:1.18.+')
+  annotationProcessor('org.projectlombok:lombok:1.18.+')
 
-  implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+  compileOnly('com.mageddo.nativeimage:reflection-config-generator:2.4.3')
+  annotationProcessor('com.mageddo.nativeimage:reflection-config-generator:2.4.3')
 
-  compileOnly group: 'com.mageddo.nativeimage', name: 'reflection-config-generator', version: '2.4.3'
-  annotationProcessor group: 'com.mageddo.nativeimage', name: 'reflection-config-generator', version: '2.4.3'
+  implementation('net.java.dev.jna:jna-platform:5.13.0')
+  implementation('dnsjava:dnsjava:3.5.2')
 
-  implementation 'io.quarkus:quarkus-arc'
-  implementation 'io.quarkus:quarkus-resteasy'
-  implementation 'io.quarkus:quarkus-resteasy-jsonb'
+  implementation('com.github.docker-java:docker-java-core:3.2.14')
+  implementation('com.github.docker-java:docker-java-transport-httpclient5:3.2.14')
 
-  implementation group: 'net.java.dev.jna', name: 'jna-platform', version: '5.13.0'
+  implementation('info.picocli:picocli:4.7.1')
 
-  implementation group: 'dnsjava', name: 'dnsjava', version: '3.5.2'
+  implementation('com.mageddo.commons:commons-lang:0.1.6')
+  implementation('org.apache.commons:commons-exec:1.3')
 
-  implementation group: 'com.github.docker-java', name: 'docker-java-core', version: '3.2.14'
-  implementation group: 'com.github.docker-java', name: 'docker-java-transport-httpclient5', version: '3.2.14'
+  testCompileOnly('org.projectlombok:lombok:1.18.+')
+  testAnnotationProcessor('org.projectlombok:lombok:1.18.+')
 
-  implementation group: 'info.picocli', name: 'picocli', version: '4.7.1'
-
-  implementation 'com.mageddo.commons:commons-lang:0.1.6'
-  implementation 'org.apache.commons:commons-exec:1.3'
-
-  testCompileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.+'
-  testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.+'
-  testImplementation 'io.quarkus:quarkus-junit5'
-  testImplementation("io.quarkus:quarkus-junit5-mockito")
-  testImplementation 'io.rest-assured:rest-assured'
-  testImplementation(group: "org.mockito", name: "mockito-junit-jupiter", version: "5.1.+")
+  testImplementation('io.quarkus:quarkus-junit5')
+  testImplementation('io.quarkus:quarkus-junit5-mockito')
+  testImplementation('io.rest-assured:rest-assured')
+  testImplementation('org.mockito:mockito-core:5.1.1')
+  testImplementation('org.mockito:mockito-junit-jupiter:5.1.+')
 
 }
 
 test {
-  systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
   useJUnitPlatform()
   testLogging {
     events "passed", "skipped", "failed"
