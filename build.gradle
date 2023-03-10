@@ -65,8 +65,16 @@ dependencies {
 }
 
 test {
-  systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
+  exclude "**/*CompTest.class"
   useJUnitPlatform()
+  testLogging {
+    events "passed", "skipped", "failed"
+  }
+}
+
+task compTest(type: Test) {
+  include "**/*CompTest.class"
+  failFast = true
   testLogging {
     events "passed", "skipped", "failed"
   }
