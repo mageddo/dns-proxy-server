@@ -4,7 +4,6 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.ContainerNetwork;
 import com.github.dockerjava.api.model.Network;
-import com.google.common.base.Predicates;
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.net.Networks;
 import lombok.AllArgsConstructor;
@@ -118,7 +117,7 @@ public class DockerNetworkDAODefault implements DockerNetworkDAO {
 
   @Override
   public void connectRunningContainers(String networkName) {
-    this.connectRunningContainers(networkName, Predicates.alwaysTrue());
+    this.connectRunningContainers(networkName, container -> true);
   }
 
   @Override

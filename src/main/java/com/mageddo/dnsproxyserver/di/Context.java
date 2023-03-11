@@ -8,6 +8,6 @@ import javax.inject.Singleton;
 @Component(modules = MainModule.class)
 public interface Context {
   static Context create(){
-    return DaggerObjGraph.create();
+    return DaggerContext.create();
   }
 }
