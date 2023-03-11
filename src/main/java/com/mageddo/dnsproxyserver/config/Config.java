@@ -8,6 +8,9 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -72,6 +75,14 @@ public class Config {
 
   public static SimpleServer.Protocol findDnsServerProtocol() {
     return SimpleServer.Protocol.BOTH;
+  }
+
+  public void resetConfigFile() {
+    try {
+      Files.deleteIfExists(this.getConfigPath());
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
   }
 
   @Value

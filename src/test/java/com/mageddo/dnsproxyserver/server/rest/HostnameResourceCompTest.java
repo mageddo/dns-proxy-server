@@ -1,7 +1,9 @@
 package com.mageddo.dnsproxyserver.server.rest;
 
+import com.mageddo.dnsproxyserver.config.Configs;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.ws.rs.core.Response;
@@ -12,15 +14,13 @@ import static org.hamcrest.CoreMatchers.equalTo;
 @QuarkusTest
 class HostnameResourceCompTest {
 
-//  @BeforeAll
-//  static void beforeAll(){
-//    WebServer.start();
-//  }
-//
-//  @AfterAll
-//  static void afterAll(){
-//    WebServer.stop();
-//  }
+  @BeforeEach
+  void beforeEach(){
+    Configs
+      .getInstance()
+      .resetConfigFile()
+    ;
+  }
 
   @Test
   void mustFindHostnamesButHasNoResult(){
@@ -37,7 +37,8 @@ class HostnameResourceCompTest {
     // assert
     response
       .statusCode(Response.Status.OK.getStatusCode())
-      .body(equalTo("[]"))
+      .body(equalTo("""
+        [{"hostname":"dps-sample.dev","id":"1","ip":[192,168,0,254],"ttl":30,"type":"A"}]"""))
       .log()
     ;
   }
