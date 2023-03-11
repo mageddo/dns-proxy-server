@@ -5,6 +5,8 @@ import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import com.mageddo.dnsproxyserver.server.dns.solver.RemoteResolvers;
 import com.mageddo.dnsproxyserver.utils.InetAddresses;
+import dagger.Module;
+import dagger.Provides;
 import org.xbill.DNS.Resolver;
 import org.xbill.DNS.SimpleResolver;
 
@@ -14,11 +16,13 @@ import java.util.function.Function;
 
 import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 
+@Module
 public class QuarkusConfig {
 
   public static final String DPS_LOG_LEVEL_KEY = "quarkus.log.category.\"com.mageddo\".level";
 
   @Produces
+  @Provides
   public RemoteResolvers remoteResolvers(Function<IpAddr, Resolver> resolverProvider) {
     final var servers = Configs
       .getInstance()
@@ -27,6 +31,7 @@ public class QuarkusConfig {
   }
 
   @Produces
+  @Provides
   public Function<IpAddr, Resolver> getResolverProvider() {
     return it -> {
       final var resolver = new SimpleResolver(InetAddresses.toSocketAddress(it.getRawIP(), it.getPortOrDef(53)));

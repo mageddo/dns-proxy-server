@@ -11,7 +11,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 import java.util.Map;
 
 import static com.mageddo.http.encoder.Encoders.encodeJson;
@@ -41,10 +40,4 @@ public class CacheResource implements HttpMapper {
     );
   }
 
-  public static void main(String[] args) throws InterruptedException {
-    final var server = new WebServer(List.of(new CacheResource(new SolversCache())));
-
-    System.out.println("To na pista");
-    Thread.currentThread().join();
-  }
 }

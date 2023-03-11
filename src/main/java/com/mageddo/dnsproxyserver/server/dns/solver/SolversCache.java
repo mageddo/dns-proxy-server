@@ -3,9 +3,11 @@ package com.mageddo.dnsproxyserver.server.dns.solver;
 import com.mageddo.commons.caching.LruTTLCache;
 import com.mageddo.commons.lang.tuple.Pair;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.Message;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.Duration;
 import java.util.Optional;
@@ -17,6 +19,7 @@ import static com.mageddo.dnsproxyserver.server.dns.Messages.findQuestionType;
 
 @Slf4j
 @Singleton
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class SolversCache {
 
   private final LruTTLCache cache = new LruTTLCache(2048, Duration.ofSeconds(5), false);

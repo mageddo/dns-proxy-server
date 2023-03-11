@@ -3,23 +3,24 @@ package com.mageddo.http;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.SimpleFileServer;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.InetSocketAddress;
 import java.nio.file.Path;
-import java.util.List;
+import java.util.Set;
 
+@Slf4j
 public class WebServer {
 
-  private final List<HttpMapper> mappers;
+  private final Set<HttpMapper> mappers;
   private HttpServer server;
 
   @Inject
-  public WebServer(List<HttpMapper> mappers) {
+  public WebServer(Set<HttpMapper> mappers) {
     this.mappers = mappers;
-    this.setup(8080);
   }
 
   public WebServer map(String path, HttpHandler handler) {
@@ -27,13 +28,14 @@ public class WebServer {
     return this;
   }
 
-  void setup(int port) {
+  public void start(int port) {
     try {
       this.server = HttpServer.create(new InetSocketAddress(port), 0);
       server.createContext("/static", SimpleFileServer.createFileHandler(buildStaticResourcesPath()));
       this.mappers.forEach(it -> it.handle(this));
       server.setExecutor(null);
       server.start();
+      log.info("server is being started... port={}", port);
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }

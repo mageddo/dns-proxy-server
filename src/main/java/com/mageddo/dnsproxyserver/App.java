@@ -1,42 +1,20 @@
 package com.mageddo.dnsproxyserver;
 
-import com.mageddo.dnsproxyserver.config.Configs;
-import com.mageddo.dnsproxyserver.quarkus.QuarkusConfig;
-import com.mageddo.dnsproxyserver.server.dns.ServerStarter;
-import io.quarkus.runtime.Quarkus;
-import io.quarkus.runtime.StartupEvent;
-import io.quarkus.runtime.annotations.QuarkusMain;
-import lombok.extern.slf4j.Slf4j;
+import com.mageddo.dnsproxyserver.di.Context;
 
-import javax.enterprise.event.Observes;
-
-import static com.mageddo.dnsproxyserver.quarkus.Quarkus.isTest;
-
-@Slf4j
-@QuarkusMain
 public class App {
   public static void main(String[] args) {
 
-    // configurations
-    final var config = Configs.getInstance(args);
-
-    // setup quarkus configs
-    QuarkusConfig.setup(config);
-
-    // todo install as service
+    final var context = Context.create();
 
     // start webserver
     // start dns server
-    Quarkus.run(args);
+    context.start();
 
-  }
+    // fixme ajustar logs do logback
+//    QuarkusConfig.setup(config);
 
-  void onStart(@Observes StartupEvent ev, ServerStarter dnsServer) {
-    if(isTest()){
-      log.warn("status=won't-start-dns-server-when-testing");
-      return;
-    } else {
-      dnsServer.start();
-    }
+    // todo install as service
+
   }
 }

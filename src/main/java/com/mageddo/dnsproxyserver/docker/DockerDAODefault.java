@@ -9,7 +9,7 @@ import com.mageddo.dnsproxyserver.quarkus.DockerConfig;
 import com.mageddo.dnsproxyserver.server.dns.IP;
 import com.mageddo.os.Platform;
 import com.mageddo.os.linux.LinuxFiles;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.enterprise.inject.Default;
@@ -22,7 +22,7 @@ import java.util.List;
 @Slf4j
 @Default
 @Singleton
-@AllArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class DockerDAODefault implements DockerDAO {
 
   private final DockerClient dockerClient;
