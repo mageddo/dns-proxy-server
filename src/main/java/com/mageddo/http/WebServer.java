@@ -10,13 +10,16 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.InetSocketAddress;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 @Slf4j
 public class WebServer {
 
   private final Set<HttpMapper> mappers;
+  private final Map<String, Map<String, HttpHandler>> handlesStore = new HashMap<>();
   private HttpServer server;
 
   @Inject
@@ -48,12 +51,17 @@ public class WebServer {
     return this.map(HttpMethod.PATCH, path, handler);
   }
 
-  public WebServer map(String method, String path, HttpHandler handler) {
-    this.server.createContext(path, exchange -> {
-      if (method == null || method.toUpperCase(Locale.ENGLISH).equals(exchange.getRequestMethod())) {
-        handler.handle(exchange);
+  public WebServer map(String method_, String path, HttpHandler handler) {
+    final var method = method_.toUpperCase(Locale.ENGLISH);
+    this.handlesStore.compute(path, (key, value) -> {
+      if (value == null) {
+        final var collection = new HashMap<String, HttpHandler>();
+        collection.put(method, handler);
+        return collection;
+      } else {
+        value.put(method, handler);
+        return value;
       }
-      exchange.sendResponseHeaders(415, 0);
     });
     return this;
   }
@@ -67,7 +75,19 @@ public class WebServer {
     try {
       this.server = HttpServer.create(new InetSocketAddress(port), 0);
       server.createContext("/static", SimpleFileServer.createFileHandler(buildStaticResourcesPath()));
-      this.mappers.forEach(it -> it.handle(this));
+      this.mappers.forEach(mapper -> {
+
+        mapper.map(this);
+
+        this.handlesStore.forEach((path, pairs) -> {
+          this.server.createContext(path, exchange -> {
+            pairs.getOrDefault(exchange.getRequestMethod(), pExchange -> pExchange.sendResponseHeaders(415, 0))
+                .handle(exchange);
+          });
+        });
+
+
+      });
       server.setExecutor(null);
       server.start();
       log.info("status=startingWebServer, port={}", port);

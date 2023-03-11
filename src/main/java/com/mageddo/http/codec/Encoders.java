@@ -19,11 +19,11 @@ public class Encoders {
     new EncoderJson().encode(exchange, status, o);
   }
 
-  public static void noBody(HttpExchange exchange, Response.Status status) {
-    noBody(exchange, status.getStatusCode());
+  public static void status(HttpExchange exchange, Response.Status status) {
+    status(exchange, status.getStatusCode());
   }
 
-  public static void noBody(HttpExchange exchange, final int statusCode) {
+  public static void status(HttpExchange exchange, final int statusCode) {
     try {
       exchange.sendResponseHeaders(statusCode, 0);
     } catch (IOException e) {

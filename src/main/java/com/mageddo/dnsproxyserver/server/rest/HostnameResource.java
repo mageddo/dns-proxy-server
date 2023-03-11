@@ -8,20 +8,20 @@ import com.mageddo.http.Request;
 import com.mageddo.http.WebServer;
 import com.mageddo.http.codec.Decoders;
 import com.mageddo.http.codec.Encoders;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import javax.inject.Inject;
-import javax.ws.rs.Path;
+import javax.inject.Singleton;
 import javax.ws.rs.core.Response.Status;
 
-@Path("/hostname")
-@AllArgsConstructor(onConstructor = @__({@Inject}))
+@Singleton
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class HostnameResource implements HttpMapper {
 
   private final ConfigDAO configDAO;
 
   @Override
-  public void handle(WebServer server) {
+  public void map(WebServer server) {
 
     server.get("/hostname/find", exchange -> {
       final var env = Request.queryParam(exchange, "env");
@@ -52,7 +52,7 @@ public class HostnameResource implements HttpMapper {
       final var hostname = Decoders.jsonDecode(exchange, HostnameV1.class);
       final var removed = this.configDAO.removeEntry(hostname.getEnv(), hostname.getHostname());
       if (removed) {
-        Encoders.noBody(exchange, Status.OK);
+        Encoders.status(exchange, Status.OK);
       } else {
         final var msg = Message.of(
           Status.BAD_REQUEST.getStatusCode(),

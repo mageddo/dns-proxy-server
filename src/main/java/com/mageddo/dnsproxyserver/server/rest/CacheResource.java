@@ -29,7 +29,7 @@ public class CacheResource implements HttpMapper {
   }
 
   @Override
-  public void handle(WebServer server) {
+  public void map(WebServer server) {
     server.map(
       "/v1/caches/size",
       exchange -> encodeJson(

@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.di.module;
 
 import com.mageddo.dnsproxyserver.server.rest.CacheResource;
+import com.mageddo.dnsproxyserver.server.rest.HostnameResource;
 import com.mageddo.http.HttpMapper;
 import dagger.Module;
 import dagger.Provides;
@@ -15,8 +16,11 @@ public interface ModuleHttpMapper {
   @Provides
   @Singleton
   @ElementsIntoSet
-  static Set<HttpMapper> mappers(CacheResource o1) {
-    return Set.of(o1);
+  static Set<HttpMapper> mappers(CacheResource o1, HostnameResource o2) {
+    return Set.of(
+      o1,
+      o2
+    );
   }
 
 }
