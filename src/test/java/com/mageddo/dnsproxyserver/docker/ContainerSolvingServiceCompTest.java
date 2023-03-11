@@ -16,7 +16,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-class ContainerSolvingServiceTest {
+class ContainerSolvingServiceCompTest {
 
   static TestContext ctx;
 
