@@ -1,6 +1,8 @@
 package com.mageddo.utils.dagger.mockito;
 
+import dagger.internal.DoubleCheck;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
@@ -14,7 +16,6 @@ import org.mockito.Mockito;
 import org.mockito.internal.util.MockUtil;
 
 import javax.inject.Inject;
-import javax.inject.Provider;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Objects;
@@ -78,8 +79,18 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
         final var fieldType = Generics.getFirstFieldArg(field);
         log.trace("status=daggerMocking, mockClass={}, fieldType={}", mockClazz, fieldType);
         if (Objects.equals(mockClazz, fieldType)) {
+
           log.debug("status=daggerMocking, class={}", fieldType);
-          FieldUtils.writeField(field, daggerGraph, (Provider<?>) () -> mock, true);
+          final var provider = FieldUtils.readField(field, daggerGraph, true);
+          final var uninitializedField = FieldUtils.getField(DoubleCheck.class, "UNINITIALIZED", true);
+          final var instanceField = FieldUtils.getField(DoubleCheck.class, "instance", true);
+          final var uninitialized = FieldUtils.readField(uninitializedField, provider, true);
+          final var instance = FieldUtils.readField(instanceField, provider, true);
+          Validate.isTrue(
+            Objects.equals(uninitialized, instance),
+            "Dagger beans were already used, can't mock anymore, please wait DaggerTest to mock them"
+          );
+          FieldUtils.writeField(instanceField, provider, mock, true);
         }
       } catch (IllegalAccessException e) {
         throw new RuntimeException(e);
