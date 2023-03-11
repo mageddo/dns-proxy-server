@@ -4,7 +4,6 @@ import com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTempl
 import com.mageddo.dnsproxyserver.templates.docker.NetworkTemplates;
 import com.mageddo.utils.dagger.TestContext;
 import com.mageddo.utils.dagger.mockito.DaggerTest;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,20 +32,20 @@ class ContainerSolvingServiceCompTest {
   @Inject
   ContainerSolvingService containerSolvingService;
 
-  @BeforeAll
-  static void beforeAll(TestContext ctx){
+//  @BeforeAll
+//  static void beforeAll(TestContext ctx){
 //    (ContextConsumer c){
 //    System.out.println(">>>> " + c);
-    ContainerSolvingServiceCompTest.ctx = ctx;
+//    ContainerSolvingServiceCompTest.ctx = ctx;
 //    c.consume(TestContext.create());
-  }
+//  }
 
   @BeforeEach
   void beforeEach() {
 
-    this.containerSolvingService = ctx.get(ContainerSolvingService.class);
-    this.dockerNetworkDAO = ctx.get(DockerNetworkDAO.class);
-    this.dockerDAO = ctx.get(DockerDAO.class);
+//    this.containerSolvingService = ctx.get(ContainerSolvingService.class);
+//    this.dockerNetworkDAO = ctx.get(DockerNetworkDAO.class);
+//    this.dockerDAO = ctx.get(DockerDAO.class);
 //    Mockito.reset();
 
     doReturn("192.168.15.1")

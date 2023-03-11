@@ -1,5 +1,6 @@
 package com.mageddo.utils.dagger.mockito;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
@@ -9,7 +10,9 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.platform.commons.support.AnnotationSupport;
 
+import javax.inject.Inject;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.create;
@@ -17,19 +20,28 @@ import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.create;
 public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEachCallback, ParameterResolver {
 
   private final static ExtensionContext.Namespace DAGGER = create("dagger2");
-  private final static String DAGGER_CTX = "DAGGER_CTX";
+  private final static String
+    DAGGER_CTX = "DAGGER_CTX",
+    DAGGER_CTX_WRAPPER = "DAGGER_CTX_WRAPPER"
+    ;
 
   @Override
   public void beforeAll(ExtensionContext context) throws Exception {
     final var settings = this.mustFindDaggerTestSettings(context);
     final var ctx = MethodUtils.invokeStaticMethod(settings.component(), settings.createMethod());
     context.getStore(DAGGER).put(DAGGER_CTX, ctx);
+    context.getStore(DAGGER).put(DAGGER_CTX_WRAPPER, new CtxWrapper(ctx));
   }
 
   @Override
   public void beforeEach(ExtensionContext context) throws Exception {
     final var testInstances = context.getRequiredTestInstances().getAllInstances();
+    final var ctx = context.getStore(DAGGER).get(DAGGER_CTX_WRAPPER, CtxWrapper.class);
     for (Object instance : testInstances) {
+      final var fields = FieldUtils.getFieldsListWithAnnotation(instance.getClass(), Inject.class);
+      for (Field field : fields) {
+        FieldUtils.writeField(field, instance, ctx.get(field.getType()), true);
+      }
     }
   }
 
