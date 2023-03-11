@@ -35,10 +35,10 @@ dependencies {
   compileOnly('com.mageddo.nativeimage:reflection-config-generator:2.4.3')
   annotationProcessor('com.mageddo.nativeimage:reflection-config-generator:2.4.3')
 
-
   annotationProcessor("com.google.dagger:dagger-compiler:2.45")
   implementation("com.google.dagger:dagger:2.45")
 
+  implementation('ch.qos.logback:logback-classic:1.4.5')
   implementation('net.java.dev.jna:jna-platform:5.13.0')
   implementation('dnsjava:dnsjava:3.5.2')
 
