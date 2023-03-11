@@ -12,6 +12,5 @@ public class Events implements EventHandler<Context> {
     log.info("status=startingDPS");
     component.start();
     RestAssured.port = 5380;
-//    Threads.sleep(5000);
   }
 }
