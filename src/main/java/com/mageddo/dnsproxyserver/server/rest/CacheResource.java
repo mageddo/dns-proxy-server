@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Map;
 
-import static com.mageddo.http.encoder.Encoders.encodeJson;
+import static com.mageddo.http.codec.Encoders.encodeJson;
 
 @Path("/v1/caches")
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))

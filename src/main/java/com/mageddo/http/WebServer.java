@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.InetSocketAddress;
 import java.nio.file.Path;
+import java.util.Locale;
 import java.util.Set;
 
 @Slf4j
@@ -21,6 +22,40 @@ public class WebServer {
   @Inject
   public WebServer(Set<HttpMapper> mappers) {
     this.mappers = mappers;
+  }
+
+  public WebServer get(String path, HttpHandler handler) {
+    return this.map(HttpMethod.GET, path, handler);
+  }
+
+  public WebServer post(String path, HttpHandler handler) {
+    return this.map(HttpMethod.POST, path, handler);
+  }
+
+  public WebServer put(String path, HttpHandler handler) {
+    return this.map(HttpMethod.PUT, path, handler);
+  }
+
+  public WebServer delete(String path, HttpHandler handler) {
+    return this.map(HttpMethod.DELETE, path, handler);
+  }
+
+  public WebServer head(String path, HttpHandler handler) {
+    return this.map(HttpMethod.HEAD, path, handler);
+  }
+
+  public WebServer patch(String path, HttpHandler handler) {
+    return this.map(HttpMethod.PATCH, path, handler);
+  }
+
+  public WebServer map(String method, String path, HttpHandler handler) {
+    this.server.createContext(path, exchange -> {
+      if (method == null || method.toUpperCase(Locale.ENGLISH).equals(exchange.getRequestMethod())) {
+        handler.handle(exchange);
+      }
+      exchange.sendResponseHeaders(415, 0);
+    });
+    return this;
   }
 
   public WebServer map(String path, HttpHandler handler) {

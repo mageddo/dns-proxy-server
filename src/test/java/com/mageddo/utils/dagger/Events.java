@@ -1,6 +1,5 @@
 package com.mageddo.utils.dagger;
 
-import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.utils.dagger.mockito.EventHandler;
 import io.restassured.RestAssured;
@@ -13,6 +12,6 @@ public class Events implements EventHandler<Context> {
     log.info("status=startingDPS");
     component.start();
     RestAssured.port = 5380;
-    Threads.sleep(5000);
+//    Threads.sleep(5000);
   }
 }

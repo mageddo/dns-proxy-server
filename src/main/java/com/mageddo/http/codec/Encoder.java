@@ -1,4 +1,4 @@
-package com.mageddo.http.encoder;
+package com.mageddo.http.codec;
 
 import com.sun.net.httpserver.HttpExchange;
 
