@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Objects;
 
@@ -19,14 +18,8 @@ public class CtxWrapper {
   }
 
   public Object get(Class<?> clazz) {
-    try {
-      final var m = findMethod();
-      return m.invoke(this.delegate, clazz);
-    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-      throw new RuntimeException(e);
-    } catch (Exception e) {
-      throw new RuntimeException(String.format("failed to obtain instance of: %s ", clazz.getName()));
-    }
+    final var provider = this.findProviderFor(clazz);
+    return provider.getValue();
   }
 
   private void validate() {

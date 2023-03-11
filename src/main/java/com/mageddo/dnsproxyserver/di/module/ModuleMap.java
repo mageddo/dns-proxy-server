@@ -6,7 +6,6 @@ import com.mageddo.dnsproxyserver.docker.DockerDAO;
 import com.mageddo.dnsproxyserver.docker.DockerNetworkDAO;
 import com.mageddo.dnsproxyserver.server.dns.ServerStarter;
 import com.mageddo.dnsproxyserver.server.dns.solver.SolverLocalDB;
-import com.mageddo.dnsproxyserver.server.dns.solver.SolverProvider;
 import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.ClassKey;
@@ -14,8 +13,11 @@ import dagger.multibindings.IntoMap;
 
 /**
  * See
- *  https://dagger.dev/dev-guide/multibindings
- *  https://stackoverflow.com/questions/62150127/is-it-possible-to-get-beans-by-class-type-in-dagger2-similarly-to-spring-does
+ * https://dagger.dev/dev-guide/multibindings
+ * https://stackoverflow.com/questions/62150127/is-it-possible-to-get-beans-by-class-type-in-dagger2-similarly-to-spring-does
+ *
+ * @deprecated this class is not necessary anymore for test dependency injection, it's here just for IntoMap
+ * usage example.
  */
 @Module
 public interface ModuleMap {
@@ -50,8 +52,4 @@ public interface ModuleMap {
   @ClassKey(ConfigDAO.class)
   Object b6(ConfigDAO bean);
 
-  @Binds
-  @IntoMap
-  @ClassKey(SolverProvider.class)
-  Object b7(SolverProvider bean);
 }

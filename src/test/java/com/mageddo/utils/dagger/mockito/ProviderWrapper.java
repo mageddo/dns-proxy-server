@@ -4,9 +4,11 @@ import dagger.internal.DoubleCheck;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.commons.lang3.reflect.MethodUtils;
 import org.mockito.Mockito;
 import org.mockito.internal.util.MockUtil;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 
 @Slf4j
@@ -33,7 +35,7 @@ public class ProviderWrapper {
       final Object uninitialized = this.findUnitializedValue();
       final var instanceField = FieldUtils.getField(DoubleCheck.class, "instance", true);
       final var instance = FieldUtils.readField(instanceField, this.provider, true);
-      if(MockUtil.isMock(instance) || MockUtil.isSpy(instance)){
+      if (MockUtil.isMock(instance) || MockUtil.isSpy(instance)) {
         log.debug("status=alreadyMocked, type={}", this.type);
         return;
       }
@@ -56,4 +58,11 @@ public class ProviderWrapper {
     }
   }
 
+  public Object getValue() {
+    try {
+      return MethodUtils.invokeMethod(this.provider, "get");
+    } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+      throw new IllegalStateException(e);
+    }
+  }
 }
