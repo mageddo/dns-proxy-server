@@ -1,7 +1,9 @@
 package com.mageddo.dnsproxyserver.server.rest;
 
 import com.mageddo.dnsproxyserver.config.Configs;
-import io.quarkus.test.junit.QuarkusTest;
+import com.mageddo.dnsproxyserver.di.Context;
+import com.mageddo.utils.dagger.Events;
+import com.mageddo.utils.dagger.mockito.DaggerTest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +13,7 @@ import javax.ws.rs.core.Response;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 
-@QuarkusTest
+@DaggerTest(component = Context.class, eventsHandler = Events.class)
 class HostnameResourceCompTest {
 
   @BeforeEach

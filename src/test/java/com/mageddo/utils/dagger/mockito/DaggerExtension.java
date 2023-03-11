@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.create;
 
@@ -30,16 +31,19 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
   private final static ExtensionContext.Namespace DAGGER = create("dagger2");
   private final static String
     DAGGER_CTX = "DAGGER_CTX",
-    DAGGER_CTX_WRAPPER = "DAGGER_CTX_WRAPPER";
+    DAGGER_CTX_WRAPPER = "DAGGER_CTX_WRAPPER",
+    DAGGER_LIFECYCLE_HANDLER = "DAGGER_LIFECYCLE_HANDLER",
+    DAGGER_SETUP = "DAGGER_SETUP";
 
   @Override
   public void beforeAll(ExtensionContext context) throws Exception {
 
     final var settings = this.mustFindDaggerTestSettings(context);
-    final var ctx = MethodUtils.invokeStaticMethod(settings.component(), settings.createMethod());
+    final var ctx = createCtx(settings);
 
     context.getStore(DAGGER).put(DAGGER_CTX, ctx);
     context.getStore(DAGGER).put(DAGGER_CTX_WRAPPER, new CtxWrapper(ctx));
+    context.getStore(DAGGER).put(DAGGER_LIFECYCLE_HANDLER, createInstance(settings.eventsHandler()));
 
   }
 
@@ -48,6 +52,9 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
     injectMocks(context);
     injectFields(context);
     resetMocks(context);
+    if (!Boolean.TRUE.equals(context.getStore(DAGGER).get(DAGGER_SETUP, Boolean.class))) {
+      triggerSetupEvent(context);
+    }
   }
 
   @Override
@@ -149,4 +156,29 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
   static Object findCtx(ExtensionContext context) {
     return context.getStore(DAGGER).get(DAGGER_CTX);
   }
+
+  static Object createCtx(DaggerTest settings) throws Exception {
+    if (settings.component() != Void.class) {
+      log.debug("strategy=component, component={}, method={}", settings.component(), settings.createMethod());
+      return MethodUtils.invokeStaticMethod(settings.component(), settings.createMethod());
+    } else if (settings.initializer() != NopSupplier.class) {
+      final var instance = (Supplier) createInstance(settings.initializer());
+      return instance.get();
+    }
+    throw new IllegalArgumentException("You need to inform either: component or initializer options");
+  }
+
+  static void triggerSetupEvent(ExtensionContext context) {
+    context
+      .getStore(DAGGER)
+      .get(DAGGER_LIFECYCLE_HANDLER, EventHandler.class)
+      .afterSetup(findCtx(context))
+    ;
+    context.getRoot().getStore(DAGGER).put(DAGGER_SETUP, true);
+  }
+
+  static Object createInstance(Class<?> clazz) throws Exception {
+    return clazz.getDeclaredConstructor().newInstance();
+  }
+
 }
