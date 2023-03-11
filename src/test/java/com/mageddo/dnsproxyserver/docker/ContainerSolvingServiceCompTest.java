@@ -21,8 +21,6 @@ import static org.mockito.Mockito.verify;
 @DaggerTest(component = TestContext.class)
 class ContainerSolvingServiceCompTest {
 
-  static TestContext ctx;
-
   @Inject
   DockerDAO dockerDAO;
 
@@ -32,22 +30,8 @@ class ContainerSolvingServiceCompTest {
   @Inject
   ContainerSolvingService containerSolvingService;
 
-//  @BeforeAll
-//  static void beforeAll(TestContext ctx){
-//    (ContextConsumer c){
-//    System.out.println(">>>> " + c);
-//    ContainerSolvingServiceCompTest.ctx = ctx;
-//    c.consume(TestContext.create());
-//  }
-
   @BeforeEach
   void beforeEach() {
-
-//    this.containerSolvingService = ctx.get(ContainerSolvingService.class);
-//    this.dockerNetworkDAO = ctx.get(DockerNetworkDAO.class);
-//    this.dockerDAO = ctx.get(DockerDAO.class);
-//    Mockito.reset();
-
     doReturn("192.168.15.1")
       .when(this.dockerDAO)
       .findHostMachineIpRaw()

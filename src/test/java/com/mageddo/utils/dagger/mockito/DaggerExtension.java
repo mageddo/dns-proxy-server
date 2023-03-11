@@ -9,6 +9,8 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.platform.commons.support.AnnotationSupport;
+import org.mockito.Mockito;
+import org.mockito.internal.util.MockUtil;
 
 import javax.inject.Inject;
 import java.lang.annotation.Annotation;
@@ -22,8 +24,7 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
   private final static ExtensionContext.Namespace DAGGER = create("dagger2");
   private final static String
     DAGGER_CTX = "DAGGER_CTX",
-    DAGGER_CTX_WRAPPER = "DAGGER_CTX_WRAPPER"
-    ;
+    DAGGER_CTX_WRAPPER = "DAGGER_CTX_WRAPPER";
 
   @Override
   public void beforeAll(ExtensionContext context) throws Exception {
@@ -35,14 +36,7 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
 
   @Override
   public void beforeEach(ExtensionContext context) throws Exception {
-    final var testInstances = context.getRequiredTestInstances().getAllInstances();
-    final var ctx = context.getStore(DAGGER).get(DAGGER_CTX_WRAPPER, CtxWrapper.class);
-    for (Object instance : testInstances) {
-      final var fields = FieldUtils.getFieldsListWithAnnotation(instance.getClass(), Inject.class);
-      for (Field field : fields) {
-        FieldUtils.writeField(field, instance, ctx.get(field.getType()), true);
-      }
-    }
+    injectFields(context);
   }
 
   @Override
@@ -80,6 +74,26 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
     } while (!annotation.isPresent() && currentContext != context.getRoot());
 
     return annotation;
+  }
+
+
+  static void injectFields(ExtensionContext context) throws IllegalAccessException {
+    final var ctx = context.getStore(DAGGER).get(DAGGER_CTX_WRAPPER, CtxWrapper.class);
+    final var testInstances = context.getRequiredTestInstances().getAllInstances();
+    for (Object instance : testInstances) {
+      final var fields = FieldUtils.getFieldsListWithAnnotation(instance.getClass(), Inject.class);
+      for (Field field : fields) {
+        FieldUtils.writeField(field, instance, getAndReset(ctx, field), true);
+      }
+    }
+  }
+
+  static Object getAndReset(CtxWrapper ctx, Field field) {
+    final var instance = ctx.get(field.getType());
+    if (MockUtil.isMock(instance) || MockUtil.isSpy(instance)) {
+      Mockito.reset(instance);
+    }
+    return instance;
   }
 
 }
