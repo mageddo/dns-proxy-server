@@ -1,5 +1,7 @@
 package com.mageddo.utils.dagger.mockito;
 
+import com.github.dockerjava.api.DockerClient;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
@@ -13,12 +15,18 @@ import org.mockito.Mockito;
 import org.mockito.internal.util.MockUtil;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.create;
 
+/**
+ * Inspired on MockitoExtension and QuarkusTest
+ */
+@Slf4j
 public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEachCallback, ParameterResolver {
 
   private final static ExtensionContext.Namespace DAGGER = create("dagger2");
@@ -36,7 +44,52 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
 
   @Override
   public void beforeEach(ExtensionContext context) throws Exception {
+    injectMocks(context);
     injectFields(context);
+  }
+
+  void injectMocks(ExtensionContext context) {
+    final var testInstances = context.getRequiredTestInstances().getAllInstances();
+    for (Object instance : testInstances) {
+      final var fields = FieldUtils.getFieldsListWithAnnotation(instance.getClass(), InjectMock.class);
+      for (Field field : fields) {
+        try {
+          log.debug("status=injectMockField, field={} {}", field.getType().getSimpleName(), field.getName());
+          // creating a mock for the field
+          final Object mock = Mockito.mock(field.getType());
+          FieldUtils.writeField(field, instance, mock, true);
+
+          // replacing real bean with the created mock
+          mockDaggerCtx(mock, field.getType(), findCtx(context));
+
+        } catch (IllegalAccessException e) {
+          throw new IllegalStateException(e);
+        }
+      }
+    }
+  }
+
+  void mockDaggerCtx(Object mock, Class<?> mockClazz, Object daggerGraph) {
+    final var fields = FieldUtils.getAllFields(daggerGraph.getClass());
+    for (Field field : fields) {
+      try {
+//        final var v = FieldUtils.readField(field, mock);
+//        final var c = (ParameterizedType)field.getType();
+
+        log.debug(
+          "status=daggerMocking, mockClass={}, class={}, genericInterfaces={}",
+          mockClazz, field.getType(), field.getGenericType()
+        );
+        if(Objects.equals(mockClazz, field.getType())){
+          log.debug("status=daggerMocking, class={}", field.getType());
+        }
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+
+
+    }
+    Provider<DockerClient> dockerClientProvider;
   }
 
   @Override
@@ -78,7 +131,7 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
 
 
   static void injectFields(ExtensionContext context) throws IllegalAccessException {
-    final var ctx = context.getStore(DAGGER).get(DAGGER_CTX_WRAPPER, CtxWrapper.class);
+    final var ctx = findCtxWrapper(context);
     final var testInstances = context.getRequiredTestInstances().getAllInstances();
     for (Object instance : testInstances) {
       final var fields = FieldUtils.getFieldsListWithAnnotation(instance.getClass(), Inject.class);
@@ -96,4 +149,11 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
     return instance;
   }
 
+  static CtxWrapper findCtxWrapper(ExtensionContext context) {
+    return context.getStore(DAGGER).get(DAGGER_CTX_WRAPPER, CtxWrapper.class);
+  }
+
+  static Object findCtx(ExtensionContext context) {
+    return context.getStore(DAGGER).get(DAGGER_CTX);
+  }
 }

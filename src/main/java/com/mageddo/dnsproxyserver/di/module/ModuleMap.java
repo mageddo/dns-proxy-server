@@ -1,9 +1,11 @@
 package com.mageddo.dnsproxyserver.di.module;
 
+import com.mageddo.dnsproxyserver.config.ConfigDAO;
 import com.mageddo.dnsproxyserver.docker.ContainerSolvingService;
 import com.mageddo.dnsproxyserver.docker.DockerDAO;
 import com.mageddo.dnsproxyserver.docker.DockerNetworkDAO;
 import com.mageddo.dnsproxyserver.server.dns.ServerStarter;
+import com.mageddo.dnsproxyserver.server.dns.solver.SolverLocalDB;
 import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.ClassKey;
@@ -36,4 +38,14 @@ public interface ModuleMap {
   @IntoMap
   @ClassKey(ServerStarter.class)
   Object b4(ServerStarter bean);
+
+  @Binds
+  @IntoMap
+  @ClassKey(SolverLocalDB.class)
+  Object b5(SolverLocalDB bean);
+
+  @Binds
+  @IntoMap
+  @ClassKey(ConfigDAO.class)
+  Object b6(ConfigDAO bean);
 }

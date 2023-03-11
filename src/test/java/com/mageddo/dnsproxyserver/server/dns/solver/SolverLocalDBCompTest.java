@@ -5,8 +5,9 @@ import com.mageddo.dnsproxyserver.config.ConfigDAO;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.templates.EntryTemplates;
 import com.mageddo.dnsproxyserver.templates.docker.SolverTemplates;
-import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.mockito.InjectMock;
+import com.mageddo.utils.dagger.TestContext;
+import com.mageddo.utils.dagger.mockito.DaggerTest;
+import com.mageddo.utils.dagger.mockito.InjectMock;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -19,7 +20,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-@QuarkusTest
+@DaggerTest(component = TestContext.class)
 class SolverLocalDBCompTest {
 
   @Inject
@@ -28,7 +29,7 @@ class SolverLocalDBCompTest {
   @Inject
   ConfigDAO configDAO;
 
-  @InjectMock(convertScopes = true)
+  @InjectMock
   SolverProvider solverProvider;
 
   @Test
