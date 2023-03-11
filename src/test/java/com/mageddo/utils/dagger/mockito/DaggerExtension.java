@@ -1,6 +1,5 @@
 package com.mageddo.utils.dagger.mockito;
 
-import dagger.internal.DoubleCheck;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -18,7 +17,6 @@ import org.mockito.internal.util.MockUtil;
 import javax.inject.Inject;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.create;
@@ -61,47 +59,22 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
 
   void injectMocks(ExtensionContext context) {
     final var testInstances = context.getRequiredTestInstances().getAllInstances();
+    final var ctxWrapper = findCtxWrapper(context);
     for (Object instance : testInstances) {
+
       final var fields = FieldUtils.getFieldsListWithAnnotation(instance.getClass(), InjectMock.class);
       for (Field field : fields) {
         try {
-          log.debug("status=injectMockField, field={} {}", field.getType().getSimpleName(), field.getName());
-          // creating a mock for the field
-          final Object mock = Mockito.mock(field.getType());
-          FieldUtils.writeField(field, instance, mock, true);
 
-          // replacing real bean with the created mock
-          mockDaggerCtxBean(mock, field.getType(), findCtx(context));
+          log.debug("status=injectMockField, field={} {}", field.getType().getSimpleName(), field.getName());
+          ctxWrapper.initializeWithMockOrThrows(field.getType());
+          final var mock = ctxWrapper.get(field.getType());
+          Validate.isTrue(MockUtil.isMock(mock), "Mock didn't work for type: %s", field.getType());
+          FieldUtils.writeField(field, instance, mock, true);
 
         } catch (IllegalAccessException e) {
           throw new IllegalStateException(e);
         }
-      }
-    }
-  }
-
-  void mockDaggerCtxBean(Object mock, Class<?> mockClazz, Object daggerGraph) {
-    final var fields = FieldUtils.getAllFields(daggerGraph.getClass());
-    for (final Field field : fields) {
-      try {
-        final var fieldType = Generics.getFirstFieldArg(field);
-        log.trace("status=daggerMocking, mockClass={}, fieldType={}", mockClazz, fieldType);
-        if (Objects.equals(mockClazz, fieldType)) {
-
-          log.debug("status=daggerMocking, class={}", fieldType);
-          final var provider = FieldUtils.readField(field, daggerGraph, true);
-          final var uninitializedField = FieldUtils.getField(DoubleCheck.class, "UNINITIALIZED", true);
-          final var instanceField = FieldUtils.getField(DoubleCheck.class, "instance", true);
-          final var uninitialized = FieldUtils.readField(uninitializedField, provider, true);
-          final var instance = FieldUtils.readField(instanceField, provider, true);
-          Validate.isTrue(
-            Objects.equals(uninitialized, instance),
-            "Dagger beans were already used, can't mock anymore, please wait DaggerTest to mock them"
-          );
-          FieldUtils.writeField(instanceField, provider, mock, true);
-        }
-      } catch (IllegalAccessException e) {
-        throw new RuntimeException(e);
       }
     }
   }
