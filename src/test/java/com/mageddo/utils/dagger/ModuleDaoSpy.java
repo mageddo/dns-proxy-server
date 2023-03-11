@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.di.module;
+package com.mageddo.utils.dagger;
 
 import com.mageddo.dnsproxyserver.config.ConfigDAO;
 import com.mageddo.dnsproxyserver.config.ConfigDAOJson;
@@ -6,24 +6,32 @@ import com.mageddo.dnsproxyserver.docker.DockerDAO;
 import com.mageddo.dnsproxyserver.docker.DockerDAODefault;
 import com.mageddo.dnsproxyserver.docker.DockerNetworkDAO;
 import com.mageddo.dnsproxyserver.docker.DockerNetworkDAODefault;
-import dagger.Binds;
 import dagger.Module;
+import dagger.Provides;
 
 import javax.inject.Singleton;
 
+import static org.mockito.Mockito.spy;
+
 @Module
-public interface ModuleDaos {
+public interface ModuleDaoSpy {
 
-  @Binds
+  @Provides
   @Singleton
-  DockerDAO dockerDAO(DockerDAODefault impl);
+  static DockerDAO dockerDAO(DockerDAODefault impl){
+    return spy(impl);
+  }
 
-  @Binds
+  @Provides
   @Singleton
-  DockerNetworkDAO dockerNetworkDAO(DockerNetworkDAODefault impl);
+  static DockerNetworkDAO dockerNetworkDAO(DockerNetworkDAODefault impl){
+    return spy(impl);
+  }
 
-  @Binds
+  @Provides
   @Singleton
-  ConfigDAO configDAO(ConfigDAOJson impl);
+  static ConfigDAO configDAO(ConfigDAOJson impl){
+    return spy(impl);
+  }
 
 }

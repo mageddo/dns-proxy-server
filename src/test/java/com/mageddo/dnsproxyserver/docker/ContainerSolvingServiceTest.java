@@ -2,13 +2,11 @@ package com.mageddo.dnsproxyserver.docker;
 
 import com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates;
 import com.mageddo.dnsproxyserver.templates.docker.NetworkTemplates;
-import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.mockito.InjectMock;
+import com.mageddo.utils.dagger.TestContext;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import javax.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -18,20 +16,27 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-@QuarkusTest
 class ContainerSolvingServiceTest {
 
-  @InjectMock
+  static TestContext ctx;
+
   DockerDAO dockerDAO;
-
-  @InjectMock(convertScopes = true)
   DockerNetworkDAO dockerNetworkDAO;
-
-  @Inject
   ContainerSolvingService containerSolvingService;
+
+  @BeforeAll
+  static void beforeAll(){
+    ctx = TestContext.create();
+  }
 
   @BeforeEach
   void beforeEach() {
+
+    this.containerSolvingService = ctx.containerSolvingService();
+    this.dockerNetworkDAO = ctx.dockerNetworkDAO();
+    this.dockerDAO = ctx.dockerDAO();
+//    Mockito.reset();
+
     doReturn("192.168.15.1")
       .when(this.dockerDAO)
       .findHostMachineIpRaw()
