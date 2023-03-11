@@ -35,7 +35,7 @@ public class WebServer {
       this.mappers.forEach(it -> it.handle(this));
       server.setExecutor(null);
       server.start();
-      log.info("server is being started... port={}", port);
+      log.info("status=startingWebServer, port={}", port);
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
