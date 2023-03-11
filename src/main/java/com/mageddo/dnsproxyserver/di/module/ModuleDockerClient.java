@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.di;
+package com.mageddo.dnsproxyserver.di.module;
 
 import com.github.dockerjava.api.DockerClient;
 import com.mageddo.dnsproxyserver.quarkus.DockerConfig;

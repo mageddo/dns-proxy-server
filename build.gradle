@@ -23,9 +23,9 @@ targetCompatibility = JavaVersion.VERSION_19
 dependencies {
 
   // fixme just for the migration
-  implementation 'io.quarkus:quarkus-arc:2.16.4.Final'
-  implementation 'io.quarkus:quarkus-resteasy:2.16.4.Final'
-  implementation 'io.quarkus:quarkus-resteasy-jsonb:2.16.4.Final'
+//  implementation 'io.quarkus:quarkus-arc:2.16.4.Final'
+//  implementation 'io.quarkus:quarkus-resteasy:2.16.4.Final'
+//  implementation 'io.quarkus:quarkus-resteasy-jsonb:2.16.4.Final'
   testImplementation 'io.quarkus:quarkus-junit5:2.16.4.Final'
   testImplementation("io.quarkus:quarkus-junit5-mockito:2.16.4.Final")
 
@@ -38,6 +38,12 @@ dependencies {
   annotationProcessor("com.google.dagger:dagger-compiler:2.45")
   implementation("com.google.dagger:dagger:2.45")
 
+//  compileOnly 'javax.enterprise:cdi-api:1.2'
+  implementation('jakarta.enterprise:jakarta.enterprise.cdi-api:2.0.2')
+  implementation('jakarta.ws.rs:jakarta.ws.rs-api:2.1.6')
+  implementation('com.mageddo.commons:commons-lang:0.1.6')
+  implementation('org.apache.commons:commons-exec:1.3')
+
   implementation('ch.qos.logback:logback-classic:1.4.5')
   implementation('net.java.dev.jna:jna-platform:5.13.0')
   implementation('dnsjava:dnsjava:3.5.2')
@@ -47,16 +53,13 @@ dependencies {
 
   implementation('info.picocli:picocli:4.7.1')
 
-  implementation('com.mageddo.commons:commons-lang:0.1.6')
-  implementation('org.apache.commons:commons-exec:1.3')
-
-  annotationProcessor("com.google.dagger:dagger-compiler:2.45")
+  testAnnotationProcessor("com.google.dagger:dagger-compiler:2.45")
   testCompileOnly('org.projectlombok:lombok:1.18.+')
   testAnnotationProcessor('org.projectlombok:lombok:1.18.+')
 
-  testImplementation('io.rest-assured:rest-assured:5.3.0')
-  testImplementation('org.mockito:mockito-core:5.1.1')
+  testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
   testImplementation('org.mockito:mockito-junit-jupiter:5.1.+')
+  testImplementation('io.rest-assured:rest-assured:5.3.0')
 
 }
 

@@ -1,5 +1,10 @@
 package com.mageddo.dnsproxyserver.di;
 
+import com.mageddo.dnsproxyserver.di.module.ModuleDaos;
+import com.mageddo.dnsproxyserver.di.module.ModuleDockerClient;
+import com.mageddo.dnsproxyserver.di.module.ModuleHttpMapper;
+import com.mageddo.dnsproxyserver.di.module.ModuleMain;
+import com.mageddo.dnsproxyserver.di.module.ModuleSolver;
 import com.mageddo.dnsproxyserver.quarkus.QuarkusConfig;
 import com.mageddo.dnsproxyserver.server.Starter;
 import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
@@ -7,15 +12,17 @@ import dagger.Component;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Singleton;
+import java.util.Set;
 
 @Singleton
 @Component(modules = {
-    ModuleMain.class,
-    ModuleDaos.class,
-    ModuleDockerClient.class,
-    QuarkusConfig.class,
-    ModuleHttpMapper.class,
-    ModuleSolver.class
+  ModuleMain.class,
+  ModuleDaos.class,
+  ModuleDockerClient.class,
+  QuarkusConfig.class,
+  ModuleHttpMapper.class,
+  ModuleSolver.class,
+  StartupEvent.class
 })
 public interface Context {
 
@@ -25,7 +32,10 @@ public interface Context {
 
   Starter starter();
 
+//  Set<StartupEvent> events();
+
   default void start() {
+//    this.events().forEach(StartupEvent::onStart);
     this.starter().start();
   }
 

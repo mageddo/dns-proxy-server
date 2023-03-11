@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.di;
+package com.mageddo.dnsproxyserver.di.module;
 
 import com.mageddo.dnsproxyserver.config.ConfigDAO;
 import com.mageddo.dnsproxyserver.config.ConfigDAOJson;

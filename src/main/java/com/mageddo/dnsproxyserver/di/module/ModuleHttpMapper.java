@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.di;
+package com.mageddo.dnsproxyserver.di.module;
 
 import com.mageddo.dnsproxyserver.server.rest.CacheResource;
 import com.mageddo.http.HttpMapper;

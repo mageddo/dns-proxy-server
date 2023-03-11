@@ -4,12 +4,11 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.async.ResultCallback;
 import com.github.dockerjava.api.model.Event;
 import com.mageddo.dnsproxyserver.config.Configs;
-import io.quarkus.runtime.StartupEvent;
+import com.mageddo.dnsproxyserver.di.StartupEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.Closeable;
@@ -19,7 +18,7 @@ import static com.mageddo.dnsproxyserver.docker.ContainerSolvingService.NETWORK_
 @Slf4j
 @Singleton
 @AllArgsConstructor(onConstructor = @__({@Inject}))
-public class EventListener {
+public class EventListener implements StartupEvent {
 
   private final DockerClient dockerClient;
   private final DockerDAO dockerDAO;
@@ -27,7 +26,8 @@ public class EventListener {
   private final DockerNetworkDAO dockerNetworkDAO;
   private final DockerNetworkService networkService;
 
-  void onStart(@Observes StartupEvent ev) {
+  @Override
+  public void onStart() {
 
     final var dockerConnected = this.dockerDAO.isConnected();
     log.info("status=binding-docker-events, dockerConnected={}", dockerConnected);

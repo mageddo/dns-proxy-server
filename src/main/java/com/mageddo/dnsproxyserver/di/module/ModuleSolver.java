@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.di;
+package com.mageddo.dnsproxyserver.di.module;
 
 import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
 import com.mageddo.dnsproxyserver.server.dns.solver.SolverDocker;

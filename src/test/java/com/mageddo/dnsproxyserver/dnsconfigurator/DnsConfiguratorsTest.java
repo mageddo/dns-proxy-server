@@ -32,7 +32,7 @@ class DnsConfiguratorsTest {
     doThrow(new IllegalAccessError("Mocked error")).when(this.configurators).configure(any());
 
     // act
-    this.configurators.onStart(null);
+    this.configurators.onStart();
 
     // assert
     Threads.sleep(300);

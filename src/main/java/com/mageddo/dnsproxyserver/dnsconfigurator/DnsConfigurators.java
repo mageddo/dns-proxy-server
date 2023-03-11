@@ -3,15 +3,14 @@ package com.mageddo.dnsproxyserver.dnsconfigurator;
 import com.mageddo.commons.concurrent.ThreadPool;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Configs;
+import com.mageddo.dnsproxyserver.di.StartupEvent;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.DnsConfiguratorLinux;
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
-import io.quarkus.runtime.StartupEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.OS;
 import org.apache.commons.lang3.ClassUtils;
 
-import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.IOException;
@@ -21,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
-public class DnsConfigurators {
+public class DnsConfigurators implements StartupEvent {
 
   private final DnsConfiguratorLinux linuxConfigurator;
   private final DnsConfiguratorOSX osxConfigurator;
@@ -31,7 +30,8 @@ public class DnsConfigurators {
 
   private volatile DnsConfigurator instance;
 
-  void onStart(@Observes StartupEvent ev) {
+  @Override
+  public void onStart() {
     final var config = Configs.getInstance();
     log.debug("action=setAsDefaultDns, active={}", config.getDefaultDns());
     if (!Boolean.TRUE.equals(config.getDefaultDns())) {
