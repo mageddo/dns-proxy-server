@@ -1,6 +1,8 @@
 package com.mageddo.dnsproxyserver.server;
 
+import com.mageddo.dnsproxyserver.config.Configs;
 import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.ws.rs.core.Response;
@@ -10,6 +12,14 @@ import static org.hamcrest.CoreMatchers.equalTo;
 
 @QuarkusTest
 class CacheResourceCompTest {
+
+  @BeforeEach
+  void beforeEach(){
+    Configs
+      .getInstance()
+      .resetConfigFile()
+    ;
+  }
 
   @Test
   void mustFindCacheSize() {
