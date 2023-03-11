@@ -32,7 +32,9 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
   private final static ExtensionContext.Namespace DAGGER = create("dagger2");
   private final static String
     DAGGER_CTX = "DAGGER_CTX",
-    DAGGER_CTX_WRAPPER = "DAGGER_CTX_WRAPPER";
+    DAGGER_CTX_WRAPPER = "DAGGER_CTX_WRAPPER",
+    MOCKED = "MOCKED"
+  ;
 
   @Override
   public void beforeAll(ExtensionContext context) throws Exception {
@@ -47,7 +49,13 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
 
   @Override
   public void beforeEach(ExtensionContext context) throws Exception {
-    injectMocks(context);
+//    final var alreadyMocked = context.getStore(DAGGER).get(MOCKED, Boolean.class);
+//    if(!Boolean.TRUE.equals(alreadyMocked)){
+      injectMocks(context);
+//      context.getRoot()
+//        .getStore(DAGGER)
+//        .put(MOCKED, true);
+//    }
     injectFields(context);
   }
 
