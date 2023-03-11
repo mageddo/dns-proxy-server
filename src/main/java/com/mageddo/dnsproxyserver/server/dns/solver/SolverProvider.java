@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
-import com.mageddo.dnsproxyserver.quarkus.Quarkus;
+import com.mageddo.dnsproxyserver.di.Context;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.enterprise.inject.Instance;
@@ -22,7 +22,7 @@ public class SolverProvider {
   }
 
   public SolverProvider(Instance<Solver> solvers) {
-    this.solvers = Solvers.sorted(solvers.stream().toList());
+    this.solvers = sorted(solvers);
   }
 
   public List<Solver> getSolversExcludingLocalDB() {
@@ -41,8 +41,16 @@ public class SolverProvider {
 
   void lazyLoad() {
     if (this.count.compareAndSet(false, true)) {
-      this.solvers = Solvers.sorted(Quarkus.beansOf(Solver.class));
+      this.solvers = sorted(Context
+          .create()
+          .solvers()
+      );
+//      this.solvers = Solvers.sorted(Quarkus.beansOf(Solver.class));
       log.debug("status=instantesSet, size={}", this.solvers.size());
     }
+  }
+
+  static List<Solver> sorted(Instance<Solver> solvers) {
+    return Solvers.sorted(solvers.stream().toList());
   }
 }

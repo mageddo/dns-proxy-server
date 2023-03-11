@@ -46,7 +46,7 @@ public class InstanceImpl<T> implements Instance<T> {
 
   @Override
   public Iterator iterator() {
-    return stream().iterator();
+    return this.values.iterator();
   }
 
   @Override

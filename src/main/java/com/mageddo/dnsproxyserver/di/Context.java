@@ -2,8 +2,10 @@ package com.mageddo.dnsproxyserver.di;
 
 import com.mageddo.dnsproxyserver.quarkus.QuarkusConfig;
 import com.mageddo.dnsproxyserver.server.Starter;
+import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
 import dagger.Component;
 
+import javax.enterprise.inject.Instance;
 import javax.inject.Singleton;
 
 @Singleton
@@ -12,7 +14,8 @@ import javax.inject.Singleton;
     ModuleDaos.class,
     ModuleDockerClient.class,
     QuarkusConfig.class,
-    ModuleHttpMapper.class
+    ModuleHttpMapper.class,
+    ModuleSolver.class
 })
 public interface Context {
 
@@ -26,4 +29,5 @@ public interface Context {
     this.starter().start();
   }
 
+  Instance<Solver> solvers();
 }
