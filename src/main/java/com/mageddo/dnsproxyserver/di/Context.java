@@ -4,6 +4,7 @@ import com.mageddo.dnsproxyserver.di.module.ModuleDao;
 import com.mageddo.dnsproxyserver.di.module.ModuleDockerClient;
 import com.mageddo.dnsproxyserver.di.module.ModuleHttpMapper;
 import com.mageddo.dnsproxyserver.di.module.ModuleMain;
+import com.mageddo.dnsproxyserver.di.module.ModuleMap;
 import com.mageddo.dnsproxyserver.di.module.ModuleSolver;
 import com.mageddo.dnsproxyserver.di.module.ModuleStartup;
 import com.mageddo.dnsproxyserver.docker.ContainerSolvingService;
@@ -15,7 +16,9 @@ import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
 import dagger.Component;
 
 import javax.enterprise.inject.Instance;
+import javax.inject.Provider;
 import javax.inject.Singleton;
+import java.util.Map;
 import java.util.Set;
 
 @Singleton
@@ -26,7 +29,8 @@ import java.util.Set;
   QuarkusConfig.class,
   ModuleHttpMapper.class,
   ModuleSolver.class,
-  ModuleStartup.class
+  ModuleStartup.class,
+  ModuleMap.class
 })
 public interface Context {
 
@@ -50,4 +54,7 @@ public interface Context {
   DockerNetworkDAO dockerNetworkDAO();
 
   DockerDAO dockerDAO();
+
+  Map<Class<?>, Provider<Object>> bindings();
+
 }

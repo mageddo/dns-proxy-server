@@ -4,6 +4,7 @@ import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.dnsproxyserver.di.module.ModuleDockerClient;
 import com.mageddo.dnsproxyserver.di.module.ModuleHttpMapper;
 import com.mageddo.dnsproxyserver.di.module.ModuleMain;
+import com.mageddo.dnsproxyserver.di.module.ModuleMap;
 import com.mageddo.dnsproxyserver.di.module.ModuleSolver;
 import com.mageddo.dnsproxyserver.di.module.ModuleStartup;
 import com.mageddo.dnsproxyserver.quarkus.QuarkusConfig;
@@ -21,6 +22,7 @@ import javax.inject.Singleton;
     ModuleHttpMapper.class,
     ModuleSolver.class,
     ModuleStartup.class,
+    ModuleMap.class,
     // mocks
     ModuleDaoSpy.class,
   }
