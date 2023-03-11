@@ -14,6 +14,7 @@ import com.mageddo.dnsproxyserver.quarkus.QuarkusConfig;
 import com.mageddo.dnsproxyserver.server.Starter;
 import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
 import dagger.Component;
+import org.apache.commons.lang3.Validate;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Provider;
@@ -48,7 +49,9 @@ public interface Context {
   }
 
   default <T> T get(Class<T> clazz) {
-    return (T) bindings().get(clazz).get();
+    final var v = bindings().get(clazz);
+    Validate.notNull(v, "Bean not found for class: %s", clazz.getName());
+    return (T) v.get();
   }
 
   Instance<Solver> solvers();

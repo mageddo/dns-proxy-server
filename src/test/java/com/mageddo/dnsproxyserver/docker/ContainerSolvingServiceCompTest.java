@@ -3,10 +3,15 @@ package com.mageddo.dnsproxyserver.docker;
 import com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates;
 import com.mageddo.dnsproxyserver.templates.docker.NetworkTemplates;
 import com.mageddo.utils.dagger.TestContext;
+import com.mageddo.utils.dagger.mockito.ContextConsumer;
+import com.mageddo.utils.dagger.mockito.DaggerExtension;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import javax.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -16,17 +21,25 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+@ExtendWith(DaggerExtension.class)
 class ContainerSolvingServiceCompTest {
 
   static TestContext ctx;
 
+  @Inject
   DockerDAO dockerDAO;
+
+  @Inject
   DockerNetworkDAO dockerNetworkDAO;
+
+  @Inject
   ContainerSolvingService containerSolvingService;
 
   @BeforeAll
-  static void beforeAll(){
+  static void beforeAll(ContextConsumer c){
+    System.out.println(">>>> " + c);
     ctx = TestContext.create();
+    c.consume(TestContext.create());
   }
 
   @BeforeEach
