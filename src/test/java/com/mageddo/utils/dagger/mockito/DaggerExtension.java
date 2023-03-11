@@ -30,9 +30,7 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
   private final static ExtensionContext.Namespace DAGGER = create("dagger2");
   private final static String
     DAGGER_CTX = "DAGGER_CTX",
-    DAGGER_CTX_WRAPPER = "DAGGER_CTX_WRAPPER",
-    MOCKED = "MOCKED"
-  ;
+    DAGGER_CTX_WRAPPER = "DAGGER_CTX_WRAPPER";
 
   @Override
   public void beforeAll(ExtensionContext context) throws Exception {
@@ -47,14 +45,41 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
 
   @Override
   public void beforeEach(ExtensionContext context) throws Exception {
-//    final var alreadyMocked = context.getStore(DAGGER).get(MOCKED, Boolean.class);
-//    if(!Boolean.TRUE.equals(alreadyMocked)){
-      injectMocks(context);
-//      context.getRoot()
-//        .getStore(DAGGER)
-//        .put(MOCKED, true);
-//    }
+    injectMocks(context);
     injectFields(context);
+    resetMocks(context);
+  }
+
+  @Override
+  public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
+    return resolveParameter(parameterContext, extensionContext) != null;
+  }
+
+  @Override
+  public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
+    final Class<?> pClass = parameterContext.getParameter().getType();
+    final var daggerCtx = extensionContext.getStore(DAGGER).get(DAGGER_CTX);
+    if (pClass.isAssignableFrom(daggerCtx.getClass())) {
+      return daggerCtx;
+    }
+    return null;
+  }
+
+  void resetMocks(ExtensionContext context) {
+    final var testInstances = context.getRequiredTestInstances().getAllInstances();
+    for (Object instance : testInstances) {
+      final var fields = FieldUtils.getAllFields(instance.getClass());
+      for (Field field : fields) {
+        try {
+          final var fieldValue = FieldUtils.readField(field, instance, true);
+          if (MockUtil.isMock(fieldValue) || MockUtil.isSpy(fieldValue)) {
+            Mockito.reset(fieldValue);
+          }
+        } catch (IllegalAccessException e) {
+          throw new IllegalStateException(e);
+        }
+      }
+    }
   }
 
   void injectMocks(ExtensionContext context) {
@@ -79,22 +104,7 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
     }
   }
 
-  @Override
-  public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
-    return resolveParameter(parameterContext, extensionContext) != null;
-  }
-
-  @Override
-  public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
-    final Class<?> pClass = parameterContext.getParameter().getType();
-    final var daggerCtx = extensionContext.getStore(DAGGER).get(DAGGER_CTX);
-    if (pClass.isAssignableFrom(daggerCtx.getClass())) {
-      return daggerCtx;
-    }
-    return null;
-  }
-
-  private DaggerTest mustFindDaggerTestSettings(ExtensionContext context) {
+  DaggerTest mustFindDaggerTestSettings(ExtensionContext context) {
     return this.findAnnotation(context, DaggerTest.class)
       .orElseThrow(() -> new IllegalArgumentException("You need to use @DaggerTest annotation"))
       ;
@@ -123,17 +133,13 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
     for (Object instance : testInstances) {
       final var fields = FieldUtils.getFieldsListWithAnnotation(instance.getClass(), Inject.class);
       for (Field field : fields) {
-        FieldUtils.writeField(field, instance, getAndReset(ctx, field), true);
+        FieldUtils.writeField(field, instance, get(ctx, field), true);
       }
     }
   }
 
-  static Object getAndReset(CtxWrapper ctx, Field field) {
-    final var instance = ctx.get(field.getType());
-    if (MockUtil.isMock(instance) || MockUtil.isSpy(instance)) {
-      Mockito.reset(instance);
-    }
-    return instance;
+  static Object get(CtxWrapper ctx, Field field) {
+    return ctx.get(field.getType());
   }
 
   static CtxWrapper findCtxWrapper(ExtensionContext context) {
