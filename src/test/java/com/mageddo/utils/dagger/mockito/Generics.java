@@ -11,7 +11,7 @@ public class Generics {
 
   public static Type getFirstTypeArg(Type type) {
     final var args = getTypeArgs(type);
-    return args.length > 0 ? args[0] : null;
+    return args != null && args.length > 0 ? args[0] : null;
   }
 
   public static Type[] getTypeArgs(Type type) {

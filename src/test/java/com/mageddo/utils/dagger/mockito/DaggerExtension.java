@@ -1,6 +1,5 @@
 package com.mageddo.utils.dagger.mockito;
 
-import com.github.dockerjava.api.DockerClient;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
@@ -36,10 +35,13 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
 
   @Override
   public void beforeAll(ExtensionContext context) throws Exception {
+
     final var settings = this.mustFindDaggerTestSettings(context);
     final var ctx = MethodUtils.invokeStaticMethod(settings.component(), settings.createMethod());
+
     context.getStore(DAGGER).put(DAGGER_CTX, ctx);
     context.getStore(DAGGER).put(DAGGER_CTX_WRAPPER, new CtxWrapper(ctx));
+
   }
 
   @Override
@@ -60,7 +62,7 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
           FieldUtils.writeField(field, instance, mock, true);
 
           // replacing real bean with the created mock
-          mockDaggerCtx(mock, field.getType(), findCtx(context));
+          mockDaggerCtxBean(mock, field.getType(), findCtx(context));
 
         } catch (IllegalAccessException e) {
           throw new IllegalStateException(e);
@@ -69,27 +71,20 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
     }
   }
 
-  void mockDaggerCtx(Object mock, Class<?> mockClazz, Object daggerGraph) {
+  void mockDaggerCtxBean(Object mock, Class<?> mockClazz, Object daggerGraph) {
     final var fields = FieldUtils.getAllFields(daggerGraph.getClass());
-    for (Field field : fields) {
+    for (final Field field : fields) {
       try {
-//        final var v = FieldUtils.readField(field, mock);
-//        final var c = (ParameterizedType)field.getType();
-
-        log.debug(
-          "status=daggerMocking, mockClass={}, class={}, genericInterfaces={}",
-          mockClazz, field.getType(), field.getGenericType()
-        );
-        if(Objects.equals(mockClazz, field.getType())){
-          log.debug("status=daggerMocking, class={}", field.getType());
+        final var fieldType = Generics.getFirstFieldArg(field);
+        log.trace("status=daggerMocking, mockClass={}, fieldType={}", mockClazz, fieldType);
+        if (Objects.equals(mockClazz, fieldType)) {
+          log.debug("status=daggerMocking, class={}", fieldType);
+          FieldUtils.writeField(field, daggerGraph, (Provider<?>) () -> mock, true);
         }
-      } catch (Exception e) {
+      } catch (IllegalAccessException e) {
         throw new RuntimeException(e);
       }
-
-
     }
-    Provider<DockerClient> dockerClientProvider;
   }
 
   @Override
