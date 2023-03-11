@@ -1,6 +1,7 @@
 package com.mageddo.utils.dagger.mockito;
 
 import dagger.internal.DoubleCheck;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.mockito.Mockito;
@@ -8,6 +9,7 @@ import org.mockito.internal.util.MockUtil;
 
 import java.util.Objects;
 
+@Slf4j
 public class ProviderWrapper {
 
   private final Class<?> type;
@@ -31,9 +33,12 @@ public class ProviderWrapper {
       final Object uninitialized = this.findUnitializedValue();
       final var instanceField = FieldUtils.getField(DoubleCheck.class, "instance", true);
       final var instance = FieldUtils.readField(instanceField, this.provider, true);
-
+      if(MockUtil.isMock(instance) || MockUtil.isSpy(instance)){
+        log.debug("status=alreadyMocked, type={}", this.type);
+        return;
+      }
       Validate.isTrue(
-        Objects.equals(uninitialized, instance) || MockUtil.isMock(instance) || MockUtil.isSpy(instance),
+        Objects.equals(uninitialized, instance),
         "Dagger beans were already used, can't mock/spy anymore, please wait DaggerTest to mock them"
       );
       FieldUtils.writeField(instanceField, this.provider, o, true);
