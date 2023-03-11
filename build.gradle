@@ -22,6 +22,13 @@ targetCompatibility = JavaVersion.VERSION_17
 
 dependencies {
 
+  // fixme just for the migration
+  implementation 'io.quarkus:quarkus-arc:2.16.4.Final'
+  implementation 'io.quarkus:quarkus-resteasy:2.16.4.Final'
+  implementation 'io.quarkus:quarkus-resteasy-jsonb:2.16.4.Final'
+  testImplementation 'io.quarkus:quarkus-junit5:2.16.4.Final'
+  testImplementation("io.quarkus:quarkus-junit5-mockito:2.16.4.Final")
+
   compileOnly('org.projectlombok:lombok:1.18.+')
   annotationProcessor('org.projectlombok:lombok:1.18.+')
 
@@ -42,9 +49,7 @@ dependencies {
   testCompileOnly('org.projectlombok:lombok:1.18.+')
   testAnnotationProcessor('org.projectlombok:lombok:1.18.+')
 
-  testImplementation('io.quarkus:quarkus-junit5')
-  testImplementation('io.quarkus:quarkus-junit5-mockito')
-  testImplementation('io.rest-assured:rest-assured')
+  testImplementation('io.rest-assured:rest-assured:5.3.0')
   testImplementation('org.mockito:mockito-core:5.1.1')
   testImplementation('org.mockito:mockito-junit-jupiter:5.1.+')
 
