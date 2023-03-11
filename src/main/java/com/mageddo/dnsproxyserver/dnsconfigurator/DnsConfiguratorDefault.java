@@ -5,6 +5,7 @@ import com.mageddo.dnsproxyserver.utils.Dns;
 import com.mageddo.net.Network;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ public class DnsConfiguratorDefault implements DnsConfigurator {
   private final Network delegate;
   private RuntimeException error;
 
+  @Inject
   public DnsConfiguratorDefault() {
     this.serversBefore = new HashMap<>();
     this.delegate = createInstance();
