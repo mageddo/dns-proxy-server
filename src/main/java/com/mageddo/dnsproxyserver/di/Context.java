@@ -47,6 +47,10 @@ public interface Context {
     this.starter().start();
   }
 
+  default <T> T get(Class<T> clazz) {
+    return (T) bindings().get(clazz).get();
+  }
+
   Instance<Solver> solvers();
 
   ContainerSolvingService containerSolvingService();
@@ -56,5 +60,6 @@ public interface Context {
   DockerDAO dockerDAO();
 
   Map<Class<?>, Provider<Object>> bindings();
+
 
 }

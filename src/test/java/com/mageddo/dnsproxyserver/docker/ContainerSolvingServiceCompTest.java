@@ -32,9 +32,9 @@ class ContainerSolvingServiceCompTest {
   @BeforeEach
   void beforeEach() {
 
-    this.containerSolvingService = ctx.containerSolvingService();
-    this.dockerNetworkDAO = ctx.dockerNetworkDAO();
-    this.dockerDAO = ctx.dockerDAO();
+    this.containerSolvingService = ctx.get(ContainerSolvingService.class);
+    this.dockerNetworkDAO = ctx.get(DockerNetworkDAO.class);
+    this.dockerDAO = ctx.get(DockerDAO.class);
 //    Mockito.reset();
 
     doReturn("192.168.15.1")
