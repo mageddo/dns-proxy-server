@@ -29,6 +29,9 @@ dependencies {
   testImplementation 'io.quarkus:quarkus-junit5:2.16.4.Final'
   testImplementation("io.quarkus:quarkus-junit5-mockito:2.16.4.Final")
 
+  annotationProcessor("com.google.dagger:dagger-compiler:2.45")
+  implementation("com.google.dagger:dagger:2.45")
+
   compileOnly('org.projectlombok:lombok:1.18.+')
   annotationProcessor('org.projectlombok:lombok:1.18.+')
 
@@ -46,6 +49,7 @@ dependencies {
   implementation('com.mageddo.commons:commons-lang:0.1.6')
   implementation('org.apache.commons:commons-exec:1.3')
 
+  annotationProcessor("com.google.dagger:dagger-compiler:2.45")
   testCompileOnly('org.projectlombok:lombok:1.18.+')
   testAnnotationProcessor('org.projectlombok:lombok:1.18.+')
 
