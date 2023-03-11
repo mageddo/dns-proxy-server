@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.config.entrypoint;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.config.entrypoint.ConfigJsonV2.Entry;
 import com.mageddo.dnsproxyserver.config.entrypoint.ConfigJsonV2.Env;
 import com.mageddo.json.JsonUtils;
@@ -101,4 +102,10 @@ public class JsonConfigs {
     return tree.at("/version").asInt(VERSION_1);
   }
 
+  public static ConfigJsonV2 loadConfigJson() {
+    final var configPath = Configs
+      .getInstance()
+      .getConfigPath();
+    return (ConfigJsonV2) loadConfig(configPath);
+  }
 }

@@ -16,6 +16,7 @@ import org.apache.commons.lang3.Validate;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -27,7 +28,7 @@ public class ConfigDAOJson implements ConfigDAO {
 
   @Override
   public Config.Env findActiveEnv() {
-    final var configJson = loadConfigJson();
+    final var configJson = JsonConfigs.loadConfigJson();
     return findEnv(configJson.getActiveEnv(), configJson);
   }
 
@@ -51,7 +52,7 @@ public class ConfigDAOJson implements ConfigDAO {
 
   @Override
   public void addEntry(String env, Config.Entry entry) {
-    final var config = loadConfigJson();
+    final var config = JsonConfigs.loadConfigJson();
     final var found = findOrBind(env, config);
     found.add(ConfigJsonV2.Entry.from(entry));
     save(config);
@@ -59,7 +60,7 @@ public class ConfigDAOJson implements ConfigDAO {
 
   @Override
   public boolean updateEntry(String env, Config.Entry entry) {
-    final var config = loadConfigJson();
+    final var config = JsonConfigs.loadConfigJson();
     final var found = findOrBind(env, config);
     final var hostnames = found.getHostnames();
     if (hostnames.isEmpty()) {
@@ -76,7 +77,7 @@ public class ConfigDAOJson implements ConfigDAO {
 
   @Override
   public boolean removeEntry(String env, String hostname) {
-    final var config = loadConfigJson();
+    final var config = JsonConfigs.loadConfigJson();
     final var found = findOrBind(env, config);
     final var hostnames = found.getHostnames();
     if (hostnames.isEmpty()) {
@@ -94,7 +95,7 @@ public class ConfigDAOJson implements ConfigDAO {
 
   @Override
   public void createEnv(Config.Env env) {
-    final var config = loadConfigJson();
+    final var config = JsonConfigs.loadConfigJson();
 
     final var alreadyExists = config
       .get_envs()
@@ -112,7 +113,7 @@ public class ConfigDAOJson implements ConfigDAO {
 
   @Override
   public void deleteEnv(String name) {
-    final var config = loadConfigJson();
+    final var config = JsonConfigs.loadConfigJson();
     final var filtered = config
       .get_envs()
       .stream()
@@ -124,7 +125,7 @@ public class ConfigDAOJson implements ConfigDAO {
 
   @Override
   public List<Config.Env> findEnvs() {
-    return loadConfigJson().getEnvs();
+    return JsonConfigs.loadConfigJson().getEnvs();
   }
 
   @Override
@@ -144,7 +145,7 @@ public class ConfigDAOJson implements ConfigDAO {
 
   @Override
   public void changeActiveEnv(String name) {
-    final var config = loadConfigJson()
+    final var config = JsonConfigs.loadConfigJson()
       .setActiveEnv(name);
     save(config);
   }
@@ -156,8 +157,8 @@ public class ConfigDAOJson implements ConfigDAO {
         return env;
       }
     }
-    log.debug("status=notFound, action=usingDefaultEnv, activeEnv={}", Config.Env.DEFAULT_ENV);
-    final var def = ConfigJsonV2.Env.from(Config.Env.theDefault());
+    log.debug("status=envNotFound, action=creating, activeEnv={}", envKey);
+    final var def = ConfigJsonV2.Env.from(Config.Env.of(envKey, Collections.emptyList()));
     configJson.get_envs().add(def);
     return def;
   }
@@ -171,13 +172,6 @@ public class ConfigDAOJson implements ConfigDAO {
       .orElse(Config.Env.theDefault());
     log.trace("activeEnv={}", env.getName());
     return env;
-  }
-
-  static ConfigJsonV2 loadConfigJson() {
-    final var configPath = Configs
-      .getInstance()
-      .getConfigPath();
-    return (ConfigJsonV2) JsonConfigs.loadConfig(configPath);
   }
 
   static void save(ConfigJsonV2 config) {
