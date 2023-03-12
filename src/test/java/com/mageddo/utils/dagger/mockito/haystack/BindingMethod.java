@@ -4,10 +4,9 @@ import com.mageddo.utils.dagger.mockito.CtxWrapper;
 import jdk.jfr.Name;
 import org.apache.commons.lang3.reflect.MethodUtils;
 
-import javax.inject.Provider;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Map;
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -28,35 +27,36 @@ public class BindingMethod {
   }
 
   public static BindingMethod findBindingMethod(CtxWrapper ctx) {
-    final var methods = MethodUtils.getMethodsListWithAnnotation(ctx.getCtxClass(), Name.class, true, true)
-        .stream()
-        .filter(it -> it.getAnnotation(Name.class).value().equals("bindings"))
-        .collect(Collectors.toList());
-
+    final var methods = filterBindingMethods(ctx);
     for (final var method : methods) {
-      if (isGetByClass(method)) {
+      final var bindingMethod = BindingMapMethod.of(ctx, method);
+      if (bindingMethod != null) {
+        return new BindingMethod(bindingMethod::get);
+      } else if (isGetByClass(method)) {
         return buildGetByClass(ctx, method);
-      } else if (isGetBindingsMap(method)) {
-        return buildGetByBindingMaps(ctx, method);
       }
     }
     return null;
   }
 
-  static BindingMethod buildGetByBindingMaps(CtxWrapper ctx, Method method) {
-    return new BindingMethod(clazz -> {
-      try {
-        final Map<Class<?>, Provider<?>> bindings = (Map<Class<?>, Provider<?>>) method.invoke(ctx.getCtx());
-        final Provider<?> provider = bindings.get(clazz);
-        if (provider != null) {
-          return provider.get();
-        }
-        return null;
-      } catch (IllegalAccessException | InvocationTargetException e) {
-        throw new IllegalStateException(e);
+  public static BindingMapMethod findBindingMap(CtxWrapper ctx) {
+    final var methods = filterBindingMethods(ctx);
+    for (final var method : methods) {
+      final var bindingMethod = BindingMapMethod.of(ctx, method);
+      if (bindingMethod != null) {
+        return bindingMethod;
       }
-    });
+    }
+    return null;
   }
+
+  static List<Method> filterBindingMethods(CtxWrapper ctx) {
+    return MethodUtils.getMethodsListWithAnnotation(ctx.getCtxClass(), Name.class, true, true)
+        .stream()
+        .filter(it -> it.getAnnotation(Name.class).value().equals("bindings"))
+        .collect(Collectors.toList());
+  }
+
 
   static BindingMethod buildGetByClass(CtxWrapper ctx, Method method) {
     return new BindingMethod(clazz -> {
@@ -75,9 +75,4 @@ public class BindingMethod {
         ;
   }
 
-  static boolean isGetBindingsMap(Method m) {
-    return m.getParameterTypes().length == 0
-        && m.getReturnType().isAssignableFrom(Map.class)
-        ;
-  }
 }

@@ -3,6 +3,7 @@ package com.mageddo.utils.dagger.mockito;
 import com.mageddo.utils.dagger.MethodUtils;
 import com.mageddo.utils.dagger.mockito.haystack.BindingMethod;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.reflect.Field;
@@ -86,10 +87,29 @@ public class CtxWrapper {
 
   public void initializeWithMockOrThrows(Class<?> type) {
     final var provider = this.findProviderFor(type);
+    Validate.notNull(provider, "No provider found for: %s", type);
     provider.mock();
   }
 
   ProviderWrapper findProviderFor(Class<?> type) {
+    {
+      final var p = this.findProviderOnCtx(type);
+      if (p != null) {
+        log.debug("status=providerOnCtx, type={}", type);
+        return p;
+      }
+    }
+    {
+      final var p = BindingMethod.findBindingMap(this);
+      if (p != null) {
+        log.debug("status=providerByBindings, type={}", type);
+        return new ProviderWrapper(p.get(type), type);
+      }
+    }
+    return null;
+  }
+
+  private ProviderWrapper findProviderOnCtx(Class<?> type) {
     try {
       final var field = findFirstProviderFieldWithType(this.ctx.getClass(), type);
       if (field == null) {

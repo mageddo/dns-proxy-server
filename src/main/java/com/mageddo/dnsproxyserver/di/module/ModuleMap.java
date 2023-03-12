@@ -16,8 +16,6 @@ import dagger.multibindings.IntoMap;
  * https://dagger.dev/dev-guide/multibindings
  * https://stackoverflow.com/questions/62150127/is-it-possible-to-get-beans-by-class-type-in-dagger2-similarly-to-spring-does
  *
- * @deprecated this class is not necessary anymore for test dependency injection, it's here just for IntoMap
- * usage example.
  */
 @Module
 public interface ModuleMap {

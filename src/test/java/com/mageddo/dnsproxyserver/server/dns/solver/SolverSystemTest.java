@@ -1,11 +1,13 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
+import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.dnsproxyserver.docker.DockerDAO;
 import com.mageddo.dnsproxyserver.server.dns.IP;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.templates.MessageTemplates;
-import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.mockito.InjectMock;
+import com.mageddo.utils.dagger.Events;
+import com.mageddo.utils.dagger.mockito.DaggerTest;
+import com.mageddo.utils.dagger.mockito.InjectMock;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 
@@ -16,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
-@QuarkusTest
+@DaggerTest(component = Context.class, eventsHandler = Events.class)
 class SolverSystemTest {
 
-  @InjectMock(convertScopes = true)
+  @InjectMock
   DockerDAO dockerDAO;
 
   @Inject
