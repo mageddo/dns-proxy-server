@@ -52,6 +52,7 @@ $ docker run --rm --hostname dns.mageddo -p 5380:5380 -p 127.0.0.1:53:53/udp def
 ```
 
 Runining on docker limitations:
+
 * You have to configure docker as default DNS [by yourself][3], you can check more [details here][4] for the reason
 
 [1]: https://github.com/mageddo/dns-proxy-server/issues/326
