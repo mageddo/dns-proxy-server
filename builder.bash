@@ -16,7 +16,7 @@ generateDocs(){
   --ignoreCache --source docs/
 
   echo "> Generated docs version=$1, out files:"
-  ls -lha $2
+  ls -lhS $2
 }
 
 copyFileFromService(){
@@ -123,7 +123,7 @@ case $1 in
 
   echo "> Deploy started , current branch=$CURRENT_BRANCH"
   rm -vrf build
-  ls -lha
+  ls -lhS
 
   ./builder.bash validate-release || exit 0
 
