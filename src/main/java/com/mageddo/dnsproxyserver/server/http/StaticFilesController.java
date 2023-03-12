@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.server.http;
 
 import com.mageddo.commons.io.IoUtils;
 import com.mageddo.http.HttpMapper;
+import com.mageddo.http.HttpStatus;
 import com.mageddo.http.WebServer;
 import com.sun.net.httpserver.SimpleFileServer;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +31,16 @@ public class StaticFilesController implements HttpMapper {
 
   @Override
   public void map(WebServer server) {
+
+    server.get("/", exchange -> {
+      exchange
+        .getResponseHeaders()
+        .add("Location", "/static");
+      exchange.sendResponseHeaders(HttpStatus.MOVED_PERMANENTLY, -1);
+    });
+
     final var handler = SimpleFileServer.createFileHandler(this.createServePath());
-    server.map("/static/.*", exchange -> { // fixme /static e todos os subdirs precisam direcionar pra cá
+    server.map("/static/.*", exchange -> {
       try {
         if (this.loaded) {
           return;
