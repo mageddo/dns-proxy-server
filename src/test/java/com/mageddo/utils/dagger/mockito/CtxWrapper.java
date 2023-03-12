@@ -1,6 +1,7 @@
 package com.mageddo.utils.dagger.mockito;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.reflect.Field;
@@ -46,6 +47,7 @@ public class CtxWrapper {
   ProviderWrapper findProviderFor(Class<?> type) {
     try {
       final var field = findFirstProviderFieldWithType(this.delegate.getClass(), type);
+      Validate.notNull(field, "No provider found for type: %s", type);
       final Object provider = FieldUtils.readField(field, this.delegate, true);
       return new ProviderWrapper(provider, type);
     } catch (IllegalAccessException e) {

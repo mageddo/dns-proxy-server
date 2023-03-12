@@ -2,10 +2,10 @@ package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.ConfigDAO;
+import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.templates.EntryTemplates;
 import com.mageddo.dnsproxyserver.templates.docker.SolverTemplates;
-import com.mageddo.utils.dagger.TestContext;
 import com.mageddo.utils.dagger.mockito.DaggerTest;
 import com.mageddo.utils.dagger.mockito.InjectMock;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-@DaggerTest(component = TestContext.class)
+@DaggerTest(component = Context.class)
 class SolverLocalDBCompTest {
 
   @Inject

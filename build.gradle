@@ -36,6 +36,7 @@ dependencies {
   annotationProcessor('com.mageddo.nativeimage:reflection-config-generator:2.4.3')
 
   annotationProcessor("com.google.dagger:dagger-compiler:2.45")
+  compileOnly("com.google.dagger:dagger-compiler:2.45")
   implementation("com.google.dagger:dagger:2.45")
 
 //  compileOnly 'javax.enterprise:cdi-api:1.2'

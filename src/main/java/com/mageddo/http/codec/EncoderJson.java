@@ -12,13 +12,17 @@ public class EncoderJson implements Encoder {
   public void encode(HttpExchange exchange, int status, Object o) {
     try {
       final var jsonBytes = JsonUtils
-        .instance()
-        .writeValueAsBytes(o);
+          .instance()
+          .writeValueAsBytes(o);
 
       exchange.sendResponseHeaders(status, jsonBytes.length);
       exchange
-        .getResponseBody()
-        .write(jsonBytes)
+          .getResponseHeaders()
+          .add("Content-Type", "application/json")
+      ;
+      exchange
+          .getResponseBody()
+          .write(jsonBytes)
       ;
     } catch (IOException e) {
       throw new UncheckedIOException(e);

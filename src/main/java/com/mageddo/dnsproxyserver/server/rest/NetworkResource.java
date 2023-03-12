@@ -1,31 +1,34 @@
 package com.mageddo.dnsproxyserver.server.rest;
 
+import com.mageddo.commons.lang.Objects;
 import com.mageddo.dnsproxyserver.docker.DockerNetworkService;
+import com.mageddo.http.HttpMapper;
+import com.mageddo.http.Request;
+import com.mageddo.http.WebServer;
+import com.mageddo.http.codec.Encoders;
 import lombok.RequiredArgsConstructor;
 
 import javax.inject.Inject;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
+import javax.inject.Singleton;
+import javax.ws.rs.core.Response.Status;
 import java.util.Collections;
-import java.util.List;
 
-@Path("/network")
+@Singleton
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
-public class NetworkResource {
+public class NetworkResource implements HttpMapper {
 
   private final DockerNetworkService networkService;
 
-  @DELETE
-  @Path("/disconnect-containers")
-  @Produces(MediaType.APPLICATION_JSON)
-  public List<String> delete(@QueryParam("networkId") String id) {
-    final var containers = this.networkService.disconnectContainers(id);
-    if (containers == null) {
-      return Collections.singletonList("Network not found");
-    }
-    return containers;
+  @Override
+  public void map(WebServer server) {
+    server.delete("/network/disconnect-containers", exchange -> {
+      final var id = Request.queryParam(exchange, "networkId");
+      final var containers = this.networkService.disconnectContainers(id);
+      Encoders.encodeJson(
+          exchange,
+          Status.OK,
+          Objects.useItOrDefault(containers, () -> Collections.singletonList("Network not found"))
+      );
+    });
   }
 }
