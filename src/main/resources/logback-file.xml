@@ -10,12 +10,11 @@
     value="${dpsLogFile:-/tmp/log.log}"
   />
   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-<!--    <file>${logFile}</file>-->
-    <file>/home/typer/dev/projects/graalvm-examples/dps-2/log.log</file>
+    <append>true</append>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-    <fileNamePattern>/home/typer/dev/projects/graalvm-examples/dps-2/log.log-%d{yyyy-MM-dd-HH-mm}.log</fileNamePattern>
-<!--      <maxHistory>120</maxHistory>-->
-<!--      <totalSizeCap>2GB</totalSizeCap>-->
+      <fileNamePattern>${logFile}.%d{yyyy-MM-dd}.log</fileNamePattern>
+      <maxHistory>120</maxHistory>
+      <totalSizeCap>2GB</totalSizeCap>
     </rollingPolicy>
     <encoder>
       <pattern>${dpsLogPattern:-${dpsLogPatternDefault}}</pattern>
