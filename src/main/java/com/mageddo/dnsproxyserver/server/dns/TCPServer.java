@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
 import com.mageddo.commons.concurrent.ThreadPool;
+import com.mageddo.commons.io.IoUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
@@ -27,6 +28,7 @@ public class TCPServer {
   public static final int MAX_CLIENT_ALIVE_SECS = 5;
   private final ScheduledExecutorService pool = ThreadPool.create(10);
   private final Set<WeakReference<SocketClient>> clients = new LinkedHashSet<>();
+  private ServerSocket server;
 
   public void start(int port, InetAddress address, SocketClientMessageHandler handler) {
     log.info("status=startingTcpServer, port={}", port);
@@ -35,7 +37,7 @@ public class TCPServer {
   }
 
   void start0(int port, InetAddress address, SocketClientMessageHandler handler) {
-    try (var server = new ServerSocket(port)) {
+    try (var server = this.server = new ServerSocket(port)) {
 
       Socket socket;
       while (!server.isClosed() && (socket = server.accept()) != null) {
@@ -79,8 +81,8 @@ public class TCPServer {
         }
       }
       log.debug(
-        "status=watchdog, removed={}, clientsBefore={}, after={}",
-        clientsBefore - this.clients.size(), clientsBefore, this.clients.size()
+          "status=watchdog, removed={}, clientsBefore={}, after={}",
+          clientsBefore - this.clients.size(), clientsBefore, this.clients.size()
       );
     } catch (Throwable e) {
       log.error("status=watchdogFailed, msg={}", e.getMessage(), e);
@@ -89,5 +91,9 @@ public class TCPServer {
 
   static boolean runningForTooLong(SocketClient client) {
     return Duration.ofSeconds(MAX_CLIENT_ALIVE_SECS).compareTo(client.getRunningTime()) <= 0;
+  }
+
+  public void stop() {
+    IoUtils.silentClose(this.server);
   }
 }

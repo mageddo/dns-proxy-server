@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
+import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.Extension;
@@ -26,7 +27,8 @@ import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.create;
  * Inspired on MockitoExtension and QuarkusTest
  */
 @Slf4j
-public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEachCallback, ParameterResolver {
+public class DaggerExtension implements Extension, BeforeAllCallback, AfterAllCallback,
+    BeforeEachCallback, ParameterResolver {
 
   private final static ExtensionContext.Namespace DAGGER = create("dagger2");
   private final static String
@@ -45,6 +47,11 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
     context.getStore(DAGGER).put(DAGGER_CTX_WRAPPER, new CtxWrapper(ctx));
     context.getStore(DAGGER).put(DAGGER_LIFECYCLE_HANDLER, createInstance(settings.eventsHandler()));
 
+  }
+
+  @Override
+  public void afterAll(ExtensionContext context) throws Exception {
+    triggerAfterAllEvent(context);
   }
 
   @Override
@@ -133,7 +140,6 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
     return annotation;
   }
 
-
   static void injectFields(ExtensionContext context) throws IllegalAccessException {
     final var ctx = findCtxWrapper(context);
     final var testInstances = context.getRequiredTestInstances().getAllInstances();
@@ -165,12 +171,26 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
   }
 
   static void triggerSetupEvent(ExtensionContext context) {
-    context
-      .getStore(DAGGER)
-      .get(DAGGER_LIFECYCLE_HANDLER, EventHandler.class)
-      .afterSetup(findCtx(context))
-    ;
-    context.getRoot().getStore(DAGGER).put(DAGGER_SETUP, true);
+    findLifecycleHander(context).afterSetup(findCtx(context));
+    final var parent = context.getParent().get();
+    parent.getStore(DAGGER).put(DAGGER_SETUP, true);
+    log.debug(
+        "status=triggeredSetupEvent, context={}, parent={}, root={}",
+        context.hashCode(), parent.hashCode(), context.getRoot().hashCode()
+    );
+  }
+
+  private void triggerAfterAllEvent(ExtensionContext context) {
+    findLifecycleHander(context).afterAll(findCtx(context));
+    log.debug(
+        "status=triggeredAfterAllEvent"
+    );
+  }
+
+  private static EventHandler findLifecycleHander(ExtensionContext context) {
+    return context
+        .getStore(DAGGER)
+        .get(DAGGER_LIFECYCLE_HANDLER, EventHandler.class);
   }
 
   static Object createInstance(Class<?> clazz) throws Exception {

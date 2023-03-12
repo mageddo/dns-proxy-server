@@ -27,4 +27,9 @@ public class Starter {
     }
     this.webServer.start(Configs.getInstance().getWebServerPort());
   }
+
+  public void stop(){
+    this.dnsServerStarter.stop();
+    this.webServer.stop();
+  }
 }

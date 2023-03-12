@@ -1,7 +1,5 @@
 package com.mageddo.dnsproxyserver.di;
 
-import com.mageddo.dnsproxyserver.di.module.Iface;
-import com.mageddo.dnsproxyserver.di.module.Iface2;
 import com.mageddo.dnsproxyserver.di.module.ModuleDao;
 import com.mageddo.dnsproxyserver.di.module.ModuleDockerClient;
 import com.mageddo.dnsproxyserver.di.module.ModuleHttpMapper;
@@ -28,14 +26,14 @@ import java.util.Set;
 
 @Singleton
 @Component(modules = {
-  ModuleMain.class,
-  ModuleDao.class,
-  ModuleDockerClient.class,
-  QuarkusConfig.class,
-  ModuleHttpMapper.class,
-  ModuleSolver.class,
-  ModuleStartup.class,
-  ModuleMap.class
+    ModuleMain.class,
+    ModuleDao.class,
+    ModuleDockerClient.class,
+    QuarkusConfig.class,
+    ModuleHttpMapper.class,
+    ModuleSolver.class,
+    ModuleStartup.class,
+    ModuleMap.class
 })
 public interface Context {
 
@@ -68,12 +66,10 @@ public interface Context {
 
   DockerDAOMock dockerDAOMock();
 
-  Iface iface();
-
-  Iface2 iface2();
-
   @Name("bindings")
   Map<Class<?>, Provider<Object>> bindings();
 
-
+  default void stop() {
+    this.starter().stop();
+  }
 }

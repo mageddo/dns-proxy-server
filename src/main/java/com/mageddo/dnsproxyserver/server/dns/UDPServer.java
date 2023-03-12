@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
 import com.mageddo.commons.concurrent.ThreadPool;
+import com.mageddo.commons.io.IoUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.Message;
 
@@ -17,6 +18,7 @@ public class UDPServer {
   private final ExecutorService pool;
   private final SocketAddress address;
   private final RequestHandler requestHandler;
+  private DatagramSocket server;
 
   public UDPServer(SocketAddress address, RequestHandler requestHandler) {
     this.address = address;
@@ -31,7 +33,7 @@ public class UDPServer {
 
   private void start0() {
     try {
-      final var server = new DatagramSocket(this.address);
+      this.server = new DatagramSocket(this.address);
       while (!server.isClosed()) {
 
         final var datagram = new DatagramPacket(new byte[BUFFER_SIZE], 0, BUFFER_SIZE);
@@ -66,5 +68,10 @@ public class UDPServer {
 
   public SocketAddress getAddress() {
     return this.address;
+  }
+
+  public void stop() {
+    IoUtils.silentClose(this.server);
+    this.pool.shutdown();
   }
 }

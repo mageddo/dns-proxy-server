@@ -1,5 +1,6 @@
 package com.mageddo.http;
 
+import com.mageddo.commons.io.IoUtils;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import lombok.extern.slf4j.Slf4j;
@@ -103,7 +104,7 @@ public class WebServer {
                 }
               })
               .handle(exchange);
-        } catch (IOException e){
+        } catch (IOException e) {
           log.error("status=handleFailed, msg={}", e.getMessage(), e);
         } finally {
           try {
@@ -112,7 +113,7 @@ public class WebServer {
               exchange.sendResponseHeaders(204, 0);
             }
             exchange.close();
-          } catch (Throwable e){
+          } catch (Throwable e) {
             log.warn("status=could not generate default ok response, msg={}", e.getMessage());
           }
         }
@@ -127,4 +128,9 @@ public class WebServer {
     }
   }
 
+  public void stop() {
+    IoUtils.silentClose(() -> {
+      this.server.stop(1);
+    });
+  }
 }

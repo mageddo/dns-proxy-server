@@ -38,6 +38,11 @@ public class SimpleServer {
     }
   }
 
+  public void stop() {
+    this.udpServerPool.stop();
+    this.tcpServer.stop();
+  }
+
   public enum Protocol {
     UDP,
     TCP,

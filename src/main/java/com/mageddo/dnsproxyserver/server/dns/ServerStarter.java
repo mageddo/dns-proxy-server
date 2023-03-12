@@ -40,4 +40,7 @@ public class ServerStarter {
     return this;
   }
 
+  public void stop() {
+    this.server.stop();
+  }
 }

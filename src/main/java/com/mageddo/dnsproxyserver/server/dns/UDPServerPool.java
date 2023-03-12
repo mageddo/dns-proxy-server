@@ -34,4 +34,11 @@ public class UDPServerPool {
       .collect(Collectors.joining(", "));
     log.info("Starting UDP server, addresses={}", addresses);
   }
+
+  public void stop() {
+    this.servers
+        .parallelStream()
+        .forEach(UDPServer::stop)
+    ;
+  }
 }
