@@ -10,6 +10,7 @@
     value="${dpsLogFile:-/tmp/log.log}"
   />
   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${logFile}</file>
     <append>true</append>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <fileNamePattern>${logFile}.%d{yyyy-MM-dd}.log</fileNamePattern>
