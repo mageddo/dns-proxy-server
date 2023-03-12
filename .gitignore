@@ -1,39 +1,71 @@
-examples/tmp
-issues
-static
-/pkg
-/bin
-build
-out/
-.idea/
-*.iml
-/files
+# Version: 2.0
+# https://gist.github.com/mageddo/0a77a179e1dc483679a23b83764ef0af#file-gitignore
+# Operating System Files
 
-.gradle/
-*.orig
-*.tmp
-conf/config.json
+*.DS_Store
+Thumbs.db
+
+# Build Files
 *.log
-*.old
+bin
+target
+build/
+.gradle
+*.lock
+lib
 
-# dependencies
+# Eclipse Project Files #
+
+.classpath
+.project
+.settings
+
+# IntelliJ IDEA Files #
+
+out
+*.iml
+*.ipr
+*.iws
+*.idea
+
+# Spring Bootstrap artifacts
+
+dependency-reduced-pom.xml
+README.html
+
+# Misc
+*.old
+*.tmp
+*.orig
+
+# Binaries
+*.so
+*.dll
+*.tgz
+*.zip
+*.tar
+*.tar.gz
+*.7z
+*.rar
+*.bz2
+*.tar.*
+
+####
+# DPS Custom
+####
+
+# Dependencies
 node_modules
 .pnp
 .pnp.js
 
-# testing
-coverage
-
-# misc
-.DS_Store
+# Misc
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
-
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-*.lock
-lib
 runjar.bat
+conf/config.json
+examples/tmp
+issues
+/files
