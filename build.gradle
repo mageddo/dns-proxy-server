@@ -22,9 +22,6 @@ targetCompatibility = JavaVersion.VERSION_19
 
 dependencies {
 
-  testImplementation 'io.quarkus:quarkus-junit5:2.16.4.Final'
-  testImplementation("io.quarkus:quarkus-junit5-mockito:2.16.4.Final")
-
   compileOnly('org.projectlombok:lombok:1.18.+')
   annotationProcessor('org.projectlombok:lombok:1.18.+')
 
@@ -32,7 +29,6 @@ dependencies {
   annotationProcessor('com.mageddo.nativeimage:reflection-config-generator:2.4.4')
 
   annotationProcessor("com.google.dagger:dagger-compiler:2.45")
-  compileOnly("com.google.dagger:dagger-compiler:2.45")
   implementation("com.google.dagger:dagger:2.45")
 
   implementation('jakarta.enterprise:jakarta.enterprise.cdi-api:2.0.2')
