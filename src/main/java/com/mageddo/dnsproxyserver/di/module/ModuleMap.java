@@ -16,6 +16,7 @@ import dagger.multibindings.IntoMap;
  * https://dagger.dev/dev-guide/multibindings
  * https://stackoverflow.com/questions/62150127/is-it-possible-to-get-beans-by-class-type-in-dagger2-similarly-to-spring-does
  *
+ * todo check if {@link dagger.multibindings.Multibinds} can reduce this boilerplate.
  */
 @Module
 public interface ModuleMap {
