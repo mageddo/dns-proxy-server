@@ -19,7 +19,7 @@ Check the following table to understand the support at every platform:
 |----------|:-------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Linux    |    ✅    | Will use system-resolved when avaible or `/etc/resolv.conf`, check `MG_RESOLVCONF` env check which file will be configured, see [running on Linux][2] for more details |
 | MAC OSX  |    ✅    | DPS will use `networksetup` to configure the DNS, check [running on MAC][3] to see more details                                                                        |
-| Windows  |    ❌    | Windows is not supported yet but there is [an issue to solve that][4]                                                                                                  |
+| Windows  |    ✅    | Will configure available network interfaces to query DPS as the default DNS, you can see available networks by running `ncpa.cpl`                                      |
 
 
 ### Docker Limitations
