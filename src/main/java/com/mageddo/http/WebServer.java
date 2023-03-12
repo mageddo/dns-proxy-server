@@ -19,13 +19,14 @@ import java.util.stream.Stream;
 @Slf4j
 public class WebServer implements AutoCloseable {
 
+  public static final String ALL_METHODS_WILDCARD = "";
+
   static final String DEFAULT_RES_BODY = """
     <h1>404 Not Found</h1>No context found for request""";
 
   private final byte[] DEFAULT_RES_BODY_BYTES = DEFAULT_RES_BODY.getBytes(UriUtils.DEFAULT_CHARSET);
 
   private static final String ROOT = "/";
-  public static final String ALL_METHODS_WILDCARD = "";
 
   private final Set<HttpMapper> mappers;
   private final Map<String, Map<String, HttpHandler>> handlesStore = new HashMap<>();
@@ -95,8 +96,7 @@ public class WebServer implements AutoCloseable {
       this.server.createContext(ROOT, exchange -> {
         try {
           final var canonicalPath = UriUtils.canonicalPath(exchange.getRequestURI());
-          final var handler = this.handlesStore.get(canonicalPath);
-
+          final var handler = this.lookupForHandler(canonicalPath);
           if (handler == null) {
             exchange.sendResponseHeaders(HttpStatus.NOT_FOUND, DEFAULT_RES_BODY_BYTES.length);
             exchange.getResponseBody().write(DEFAULT_RES_BODY_BYTES);
@@ -135,6 +135,19 @@ public class WebServer implements AutoCloseable {
       IOException e) {
       throw new UncheckedIOException(e);
     }
+  }
+
+  private Map<String, HttpHandler> lookupForHandler(String canonicalPath) {
+    if (this.handlesStore.containsKey(canonicalPath)) {
+      return this.handlesStore.get(canonicalPath);
+    }
+    final var keys = this.handlesStore
+      .keySet()
+      .stream()
+      .sorted((o1, o2) -> {
+
+      });
+    return this.handlesStore.get(canonicalPath + ALL_SUB_PATHS_WILDCARD);
   }
 
   public void stop() {
