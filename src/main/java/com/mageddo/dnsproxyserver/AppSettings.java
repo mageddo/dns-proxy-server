@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver;
 
+import ch.qos.logback.classic.Level;
 import com.mageddo.commons.io.IoUtils;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Configs;
@@ -15,8 +16,7 @@ public class AppSettings {
 
     final var logFile = Configs.parseLogFile(config.getLogFile());
     if (logFile == null) {
-      System.setProperty("quarkus.log.console.enable", "false");
-      System.setProperty("quarkus.log.file.enable", "false");
+      LogbackUtils.changeRootLogLevel(Level.OFF);
     } else if (!equalsIgnoreCase(logFile, "console")) {
       log.info("status=swapLogToFile, file={}", logFile);
       System.setProperty("dpsLogFile", logFile);
