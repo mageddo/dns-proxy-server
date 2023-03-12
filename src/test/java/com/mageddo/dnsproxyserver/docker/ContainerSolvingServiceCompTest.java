@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 @DaggerTest(component = Context.class)
 class ContainerSolvingServiceCompTest {
 
-  @Inject
+  @InjectMock
   DockerDAO dockerDAO;
 
   @InjectMock
