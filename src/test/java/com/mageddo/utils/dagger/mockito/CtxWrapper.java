@@ -16,7 +16,6 @@ public class CtxWrapper {
 
   public CtxWrapper(Object ctx) {
     this.ctx = ctx;
-    this.validate();
   }
 
   public Object get(Class<?> clazz) {
@@ -69,25 +68,13 @@ public class CtxWrapper {
 
   }
 
-  private void validate() {
-//    try {
-//      this.findMethod();
-//    } catch (NoSuchMethodException e) {
-//      throw new RuntimeException(e);
-//    }
-  }
-
-//  private Method findMethod() throws NoSuchMethodException {
-//    return this.ctx.getClass().getMethod("get", Class.class);
-//  }
-
   public Object getCtx() {
     return ctx;
   }
 
   public void initializeWithMockOrThrows(Class<?> type) {
     final var provider = this.findProviderFor(type);
-    Validate.notNull(provider, "No provider found for: %s", type);
+    Validate.notNull(provider, "No provider found for: %s, try create an @IntoMap bind", type);
     provider.mock();
   }
 
