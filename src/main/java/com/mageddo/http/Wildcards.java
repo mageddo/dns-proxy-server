@@ -20,9 +20,6 @@ class Wildcards {
       })
       .map(Path::getRaw)
       .filter(mapPath -> {
-//        /hello-world/.*
-
-//        /hello-world/batata
         final var matcher = Regexes.matcher(path, Pattern.compile(mapPath));
         return matcher != null && matcher.matches();
       })
