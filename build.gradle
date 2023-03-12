@@ -122,7 +122,7 @@ graalvmNative {
       verbose = true
       fallback = false
       buildArgs.add('-J-Xmx5G')
-      buildArgs.add('--link-at-build-time')
+//      buildArgs.add('--link-at-build-time')
     }
   }
 }
