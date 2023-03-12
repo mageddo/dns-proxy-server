@@ -10,9 +10,9 @@ weight: 1
 ### General Instructions
 The process to running DPS is basically the same for all platforms:
 
-Download the [latest release][2] for your platform
+Download the [latest release][2] for your platform, if no binary available use the jar (requires JRE 19+)
 
-Start DPS
+Start DPS (you need to run as administrator/sudo so DPS can set itself as the default DNS)
 ```bash
 sudo ./dns-proxy-server
 ```
@@ -23,7 +23,7 @@ $ ping dps-sample.dev
 PING dps-sample.dev (192.168.0.254) 56(84) bytes of data.
 ```
 
-Also solve Docker containers:
+Also solve Docker containers*:
 ```bash
 $ docker run --rm --hostname nginx.dev nginx
 
@@ -32,6 +32,9 @@ PING nginx.dev (172.17.0.4) 56(84) bytes of data.
 64 bytes from 172.17.0.4 (172.17.0.4): icmp_seq=1 ttl=64 time=0.043 ms
 64 bytes from 172.17.0.4 (172.17.0.4): icmp_seq=2 ttl=64 time=0.022 ms
 ```
+
+*Not supported on Windows
+
 
 ## Running on Docker
 
