@@ -1,4 +1,4 @@
-package com.mageddo.utils.dagger.mockito;
+package dagger.sheath.junit;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

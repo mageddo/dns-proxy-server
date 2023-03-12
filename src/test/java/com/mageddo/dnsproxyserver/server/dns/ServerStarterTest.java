@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
 import com.mageddo.dnsproxyserver.di.Context;
-import com.mageddo.utils.dagger.mockito.DaggerTest;
+import dagger.sheath.junit.DaggerTest;
 import org.apache.commons.lang3.ClassUtils;
 import org.junit.jupiter.api.Test;
 

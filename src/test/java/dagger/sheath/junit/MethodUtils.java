@@ -1,4 +1,4 @@
-package com.mageddo.utils.dagger;
+package dagger.sheath.junit;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

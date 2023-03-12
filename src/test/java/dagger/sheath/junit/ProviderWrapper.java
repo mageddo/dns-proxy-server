@@ -1,4 +1,4 @@
-package com.mageddo.utils.dagger.mockito;
+package dagger.sheath.junit;
 
 import dagger.internal.DoubleCheck;
 import lombok.extern.slf4j.Slf4j;

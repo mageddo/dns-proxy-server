@@ -1,4 +1,4 @@
-package com.mageddo.utils.dagger.mockito;
+package dagger.sheath.junit;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;

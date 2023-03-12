@@ -5,9 +5,9 @@ import com.mageddo.dnsproxyserver.docker.DockerDAO;
 import com.mageddo.dnsproxyserver.server.dns.IP;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.templates.MessageTemplates;
-import com.mageddo.utils.dagger.Events;
-import com.mageddo.utils.dagger.mockito.DaggerTest;
-import com.mageddo.utils.dagger.mockito.InjectMock;
+import dagger.Events;
+import dagger.sheath.junit.DaggerTest;
+import dagger.sheath.junit.InjectMock;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 

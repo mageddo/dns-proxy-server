@@ -1,4 +1,4 @@
-package com.mageddo.utils.dagger.mockito;
+package dagger.sheath.junit;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;

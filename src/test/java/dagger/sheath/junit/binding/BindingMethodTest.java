@@ -1,4 +1,4 @@
-package com.mageddo.utils.dagger.mockito.binding;
+package dagger.sheath.junit.binding;
 
 import org.junit.jupiter.api.Test;
 import sheath.stubing.AppByBindingMap;

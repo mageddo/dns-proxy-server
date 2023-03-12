@@ -1,7 +1,7 @@
-package com.mageddo.utils.dagger.mockito.binding;
+package dagger.sheath.junit.binding;
 
 import com.mageddo.commons.lang.Objects;
-import com.mageddo.utils.dagger.mockito.CtxWrapper;
+import dagger.sheath.junit.CtxWrapper;
 import jdk.jfr.Name;
 import org.apache.commons.lang3.reflect.MethodUtils;
 

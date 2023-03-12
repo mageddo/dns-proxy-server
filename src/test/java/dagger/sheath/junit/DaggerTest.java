@@ -1,4 +1,4 @@
-package com.mageddo.utils.dagger.mockito;
+package dagger.sheath.junit;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 

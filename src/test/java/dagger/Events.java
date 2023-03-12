@@ -1,7 +1,7 @@
-package com.mageddo.utils.dagger;
+package dagger;
 
 import com.mageddo.dnsproxyserver.di.Context;
-import com.mageddo.utils.dagger.mockito.EventHandler;
+import dagger.sheath.junit.EventHandler;
 import io.restassured.RestAssured;
 import io.restassured.config.HttpClientConfig;
 import lombok.extern.slf4j.Slf4j;

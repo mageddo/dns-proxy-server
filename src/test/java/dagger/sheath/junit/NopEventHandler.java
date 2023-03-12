@@ -1,4 +1,4 @@
-package com.mageddo.utils.dagger.mockito;
+package dagger.sheath.junit;
 
 public class NopEventHandler implements EventHandler<Object> {
   @Override

@@ -2,9 +2,9 @@ package com.mageddo.dnsproxyserver.server.rest;
 
 import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.dnsproxyserver.docker.DockerNetworkService;
-import com.mageddo.utils.dagger.Events;
-import com.mageddo.utils.dagger.mockito.DaggerTest;
-import com.mageddo.utils.dagger.mockito.InjectMock;
+import dagger.Events;
+import dagger.sheath.junit.DaggerTest;
+import dagger.sheath.junit.InjectMock;
 import org.junit.jupiter.api.Test;
 
 import javax.ws.rs.core.Response;
