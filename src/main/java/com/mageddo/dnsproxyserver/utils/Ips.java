@@ -43,4 +43,12 @@ public class Ips {
   public static SocketAddress toSocketAddress(String ip, int port) {
     return new InetSocketAddress(Ips.toAddress(ip), port);
   }
+
+  public static InetAddress getAnyLocalAddress() {
+    try {
+      return InetAddress.getByAddress(new byte[]{0, 0, 0, 0});
+    } catch (UnknownHostException e) {
+      return null;
+    }
+  }
 }

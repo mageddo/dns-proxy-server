@@ -2,14 +2,13 @@ package com.mageddo.dnsproxyserver.server.dns;
 
 import com.mageddo.commons.concurrent.ThreadPool;
 import com.mageddo.commons.io.IoUtils;
+import com.mageddo.dnsproxyserver.utils.Ips;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.lang.ref.WeakReference;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -31,13 +30,15 @@ public class TCPServer {
   private ServerSocket server;
 
   public void start(int port, InetAddress address, SocketClientMessageHandler handler) {
-    log.info("status=startingTcpServer, port={}", port);
+    log.debug("status=tcpServerStartScheduled, port={}", port);
     this.pool.submit(() -> this.start0(port, address, handler));
     this.pool.scheduleWithFixedDelay(this::watchDog, MAX_CLIENT_ALIVE_SECS, MAX_CLIENT_ALIVE_SECS, TimeUnit.SECONDS);
   }
 
   void start0(int port, InetAddress address, SocketClientMessageHandler handler) {
-    try (var server = this.server = new ServerSocket(port)) {
+    log.info("status=tcpServerStarting, port={}", port);
+    final var addr = Ips.getAnyLocalAddress(); // todo porque isso funciona e sem passar o endereço nao?
+    try (var server = this.server = new ServerSocket(port, 50, addr)) {
 
       Socket socket;
       while (!server.isClosed() && (socket = server.accept()) != null) {
@@ -46,8 +47,11 @@ public class TCPServer {
         this.pool.submit(client);
       }
 
-    } catch (IOException e) {
-      throw new UncheckedIOException(e);
+    } catch (Throwable e) {
+      log.warn("status=tcpServerGetError, msg={}", e.getMessage(), e);
+      throw new RuntimeException(e);
+    } finally {
+      log.debug("status=tcpServerClosing...");
     }
   }
 
