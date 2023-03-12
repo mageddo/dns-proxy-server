@@ -27,6 +27,5 @@ public class AppSettings {
       LogbackUtils.changeLogLevel("com.mageddo", config.getLogLevel().toLogbackLevel());
     }
 
-
   }
 }

@@ -1,22 +1,22 @@
-package com.mageddo.dnsproxyserver.quarkus;
+package com.mageddo.dnsproxyserver;
 
 import com.mageddo.dnsproxyserver.templates.ConfigTemplates;
+import com.mageddo.logback.LogbackUtils;
 import org.junit.jupiter.api.Test;
 
-import static com.mageddo.dnsproxyserver.quarkus.QuarkusConfig.DPS_LOG_LEVEL_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class QuarkusConfigTest {
+class AppSettingsTest {
   @Test
   void mustLogLevelInSl4jConvetion(){
     // arrange
     final var config = ConfigTemplates.withoutId();
 
     // act
-    QuarkusConfig.setup(config);
+    AppSettings.setup(config);
 
     // assert
-    assertEquals(System.getProperty(DPS_LOG_LEVEL_KEY), "WARN");
+    assertEquals("WARN", LogbackUtils.getLogLevel("com.mageddo").levelStr);
   }
 
 

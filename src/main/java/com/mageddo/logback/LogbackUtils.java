@@ -15,17 +15,21 @@ public class LogbackUtils {
   }
 
   public static void changeRootLogLevel(Level level) {
-    final var root = (Logger) LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+    final var root = getLoggerImpl(org.slf4j.Logger.ROOT_LOGGER_NAME);
     root.setLevel(level);
   }
 
   public static boolean changeLogLevel(String name, Level level) {
-    final var logger = (Logger) LoggerFactory.getLogger(name);
+    final var logger = getLoggerImpl(name);
     if (logger == null) {
       return false;
     }
     logger.setLevel(level);
     return true;
+  }
+
+  public static Level getLogLevel(String name){
+    return getLoggerImpl(name).getLevel();
   }
 
   public static void replaceConfig(InputStream configFileIn) {
@@ -38,6 +42,10 @@ public class LogbackUtils {
     } catch (JoranException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  private static Logger getLoggerImpl(String name) {
+    return (Logger) LoggerFactory.getLogger(name);
   }
 
 }
