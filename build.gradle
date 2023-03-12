@@ -66,6 +66,16 @@ dependencies {
 
 test {
   useJUnitPlatform()
+  exclude "**/*CompTest.class"
+  testLogging {
+    events "passed", "skipped", "failed"
+  }
+}
+
+task compTest(type: Test) {
+  useJUnitPlatform()
+  include "**/*CompTest.class"
+  failFast = true
   testLogging {
     events "passed", "skipped", "failed"
   }
