@@ -3,7 +3,7 @@ COPY ./ /app
 WORKDIR /app
 RUN ./gradlew clean build compTest shadowJar nativeCompile -i &&\
   ls -lha ./build &&\
-  mkdir -p ./build/artifacts/linux-amd64 && mv ./build/dns-proxy-server ./build/artifacts/linux-amd64/ &&\
+  mkdir -p ./build/artifacts/linux-amd64 && mv ./build/native/nativeCompile/dns-proxy-server ./build/artifacts/linux-amd64/ &&\
   mkdir -p ./build/artifacts/jre && mv ./build/dns-proxy-server-*-all.jar ./build/artifacts/jre/dns-proxy-server.jar &&\
   mv cp ./build/artifacts/jre/dns-proxy-server.jar ./build/artifacts/native-image-source
 ENTRYPOINT cat

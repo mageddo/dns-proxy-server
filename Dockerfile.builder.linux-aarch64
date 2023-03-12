@@ -4,23 +4,7 @@ COPY ./build/artifacts/native-image-source/ /app/build
 
 ENV JAVA_TOOL_OPTIONS='-Djdk.lang.Process.launchMechanism=fork'
 RUN uname -m && ls -lha &&\
-  native-image -Djdk.lang.Process.launchMechanism=fork -J-Djdk.lang.Process.launchMechanism=fork -J-Djava.util.logging.manager=org.jboss.logmanager.LogManager -J-Dsun.nio.ch.maxUpdateArraySize=100 \
-  -J-Dlogging.initial-configurator.min-level=500 -J-Dio.netty.leakDetection.level=DISABLED -J-Dio.netty.allocator.maxOrder=3 \
-  -J-Dvertx.logger-delegate-factory-class-name=io.quarkus.vertx.core.runtime.VertxLogDelegateFactory \
-  -J-Dvertx.disableDnsResolver=true -J-Duser.language=en -J-Duser.country=US -J-Dfile.encoding=UTF-8 \
-  --features=io.quarkus.runner.Feature,io.quarkus.runtime.graal.ResourcesFeature,io.quarkus.runtime.graal.DisableLoggingFeature \
-  -J--add-exports=java.security.jgss/sun.security.krb5=ALL-UNNAMED -J--add-opens=java.base/java.text=ALL-UNNAMED \
-  -J--add-opens=java.base/java.io=ALL-UNNAMED -J--add-opens=java.base/java.lang.invoke=ALL-UNNAMED \
-  -J--add-opens=java.base/java.util=ALL-UNNAMED -H:+CollectImageBuildStatistics \
-  -H:ImageBuildStatisticsFile=dns-proxy-server-timing-stats.json \
-  -H:BuildOutputJSONFile=dns-proxy-server-build-output-stats.json -H:+AllowFoldMethods -J-Djava.awt.headless=true \
-  --no-fallback --link-at-build-time -H:+ReportExceptionStackTraces -H:-AddAllCharsets --enable-url-protocols=http \
-  -H:NativeLinkerOption=-no-pie -H:-UseServiceLoaderFeature -H:+StackTrace \
-  -J--add-exports=org.graalvm.sdk/org.graalvm.nativeimage.impl=ALL-UNNAMED \
-  -J--add-exports=org.graalvm.nativeimage.builder/com.oracle.svm.core.jdk=ALL-UNNAMED \
-  --exclude-config io\.netty\.netty-codec /META-INF/native-image/io\.netty/netty-codec/generated/handlers/reflect-config\.json \
-  --exclude-config io\.netty\.netty-handler /META-INF/native-image/io\.netty/netty-handler/generated/handlers/reflect-config\.json dns-proxy-server \
-  --trace-class-initialization=com.sun.jna.win32.W32APITypeMapper,com.sun.jna.Platform,com.sun.jna.CallbackReference$AttachOptions,com.sun.jna.CallbackReference,com.sun.jna.Native,com.sun.jna.Callback,com.sun.jna.Structure,com.sun.jna.win32.W32APIOptions,com.sun.jna.NativeLibrary,com.sun.jna.platform.win32.Advapi32Util \
+  native-image -Djdk.lang.Process.launchMechanism=fork -J-Djdk.lang.Process.launchMechanism=fork \
   -jar dns-proxy-server.jar
 
 RUN ls -lha &&\
