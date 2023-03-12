@@ -5,6 +5,7 @@ import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import com.mageddo.dnsproxyserver.server.dns.solver.RemoteResolvers;
 import com.mageddo.dnsproxyserver.utils.InetAddresses;
+import com.mageddo.logback.LogbackUtils;
 import dagger.Module;
 import dagger.Provides;
 import org.xbill.DNS.Resolver;
@@ -18,8 +19,6 @@ import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 
 @Module
 public class QuarkusConfig {
-
-  public static final String DPS_LOG_LEVEL_KEY = "quarkus.log.category.\"com.mageddo\".level";
 
   @Produces
   @Provides
@@ -41,10 +40,9 @@ public class QuarkusConfig {
   }
 
   public static void setup(Config config) {
-    System.setProperty("quarkus.http.port", String.valueOf(config.getWebServerPort()));
 
     if (config.getLogLevel() != null) {
-      System.setProperty(DPS_LOG_LEVEL_KEY, config.getLogLevel().getSlf4jName());
+      LogbackUtils.changeLogLevel("com.mageddo", config.getLogLevel().toLogbackLevel());
     }
 
     final var logFile = Configs.parseLogFile(config.getLogFile());

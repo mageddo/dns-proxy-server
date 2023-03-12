@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver;
 
 import com.mageddo.dnsproxyserver.di.Context;
+import com.mageddo.dnsproxyserver.quarkus.QuarkusConfig;
 
 public class App {
   public static void main(String[] args) {
@@ -12,7 +13,7 @@ public class App {
     context.start();
 
     // fixme ajustar logs do logback
-//    QuarkusConfig.setup(config);
+    QuarkusConfig.setup(config);
 
     // todo install as service
 

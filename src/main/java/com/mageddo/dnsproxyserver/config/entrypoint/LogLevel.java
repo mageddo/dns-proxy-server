@@ -1,8 +1,10 @@
 package com.mageddo.dnsproxyserver.config.entrypoint;
 
+import ch.qos.logback.classic.Level;
 import org.apache.commons.lang3.StringUtils;
 
 public enum LogLevel {
+
   ERROR,
   WARNING("WARN"),
   INFO,
@@ -26,5 +28,9 @@ public enum LogLevel {
   @Override
   public String toString() {
     return this.name();
+  }
+
+  public Level toLogbackLevel() {
+    return Level.convertAnSLF4JLevel(org.slf4j.event.Level.valueOf(this.getSlf4jName()));
   }
 }
