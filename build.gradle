@@ -22,10 +22,6 @@ targetCompatibility = JavaVersion.VERSION_19
 
 dependencies {
 
-  // fixme just for the migration
-//  implementation 'io.quarkus:quarkus-arc:2.16.4.Final'
-//  implementation 'io.quarkus:quarkus-resteasy:2.16.4.Final'
-//  implementation 'io.quarkus:quarkus-resteasy-jsonb:2.16.4.Final'
   testImplementation 'io.quarkus:quarkus-junit5:2.16.4.Final'
   testImplementation("io.quarkus:quarkus-junit5-mockito:2.16.4.Final")
 
@@ -39,7 +35,6 @@ dependencies {
   compileOnly("com.google.dagger:dagger-compiler:2.45")
   implementation("com.google.dagger:dagger:2.45")
 
-//  compileOnly 'javax.enterprise:cdi-api:1.2'
   implementation('jakarta.enterprise:jakarta.enterprise.cdi-api:2.0.2')
   implementation('jakarta.ws.rs:jakarta.ws.rs-api:2.1.6')
   implementation('com.mageddo.commons:commons-lang:0.1.6')
