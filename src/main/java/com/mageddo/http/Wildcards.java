@@ -18,15 +18,15 @@ class Wildcards {
         final var o2Index = indexOfWildcard(o2);
         return Integer.compare(o1Index, o2Index);
       })
-      .filter(key -> {
+      .map(Path::getRaw)
+      .filter(raw -> {
 //        /hello-world/.*
 
 //        /hello-world/batata
         return Regexes
-          .matcher(rawPath, Pattern.compile(key.getRaw()))
+          .matcher(rawPath, Pattern.compile(raw))
           .matches();
       })
-      .map(Path::getRaw)
       .findFirst()
       .orElse(null);
   }
