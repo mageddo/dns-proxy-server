@@ -116,7 +116,8 @@ case $1 in
     echo "> Push docker images to docker hub"
     docker tag defreitas/dns-proxy-server:${APP_VERSION} defreitas/dns-proxy-server:latest &&\
     echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&\
-    docker-compose push image-linux-amd64 image-linux-aarch64
+    docker-compose push image-linux-amd64 image-linux-aarch64 &&\
+    docker push defreitas/dns-proxy-server:latest
   ;;
 
   deploy )
