@@ -4,11 +4,18 @@ weight: 1
 ---
 
 ## Running on Windows
+You can run DPS on Windows host without any issues except by DPS isn't capable yet ([see backlog issue][4])
+to connect to docker API and solve containers.
 
-You can run DPS on Windows host without any problems except by two features
+### Standalone Run
+* Download the [latest release][5], currently only the jar binary is available for DPS, JRE 19+ is required.
+* Run dps by `java -jar dns-proxy-server.jar`
 
-* DPS won't be able to be set as [default DNS automatically][2] (instructions below)
-* DPS isn't capable yet ([see backlog issue][4]) to connect to docker API and solve containers
+If you run DPS as administrator (using administrator prompt) then it will capable of configure itself as the [default DNS][6]
+or check instructions below of how to set DPS as default DNS manually.
+
+### Running on Docker
+DPS on Docker have one limitation, it won't be able to set itself as default DNS automatically (instructions below)
 
 1. Start up DPS
 ```bash
@@ -73,5 +80,6 @@ Start the server at [custom port](#configure-your-dns) and solving from it
 $ nslookup -port=8980 google.com 127.0.0.1
 ```
 [1]: https://imgur.com/a/LlDH8AM
-[2]: https://github.com/mageddo/dns-proxy-server/issues/326
 [4]: https://github.com/mageddo/dns-proxy-server/issues/314
+[5]: https://github.com/mageddo/dns-proxy-server/releases
+[6]: {{%relref "2-features/auto-configuration-as-default-dns/_index.md" %}}
