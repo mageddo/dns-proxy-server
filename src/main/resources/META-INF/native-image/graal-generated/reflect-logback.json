@@ -103,33 +103,18 @@
   },
   {
     "name": "ch.qos.logback.core.rolling.TimeBasedRollingPolicy",
-    "queryAllPublicMethods": true,
-    "methods": [
-      {
-        "name": "<init>",
-        "parameterTypes": []
-      }
-    ]
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
   },
   {
     "name": "ch.qos.logback.core.FileAppender",
-    "queryAllPublicMethods": true,
-    "methods": [
-      {
-        "name": "<init>",
-        "parameterTypes": []
-      }
-    ]
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
   },
   {
     "name": "ch.qos.logback.core.rolling.RollingFileAppender",
-    "queryAllPublicMethods": true,
-    "methods": [
-      {
-        "name": "<init>",
-        "parameterTypes": []
-      }
-    ]
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
   },
   {
     "name": "ch.qos.logback.core.OutputStreamAppender",
