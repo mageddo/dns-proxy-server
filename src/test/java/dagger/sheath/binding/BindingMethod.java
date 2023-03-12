@@ -1,7 +1,7 @@
-package dagger.sheath.junit.binding;
+package dagger.sheath.binding;
 
 import com.mageddo.commons.lang.Objects;
-import dagger.sheath.junit.CtxWrapper;
+import dagger.sheath.CtxWrapper;
 import jdk.jfr.Name;
 import org.apache.commons.lang3.reflect.MethodUtils;
 

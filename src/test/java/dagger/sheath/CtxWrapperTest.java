@@ -1,4 +1,4 @@
-package dagger.sheath.junit;
+package dagger.sheath;
 
 import org.junit.jupiter.api.Test;
 import sheath.stubing.AppByProvider;

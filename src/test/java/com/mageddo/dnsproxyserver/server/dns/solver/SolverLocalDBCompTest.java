@@ -7,7 +7,7 @@ import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.templates.EntryTemplates;
 import com.mageddo.dnsproxyserver.templates.docker.SolverTemplates;
 import dagger.sheath.junit.DaggerTest;
-import dagger.sheath.junit.InjectMock;
+import dagger.sheath.InjectMock;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;

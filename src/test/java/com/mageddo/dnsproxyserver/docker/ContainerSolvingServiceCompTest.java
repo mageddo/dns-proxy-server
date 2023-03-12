@@ -4,7 +4,7 @@ import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates;
 import com.mageddo.dnsproxyserver.templates.docker.NetworkTemplates;
 import dagger.sheath.junit.DaggerTest;
-import dagger.sheath.junit.InjectMock;
+import dagger.sheath.InjectMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

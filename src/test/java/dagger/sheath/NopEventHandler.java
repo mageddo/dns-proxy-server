@@ -1,4 +1,6 @@
-package dagger.sheath.junit;
+package dagger.sheath;
+
+import dagger.sheath.EventHandler;
 
 public class NopEventHandler implements EventHandler<Object> {
   @Override

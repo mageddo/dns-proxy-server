@@ -1,5 +1,8 @@
 package dagger.sheath.junit;
 
+import dagger.sheath.EventHandler;
+import dagger.sheath.NopEventHandler;
+import dagger.sheath.NopSupplier;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.lang.annotation.Inherited;

@@ -1,4 +1,4 @@
-package dagger.sheath.junit.binding;
+package dagger.sheath.binding;
 
 import org.junit.jupiter.api.Test;
 import sheath.stubing.AppByBindingMap;

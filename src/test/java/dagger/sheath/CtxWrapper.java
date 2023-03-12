@@ -1,6 +1,6 @@
-package dagger.sheath.junit;
+package dagger.sheath;
 
-import dagger.sheath.junit.binding.BindingMethod;
+import dagger.sheath.binding.BindingMethod;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.reflect.FieldUtils;

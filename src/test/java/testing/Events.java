@@ -1,7 +1,7 @@
-package dagger;
+package testing;
 
 import com.mageddo.dnsproxyserver.di.Context;
-import dagger.sheath.junit.EventHandler;
+import dagger.sheath.EventHandler;
 import io.restassured.RestAssured;
 import io.restassured.config.HttpClientConfig;
 import lombok.extern.slf4j.Slf4j;

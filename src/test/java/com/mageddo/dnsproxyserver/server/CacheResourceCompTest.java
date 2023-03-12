@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.server;
 
 import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.di.Context;
-import dagger.Events;
+import testing.Events;
 import dagger.sheath.junit.DaggerTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

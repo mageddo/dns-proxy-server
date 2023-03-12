@@ -1,4 +1,4 @@
-package dagger.sheath.junit;
+package dagger.sheath;
 
 public interface EventHandler<T> {
   /**

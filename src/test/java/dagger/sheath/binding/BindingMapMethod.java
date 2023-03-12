@@ -1,6 +1,6 @@
-package dagger.sheath.junit.binding;
+package dagger.sheath.binding;
 
-import dagger.sheath.junit.CtxWrapper;
+import dagger.sheath.CtxWrapper;
 
 import javax.inject.Provider;
 import java.lang.reflect.InvocationTargetException;

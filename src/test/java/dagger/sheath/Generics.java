@@ -1,4 +1,4 @@
-package dagger.sheath.junit;
+package dagger.sheath;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
