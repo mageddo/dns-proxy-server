@@ -20,6 +20,7 @@ public class StaticFilesController implements HttpMapper {
     server.map("/static", SimpleFileServer.createFileHandler(buildStaticResourcesPath()));
   }
 
+  // fixme must copy static files to a temp dir when running inside a jar.
   static Path buildStaticResourcesPath() {
     return Path.of("/tmp");
   }
