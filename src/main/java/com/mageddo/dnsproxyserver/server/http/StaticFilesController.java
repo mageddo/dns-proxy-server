@@ -5,6 +5,7 @@ import com.mageddo.http.HttpMapper;
 import com.mageddo.http.WebServer;
 import com.sun.net.httpserver.SimpleFileServer;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.rauschig.jarchivelib.ArchiveFormat;
 import org.rauschig.jarchivelib.ArchiverFactory;
 import org.rauschig.jarchivelib.CompressionType;
@@ -64,7 +65,14 @@ public class StaticFilesController implements HttpMapper {
   Path createServePath() {
     try {
       this.tmpDir = Files.createTempDirectory("dps-static-");
-      this.tmpDir.toFile().deleteOnExit();
+      Runtime
+        .getRuntime()
+        .addShutdownHook(new Thread(() -> {
+          try {
+            FileUtils.deleteDirectory(tmpDir.toFile());
+          } catch (Throwable e) {
+          }
+        }));
       return this.tmpDir;
     } catch (IOException e) {
       throw new UncheckedIOException(e);
