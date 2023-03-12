@@ -1,7 +1,7 @@
 FROM docker.io/defreitas/tools_graalvm-22.3_java-19_debian-9:0.1.1 AS BUILDER
 COPY ./ /app
 WORKDIR /app
-RUN ./gradlew clean build -Dquarkus.package.type=native -i &&\
+RUN ./gradlew clean build compTest -Dquarkus.package.type=native -i &&\
     ./gradlew build -Dquarkus.package.type=uber-jar -i -x check &&\
     ls -lha ./build &&\
     mkdir -p ./build/artifacts/linux-amd64 && mv ./build/dns-proxy-server ./build/artifacts/linux-amd64/ &&\

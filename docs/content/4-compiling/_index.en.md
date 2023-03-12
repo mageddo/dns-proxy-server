@@ -18,6 +18,6 @@ Build the frontend files (optional)
 Build and run the program
 ```bash
 
-$ ./gradlew build -Dquarkus.package.type=uber-jar && java -jar ./build/dns-proxy-server.jar
+$ ./gradlew build compTest -Dquarkus.package.type=uber-jar && java -jar ./build/dns-proxy-server.jar
 ```
 
