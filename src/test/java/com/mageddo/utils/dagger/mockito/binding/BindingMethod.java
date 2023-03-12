@@ -1,4 +1,4 @@
-package com.mageddo.utils.dagger.mockito.haystack;
+package com.mageddo.utils.dagger.mockito.binding;
 
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.utils.dagger.mockito.CtxWrapper;

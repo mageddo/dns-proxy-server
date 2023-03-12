@@ -1,7 +1,7 @@
 package com.mageddo.utils.dagger.mockito;
 
 import com.mageddo.utils.dagger.MethodUtils;
-import com.mageddo.utils.dagger.mockito.haystack.BindingMethod;
+import com.mageddo.utils.dagger.mockito.binding.BindingMethod;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.reflect.FieldUtils;
