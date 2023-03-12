@@ -66,7 +66,11 @@ public class Configs {
   }
 
   static LogLevel buildLogLevel(String logLevelName) {
-    return EnumUtils.getEnumIgnoreCase(LogLevel.class, logLevelName);
+    final var level = EnumUtils.getEnumIgnoreCase(LogLevel.class, logLevelName);
+    if(StringUtils.isNotBlank(logLevelName) && level == null){
+      log.warn("status=couldntParseLogLevel, action=changesWillTakeNoEffect, proposedValue={}", logLevelName);
+    }
+    return level;
   }
 
   public static String parseLogFile(String v) {
