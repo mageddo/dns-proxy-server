@@ -120,7 +120,7 @@ public class WebServer implements AutoCloseable {
           try {
             final var responseCode = exchange.getResponseCode();
             if (responseCode == -1) {
-              exchange.sendResponseHeaders(HttpStatus.NO_CONTENT, 0);
+              exchange.sendResponseHeaders(HttpStatus.NO_CONTENT, -1);
             }
             exchange.close();
           } catch (Throwable e) {
