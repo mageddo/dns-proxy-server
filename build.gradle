@@ -10,6 +10,7 @@ plugins {
   id "java"
   id 'net.researchgate.release' version '3.0.2'
   id 'com.github.johnrengelman.shadow' version '7.1.2'
+  id 'org.graalvm.buildtools.native' version '0.9.19'
 }
 
 repositories {
@@ -101,6 +102,26 @@ jar {
 
 shadowJar {
   mergeServiceFiles()
+}
+
+graalvmNative {
+  binaries {
+    main {
+      javaLauncher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(19)
+        requiredVersion = '22.3'
+        vendor = JvmVendorSpec.matching("GraalVM Community")
+      }
+
+      // Main options
+      imageName = project.name
+      mainClass = mainClassName
+//      debug = true
+      verbose = true
+      fallback = false
+      buildArgs.add('-J-Xmx5G')
+    }
+  }
 }
 
 release {
