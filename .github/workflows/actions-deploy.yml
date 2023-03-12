@@ -42,10 +42,11 @@ jobs:
 
       # artifacts for the following jobs (Windows, Mac and Arm)
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: helloworld-${{ matrix.os }}
-          path: helloworld*
+          path: |
+            ./build/artifacts/**/*
 
       - name: Latest version changelog extraction
         uses: kemayo/actions-recent-changelog@v1
