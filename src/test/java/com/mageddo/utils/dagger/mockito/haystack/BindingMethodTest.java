@@ -20,7 +20,7 @@ public class BindingMethodTest {
     final var nop = ctx.root();
 
     // act
-    final var bindingMethod = BindingMethod.findBindingsMethod(ctx);
+    final var bindingMethod = BindingMethod.findBindingMethod(ctx);
 
     // assert
     assertNull(bindingMethod);
@@ -33,7 +33,7 @@ public class BindingMethodTest {
     final var nop = ctx.root();
 
     // act
-    final var bindingMethod = BindingMethod.findBindingsMethod(ctx);
+    final var bindingMethod = BindingMethod.findBindingMethod(ctx);
 
     // assert
     assertNotNull(bindingMethod);
@@ -49,7 +49,7 @@ public class BindingMethodTest {
     final var nop = ctx.root();
 
     // act
-    final var bindingMethod = BindingMethod.findBindingsMethod(ctx);
+    final var bindingMethod = BindingMethod.findBindingMethod(ctx);
 
     // assert
     assertNotNull(bindingMethod);

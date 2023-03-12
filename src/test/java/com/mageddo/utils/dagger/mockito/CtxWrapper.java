@@ -1,5 +1,6 @@
 package com.mageddo.utils.dagger.mockito;
 
+import com.mageddo.utils.dagger.mockito.haystack.BindingMethod;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
@@ -17,13 +18,35 @@ public class CtxWrapper {
   }
 
   public Object get(Class<?> clazz) {
-    final var provider = this.findProviderFor(clazz);
-    if (provider != null) {
-      log.debug("status=beanSolved, from=Provider, beanClass={}", clazz);
-      return provider.getValue();
+    try {
+      final var provider = this.findProviderFor(clazz);
+      if (provider != null) {
+        log.debug("status=beanSolved, from=Provider, beanClass={}", clazz);
+        return provider.getValue();
+      }
+    } catch (Throwable e) {
+      log.warn("status=failedToFindByProvider, msg={}", e.getMessage());
     }
-    throw new UnsupportedOperationException();
-//    this.findBindingsMethod();
+    try {
+      final var bindingMethod = BindingMethod.findBindingMethod(this);
+      if (bindingMethod == null) {
+        final Object result = bindingMethod.get(clazz);
+        if (result != null) {
+          return result;
+        }
+      }
+    } catch (Throwable e) {
+      log.warn("status=failedToFindByBinding, msg={}", e.getMessage());
+    }
+
+    return null;
+
+    // todo procurar a classe que o obj grah impl estende ou a interface que ele implementa
+    //  Pegar a anotação @Component e pegar os modulos
+    //  andar pelos metodos de cada modulo procurando pelo método que retorna o tipo da interface desejada
+    //  e que tenha @Binds , provides nao serve como ele pode receber um tipo pra internamente montar o
+    //  tipo retornado mas daih nao da obter a instancia
+
   }
 
   private void validate() {

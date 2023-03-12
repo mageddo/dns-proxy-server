@@ -23,11 +23,11 @@ public class BindingMethod {
     return (T) this.mapper.apply(clazz);
   }
 
-  public static BindingMethod findBindingsMethod(Object ctx) {
-    return findBindingsMethod(new CtxWrapper(ctx));
+  public static BindingMethod findBindingMethod(Object ctx) {
+    return findBindingMethod(new CtxWrapper(ctx));
   }
 
-  public static BindingMethod findBindingsMethod(CtxWrapper ctx) {
+  public static BindingMethod findBindingMethod(CtxWrapper ctx) {
     final var methods = MethodUtils.getMethodsListWithAnnotation(ctx.getCtxClass(), Name.class, true, true)
         .stream()
         .filter(it -> it.getAnnotation(Name.class).value().equals("bindings"))
