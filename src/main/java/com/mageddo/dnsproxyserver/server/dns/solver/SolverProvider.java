@@ -45,7 +45,6 @@ public class SolverProvider {
           .create()
           .solvers()
       );
-//      this.solvers = Solvers.sorted(Quarkus.beansOf(Solver.class));
       log.debug("status=instantesSet, size={}", this.solvers.size());
     }
   }
