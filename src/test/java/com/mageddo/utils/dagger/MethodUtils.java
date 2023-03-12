@@ -6,10 +6,11 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class MethodUtils {
+
   private MethodUtils() {
   }
 
-  public static Set<Method> getAllMethods(Class clazz) {
+  public static Set<Method> getAllMethods(Class<?> clazz) {
     final Set<Method> methods = new LinkedHashSet<>();
     for (Class<?> c = clazz; c != null; c = c.getSuperclass()) {
       for (final Method method : c.getDeclaredMethods()) {
