@@ -140,13 +140,9 @@ public class DaggerExtension implements Extension, BeforeAllCallback, BeforeEach
     for (Object instance : testInstances) {
       final var fields = FieldUtils.getFieldsListWithAnnotation(instance.getClass(), Inject.class);
       for (Field field : fields) {
-        FieldUtils.writeField(field, instance, get(ctx, field), true);
+        FieldUtils.writeField(field, instance, ctx.get(field.getType()), true);
       }
     }
-  }
-
-  static Object get(CtxWrapper ctx, Field field) {
-    return ctx.get(field.getType());
   }
 
   static CtxWrapper findCtxWrapper(ExtensionContext context) {
