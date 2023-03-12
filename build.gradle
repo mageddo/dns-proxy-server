@@ -28,8 +28,8 @@ dependencies {
   compileOnly('org.projectlombok:lombok:1.18.+')
   annotationProcessor('org.projectlombok:lombok:1.18.+')
 
-  compileOnly('com.mageddo.nativeimage:reflection-config-generator:2.4.3')
-  annotationProcessor('com.mageddo.nativeimage:reflection-config-generator:2.4.3')
+  compileOnly('com.mageddo.nativeimage:reflection-config-generator:2.4.4')
+  annotationProcessor('com.mageddo.nativeimage:reflection-config-generator:2.4.4')
 
   annotationProcessor("com.google.dagger:dagger-compiler:2.45")
   compileOnly("com.google.dagger:dagger-compiler:2.45")
