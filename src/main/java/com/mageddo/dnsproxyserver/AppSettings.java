@@ -21,10 +21,6 @@ public class AppSettings {
       log.info("status=swapLogToFile, file={}", logFile);
       System.setProperty("dpsLogFile", logFile);
       LogbackUtils.replaceConfig(IoUtils.getResourceAsStream("/logback-file.xml"));
-      // -Dlogback.configurationFile=logback-file.xml
-//      System.setProperty("quarkus.log.console.enable", "false");
-//      System.setProperty("quarkus.log.file.enable", "true");
-//      System.setProperty("quarkus.log.file.path", config.getLogFile());
     }
 
     if (config.getLogLevel() != null) {
