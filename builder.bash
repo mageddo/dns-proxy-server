@@ -51,13 +51,14 @@ case $1 in
 
   build-frontend )
 
-    echo "> Building frontend files..."
+    tmpDir=$(mktemp -d)
+    echo "> Building frontend files... tmpDir=${tmpDir}"
     docker-compose build --no-cache --progress=plain build-frontend
-    rm -rf ./src/main/resources/META-INF/resources/static
-    copyFileFromService build-frontend /static ./src/main/resources/META-INF/resources/static
+    copyFileFromService build-frontend /static ${tmpDir}
 
-    echo "> Build, test and generate the binaries"
-    mkdir -p "${REPO_DIR}/build"
+    tgzPath=./src/main/resources/META-INF/resources/static.tgz
+    rm -vf ${tgzPath}
+    tar -czvf ${tgzPath} -C ${tmpDir} .
 
   ;;
 
