@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 public class WebServer {
@@ -23,6 +25,10 @@ public class WebServer {
   private final Set<HttpMapper> mappers;
   private final Map<String, Map<String, HttpHandler>> handlesStore = new HashMap<>();
   private HttpServer server;
+
+  public WebServer(HttpMapper... mappers) {
+    this(Stream.of(mappers).collect(Collectors.toSet()));
+  }
 
   @Inject
   public WebServer(Set<HttpMapper> mappers) {
@@ -88,22 +94,22 @@ public class WebServer {
 
           if (handler == null) {
             final var html = """
-                <h1>404 Not Found</h1>No context found for request""".getBytes(UriUtils.DEFAULT_CHARSET);
+              <h1>404 Not Found</h1>No context found for request""".getBytes(UriUtils.DEFAULT_CHARSET);
             exchange.sendResponseHeaders(404, html.length);
             exchange.getResponseBody().write(html);
             return;
           }
 
           handler
-              .getOrDefault(exchange.getRequestMethod(), pExchange -> {
-                final var defaultPathHandler = handler.get(ALL_METHODS_WILDCARD);
-                if (defaultPathHandler != null) {
-                  defaultPathHandler.handle(pExchange);
-                } else {
-                  pExchange.sendResponseHeaders(415, 0);
-                }
-              })
-              .handle(exchange);
+            .getOrDefault(exchange.getRequestMethod(), pExchange -> {
+              final var defaultPathHandler = handler.get(ALL_METHODS_WILDCARD);
+              if (defaultPathHandler != null) {
+                defaultPathHandler.handle(pExchange);
+              } else {
+                pExchange.sendResponseHeaders(415, 0);
+              }
+            })
+            .handle(exchange);
         } catch (IOException e) {
           log.error("status=handleFailed, msg={}", e.getMessage(), e);
         } finally {
@@ -123,7 +129,7 @@ public class WebServer {
       server.start();
       log.info("status=startingWebServer, port={}", port);
     } catch (
-        IOException e) {
+      IOException e) {
       throw new UncheckedIOException(e);
     }
   }

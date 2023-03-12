@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpExchange;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
 
 public class Encoders {
 
@@ -26,6 +27,16 @@ public class Encoders {
   public static void status(HttpExchange exchange, final int statusCode) {
     try {
       exchange.sendResponseHeaders(statusCode, 0);
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
+  }
+
+  public static void encodePlain(HttpExchange exchange, String text) {
+    try {
+      final var bytes = text.getBytes(StandardCharsets.UTF_8);
+      exchange.sendResponseHeaders(200, bytes.length);
+      exchange.getResponseBody().write(bytes);
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
