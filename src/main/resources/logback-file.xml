@@ -14,7 +14,7 @@
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <fileNamePattern>${logFile}.%d{yyyy-MM-dd}.log</fileNamePattern>
       <maxHistory>120</maxHistory>
-      <totalSizeCap>2GB</totalSizeCap>
+      <totalSizeCap>20MB</totalSizeCap>
     </rollingPolicy>
     <encoder>
       <pattern>${dpsLogPattern:-${dpsLogPatternDefault}}</pattern>
