@@ -1,4 +1,4 @@
-package sheath.stubing;
+package dagger.sheath.testing.stub;
 
 import dagger.Binds;
 import dagger.Component;

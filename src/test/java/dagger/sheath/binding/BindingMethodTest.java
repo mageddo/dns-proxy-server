@@ -1,11 +1,11 @@
 package dagger.sheath.binding;
 
 import org.junit.jupiter.api.Test;
-import sheath.stubing.AppByBindingMap;
-import sheath.stubing.AppByGetClass;
-import sheath.stubing.DaggerAppByBindingMap;
-import sheath.stubing.DaggerAppByGetClass;
-import sheath.stubing.DaggerAppByProvider;
+import dagger.sheath.testing.stub.AppByBindingMap;
+import dagger.sheath.testing.stub.AppByGetClass;
+import dagger.sheath.testing.stub.DaggerAppByBindingMap;
+import dagger.sheath.testing.stub.DaggerAppByGetClass;
+import dagger.sheath.testing.stub.DaggerAppByProvider;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

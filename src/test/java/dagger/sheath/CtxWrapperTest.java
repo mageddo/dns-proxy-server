@@ -1,8 +1,8 @@
 package dagger.sheath;
 
 import org.junit.jupiter.api.Test;
-import sheath.stubing.AppByProvider;
-import sheath.stubing.DaggerAppByProvider;
+import dagger.sheath.testing.stub.AppByProvider;
+import dagger.sheath.testing.stub.DaggerAppByProvider;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
