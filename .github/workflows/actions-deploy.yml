@@ -15,7 +15,7 @@ env:
   CURRENT_BRANCH: ${{ github.head_ref || github.ref_name }}
 
 jobs:
-  Primary CD:
+  primary-release:
     runs-on: ubuntu-latest
     steps:
       - name: Explain
