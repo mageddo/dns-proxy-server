@@ -42,6 +42,7 @@ dependencies {
   implementation('net.java.dev.jna:jna-platform:5.13.0')
   implementation('dnsjava:dnsjava:3.5.2')
   implementation('org.apache.commons:commons-compress:1.22')
+  implementation('org.rauschig:jarchivelib:1.2.0')
 
   implementation('com.github.docker-java:docker-java-core:3.2.14')
   implementation('com.github.docker-java:docker-java-transport-httpclient5:3.2.14')
