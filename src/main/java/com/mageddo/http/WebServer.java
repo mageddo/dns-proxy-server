@@ -4,6 +4,7 @@ import com.mageddo.commons.io.IoUtils;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ClassUtils;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -113,8 +114,8 @@ public class WebServer implements AutoCloseable {
               }
             })
             .handle(exchange);
-        } catch (IOException e) {
-          log.error("status=handleFailed, msg={}", e.getMessage(), e);
+        } catch (Exception e) {
+          log.error("status=handleFailed, msg={}:{}", ClassUtils.getSimpleName(e), e.getMessage(), e);
         } finally {
           try {
             final var responseCode = exchange.getResponseCode();
@@ -131,8 +132,7 @@ public class WebServer implements AutoCloseable {
       server.setExecutor(null);
       server.start();
       log.info("status=startingWebServer, port={}", port);
-    } catch (
-      IOException e) {
+    } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
   }
@@ -140,6 +140,11 @@ public class WebServer implements AutoCloseable {
   private Map<String, HttpHandler> lookupForHandler(String canonicalPath) {
     if (this.handlesStore.containsKey(canonicalPath)) {
       return this.handlesStore.get(canonicalPath);
+    } else {
+      final var wildcardMapPath = Path.of(canonicalPath, Wildcards.ALL_SUB_PATHS_WILDCARD).getRaw();
+      if (this.handlesStore.containsKey(wildcardMapPath)) {
+        return this.handlesStore.get(wildcardMapPath);
+      }
     }
     final var mapPath = Wildcards.findMatchingMap(this.handlesStore.keySet(), canonicalPath);
     return this.handlesStore.get(mapPath);

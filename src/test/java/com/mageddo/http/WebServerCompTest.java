@@ -88,7 +88,6 @@ class WebServerCompTest {
     }
   }
 
-
   @Test
   void mustSolveFromMostGenericWildCardPath() throws Exception {
     // arrange
@@ -112,6 +111,61 @@ class WebServerCompTest {
       response
         .statusCode(HttpStatus.OK)
         .body(equalTo("Root Path"))
+      ;
+    }
+  }
+
+
+  @Test
+  void mustNotMatch() throws Exception {
+    // arrange
+    final var theServer = new WebServer(server -> {
+      server.get("/hello-world", exchange -> Encoders.encodePlain(exchange, "Batata"));
+    });
+    try (theServer) {
+
+      theServer.start(PORT);
+
+      // act
+      final var response = given()
+        .port(PORT)
+        .get("/hello-world/pateta.css")
+        .then()
+        .log()
+        .ifValidationFails();
+
+      // assert
+      response
+        .statusCode(HttpStatus.NOT_FOUND)
+        .body(equalTo(WebServer.DEFAULT_RES_BODY))
+      ;
+    }
+  }
+
+
+  @Test
+  void mustSolveExactPath() throws Exception {
+    // arrange
+    final var resBody = "Hello World";
+    final var theServer = new WebServer(server -> {
+      server.get("/hello-world/.*", exchange -> Encoders.encodePlain(exchange, resBody));
+    });
+    try (theServer) {
+
+      theServer.start(PORT);
+
+      // act
+      final var response = given()
+        .port(PORT)
+        .get("/hello-world")
+        .then()
+        .log()
+        .ifValidationFails();
+
+      // assert
+      response
+        .statusCode(HttpStatus.OK)
+        .body(equalTo(resBody))
       ;
     }
   }

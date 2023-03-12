@@ -31,7 +31,7 @@ public class StaticFilesController implements HttpMapper {
   @Override
   public void map(WebServer server) {
     final var handler = SimpleFileServer.createFileHandler(this.createServePath());
-    server.map("/static", exchange -> { // fixme /static e todos os subdirs precisam direcionar pra cá
+    server.map("/static/.*", exchange -> { // fixme /static e todos os subdirs precisam direcionar pra cá
       try {
         if (this.loaded) {
           return;

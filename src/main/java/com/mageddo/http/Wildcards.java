@@ -23,9 +23,8 @@ class Wildcards {
 //        /hello-world/.*
 
 //        /hello-world/batata
-        return Regexes
-          .matcher(path, Pattern.compile(mapPath))
-          .matches();
+        final var matcher = Regexes.matcher(path, Pattern.compile(mapPath));
+        return matcher != null && matcher.matches();
       })
       .findFirst()
       .orElse(null);

@@ -29,15 +29,18 @@ public class UriUtils {
    * <code>
    * <pre>
    *   /
-   *   /a/
-   *   /abc/
+   *   /do/stuff
+   *   /style.css
    *   </pre>
    * </code>
    */
   public static String canonicalPath(String path) {
-    if (path.endsWith("/")) {
-      return path;
+    if (path.equals(Path.SEPARATOR)) {
+      return Path.SEPARATOR;
     }
-    return path + "/";
+    if (path.endsWith(Path.SEPARATOR)) {
+      return path.substring(0, path.length() - 1);
+    }
+    return path;
   }
 }
