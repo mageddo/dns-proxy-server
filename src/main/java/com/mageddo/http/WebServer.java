@@ -141,13 +141,8 @@ public class WebServer implements AutoCloseable {
     if (this.handlesStore.containsKey(canonicalPath)) {
       return this.handlesStore.get(canonicalPath);
     }
-    final var keys = this.handlesStore
-      .keySet()
-      .stream()
-      .sorted((o1, o2) -> {
-
-      });
-    return this.handlesStore.get(canonicalPath + ALL_SUB_PATHS_WILDCARD);
+    final var mapPath = Wildcards.findMatchingMap(this.handlesStore.keySet(), canonicalPath);
+    return this.handlesStore.get(mapPath);
   }
 
   public void stop() {

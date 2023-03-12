@@ -9,7 +9,7 @@ class Wildcards {
 
   public static final String ALL_SUB_PATHS_WILDCARD = ".*";
 
-  public static String findMatchingMap(Collection<String> map, String rawPath) {
+  public static String findMatchingMap(Collection<String> map, String path) {
     return map
       .stream()
       .map(Path::of)
@@ -19,12 +19,12 @@ class Wildcards {
         return Integer.compare(o1Index, o2Index);
       })
       .map(Path::getRaw)
-      .filter(raw -> {
+      .filter(mapPath -> {
 //        /hello-world/.*
 
 //        /hello-world/batata
         return Regexes
-          .matcher(rawPath, Pattern.compile(raw))
+          .matcher(path, Pattern.compile(mapPath))
           .matches();
       })
       .findFirst()
