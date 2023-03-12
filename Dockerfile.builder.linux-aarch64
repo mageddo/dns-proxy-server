@@ -9,5 +9,5 @@ RUN uname -m && ls -lha &&\
 
 RUN ls -lhS &&\
     mkdir -p ./artifacts/linux-aarch64 &&\
-    mv ./build/native/nativeCompile/dns-proxy-server ./artifacts/linux-aarch64/
+    mv ./dns-proxy-server ./artifacts/linux-aarch64/
 ENTRYPOINT cat
