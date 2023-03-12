@@ -1,5 +1,6 @@
 package com.mageddo.utils.dagger.mockito;
 
+import com.mageddo.utils.dagger.MethodUtils;
 import com.mageddo.utils.dagger.mockito.haystack.BindingMethod;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -19,6 +20,8 @@ public class CtxWrapper {
 
   public Object get(Class<?> clazz) {
     try {
+
+      // binding by available providers
       final var provider = this.findProviderFor(clazz);
       if (provider != null) {
         log.debug("status=beanSolved, from=Provider, beanClass={}", clazz);
@@ -27,6 +30,8 @@ public class CtxWrapper {
     } catch (Throwable e) {
       log.warn("status=failedToFindByProvider, msg={}", e.getMessage());
     }
+
+    // find by binding methods
     try {
       final var bindingMethod = BindingMethod.findBindingMethod(this);
       if (bindingMethod == null) {
@@ -37,6 +42,20 @@ public class CtxWrapper {
       }
     } catch (Throwable e) {
       log.warn("status=failedToFindByBinding, msg={}", e.getMessage());
+    }
+
+    // find by ctx obj methods
+    try {
+      final var method = MethodUtils
+          .getAllMethods(this.getCtxClass())
+          .stream()
+          .filter(it -> it.getReturnType().isAssignableFrom(clazz) && it.getParameterTypes().length == 0)
+          .findFirst();
+      if (method.isPresent()) {
+        return MethodUtils.invoke(method.get(), this.ctx, true);
+      }
+    } catch (Throwable e) {
+      log.warn("status=failedToFindByMethodOnCtx, msg={}", e.getMessage());
     }
 
     return null;
