@@ -2,7 +2,12 @@ package com.mageddo.logback;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.joran.JoranConfigurator;
+import ch.qos.logback.core.joran.spi.JoranException;
 import org.slf4j.LoggerFactory;
+
+import java.io.InputStream;
 
 public class LogbackUtils {
 
@@ -21,6 +26,18 @@ public class LogbackUtils {
     }
     logger.setLevel(level);
     return true;
+  }
+
+  public static void replaceConfig(InputStream configFileIn) {
+    try {
+      final var context = (LoggerContext) LoggerFactory.getILoggerFactory();
+      final var configurator = new JoranConfigurator();
+      configurator.setContext(context);
+      context.reset();
+      configurator.doConfigure(configFileIn);
+    } catch (JoranException e) {
+      throw new RuntimeException(e);
+    }
   }
 
 }

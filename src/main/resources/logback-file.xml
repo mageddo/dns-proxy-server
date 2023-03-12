@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <property
+    name="dpsLogPatternDefault"
+    value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-15.15thread] %3.-3level %-0.70logger{70} m=%method l=%line %mdc %msg%n"
+  />
+
+  <property
+    name="logFile"
+    value="${dpsLogFile:-/tmp/log.log}"
+  />
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+<!--    <file>${logFile}</file>-->
+    <file>/home/typer/dev/projects/graalvm-examples/dps-2/log.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    <fileNamePattern>/home/typer/dev/projects/graalvm-examples/dps-2/log.log-%d{yyyy-MM-dd-HH-mm}.log</fileNamePattern>
+<!--      <maxHistory>120</maxHistory>-->
+<!--      <totalSizeCap>2GB</totalSizeCap>-->
+    </rollingPolicy>
+    <encoder>
+      <pattern>${dpsLogPattern:-${dpsLogPatternDefault}}</pattern>
+      <charset>utf8</charset>
+    </encoder>
+  </appender>
+
+  <root level="INFO">
+    <appender-ref ref="FILE"/>
+  </root>
+
+</configuration>

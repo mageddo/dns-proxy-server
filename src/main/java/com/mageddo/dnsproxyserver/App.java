@@ -6,14 +6,13 @@ import com.mageddo.dnsproxyserver.di.Context;
 public class App {
   public static void main(String[] args) {
 
+    AppSettings.setup(Configs.getInstance());
+
     final var context = Context.create();
 
     // start webserver
     // start dns server
     context.start();
-
-    // fixme ajustar logs do logback
-    AppSettings.setup(Configs.getInstance());
 
     // todo install as service
 
