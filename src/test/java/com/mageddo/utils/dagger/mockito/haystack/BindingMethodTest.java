@@ -1,9 +1,10 @@
 package com.mageddo.utils.dagger.mockito.haystack;
 
 import org.junit.jupiter.api.Test;
-import sheath.stubing.AppByBinding;
-import sheath.stubing.AppByProvider;
-import sheath.stubing.DaggerAppByBinding;
+import sheath.stubing.AppByBindingMap;
+import sheath.stubing.AppByGetClass;
+import sheath.stubing.DaggerAppByBindingMap;
+import sheath.stubing.DaggerAppByGetClass;
 import sheath.stubing.DaggerAppByProvider;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,20 +23,37 @@ public class BindingMethodTest {
     final var bindingMethod = BindingMethod.findBindingsMethod(ctx);
 
     // assert
-    assertNull(bindingMethod.get(AppByProvider.Iface.class));
+    assertNull(bindingMethod);
   }
 
   @Test
-  void mustFindBeanUsingGetByClass(){
+  void mustFindBeanUsingBindingMap(){
     // arrange
-    final var ctx = DaggerAppByBinding.create();
+    final var ctx = DaggerAppByBindingMap.create();
     final var nop = ctx.root();
 
     // act
     final var bindingMethod = BindingMethod.findBindingsMethod(ctx);
 
     // assert
-    final var instance = bindingMethod.get(AppByBinding.Iface.class);
+    assertNotNull(bindingMethod);
+    final var instance = bindingMethod.get(AppByBindingMap.Iface.class);
+    assertNotNull(instance);
+    assertEquals("do", instance.stuff());
+  }
+
+  @Test
+  void mustFindBeanUsingByGetClass(){
+    // arrange
+    final var ctx = DaggerAppByGetClass.create();
+    final var nop = ctx.root();
+
+    // act
+    final var bindingMethod = BindingMethod.findBindingsMethod(ctx);
+
+    // assert
+    assertNotNull(bindingMethod);
+    final var instance = bindingMethod.get(AppByGetClass.Iface.class);
     assertNotNull(instance);
     assertEquals("do", instance.stuff());
   }

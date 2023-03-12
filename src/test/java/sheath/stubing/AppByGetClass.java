@@ -6,17 +6,24 @@ import dagger.Module;
 import dagger.multibindings.ClassKey;
 import dagger.multibindings.IntoMap;
 import jdk.jfr.Name;
+import org.apache.commons.lang3.Validate;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
 import java.util.Map;
 
-@Component(modules = AppByBinding.MainModule.class)
-public interface AppByBinding {
+@Component(modules = AppByGetClass.MainModule.class)
+public interface AppByGetClass {
 
   Root root();
 
   @Name("bindings")
+  default <T> T get(Class<T> clazz) {
+    final var v = whatever().get(clazz);
+    Validate.notNull(v, "Bean not found for class: %s", clazz.getName());
+    return (T) v.get();
+  }
+
   Map<Class<?>, Provider<Object>> whatever();
 
   class Root {
