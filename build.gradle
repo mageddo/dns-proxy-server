@@ -9,6 +9,7 @@ buildscript {
 plugins {
   id "java"
   id 'net.researchgate.release' version '3.0.2'
+  id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 repositories {
@@ -89,6 +90,19 @@ processResources {
   }
 }
 
+def mainClassName = "com.mageddo.dnsproxyserver.App"
+jar {
+  manifest {
+    attributes(
+      "Main-Class": mainClassName
+    )
+  }
+}
+
+shadowJar {
+  mergeServiceFiles()
+}
+
 release {
   project.ext.set("release.useAutomaticVersion", true)
   git {
@@ -117,7 +131,6 @@ tasks.register("updateNewVersion") {
   }
 }
 tasks["updateVersion"].finalizedBy("updateNewVersion")
-
 
 def updateVersion(fileName, pattern, version) {
   println("> file=${fileName}, pattern=${pattern}, to=${version}")
