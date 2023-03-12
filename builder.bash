@@ -57,6 +57,7 @@ case $1 in
     copyFileFromService build-frontend /static ${tmpDir}
 
     tgzPath=./src/main/resources/META-INF/resources/static.tgz
+    mkdir -p $(dirname ${tgzPath})
     rm -vf ${tgzPath}
     tar -czvf ${tgzPath} -C ${tmpDir} .
 
