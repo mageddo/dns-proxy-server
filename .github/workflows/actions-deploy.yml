@@ -1,9 +1,12 @@
 name: CD
 
 on:
-  push:
-    branches:
-      - master
+  pull_request:
+
+#on:
+#  push:
+#    branches:
+#      - master
 
 permissions:
   contents: write
@@ -12,25 +15,53 @@ env:
   CURRENT_BRANCH: ${{ github.head_ref || github.ref_name }}
 
 jobs:
-  cd:
+  Primary CD:
     runs-on: ubuntu-latest
     steps:
       - name: Explain
         run: |
-          echo "Bump version, build, generate github release, push docker images and the docs"
+          echo "Releases the Jar and Linux AMD64 version"
 
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           fetch-depth: '0'
 
-      - name: Configure Qemu
-        run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-
-      - name: Deploy
-        run: docker-compose -f docker-compose-deploy.yml up --build --force-recreate --exit-code-from deploy deploy
+      - name: Jar and Linux AMD64 Release
+        run: |
+          docker-compose -f docker-compose-deploy.yml up --build --force-recreate --exit-code-from deploy deploy &&\
+          mkdir -p ./build/ &&\
+          ./builder.bash copy-from-docker-service /app/build/compressed-artifacts ./build/ &&\
+          ./builder.bash copy-from-docker-service /app/build/artifacts ./build/ &&\
+          ls -lhS ./build/compressed-artifacts ./build/compressed-artifacts
         env:
           # github token to deploy the binary
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+      # artifacts for the following jobs (Windows, Mac and Arm)
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: helloworld-${{ matrix.os }}
+          path: helloworld*
+
+      - name: Latest version changelog extraction
+        uses: kemayo/actions-recent-changelog@v1
+        with:
+          input: RELEASE-NOTES.md
+          output: VERSION-RELEASE-NOTES.md
+      - name: Check Release Notes
+        run: cat ./VERSION-RELEASE-NOTES.md
+
+      - name: Github release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.APP_VERSION }}
+          prerelease: true
+          body_path: VERSION-RELEASE-NOTES.md
+          files: |
+            ./build/compressed-artifacts/*

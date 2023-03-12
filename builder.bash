@@ -41,8 +41,11 @@ validateRelease(){
 
 case $1 in
 
-  copy )
-    copyFileFromService build-frontend /static ./src/main/resources/META-INF/resources/static
+  copy-from-docker-service )
+    service=$2
+    from=$3
+    to=$4
+    copyFileFromService ${service} ${from} ${to}
   ;;
 
   validate-release )
@@ -88,7 +91,7 @@ case $1 in
     echo "> Backend build done ${IMAGE_SERVICE_NAME}"
   ;;
 
-  compress-upload-artifacts )
+  compress-artifacts )
     echo "> compress the files ..."
     ./builder.bash validate-release || exit 0
 
@@ -105,10 +108,13 @@ case $1 in
       echo "> compressed ${artPath} to ${tgz} ..."
     done
 
-    echo "> Uploading the release artifacts"
-    cd $REPO_DIR
-    DESC=$(cat RELEASE-NOTES.md | awk 'BEGIN {RS="|"} {print substr($0, 0, index(substr($0, 3), "###"))}' | sed ':a;N;$!ba;s/\n/\\r\\n/g')
-    github-cli release mageddo dns-proxy-server $APP_VERSION $CURRENT_BRANCH "${DESC}" ${COMPRESSED_ARTIFACTS_DIR}/*.tgz
+    echo "> done! files compressed to ${COMPRESSED_ARTIFACTS_DIR}"
+    ls -lhS ${COMPRESSED_ARTIFACTS_DIR}
+
+#    echo "> Uploading the release artifacts"
+#    cd $REPO_DIR
+#    DESC=$(cat RELEASE-NOTES.md | awk 'BEGIN {RS="|"} {print substr($0, 0, index(substr($0, 3), "###"))}' | sed ':a;N;$!ba;s/\n/\\r\\n/g')
+#    github-cli release mageddo dns-proxy-server $APP_VERSION $CURRENT_BRANCH "${DESC}" ${COMPRESSED_ARTIFACTS_DIR}/*.tgz
 
   ;;
 
@@ -129,10 +135,12 @@ case $1 in
   ./builder.bash validate-release || exit 0
 
   ./builder.bash build-frontend
-  ./builder.bash build-backend amd64 #also builds the jar
-  ./builder.bash build-backend aarch64
 
-  ./builder.bash compress-upload-artifacts
+  # also builds the jar
+  ./builder.bash build-backend amd64
+#  ./builder.bash build-backend aarch64
+
+  ./builder.bash compress-artifacts
 
   ./builder.bash docker-push
   ;;

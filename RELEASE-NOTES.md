@@ -1,3 +1,6 @@
+### 3.10.0
+* This version is focused on Windows and MacOS binary release
+
 ### 3.9.1
 * Now, releasing the latest docker image
 
