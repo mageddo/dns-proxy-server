@@ -15,11 +15,11 @@ public class EncoderJson implements Encoder {
           .instance()
           .writeValueAsBytes(o);
 
-      exchange.sendResponseHeaders(status, jsonBytes.length);
       exchange
           .getResponseHeaders()
-          .add("Content-Type", "application/json")
+          .set("Content-Type", "application/json");
       ;
+      exchange.sendResponseHeaders(status, jsonBytes.length);
       exchange
           .getResponseBody()
           .write(jsonBytes)

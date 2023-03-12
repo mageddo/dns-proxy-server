@@ -40,6 +40,7 @@ class EnvResourceCompTest {
     // assert
     response
       .statusCode(Response.Status.OK.getStatusCode())
+      .contentType("application/json")
       .body(equalTo("""
         {"name":""}"""))
       .log()

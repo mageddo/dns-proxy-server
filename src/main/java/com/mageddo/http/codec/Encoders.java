@@ -35,6 +35,7 @@ public class Encoders {
   public static void encodePlain(HttpExchange exchange, String text) {
     try {
       final var bytes = text.getBytes(StandardCharsets.UTF_8);
+      exchange.getResponseHeaders().add("Content-Type", "text/plain");
       exchange.sendResponseHeaders(200, bytes.length);
       exchange.getResponseBody().write(bytes);
     } catch (IOException e) {
