@@ -312,3 +312,5 @@ If you register a hostname with `.` at start, then all subdomains will solve to 
 ## 2.0.18
 * Making it compatible with docker 1.8 api v1.20
 
+## Notes
+* compliance with: https://keepachangelog.com/en/1.0.0/
