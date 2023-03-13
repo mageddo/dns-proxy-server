@@ -5,11 +5,13 @@ services:
       context: .
       dockerfile: Dockerfile.deploy
     command: |
-      /bin/builder.bash deploy &&\
-      echo "> Copying files to the host" &&\
-      cp -rv /app/build/compressed-artifacts ./host/build/ &&\
-      cp -rv /app/build/artifacts ./host/build/ &&\
+      bash -c '
+      /bin/builder.bash deploy
+      echo "> Copying files to the host"
+      cp -rv /app/build/compressed-artifacts ./host/build/
+      cp -rv /app/build/artifacts ./host/build/
       eho "Linux amd64 is done!"
+      '
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker:/var/lib/docker
