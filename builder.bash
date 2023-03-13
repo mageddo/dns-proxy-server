@@ -133,7 +133,7 @@ case $1 in
   rm -vrf build
   ls -lhS
 
-  ./builder.bash validate-release || exit 0
+  ./builder.bash validate-release
 
   ./builder.bash build-frontend
 
