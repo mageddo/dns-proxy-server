@@ -89,7 +89,7 @@ jobs:
         run: |
           echo "app version=$APP_VERSION" &&\
           ls -lhS ./build/* &&\
-          docker-compose -f docker-compose-deploy.yml run --build deploy bash -c '
+          docker-compose -f docker-compose-deploy.yml run deploy bash -c '
             /bin/builder.bash deploy-arm &&\
             echo "> Copying files to the host" &&\
             cp -rv /app/build/compressed-artifacts /host/build/ &&\
