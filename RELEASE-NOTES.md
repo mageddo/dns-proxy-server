@@ -1,4 +1,4 @@
-## 3.10.0
+## 3.9.2
 * This version is focused on Windows and MacOS binary release
 
 ## 3.9.1
