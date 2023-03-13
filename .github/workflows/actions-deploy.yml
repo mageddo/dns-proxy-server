@@ -1,12 +1,9 @@
 name: CD
 
 on:
-  pull_request:
-
-#on:
-#  push:
-#    branches:
-#      - master
+  push:
+    branches:
+      - master
 
 permissions:
   contents: write
@@ -14,7 +11,6 @@ permissions:
 env:
   CURRENT_BRANCH: ${{ github.head_ref || github.ref_name }}
   # github token to deploy the binary
-  # GITHUB_SHA already existent but not necessary
   REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
