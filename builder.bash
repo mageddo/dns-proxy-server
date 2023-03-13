@@ -111,11 +111,6 @@ case $1 in
     echo "> done! files compressed to ${COMPRESSED_ARTIFACTS_DIR}"
     ls -lhS ${COMPRESSED_ARTIFACTS_DIR}
 
-#    echo "> Uploading the release artifacts"
-#    cd $REPO_DIR
-#    DESC=$(cat RELEASE-NOTES.md | awk 'BEGIN {RS="|"} {print substr($0, 0, index(substr($0, 3), "###"))}' | sed ':a;N;$!ba;s/\n/\\r\\n/g')
-#    github-cli release mageddo dns-proxy-server $APP_VERSION $CURRENT_BRANCH "${DESC}" ${COMPRESSED_ARTIFACTS_DIR}/*.tgz
-
   ;;
 
   docker-push )
@@ -139,13 +134,24 @@ case $1 in
 
   # also builds the jar
   ./builder.bash build-backend amd64
-#  ./builder.bash build-backend aarch64
 
   ./builder.bash compress-artifacts
 
   ./builder.bash docker-push
 
   echo "> deploy done"
+  ;;
+
+  deploy-arm )
+
+  echo "> Arm deploy started , current branch=$CURRENT_BRANCH"
+  ls -lhS build/*
+
+  ./builder.bash build-backend aarch64
+  ./builder.bash compress-artifacts
+  ./builder.bash docker-push
+
+  echo "> arm deploy done"
   ;;
 
   deploy-docs )
