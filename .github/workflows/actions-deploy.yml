@@ -1,9 +1,12 @@
 name: CD
 
 on:
-  push:
-    branches:
-      - master
+  pull_request:
+
+#on:
+#  push:
+#    branches:
+#      - master
 
 permissions:
   contents: write
@@ -92,6 +95,51 @@ jobs:
             echo "Linux arm64 is done!"
           ' &&\
           tree -h ./build/
+
+      # Release details will be provided by primary-release
+      - name: Github release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.APP_VERSION }}
+          append_body: true
+          body: ''
+          files: |
+            ./build/compressed-artifacts/*
+
+  aditional_release:
+    name: ${{ matrix.os }} release
+    needs: primary_release
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest]
+    env:
+      APP_VERSION: ${{ needs.primary_release.outputs.APP_VERSION }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: native-image-source
+          path: ./build/artifacts/native-image-source/
+
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          version: '22.3.1'
+          java-version: '19'
+          components: 'native-image'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          native-image-job-reports: 'true'
+
+      - name: build native-image binary ${{ matrix.os }}
+        run: |
+          echo "> Building binary for: ${RUNNER_OS}-${RUNNER_ARCH}" &&\
+          native-image -jar ./build/artifacts/native-image-source/dns-proxy-server.jar dns-proxy-server &&\
+          ls -lhS &&\
+          mkdir -p ./build/artifacts/${RUNNER_OS}-${RUNNER_ARCH} &&\
+          mv ./dns-proxy-server ./build/artifacts/${RUNNER_OS}-${RUNNER_ARCH}/
+        shell: bash
 
       # Release details will be provided by primary-release
       - name: Github release
