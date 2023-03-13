@@ -69,6 +69,7 @@ jobs:
     steps:
       - env:
           APP_VERSION: ${{ needs.primary_release.outputs.APP_VERSION }}
+        run: echo "$APP_VERSION"
 
       - name: Checkout code
         uses: actions/checkout@v3
@@ -82,6 +83,7 @@ jobs:
 
       - name: Linux Arm Release
         run: |
+          echo "app version=$APP_VERSION" &&\
           ls -lhS ./build/* &&\
           docker-compose -f docker-compose-deploy.yml run --build deploy-arm bash -c '
             /bin/builder.bash deploy-arm &&\
