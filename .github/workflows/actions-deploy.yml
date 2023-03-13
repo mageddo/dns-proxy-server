@@ -33,10 +33,7 @@ jobs:
       - name: Jar and Linux AMD64 Release
         run: |
           mkdir -p ./build/ \
-          && { ( docker-compose -f docker-compose-deploy.yml up --build --force-recreate --exit-code-from deploy deploy ); EXITCODE=$?; } \
-          && test $EXITCODE -eq 3 && echo "> Already released " && exit 0 \
-          || test $EXITCODE -ne 0 && echo "> Unkown error" && exit $EXITCODE \
-          || echo "Keep going ... " \
+          && docker-compose -f docker-compose-deploy.yml up --build --force-recreate --exit-code-from deploy deploy \
           && ls -lhS ./build/*
         env:
           # github token to deploy the binary
