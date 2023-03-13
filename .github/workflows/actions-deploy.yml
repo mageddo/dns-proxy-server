@@ -22,6 +22,9 @@ jobs:
         run: |
           echo "Releases the Jar and Linux AMD64 version"
 
+      - name: Set app version
+        run: ./gradlew setVersionOnActions
+
       - name: Checkout code
         uses: actions/checkout@v3
         with:
