@@ -80,7 +80,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: native-image-source.jar
-          path: ./build/artifacts/native-image-source/dns-proxy-server.jar
+          path: ./build/artifacts/native-image-source/
 
       - name: Configure Qemu
         run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
@@ -88,7 +88,7 @@ jobs:
       - name: Linux Arm Release
         run: |
           echo "app version=$APP_VERSION" &&\
-          ls -lhS ./build/* &&\
+          tree ./build/* &&\
           docker-compose -f docker-compose-deploy.yml run deploy bash -c '
             /bin/builder.bash deploy-arm &&\
             echo "> Copying files to the host" &&\

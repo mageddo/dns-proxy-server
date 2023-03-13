@@ -129,8 +129,7 @@ case $1 in
   ls -lhS
 
   ./builder.bash validate-release
-# todo disabling to speed up release tests, enable again before merge
-#  ./builder.bash build-frontend
+  ./builder.bash build-frontend
 
   # also builds the jar
   ./builder.bash build-backend amd64
