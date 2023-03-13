@@ -31,8 +31,6 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: '0'
 
       - name: Set app version
         id: set_app_version
@@ -75,8 +73,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: '0'
 
       - name: Check app version
         run: echo "$APP_VERSION"
