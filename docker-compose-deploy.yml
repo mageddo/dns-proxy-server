@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile.deploy
     command: |
       bash -c '
-      /bin/builder.bash deploy || exit 0 &&\
+      /bin/builder.bash deploy &&\
       echo "> Copying files to the host" &&\
       cp -rv /app/build/compressed-artifacts /host/build/ &&\
       cp -rv /app/build/artifacts /host/build/ &&\
