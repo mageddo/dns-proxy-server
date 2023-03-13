@@ -14,6 +14,7 @@ permissions:
 env:
   CURRENT_BRANCH: ${{ github.head_ref || github.ref_name }}
   # github token to deploy the binary
+  # GITHUB_SHA already existent but not necessary
   REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
@@ -78,7 +79,7 @@ jobs:
           fetch-depth: '0'
 
       - name: Check app version
-        run: echo "$APP_VERSION" && git checkout $APP_VERSION
+        run: echo "$APP_VERSION"
 
       - uses: actions/download-artifact@v3
         with:
