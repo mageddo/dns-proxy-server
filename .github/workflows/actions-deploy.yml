@@ -21,6 +21,8 @@ env:
 jobs:
   primary_release:
     runs-on: ubuntu-latest
+    outputs:
+      APP_VERSION: ${{ steps.set_app_version.outputs.APP_VERSION }}
     steps:
       - name: Explain
         run: |
@@ -32,6 +34,7 @@ jobs:
           fetch-depth: '0'
 
       - name: Set app version
+        id: set_app_version
         run: ./gradlew setVersionOnActions
 
       - name: Jar and Linux AMD64 Release
