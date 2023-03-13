@@ -29,11 +29,9 @@ jobs:
 
       - name: Jar and Linux AMD64 Release
         run: |
-          docker-compose -f docker-compose-deploy.yml up --build --force-recreate --exit-code-from deploy deploy &&\
           mkdir -p ./build/ &&\
-          ./builder.bash copy-from-docker-service /app/build/compressed-artifacts ./build/ &&\
-          ./builder.bash copy-from-docker-service /app/build/artifacts ./build/ &&\
-          ls -lhS ./build/compressed-artifacts ./build/compressed-artifacts
+          docker-compose -f docker-compose-deploy.yml up --build --force-recreate --exit-code-from deploy deploy &&\
+          ls -lhS ./build/*
         env:
           # github token to deploy the binary
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
