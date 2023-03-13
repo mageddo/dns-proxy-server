@@ -124,6 +124,7 @@ case $1 in
     echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&\
     docker-compose push image-linux-amd64 &&\
     docker push defreitas/dns-proxy-server:latest
+    echo "Push done"
   ;;
 
   deploy )
@@ -143,6 +144,8 @@ case $1 in
   ./builder.bash compress-artifacts
 
   ./builder.bash docker-push
+
+  echo "> deploy done"
   ;;
 
   deploy-docs )
