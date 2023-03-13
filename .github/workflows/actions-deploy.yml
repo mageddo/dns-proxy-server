@@ -38,13 +38,11 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
-      # artifacts for the following jobs (Windows, Mac and Arm)
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: helloworld-${{ matrix.os }}
-          path: |
-            ./build/artifacts/**/*
+          name: native-image-source.jar
+          path: ./build/artifacts/native-image-source/dns-proxy-server.jar
 
       - name: Latest version changelog extraction
         uses: kemayo/actions-recent-changelog@v1
