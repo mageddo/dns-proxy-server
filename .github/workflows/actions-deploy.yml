@@ -69,9 +69,10 @@ jobs:
   linux_arm_release:
     runs-on: ubuntu-latest
     needs: primary_release
+    env:
+      APP_VERSION: ${{ needs.primary_release.outputs.APP_VERSION }}
     steps:
-      - env:
-          APP_VERSION: ${{ needs.primary_release.outputs.APP_VERSION }}
+      - name: Check app version
         run: echo "$APP_VERSION"
 
       - name: Checkout code
@@ -88,7 +89,7 @@ jobs:
         run: |
           echo "app version=$APP_VERSION" &&\
           ls -lhS ./build/* &&\
-          docker-compose -f docker-compose-deploy.yml run --build deploy-arm bash -c '
+          docker-compose -f docker-compose-deploy.yml run --build deploy bash -c '
             /bin/builder.bash deploy-arm &&\
             echo "> Copying files to the host" &&\
             cp -rv /app/build/compressed-artifacts /host/build/ &&\
