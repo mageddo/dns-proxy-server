@@ -45,7 +45,7 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: native-image-source.jar
+          name: native-image-source
           path: ./build/artifacts/native-image-source/dns-proxy-server.jar
 
       - name: Latest version changelog extraction
@@ -79,7 +79,7 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          name: native-image-source.jar
+          name: native-image-source
           path: ./build/artifacts/native-image-source/
 
       - name: Configure Qemu
@@ -88,14 +88,14 @@ jobs:
       - name: Linux Arm Release
         run: |
           echo "app version=$APP_VERSION" &&\
-          tree ./build/* &&\
+          tree -h ./build/ &&\
           docker-compose -f docker-compose-deploy.yml run deploy bash -c '
             /bin/builder.bash deploy-arm &&\
             echo "> Copying files to the host" &&\
             cp -rv /app/build/compressed-artifacts /host/build/ &&\
             echo "Linux arm64 is done!"
           ' &&\
-          ls -lhS ./build/*
+          tree -h ./build/
 
       # Release details will be provided by primary-release
       - name: Github release
