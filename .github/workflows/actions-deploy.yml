@@ -149,7 +149,11 @@ jobs:
 #        run: native-image -Djava.home="$env:GRAALVM_HOME" -jar ./build/artifacts/native-image-source/dns-proxy-server.jar ./tmp/dns-proxy-server
         run: |
           cp -r ${GRAALVM_HOME}/lib ./lib &&\
-          ${GRAALVM_HOME}/bin/native-image.cmd -jar ./build/artifacts/native-image-source/dns-proxy-server.jar ./tmp/dns-proxy-server
+          ${GRAALVM_HOME}/bin/native-image.cmd \
+          -H:ReportAnalysisForbiddenType=java.awt.Component \
+          --trace-class-initialization=java.awt.Component \
+          -H:ServiceLoaderFeatureExcludeServices=java.net.ContentHandlerFactory \
+          -jar ./build/artifacts/native-image-source/dns-proxy-server.jar ./tmp/dns-proxy-server
         shell: bash
 #          ${GRAALVM_HOME}/bin/native-image.cmd -Djava.home="${GRAALVM_HOME}" -jar ./build/artifacts/native-image-source/dns-proxy-server.jar ./tmp/dns-proxy-server
 
