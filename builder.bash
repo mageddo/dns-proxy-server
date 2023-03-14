@@ -31,14 +31,6 @@ copyFileFromService(){
   docker cp "$id:$from" "$to"
 }
 
-validateRelease(){
-  echo "> validate release, version=${APP_VERSION}, git=$(git rev-parse $APP_VERSION 2>/dev/null)"
-  if git rev-parse "$APP_VERSION^{}" >/dev/null 2>&1; then
-    echo "> Tag already exists $APP_VERSION"
-    exit 3
-  fi
-}
-
 case $1 in
 
   copy-from-docker-service )
@@ -46,10 +38,6 @@ case $1 in
     from=$3
     to=$4
     copyFileFromService ${service} ${from} ${to}
-  ;;
-
-  validate-release )
-    validateRelease
   ;;
 
   build-frontend )
@@ -93,7 +81,6 @@ case $1 in
 
   compress-artifacts )
     echo "> compress the files ..."
-    ./builder.bash validate-release || exit 0
 
     ARTIFACTS_DIR="${REPO_DIR}/build/artifacts"
     COMPRESSED_ARTIFACTS_DIR="${REPO_DIR}/build/compressed-artifacts"
@@ -128,7 +115,6 @@ case $1 in
   rm -vrf build
   ls -lhS
 
-  ./builder.bash validate-release
   ./builder.bash build-frontend
 
   # also builds the jar

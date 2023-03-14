@@ -30,10 +30,15 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Set app version
         id: set_app_version
         run: ./gradlew setVersionOnActions
+
+      - name: Check already released
+        run: git rev-parse "${APP_VERSION}^{}" >/dev/null 2>&1 || exit 3
 
       - name: Jar and Linux AMD64 Release
         run: |
