@@ -131,12 +131,13 @@ release {
   project.ext.set("release.useAutomaticVersion", true)
   git {
     requireBranch.set("")
+    pushToRemote.set('')
   }
   failOnCommitNeeded = true
   failOnPublishNeeded = false
   failOnUnversionedFiles = true
   buildTasks = []
-  pushToRemote = false
+
 }
 
 // don't create tags as github-cli will do that
