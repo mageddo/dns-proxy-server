@@ -139,17 +139,19 @@ jobs:
 
       - name: Os Report ${{ matrix.os }}
         run: |
-          echo "> Building binary for: ${RUNNER_OS}-${RUNNER_ARCH}"
+          echo "> Building binary for: ${RUNNER_OS}-${RUNNER_ARCH}" &&\
+          mkdir tmp &&\
+          mkdir -p ./build/artifacts/${RUNNER_OS}-${RUNNER_ARCH} ./build/compressed-artifacts/${RUNNER_OS}-${RUNNER_ARCH}
         shell: bash
 
       - name: build native-image binary ${{ matrix.os }}
-        run: native-image -jar ./build/artifacts/native-image-source/dns-proxy-server.jar dns-proxy-server
+        run: native-image -jar ./build/artifacts/native-image-source/dns-proxy-server.jar ./tmp/dns-proxy-server
 
       - name: build native-image binary ${{ matrix.os }}
         run: |
-          ls -lhS &&\
-          mkdir -p ./build/artifacts/${RUNNER_OS}-${RUNNER_ARCH} &&\
-          mv ./dns-proxy-server ./build/artifacts/${RUNNER_OS}-${RUNNER_ARCH}/
+          ls -lhS ./tmp &&\
+          mv ./tmp/* ./build/artifacts/${RUNNER_OS}-${RUNNER_ARCH}/ &&\
+          7z a -tzip ./build/compressed-artifacts/${RUNNER_OS}-${RUNNER_ARCH}.zip ./build/artifacts/${RUNNER_OS}-${RUNNER_ARCH}
         shell: bash
 
       # Release details will be provided by primary-release
