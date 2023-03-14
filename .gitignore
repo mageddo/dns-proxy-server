@@ -69,3 +69,4 @@ conf/config.json
 examples/tmp
 issues
 /files
+tmp/
