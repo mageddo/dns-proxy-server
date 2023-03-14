@@ -27,7 +27,7 @@ or via docker looking at [Dockerhub images][3].
 
 Basic running it on Linux or Mac
 ```bash
-$ curl -s -L https://github.com/mageddo/dns-proxy-server/releases/download/3.10.0-snapshot/dns-proxy-server-linux-amd64-3.10.0-snapshot.tgz | tar -vzx &&\
+$ curl -s -L https://github.com/mageddo/dns-proxy-server/releases/download/3.10.1-snapshot/dns-proxy-server-linux-amd64-3.10.1-snapshot.tgz | tar -vzx &&\
 sudo ./dns-proxy-server
 ```
 
