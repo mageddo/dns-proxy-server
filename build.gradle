@@ -133,7 +133,7 @@ release {
     requireBranch.set("")
   }
   failOnCommitNeeded = true
-  failOnPublishNeeded = true
+  failOnPublishNeeded = false
   failOnUnversionedFiles = true
   buildTasks = []
   pushChanges = false
@@ -151,8 +151,9 @@ confirmReleaseVersion {
 
 tasks.register("updateNewVersion") {
   doLast {
-    updateVersion("README.md", "/\\d+\\.\\d+\\.\\d+/", "/${version}/")
-    updateVersion("README.md", "\\d+\\.\\d+\\.\\d+\\.tgz", "${version}.tgz")
+    def versionPattern = "\\d+\\.\\d+\\.\\d+(?:-beta|-snapshot|-alpha)?"
+    updateVersion("README.md", "/${versionPattern}/", "/${version}/")
+    updateVersion("README.md", "${versionPattern}.tgz", "${version}.tgz")
   }
 }
 tasks["updateVersion"].finalizedBy("updateNewVersion")
