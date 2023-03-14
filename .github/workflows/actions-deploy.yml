@@ -135,7 +135,7 @@ jobs:
           java-version: '19'
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          native-image-job-reports: 'true'
+#          native-image-job-reports: 'true'
 
       - name: Os Report ${{ matrix.os }}
         run: |
