@@ -145,6 +145,10 @@ jobs:
         shell: bash
 
 #        -H:ReportAnalysisForbiddenType=java.awt.Component \
+#   | https://github.com/mageddo/dns-proxy-server/actions/runs/4412674663/jobs/7732416319
+
+# todo remover todas as classes que usam awt, classes do projeto jna-platform, porem a classe Native tambem usa, vou
+      precisar remover esses metodos que usam...
 
       - name: build native-image binary ${{ matrix.os }}
         if: runner.os == 'Windows'

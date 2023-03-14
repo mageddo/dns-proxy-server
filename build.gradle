@@ -40,7 +40,7 @@ dependencies {
 
   implementation('ch.qos.logback:logback-classic:1.4.5')
 //  implementation('net.java.dev.jna:jna:5.13.0')
-  implementation('net.java.dev.jna:jna-platform:5.13.0')
+//  implementation('net.java.dev.jna:jna-platform:5.13.0')
   implementation('dnsjava:dnsjava:3.5.2')
   implementation('org.apache.commons:commons-compress:1.22')
   implementation('org.rauschig:jarchivelib:1.2.0')
@@ -104,6 +104,9 @@ jar {
 }
 
 shadowJar {
+  exclude 'com/example/**/DesktopWindow.class'
+  exclude 'junittutorial/**/*.class'
+  exclude '**/*Test.class'
   mergeServiceFiles()
 }
 
