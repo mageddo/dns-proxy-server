@@ -144,13 +144,14 @@ jobs:
           mkdir -p ./build/artifacts/${RUNNER_OS}-${RUNNER_ARCH} ./build/compressed-artifacts/${RUNNER_OS}-${RUNNER_ARCH}
         shell: bash
 
+#        -H:ReportAnalysisForbiddenType=java.awt.Component \
+
       - name: build native-image binary ${{ matrix.os }}
         if: runner.os == 'Windows'
 #        run: native-image -Djava.home="$env:GRAALVM_HOME" -jar ./build/artifacts/native-image-source/dns-proxy-server.jar ./tmp/dns-proxy-server
         run: |
           cp -r ${GRAALVM_HOME}/lib ./lib &&\
           ${GRAALVM_HOME}/bin/native-image.cmd \
-          -H:ReportAnalysisForbiddenType=java.awt.Component \
           --trace-class-initialization=java.awt.Component \
           -H:ServiceLoaderFeatureExcludeServices=java.net.ContentHandlerFactory \
           -jar ./build/artifacts/native-image-source/dns-proxy-server.jar ./tmp/dns-proxy-server
