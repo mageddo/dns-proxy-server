@@ -136,7 +136,7 @@ release {
   failOnPublishNeeded = false
   failOnUnversionedFiles = true
   buildTasks = []
-  pushChanges = false
+  pushToRemote = false
 }
 
 // don't create tags as github-cli will do that
