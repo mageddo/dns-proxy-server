@@ -38,7 +38,7 @@ jobs:
         run: ./gradlew setVersionOnActions
 
       - name: Check already released
-        run: git rev-parse "${APP_VERSION}^{}" >/dev/null 2>&1 || exit 3
+        run: git rev-parse "${APP_VERSION}^{}" >/dev/null 2>&1 && echo "> Already released" && exit 3
 
       - name: Jar and Linux AMD64 Release
         run: |
