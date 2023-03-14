@@ -131,7 +131,7 @@ release {
   project.ext.set("release.useAutomaticVersion", true)
   git {
     requireBranch.set("")
-    pushToRemote.set('')
+    pushToRemote.set('') // disabling push to remote
   }
   failOnCommitNeeded = true
   failOnPublishNeeded = false
