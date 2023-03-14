@@ -137,10 +137,16 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           native-image-job-reports: 'true'
 
+      - name: Os Report ${{ matrix.os }}
+        run: |
+          echo "> Building binary for: ${RUNNER_OS}-${RUNNER_ARCH}"
+        shell: bash
+
+      - name: build native-image binary ${{ matrix.os }}
+        run: native-image -jar ./build/artifacts/native-image-source/dns-proxy-server.jar dns-proxy-server
+
       - name: build native-image binary ${{ matrix.os }}
         run: |
-          echo "> Building binary for: ${RUNNER_OS}-${RUNNER_ARCH}" &&\
-          native-image -jar ./build/artifacts/native-image-source/dns-proxy-server.jar dns-proxy-server &&\
           ls -lhS &&\
           mkdir -p ./build/artifacts/${RUNNER_OS}-${RUNNER_ARCH} &&\
           mv ./dns-proxy-server ./build/artifacts/${RUNNER_OS}-${RUNNER_ARCH}/
