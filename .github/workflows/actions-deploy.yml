@@ -145,6 +145,11 @@ jobs:
         shell: bash
 
       - name: build native-image binary ${{ matrix.os }}
+        if: runner.os == 'Windows'
+        run: native-image -Djava.home=$env:GRAALVM_HOME -jar ./build/artifacts/native-image-source/dns-proxy-server.jar ./tmp/dns-proxy-server
+
+      - name: build native-image binary ${{ matrix.os }}
+        if: runner.os == 'macOS'
         run: native-image -jar ./build/artifacts/native-image-source/dns-proxy-server.jar ./tmp/dns-proxy-server
 
       - name: build native-image binary ${{ matrix.os }}
