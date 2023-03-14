@@ -74,4 +74,3 @@ Or via QR code
 [5]: http://mageddo.github.io/dns-proxy-server/latest/en/1-getting-started/running-it/
 [6]: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PYFAZCXL442B6&source=url
 [7]: https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif
-
