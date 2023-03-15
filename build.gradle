@@ -194,55 +194,44 @@ task('proguard', type: proguard.gradle.ProGuardTask) {
   // file for all static settings, but we're specifying them all here, for
   // the sake of the example.
   //configuration 'configuration.pro'
-
   verbose
   dontnote '**'
   dontwarn '**'
   dontobfuscate
-//  dontshrink
   dontoptimize
 
   // Specify the input jars, output jars, and library jars.
-
   injars "${buildDir}/libs/dns-proxy-server-${project.version}-all.jar"
   outjars "${buildDir}/libs/dns-proxy-server-${project.version}-obf.jar"
 
   libraryjars "${System.getProperty('java.home')}/jmods/java.base.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
-  //libraryjars "${System.getProperty('java.home')}/jmods/....."
-
 
   // Save the obfuscation mapping to a file, so you can de-obfuscate any stack
   // traces later on. Keep a fixed source file attribute and all line number
   // tables to get line numbers in the stack traces.
   // You can comment this out if you're not interested in stack traces.
-
   printmapping 'out.map'
   renamesourcefileattribute 'SourceFile'
   keepattributes 'SourceFile,LineNumberTable'
 
   // Preserve all annotations.
-
   keepattributes '*Annotation*'
 
   // You can print out the seeds that are matching the keep options below.
-
   //printseeds 'out.seeds'
 
   // Preserve all public applications.
-
   keepclasseswithmembers 'public class * { \
         public static void main(java.lang.String[]); \
     }'
 
   // Preserve all native method names and the names of their classes.
-
   keepclasseswithmembernames includedescriptorclasses: true, 'class * { \
         native <methods>; \
     }'
 
   // Preserve the special static methods that are required in all enumeration
   // classes.
-
   keepclassmembers allowoptimization: true, 'enum * { \
         public static **[] values(); \
         public static ** valueOf(java.lang.String); \
@@ -253,7 +242,6 @@ task('proguard', type: proguard.gradle.ProGuardTask) {
   // You can comment this out if your application doesn't use serialization.
   // If your code contains serializable classes that have to be backward
   // compatible, please refer to the manual.
-
   keepclassmembers 'class * implements java.io.Serializable { \
         static final long serialVersionUID; \
         static final java.io.ObjectStreamField[] serialPersistentFields; \
@@ -263,53 +251,7 @@ task('proguard', type: proguard.gradle.ProGuardTask) {
         java.lang.Object readResolve(); \
     }'
 
-  // Your application may contain more items that need to be preserved;
-  // typically classes that are dynamically created using Class.forName:
-
-//  assumenosideeffects 'class com.sun.jna.Native { \
-//    public static long getWindowID(**); \
-//    public static long getComponentID(**); \
-//    public static Pointer getWindowPointer(**); \
-//    public static Pointer getComponentPointer(**); \
-//    static native long getWindowHandle0(**); \
-//  }'
-//
-//  assumenosideeffects 'class com.sun.jna.Native { \
-//    public static long getWindowID(..); \
-//    public static long getComponentID(%); \
-//    public static Pointer getWindowPointer(**); \
-//    public static Pointer getComponentPointer(**); \
-//    static native long getWindowHandle0(**); \
-//  }'
-
-//  keep 'class com.sun.jna.Native { \
-//    static Pointer getWindowPointer(**); \
-//    static Pointer getComponentPointer(**); \
-//    static native long getWindowHandle0(**); \
-//  }'
-
-//  keepclasseswithmembernames includedescriptorclasses: true, 'class * { \
-//    static Pointer getWindowPointer(**);\
-//  }'
-
-  keep 'class com.sun.jna.Native { \
-    <methods>; \
-  }'
-
-//  keepclasseswithmembernames 'class com.sun.jna.Native { \
-//    <methods>; \
-//  }'
-
-
-//  static long getWindowID(..);     static long getComponentID(%);
-
-//  assumenosideeffects 'class com.sun.jna.Native.AWT'
-
-  keep 'class ch.qos.logback.** { *; }'
-//  keep 'class ** { *; }'
-
   // https://stackoverflow.com/a/41064207/2979435
-//  keep 'class !com.aleatorio.** { *; }'
-
+  keep 'class !com.sun.jna.Native, !com.sun.jna.Native**, ** { *; }'
 
 }
