@@ -2,10 +2,9 @@ FROM defreitas/tools_graalvm-22.3_java-19_debian-9:0.1.2 AS BUILDER
 COPY ./ /app
 WORKDIR /app
 RUN ./gradlew clean build compTest shadowJar nativeCompile -i &&\
-  ./gradlew proguard -i &&\
   ls -lha ./build &&\
   mkdir -p ./build/artifacts/linux-amd64 && mv ./build/native/nativeCompile/dns-proxy-server ./build/artifacts/linux-amd64/ &&\
-  mkdir -p ./build/artifacts/jre && mv ./build/libs/dns-proxy-server-*-obf.jar ./build/artifacts/jre/dns-proxy-server.jar &&\
+  mkdir -p ./build/artifacts/jre && mv ./build/libs/dns-proxy-server-*-all.jar ./build/artifacts/jre/dns-proxy-server.jar &&\
   mkdir -p ./build/artifacts/native-image-source && cp ./build/artifacts/jre/dns-proxy-server.jar ./build/artifacts/native-image-source/ &&\
   ls -lhS ./build/artifacts/*
 ENTRYPOINT cat
