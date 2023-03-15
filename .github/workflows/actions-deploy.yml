@@ -1,9 +1,12 @@
 name: CD
 
 on:
-  push:
-    branches:
-      - master
+  pull_request:
+
+#on:
+#  push:
+#    branches:
+#      - master
 
 permissions:
   contents: write
