@@ -188,7 +188,7 @@ void appendAppVersion(String f) {
 }
 
 
-task ('proguard', type: proguard.gradle.ProGuardTask) {
+task('proguard', type: proguard.gradle.ProGuardTask) {
 
   // You should probably import a more compact ProGuard-style configuration
   // file for all static settings, but we're specifying them all here, for
@@ -204,7 +204,7 @@ task ('proguard', type: proguard.gradle.ProGuardTask) {
 
   // Specify the input jars, output jars, and library jars.
 
-  injars  "${buildDir}/libs/dns-proxy-server-${project.version}-all.jar"
+  injars "${buildDir}/libs/dns-proxy-server-${project.version}-all.jar"
   outjars "${buildDir}/libs/dns-proxy-server-${project.version}-obf.jar"
 
   libraryjars "${System.getProperty('java.home')}/jmods/java.base.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
@@ -281,6 +281,27 @@ task ('proguard', type: proguard.gradle.ProGuardTask) {
 //    public static Pointer getComponentPointer(**); \
 //    static native long getWindowHandle0(**); \
 //  }'
+
+//  keep 'class com.sun.jna.Native { \
+//    static Pointer getWindowPointer(**); \
+//    static Pointer getComponentPointer(**); \
+//    static native long getWindowHandle0(**); \
+//  }'
+
+//  keepclasseswithmembernames includedescriptorclasses: true, 'class * { \
+//    static Pointer getWindowPointer(**);\
+//  }'
+
+  keep 'class com.sun.jna.Native { \
+    <methods>; \
+  }'
+
+//  keepclasseswithmembernames 'class com.sun.jna.Native { \
+//    <methods>; \
+//  }'
+
+
+//  static long getWindowID(..);     static long getComponentID(%);
 
 //  assumenosideeffects 'class com.sun.jna.Native.AWT'
 
