@@ -42,8 +42,7 @@ dependencies {
   implementation('org.apache.commons:commons-exec:1.3')
 
   implementation('ch.qos.logback:logback-classic:1.4.5')
-//  implementation('net.java.dev.jna:jna:5.13.0')
-//  implementation('net.java.dev.jna:jna-platform:5.13.0')
+  implementation('net.java.dev.jna:jna-platform:5.13.0')
   implementation('dnsjava:dnsjava:3.5.2')
   implementation('org.apache.commons:commons-compress:1.22')
   implementation('org.rauschig:jarchivelib:1.2.0')
@@ -252,6 +251,10 @@ task('proguard', type: proguard.gradle.ProGuardTask) {
     }'
 
   // https://stackoverflow.com/a/41064207/2979435
-  keep 'class !com.sun.jna.Native, !com.sun.jna.Native**, ** { *; }'
+  keep 'class !com.sun.jna.Native,\
+     !com.sun.jna.platform.KeyboardUtils**,\
+     !com.sun.jna.Native**,\
+     ** { *; }\
+  '
 
 }
