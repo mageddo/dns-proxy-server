@@ -3,24 +3,30 @@ title: MacOSX running instructions
 weight: 1
 ---
 
+## Running on MAC
 
-### Running on MAC
-
-DPS actually is fully supported on MAC except by [docker limitation features][5]. Despite on this,
-there is no additional configuration to run DPS on Mac, you can do just like [on Linux](#running-on-linux).
+DPS actually is fully supported on MAC knowing [docker limitation features][5]. Despite on this,
+there is **no** additional configuration to run DPS on Mac, you can do just like [on Linux](#running-on-linux).
 
 Download the [latest release][3], extract and run:
 ```bash
 $ sudo ./dns-proxy-server
 ```
 
-When running on standalone mode (not on docker container) DPS will be able to auto-configure itself as OSX default DNS,
+(todo: Add usages examples here)
+
+When running on standalone mode (not on docker container) DPS will be able to auto configure itself as OSX default DNS,
 after 5 seconds you see something like `usingDnsConfigurator=DnsConfiguratorOSx` at the logs.
 
-### Configuring DPS as default DNS manually
+## Running on Docker
+It's also possible to run DPS on docker you can do it in different ways, bellow the most recommended.
 
-If by some reason it doesn't work or you want to configure it manually because are running DPS on a docker conainer,
-then check the instructions bellow:
+(todo: Explain)
+
+## Configuring DPS as default DNS manually
+
+When not running in standalone mode you will need to configure DPS as default DPS manually,
+check the instructions bellow:
 
 To list available networks:
 ```bash
@@ -36,10 +42,13 @@ configured DNS server:
 $ networksetup -getdnsservers Wi-Fi
 There aren't any DNS Servers set on Wi-Fi. 
 ```
-If it returns some server IP then is a good idea to save it to restore the configurations later.
+If it returns some server IP then is a good idea to backup it then you can restore the configurations later.
 
-Let's set DPS as the default DNS Server, you can get DPS IP by search for `Starting UDP server` at the starting logs,
-it's `192.168.0.14` in my case, remember you need to run DPS in port 53 as MAC doesn't accept custom port especification.
+Let's set DPS as the default DNS Server, best option here is to get your network IP address, `Wi-Fi` in my case which
+has `192.168.0.14` set, `127.0.0.1` will partially works because this way containers won't be able 
+to solve each other in my tests. 
+
+**Obs**: Be aware you need to run DPS in port **53** as MAC doesn't accept custom port especification.
 
 ```bash
 $ networksetup -setdnsservers Wi-Fi 192.168.0.14
