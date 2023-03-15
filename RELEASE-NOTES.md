@@ -1,4 +1,4 @@
-## 3.10.0
+## 3.10.3
 * Windows and MacOS binary release
 
 ## 3.9.2
