@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -55,13 +56,14 @@ public class NetworkRegistry {
   public static List<NetworkInterface> findNetworksWithIp() {
     return findNetworksIds()
       .stream()
-      .map(NetworkRegistry::findNetworkInterface)
+      .map(NetworkRegistry::findNetworkInterfaceOrNull)
+      .filter(Objects::nonNull)
       .filter(NetworkInterface::hasIp)
       .toList()
       ;
   }
 
-  public static NetworkInterface findNetworkInterface(String networkId) {
+  public static NetworkInterface findNetworkInterfaceOrNull(String networkId) {
     try {
       return NetworkInterface.builder()
         .id(networkId)
@@ -71,7 +73,7 @@ public class NetworkRegistry {
         .build();
     } catch (Throwable e) {
       log.info("status=failedToFindInterface, nid={}, msg={}", networkId, e.getMessage());
-      throw e;
+      return null;
     }
   }
 

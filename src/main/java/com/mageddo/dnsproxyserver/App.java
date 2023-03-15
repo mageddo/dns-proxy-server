@@ -6,7 +6,8 @@ import com.mageddo.dnsproxyserver.di.Context;
 public class App {
   public static void main(String[] args) {
 
-    AppSettings.setup(Configs.getInstance());
+    final var config = Configs.getInstance(args);
+    AppSettings.setup(config);
 
     final var context = Context.create();
 

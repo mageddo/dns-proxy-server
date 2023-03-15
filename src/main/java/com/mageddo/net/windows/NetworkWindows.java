@@ -7,7 +7,7 @@ import com.mageddo.jna.net.windows.registry.NetworkRegistry;
 
 import java.util.List;
 
-import static com.mageddo.jna.net.windows.registry.NetworkRegistry.findNetworkInterface;
+import static com.mageddo.jna.net.windows.registry.NetworkRegistry.findNetworkInterfaceOrNull;
 
 public class NetworkWindows implements Network {
 
@@ -24,6 +24,6 @@ public class NetworkWindows implements Network {
 
   @Override
   public List<String> findNetworkDnsServers(String network) {
-    return Objects.mapOrNull(findNetworkInterface(network), NetworkInterface::getStaticDnsServers);
+    return Objects.mapOrNull(findNetworkInterfaceOrNull(network), NetworkInterface::getStaticDnsServers);
   }
 }
