@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @DaggerTest(component = Context.class, eventsHandler = Events.class)
-class SolverRemoteTest {
+class SolverRemoteCompTest {
 
   @Inject
   RemoteResolvers remoteResolvers;

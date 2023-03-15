@@ -9,3 +9,5 @@ RUN ./gradlew clean build compTest shadowJar nativeCompile -i &&\
   mkdir -p ./build/artifacts/native-image-source && cp ./build/artifacts/jre/dns-proxy-server.jar ./build/artifacts/native-image-source/ &&\
   ls -lhS ./build/artifacts/*
 ENTRYPOINT cat
+./gradlew clean build compTest shadowJar &&\
+  ./gradlew proguard -i

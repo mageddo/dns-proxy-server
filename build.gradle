@@ -265,16 +265,30 @@ task ('proguard', type: proguard.gradle.ProGuardTask) {
 
   // Your application may contain more items that need to be preserved;
   // typically classes that are dynamically created using Class.forName:
-  assumenosideeffects 'class com.sun.jna.Native { \
-    public static long getWindowID(**); \
-    public static long getComponentID(**); \
-    public static Pointer getWindowPointer(**); \
-    public static Pointer getComponentPointer(**); \
-    static native long getWindowHandle0(**); \
-  }'
 
-  assumenosideeffects 'class com.sun.jna.Native.AWT'
+//  assumenosideeffects 'class com.sun.jna.Native { \
+//    public static long getWindowID(**); \
+//    public static long getComponentID(**); \
+//    public static Pointer getWindowPointer(**); \
+//    public static Pointer getComponentPointer(**); \
+//    static native long getWindowHandle0(**); \
+//  }'
+//
+//  assumenosideeffects 'class com.sun.jna.Native { \
+//    public static long getWindowID(..); \
+//    public static long getComponentID(%); \
+//    public static Pointer getWindowPointer(**); \
+//    public static Pointer getComponentPointer(**); \
+//    static native long getWindowHandle0(**); \
+//  }'
 
-  keep 'class ** { *; }'
+//  assumenosideeffects 'class com.sun.jna.Native.AWT'
+
+  keep 'class ch.qos.logback.** { *; }'
+//  keep 'class ** { *; }'
+
+  // https://stackoverflow.com/a/41064207/2979435
+//  keep 'class !com.aleatorio.** { *; }'
+
 
 }
