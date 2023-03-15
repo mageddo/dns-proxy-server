@@ -160,7 +160,7 @@ jobs:
         run: |
           ls -lhS ./tmp &&\
           mv ./tmp/* ./build/artifacts/${RUNNER_OS}-${RUNNER_ARCH}/ &&\
-          7z a -tzip ./build/compressed-artifacts/dns-proxy-server-${RUNNER_OS}-${RUNNER_ARCH}-${APP_VERSION}.zip ./build/artifacts/${RUNNER_OS}-${RUNNER_ARCH} &&\
+          7z a -tzip ./build/compressed-artifacts/dns-proxy-server-${RUNNER_OS}-${RUNNER_ARCH}-${APP_VERSION}.zip ./build/artifacts/${RUNNER_OS}-${RUNNER_ARCH}
         shell: bash
 
       # Release details will be provided by primary-release
