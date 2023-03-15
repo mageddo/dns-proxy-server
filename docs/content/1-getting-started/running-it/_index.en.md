@@ -7,6 +7,12 @@ weight: 1
 
 {{%children style="li"  %}}
 
+### Running as Service
+
+If you are using Docker on your machine I recommend to run DPS as a docker service,
+this way it will automatically be configured whenever you restart the machine,
+checkout the instructions for Linux Mac and [Windows][5]
+
 ### General Instructions
 The process to running DPS is basically the same for all platforms:
 
@@ -36,7 +42,7 @@ PING nginx.dev (172.17.0.4) 56(84) bytes of data.
 *Not supported on Windows
 
 
-## Running on Docker
+### Running on Docker
 
 You probably want to check on [specific running instructions][3] to configure all DPS features when running on docker,
 set as default DNS and docker container solving have different docker run options for each platform.
@@ -62,3 +68,4 @@ Runining on docker limitations:
 [2]: https://github.com/mageddo/dns-proxy-server/releases
 [3]: #specific-instructions
 [4]: {{%relref "2-features/auto-configuration-as-default-dns/_index.md#docker-limitations" %}}
+[5]: {{%relref "1-getting-started/running-it/windows/_index.md#running-as-docker-service" %}}
