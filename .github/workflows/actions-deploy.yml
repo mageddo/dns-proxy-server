@@ -147,6 +147,7 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           ${GRAALVM_HOME}/bin/native-image.cmd \
+          -H:+AddAllCharsets \
           -H:ServiceLoaderFeatureExcludeServices=java.net.ContentHandlerFactory \
           -jar ./build/artifacts/native-image-source/dns-proxy-server.jar ./tmp/dns-proxy-server
         shell: bash
