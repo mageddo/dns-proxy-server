@@ -106,11 +106,6 @@ jar {
 }
 
 shadowJar {
-  exclude 'com/sun/jna/platform/KeyboardUtils.class'
-  exclude 'com/sun/jna/platform/WindowUtils.class'
-  exclude 'com/sun/jna/platform/RasterRangesUtils.class'
-  exclude 'com/sun/jna/platform/DesktopWindow.class'
-  exclude 'com/sun/jna/platform/GDI32Util.class'
   mergeServiceFiles()
 }
 

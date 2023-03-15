@@ -21,7 +21,7 @@
  * A copy is also included in the downloadable source code package
  * containing JNA, in file "AL2.0".
  */
-package com.mageddo.sun.jna.platform.win32;
+package com.sun.jna.platform.win32;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -38,13 +38,6 @@ import com.sun.jna.PointerType;
 import com.sun.jna.Structure;
 import com.sun.jna.Structure.FieldOrder;
 import com.sun.jna.Union;
-import com.sun.jna.platform.win32.Advapi32;
-import com.sun.jna.platform.win32.Advapi32Util;
-import com.sun.jna.platform.win32.BaseTSD;
-import com.sun.jna.platform.win32.Kernel32;
-import com.sun.jna.platform.win32.WinBase;
-import com.sun.jna.platform.win32.WinDef;
-import com.sun.jna.platform.win32.WinError;
 import com.sun.jna.ptr.ByReference;
 import com.sun.jna.win32.StdCallLibrary.StdCallCallback;
 
@@ -2564,7 +2557,7 @@ public interface WinNT extends WinError, WinDef, WinBase, BaseTSD {
          *
          * <p>ACE types as decoded to their native JNA counterparts. ACE types,
          * that are currently unsupported by JNA are returned as
-         * {@link ACE_HEADER} objects.</p>
+         * {@link WinNT.ACE_HEADER} objects.</p>
          *
          * @return array holding the contained ACEs
          */
@@ -2850,7 +2843,7 @@ public interface WinNT extends WinError, WinDef, WinBase, BaseTSD {
     // TODO: figure out how OVERLAPPED is used and apply an appropriate mapping
     interface OVERLAPPED_COMPLETION_ROUTINE extends StdCallCallback {
         void callback(int errorCode, int nBytesTransferred,
-                OVERLAPPED overlapped);
+                WinBase.OVERLAPPED overlapped);
     }
 
 
@@ -3987,7 +3980,7 @@ public interface WinNT extends WinError, WinDef, WinBase, BaseTSD {
          * how the server may represent, or impersonate, the client. Security
          * impersonation levels govern the degree to which a server process can
          * act on behalf of a client process. This member is a
-         * {@link SECURITY_IMPERSONATION_LEVEL} enumeration type value.
+         * {@link WinNT.SECURITY_IMPERSONATION_LEVEL} enumeration type value.
          */
         public int ImpersonationLevel;
         /**

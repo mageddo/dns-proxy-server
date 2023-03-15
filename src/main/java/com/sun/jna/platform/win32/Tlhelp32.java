@@ -20,16 +20,13 @@
  * A copy is also included in the downloadable source code package
  * containing JNA, in file "AL2.0".
  */
-package com.mageddo.sun.jna.platform.win32;
+package com.sun.jna.platform.win32;
 
 import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import com.sun.jna.Structure.FieldOrder;
-import com.sun.jna.platform.win32.BaseTSD;
-import com.sun.jna.platform.win32.Kernel32;
-import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinDef.DWORD;
 import com.sun.jna.platform.win32.WinDef.HMODULE;
 
@@ -42,17 +39,17 @@ public interface Tlhelp32 {
      * Includes all heaps of the process specified in th32ProcessID in the snapshot. To enumerate the heaps, see
      * Heap32ListFirst.
      */
-    DWORD TH32CS_SNAPHEAPLIST = new DWORD(0x00000001);
+    WinDef.DWORD TH32CS_SNAPHEAPLIST = new WinDef.DWORD(0x00000001);
 
     /**
      * Includes all processes in the system in the snapshot. To enumerate the processes, see Process32First.
      */
-    DWORD TH32CS_SNAPPROCESS  = new DWORD(0x00000002);
+    WinDef.DWORD TH32CS_SNAPPROCESS  = new WinDef.DWORD(0x00000002);
 
     /**
      * Includes all threads in the system in the snapshot. To enumerate the threads, see Thread32First.
      */
-    DWORD TH32CS_SNAPTHREAD   = new DWORD(0x00000004);
+    WinDef.DWORD TH32CS_SNAPTHREAD   = new WinDef.DWORD(0x00000004);
 
     /**
      *
@@ -70,25 +67,25 @@ public interface Tlhelp32 {
      *
      * @see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms682489(v=vs.85).aspx">MSDN</a>
      */
-    DWORD TH32CS_SNAPMODULE   = new DWORD(0x00000008);
+    WinDef.DWORD TH32CS_SNAPMODULE   = new WinDef.DWORD(0x00000008);
 
     /**
      * Includes all 32-bit modules of the process specified in th32ProcessID in the snapshot when called from a 64-bit
      * process. This flag can be combined with TH32CS_SNAPMODULE or TH32CS_SNAPALL. If the function fails with
      * ERROR_BAD_LENGTH, retry the function until it succeeds.
      */
-    DWORD TH32CS_SNAPMODULE32 = new DWORD(0x00000010);
+    WinDef.DWORD TH32CS_SNAPMODULE32 = new WinDef.DWORD(0x00000010);
 
     /**
      * Includes all processes and threads in the system, plus the heaps and modules of the process specified in th32ProcessID.
      */
-    DWORD TH32CS_SNAPALL      = new DWORD((TH32CS_SNAPHEAPLIST.intValue() |
+    WinDef.DWORD TH32CS_SNAPALL      = new WinDef.DWORD((TH32CS_SNAPHEAPLIST.intValue() |
             TH32CS_SNAPPROCESS.intValue() | TH32CS_SNAPTHREAD.intValue() | TH32CS_SNAPMODULE.intValue()));
 
     /**
      * Indicates that the snapshot handle is to be inheritable.
      */
-    DWORD TH32CS_INHERIT      = new DWORD(0x80000000);
+    WinDef.DWORD TH32CS_INHERIT      = new WinDef.DWORD(0x80000000);
 
     int MAX_MODULE_NAME32 = 255;
 
@@ -113,17 +110,17 @@ public interface Tlhelp32 {
          * The size of the structure, in bytes. Before calling the Process32First function, set this member to
          * sizeof(PROCESSENTRY32). If you do not initialize dwSize, Process32First fails.
          */
-        public DWORD dwSize;
+        public WinDef.DWORD dwSize;
 
         /**
          * This member is no longer used and is always set to zero.
          */
-        public DWORD cntUsage;
+        public WinDef.DWORD cntUsage;
 
         /**
          * The process identifier.
          */
-        public DWORD th32ProcessID;
+        public WinDef.DWORD th32ProcessID;
 
         /**
          * This member is no longer used and is always set to zero.
@@ -133,27 +130,27 @@ public interface Tlhelp32 {
         /**
          * This member is no longer used and is always set to zero.
          */
-        public DWORD th32ModuleID;
+        public WinDef.DWORD th32ModuleID;
 
         /**
          * The number of execution threads started by the process.
          */
-        public DWORD cntThreads;
+        public WinDef.DWORD cntThreads;
 
         /**
          * The identifier of the process that created this process (its parent process).
          */
-        public DWORD th32ParentProcessID;
+        public WinDef.DWORD th32ParentProcessID;
 
         /**
          * The base priority of any threads created by this process.
          */
-        public com.sun.jna.platform.win32.WinDef.LONG pcPriClassBase;
+        public WinDef.LONG pcPriClassBase;
 
         /**
          * This member is no longer used, and is always set to zero.
          */
-        public DWORD dwFlags;
+        public WinDef.DWORD dwFlags;
 
         /**
          * The name of the executable file for the process. To retrieve the full path to the executable file, call the
@@ -161,10 +158,10 @@ public interface Tlhelp32 {
          * However, if the calling process is a 32-bit process, you must call the QueryFullProcessImageName function to
          * retrieve the full path of the executable file for a 64-bit process.
          */
-        public char[] szExeFile = new char[com.sun.jna.platform.win32.WinDef.MAX_PATH];
+        public char[] szExeFile = new char[WinDef.MAX_PATH];
 
         public PROCESSENTRY32() {
-            dwSize = new DWORD(size());
+            dwSize = new WinDef.DWORD(size());
         }
 
         public PROCESSENTRY32(Pointer memory) {
@@ -318,7 +315,7 @@ public interface Tlhelp32 {
         public char[] szExePath = new char[Kernel32.MAX_PATH];
 
         public MODULEENTRY32W() {
-            dwSize = new DWORD(size());
+            dwSize = new WinDef.DWORD(size());
         }
 
         public MODULEENTRY32W(Pointer memory) {

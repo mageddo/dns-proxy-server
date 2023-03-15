@@ -21,13 +21,11 @@
  * A copy is also included in the downloadable source code package
  * containing JNA, in file "AL2.0".
  */
-package com.mageddo.sun.jna.platform.win32;
+package com.sun.jna.platform.win32;
 
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
-import com.sun.jna.platform.win32.Kernel32;
-import com.sun.jna.platform.win32.WinBase;
 import com.sun.jna.platform.win32.WinBase.FE_EXPORT_FUNC;
 import com.sun.jna.platform.win32.WinBase.FE_IMPORT_FUNC;
 import com.sun.jna.platform.win32.WinBase.PROCESS_INFORMATION;
@@ -37,8 +35,6 @@ import com.sun.jna.platform.win32.WinDef.BOOLByReference;
 import com.sun.jna.platform.win32.WinDef.DWORD;
 import com.sun.jna.platform.win32.WinDef.DWORDByReference;
 import com.sun.jna.platform.win32.WinDef.ULONG;
-import com.sun.jna.platform.win32.WinError;
-import com.sun.jna.platform.win32.WinNT;
 import com.sun.jna.platform.win32.WinNT.ACL;
 import com.sun.jna.platform.win32.WinNT.GENERIC_MAPPING;
 import com.sun.jna.platform.win32.WinNT.HANDLE;
@@ -49,10 +45,8 @@ import com.sun.jna.platform.win32.WinNT.PSID;
 import com.sun.jna.platform.win32.WinNT.PSIDByReference;
 import com.sun.jna.platform.win32.WinNT.SECURITY_DESCRIPTOR;
 import com.sun.jna.platform.win32.WinNT.SECURITY_DESCRIPTOR_RELATIVE;
-import com.sun.jna.platform.win32.WinReg;
 import com.sun.jna.platform.win32.WinReg.HKEY;
 import com.sun.jna.platform.win32.WinReg.HKEYByReference;
-import com.sun.jna.platform.win32.Winsvc;
 import com.sun.jna.platform.win32.Winsvc.ChangeServiceConfig2Info;
 import com.sun.jna.platform.win32.Winsvc.HandlerEx;
 import com.sun.jna.platform.win32.Winsvc.SC_HANDLE;
@@ -755,7 +749,7 @@ public interface Advapi32 extends StdCallLibrary {
      *         information, call GetLastError.
      */
     boolean DuplicateTokenEx(HANDLE hExistingToken, int dwDesiredAccess,
-                             SECURITY_ATTRIBUTES lpTokenAttributes,
+                             WinBase.SECURITY_ATTRIBUTES lpTokenAttributes,
                              int ImpersonationLevel, int TokenType, HANDLEByReference phNewToken);
 
     /**
@@ -898,8 +892,8 @@ public interface Advapi32 extends StdCallLibrary {
      *            A predefined registry handle. This parameter can be one of
      *            the following predefined keys on the remote computer.<br />
      *            <ul>
-     *                <li>{@link com.sun.jna.platform.win32.WinReg#HKEY_LOCAL_MACHINE}</li>
-     *                <li>{@link com.sun.jna.platform.win32.WinReg#HKEY_PERFORMANCE_DATA}</li>
+     *                <li>{@link WinReg#HKEY_LOCAL_MACHINE}</li>
+     *                <li>{@link WinReg#HKEY_PERFORMANCE_DATA}</li>
      *                <li>{@link WinReg#HKEY_USERS}</li>
      *            </ul>
      * @param phkResult
@@ -1048,13 +1042,13 @@ public interface Advapi32 extends StdCallLibrary {
                   int dwType, Pointer lpData, int cbData);
 
     /**
-     * See {@link #RegSetValueEx(HKEY, String, int, int, Pointer, int) }
+     * See {@link #RegSetValueEx(com.sun.jna.platform.win32.WinReg.HKEY, java.lang.String, int, int, com.sun.jna.Pointer, int) }
      */
     int RegSetValueEx(HKEY hKey, String lpValueName, int Reserved,
                       int dwType, char[] lpData, int cbData);
 
     /**
-     * See {@link #RegSetValueEx(HKEY, String, int, int, Pointer, int) }
+     * See {@link #RegSetValueEx(com.sun.jna.platform.win32.WinReg.HKEY, java.lang.String, int, int, com.sun.jna.Pointer, int) }
      */
     int RegSetValueEx(HKEY hKey, String lpValueName, int Reserved,
                       int dwType, byte[] lpData, int cbData);
@@ -1137,7 +1131,7 @@ public interface Advapi32 extends StdCallLibrary {
      */
     int RegEnumKeyEx(HKEY hKey, int dwIndex, char[] lpName,
                      IntByReference lpcName, IntByReference reserved, char[] lpClass,
-                     IntByReference lpcClass, com.sun.jna.platform.win32.WinBase.FILETIME lpftLastWriteTime);
+                     IntByReference lpcClass, WinBase.FILETIME lpftLastWriteTime);
 
     /**
      * The RegEnumValue function enumerates the values for the specified open
@@ -1184,7 +1178,7 @@ public interface Advapi32 extends StdCallLibrary {
                      IntByReference lpType, Pointer lpData, IntByReference lpcbData);
 
     /**
-     * See {@link #RegEnumValue(HKEY, int, char[], IntByReference, IntByReference, IntByReference, Pointer, IntByReference)}.
+     * See {@link #RegEnumValue(com.sun.jna.platform.win32.WinReg.HKEY, int, char[], com.sun.jna.ptr.IntByReference, com.sun.jna.ptr.IntByReference, com.sun.jna.ptr.IntByReference, com.sun.jna.Pointer, com.sun.jna.ptr.IntByReference)}.
      */
     int RegEnumValue(HKEY hKey, int dwIndex, char[] lpValueName,
                      IntByReference lpcchValueName, IntByReference reserved,
@@ -1246,7 +1240,7 @@ public interface Advapi32 extends StdCallLibrary {
             IntByReference lpcMaxClassLen, IntByReference lpcValues,
             IntByReference lpcMaxValueNameLen, IntByReference lpcMaxValueLen,
             IntByReference lpcbSecurityDescriptor,
-            com.sun.jna.platform.win32.WinBase.FILETIME lpftLastWriteTime);
+            WinBase.FILETIME lpftLastWriteTime);
 
     /**
      * Retrieves the type and data for the specified registry value.
@@ -1384,7 +1378,7 @@ public interface Advapi32 extends StdCallLibrary {
                     IntByReference pcbData);
 
     /**
-     * See {@link #RegGetValue(HKEY, String, String, int, IntByReference, Pointer, IntByReference)}.
+     * See {@link #RegGetValue(com.sun.jna.platform.win32.WinReg.HKEY, java.lang.String, java.lang.String, int, com.sun.jna.ptr.IntByReference, com.sun.jna.Pointer, com.sun.jna.ptr.IntByReference)}.
      */
     int RegGetValue(HKEY hkey, String lpSubKey, String lpValue,
                     int dwFlags, IntByReference pdwType, byte[] pvData,
@@ -2037,15 +2031,15 @@ public interface Advapi32 extends StdCallLibrary {
      *                           values.
      * <table>
      * <tr><th>Value</th><th>Meaning</th></tr>
-     * <tr><td>{@link com.sun.jna.platform.win32.Winsvc#SERVICE_ACTIVE}</td><td>Enumerates services that
+     * <tr><td>{@link Winsvc#SERVICE_ACTIVE}</td><td>Enumerates services that
      * are in the following states:
-     * {@link com.sun.jna.platform.win32.Winsvc#SERVICE_START_PENDING}, {@link com.sun.jna.platform.win32.Winsvc#SERVICE_STOP_PENDING}, {@link com.sun.jna.platform.win32.Winsvc#SERVICE_RUNNING}, {@link com.sun.jna.platform.win32.Winsvc#SERVICE_CONTINUE_PENDING}, {@link com.sun.jna.platform.win32.Winsvc#SERVICE_PAUSE_PENDING},
-     * and {@link com.sun.jna.platform.win32.Winsvc#SERVICE_PAUSED}.</td></tr>
-     * <tr><td>{@link com.sun.jna.platform.win32.Winsvc#SERVICE_INACTIVE}</td><td>Enumerates services that
-     * are in the {@link com.sun.jna.platform.win32.Winsvc#SERVICE_STOPPED} state.</td></tr>
-     * <tr><td>{@link com.sun.jna.platform.win32.Winsvc#SERVICE_STATE_ALL}</td><td>Combines the following
-     * states: {@link com.sun.jna.platform.win32.Winsvc#SERVICE_ACTIVE} and
-     * {@link com.sun.jna.platform.win32.Winsvc#SERVICE_INACTIVE}.</td></tr>
+     * {@link Winsvc#SERVICE_START_PENDING}, {@link Winsvc#SERVICE_STOP_PENDING}, {@link Winsvc#SERVICE_RUNNING}, {@link Winsvc#SERVICE_CONTINUE_PENDING}, {@link Winsvc#SERVICE_PAUSE_PENDING},
+     * and {@link Winsvc#SERVICE_PAUSED}.</td></tr>
+     * <tr><td>{@link Winsvc#SERVICE_INACTIVE}</td><td>Enumerates services that
+     * are in the {@link Winsvc#SERVICE_STOPPED} state.</td></tr>
+     * <tr><td>{@link Winsvc#SERVICE_STATE_ALL}</td><td>Combines the following
+     * states: {@link Winsvc#SERVICE_ACTIVE} and
+     * {@link Winsvc#SERVICE_INACTIVE}.</td></tr>
      * </table>
      * @param lpService          A pointer to an array of ENUM_SERVICE_STATUS
      *                           structures that receives the name and service
@@ -2087,7 +2081,7 @@ public interface Advapi32 extends StdCallLibrary {
      *
      * <table>
      * <tr><th>Return code</th><th>Description</th></tr>
-     * <tr><td>{@link WinError#ERROR_ACCESS_DENIED}</td><td>The handle does not have the {@link com.sun.jna.platform.win32.Winsvc#SERVICE_ENUMERATE_DEPENDENTS} access right.</td></tr>
+     * <tr><td>{@link WinError#ERROR_ACCESS_DENIED}</td><td>The handle does not have the {@link Winsvc#SERVICE_ENUMERATE_DEPENDENTS} access right.</td></tr>
      * <tr><td>{@link WinError#ERROR_INVALID_HANDLE}</td><td>The specified handle is invalid.</td></tr>
      * <tr><td>{@link WinError#ERROR_INVALID_PARAMETER}</td><td>A parameter that was specified is invalid.</td></tr>
      * <tr><td>{@link WinError#ERROR_MORE_DATA}</td><td>The buffer pointed to by lpServices is not large enough. The function sets the variable pointed to by lpServicesReturned to the actual number of service entries stored into the buffer. The function sets the variable pointed to by pcbBytesNeeded to the number of bytes required to store all of the service entries.</td></tr>
@@ -2105,16 +2099,16 @@ public interface Advapi32 extends StdCallLibrary {
      * @param hSCManager         A handle to the service control manager
      *                           database. This handle is returned by the
      *                           {@link #OpenSCManager} function, and must have
-     *                           the {@link com.sun.jna.platform.win32.Winsvc#SC_MANAGER_ENUMERATE_SERVICE}
+     *                           the {@link Winsvc#SC_MANAGER_ENUMERATE_SERVICE}
      *                           access right. For more information, see Service
      *                           Security and Access Rights.
      * @param InfoLevel          The service attributes that are to be returned.
-     *                           Use {@link com.sun.jna.platform.win32.Winsvc#SC_ENUM_PROCESS_INFO} to
+     *                           Use {@link Winsvc#SC_ENUM_PROCESS_INFO} to
      *                           retrieve the name and service status
      *                           information for each service in the database.
      *                           The lpServices parameter is a pointer to a
      *                           buffer that receives an array of
-     *                           {@link com.sun.jna.platform.win32.Winsvc.ENUM_SERVICE_STATUS_PROCESS}
+     *                           {@link Winsvc.ENUM_SERVICE_STATUS_PROCESS}
      *                           structures. The buffer must be large enough to
      *                           hold the structures as well as the strings to
      *                           which their members point.
@@ -2126,12 +2120,12 @@ public interface Advapi32 extends StdCallLibrary {
      *
      * <table>
      * <tr><th>Value</th><th>Meaning</th></tr>
-     * <tr><td>{@link com.sun.jna.platform.win32.WinNT#SERVICE_DRIVER}</td><td>Services of type {@link com.sun.jna.platform.win32.WinNT#SERVICE_KERNEL_DRIVER} and {@link com.sun.jna.platform.win32.WinNT#SERVICE_FILE_SYSTEM_DRIVER}.</td></tr>
-     * <tr><td>{@link com.sun.jna.platform.win32.WinNT#SERVICE_FILE_SYSTEM_DRIVER}</td><td>File system driver services.</td></tr>
-     * <tr><td>{@link com.sun.jna.platform.win32.WinNT#SERVICE_KERNEL_DRIVER}</td><td>Driver services.</td></tr>
-     * <tr><td>{@link com.sun.jna.platform.win32.WinNT#SERVICE_WIN32}</td><td>Services of type {@link com.sun.jna.platform.win32.WinNT#SERVICE_WIN32_OWN_PROCESS} and {@link com.sun.jna.platform.win32.WinNT#SERVICE_WIN32_SHARE_PROCESS}.</td></tr>
-     * <tr><td>{@link com.sun.jna.platform.win32.WinNT#SERVICE_WIN32_OWN_PROCESS}</td><td>Services that run in their own processes.</td></tr>
-     * <tr><td>{@link com.sun.jna.platform.win32.WinNT#SERVICE_WIN32_SHARE_PROCESS}</td><td>Services that share a process with one or more other services. For more information, see Service Programs.</td></tr>
+     * <tr><td>{@link WinNT#SERVICE_DRIVER}</td><td>Services of type {@link WinNT#SERVICE_KERNEL_DRIVER} and {@link WinNT#SERVICE_FILE_SYSTEM_DRIVER}.</td></tr>
+     * <tr><td>{@link WinNT#SERVICE_FILE_SYSTEM_DRIVER}</td><td>File system driver services.</td></tr>
+     * <tr><td>{@link WinNT#SERVICE_KERNEL_DRIVER}</td><td>Driver services.</td></tr>
+     * <tr><td>{@link WinNT#SERVICE_WIN32}</td><td>Services of type {@link WinNT#SERVICE_WIN32_OWN_PROCESS} and {@link WinNT#SERVICE_WIN32_SHARE_PROCESS}.</td></tr>
+     * <tr><td>{@link WinNT#SERVICE_WIN32_OWN_PROCESS}</td><td>Services that run in their own processes.</td></tr>
+     * <tr><td>{@link WinNT#SERVICE_WIN32_SHARE_PROCESS}</td><td>Services that share a process with one or more other services. For more information, see Service Programs.</td></tr>
      * </table>
      *
      * @param dwServiceState     The state of the services to be enumerated.
@@ -2139,15 +2133,15 @@ public interface Advapi32 extends StdCallLibrary {
      *                           values.
      * <table>
      * <tr><th>Value</th><th>Meaning</th></tr>
-     * <tr><td>{@link com.sun.jna.platform.win32.Winsvc#SERVICE_ACTIVE}</td><td>Enumerates services that
+     * <tr><td>{@link Winsvc#SERVICE_ACTIVE}</td><td>Enumerates services that
      * are in the following states:
-     * {@link com.sun.jna.platform.win32.Winsvc#SERVICE_START_PENDING}, {@link com.sun.jna.platform.win32.Winsvc#SERVICE_STOP_PENDING}, {@link com.sun.jna.platform.win32.Winsvc#SERVICE_RUNNING}, {@link com.sun.jna.platform.win32.Winsvc#SERVICE_CONTINUE_PENDING}, {@link com.sun.jna.platform.win32.Winsvc#SERVICE_PAUSE_PENDING},
-     * and {@link com.sun.jna.platform.win32.Winsvc#SERVICE_PAUSED}.</td></tr>
-     * <tr><td>{@link com.sun.jna.platform.win32.Winsvc#SERVICE_INACTIVE}</td><td>Enumerates services that
-     * are in the {@link com.sun.jna.platform.win32.Winsvc#SERVICE_STOPPED} state.</td></tr>
-     * <tr><td>{@link com.sun.jna.platform.win32.Winsvc#SERVICE_STATE_ALL}</td><td>Combines the following
-     * states: {@link com.sun.jna.platform.win32.Winsvc#SERVICE_ACTIVE} and
-     * {@link com.sun.jna.platform.win32.Winsvc#SERVICE_INACTIVE}.</td></tr>
+     * {@link Winsvc#SERVICE_START_PENDING}, {@link Winsvc#SERVICE_STOP_PENDING}, {@link Winsvc#SERVICE_RUNNING}, {@link Winsvc#SERVICE_CONTINUE_PENDING}, {@link Winsvc#SERVICE_PAUSE_PENDING},
+     * and {@link Winsvc#SERVICE_PAUSED}.</td></tr>
+     * <tr><td>{@link Winsvc#SERVICE_INACTIVE}</td><td>Enumerates services that
+     * are in the {@link Winsvc#SERVICE_STOPPED} state.</td></tr>
+     * <tr><td>{@link Winsvc#SERVICE_STATE_ALL}</td><td>Combines the following
+     * states: {@link Winsvc#SERVICE_ACTIVE} and
+     * {@link Winsvc#SERVICE_INACTIVE}.</td></tr>
      * </table>
      * @param lpServices          A pointer to the buffer that receives the
      *                           status information. The format of this data
@@ -2282,8 +2276,8 @@ public interface Advapi32 extends StdCallLibrary {
                                 String lpCommandLine, SECURITY_ATTRIBUTES lpProcessAttributes,
                                 SECURITY_ATTRIBUTES lpThreadAttributes, boolean bInheritHandles,
                                 int dwCreationFlags, String lpEnvironment,
-                                String lpCurrentDirectory, STARTUPINFO lpStartupInfo,
-                                PROCESS_INFORMATION lpProcessInformation);
+                                String lpCurrentDirectory, WinBase.STARTUPINFO lpStartupInfo,
+                                WinBase.PROCESS_INFORMATION lpProcessInformation);
 
     /**
      * The AdjustTokenPrivileges function enables or disables privileges in the
@@ -2316,8 +2310,8 @@ public interface Advapi32 extends StdCallLibrary {
      *         information, call GetLastError.
      */
     boolean AdjustTokenPrivileges(HANDLE TokenHandle,
-                                  boolean DisableAllPrivileges, com.sun.jna.platform.win32.WinNT.TOKEN_PRIVILEGES NewState,
-                                  int BufferLength, com.sun.jna.platform.win32.WinNT.TOKEN_PRIVILEGES PreviousState,
+                                  boolean DisableAllPrivileges, WinNT.TOKEN_PRIVILEGES NewState,
+                                  int BufferLength, WinNT.TOKEN_PRIVILEGES PreviousState,
                                   IntByReference ReturnLength);
 
     /**
@@ -2344,7 +2338,7 @@ public interface Advapi32 extends StdCallLibrary {
      *         function fails, the return value is zero. To get extended error
      *         information, call GetLastError.
      */
-    boolean LookupPrivilegeName(String lpSystemName, com.sun.jna.platform.win32.WinNT.LUID lpLuid,
+    boolean LookupPrivilegeName(String lpSystemName, WinNT.LUID lpLuid,
                                 char[] lpName, IntByReference cchName);
 
     /**
@@ -3320,7 +3314,7 @@ public interface Advapi32 extends StdCallLibrary {
      *
      * @param lpHandlerProc A pointer to the handler function to be registered.
      *                      For more information, see
-     *                      {@link Winsvc.Handler WinSvc.Handler}.
+     *                      {@link com.sun.jna.platform.win32.Winsvc.Handler WinSvc.Handler}.
      *
      * @return A service status handle, NULL on error. Call GetLastError to
      * get extended error condition. Possible error codes:

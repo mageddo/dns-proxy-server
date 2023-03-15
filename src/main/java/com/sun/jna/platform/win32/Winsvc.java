@@ -21,13 +21,12 @@
  * A copy is also included in the downloadable source code package
  * containing JNA, in file "AL2.0".
  */
-package com.mageddo.sun.jna.platform.win32;
+package com.sun.jna.platform.win32;
 
 import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import com.sun.jna.Structure.FieldOrder;
-import com.sun.jna.platform.win32.WinNT;
 import com.sun.jna.platform.win32.WinNT.HANDLE;
 import com.sun.jna.win32.StdCallLibrary;
 import com.sun.jna.win32.W32APITypeMapper;
@@ -341,7 +340,7 @@ public interface Winsvc {
     int SC_MANAGER_MODIFY_BOOT_CONFIG   = 0x0020;
 
     int SC_MANAGER_ALL_ACCESS =
-        com.sun.jna.platform.win32.WinNT.STANDARD_RIGHTS_REQUIRED | SC_MANAGER_CONNECT
+        WinNT.STANDARD_RIGHTS_REQUIRED | SC_MANAGER_CONNECT
         | SC_MANAGER_CREATE_SERVICE | SC_MANAGER_ENUMERATE_SERVICE
         | SC_MANAGER_LOCK | SC_MANAGER_QUERY_LOCK_STATUS
         | SC_MANAGER_MODIFY_BOOT_CONFIG;
@@ -406,7 +405,7 @@ public interface Winsvc {
     int SERVICE_USER_DEFINED_CONTROL = 0x0100;
 
     int SERVICE_ALL_ACCESS =
-        com.sun.jna.platform.win32.WinNT.STANDARD_RIGHTS_REQUIRED | SERVICE_QUERY_CONFIG
+        WinNT.STANDARD_RIGHTS_REQUIRED | SERVICE_QUERY_CONFIG
         | SERVICE_CHANGE_CONFIG | SERVICE_QUERY_STATUS
         | SERVICE_ENUMERATE_DEPENDENTS | SERVICE_START | SERVICE_STOP
         | SERVICE_PAUSE_CONTINUE | SERVICE_INTERROGATE
@@ -809,7 +808,7 @@ public interface Winsvc {
         public String lpDescription;
     }
 
-    public static class SERVICE_STATUS_HANDLE extends HANDLE {
+    public static class SERVICE_STATUS_HANDLE extends WinNT.HANDLE {
 
         public SERVICE_STATUS_HANDLE() {
         }

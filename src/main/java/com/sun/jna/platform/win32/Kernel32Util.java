@@ -21,7 +21,7 @@
  * A copy is also included in the downloadable source code package
  * containing JNA, in file "AL2.0".
  */
-package com.mageddo.sun.jna.platform.win32;
+package com.sun.jna.platform.win32;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,14 +36,6 @@ import com.sun.jna.LastErrorException;
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
-import com.sun.jna.platform.win32.Kernel32;
-import com.sun.jna.platform.win32.Tlhelp32;
-import com.sun.jna.platform.win32.W32Errors;
-import com.sun.jna.platform.win32.Win32Exception;
-import com.sun.jna.platform.win32.WinBase;
-import com.sun.jna.platform.win32.WinDef;
-import com.sun.jna.platform.win32.WinError;
-import com.sun.jna.platform.win32.WinNT;
 import com.sun.jna.platform.win32.WinNT.HANDLE;
 import com.sun.jna.platform.win32.WinNT.HANDLEByReference;
 import com.sun.jna.platform.win32.WinNT.HRESULT;
@@ -60,7 +52,7 @@ import com.sun.jna.win32.W32APITypeMapper;
  * @author markus[at]headcrashing[dot]eu
  * @author Andreas "PAX" L&uuml;ck, onkelpax-git[at]yahoo.de
  */
-public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef {
+public abstract class Kernel32Util implements WinDef {
 
     /**
      * Get current computer NetBIOS name.
@@ -68,37 +60,37 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      * @return Netbios name.
      */
     public static String getComputerName() {
-        char buffer[] = new char[com.sun.jna.platform.win32.WinBase.MAX_COMPUTERNAME_LENGTH + 1];
+        char buffer[] = new char[WinBase.MAX_COMPUTERNAME_LENGTH + 1];
         IntByReference lpnSize = new IntByReference(buffer.length);
-        if (!com.sun.jna.platform.win32.Kernel32.INSTANCE.GetComputerName(buffer, lpnSize)) {
-            throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+        if (!Kernel32.INSTANCE.GetComputerName(buffer, lpnSize)) {
+            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
         return Native.toString(buffer);
     }
 
     /**
-     * Invokes {@link com.sun.jna.platform.win32.Kernel32#LocalFree(Pointer)} and checks if it succeeded.
+     * Invokes {@link Kernel32#LocalFree(Pointer)} and checks if it succeeded.
      *
      * @param ptr The {@link Pointer} to the memory to be released - ignored if NULL
      * @throws Win32Exception if non-{@code ERROR_SUCCESS} code reported
      */
     public static void freeLocalMemory(Pointer ptr) {
-        Pointer res = com.sun.jna.platform.win32.Kernel32.INSTANCE.LocalFree(ptr);
+        Pointer res = Kernel32.INSTANCE.LocalFree(ptr);
         if (res != null) {
-            throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
     }
 
     /**
-     * Invokes {@link com.sun.jna.platform.win32.Kernel32#GlobalFree(Pointer)} and checks if it succeeded.
+     * Invokes {@link Kernel32#GlobalFree(Pointer)} and checks if it succeeded.
      *
      * @param ptr The {@link Pointer} to the memory to be released - ignored if NULL
      * @throws Win32Exception if non-{@code ERROR_SUCCESS} code reported
      */
     public static void freeGlobalMemory(Pointer ptr) {
-        Pointer res = com.sun.jna.platform.win32.Kernel32.INSTANCE.GlobalFree(ptr);
+        Pointer res = Kernel32.INSTANCE.GlobalFree(ptr);
         if (res != null) {
-            throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
     }
 
@@ -110,7 +102,7 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      * Once closed all handles, the accumulated exception (if any) is thrown
      *
      * @param refs The references to close
-     * @see #closeHandleRef(HANDLEByReference)
+     * @see #closeHandleRef(WinNT.HANDLEByReference)
      */
     public static void closeHandleRefs(HANDLEByReference... refs) {
         Win32Exception err = null;
@@ -134,14 +126,14 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      * Closes the handle in the reference
      *
      * @param ref The handle reference - ignored if {@code null}
-     * @see #closeHandle(HANDLE)
+     * @see #closeHandle(WinNT.HANDLE)
      */
     public static void closeHandleRef(HANDLEByReference ref) {
         closeHandle((ref == null) ? null : ref.getValue());
     }
 
     /**
-     * Invokes {@link #closeHandle(HANDLE)} on each handle. If an exception
+     * Invokes {@link #closeHandle(WinNT.HANDLE)} on each handle. If an exception
      * is thrown for a specific handle, then it is accumulated until all
      * handles have been closed. If more than one exception occurs, then it
      * is added as a suppressed exception to the first one. Once closed all
@@ -170,7 +162,7 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
     }
 
     /**
-     * Invokes {@link com.sun.jna.platform.win32.Kernel32#CloseHandle(HANDLE)} and checks the success code.
+     * Invokes {@link Kernel32#CloseHandle(WinNT.HANDLE)} and checks the success code.
      * If not successful, then throws a {@link Win32Exception} with the
      * {@code GetLastError} value
      *
@@ -181,8 +173,8 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
             return;
         }
 
-        if (!com.sun.jna.platform.win32.Kernel32.INSTANCE.CloseHandle(h)) {
-            throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+        if (!Kernel32.INSTANCE.CloseHandle(h)) {
+            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
     }
 
@@ -198,7 +190,7 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
 
     /**
      * Format a message from the value obtained from
-     * {@link com.sun.jna.platform.win32.Kernel32#GetLastError()} or {@link Native#getLastError()}.
+     * {@link Kernel32#GetLastError()} or {@link Native#getLastError()}.
      *
      * <p>If you pass in zero, FormatMessage looks for a message for LANGIDs in the following order:</p>
      * <ol>
@@ -216,13 +208,13 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      */
     public static String formatMessage(int code, int primaryLangId, int sublangId) {
         PointerByReference buffer = new PointerByReference();
-        int nLen = com.sun.jna.platform.win32.Kernel32.INSTANCE.FormatMessage(
-                com.sun.jna.platform.win32.WinBase.FORMAT_MESSAGE_ALLOCATE_BUFFER
-                | com.sun.jna.platform.win32.WinBase.FORMAT_MESSAGE_FROM_SYSTEM
-                | com.sun.jna.platform.win32.WinBase.FORMAT_MESSAGE_IGNORE_INSERTS,
+        int nLen = Kernel32.INSTANCE.FormatMessage(
+                WinBase.FORMAT_MESSAGE_ALLOCATE_BUFFER
+                | WinBase.FORMAT_MESSAGE_FROM_SYSTEM
+                | WinBase.FORMAT_MESSAGE_IGNORE_INSERTS,
                 null,
                 code,
-                com.sun.jna.platform.win32.WinNT.LocaleMacros.MAKELANGID(primaryLangId, sublangId),
+                WinNT.LocaleMacros.MAKELANGID(primaryLangId, sublangId),
                 buffer, 0, null);
         if (nLen == 0) {
             throw new LastErrorException(Native.getLastError());
@@ -271,7 +263,7 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      * @return Formatted message in the default locale.
      */
     public static String formatMessageFromLastErrorCode(int code) {
-        return formatMessage(com.sun.jna.platform.win32.W32Errors.HRESULT_FROM_WIN32(code));
+        return formatMessage(W32Errors.HRESULT_FROM_WIN32(code));
     }
 
     /**
@@ -286,7 +278,7 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      * @return Formatted message in the specified locale.
      */
     public static String formatMessageFromLastErrorCode(int code, int primaryLangId, int sublangId) {
-        return formatMessage(com.sun.jna.platform.win32.W32Errors.HRESULT_FROM_WIN32(code), primaryLangId, sublangId);
+        return formatMessage(W32Errors.HRESULT_FROM_WIN32(code), primaryLangId, sublangId);
     }
 
     /**
@@ -294,7 +286,7 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      *         that occurred by invocating {@code Kernel32.GetLastError()} in the default locale.
      */
     public static String getLastErrorMessage() {
-        return Kernel32Util.formatMessageFromLastErrorCode(com.sun.jna.platform.win32.Kernel32.INSTANCE
+        return Kernel32Util.formatMessageFromLastErrorCode(Kernel32.INSTANCE
                 .GetLastError());
     }
 
@@ -303,7 +295,7 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      *         that occurred by invocating {@code Kernel32.GetLastError()} in the specified locale.
      */
     public static String getLastErrorMessage(int primaryLangId, int sublangId) {
-        return Kernel32Util.formatMessageFromLastErrorCode(com.sun.jna.platform.win32.Kernel32.INSTANCE
+        return Kernel32Util.formatMessageFromLastErrorCode(Kernel32.INSTANCE
                 .GetLastError(), primaryLangId, sublangId);
     }
 
@@ -313,17 +305,17 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      * @return Path.
      */
     public static String getTempPath() {
-        DWORD nBufferLength = new DWORD(com.sun.jna.platform.win32.WinDef.MAX_PATH);
+        DWORD nBufferLength = new DWORD(WinDef.MAX_PATH);
         char[] buffer = new char[nBufferLength.intValue()];
-        if (com.sun.jna.platform.win32.Kernel32.INSTANCE.GetTempPath(nBufferLength, buffer).intValue() == 0) {
-            throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+        if (Kernel32.INSTANCE.GetTempPath(nBufferLength, buffer).intValue() == 0) {
+            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
         return Native.toString(buffer);
     }
 
     public static void deleteFile(String filename) {
-        if (!com.sun.jna.platform.win32.Kernel32.INSTANCE.DeleteFile(filename)) {
-            throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+        if (!Kernel32.INSTANCE.DeleteFile(filename)) {
+            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
     }
 
@@ -333,16 +325,16 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      * @return A {@link List} of valid drives.
      */
     public static List<String> getLogicalDriveStrings() {
-        DWORD dwSize = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLogicalDriveStrings(new DWORD(0), null);
+        DWORD dwSize = Kernel32.INSTANCE.GetLogicalDriveStrings(new DWORD(0), null);
         if (dwSize.intValue() <= 0) {
-            throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
 
         char buf[] = new char[dwSize.intValue()];
-        dwSize = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLogicalDriveStrings(dwSize, buf);
+        dwSize = Kernel32.INSTANCE.GetLogicalDriveStrings(dwSize, buf);
         int bufSize = dwSize.intValue();
         if (bufSize <= 0) {
-            throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
 
         return Native.toStringList(buf, 0, bufSize);
@@ -356,9 +348,9 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      * @return The attributes of the specified file or directory.
      */
     public static int getFileAttributes(String fileName) {
-        int fileAttributes = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetFileAttributes(fileName);
-        if (fileAttributes == com.sun.jna.platform.win32.WinBase.INVALID_FILE_ATTRIBUTES) {
-            throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+        int fileAttributes = Kernel32.INSTANCE.GetFileAttributes(fileName);
+        if (fileAttributes == WinBase.INVALID_FILE_ATTRIBUTES) {
+            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
         return fileAttributes;
     }
@@ -378,21 +370,21 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
         HANDLE hFile = null;
         Win32Exception err = null;
         try {
-            hFile = com.sun.jna.platform.win32.Kernel32.INSTANCE.CreateFile(fileName, com.sun.jna.platform.win32.WinNT.GENERIC_READ,
-                    com.sun.jna.platform.win32.WinNT.FILE_SHARE_READ, new com.sun.jna.platform.win32.WinBase.SECURITY_ATTRIBUTES(),
-                    com.sun.jna.platform.win32.WinNT.OPEN_EXISTING, com.sun.jna.platform.win32.WinNT.FILE_ATTRIBUTE_NORMAL,
+            hFile = Kernel32.INSTANCE.CreateFile(fileName, WinNT.GENERIC_READ,
+                    WinNT.FILE_SHARE_READ, new WinBase.SECURITY_ATTRIBUTES(),
+                    WinNT.OPEN_EXISTING, WinNT.FILE_ATTRIBUTE_NORMAL,
                     new HANDLEByReference().getValue());
 
-            if (com.sun.jna.platform.win32.WinBase.INVALID_HANDLE_VALUE.equals(hFile)) {
-                throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+            if (WinBase.INVALID_HANDLE_VALUE.equals(hFile)) {
+                throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
             }
 
-            int type = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetFileType(hFile);
+            int type = Kernel32.INSTANCE.GetFileType(hFile);
             switch (type) {
-                case com.sun.jna.platform.win32.WinNT.FILE_TYPE_UNKNOWN:
-                    int rc = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError();
+                case WinNT.FILE_TYPE_UNKNOWN:
+                    int rc = Kernel32.INSTANCE.GetLastError();
                     switch (rc) {
-                        case com.sun.jna.platform.win32.WinError.NO_ERROR:
+                        case WinError.NO_ERROR:
                             break;
                         default:
                             throw new Win32Exception(rc);
@@ -425,7 +417,7 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      * @return One of the WinBase.DRIVE_* constants.
      */
     public static int getDriveType(String rootName) {
-        return com.sun.jna.platform.win32.Kernel32.INSTANCE.GetDriveType(rootName);
+        return Kernel32.INSTANCE.GetDriveType(rootName);
     }
 
     /**
@@ -437,24 +429,24 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      */
     public static String getEnvironmentVariable(String name) {
         // obtain the buffer size
-        int size = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetEnvironmentVariable(name, null, 0);
+        int size = Kernel32.INSTANCE.GetEnvironmentVariable(name, null, 0);
         if (size == 0) {
             return null;
         } else if (size < 0) {
-            throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
         // obtain the value
         char[] buffer = new char[size];
-        size = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetEnvironmentVariable(name, buffer,
+        size = Kernel32.INSTANCE.GetEnvironmentVariable(name, buffer,
                 buffer.length);
         if (size <= 0) {
-            throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
         return Native.toString(buffer);
     }
 
     /**
-     * Uses the {@link com.sun.jna.platform.win32.Kernel32#GetEnvironmentStrings()} to retrieve and
+     * Uses the {@link Kernel32#GetEnvironmentStrings()} to retrieve and
      * parse the current process environment
      * @return The current process environment as a {@link Map}.
      * @throws LastErrorException if failed to get or free the environment
@@ -462,16 +454,16 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      * @see #getEnvironmentVariables(Pointer, long)
      */
     public static Map<String,String> getEnvironmentVariables() {
-        Pointer lpszEnvironmentBlock= com.sun.jna.platform.win32.Kernel32.INSTANCE.GetEnvironmentStrings();
+        Pointer lpszEnvironmentBlock=Kernel32.INSTANCE.GetEnvironmentStrings();
         if (lpszEnvironmentBlock == null) {
-            throw new LastErrorException(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+            throw new LastErrorException(Kernel32.INSTANCE.GetLastError());
         }
 
         try {
             return getEnvironmentVariables(lpszEnvironmentBlock, 0L);
         } finally {
-            if (!com.sun.jna.platform.win32.Kernel32.INSTANCE.FreeEnvironmentStrings(lpszEnvironmentBlock)) {
-                throw new LastErrorException(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+            if (!Kernel32.INSTANCE.FreeEnvironmentStrings(lpszEnvironmentBlock)) {
+                throw new LastErrorException(Kernel32.INSTANCE.GetLastError());
             }
         }
     }
@@ -633,7 +625,7 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      * @param keyName
      *            The name of the key whose value is to be retrieved. This value
      *            is in the form of a string; the
-     *            {@link com.sun.jna.platform.win32.Kernel32#GetPrivateProfileInt} function converts the
+     *            {@link Kernel32#GetPrivateProfileInt} function converts the
      *            string into an integer and returns the integer.
      * @param defaultValue
      *            The default value to return if the key name cannot be found in
@@ -646,7 +638,7 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      */
     public static final int getPrivateProfileInt(final String appName,
             final String keyName, final int defaultValue, final String fileName) {
-        return com.sun.jna.platform.win32.Kernel32.INSTANCE.GetPrivateProfileInt(appName, keyName,
+        return Kernel32.INSTANCE.GetPrivateProfileInt(appName, keyName,
                 defaultValue, fileName);
     }
 
@@ -656,7 +648,7 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      * @param lpAppName
      *            The name of the section containing the key name. If this
      *            parameter is {@code null}, the
-     *            {@link com.sun.jna.platform.win32.Kernel32#GetPrivateProfileString} function copies all
+     *            {@link Kernel32#GetPrivateProfileString} function copies all
      *            section names in the file to the supplied buffer.
      * @param lpKeyName
      *            The name of the key whose associated string is to be
@@ -666,7 +658,7 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      * @param lpDefault
      *            A default string. If the {@code lpKeyName} key cannot be found
      *            in the initialization file,
-     *            {@link com.sun.jna.platform.win32.Kernel32#GetPrivateProfileString} returns the default.
+     *            {@link Kernel32#GetPrivateProfileString} returns the default.
      *            If this parameter is {@code null}, the default is an empty
      *            string, {@code ""}.
      *            <p>
@@ -695,23 +687,23 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      *         {@code lpFileName} is not found, or contains invalid values, this
      *         function will set errorno with a value of '0x2' (File Not Found).
      *         To retrieve extended error information, call
-     *         {@link com.sun.jna.platform.win32.Kernel32#GetLastError}.
+     *         {@link Kernel32#GetLastError}.
      *         </p>
      */
     public static final String getPrivateProfileString(final String lpAppName,
             final String lpKeyName, final String lpDefault,
             final String lpFileName) {
         final char buffer[] = new char[1024];
-        com.sun.jna.platform.win32.Kernel32.INSTANCE.GetPrivateProfileString(lpAppName, lpKeyName,
+        Kernel32.INSTANCE.GetPrivateProfileString(lpAppName, lpKeyName,
                 lpDefault, buffer, new DWORD(buffer.length), lpFileName);
         return Native.toString(buffer);
     }
 
     public static final void writePrivateProfileString(final String appName,
             final String keyName, final String string, final String fileName) {
-        if (!com.sun.jna.platform.win32.Kernel32.INSTANCE.WritePrivateProfileString(appName, keyName,
+        if (!Kernel32.INSTANCE.WritePrivateProfileString(appName, keyName,
                 string, fileName))
-            throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
     }
 
     /**
@@ -720,29 +712,29 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      *
      * @return the array of processor information.
      */
-    public static final com.sun.jna.platform.win32.WinNT.SYSTEM_LOGICAL_PROCESSOR_INFORMATION[] getLogicalProcessorInformation() {
-        int sizePerStruct = new com.sun.jna.platform.win32.WinNT.SYSTEM_LOGICAL_PROCESSOR_INFORMATION()
+    public static final WinNT.SYSTEM_LOGICAL_PROCESSOR_INFORMATION[] getLogicalProcessorInformation() {
+        int sizePerStruct = new WinNT.SYSTEM_LOGICAL_PROCESSOR_INFORMATION()
                 .size();
-        DWORDByReference bufferSize = new DWORDByReference(
-                new DWORD(sizePerStruct));
+        WinDef.DWORDByReference bufferSize = new WinDef.DWORDByReference(
+                new WinDef.DWORD(sizePerStruct));
         Memory memory;
         while (true) {
             memory = new Memory(bufferSize.getValue().intValue());
-            if (!com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLogicalProcessorInformation(memory,
+            if (!Kernel32.INSTANCE.GetLogicalProcessorInformation(memory,
                     bufferSize)) {
-                int err = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError();
-                if (err != com.sun.jna.platform.win32.WinError.ERROR_INSUFFICIENT_BUFFER)
+                int err = Kernel32.INSTANCE.GetLastError();
+                if (err != WinError.ERROR_INSUFFICIENT_BUFFER)
                     throw new Win32Exception(err);
             } else {
                 break;
             }
         }
-        com.sun.jna.platform.win32.WinNT.SYSTEM_LOGICAL_PROCESSOR_INFORMATION firstInformation = new com.sun.jna.platform.win32.WinNT.SYSTEM_LOGICAL_PROCESSOR_INFORMATION(
+        WinNT.SYSTEM_LOGICAL_PROCESSOR_INFORMATION firstInformation = new WinNT.SYSTEM_LOGICAL_PROCESSOR_INFORMATION(
             memory);
         int returnedStructCount = bufferSize.getValue().intValue()
             / sizePerStruct;
-        return (com.sun.jna.platform.win32.WinNT.SYSTEM_LOGICAL_PROCESSOR_INFORMATION[]) firstInformation
-                .toArray(new com.sun.jna.platform.win32.WinNT.SYSTEM_LOGICAL_PROCESSOR_INFORMATION[returnedStructCount]);
+        return (WinNT.SYSTEM_LOGICAL_PROCESSOR_INFORMATION[]) firstInformation
+                .toArray(new WinNT.SYSTEM_LOGICAL_PROCESSOR_INFORMATION[returnedStructCount]);
     }
 
     /**
@@ -763,13 +755,13 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      */
     public static final SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX[] getLogicalProcessorInformationEx(
             int relationshipType) {
-        DWORDByReference bufferSize = new DWORDByReference(new DWORD(1));
+        WinDef.DWORDByReference bufferSize = new WinDef.DWORDByReference(new WinDef.DWORD(1));
         Memory memory;
         while (true) {
             memory = new Memory(bufferSize.getValue().intValue());
-            if (!com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLogicalProcessorInformationEx(relationshipType, memory, bufferSize)) {
-                int err = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError();
-                if (err != com.sun.jna.platform.win32.WinError.ERROR_INSUFFICIENT_BUFFER)
+            if (!Kernel32.INSTANCE.GetLogicalProcessorInformationEx(relationshipType, memory, bufferSize)) {
+                int err = Kernel32.INSTANCE.GetLastError();
+                if (err != WinError.ERROR_INSUFFICIENT_BUFFER)
                     throw new Win32Exception(err);
             } else {
                 break;
@@ -809,9 +801,9 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      */
     public static final String[] getPrivateProfileSection(final String appName, final String fileName) {
         final char buffer[] = new char[32768]; // Maximum section size according to MSDN (http://msdn.microsoft.com/en-us/library/windows/desktop/ms724348(v=vs.85).aspx)
-        if (com.sun.jna.platform.win32.Kernel32.INSTANCE.GetPrivateProfileSection(appName, buffer, new DWORD(buffer.length), fileName).intValue() == 0) {
-            final int lastError = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError();
-            if (lastError == com.sun.jna.platform.win32.Kernel32.ERROR_SUCCESS) {
+        if (Kernel32.INSTANCE.GetPrivateProfileSection(appName, buffer, new DWORD(buffer.length), fileName).intValue() == 0) {
+            final int lastError = Kernel32.INSTANCE.GetLastError();
+            if (lastError == Kernel32.ERROR_SUCCESS) {
                 return EMPTY_STRING_ARRAY;
             } else {
                 throw new Win32Exception(lastError);
@@ -833,8 +825,8 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      */
     public static final String[] getPrivateProfileSectionNames(final String fileName) {
         final char buffer[] = new char[65536]; // Maximum INI file size according to MSDN (http://support.microsoft.com/kb/78346)
-        if (com.sun.jna.platform.win32.Kernel32.INSTANCE.GetPrivateProfileSectionNames(buffer, new DWORD(buffer.length), fileName).intValue() == 0) {
-            throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+        if (Kernel32.INSTANCE.GetPrivateProfileSectionNames(buffer, new DWORD(buffer.length), fileName).intValue() == 0) {
+            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
         return new String(buffer).split("\0");
     }
@@ -853,13 +845,13 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
         for (final String string : strings)
             buffer.append(string).append('\0');
         buffer.append('\0');
-        if (! com.sun.jna.platform.win32.Kernel32.INSTANCE.WritePrivateProfileSection(appName, buffer.toString(), fileName)) {
-            throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+        if (! Kernel32.INSTANCE.WritePrivateProfileSection(appName, buffer.toString(), fileName)) {
+            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
     }
 
     /**
-     * Invokes the {@link com.sun.jna.platform.win32.Kernel32#QueryDosDevice(String, char[], int)} method
+     * Invokes the {@link Kernel32#QueryDosDevice(String, char[], int)} method
      * and parses the result
      * @param lpszDeviceName The device name
      * @param maxTargetSize The work buffer size to use for the query
@@ -867,26 +859,26 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      */
     public static final List<String> queryDosDevice(String lpszDeviceName, int maxTargetSize) {
         char[] lpTargetPath = new char[maxTargetSize];
-        int dwSize = com.sun.jna.platform.win32.Kernel32.INSTANCE.QueryDosDevice(lpszDeviceName, lpTargetPath, lpTargetPath.length);
+        int dwSize = Kernel32.INSTANCE.QueryDosDevice(lpszDeviceName, lpTargetPath, lpTargetPath.length);
         if (dwSize == 0) {
-            throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
 
         return Native.toStringList(lpTargetPath, 0, dwSize);
     }
 
     /**
-     * Invokes and parses the result of {@link com.sun.jna.platform.win32.Kernel32#GetVolumePathNamesForVolumeName(String, char[], int, IntByReference)}
+     * Invokes and parses the result of {@link Kernel32#GetVolumePathNamesForVolumeName(String, char[], int, IntByReference)}
      * @param lpszVolumeName The volume name
      * @return The parsed result
      * @throws Win32Exception If failed to retrieve the required information
      */
     public static final List<String> getVolumePathNamesForVolumeName(String lpszVolumeName) {
-        char[] lpszVolumePathNames = new char[com.sun.jna.platform.win32.WinDef.MAX_PATH + 1];
+        char[] lpszVolumePathNames = new char[WinDef.MAX_PATH + 1];
         IntByReference lpcchReturnLength = new IntByReference();
 
-        if (!com.sun.jna.platform.win32.Kernel32.INSTANCE.GetVolumePathNamesForVolumeName(lpszVolumeName, lpszVolumePathNames, lpszVolumePathNames.length, lpcchReturnLength)) {
-            int hr = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError();
+        if (!Kernel32.INSTANCE.GetVolumePathNamesForVolumeName(lpszVolumeName, lpszVolumePathNames, lpszVolumePathNames.length, lpcchReturnLength)) {
+            int hr = Kernel32.INSTANCE.GetLastError();
             if (hr != WinError.ERROR_MORE_DATA) {
                 throw new Win32Exception(hr);
             }
@@ -894,8 +886,8 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
             int required = lpcchReturnLength.getValue();
             lpszVolumePathNames = new char[required];
             // this time we MUST succeed
-            if (!com.sun.jna.platform.win32.Kernel32.INSTANCE.GetVolumePathNamesForVolumeName(lpszVolumeName, lpszVolumePathNames, lpszVolumePathNames.length, lpcchReturnLength)) {
-                throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+            if (!Kernel32.INSTANCE.GetVolumePathNamesForVolumeName(lpszVolumeName, lpszVolumePathNames, lpszVolumePathNames.length, lpcchReturnLength)) {
+                throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
             }
         }
 
@@ -909,8 +901,8 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
 
     /**
      * Parses and returns the pure GUID value of a volume name obtained
-     * from {@link com.sun.jna.platform.win32.Kernel32#FindFirstVolume(char[], int)} or
-     * {@link com.sun.jna.platform.win32.Kernel32#FindNextVolume} calls
+     * from {@link Kernel32#FindFirstVolume(char[], int)} or
+     * {@link Kernel32#FindNextVolume} calls
      *
      * @param volumeGUIDPath
      *              The volume GUID path as returned by one of the above mentioned calls
@@ -947,9 +939,9 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
         Win32Exception we = null;
 
         try {
-            hProcess = com.sun.jna.platform.win32.Kernel32.INSTANCE.OpenProcess(com.sun.jna.platform.win32.WinNT.PROCESS_QUERY_INFORMATION | WinNT.PROCESS_VM_READ, false, pid);
+            hProcess = Kernel32.INSTANCE.OpenProcess(WinNT.PROCESS_QUERY_INFORMATION | WinNT.PROCESS_VM_READ, false, pid);
             if (hProcess == null) {
-                throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+                throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
             }
             return QueryFullProcessImageName(hProcess, dwFlags);
         } catch (Win32Exception e) {
@@ -990,12 +982,12 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
         do {
             char[] lpExeName = new char[size];
             lpdwSize.setValue(size);
-            if (com.sun.jna.platform.win32.Kernel32.INSTANCE.QueryFullProcessImageName(hProcess, dwFlags, lpExeName, lpdwSize)) {
+            if (Kernel32.INSTANCE.QueryFullProcessImageName(hProcess, dwFlags, lpExeName, lpdwSize)) {
                 return new String(lpExeName, 0, lpdwSize.getValue());
             }
             size += 1024;
-        } while (com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError() == com.sun.jna.platform.win32.Kernel32.ERROR_INSUFFICIENT_BUFFER);
-        throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+        } while (Kernel32.INSTANCE.GetLastError() == Kernel32.ERROR_INSUFFICIENT_BUFFER);
+        throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
     }
 
     /**
@@ -1012,10 +1004,10 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      * @throws IllegalStateException if the call to LockResource fails
      */
     public static byte[] getResource(String path, String type, String name) {
-        HMODULE target = com.sun.jna.platform.win32.Kernel32.INSTANCE.LoadLibraryEx(path, null, com.sun.jna.platform.win32.Kernel32.LOAD_LIBRARY_AS_DATAFILE);
+        HMODULE target = Kernel32.INSTANCE.LoadLibraryEx(path, null, Kernel32.LOAD_LIBRARY_AS_DATAFILE);
 
         if (target == null) {
-            throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
 
         Win32Exception err = null;
@@ -1039,25 +1031,25 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
                 n.setWideString(0, name);
             }
 
-            HRSRC hrsrc = com.sun.jna.platform.win32.Kernel32.INSTANCE.FindResource(target, n, t);
+            HRSRC hrsrc = Kernel32.INSTANCE.FindResource(target, n, t);
             if (hrsrc == null) {
-                throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+                throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
             }
 
             // according to MSDN, on 32 bit Windows or newer, calling FreeResource() is not necessary - and in fact does nothing but return false.
-            HANDLE loaded = com.sun.jna.platform.win32.Kernel32.INSTANCE.LoadResource(target, hrsrc);
+            HANDLE loaded = Kernel32.INSTANCE.LoadResource(target, hrsrc);
             if (loaded == null) {
-                throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+                throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
             }
 
-            length = com.sun.jna.platform.win32.Kernel32.INSTANCE.SizeofResource(target, hrsrc);
+            length = Kernel32.INSTANCE.SizeofResource(target, hrsrc);
             if (length == 0) {
-                throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+                throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
             }
 
             // MSDN: It is not necessary to unlock resources because the system automatically deletes them when the process that created them terminates.
             // MSDN does not say that LockResource sets GetLastError
-            start = com.sun.jna.platform.win32.Kernel32.INSTANCE.LockResource(loaded);
+            start = Kernel32.INSTANCE.LockResource(loaded);
             if (start == null) {
                 throw new IllegalStateException("LockResource returned null.");
             }
@@ -1068,8 +1060,8 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
         } finally {
             // from what I can tell on MSDN, the only thing that needs cleanup on this is the HMODULE from LoadLibrary
             if (target != null) {
-                if (!com.sun.jna.platform.win32.Kernel32.INSTANCE.FreeLibrary(target)) {
-                    Win32Exception we = new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+                if (!Kernel32.INSTANCE.FreeLibrary(target)) {
+                    Win32Exception we = new Win32Exception(Kernel32.INSTANCE.GetLastError());
                     if (err != null) {
                         we.addSuppressedReflected(err);
                     }
@@ -1095,16 +1087,16 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      *         be handed off to getResource() to actually get the resource.
      */
     public static Map<String, List<String>> getResourceNames(String path) {
-        HMODULE target = com.sun.jna.platform.win32.Kernel32.INSTANCE.LoadLibraryEx(path, null, com.sun.jna.platform.win32.Kernel32.LOAD_LIBRARY_AS_DATAFILE);
+        HMODULE target = Kernel32.INSTANCE.LoadLibraryEx(path, null, Kernel32.LOAD_LIBRARY_AS_DATAFILE);
 
         if (target == null) {
-            throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
 
         final List<String> types = new ArrayList<String>();
         final Map<String, List<String>> result = new LinkedHashMap<String, List<String>>();
 
-        com.sun.jna.platform.win32.WinBase.EnumResTypeProc ertp = new com.sun.jna.platform.win32.WinBase.EnumResTypeProc() {
+        WinBase.EnumResTypeProc ertp = new WinBase.EnumResTypeProc() {
 
             @Override
             public boolean invoke(HMODULE module, Pointer type, Pointer lParam) {
@@ -1121,7 +1113,7 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
             }
         };
 
-        com.sun.jna.platform.win32.WinBase.EnumResNameProc ernp = new WinBase.EnumResNameProc() {
+        WinBase.EnumResNameProc ernp = new WinBase.EnumResNameProc() {
 
             @Override
             public boolean invoke(HMODULE module, Pointer type, Pointer name, Pointer lParam) {
@@ -1146,8 +1138,8 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
 
         Win32Exception err = null;
         try {
-            if (!com.sun.jna.platform.win32.Kernel32.INSTANCE.EnumResourceTypes(target, ertp, null)) {
-                throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+            if (!Kernel32.INSTANCE.EnumResourceTypes(target, ertp, null)) {
+                throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
             }
 
             for (final String typeName : types) {
@@ -1164,10 +1156,10 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
                     pointer.setWideString(0, typeName);
                 }
 
-                boolean callResult = com.sun.jna.platform.win32.Kernel32.INSTANCE.EnumResourceNames(target, pointer, ernp, null);
+                boolean callResult = Kernel32.INSTANCE.EnumResourceNames(target, pointer, ernp, null);
 
                 if (!callResult) {
-                    throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+                    throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
                 }
             }
         } catch (Win32Exception e) {
@@ -1176,8 +1168,8 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
             // from what I can tell on MSDN, the only thing that needs cleanup
             // on this is the HMODULE from LoadLibrary
             if (target != null) {
-                if (!com.sun.jna.platform.win32.Kernel32.INSTANCE.FreeLibrary(target)) {
-                    Win32Exception we = new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+                if (!Kernel32.INSTANCE.FreeLibrary(target)) {
+                    Win32Exception we = new Win32Exception(Kernel32.INSTANCE.GetLastError());
                     if (err != null) {
                         we.addSuppressedReflected(err);
                     }
@@ -1199,34 +1191,34 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
      *            The process ID to get executable modules for
      * @return All the modules in the process.
      */
-    public static List<com.sun.jna.platform.win32.Tlhelp32.MODULEENTRY32W> getModules(int processID) {
-        HANDLE snapshot = com.sun.jna.platform.win32.Kernel32.INSTANCE.CreateToolhelp32Snapshot(com.sun.jna.platform.win32.Tlhelp32.TH32CS_SNAPMODULE, new DWORD(processID));
+    public static List<Tlhelp32.MODULEENTRY32W> getModules(int processID) {
+        HANDLE snapshot = Kernel32.INSTANCE.CreateToolhelp32Snapshot(Tlhelp32.TH32CS_SNAPMODULE, new DWORD(processID));
         if (snapshot == null) {
-            throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
 
         Win32Exception we = null;
         try {
-            com.sun.jna.platform.win32.Tlhelp32.MODULEENTRY32W first = new com.sun.jna.platform.win32.Tlhelp32.MODULEENTRY32W();
+            Tlhelp32.MODULEENTRY32W first = new Tlhelp32.MODULEENTRY32W();
 
-            if (!com.sun.jna.platform.win32.Kernel32.INSTANCE.Module32FirstW(snapshot, first)) {
-                throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+            if (!Kernel32.INSTANCE.Module32FirstW(snapshot, first)) {
+                throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
             }
 
-            List<com.sun.jna.platform.win32.Tlhelp32.MODULEENTRY32W> modules = new ArrayList<com.sun.jna.platform.win32.Tlhelp32.MODULEENTRY32W>();
+            List<Tlhelp32.MODULEENTRY32W> modules = new ArrayList<Tlhelp32.MODULEENTRY32W>();
             modules.add(first);
 
-            com.sun.jna.platform.win32.Tlhelp32.MODULEENTRY32W next = new com.sun.jna.platform.win32.Tlhelp32.MODULEENTRY32W();
-            while (com.sun.jna.platform.win32.Kernel32.INSTANCE.Module32NextW(snapshot, next)) {
+            Tlhelp32.MODULEENTRY32W next = new Tlhelp32.MODULEENTRY32W();
+            while (Kernel32.INSTANCE.Module32NextW(snapshot, next)) {
                 modules.add(next);
                 next = new Tlhelp32.MODULEENTRY32W();
             }
 
-            int lastError = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError();
+            int lastError = Kernel32.INSTANCE.GetLastError();
             // if we got a false from Module32Next,
             // check to see if it returned false because we're genuinely done
             // or if something went wrong.
-            if (lastError != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS && lastError != W32Errors.ERROR_NO_MORE_FILES) {
+            if (lastError != W32Errors.ERROR_SUCCESS && lastError != W32Errors.ERROR_NO_MORE_FILES) {
                 throw new Win32Exception(lastError);
             }
 
@@ -1276,10 +1268,10 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
             return "";
         }
 
-        int resultChars = com.sun.jna.platform.win32.Kernel32.INSTANCE.ExpandEnvironmentStrings(input, null, 0);
+        int resultChars = Kernel32.INSTANCE.ExpandEnvironmentStrings(input, null, 0);
 
         if(resultChars == 0) {
-            throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
 
         Memory resultMemory;
@@ -1291,7 +1283,7 @@ public abstract class Kernel32Util implements com.sun.jna.platform.win32.WinDef 
             // string length, plus terminating null character, plus one
             resultMemory = new Memory(resultChars + 1);
         }
-        resultChars = com.sun.jna.platform.win32.Kernel32.INSTANCE.ExpandEnvironmentStrings(input, resultMemory, resultChars);
+        resultChars = Kernel32.INSTANCE.ExpandEnvironmentStrings(input, resultMemory, resultChars);
 
         if(resultChars == 0) {
             throw new Win32Exception(Kernel32.INSTANCE.GetLastError());

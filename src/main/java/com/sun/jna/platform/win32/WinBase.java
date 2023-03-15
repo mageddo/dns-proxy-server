@@ -21,7 +21,7 @@
  * A copy is also included in the downloadable source code package
  * containing JNA, in file "AL2.0".
  */
-package com.mageddo.sun.jna.platform.win32;
+package com.sun.jna.platform.win32;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -34,12 +34,6 @@ import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import com.sun.jna.Structure.FieldOrder;
 import com.sun.jna.Union;
-import com.sun.jna.platform.win32.Advapi32;
-import com.sun.jna.platform.win32.BaseTSD;
-import com.sun.jna.platform.win32.Kernel32;
-import com.sun.jna.platform.win32.NTStatus;
-import com.sun.jna.platform.win32.WinDef;
-import com.sun.jna.platform.win32.WinNT;
 import com.sun.jna.platform.win32.WinNT.HANDLE;
 import com.sun.jna.platform.win32.WinNT.LARGE_INTEGER;
 import com.sun.jna.ptr.ByteByReference;
@@ -199,7 +193,7 @@ public interface WinBase extends WinDef, BaseTSD {
   /**
    * Return code for a process still active.
    */
-  int STILL_ACTIVE = com.sun.jna.platform.win32.WinNT.STATUS_PENDING;
+  int STILL_ACTIVE = WinNT.STATUS_PENDING;
 
   // Codes for FILE_INFO_BY_HANDLE_CLASS taken from Winbase.h
   int FileBasicInfo                   = 0;
@@ -224,11 +218,11 @@ public interface WinBase extends WinDef, BaseTSD {
   int FileIdExtdDirectoryInfo         = 19; // 0x13
   int FileIdExtdDirectoryRestartInfo  = 20; // 0x14
 
-  int FILE_MAP_COPY = com.sun.jna.platform.win32.WinNT.SECTION_QUERY;
-  int FILE_MAP_WRITE = com.sun.jna.platform.win32.WinNT.SECTION_MAP_WRITE;
-  int FILE_MAP_READ = com.sun.jna.platform.win32.WinNT.SECTION_MAP_READ;
-  int FILE_MAP_ALL_ACCESS = com.sun.jna.platform.win32.WinNT.SECTION_ALL_ACCESS;
-  int FILE_MAP_EXECUTE = com.sun.jna.platform.win32.WinNT.SECTION_MAP_EXECUTE_EXPLICIT;
+  int FILE_MAP_COPY = WinNT.SECTION_QUERY;
+  int FILE_MAP_WRITE = WinNT.SECTION_MAP_WRITE;
+  int FILE_MAP_READ = WinNT.SECTION_MAP_READ;
+  int FILE_MAP_ALL_ACCESS = WinNT.SECTION_ALL_ACCESS;
+  int FILE_MAP_EXECUTE = WinNT.SECTION_MAP_EXECUTE_EXPLICIT;
 
   /**
    * Contains the basic information for a file. Used for file handles.
@@ -2497,6 +2491,6 @@ public interface WinBase extends WinDef, BaseTSD {
   int ES_USER_PRESENT = 0x00000004;
 
 
-  int MUTEX_MODIFY_STATE = com.sun.jna.platform.win32.WinNT.MUTANT_QUERY_STATE;
+  int MUTEX_MODIFY_STATE = WinNT.MUTANT_QUERY_STATE;
   int MUTEX_ALL_ACCESS = WinNT.MUTANT_ALL_ACCESS;
 }

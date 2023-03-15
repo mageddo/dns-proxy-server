@@ -22,7 +22,7 @@
  * containing JNA, in file "AL2.0".
  */
 
-package com.mageddo.sun.jna.platform.win32;
+package com.sun.jna.platform.win32;
 
 import com.sun.jna.win32.StdCallLibrary;
 

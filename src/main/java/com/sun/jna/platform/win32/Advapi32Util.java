@@ -21,7 +21,7 @@
  * A copy is also included in the downloadable source code package
  * containing JNA, in file "AL2.0".
  */
-package com.mageddo.sun.jna.platform.win32;
+package com.sun.jna.platform.win32;
 
 import static com.sun.jna.platform.win32.WinBase.CREATE_FOR_DIR;
 import static com.sun.jna.platform.win32.WinBase.CREATE_FOR_IMPORT;
@@ -63,13 +63,6 @@ import java.util.TreeMap;
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
-import com.sun.jna.platform.win32.AccCtrl;
-import com.sun.jna.platform.win32.Advapi32;
-import com.sun.jna.platform.win32.Kernel32;
-import com.sun.jna.platform.win32.Kernel32Util;
-import com.sun.jna.platform.win32.W32Errors;
-import com.sun.jna.platform.win32.Win32Exception;
-import com.sun.jna.platform.win32.WinBase;
 import com.sun.jna.platform.win32.WinBase.FE_EXPORT_FUNC;
 import com.sun.jna.platform.win32.WinBase.FE_IMPORT_FUNC;
 import com.sun.jna.platform.win32.WinBase.FILETIME;
@@ -78,8 +71,6 @@ import com.sun.jna.platform.win32.WinDef.DWORD;
 import com.sun.jna.platform.win32.WinDef.DWORDByReference;
 import com.sun.jna.platform.win32.WinDef.ULONG;
 import com.sun.jna.platform.win32.WinDef.ULONGByReference;
-import com.sun.jna.platform.win32.WinError;
-import com.sun.jna.platform.win32.WinNT;
 import com.sun.jna.platform.win32.WinNT.ACCESS_ACEStructure;
 import com.sun.jna.platform.win32.WinNT.ACCESS_ALLOWED_ACE;
 import com.sun.jna.platform.win32.WinNT.ACE_HEADER;
@@ -97,7 +88,6 @@ import com.sun.jna.platform.win32.WinNT.SID_AND_ATTRIBUTES;
 import com.sun.jna.platform.win32.WinNT.SID_NAME_USE;
 import com.sun.jna.platform.win32.WinNT.TOKEN_ELEVATION;
 import com.sun.jna.platform.win32.WinNT.TOKEN_TYPE;
-import com.sun.jna.platform.win32.WinReg;
 import com.sun.jna.platform.win32.WinReg.HKEY;
 import com.sun.jna.platform.win32.WinReg.HKEYByReference;
 import com.sun.jna.ptr.IntByReference;
@@ -155,11 +145,11 @@ public abstract class Advapi32Util {
   public static String getUserName() {
     char[] buffer = new char[128];
     IntByReference len = new IntByReference(buffer.length);
-    boolean result = com.sun.jna.platform.win32.Advapi32.INSTANCE.GetUserNameW(buffer, len);
+    boolean result = Advapi32.INSTANCE.GetUserNameW(buffer, len);
 
     if (!result) {
-      switch (com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError()) {
-        case com.sun.jna.platform.win32.W32Errors.ERROR_INSUFFICIENT_BUFFER:
+      switch (Kernel32.INSTANCE.GetLastError()) {
+        case W32Errors.ERROR_INSUFFICIENT_BUFFER:
           buffer = new char[len.getValue()];
           break;
 
@@ -167,7 +157,7 @@ public abstract class Advapi32Util {
           throw new Win32Exception(Native.getLastError());
       }
 
-      result = com.sun.jna.platform.win32.Advapi32.INSTANCE.GetUserNameW(buffer, len);
+      result = Advapi32.INSTANCE.GetUserNameW(buffer, len);
     }
 
     if (!result) {
@@ -203,14 +193,14 @@ public abstract class Advapi32Util {
     IntByReference cchDomainName = new IntByReference(0);
     PointerByReference peUse = new PointerByReference();
 
-    if (com.sun.jna.platform.win32.Advapi32.INSTANCE.LookupAccountName(systemName, accountName, null,
+    if (Advapi32.INSTANCE.LookupAccountName(systemName, accountName, null,
       pSid, null, cchDomainName, peUse)) {
       throw new RuntimeException(
         "LookupAccountNameW was expected to fail with ERROR_INSUFFICIENT_BUFFER");
     }
 
-    int rc = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError();
-    if (pSid.getValue() == 0 || rc != com.sun.jna.platform.win32.W32Errors.ERROR_INSUFFICIENT_BUFFER) {
+    int rc = Kernel32.INSTANCE.GetLastError();
+    if (pSid.getValue() == 0 || rc != W32Errors.ERROR_INSUFFICIENT_BUFFER) {
       throw new Win32Exception(rc);
     }
 
@@ -218,9 +208,9 @@ public abstract class Advapi32Util {
     PSID result = new PSID(sidMemory);
     char[] referencedDomainName = new char[cchDomainName.getValue() + 1];
 
-    if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.LookupAccountName(systemName, accountName,
+    if (!Advapi32.INSTANCE.LookupAccountName(systemName, accountName,
       result, pSid, referencedDomainName, cchDomainName, peUse)) {
-      throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+      throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
     }
 
     Account account = new Account();
@@ -279,11 +269,11 @@ public abstract class Advapi32Util {
     char[] domainName = new char[cchDomainName.getValue()];
     char[] name = new char[cchName.getValue()];
 
-    int rc = com.sun.jna.platform.win32.WinError.ERROR_SUCCESS;
-    if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.LookupAccountSid(systemName, sid, name, cchName,
+    int rc = WinError.ERROR_SUCCESS;
+    if (!Advapi32.INSTANCE.LookupAccountSid(systemName, sid, name, cchName,
       domainName, cchDomainName, peUse)) {
-      rc = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError();
-      if (rc != com.sun.jna.platform.win32.WinError.ERROR_NONE_MAPPED) {
+      rc = Kernel32.INSTANCE.GetLastError();
+      if (rc != WinError.ERROR_NONE_MAPPED) {
         throw new Win32Exception(rc);
       }
     }
@@ -319,8 +309,8 @@ public abstract class Advapi32Util {
    */
   public static String convertSidToStringSid(PSID sid) {
     PointerByReference stringSid = new PointerByReference();
-    if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.ConvertSidToStringSid(sid, stringSid)) {
-      throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+    if (!Advapi32.INSTANCE.ConvertSidToStringSid(sid, stringSid)) {
+      throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
     }
 
     Pointer ptr = stringSid.getValue();
@@ -341,8 +331,8 @@ public abstract class Advapi32Util {
    */
   public static byte[] convertStringSidToSid(String sidString) {
     PSIDByReference pSID = new PSIDByReference();
-    if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.ConvertStringSidToSid(sidString, pSID)) {
-      throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+    if (!Advapi32.INSTANCE.ConvertStringSidToSid(sidString, pSID)) {
+      throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
     }
 
     PSID value = pSID.getValue();
@@ -365,13 +355,13 @@ public abstract class Advapi32Util {
    */
   public static boolean isWellKnownSid(String sidString, int wellKnownSidType) {
     PSIDByReference pSID = new PSIDByReference();
-    if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.ConvertStringSidToSid(sidString, pSID)) {
-      throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+    if (!Advapi32.INSTANCE.ConvertStringSidToSid(sidString, pSID)) {
+      throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
     }
 
     PSID value = pSID.getValue();
     try {
-      return com.sun.jna.platform.win32.Advapi32.INSTANCE.IsWellKnownSid(value, wellKnownSidType);
+      return Advapi32.INSTANCE.IsWellKnownSid(value, wellKnownSidType);
     } finally {
       Kernel32Util.freeLocalMemory(value.getPointer());
     }
@@ -389,7 +379,7 @@ public abstract class Advapi32Util {
    */
   public static boolean isWellKnownSid(byte[] sidBytes, int wellKnownSidType) {
     PSID pSID = new PSID(sidBytes);
-    return com.sun.jna.platform.win32.Advapi32.INSTANCE.IsWellKnownSid(pSID, wellKnownSidType);
+    return Advapi32.INSTANCE.IsWellKnownSid(pSID, wellKnownSidType);
   }
 
   /**
@@ -447,23 +437,23 @@ public abstract class Advapi32Util {
   public static Account[] getTokenGroups(HANDLE hToken) {
     // get token group information size
     IntByReference tokenInformationLength = new IntByReference();
-    if (com.sun.jna.platform.win32.Advapi32.INSTANCE.GetTokenInformation(hToken,
-      com.sun.jna.platform.win32.WinNT.TOKEN_INFORMATION_CLASS.TokenGroups, null, 0,
+    if (Advapi32.INSTANCE.GetTokenInformation(hToken,
+      WinNT.TOKEN_INFORMATION_CLASS.TokenGroups, null, 0,
       tokenInformationLength)) {
       throw new RuntimeException(
         "Expected GetTokenInformation to fail with ERROR_INSUFFICIENT_BUFFER");
     }
-    int rc = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError();
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_INSUFFICIENT_BUFFER) {
+    int rc = Kernel32.INSTANCE.GetLastError();
+    if (rc != W32Errors.ERROR_INSUFFICIENT_BUFFER) {
       throw new Win32Exception(rc);
     }
     // get token group information
-    com.sun.jna.platform.win32.WinNT.TOKEN_GROUPS groups = new com.sun.jna.platform.win32.WinNT.TOKEN_GROUPS(
+    WinNT.TOKEN_GROUPS groups = new WinNT.TOKEN_GROUPS(
       tokenInformationLength.getValue());
-    if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.GetTokenInformation(hToken,
-      com.sun.jna.platform.win32.WinNT.TOKEN_INFORMATION_CLASS.TokenGroups, groups,
+    if (!Advapi32.INSTANCE.GetTokenInformation(hToken,
+      WinNT.TOKEN_INFORMATION_CLASS.TokenGroups, groups,
       tokenInformationLength.getValue(), tokenInformationLength)) {
-      throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+      throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
     }
     ArrayList<Account> userGroups = new ArrayList<Account>();
     // make array of names
@@ -496,19 +486,19 @@ public abstract class Advapi32Util {
   public static Account getTokenPrimaryGroup(HANDLE hToken) {
     // get token group information size
     IntByReference tokenInformationLength = new IntByReference();
-    if (com.sun.jna.platform.win32.Advapi32.INSTANCE.GetTokenInformation(hToken, com.sun.jna.platform.win32.WinNT.TOKEN_INFORMATION_CLASS.TokenPrimaryGroup, null, 0,
+    if (Advapi32.INSTANCE.GetTokenInformation(hToken, WinNT.TOKEN_INFORMATION_CLASS.TokenPrimaryGroup, null, 0,
       tokenInformationLength)) {
       throw new RuntimeException("Expected GetTokenInformation to fail with ERROR_INSUFFICIENT_BUFFER");
     }
-    int rc = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError();
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_INSUFFICIENT_BUFFER) {
+    int rc = Kernel32.INSTANCE.GetLastError();
+    if (rc != W32Errors.ERROR_INSUFFICIENT_BUFFER) {
       throw new Win32Exception(rc);
     }
     // get token group information
-    com.sun.jna.platform.win32.WinNT.TOKEN_PRIMARY_GROUP primaryGroup = new com.sun.jna.platform.win32.WinNT.TOKEN_PRIMARY_GROUP(tokenInformationLength.getValue());
-    if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.GetTokenInformation(hToken, com.sun.jna.platform.win32.WinNT.TOKEN_INFORMATION_CLASS.TokenPrimaryGroup,
+    WinNT.TOKEN_PRIMARY_GROUP primaryGroup = new WinNT.TOKEN_PRIMARY_GROUP(tokenInformationLength.getValue());
+    if (!Advapi32.INSTANCE.GetTokenInformation(hToken, WinNT.TOKEN_INFORMATION_CLASS.TokenPrimaryGroup,
       primaryGroup, tokenInformationLength.getValue(), tokenInformationLength)) {
-      throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+      throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
     }
     Account group;
     try {
@@ -535,23 +525,23 @@ public abstract class Advapi32Util {
   public static Account getTokenAccount(HANDLE hToken) {
     // get token group information size
     IntByReference tokenInformationLength = new IntByReference();
-    if (com.sun.jna.platform.win32.Advapi32.INSTANCE.GetTokenInformation(hToken,
-      com.sun.jna.platform.win32.WinNT.TOKEN_INFORMATION_CLASS.TokenUser, null, 0,
+    if (Advapi32.INSTANCE.GetTokenInformation(hToken,
+      WinNT.TOKEN_INFORMATION_CLASS.TokenUser, null, 0,
       tokenInformationLength)) {
       throw new RuntimeException(
         "Expected GetTokenInformation to fail with ERROR_INSUFFICIENT_BUFFER");
     }
-    int rc = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError();
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_INSUFFICIENT_BUFFER) {
+    int rc = Kernel32.INSTANCE.GetLastError();
+    if (rc != W32Errors.ERROR_INSUFFICIENT_BUFFER) {
       throw new Win32Exception(rc);
     }
     // get token user information
-    com.sun.jna.platform.win32.WinNT.TOKEN_USER user = new com.sun.jna.platform.win32.WinNT.TOKEN_USER(
+    WinNT.TOKEN_USER user = new WinNT.TOKEN_USER(
       tokenInformationLength.getValue());
-    if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.GetTokenInformation(hToken,
-      com.sun.jna.platform.win32.WinNT.TOKEN_INFORMATION_CLASS.TokenUser, user,
+    if (!Advapi32.INSTANCE.GetTokenInformation(hToken,
+      WinNT.TOKEN_INFORMATION_CLASS.TokenUser, user,
       tokenInformationLength.getValue(), tokenInformationLength)) {
-      throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+      throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
     }
     return getAccountBySid(user.User.Sid);
   }
@@ -566,18 +556,18 @@ public abstract class Advapi32Util {
     Win32Exception err = null;
     try {
       // open thread or process token
-      HANDLE threadHandle = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetCurrentThread();
-      if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.OpenThreadToken(threadHandle,
+      HANDLE threadHandle = Kernel32.INSTANCE.GetCurrentThread();
+      if (!Advapi32.INSTANCE.OpenThreadToken(threadHandle,
         TOKEN_DUPLICATE | TOKEN_QUERY, true, phToken)) {
-        int rc = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError();
-        if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_NO_TOKEN) {
+        int rc = Kernel32.INSTANCE.GetLastError();
+        if (rc != W32Errors.ERROR_NO_TOKEN) {
           throw new Win32Exception(rc);
         }
 
-        HANDLE processHandle = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetCurrentProcess();
-        if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.OpenProcessToken(processHandle,
+        HANDLE processHandle = Kernel32.INSTANCE.GetCurrentProcess();
+        if (!Advapi32.INSTANCE.OpenProcessToken(processHandle,
           TOKEN_DUPLICATE | TOKEN_QUERY, phToken)) {
-          throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+          throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
       }
 
@@ -587,7 +577,7 @@ public abstract class Advapi32Util {
       throw err;    // re-throw in order to invoke finally block
     } finally {
       HANDLE hToken = phToken.getValue();
-      if (!com.sun.jna.platform.win32.WinBase.INVALID_HANDLE_VALUE.equals(hToken)) {
+      if (!WinBase.INVALID_HANDLE_VALUE.equals(hToken)) {
         try {
           Kernel32Util.closeHandle(hToken);
         } catch(Win32Exception e) {
@@ -632,13 +622,13 @@ public abstract class Advapi32Util {
    */
   public static boolean registryKeyExists(HKEY root, String key, int samDesiredExtra) {
     HKEYByReference phkKey = new HKEYByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegOpenKeyEx(root, key, 0, com.sun.jna.platform.win32.WinNT.KEY_READ | samDesiredExtra,
+    int rc = Advapi32.INSTANCE.RegOpenKeyEx(root, key, 0, WinNT.KEY_READ | samDesiredExtra,
       phkKey);
     switch (rc) {
-      case com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS:
-        com.sun.jna.platform.win32.Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
+      case W32Errors.ERROR_SUCCESS:
+        Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
         return true;
-      case com.sun.jna.platform.win32.W32Errors.ERROR_FILE_NOT_FOUND:
+      case W32Errors.ERROR_FILE_NOT_FOUND:
         return false;
       default:
         throw new Win32Exception(rc);
@@ -677,12 +667,12 @@ public abstract class Advapi32Util {
   public static boolean registryValueExists(HKEY root, String key,
                                             String value, int samDesiredExtra) {
     HKEYByReference phkKey = new HKEYByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegOpenKeyEx(root, key, 0, com.sun.jna.platform.win32.WinNT.KEY_READ | samDesiredExtra,
+    int rc = Advapi32.INSTANCE.RegOpenKeyEx(root, key, 0, WinNT.KEY_READ | samDesiredExtra,
       phkKey);
     switch (rc) {
-      case com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS:
+      case W32Errors.ERROR_SUCCESS:
         break;
-      case com.sun.jna.platform.win32.W32Errors.ERROR_FILE_NOT_FOUND:
+      case W32Errors.ERROR_FILE_NOT_FOUND:
         return false;
       default:
         throw new Win32Exception(rc);
@@ -690,22 +680,22 @@ public abstract class Advapi32Util {
     try {
       IntByReference lpcbData = new IntByReference();
       IntByReference lpType = new IntByReference();
-      rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegQueryValueEx(phkKey.getValue(), value, 0,
+      rc = Advapi32.INSTANCE.RegQueryValueEx(phkKey.getValue(), value, 0,
         lpType, (Pointer) null, lpcbData);
       switch (rc) {
-        case com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS:
-        case com.sun.jna.platform.win32.W32Errors.ERROR_MORE_DATA:
-        case com.sun.jna.platform.win32.W32Errors.ERROR_INSUFFICIENT_BUFFER:
+        case W32Errors.ERROR_SUCCESS:
+        case W32Errors.ERROR_MORE_DATA:
+        case W32Errors.ERROR_INSUFFICIENT_BUFFER:
           return true;
-        case com.sun.jna.platform.win32.W32Errors.ERROR_FILE_NOT_FOUND:
+        case W32Errors.ERROR_FILE_NOT_FOUND:
           return false;
         default:
           throw new Win32Exception(rc);
       }
     } finally {
-      if (!com.sun.jna.platform.win32.WinBase.INVALID_HANDLE_VALUE.equals(phkKey.getValue())) {
-        rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
-        if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+      if (!WinBase.INVALID_HANDLE_VALUE.equals(phkKey.getValue())) {
+        rc = Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
+        if (rc != W32Errors.ERROR_SUCCESS) {
           throw new Win32Exception(rc);
         }
       }
@@ -745,16 +735,16 @@ public abstract class Advapi32Util {
   public static String registryGetStringValue(HKEY root, String key,
                                               String value, int samDesiredExtra) {
     HKEYByReference phkKey = new HKEYByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegOpenKeyEx(root, key, 0, com.sun.jna.platform.win32.WinNT.KEY_READ | samDesiredExtra ,
+    int rc = Advapi32.INSTANCE.RegOpenKeyEx(root, key, 0, WinNT.KEY_READ | samDesiredExtra ,
       phkKey);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
     try {
       return registryGetStringValue(phkKey.getValue(), value);
     } finally {
-      rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
-      if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+      rc = Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
+      if (rc != W32Errors.ERROR_SUCCESS) {
         throw new Win32Exception(rc);
       }
     }
@@ -772,14 +762,14 @@ public abstract class Advapi32Util {
   public static String registryGetStringValue(HKEY hKey, String value) {
     IntByReference lpcbData = new IntByReference();
     IntByReference lpType = new IntByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
+    int rc = Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
       lpType, (Pointer) null, lpcbData);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS
-      && rc != com.sun.jna.platform.win32.W32Errors.ERROR_INSUFFICIENT_BUFFER) {
+    if (rc != W32Errors.ERROR_SUCCESS
+      && rc != W32Errors.ERROR_INSUFFICIENT_BUFFER) {
       throw new Win32Exception(rc);
     }
-    if (lpType.getValue() != com.sun.jna.platform.win32.WinNT.REG_SZ
-      && lpType.getValue() != com.sun.jna.platform.win32.WinNT.REG_EXPAND_SZ) {
+    if (lpType.getValue() != WinNT.REG_SZ
+      && lpType.getValue() != WinNT.REG_EXPAND_SZ) {
       throw new RuntimeException("Unexpected registry type "
         + lpType.getValue()
         + ", expected REG_SZ or REG_EXPAND_SZ");
@@ -790,10 +780,10 @@ public abstract class Advapi32Util {
     // See comment in #registryGetValue
     Memory mem = new Memory(lpcbData.getValue() + Native.WCHAR_SIZE);
     mem.clear();
-    rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
+    rc = Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
       lpType, mem, lpcbData);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS
-      && rc != com.sun.jna.platform.win32.W32Errors.ERROR_INSUFFICIENT_BUFFER) {
+    if (rc != W32Errors.ERROR_SUCCESS
+      && rc != W32Errors.ERROR_INSUFFICIENT_BUFFER) {
       throw new Win32Exception(rc);
     }
     if (W32APITypeMapper.DEFAULT == W32APITypeMapper.UNICODE) {
@@ -836,16 +826,16 @@ public abstract class Advapi32Util {
   public static String registryGetExpandableStringValue(HKEY root,
                                                         String key, String value, int samDesiredExtra) {
     HKEYByReference phkKey = new HKEYByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegOpenKeyEx(root, key, 0, com.sun.jna.platform.win32.WinNT.KEY_READ | samDesiredExtra,
+    int rc = Advapi32.INSTANCE.RegOpenKeyEx(root, key, 0, WinNT.KEY_READ | samDesiredExtra,
       phkKey);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
     try {
       return registryGetExpandableStringValue(phkKey.getValue(), value);
     } finally {
-      rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
-      if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+      rc = Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
+      if (rc != W32Errors.ERROR_SUCCESS) {
         throw new Win32Exception(rc);
       }
     }
@@ -863,13 +853,13 @@ public abstract class Advapi32Util {
   public static String registryGetExpandableStringValue(HKEY hKey, String value) {
     IntByReference lpcbData = new IntByReference();
     IntByReference lpType = new IntByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
+    int rc = Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
       lpType, (char[]) null, lpcbData);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS
-      && rc != com.sun.jna.platform.win32.W32Errors.ERROR_INSUFFICIENT_BUFFER) {
+    if (rc != W32Errors.ERROR_SUCCESS
+      && rc != W32Errors.ERROR_INSUFFICIENT_BUFFER) {
       throw new Win32Exception(rc);
     }
-    if (lpType.getValue() != com.sun.jna.platform.win32.WinNT.REG_EXPAND_SZ) {
+    if (lpType.getValue() != WinNT.REG_EXPAND_SZ) {
       throw new RuntimeException("Unexpected registry type "
         + lpType.getValue() + ", expected REG_SZ");
     }
@@ -879,10 +869,10 @@ public abstract class Advapi32Util {
     // See comment in #registryGetValue
     Memory mem = new Memory(lpcbData.getValue() + Native.WCHAR_SIZE);
     mem.clear();
-    rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
+    rc = Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
       lpType, mem, lpcbData);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS
-      && rc != com.sun.jna.platform.win32.W32Errors.ERROR_INSUFFICIENT_BUFFER) {
+    if (rc != W32Errors.ERROR_SUCCESS
+      && rc != W32Errors.ERROR_INSUFFICIENT_BUFFER) {
       throw new Win32Exception(rc);
     }
     if (W32APITypeMapper.DEFAULT == W32APITypeMapper.UNICODE) {
@@ -925,16 +915,16 @@ public abstract class Advapi32Util {
   public static String[] registryGetStringArray(HKEY root, String key,
                                                 String value, int samDesiredExtra) {
     HKEYByReference phkKey = new HKEYByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegOpenKeyEx(root, key, 0, com.sun.jna.platform.win32.WinNT.KEY_READ | samDesiredExtra,
+    int rc = Advapi32.INSTANCE.RegOpenKeyEx(root, key, 0, WinNT.KEY_READ | samDesiredExtra,
       phkKey);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
     try {
       return registryGetStringArray(phkKey.getValue(), value);
     } finally {
-      rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
-      if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+      rc = Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
+      if (rc != W32Errors.ERROR_SUCCESS) {
         throw new Win32Exception(rc);
       }
     }
@@ -952,13 +942,13 @@ public abstract class Advapi32Util {
   public static String[] registryGetStringArray(HKEY hKey, String value) {
     IntByReference lpcbData = new IntByReference();
     IntByReference lpType = new IntByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
+    int rc = Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
       lpType, (char[]) null, lpcbData);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS
-      && rc != com.sun.jna.platform.win32.W32Errors.ERROR_INSUFFICIENT_BUFFER) {
+    if (rc != W32Errors.ERROR_SUCCESS
+      && rc != W32Errors.ERROR_INSUFFICIENT_BUFFER) {
       throw new Win32Exception(rc);
     }
-    if (lpType.getValue() != com.sun.jna.platform.win32.WinNT.REG_MULTI_SZ) {
+    if (lpType.getValue() != WinNT.REG_MULTI_SZ) {
       throw new RuntimeException("Unexpected registry type "
         + lpType.getValue() + ", expected REG_SZ");
     }
@@ -966,10 +956,10 @@ public abstract class Advapi32Util {
     // double NULL chars are present
     Memory data = new Memory(lpcbData.getValue() + 2 * Native.WCHAR_SIZE);
     data.clear();
-    rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
+    rc = Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
       lpType, data, lpcbData);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS
-      && rc != com.sun.jna.platform.win32.W32Errors.ERROR_INSUFFICIENT_BUFFER) {
+    if (rc != W32Errors.ERROR_SUCCESS
+      && rc != W32Errors.ERROR_INSUFFICIENT_BUFFER) {
       throw new Win32Exception(rc);
     }
     return regMultiSzBufferToStringArray(data);
@@ -977,7 +967,7 @@ public abstract class Advapi32Util {
 
   /**
    * Convert the null-delimited buffer of strings returned from registry values of
-   * type {@link com.sun.jna.platform.win32.WinNT#REG_MULTI_SZ} to an array of strings.
+   * type {@link WinNT#REG_MULTI_SZ} to an array of strings.
    *
    * @param data
    *            A buffer containing strings delimited by a null character, ending
@@ -1044,16 +1034,16 @@ public abstract class Advapi32Util {
   public static byte[] registryGetBinaryValue(HKEY root, String key,
                                               String value, int samDesiredExtra) {
     HKEYByReference phkKey = new HKEYByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegOpenKeyEx(root, key, 0, com.sun.jna.platform.win32.WinNT.KEY_READ | samDesiredExtra,
+    int rc = Advapi32.INSTANCE.RegOpenKeyEx(root, key, 0, WinNT.KEY_READ | samDesiredExtra,
       phkKey);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
     try {
       return registryGetBinaryValue(phkKey.getValue(), value);
     } finally {
-      rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
-      if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+      rc = Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
+      if (rc != W32Errors.ERROR_SUCCESS) {
         throw new Win32Exception(rc);
       }
     }
@@ -1071,21 +1061,21 @@ public abstract class Advapi32Util {
   public static byte[] registryGetBinaryValue(HKEY hKey, String value) {
     IntByReference lpcbData = new IntByReference();
     IntByReference lpType = new IntByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
+    int rc = Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
       lpType, (Pointer) null, lpcbData);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS
-      && rc != com.sun.jna.platform.win32.W32Errors.ERROR_INSUFFICIENT_BUFFER) {
+    if (rc != W32Errors.ERROR_SUCCESS
+      && rc != W32Errors.ERROR_INSUFFICIENT_BUFFER) {
       throw new Win32Exception(rc);
     }
-    if (lpType.getValue() != com.sun.jna.platform.win32.WinNT.REG_BINARY) {
+    if (lpType.getValue() != WinNT.REG_BINARY) {
       throw new RuntimeException("Unexpected registry type "
         + lpType.getValue() + ", expected REG_BINARY");
     }
     byte[] data = new byte[lpcbData.getValue()];
-    rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
+    rc = Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
       lpType, data, lpcbData);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS
-      && rc != com.sun.jna.platform.win32.W32Errors.ERROR_INSUFFICIENT_BUFFER) {
+    if (rc != W32Errors.ERROR_SUCCESS
+      && rc != W32Errors.ERROR_INSUFFICIENT_BUFFER) {
       throw new Win32Exception(rc);
     }
     return data;
@@ -1120,18 +1110,18 @@ public abstract class Advapi32Util {
    *            (e.g WinNT.KEY_WOW64_32KEY or WinNT.KEY_WOW64_64KEY to force 32bit or 64bit registry access.)
    * @return Integer value.
    */
-  public static int registryGetIntValue(HKEY root, String key, String value, int samDesiredExtra) {
+  public static int registryGetIntValue(WinReg.HKEY root, String key, String value, int samDesiredExtra) {
     HKEYByReference phkKey = new HKEYByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegOpenKeyEx(root, key, 0, com.sun.jna.platform.win32.WinNT.KEY_READ | samDesiredExtra,
+    int rc = Advapi32.INSTANCE.RegOpenKeyEx(root, key, 0, WinNT.KEY_READ | samDesiredExtra,
       phkKey);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
     try {
       return registryGetIntValue(phkKey.getValue(), value);
     } finally {
-      rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
-      if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+      rc = Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
+      if (rc != W32Errors.ERROR_SUCCESS) {
         throw new Win32Exception(rc);
       }
     }
@@ -1149,21 +1139,21 @@ public abstract class Advapi32Util {
   public static int registryGetIntValue(HKEY hKey, String value) {
     IntByReference lpcbData = new IntByReference();
     IntByReference lpType = new IntByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
+    int rc = Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
       lpType, (char[]) null, lpcbData);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS
-      && rc != com.sun.jna.platform.win32.W32Errors.ERROR_INSUFFICIENT_BUFFER) {
+    if (rc != W32Errors.ERROR_SUCCESS
+      && rc != W32Errors.ERROR_INSUFFICIENT_BUFFER) {
       throw new Win32Exception(rc);
     }
-    if (lpType.getValue() != com.sun.jna.platform.win32.WinNT.REG_DWORD) {
+    if (lpType.getValue() != WinNT.REG_DWORD) {
       throw new RuntimeException("Unexpected registry type "
         + lpType.getValue() + ", expected REG_DWORD");
     }
     IntByReference data = new IntByReference();
-    rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
+    rc = Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
       lpType, data, lpcbData);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS
-      && rc != com.sun.jna.platform.win32.W32Errors.ERROR_INSUFFICIENT_BUFFER) {
+    if (rc != W32Errors.ERROR_SUCCESS
+      && rc != W32Errors.ERROR_INSUFFICIENT_BUFFER) {
       throw new Win32Exception(rc);
     }
     return data.getValue();
@@ -1200,16 +1190,16 @@ public abstract class Advapi32Util {
    */
   public static long registryGetLongValue(HKEY root, String key, String value, int samDesiredExtra) {
     HKEYByReference phkKey = new HKEYByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegOpenKeyEx(root, key, 0, com.sun.jna.platform.win32.WinNT.KEY_READ | samDesiredExtra,
+    int rc = Advapi32.INSTANCE.RegOpenKeyEx(root, key, 0, WinNT.KEY_READ | samDesiredExtra,
       phkKey);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
     try {
       return registryGetLongValue(phkKey.getValue(), value);
     } finally {
-      rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
-      if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+      rc = Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
+      if (rc != W32Errors.ERROR_SUCCESS) {
         throw new Win32Exception(rc);
       }
     }
@@ -1227,21 +1217,21 @@ public abstract class Advapi32Util {
   public static long registryGetLongValue(HKEY hKey, String value) {
     IntByReference lpcbData = new IntByReference();
     IntByReference lpType = new IntByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
+    int rc = Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
       lpType, (char[]) null, lpcbData);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS
-      && rc != com.sun.jna.platform.win32.W32Errors.ERROR_INSUFFICIENT_BUFFER) {
+    if (rc != W32Errors.ERROR_SUCCESS
+      && rc != W32Errors.ERROR_INSUFFICIENT_BUFFER) {
       throw new Win32Exception(rc);
     }
-    if (lpType.getValue() != com.sun.jna.platform.win32.WinNT.REG_QWORD) {
+    if (lpType.getValue() != WinNT.REG_QWORD) {
       throw new RuntimeException("Unexpected registry type "
         + lpType.getValue() + ", expected REG_QWORD");
     }
     LongByReference data = new LongByReference();
-    rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
+    rc = Advapi32.INSTANCE.RegQueryValueEx(hKey, value, 0,
       lpType, data, lpcbData);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS
-      && rc != com.sun.jna.platform.win32.W32Errors.ERROR_INSUFFICIENT_BUFFER) {
+    if (rc != W32Errors.ERROR_SUCCESS
+      && rc != W32Errors.ERROR_INSUFFICIENT_BUFFER) {
       throw new Win32Exception(rc);
     }
     return data.getValue();
@@ -1265,15 +1255,15 @@ public abstract class Advapi32Util {
     IntByReference lpType = new IntByReference();
     IntByReference lpcbData = new IntByReference();
 
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegGetValue(hkKey, subKey, lpValueName,
-      com.sun.jna.platform.win32.Advapi32.RRF_RT_ANY, lpType, (Pointer) null, lpcbData);
+    int rc = Advapi32.INSTANCE.RegGetValue(hkKey, subKey, lpValueName,
+      Advapi32.RRF_RT_ANY, lpType, (Pointer) null, lpcbData);
 
     // if lpType == 0 then the value is empty (REG_NONE)!
-    if (lpType.getValue() == com.sun.jna.platform.win32.WinNT.REG_NONE)
+    if (lpType.getValue() == WinNT.REG_NONE)
       return null;
 
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS
-      && rc != com.sun.jna.platform.win32.W32Errors.ERROR_INSUFFICIENT_BUFFER) {
+    if (rc != W32Errors.ERROR_SUCCESS
+      && rc != W32Errors.ERROR_INSUFFICIENT_BUFFER) {
       throw new Win32Exception(rc);
     }
 
@@ -1284,21 +1274,21 @@ public abstract class Advapi32Util {
     Memory byteData = new Memory(lpcbData.getValue() + Native.WCHAR_SIZE);
     byteData.clear();
 
-    rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegGetValue(hkKey, subKey, lpValueName,
-      com.sun.jna.platform.win32.Advapi32.RRF_RT_ANY, lpType, byteData, lpcbData);
+    rc = Advapi32.INSTANCE.RegGetValue(hkKey, subKey, lpValueName,
+      Advapi32.RRF_RT_ANY, lpType, byteData, lpcbData);
 
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
 
-    if (lpType.getValue() == com.sun.jna.platform.win32.WinNT.REG_DWORD) {
+    if (lpType.getValue() == WinNT.REG_DWORD) {
       result = byteData.getInt(0);
-    } else if (lpType.getValue() == com.sun.jna.platform.win32.WinNT.REG_QWORD) {
+    } else if (lpType.getValue() == WinNT.REG_QWORD) {
       result = byteData.getLong(0);
-    } else if (lpType.getValue() == com.sun.jna.platform.win32.WinNT.REG_BINARY) {
+    } else if (lpType.getValue() == WinNT.REG_BINARY) {
       result = byteData.getByteArray(0, lpcbData.getValue());
-    } else if ((lpType.getValue() == com.sun.jna.platform.win32.WinNT.REG_SZ)
-      || (lpType.getValue() == com.sun.jna.platform.win32.WinNT.REG_EXPAND_SZ)) {
+    } else if ((lpType.getValue() == WinNT.REG_SZ)
+      || (lpType.getValue() == WinNT.REG_EXPAND_SZ)) {
       if (W32APITypeMapper.DEFAULT == W32APITypeMapper.UNICODE) {
         result = byteData.getWideString(0);
       } else {
@@ -1334,20 +1324,20 @@ public abstract class Advapi32Util {
    *            (e.g WinNT.KEY_WOW64_32KEY or WinNT.KEY_WOW64_64KEY to force 32bit or 64bit registry access.)
    * @return True if the key was created, false otherwise.
    */
-  public static boolean registryCreateKey(HKEY hKey, String keyName, int samDesiredExtra) {
+  public static boolean registryCreateKey(WinReg.HKEY hKey, String keyName, int samDesiredExtra) {
     HKEYByReference phkResult = new HKEYByReference();
     IntByReference lpdwDisposition = new IntByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegCreateKeyEx(hKey, keyName, 0, null,
-      com.sun.jna.platform.win32.WinNT.REG_OPTION_NON_VOLATILE, com.sun.jna.platform.win32.WinNT.KEY_READ | samDesiredExtra, null, phkResult,
+    int rc = Advapi32.INSTANCE.RegCreateKeyEx(hKey, keyName, 0, null,
+      WinNT.REG_OPTION_NON_VOLATILE, WinNT.KEY_READ | samDesiredExtra, null, phkResult,
       lpdwDisposition);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
-    rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegCloseKey(phkResult.getValue());
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    rc = Advapi32.INSTANCE.RegCloseKey(phkResult.getValue());
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
-    return com.sun.jna.platform.win32.WinNT.REG_CREATED_NEW_KEY == lpdwDisposition.getValue();
+    return WinNT.REG_CREATED_NEW_KEY == lpdwDisposition.getValue();
   }
 
   /**
@@ -1383,16 +1373,16 @@ public abstract class Advapi32Util {
   public static boolean registryCreateKey(HKEY root, String parentPath,
                                           String keyName, int samDesiredExtra) {
     HKEYByReference phkKey = new HKEYByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegOpenKeyEx(root, parentPath, 0,
-      com.sun.jna.platform.win32.WinNT.KEY_CREATE_SUB_KEY | samDesiredExtra, phkKey);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    int rc = Advapi32.INSTANCE.RegOpenKeyEx(root, parentPath, 0,
+      WinNT.KEY_CREATE_SUB_KEY | samDesiredExtra, phkKey);
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
     try {
       return registryCreateKey(phkKey.getValue(), keyName);
     } finally {
-      rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
-      if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+      rc = Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
+      if (rc != W32Errors.ERROR_SUCCESS) {
         throw new Win32Exception(rc);
       }
     }
@@ -1414,9 +1404,9 @@ public abstract class Advapi32Util {
     data[1] = (byte) ((value >> 8) & 0xff);
     data[2] = (byte) ((value >> 16) & 0xff);
     data[3] = (byte) ((value >> 24) & 0xff);
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegSetValueEx(hKey, name, 0,
-      com.sun.jna.platform.win32.WinNT.REG_DWORD, data, 4);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    int rc = Advapi32.INSTANCE.RegSetValueEx(hKey, name, 0,
+      WinNT.REG_DWORD, data, 4);
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
   }
@@ -1453,19 +1443,19 @@ public abstract class Advapi32Util {
    *            Registry key security and access rights to be requested in addition to WinNT.KEY_READ and WinNT.KEY_WRITE.
    *            (e.g WinNT.KEY_WOW64_32KEY or WinNT.KEY_WOW64_64KEY to force 32bit or 64bit registry access.)
    */
-  public static void registrySetIntValue(HKEY root, String keyPath,
+  public static void registrySetIntValue(WinReg.HKEY root, String keyPath,
                                          String name, int value, int samDesiredExtra) {
-    HKEYByReference phkKey = new HKEYByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegOpenKeyEx(root, keyPath, 0,
-      com.sun.jna.platform.win32.WinNT.KEY_READ | com.sun.jna.platform.win32.WinNT.KEY_WRITE | samDesiredExtra, phkKey);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    WinReg.HKEYByReference phkKey = new WinReg.HKEYByReference();
+    int rc = Advapi32.INSTANCE.RegOpenKeyEx(root, keyPath, 0,
+      WinNT.KEY_READ | WinNT.KEY_WRITE | samDesiredExtra, phkKey);
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
     try {
       registrySetIntValue(phkKey.getValue(), name, value);
     } finally {
-      rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
-      if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+      rc = Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
+      if (rc != W32Errors.ERROR_SUCCESS) {
         throw new Win32Exception(rc);
       }
     }
@@ -1491,9 +1481,9 @@ public abstract class Advapi32Util {
     data[5] = (byte) ((value >> 40) & 0xff);
     data[6] = (byte) ((value >> 48) & 0xff);
     data[7] = (byte) ((value >> 56) & 0xff);
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegSetValueEx(hKey, name, 0,
-      com.sun.jna.platform.win32.WinNT.REG_QWORD, data, 8);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    int rc = Advapi32.INSTANCE.RegSetValueEx(hKey, name, 0,
+      WinNT.REG_QWORD, data, 8);
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
   }
@@ -1533,16 +1523,16 @@ public abstract class Advapi32Util {
   public static void registrySetLongValue(HKEY root, String keyPath,
                                           String name, long value, int samDesiredExtra) {
     HKEYByReference phkKey = new HKEYByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegOpenKeyEx(root, keyPath, 0,
-      com.sun.jna.platform.win32.WinNT.KEY_READ | com.sun.jna.platform.win32.WinNT.KEY_WRITE | samDesiredExtra, phkKey);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    int rc = Advapi32.INSTANCE.RegOpenKeyEx(root, keyPath, 0,
+      WinNT.KEY_READ | WinNT.KEY_WRITE | samDesiredExtra, phkKey);
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
     try {
       registrySetLongValue(phkKey.getValue(), name, value);
     } finally {
-      rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
-      if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+      rc = Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
+      if (rc != W32Errors.ERROR_SUCCESS) {
         throw new Win32Exception(rc);
       }
     }
@@ -1571,9 +1561,9 @@ public abstract class Advapi32Util {
       data = new Memory((value.length() + 1));
       data.setString(0, value);
     }
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegSetValueEx(hKey, name, 0, com.sun.jna.platform.win32.WinNT.REG_SZ,
+    int rc = Advapi32.INSTANCE.RegSetValueEx(hKey, name, 0, WinNT.REG_SZ,
       data, (int) data.size());
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
   }
@@ -1613,16 +1603,16 @@ public abstract class Advapi32Util {
   public static void registrySetStringValue(HKEY root, String keyPath,
                                             String name, String value, int samDesiredExtra) {
     HKEYByReference phkKey = new HKEYByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegOpenKeyEx(root, keyPath, 0,
-      com.sun.jna.platform.win32.WinNT.KEY_READ | com.sun.jna.platform.win32.WinNT.KEY_WRITE | samDesiredExtra, phkKey);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    int rc = Advapi32.INSTANCE.RegOpenKeyEx(root, keyPath, 0,
+      WinNT.KEY_READ | WinNT.KEY_WRITE | samDesiredExtra, phkKey);
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
     try {
       registrySetStringValue(phkKey.getValue(), name, value);
     } finally {
-      rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
-      if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+      rc = Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
+      if (rc != W32Errors.ERROR_SUCCESS) {
         throw new Win32Exception(rc);
       }
     }
@@ -1648,9 +1638,9 @@ public abstract class Advapi32Util {
       data = new Memory((value.length() + 1));
       data.setString(0, value);
     }
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegSetValueEx(hKey, name, 0,
-      com.sun.jna.platform.win32.WinNT.REG_EXPAND_SZ, data, (int) data.size());
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    int rc = Advapi32.INSTANCE.RegSetValueEx(hKey, name, 0,
+      WinNT.REG_EXPAND_SZ, data, (int) data.size());
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
   }
@@ -1690,16 +1680,16 @@ public abstract class Advapi32Util {
   public static void registrySetExpandableStringValue(HKEY root,
                                                       String keyPath, String name, String value, int samDesiredExtra) {
     HKEYByReference phkKey = new HKEYByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegOpenKeyEx(root, keyPath, 0,
-      com.sun.jna.platform.win32.WinNT.KEY_READ | com.sun.jna.platform.win32.WinNT.KEY_WRITE | samDesiredExtra, phkKey);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    int rc = Advapi32.INSTANCE.RegOpenKeyEx(root, keyPath, 0,
+      WinNT.KEY_READ | WinNT.KEY_WRITE | samDesiredExtra, phkKey);
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
     try {
       registrySetExpandableStringValue(phkKey.getValue(), name, value);
     } finally {
-      rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
-      if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+      rc = Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
+      if (rc != W32Errors.ERROR_SUCCESS) {
         throw new Win32Exception(rc);
       }
     }
@@ -1740,10 +1730,10 @@ public abstract class Advapi32Util {
       offset += charwidth;
     }
 
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegSetValueEx(hKey, name, 0,
-      com.sun.jna.platform.win32.WinNT.REG_MULTI_SZ, data, size);
+    int rc = Advapi32.INSTANCE.RegSetValueEx(hKey, name, 0,
+      WinNT.REG_MULTI_SZ, data, size);
 
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
   }
@@ -1783,16 +1773,16 @@ public abstract class Advapi32Util {
   public static void registrySetStringArray(HKEY root, String keyPath,
                                             String name, String[] arr, int samDesiredExtra) {
     HKEYByReference phkKey = new HKEYByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegOpenKeyEx(root, keyPath, 0,
-      com.sun.jna.platform.win32.WinNT.KEY_READ | com.sun.jna.platform.win32.WinNT.KEY_WRITE | samDesiredExtra, phkKey);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    int rc = Advapi32.INSTANCE.RegOpenKeyEx(root, keyPath, 0,
+      WinNT.KEY_READ | WinNT.KEY_WRITE | samDesiredExtra, phkKey);
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
     try {
       registrySetStringArray(phkKey.getValue(), name, arr);
     } finally {
-      rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
-      if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+      rc = Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
+      if (rc != W32Errors.ERROR_SUCCESS) {
         throw new Win32Exception(rc);
       }
     }
@@ -1810,9 +1800,9 @@ public abstract class Advapi32Util {
    */
   public static void registrySetBinaryValue(HKEY hKey, String name,
                                             byte[] data) {
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegSetValueEx(hKey, name, 0,
-      com.sun.jna.platform.win32.WinNT.REG_BINARY, data, data.length);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    int rc = Advapi32.INSTANCE.RegSetValueEx(hKey, name, 0,
+      WinNT.REG_BINARY, data, data.length);
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
   }
@@ -1852,16 +1842,16 @@ public abstract class Advapi32Util {
   public static void registrySetBinaryValue(HKEY root, String keyPath,
                                             String name, byte[] data, int samDesiredExtra) {
     HKEYByReference phkKey = new HKEYByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegOpenKeyEx(root, keyPath, 0,
-      com.sun.jna.platform.win32.WinNT.KEY_READ | com.sun.jna.platform.win32.WinNT.KEY_WRITE | samDesiredExtra, phkKey);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    int rc = Advapi32.INSTANCE.RegOpenKeyEx(root, keyPath, 0,
+      WinNT.KEY_READ | WinNT.KEY_WRITE | samDesiredExtra, phkKey);
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
     try {
       registrySetBinaryValue(phkKey.getValue(), name, data);
     } finally {
-      rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
-      if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+      rc = Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
+      if (rc != W32Errors.ERROR_SUCCESS) {
         throw new Win32Exception(rc);
       }
     }
@@ -1876,8 +1866,8 @@ public abstract class Advapi32Util {
    *            Name of the key to delete.
    */
   public static void registryDeleteKey(HKEY hKey, String keyName) {
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegDeleteKey(hKey, keyName);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    int rc = Advapi32.INSTANCE.RegDeleteKey(hKey, keyName);
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
   }
@@ -1913,16 +1903,16 @@ public abstract class Advapi32Util {
   public static void registryDeleteKey(HKEY root, String keyPath,
                                        String keyName, int samDesiredExtra) {
     HKEYByReference phkKey = new HKEYByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegOpenKeyEx(root, keyPath, 0,
-      com.sun.jna.platform.win32.WinNT.KEY_READ | com.sun.jna.platform.win32.WinNT.KEY_WRITE | samDesiredExtra, phkKey);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    int rc = Advapi32.INSTANCE.RegOpenKeyEx(root, keyPath, 0,
+      WinNT.KEY_READ | WinNT.KEY_WRITE | samDesiredExtra, phkKey);
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
     try {
       registryDeleteKey(phkKey.getValue(), keyName);
     } finally {
-      rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
-      if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+      rc = Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
+      if (rc != W32Errors.ERROR_SUCCESS) {
         throw new Win32Exception(rc);
       }
     }
@@ -1937,8 +1927,8 @@ public abstract class Advapi32Util {
    *            Name of the value to delete.
    */
   public static void registryDeleteValue(HKEY hKey, String valueName) {
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegDeleteValue(hKey, valueName);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    int rc = Advapi32.INSTANCE.RegDeleteValue(hKey, valueName);
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
   }
@@ -1974,16 +1964,16 @@ public abstract class Advapi32Util {
   public static void registryDeleteValue(HKEY root, String keyPath,
                                          String valueName, int samDesiredExtra) {
     HKEYByReference phkKey = new HKEYByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegOpenKeyEx(root, keyPath, 0,
-      com.sun.jna.platform.win32.WinNT.KEY_READ | com.sun.jna.platform.win32.WinNT.KEY_WRITE | samDesiredExtra, phkKey);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    int rc = Advapi32.INSTANCE.RegOpenKeyEx(root, keyPath, 0,
+      WinNT.KEY_READ | WinNT.KEY_WRITE | samDesiredExtra, phkKey);
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
     try {
       registryDeleteValue(phkKey.getValue(), valueName);
     } finally {
-      rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
-      if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+      rc = Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
+      if (rc != W32Errors.ERROR_SUCCESS) {
         throw new Win32Exception(rc);
       }
     }
@@ -1999,10 +1989,10 @@ public abstract class Advapi32Util {
   public static String[] registryGetKeys(HKEY hKey) {
     IntByReference lpcSubKeys = new IntByReference();
     IntByReference lpcMaxSubKeyLen = new IntByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE
+    int rc = Advapi32.INSTANCE
       .RegQueryInfoKey(hKey, null, null, null, lpcSubKeys,
         lpcMaxSubKeyLen, null, null, null, null, null, null);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
     ArrayList<String> keys = new ArrayList<String>(lpcSubKeys.getValue());
@@ -2010,9 +2000,9 @@ public abstract class Advapi32Util {
     for (int i = 0; i < lpcSubKeys.getValue(); i++) {
       IntByReference lpcchValueName = new IntByReference(
         lpcMaxSubKeyLen.getValue() + 1);
-      rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegEnumKeyEx(hKey, i, name, lpcchValueName,
+      rc = Advapi32.INSTANCE.RegEnumKeyEx(hKey, i, name, lpcchValueName,
         null, null, null, null);
-      if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+      if (rc != W32Errors.ERROR_SUCCESS) {
         throw new Win32Exception(rc);
       }
       keys.add(Native.toString(name));
@@ -2047,16 +2037,16 @@ public abstract class Advapi32Util {
    */
   public static String[] registryGetKeys(HKEY root, String keyPath, int samDesiredExtra) {
     HKEYByReference phkKey = new HKEYByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegOpenKeyEx(root, keyPath, 0,
-      com.sun.jna.platform.win32.WinNT.KEY_READ | samDesiredExtra, phkKey);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    int rc = Advapi32.INSTANCE.RegOpenKeyEx(root, keyPath, 0,
+      WinNT.KEY_READ | samDesiredExtra, phkKey);
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
     try {
       return registryGetKeys(phkKey.getValue());
     } finally {
-      rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
-      if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+      rc = Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
+      if (rc != W32Errors.ERROR_SUCCESS) {
         throw new Win32Exception(rc);
       }
     }
@@ -2078,9 +2068,9 @@ public abstract class Advapi32Util {
   public static HKEYByReference registryGetKey(HKEY root, String keyPath,
                                                int samDesired) {
     HKEYByReference phkKey = new HKEYByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegOpenKeyEx(root, keyPath, 0, samDesired,
+    int rc = Advapi32.INSTANCE.RegOpenKeyEx(root, keyPath, 0, samDesired,
       phkKey);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
 
@@ -2101,8 +2091,8 @@ public abstract class Advapi32Util {
    */
   public static HKEYByReference registryLoadAppKey(String fileName, int samDesired, int dwOptions) {
     HKEYByReference phkKey = new HKEYByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegLoadAppKey(fileName, phkKey, samDesired, dwOptions, 0);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    int rc = Advapi32.INSTANCE.RegLoadAppKey(fileName, phkKey, samDesired, dwOptions, 0);
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
 
@@ -2116,8 +2106,8 @@ public abstract class Advapi32Util {
    *            Registry key.
    */
   public static void registryCloseKey(HKEY hKey) {
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegCloseKey(hKey);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    int rc = Advapi32.INSTANCE.RegCloseKey(hKey);
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
   }
@@ -2133,10 +2123,10 @@ public abstract class Advapi32Util {
     IntByReference lpcValues = new IntByReference();
     IntByReference lpcMaxValueNameLen = new IntByReference();
     IntByReference lpcMaxValueLen = new IntByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegQueryInfoKey(hKey, null, null, null,
+    int rc = Advapi32.INSTANCE.RegQueryInfoKey(hKey, null, null, null,
       null, null, null, lpcValues, lpcMaxValueNameLen,
       lpcMaxValueLen, null, null);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
     TreeMap<String, Object> keyValues = new TreeMap<String, Object>();
@@ -2152,9 +2142,9 @@ public abstract class Advapi32Util {
       IntByReference lpcbData = new IntByReference(
         lpcMaxValueLen.getValue());
       IntByReference lpType = new IntByReference();
-      rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegEnumValue(hKey, i, name, lpcchValueName,
+      rc = Advapi32.INSTANCE.RegEnumValue(hKey, i, name, lpcchValueName,
         null, lpType, byteData, lpcbData);
-      if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+      if (rc != W32Errors.ERROR_SUCCESS) {
         throw new Win32Exception(rc);
       }
 
@@ -2162,20 +2152,20 @@ public abstract class Advapi32Util {
 
       if (lpcbData.getValue() == 0) {
         switch (lpType.getValue()) {
-          case com.sun.jna.platform.win32.WinNT.REG_BINARY: {
+          case WinNT.REG_BINARY: {
             keyValues.put(nameString, new byte[0]);
             break;
           }
-          case com.sun.jna.platform.win32.WinNT.REG_SZ:
-          case com.sun.jna.platform.win32.WinNT.REG_EXPAND_SZ: {
+          case WinNT.REG_SZ:
+          case WinNT.REG_EXPAND_SZ: {
             keyValues.put(nameString, new char[0]);
             break;
           }
-          case com.sun.jna.platform.win32.WinNT.REG_MULTI_SZ: {
+          case WinNT.REG_MULTI_SZ: {
             keyValues.put(nameString, new String[0]);
             break;
           }
-          case com.sun.jna.platform.win32.WinNT.REG_NONE: {
+          case WinNT.REG_NONE: {
             keyValues.put(nameString, null);
             break;
           }
@@ -2187,16 +2177,16 @@ public abstract class Advapi32Util {
       }
 
       switch (lpType.getValue()) {
-        case com.sun.jna.platform.win32.WinNT.REG_QWORD: {
+        case WinNT.REG_QWORD: {
           keyValues.put(nameString, byteData.getLong(0));
           break;
         }
-        case com.sun.jna.platform.win32.WinNT.REG_DWORD: {
+        case WinNT.REG_DWORD: {
           keyValues.put(nameString, byteData.getInt(0));
           break;
         }
-        case com.sun.jna.platform.win32.WinNT.REG_SZ:
-        case com.sun.jna.platform.win32.WinNT.REG_EXPAND_SZ: {
+        case WinNT.REG_SZ:
+        case WinNT.REG_EXPAND_SZ: {
           if (W32APITypeMapper.DEFAULT == W32APITypeMapper.UNICODE) {
             keyValues.put(nameString, byteData.getWideString(0));
           } else {
@@ -2204,12 +2194,12 @@ public abstract class Advapi32Util {
           }
           break;
         }
-        case com.sun.jna.platform.win32.WinNT.REG_BINARY: {
+        case WinNT.REG_BINARY: {
           keyValues.put(nameString,
             byteData.getByteArray(0, lpcbData.getValue()));
           break;
         }
-        case com.sun.jna.platform.win32.WinNT.REG_MULTI_SZ: {
+        case WinNT.REG_MULTI_SZ: {
           ArrayList<String> result = new ArrayList<String>();
           int offset = 0;
           while (offset < byteData.size()) {
@@ -2273,16 +2263,16 @@ public abstract class Advapi32Util {
   public static TreeMap<String, Object> registryGetValues(HKEY root,
                                                           String keyPath, int samDesiredExtra) {
     HKEYByReference phkKey = new HKEYByReference();
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegOpenKeyEx(root, keyPath, 0,
-      com.sun.jna.platform.win32.WinNT.KEY_READ | samDesiredExtra, phkKey);
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    int rc = Advapi32.INSTANCE.RegOpenKeyEx(root, keyPath, 0,
+      WinNT.KEY_READ | samDesiredExtra, phkKey);
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
     try {
       return registryGetValues(phkKey.getValue());
     } finally {
-      rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
-      if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+      rc = Advapi32.INSTANCE.RegCloseKey(phkKey.getValue());
+      if (rc != W32Errors.ERROR_SUCCESS) {
         throw new Win32Exception(rc);
       }
     }
@@ -2301,14 +2291,14 @@ public abstract class Advapi32Util {
                                              int lpcbSecurityDescriptor) {
 
     InfoKey infoKey = new InfoKey(hKey, lpcbSecurityDescriptor);
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegQueryInfoKey(hKey, infoKey.lpClass,
+    int rc = Advapi32.INSTANCE.RegQueryInfoKey(hKey, infoKey.lpClass,
       infoKey.lpcClass, null, infoKey.lpcSubKeys,
       infoKey.lpcMaxSubKeyLen, infoKey.lpcMaxClassLen,
       infoKey.lpcValues, infoKey.lpcMaxValueNameLen,
       infoKey.lpcMaxValueLen, infoKey.lpcbSecurityDescriptor,
       infoKey.lpftLastWriteTime);
 
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
 
@@ -2317,8 +2307,8 @@ public abstract class Advapi32Util {
 
   public static class InfoKey {
     public HKEY hKey;
-    public char[] lpClass = new char[com.sun.jna.platform.win32.WinNT.MAX_PATH];
-    public IntByReference lpcClass = new IntByReference(com.sun.jna.platform.win32.WinNT.MAX_PATH);
+    public char[] lpClass = new char[WinNT.MAX_PATH];
+    public IntByReference lpcClass = new IntByReference(WinNT.MAX_PATH);
     public IntByReference lpcSubKeys = new IntByReference();
     public IntByReference lpcMaxSubKeyLen = new IntByReference();
     public IntByReference lpcMaxClassLen = new IntByReference();
@@ -2348,11 +2338,11 @@ public abstract class Advapi32Util {
    */
   public static EnumKey registryRegEnumKey(HKEY hKey, int dwIndex) {
     EnumKey enumKey = new EnumKey(hKey, dwIndex);
-    int rc = com.sun.jna.platform.win32.Advapi32.INSTANCE.RegEnumKeyEx(hKey, enumKey.dwIndex,
+    int rc = Advapi32.INSTANCE.RegEnumKeyEx(hKey, enumKey.dwIndex,
       enumKey.lpName, enumKey.lpcName, null, enumKey.lpClass,
       enumKey.lpcbClass, enumKey.lpftLastWriteTime);
 
-    if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
+    if (rc != W32Errors.ERROR_SUCCESS) {
       throw new Win32Exception(rc);
     }
 
@@ -2362,12 +2352,12 @@ public abstract class Advapi32Util {
   public static class EnumKey {
     public HKEY hKey;
     public int dwIndex = 0;
-    public char[] lpName = new char[com.sun.jna.platform.win32.Advapi32.MAX_KEY_LENGTH];
+    public char[] lpName = new char[Advapi32.MAX_KEY_LENGTH];
     public IntByReference lpcName = new IntByReference(
-      com.sun.jna.platform.win32.Advapi32.MAX_KEY_LENGTH);
-    public char[] lpClass = new char[com.sun.jna.platform.win32.Advapi32.MAX_KEY_LENGTH];
+      Advapi32.MAX_KEY_LENGTH);
+    public char[] lpClass = new char[Advapi32.MAX_KEY_LENGTH];
     public IntByReference lpcbClass = new IntByReference(
-      com.sun.jna.platform.win32.Advapi32.MAX_KEY_LENGTH);
+      Advapi32.MAX_KEY_LENGTH);
     public FILETIME lpftLastWriteTime = new FILETIME();
 
     public EnumKey() {
@@ -2381,7 +2371,7 @@ public abstract class Advapi32Util {
 
   /**
    * Converts a map of environment variables to an environment block suitable
-   * for {@link com.sun.jna.platform.win32.Advapi32#CreateProcessAsUser}. This environment block consists
+   * for {@link Advapi32#CreateProcessAsUser}. This environment block consists
    * of null-terminated blocks of null-terminated strings. Each string is in
    * the following form: name=value\0
    *
@@ -2503,16 +2493,16 @@ public abstract class Advapi32Util {
      */
     public EventLogType getType() {
       switch (_record.EventType.intValue()) {
-        case com.sun.jna.platform.win32.WinNT.EVENTLOG_SUCCESS:
-        case com.sun.jna.platform.win32.WinNT.EVENTLOG_INFORMATION_TYPE:
+        case WinNT.EVENTLOG_SUCCESS:
+        case WinNT.EVENTLOG_INFORMATION_TYPE:
           return EventLogType.Informational;
-        case com.sun.jna.platform.win32.WinNT.EVENTLOG_AUDIT_FAILURE:
+        case WinNT.EVENTLOG_AUDIT_FAILURE:
           return EventLogType.AuditFailure;
-        case com.sun.jna.platform.win32.WinNT.EVENTLOG_AUDIT_SUCCESS:
+        case WinNT.EVENTLOG_AUDIT_SUCCESS:
           return EventLogType.AuditSuccess;
-        case com.sun.jna.platform.win32.WinNT.EVENTLOG_ERROR_TYPE:
+        case WinNT.EVENTLOG_ERROR_TYPE:
           return EventLogType.Error;
-        case com.sun.jna.platform.win32.WinNT.EVENTLOG_WARNING_TYPE:
+        case WinNT.EVENTLOG_WARNING_TYPE:
           return EventLogType.Warning;
         default:
           throw new RuntimeException("Invalid type: "
@@ -2570,14 +2560,14 @@ public abstract class Advapi32Util {
     private int _flags;
 
     public EventLogIterator(String sourceName) {
-      this(null, sourceName, com.sun.jna.platform.win32.WinNT.EVENTLOG_FORWARDS_READ);
+      this(null, sourceName, WinNT.EVENTLOG_FORWARDS_READ);
     }
 
     public EventLogIterator(String serverName, String sourceName, int flags) {
       _flags = flags;
-      _h = com.sun.jna.platform.win32.Advapi32.INSTANCE.OpenEventLog(serverName, sourceName);
+      _h = Advapi32.INSTANCE.OpenEventLog(serverName, sourceName);
       if (_h == null) {
-        throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+        throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
       }
     }
 
@@ -2590,28 +2580,28 @@ public abstract class Advapi32Util {
       IntByReference pnBytesRead = new IntByReference();
       IntByReference pnMinNumberOfBytesNeeded = new IntByReference();
 
-      if (!com.sun.jna.platform.win32.Advapi32.INSTANCE
-        .ReadEventLog(_h, com.sun.jna.platform.win32.WinNT.EVENTLOG_SEQUENTIAL_READ | _flags,
+      if (!Advapi32.INSTANCE
+        .ReadEventLog(_h, WinNT.EVENTLOG_SEQUENTIAL_READ | _flags,
           0, _buffer, (int) _buffer.size(), pnBytesRead,
           pnMinNumberOfBytesNeeded)) {
 
-        int rc = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError();
+        int rc = Kernel32.INSTANCE.GetLastError();
 
         // not enough bytes in the buffer, resize
-        if (rc == com.sun.jna.platform.win32.W32Errors.ERROR_INSUFFICIENT_BUFFER) {
+        if (rc == W32Errors.ERROR_INSUFFICIENT_BUFFER) {
           _buffer = new Memory(pnMinNumberOfBytesNeeded.getValue());
 
-          if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.ReadEventLog(_h,
-            com.sun.jna.platform.win32.WinNT.EVENTLOG_SEQUENTIAL_READ | _flags, 0,
+          if (!Advapi32.INSTANCE.ReadEventLog(_h,
+            WinNT.EVENTLOG_SEQUENTIAL_READ | _flags, 0,
             _buffer, (int) _buffer.size(), pnBytesRead,
             pnMinNumberOfBytesNeeded)) {
             throw new Win32Exception(
-              com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+              Kernel32.INSTANCE.GetLastError());
           }
         } else {
           // read failed, no more entries or error
           close();
-          if (rc != com.sun.jna.platform.win32.W32Errors.ERROR_HANDLE_EOF) {
+          if (rc != W32Errors.ERROR_HANDLE_EOF) {
             throw new Win32Exception(rc);
           }
           return false;
@@ -2630,8 +2620,8 @@ public abstract class Advapi32Util {
     public void close() {
       _done = true;
       if (_h != null) {
-        if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.CloseEventLog(_h)) {
-          throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+        if (!Advapi32.INSTANCE.CloseEventLog(_h)) {
+          throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
         _h = null;
       }
@@ -2677,7 +2667,7 @@ public abstract class Advapi32Util {
    */
   public static ACE_HEADER[] getFileSecurity(String fileName,
                                              boolean compact) {
-    int infoType = com.sun.jna.platform.win32.WinNT.DACL_SECURITY_INFORMATION;
+    int infoType = WinNT.DACL_SECURITY_INFORMATION;
     int nLength = 1024;
     boolean repeat;
     Memory memory;
@@ -2686,13 +2676,13 @@ public abstract class Advapi32Util {
       repeat = false;
       memory = new Memory(nLength);
       IntByReference lpnSize = new IntByReference();
-      boolean succeded = com.sun.jna.platform.win32.Advapi32.INSTANCE.GetFileSecurity(
+      boolean succeded = Advapi32.INSTANCE.GetFileSecurity(
         fileName, infoType, memory, nLength, lpnSize);
 
       if (!succeded) {
-        int lastError = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError();
+        int lastError = Kernel32.INSTANCE.GetLastError();
         memory.clear();
-        if (com.sun.jna.platform.win32.W32Errors.ERROR_INSUFFICIENT_BUFFER != lastError) {
+        if (W32Errors.ERROR_INSUFFICIENT_BUFFER != lastError) {
           throw new Win32Exception(lastError);
         }
       }
@@ -2704,7 +2694,7 @@ public abstract class Advapi32Util {
       }
     } while (repeat);
 
-    SECURITY_DESCRIPTOR_RELATIVE sdr = new SECURITY_DESCRIPTOR_RELATIVE(
+    SECURITY_DESCRIPTOR_RELATIVE sdr = new WinNT.SECURITY_DESCRIPTOR_RELATIVE(
       memory);
     ACL dacl = sdr.getDiscretionaryACL();
     ACE_HEADER[] aceStructures = dacl.getACEs();
@@ -2715,7 +2705,7 @@ public abstract class Advapi32Util {
       for (ACE_HEADER aceStructure : aceStructures) {
         if (aceStructure instanceof ACCESS_ACEStructure) {
           ACCESS_ACEStructure accessACEStructure = (ACCESS_ACEStructure) aceStructure;
-          boolean inherted = ((aceStructure.AceFlags & com.sun.jna.platform.win32.WinNT.VALID_INHERIT_FLAGS) != 0);
+          boolean inherted = ((aceStructure.AceFlags & WinNT.VALID_INHERIT_FLAGS) != 0);
           String key = accessACEStructure.getSidString() + "/" + inherted + "/"
             + aceStructure.getClass().getName();
           ACCESS_ACEStructure aceStructure2 = aceMap.get(key);
@@ -2759,27 +2749,27 @@ public abstract class Advapi32Util {
       DACL_SECURITY_INFORMATION;
 
     final IntByReference lpnSize = new IntByReference();
-    boolean succeeded = com.sun.jna.platform.win32.Advapi32.INSTANCE.GetFileSecurity(
+    boolean succeeded = Advapi32.INSTANCE.GetFileSecurity(
       absoluteFilePath,
       infoType,
       null,
       0, lpnSize);
 
     if (!succeeded) {
-      final int lastError = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError();
-      if (com.sun.jna.platform.win32.W32Errors.ERROR_INSUFFICIENT_BUFFER != lastError) {
+      final int lastError = Kernel32.INSTANCE.GetLastError();
+      if (W32Errors.ERROR_INSUFFICIENT_BUFFER != lastError) {
         throw new Win32Exception(lastError);
       }
     }
 
     final int nLength = lpnSize.getValue();
     final Memory securityDescriptorMemoryPointer = new Memory(nLength);
-    succeeded = com.sun.jna.platform.win32.Advapi32.INSTANCE.GetFileSecurity(
+    succeeded = Advapi32.INSTANCE.GetFileSecurity(
       absoluteFilePath, infoType, securityDescriptorMemoryPointer, nLength, lpnSize);
 
     if (!succeeded) {
       securityDescriptorMemoryPointer.clear();
-      throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+      throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
     }
 
     return securityDescriptorMemoryPointer;
@@ -2791,11 +2781,11 @@ public abstract class Advapi32Util {
    *         A pointer to a null-terminated string that specifies the name of the object
    *         from which to retrieve security information. For descriptions of the string
    *         formats for the different object types, see SE_OBJECT_TYPE in
-   *         {@link com.sun.jna.platform.win32.AccCtrl.SE_OBJECT_TYPE}
+   *         {@link AccCtrl.SE_OBJECT_TYPE}
    * @param objectType
-   *         Object type referred to by the path. See  {@link com.sun.jna.platform.win32.AccCtrl.SE_OBJECT_TYPE} for valid definitions.
+   *         Object type referred to by the path. See  {@link AccCtrl.SE_OBJECT_TYPE} for valid definitions.
    * @param getSACL
-   *         Get SACL of the object. See {@link com.sun.jna.platform.win32.Advapi32#GetNamedSecurityInfo} for process privilege requirements in getting the SACL.
+   *         Get SACL of the object. See {@link Advapi32#GetNamedSecurityInfo} for process privilege requirements in getting the SACL.
    * @return Memory containing the self relative security descriptor
    */
   public static Memory getSecurityDescriptorForObject(final String absoluteObjectPath, int objectType, boolean getSACL) {
@@ -2807,7 +2797,7 @@ public abstract class Advapi32Util {
 
     PointerByReference ppSecurityDescriptor = new PointerByReference();
 
-    int lastError = com.sun.jna.platform.win32.Advapi32.INSTANCE.GetNamedSecurityInfo(
+    int lastError = Advapi32.INSTANCE.GetNamedSecurityInfo(
       absoluteObjectPath,
       objectType,
       infoType,
@@ -2821,7 +2811,7 @@ public abstract class Advapi32Util {
       throw new Win32Exception(lastError);
     }
 
-    int nLength = com.sun.jna.platform.win32.Advapi32.INSTANCE.GetSecurityDescriptorLength(ppSecurityDescriptor.getValue());
+    int nLength = Advapi32.INSTANCE.GetSecurityDescriptorLength(ppSecurityDescriptor.getValue());
     Memory memory = new Memory(nLength);
     Pointer secValue = ppSecurityDescriptor.getValue();
     try {
@@ -2839,15 +2829,15 @@ public abstract class Advapi32Util {
    * @param absoluteObjectPath
    *         A pointer to a null-terminated string that specifies the name of the object
    *         from which to retrieve security information. For descriptions of the string
-   *         formats for the different object types, see {@link com.sun.jna.platform.win32.AccCtrl.SE_OBJECT_TYPE}.
+   *         formats for the different object types, see {@link AccCtrl.SE_OBJECT_TYPE}.
    * @param objectType
-   *         Object type referred to by the path. See  {@link com.sun.jna.platform.win32.AccCtrl.SE_OBJECT_TYPE} for valid definitions.
+   *         Object type referred to by the path. See  {@link AccCtrl.SE_OBJECT_TYPE} for valid definitions.
    * @param securityDescriptor
    *         A security descriptor to set.
    * @param setOwner
    *         Set the owner. The owner is extracted from securityDescriptor and must be valid,
    *         otherwise IllegalArgumentException is throw.
-   *         See {@link com.sun.jna.platform.win32.Advapi32#SetNamedSecurityInfo} for process privilege requirements in getting the OWNER.
+   *         See {@link Advapi32#SetNamedSecurityInfo} for process privilege requirements in getting the OWNER.
    * @param setGroup
    *         Set the group. The group is extracted from securityDescriptor and must be valid,
    *         otherwise IllegalArgumentException is throw.
@@ -2857,7 +2847,7 @@ public abstract class Advapi32Util {
    * @param setSACL
    *         Set the SACL. The SACL is extracted from securityDescriptor and must be valid,
    *         otherwise IllegalArgumentException is throw.
-   *          See {@link com.sun.jna.platform.win32.Advapi32#SetNamedSecurityInfo} for process privilege requirements in getting the SACL.
+   *          See {@link Advapi32#SetNamedSecurityInfo} for process privilege requirements in getting the SACL.
    * @param setDACLProtectedStatus
    *         Set DACL protected status as contained within securityDescriptor.control.
    * @param setSACLProtectedStatus
@@ -2883,7 +2873,7 @@ public abstract class Advapi32Util {
     if (setOwner) {
       if (psidOwner == null)
         throw new IllegalArgumentException("SECURITY_DESCRIPTOR_RELATIVE does not contain owner");
-      if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.IsValidSid(psidOwner))
+      if (!Advapi32.INSTANCE.IsValidSid(psidOwner))
         throw new IllegalArgumentException("Owner PSID is invalid");
       infoType |= OWNER_SECURITY_INFORMATION;
     }
@@ -2891,7 +2881,7 @@ public abstract class Advapi32Util {
     if (setGroup) {
       if (psidGroup == null)
         throw new IllegalArgumentException("SECURITY_DESCRIPTOR_RELATIVE does not contain group");
-      if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.IsValidSid(psidGroup))
+      if (!Advapi32.INSTANCE.IsValidSid(psidGroup))
         throw new IllegalArgumentException("Group PSID is invalid");
       infoType |= GROUP_SECURITY_INFORMATION;
     }
@@ -2899,7 +2889,7 @@ public abstract class Advapi32Util {
     if (setDACL) {
       if (dacl == null)
         throw new IllegalArgumentException("SECURITY_DESCRIPTOR_RELATIVE does not contain DACL");
-      if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.IsValidAcl(dacl.getPointer()))
+      if (!Advapi32.INSTANCE.IsValidAcl(dacl.getPointer()))
         throw new IllegalArgumentException("DACL is invalid");
       infoType |= DACL_SECURITY_INFORMATION;
     }
@@ -2907,7 +2897,7 @@ public abstract class Advapi32Util {
     if (setSACL) {
       if (sacl == null)
         throw new IllegalArgumentException("SECURITY_DESCRIPTOR_RELATIVE does not contain SACL");
-      if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.IsValidAcl(sacl.getPointer()))
+      if (!Advapi32.INSTANCE.IsValidAcl(sacl.getPointer()))
         throw new IllegalArgumentException("SACL is invalid");
       infoType |= SACL_SECURITY_INFORMATION;
     }
@@ -2934,7 +2924,7 @@ public abstract class Advapi32Util {
       }
     }
 
-    int lastError = com.sun.jna.platform.win32.Advapi32.INSTANCE.SetNamedSecurityInfo(
+    int lastError = Advapi32.INSTANCE.SetNamedSecurityInfo(
       absoluteObjectPath,
       objectType,
       infoType,
@@ -2962,13 +2952,13 @@ public abstract class Advapi32Util {
     Win32Exception err = null;
     try {
       int desireAccess = TOKEN_IMPERSONATE | TOKEN_QUERY | TOKEN_DUPLICATE | STANDARD_RIGHTS_READ;
-      HANDLE hProcess = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetCurrentProcess();
-      if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.OpenProcessToken(hProcess, desireAccess, openedAccessToken)) {
-        throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+      HANDLE hProcess = Kernel32.INSTANCE.GetCurrentProcess();
+      if (!Advapi32.INSTANCE.OpenProcessToken(hProcess, desireAccess, openedAccessToken)) {
+        throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
       }
 
-      if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.DuplicateToken(openedAccessToken.getValue(), SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation, duplicatedToken)) {
-        throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+      if (!Advapi32.INSTANCE.DuplicateToken(openedAccessToken.getValue(), SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation, duplicatedToken)) {
+        throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
       }
 
       GENERIC_MAPPING mapping = new GENERIC_MAPPING();
@@ -2978,7 +2968,7 @@ public abstract class Advapi32Util {
       mapping.genericAll = new DWORD(FILE_ALL_ACCESS);
 
       DWORDByReference rights = new DWORDByReference(new DWORD(permissionToCheck.getCode()));
-      com.sun.jna.platform.win32.Advapi32.INSTANCE.MapGenericMask(rights, mapping);
+      Advapi32.INSTANCE.MapGenericMask(rights, mapping);
 
       PRIVILEGE_SET privileges = new PRIVILEGE_SET(1);
       privileges.PrivilegeCount = new DWORD(0);
@@ -2986,12 +2976,12 @@ public abstract class Advapi32Util {
 
       DWORDByReference grantedAccess = new DWORDByReference();
       BOOLByReference result = new BOOLByReference();
-      if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.AccessCheck(securityDescriptorMemoryPointer,
+      if (!Advapi32.INSTANCE.AccessCheck(securityDescriptorMemoryPointer,
         duplicatedToken.getValue(),
         rights.getValue(),
         mapping,
         privileges, privilegeLength, grantedAccess, result)) {
-        throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+        throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
       }
 
       return result.getValue().booleanValue();
@@ -3025,13 +3015,13 @@ public abstract class Advapi32Util {
    * @param file
    *         File object containing a path to a file system object.
    * @param getSACL
-   *         Get the SACL. See {@link com.sun.jna.platform.win32.Advapi32#GetNamedSecurityInfo} for process privilege requirements in getting the SACL.
+   *         Get the SACL. See {@link Advapi32#GetNamedSecurityInfo} for process privilege requirements in getting the SACL.
    * @return The file's Security Descriptor in self relative format.
    */
   public static SECURITY_DESCRIPTOR_RELATIVE getFileSecurityDescriptor(File file, boolean getSACL)
   {
     SECURITY_DESCRIPTOR_RELATIVE sdr;
-    Memory securityDesc = getSecurityDescriptorForObject(file.getAbsolutePath().replaceAll("/", "\\"), com.sun.jna.platform.win32.AccCtrl.SE_OBJECT_TYPE.SE_FILE_OBJECT, getSACL);
+    Memory securityDesc = getSecurityDescriptorForObject(file.getAbsolutePath().replaceAll("/", "\\"), AccCtrl.SE_OBJECT_TYPE.SE_FILE_OBJECT, getSACL);
     sdr = new SECURITY_DESCRIPTOR_RELATIVE(securityDesc);
     return sdr;
   }
@@ -3043,13 +3033,13 @@ public abstract class Advapi32Util {
    * @param securityDescriptor
    *         The security descriptor to set.
    * @param setOwner
-   *         Set the owner. See {@link com.sun.jna.platform.win32.Advapi32#SetNamedSecurityInfo} for process privilege requirements in setting the owner.
+   *         Set the owner. See {@link Advapi32#SetNamedSecurityInfo} for process privilege requirements in setting the owner.
    * @param setGroup
    *         Set the group.
    * @param setDACL
    *         Set the DACL.
    * @param setSACL
-   *         Set the SACL. See {@link com.sun.jna.platform.win32.Advapi32#SetNamedSecurityInfo} for process privilege requirements in setting the SACL.
+   *         Set the SACL. See {@link Advapi32#SetNamedSecurityInfo} for process privilege requirements in setting the SACL.
    * @param setDACLProtectedStatus
    *         Set DACL protected status as contained within securityDescriptor.control.
    * @param setSACLProtectedStatus
@@ -3076,8 +3066,8 @@ public abstract class Advapi32Util {
    */
   public static void encryptFile(File file) {
     String lpFileName = file.getAbsolutePath();
-    if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.EncryptFile(lpFileName)) {
-      throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+    if (!Advapi32.INSTANCE.EncryptFile(lpFileName)) {
+      throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
     }
   }
 
@@ -3089,8 +3079,8 @@ public abstract class Advapi32Util {
    */
   public static void decryptFile(File file) {
     String lpFileName = file.getAbsolutePath();
-    if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.DecryptFile(lpFileName, new DWORD(0))) {
-      throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+    if (!Advapi32.INSTANCE.DecryptFile(lpFileName, new DWORD(0))) {
+      throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
     }
   }
 
@@ -3104,8 +3094,8 @@ public abstract class Advapi32Util {
   public static int fileEncryptionStatus(File file) {
     DWORDByReference status = new DWORDByReference();
     String lpFileName = file.getAbsolutePath();
-    if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.FileEncryptionStatus(lpFileName, status)) {
-      throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+    if (!Advapi32.INSTANCE.FileEncryptionStatus(lpFileName, status)) {
+      throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
     }
     return status.getValue().intValue();
   }
@@ -3121,7 +3111,7 @@ public abstract class Advapi32Util {
    */
   public static void disableEncryption(File directory, boolean disable) {
     String dirPath = directory.getAbsolutePath();
-    if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.EncryptionDisable(dirPath, disable)) {
+    if (!Advapi32.INSTANCE.EncryptionDisable(dirPath, disable)) {
       throw new Win32Exception(Native.getLastError());
     }
   }
@@ -3154,9 +3144,9 @@ public abstract class Advapi32Util {
     // open encrypted file for export
     String srcFileName = src.getAbsolutePath();
     PointerByReference pvContext = new PointerByReference();
-    if (com.sun.jna.platform.win32.Advapi32.INSTANCE.OpenEncryptedFileRaw(srcFileName, readFlag,
-      pvContext) != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
-      throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+    if (Advapi32.INSTANCE.OpenEncryptedFileRaw(srcFileName, readFlag,
+      pvContext) != W32Errors.ERROR_SUCCESS) {
+      throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
     }
 
     // read encrypted file
@@ -3171,13 +3161,13 @@ public abstract class Advapi32Util {
         } catch (IOException e) {
           throw new RuntimeException(e);
         }
-        return new DWORD(com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS);
+        return new DWORD(W32Errors.ERROR_SUCCESS);
       }
     };
 
-    if (com.sun.jna.platform.win32.Advapi32.INSTANCE.ReadEncryptedFileRaw(pfExportCallback, null,
-      pvContext.getValue()) != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
-      throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+    if (Advapi32.INSTANCE.ReadEncryptedFileRaw(pfExportCallback, null,
+      pvContext.getValue()) != W32Errors.ERROR_SUCCESS) {
+      throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
     }
 
     // close
@@ -3186,15 +3176,15 @@ public abstract class Advapi32Util {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-    com.sun.jna.platform.win32.Advapi32.INSTANCE.CloseEncryptedFileRaw(pvContext.getValue());
+    Advapi32.INSTANCE.CloseEncryptedFileRaw(pvContext.getValue());
 
     // open file for import
     String destFileName = destDir.getAbsolutePath() + File.separator
       + src.getName();
     pvContext = new PointerByReference();
-    if (com.sun.jna.platform.win32.Advapi32.INSTANCE.OpenEncryptedFileRaw(destFileName, writeFlag,
-      pvContext) != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
-      throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+    if (Advapi32.INSTANCE.OpenEncryptedFileRaw(destFileName, writeFlag,
+      pvContext) != W32Errors.ERROR_SUCCESS) {
+      throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
     }
 
     // write encrypted file
@@ -3210,17 +3200,17 @@ public abstract class Advapi32Util {
           length);
         elementsReadWrapper.setValue(elementsRead + length);
         ulLength.setValue(new ULONG(length));
-        return new DWORD(com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS);
+        return new DWORD(W32Errors.ERROR_SUCCESS);
       }
     };
 
-    if (com.sun.jna.platform.win32.Advapi32.INSTANCE.WriteEncryptedFileRaw(pfImportCallback, null,
-      pvContext.getValue()) != com.sun.jna.platform.win32.W32Errors.ERROR_SUCCESS) {
-      throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+    if (Advapi32.INSTANCE.WriteEncryptedFileRaw(pfImportCallback, null,
+      pvContext.getValue()) != W32Errors.ERROR_SUCCESS) {
+      throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
     }
 
     // close
-    com.sun.jna.platform.win32.Advapi32.INSTANCE.CloseEncryptedFileRaw(pvContext.getValue());
+    Advapi32.INSTANCE.CloseEncryptedFileRaw(pvContext.getValue());
   }
 
   /**
@@ -3240,7 +3230,7 @@ public abstract class Advapi32Util {
     /**
      * LUID form of the privileges
      */
-    private final com.sun.jna.platform.win32.WinNT.LUID[] pLuids;
+    private final WinNT.LUID[] pLuids;
 
     /**
      * Construct and enable a set of privileges
@@ -3248,12 +3238,12 @@ public abstract class Advapi32Util {
      * @throws IllegalArgumentException
      */
     public Privilege(String... privileges) throws IllegalArgumentException, Win32Exception {
-      pLuids = new com.sun.jna.platform.win32.WinNT.LUID[privileges.length];
+      pLuids = new WinNT.LUID[privileges.length];
       int i = 0;
       for (String p : privileges) {
-        pLuids[i] = new com.sun.jna.platform.win32.WinNT.LUID();
-        if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.LookupPrivilegeValue(null, p, pLuids[i])) {
-          throw new IllegalArgumentException("Failed to find privilege \"" + privileges[i] + "\" - " + com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+        pLuids[i] = new WinNT.LUID();
+        if (!Advapi32.INSTANCE.LookupPrivilegeValue(null, p, pLuids[i])) {
+          throw new IllegalArgumentException("Failed to find privilege \"" + privileges[i] + "\" - " + Kernel32.INSTANCE.GetLastError());
         }
         i++;
       }
@@ -3261,7 +3251,7 @@ public abstract class Advapi32Util {
 
     /**
      * Calls disable() to remove the privileges
-     * @see Closeable#close()
+     * @see java.io.Closeable#close()
      */
     @Override
     public void close() {
@@ -3285,28 +3275,28 @@ public abstract class Advapi32Util {
 
       try {
         phThreadToken.setValue(getThreadToken());
-        com.sun.jna.platform.win32.WinNT.TOKEN_PRIVILEGES tp = new com.sun.jna.platform.win32.WinNT.TOKEN_PRIVILEGES(pLuids.length);
+        WinNT.TOKEN_PRIVILEGES tp = new WinNT.TOKEN_PRIVILEGES(pLuids.length);
         for (int i = 0; i < pLuids.length; i++) {
-          tp.Privileges[i] = new com.sun.jna.platform.win32.WinNT.LUID_AND_ATTRIBUTES(pLuids[i], new DWORD(com.sun.jna.platform.win32.WinNT.SE_PRIVILEGE_ENABLED));
+          tp.Privileges[i] = new WinNT.LUID_AND_ATTRIBUTES(pLuids[i], new DWORD(WinNT.SE_PRIVILEGE_ENABLED));
         }
-        if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.AdjustTokenPrivileges(phThreadToken.getValue(), false, tp, 0, null, null)) {
-          throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+        if (!Advapi32.INSTANCE.AdjustTokenPrivileges(phThreadToken.getValue(), false, tp, 0, null, null)) {
+          throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
         }
         privilegesEnabled = true;
       }
       catch (Win32Exception ex) {
         // If fails, clean up
         if (currentlyImpersonating) {
-          com.sun.jna.platform.win32.Advapi32.INSTANCE.SetThreadToken(null, null);
+          Advapi32.INSTANCE.SetThreadToken(null, null);
           currentlyImpersonating = false;
         }
         else {
           if (privilegesEnabled) {
-            com.sun.jna.platform.win32.WinNT.TOKEN_PRIVILEGES tp = new com.sun.jna.platform.win32.WinNT.TOKEN_PRIVILEGES(pLuids.length);
+            WinNT.TOKEN_PRIVILEGES tp = new WinNT.TOKEN_PRIVILEGES(pLuids.length);
             for (int i = 0; i < pLuids.length; i++) {
-              tp.Privileges[i] = new com.sun.jna.platform.win32.WinNT.LUID_AND_ATTRIBUTES(pLuids[i], new DWORD(0));
+              tp.Privileges[i] = new WinNT.LUID_AND_ATTRIBUTES(pLuids[i], new DWORD(0));
             }
-            com.sun.jna.platform.win32.Advapi32.INSTANCE.AdjustTokenPrivileges(phThreadToken.getValue(), false, tp, 0, null, null);
+            Advapi32.INSTANCE.AdjustTokenPrivileges(phThreadToken.getValue(), false, tp, 0, null, null);
             privilegesEnabled = false;
           }
         }
@@ -3314,9 +3304,9 @@ public abstract class Advapi32Util {
       }
       finally {
         // Always close the thread token
-        if ((!com.sun.jna.platform.win32.WinBase.INVALID_HANDLE_VALUE.equals(phThreadToken.getValue()))
+        if ((!WinBase.INVALID_HANDLE_VALUE.equals(phThreadToken.getValue()))
           && (phThreadToken.getValue() != null)) {
-          com.sun.jna.platform.win32.Kernel32.INSTANCE.CloseHandle(phThreadToken.getValue());
+          Kernel32.INSTANCE.CloseHandle(phThreadToken.getValue());
           phThreadToken.setValue(null);
         }
       }
@@ -3334,25 +3324,25 @@ public abstract class Advapi32Util {
       try {
         phThreadToken.setValue(getThreadToken());
         if (currentlyImpersonating) {
-          com.sun.jna.platform.win32.Advapi32.INSTANCE.SetThreadToken(null, null);
+          Advapi32.INSTANCE.SetThreadToken(null, null);
         }
         else
         {
           if (privilegesEnabled) {
-            com.sun.jna.platform.win32.WinNT.TOKEN_PRIVILEGES tp = new com.sun.jna.platform.win32.WinNT.TOKEN_PRIVILEGES(pLuids.length);
+            WinNT.TOKEN_PRIVILEGES tp = new WinNT.TOKEN_PRIVILEGES(pLuids.length);
             for (int i = 0; i < pLuids.length; i++) {
-              tp.Privileges[i] = new com.sun.jna.platform.win32.WinNT.LUID_AND_ATTRIBUTES(pLuids[i], new DWORD(0));
+              tp.Privileges[i] = new WinNT.LUID_AND_ATTRIBUTES(pLuids[i], new DWORD(0));
             }
-            com.sun.jna.platform.win32.Advapi32.INSTANCE.AdjustTokenPrivileges(phThreadToken.getValue(), false, tp, 0, null, null);
+            Advapi32.INSTANCE.AdjustTokenPrivileges(phThreadToken.getValue(), false, tp, 0, null, null);
             privilegesEnabled = false;
           }
         }
       }
       finally {
         // Close the thread token
-        if ((!com.sun.jna.platform.win32.WinBase.INVALID_HANDLE_VALUE.equals(phThreadToken.getValue()))
+        if ((!WinBase.INVALID_HANDLE_VALUE.equals(phThreadToken.getValue()))
           && (phThreadToken.getValue() != null)) {
-          com.sun.jna.platform.win32.Kernel32.INSTANCE.CloseHandle(phThreadToken.getValue());
+          Kernel32.INSTANCE.CloseHandle(phThreadToken.getValue());
           phThreadToken.setValue(null);
         }
       }
@@ -3371,43 +3361,43 @@ public abstract class Advapi32Util {
 
       try {
         // open thread token
-        if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.OpenThreadToken(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetCurrentThread(),
+        if (!Advapi32.INSTANCE.OpenThreadToken(Kernel32.INSTANCE.GetCurrentThread(),
           TOKEN_ADJUST_PRIVILEGES,
           false,
           phThreadToken)) {
           // OpenThreadToken may fail with W32Errors.ERROR_NO_TOKEN if current thread is anonymous. Check for that condition here. If not, throw an error.
-          int lastError = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError();
+          int lastError = Kernel32.INSTANCE.GetLastError();
           if (W32Errors.ERROR_NO_TOKEN != lastError) {
             throw new Win32Exception(lastError);
           }
 
           // Due to ERROR_NO_TOKEN, we need to open the process token to duplicate it, then set our thread token.
-          if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.OpenProcessToken(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetCurrentProcess(), TOKEN_DUPLICATE, phProcessToken)) {
-            throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+          if (!Advapi32.INSTANCE.OpenProcessToken(Kernel32.INSTANCE.GetCurrentProcess(), TOKEN_DUPLICATE, phProcessToken)) {
+            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
           }
 
           // Process token opened, now duplicate
-          if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.DuplicateTokenEx(phProcessToken.getValue(),
+          if (!Advapi32.INSTANCE.DuplicateTokenEx(phProcessToken.getValue(),
             TOKEN_ADJUST_PRIVILEGES | TOKEN_IMPERSONATE,
             null,
             SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation,
             TOKEN_TYPE.TokenImpersonation,
             phThreadToken)) {
-            throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
           }
 
           // And set thread token.
-          if (!com.sun.jna.platform.win32.Advapi32.INSTANCE.SetThreadToken(null, phThreadToken.getValue())) {
-            throw new Win32Exception(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetLastError());
+          if (!Advapi32.INSTANCE.SetThreadToken(null, phThreadToken.getValue())) {
+            throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
           }
           currentlyImpersonating = true;
         }
       }
       catch (Win32Exception ex) {
         // Close the thread token
-        if ((!com.sun.jna.platform.win32.WinBase.INVALID_HANDLE_VALUE.equals(phThreadToken.getValue()))
+        if ((!WinBase.INVALID_HANDLE_VALUE.equals(phThreadToken.getValue()))
           && (phThreadToken.getValue() != null)) {
-          com.sun.jna.platform.win32.Kernel32.INSTANCE.CloseHandle(phThreadToken.getValue());
+          Kernel32.INSTANCE.CloseHandle(phThreadToken.getValue());
           phThreadToken.setValue(null);
         }
         throw ex;
@@ -3417,7 +3407,7 @@ public abstract class Advapi32Util {
         // Always close the process token
         if ((!WinBase.INVALID_HANDLE_VALUE.equals(phProcessToken.getValue()))
           && (phProcessToken.getValue() != null)) {
-          com.sun.jna.platform.win32.Kernel32.INSTANCE.CloseHandle(phProcessToken.getValue());
+          Kernel32.INSTANCE.CloseHandle(phProcessToken.getValue());
           phProcessToken.setValue(null);
         }
       }
@@ -3434,7 +3424,7 @@ public abstract class Advapi32Util {
   public static boolean isCurrentProcessElevated() {
     HANDLEByReference hToken = new HANDLEByReference();
     IntByReference returnLength = new IntByReference();
-    if (com.sun.jna.platform.win32.Advapi32.INSTANCE.OpenProcessToken(com.sun.jna.platform.win32.Kernel32.INSTANCE.GetCurrentProcess(), com.sun.jna.platform.win32.WinNT.TOKEN_QUERY,
+    if (Advapi32.INSTANCE.OpenProcessToken(Kernel32.INSTANCE.GetCurrentProcess(), WinNT.TOKEN_QUERY,
       hToken)) {
       try {
         TOKEN_ELEVATION elevation = new TOKEN_ELEVATION();

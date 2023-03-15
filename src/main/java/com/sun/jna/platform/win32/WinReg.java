@@ -21,11 +21,10 @@
  * A copy is also included in the downloadable source code package
  * containing JNA, in file "AL2.0".
  */
-package com.mageddo.sun.jna.platform.win32;
+package com.sun.jna.platform.win32;
 
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
-import com.sun.jna.platform.win32.WinBase;
 import com.sun.jna.platform.win32.WinNT.HANDLE;
 import com.sun.jna.ptr.ByReference;
 

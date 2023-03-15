@@ -21,20 +21,13 @@
  * A copy is also included in the downloadable source code package
  * containing JNA, in file "AL2.0".
  */
-package com.mageddo.sun.jna.platform.win32;
+package com.sun.jna.platform.win32;
 
 import com.sun.jna.LastErrorException;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.BaseTSD.ULONG_PTR;
-import com.sun.jna.platform.win32.Kernel32Util;
-import com.sun.jna.platform.win32.Tlhelp32;
-import com.sun.jna.platform.win32.WinBase;
-import com.sun.jna.platform.win32.WinDef;
-import com.sun.jna.platform.win32.WinError;
-import com.sun.jna.platform.win32.WinNT;
 import com.sun.jna.platform.win32.WinNT.HANDLE;
-import com.sun.jna.platform.win32.Wincon;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.PointerByReference;
 import com.sun.jna.win32.StdCallLibrary;
@@ -42,10 +35,10 @@ import com.sun.jna.win32.W32APIOptions;
 
 /**
  * Interface definitions for <code>kernel32.dll</code>. Includes additional
- * alternate mappings from {@link com.sun.jna.platform.win32.WinNT} which make use of NIO buffers,
- * {@link com.sun.jna.platform.win32.Wincon} for console API.
+ * alternate mappings from {@link WinNT} which make use of NIO buffers,
+ * {@link Wincon} for console API.
  */
-public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.WinNT, Wincon {
+public interface Kernel32 extends StdCallLibrary, WinNT, Wincon {
 
     /** The instance. */
     Kernel32 INSTANCE = Native.load("kernel32", Kernel32.class, W32APIOptions.DEFAULT_OPTIONS);
@@ -110,7 +103,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *         asynchronously. For more information, see Remarks.
      */
     boolean ReadFile(HANDLE hFile, byte[] lpBuffer, int nNumberOfBytesToRead,
-            IntByReference lpNumberOfBytesRead, OVERLAPPED lpOverlapped);
+            IntByReference lpNumberOfBytesRead, WinBase.OVERLAPPED lpOverlapped);
 
     /**
      * Frees the specified local memory object and invalidates its handle.
@@ -158,7 +151,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * The system time is expressed in Coordinated Universal Time (UTC).
      *
      * @param lpSystemTime
-     *            Pointer to a {@link SYSTEMTIME} structure to receive the current
+     *            Pointer to a {@link WinBase.SYSTEMTIME} structure to receive the current
      *            system date and time.
      * @see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms724390(v=vs.85).aspx">GetSystemTime documentation</a>
      */
@@ -169,7 +162,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * The system time is expressed in Coordinated Universal Time (UTC).
      *
      * @param lpSystemTime
-     *            Pointer to a {@link SYSTEMTIME} structure holding the new
+     *            Pointer to a {@link WinBase.SYSTEMTIME} structure holding the new
      *            system date and time. <B>Note:</B> The {@code wDayOfWeek}
      *            member of the SYSTEMTIME structure is ignored.
      * @return {@code true} if the function succeeds, {@code false} otherwise.
@@ -183,17 +176,17 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * Retrieves the current local date and time.
      *
      * @param lpSystemTime
-     *            A pointer to a {@link SYSTEMTIME} structure to receive the current
+     *            A pointer to a {@link WinBase.SYSTEMTIME} structure to receive the current
      *            local date and time.
      * @see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms724338(v=vs.85).aspx">GetLocalTime documentation</a>
      */
-    void GetLocalTime(SYSTEMTIME lpSystemTime);
+    void GetLocalTime(WinBase.SYSTEMTIME lpSystemTime);
 
     /**
      * Sets the current local time and date
      *
      * @param lpSystemTime
-     *            Pointer to a {@link SYSTEMTIME} structure holding the new
+     *            Pointer to a {@link WinBase.SYSTEMTIME} structure holding the new
      *            system date and time. <B>Note:</B> The {@code wDayOfWeek}
      *            member of the SYSTEMTIME structure is ignored.
      * @return {@code true} if the function succeeds, {@code false} otherwise.
@@ -209,16 +202,16 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * processors.
      *
      * @param lpIdleTime
-     *            A pointer to a {@link FILETIME} structure that
+     *            A pointer to a {@link WinBase.FILETIME} structure that
      *            receives the amount of time that the system has been idle.
      * @param lpKernelTime
-     *            A pointer to a {@link FILETIME} structure that
+     *            A pointer to a {@link WinBase.FILETIME} structure that
      *            receives the amount of time that the system has spent
      *            executing in Kernel mode (including all threads in all
      *            processes, on all processors). This time value also includes
      *            the amount of time the system has been idle.
      * @param lpUserTime
-     *            A pointer to a {@link FILETIME} structure that
+     *            A pointer to a {@link WinBase.FILETIME} structure that
      *            receives the amount of time that the system has spent
      *            executing in User mode (including all threads in all
      *            processes, on all processors).
@@ -227,7 +220,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *         information.
      * @see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms724400(v=vs.85).aspx">GetSystemTimes documentation</a>
      */
-    boolean GetSystemTimes(FILETIME lpIdleTime, FILETIME lpKernelTime, FILETIME lpUserTime);
+    boolean GetSystemTimes(WinBase.FILETIME lpIdleTime, WinBase.FILETIME lpKernelTime, WinBase.FILETIME lpUserTime);
 
     /**
      * The GetTickCount function retrieves the number of milliseconds that have
@@ -316,8 +309,8 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * @param hProcess
      *            A handle to the process whose affinity mask is desired.
      *            <p>
-     *            This handle must have the {@link com.sun.jna.platform.win32.WinNT#PROCESS_QUERY_INFORMATION}
-     *            or {@link com.sun.jna.platform.win32.WinNT#PROCESS_QUERY_LIMITED_INFORMATION} access right.
+     *            This handle must have the {@link WinNT#PROCESS_QUERY_INFORMATION}
+     *            or {@link WinNT#PROCESS_QUERY_LIMITED_INFORMATION} access right.
      * @param lpProcessAffinityMask
      *            A pointer to a variable that receives the affinity mask for the
      *            specified process.
@@ -349,7 +342,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *
      * @param hProcess
      *            A handle to the process whose affinity mask is to be set. This
-     *            handle must have the {@link com.sun.jna.platform.win32.WinNT#PROCESS_SET_INFORMATION} access
+     *            handle must have the {@link WinNT#PROCESS_SET_INFORMATION} access
      *            right.
      * @param dwProcessAffinityMask
      *            The affinity mask for the threads of the process.
@@ -515,7 +508,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *         call GetLastError.
      */
     HANDLE CreateFile(String lpFileName, int dwDesiredAccess, int dwShareMode,
-            SECURITY_ATTRIBUTES lpSecurityAttributes,
+            WinBase.SECURITY_ATTRIBUTES lpSecurityAttributes,
             int dwCreationDisposition, int dwFlagsAndAttributes,
             HANDLE hTemplateFile);
 
@@ -643,7 +636,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *         information, call GetLastError.
      */
     boolean CreateDirectory(String lpPathName,
-            SECURITY_ATTRIBUTES lpSecurityAttributes);
+            WinBase.SECURITY_ATTRIBUTES lpSecurityAttributes);
 
     /**
      * Creates an input/output (I/O) completion port and associates it with a
@@ -726,7 +719,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      */
     boolean PostQueuedCompletionStatus(HANDLE CompletionPort,
             int dwNumberOfBytesTransferred, Pointer dwCompletionKey,
-            OVERLAPPED lpOverlapped);
+            WinBase.OVERLAPPED lpOverlapped);
 
     /**
      * Waits until the specified object is in the signaled state or the time-out
@@ -884,9 +877,9 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *         this operation, the function fails with ERROR_INVALID_FUNCTION.
      */
     public boolean ReadDirectoryChangesW(HANDLE directory,
-            FILE_NOTIFY_INFORMATION info, int length,
+            WinNT.FILE_NOTIFY_INFORMATION info, int length,
             boolean watchSubtree, int notifyFilter,
-            IntByReference bytesReturned, OVERLAPPED overlapped,
+            IntByReference bytesReturned, WinBase.OVERLAPPED overlapped,
             OVERLAPPED_COMPLETION_ROUTINE completionRoutine);
 
     /**
@@ -957,7 +950,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      */
     boolean WriteFile(HANDLE hFile, byte[] lpBuffer, int nNumberOfBytesToWrite,
             IntByReference lpNumberOfBytesWritten,
-            OVERLAPPED lpOverlapped);
+            WinBase.OVERLAPPED lpOverlapped);
 
     /**
      * Flushes the buffers of a specified file and causes all buffered data
@@ -999,8 +992,8 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *         function fails, the return value is NULL. To get extended error
      *         information, call GetLastError.
      */
-    HANDLE CreateEvent(SECURITY_ATTRIBUTES lpEventAttributes,
-                       boolean bManualReset, boolean bInitialState, String lpName);
+    HANDLE CreateEvent(WinBase.SECURITY_ATTRIBUTES lpEventAttributes,
+            boolean bManualReset, boolean bInitialState, String lpName);
 
     /**
      * Opens an existing named event object.
@@ -1111,7 +1104,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *         GetLastError.
      */
     HANDLE CreateFileMapping(HANDLE hFile,
-            SECURITY_ATTRIBUTES lpAttributes, int flProtect,
+            WinBase.SECURITY_ATTRIBUTES lpAttributes, int flProtect,
             int dwMaximumSizeHigh, int dwMaximumSizeLow, String lpName);
 
     /**
@@ -1285,12 +1278,12 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * @return If the function succeeds, the return value is nonzero.
      */
     boolean CreateProcess(String lpApplicationName, String lpCommandLine,
-            SECURITY_ATTRIBUTES lpProcessAttributes,
-            SECURITY_ATTRIBUTES lpThreadAttributes,
+            WinBase.SECURITY_ATTRIBUTES lpProcessAttributes,
+            WinBase.SECURITY_ATTRIBUTES lpThreadAttributes,
             boolean bInheritHandles, DWORD dwCreationFlags,
             Pointer lpEnvironment, String lpCurrentDirectory,
-            STARTUPINFO lpStartupInfo,
-            PROCESS_INFORMATION lpProcessInformation);
+            WinBase.STARTUPINFO lpStartupInfo,
+            WinBase.PROCESS_INFORMATION lpProcessInformation);
 
     /**
      * Creates a new process and its primary thread. The new process runs in the
@@ -1392,12 +1385,12 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * @return If the function succeeds, the return value is nonzero.
      */
     boolean CreateProcessW(String lpApplicationName, char[] lpCommandLine,
-            SECURITY_ATTRIBUTES lpProcessAttributes,
-            SECURITY_ATTRIBUTES lpThreadAttributes,
+            WinBase.SECURITY_ATTRIBUTES lpProcessAttributes,
+            WinBase.SECURITY_ATTRIBUTES lpThreadAttributes,
             boolean bInheritHandles, DWORD dwCreationFlags,
             Pointer lpEnvironment, String lpCurrentDirectory,
-            STARTUPINFO lpStartupInfo,
-            PROCESS_INFORMATION lpProcessInformation);
+            WinBase.STARTUPINFO lpStartupInfo,
+            WinBase.PROCESS_INFORMATION lpProcessInformation);
 
     /**
      * This function returns a handle to an existing process object.
@@ -1508,7 +1501,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * This function is subject to manifest-based behavior.
      *
      * @param lpVersionInformation
-     *            A pointer to an {@link OSVERSIONINFOEX} structure
+     *            A pointer to an {@link com.sun.jna.platform.win32.WinNT.OSVERSIONINFOEX} structure
      *            containing the operating system version requirements to
      *            compare. The {@code dwTypeMask} parameter indicates the
      *            members of this structure that contain information to compare.
@@ -1520,12 +1513,12 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *            which the corresponding {@code dwTypeMask} bit is not set.
      * @param dwTypeMask
      *            A mask that indicates the members of the
-     *            {@link OSVERSIONINFOEX} structure to be tested.
+     *            {@link com.sun.jna.platform.win32.WinNT.OSVERSIONINFOEX} structure to be tested.
      * @param dwlConditionMask
      *            The type of comparison to be used for each
      *            {@code lpVersionInfo} member being compared. To build this
      *            value, call the {@link #VerSetConditionMask} function once for
-     *            each {@link OSVERSIONINFOEX} member being compared.
+     *            each {@link com.sun.jna.platform.win32.WinNT.OSVERSIONINFOEX} member being compared.
      * @return If the currently running operating system satisfies the specified
      *         requirements, the return value is a nonzero value.
      *         <p>
@@ -1556,7 +1549,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *            in the variable used in the previous call.
      * @param typeMask
      *            A mask that indicates the member of the
-     *            {@link OSVERSIONINFOEX} structure whose comparison
+     *            {@link com.sun.jna.platform.win32.WinNT.OSVERSIONINFOEX} structure whose comparison
      *            operator is being set. This value corresponds to one of the
      *            bits specified in the {@code dwTypeMask} parameter for the
      *            {@link #VerifyVersionInfoW} function.
@@ -1610,7 +1603,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *
      * @param buffer
      *            a buffer which receives an array of
-     *            {@link SYSTEM_LOGICAL_PROCESSOR_INFORMATION} structures.
+     *            {@link WinNT.SYSTEM_LOGICAL_PROCESSOR_INFORMATION} structures.
      * @param returnLength
      *            on input, specifies the length of the buffer in bytes. On
      *            output, receives the number of bytes actually returned, or if
@@ -1630,15 +1623,15 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * @param relationshipType
      *            The type of relationship to retrieve. This parameter can be
      *            one of the following values:
-     *            {@link LOGICAL_PROCESSOR_RELATIONSHIP#RelationCache},
-     *            {@link LOGICAL_PROCESSOR_RELATIONSHIP#RelationGroup},
-     *            {@link LOGICAL_PROCESSOR_RELATIONSHIP#RelationNumaNode},
-     *            {@link LOGICAL_PROCESSOR_RELATIONSHIP#RelationProcessorCore},
-     *            {@link LOGICAL_PROCESSOR_RELATIONSHIP#RelationProcessorPackage},
-     *            or {@link LOGICAL_PROCESSOR_RELATIONSHIP#RelationAll}
+     *            {@link com.sun.jna.platform.win32.WinNT.LOGICAL_PROCESSOR_RELATIONSHIP#RelationCache},
+     *            {@link com.sun.jna.platform.win32.WinNT.LOGICAL_PROCESSOR_RELATIONSHIP#RelationGroup},
+     *            {@link com.sun.jna.platform.win32.WinNT.LOGICAL_PROCESSOR_RELATIONSHIP#RelationNumaNode},
+     *            {@link com.sun.jna.platform.win32.WinNT.LOGICAL_PROCESSOR_RELATIONSHIP#RelationProcessorCore},
+     *            {@link com.sun.jna.platform.win32.WinNT.LOGICAL_PROCESSOR_RELATIONSHIP#RelationProcessorPackage},
+     *            or {@link com.sun.jna.platform.win32.WinNT.LOGICAL_PROCESSOR_RELATIONSHIP#RelationAll}
      * @param buffer
      *            A pointer to a buffer that receives an array of
-     *            {@link SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX}
+     *            {@link WinNT.SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX}
      *            structures. If the function fails, the contents of this buffer
      *            are undefined.
      * @param returnedLength
@@ -1654,7 +1647,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *            {@link WinError#ERROR_INSUFFICIENT_BUFFER}, the value of
      *            ReturnedLength is undefined.
      * @return If the function succeeds, the return value is {@code TRUE} and at
-     *         least one {@link SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX}
+     *         least one {@link WinNT.SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX}
      *         structure is written to the output buffer.
      *         <p>
      *         If the function fails, the return value is {@code FALSE}. To get
@@ -1751,8 +1744,8 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *         function fails, the return value is zero. To get extended error
      *         information, call GetLastError.
      */
-    boolean GetFileTime(HANDLE hFile, FILETIME lpCreationTime,
-            FILETIME lpLastAccessTime, FILETIME lpLastWriteTime);
+    boolean GetFileTime(HANDLE hFile, WinBase.FILETIME lpCreationTime,
+            WinBase.FILETIME lpLastAccessTime, WinBase.FILETIME lpLastWriteTime);
 
     /**
      * Sets the date and time that the specified file or directory was created,
@@ -1790,8 +1783,8 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *         If the function fails, the return value is zero. To get extended
      *         error information, call GetLastError.
      */
-    int SetFileTime(HANDLE hFile, FILETIME lpCreationTime,
-            FILETIME lpLastAccessTime, FILETIME lpLastWriteTime);
+    int SetFileTime(HANDLE hFile, WinBase.FILETIME lpCreationTime,
+            WinBase.FILETIME lpLastAccessTime, WinBase.FILETIME lpLastWriteTime);
 
     /**
      * Sets the attributes for a file or directory.
@@ -1942,7 +1935,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      */
     public boolean CreatePipe(HANDLEByReference hReadPipe,
             HANDLEByReference hWritePipe,
-            SECURITY_ATTRIBUTES lpPipeAttributes, int nSize);
+            WinBase.SECURITY_ATTRIBUTES lpPipeAttributes, int nSize);
 
     /**
      * Connects to a message-type pipe (and waits if an instance of the pipe is
@@ -1969,7 +1962,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * Enables a named pipe server process to wait for a client process to connect
      * to an instance of a named pipe
      * @param hNamedPipe A handle to the server end of a named pipe instance.
-     * @param lpOverlapped A pointer to an {@link OVERLAPPED} structure.
+     * @param lpOverlapped A pointer to an {@link WinBase.OVERLAPPED} structure.
      * @return <P>If the operation is synchronous, does not return until the operation
      * has completed. If the function succeeds, the return value is {@code true}. If
      * the function fails, the return value is {@code false}. To get extended error
@@ -2005,7 +1998,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * @param nInBufferSize The number of bytes to reserve for the input buffer.
      * @param nDefaultTimeOut The default time-out value, in milliseconds. A value of zero will
      * result in a default time-out of 50 milliseconds
-     * @param lpSecurityAttributes A pointer to a {@link SECURITY_ATTRIBUTES} structure that
+     * @param lpSecurityAttributes A pointer to a {@link WinBase.SECURITY_ATTRIBUTES} structure that
      * specifies a security descriptor for the new named pipe. If {@code null} the named pipe
      * gets a default security descriptor and the handle cannot be inherited.
      * @return If the function succeeds, the return value is a handle to the server end of a
@@ -2181,7 +2174,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * @param lpOutBuffer The buffer that receives the data read from the pipe.
      * @param nOutBufferSize The size of the output buffer, in bytes.
      * @param lpBytesRead Variable that receives the number of bytes read from the pipe.
-     * @param lpOverlapped A pointer to an {@link OVERLAPPED} structure. Can
+     * @param lpOverlapped A pointer to an {@link WinBase.OVERLAPPED} structure. Can
      * be {@code null} if pipe not opened with {@link #FILE_FLAG_OVERLAPPED}.
      * @return {@code true} if successful, {@code false} otherwise.
      * To get extended error information, call {@link #GetLastError()}.
@@ -2813,22 +2806,22 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
 
     /**
      * @deprecated Use
-     *             {@link #CreateRemoteThread(HANDLE, SECURITY_ATTRIBUTES, int, Pointer, Pointer, int, DWORDByReference)}
+     *             {@link #CreateRemoteThread(com.sun.jna.platform.win32.WinNT.HANDLE, com.sun.jna.platform.win32.WinBase.SECURITY_ATTRIBUTES, int, com.sun.jna.Pointer, com.sun.jna.Pointer, int, com.sun.jna.platform.win32.WinDef.DWORDByReference)}
      */
     @Deprecated
-    HANDLE CreateRemoteThread(HANDLE hProcess, SECURITY_ATTRIBUTES lpThreadAttributes, int dwStackSize, FOREIGN_THREAD_START_ROUTINE lpStartAddress, Pointer lpParameter, DWORD dwCreationFlags, Pointer lpThreadId);
+    HANDLE CreateRemoteThread(HANDLE hProcess, WinBase.SECURITY_ATTRIBUTES lpThreadAttributes, int dwStackSize, FOREIGN_THREAD_START_ROUTINE lpStartAddress, Pointer lpParameter, DWORD dwCreationFlags, Pointer lpThreadId);
 
     /**
      * Creates a thread that runs in the virtual address space of another process.
      *
      * @param hProcess A handle to the process in which the thread is to be created.
-     * @param lpThreadAttributes The {@link SECURITY_ATTRIBUTES} structure that
+     * @param lpThreadAttributes The {@link WinBase.SECURITY_ATTRIBUTES} structure that
      * specifies a security descriptor for the new thread. If {@code null}, the
      * thread gets a default security descriptor and the handle cannot be inherited.
      * @param dwStackSize The initial size of the stack, in bytes. The system rounds
      * this value to the nearest page. If this parameter is 0 (zero), the new thread
      * uses the default size for the executable.
-     * @param lpStartAddress The application-defined {@link FOREIGN_THREAD_START_ROUTINE}
+     * @param lpStartAddress The application-defined {@link WinBase.FOREIGN_THREAD_START_ROUTINE}
      * to be executed by the thread and represents the starting address of the
      * thread in the remote process. The function must exist in the remote process.
      * @param lpParameter A pointer to a variable to be passed to the thread function.
@@ -2896,7 +2889,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * space of a specified process.
      * @param hProcess A handle to the process whose memory information is queried.
      * @param lpAddress The base address of the region of pages to be queried.
-     * @param lpBuffer A {@link MEMORY_BASIC_INFORMATION} structure in which
+     * @param lpBuffer A {@link WinNT.MEMORY_BASIC_INFORMATION} structure in which
      * information about the specified page range is returned.
      * @param dwLength The size of the buffer pointed to by the <tt>lpBuffer</tt>
      * parameter, in bytes.
@@ -3076,7 +3069,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * @return {@code true} if succeeds. If fails then call {@link #GetLastError()}
      * to get extended error information. If no more mount points found then the reported
      * error is {@code ERROR_NO_MORE_FILES}. In this case, simply call
-     * {@link #FindVolumeMountPointClose(HANDLE)}
+     * {@link #FindVolumeMountPointClose(com.sun.jna.platform.win32.WinNT.HANDLE)}
      * @see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa364432(v=vs.85).aspx">FindNextVolumeMountPoint</a>
      */
     boolean FindNextVolumeMountPoint(HANDLE hFindVolumeMountPoint, char[] lpszVolumeMountPoint, int cchBufferLength);
@@ -3158,7 +3151,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * the specified volume. The buffer size is specified by the <tt>nVolumeNameSize</tt>
      * parameter.
      * @param nVolumeNameSize The length of the volume name buffer - max. size is
-     * {@link com.sun.jna.platform.win32.WinDef#MAX_PATH} + 1 - ignored if no volume name buffer provided
+     * {@link WinDef#MAX_PATH} + 1 - ignored if no volume name buffer provided
      * @param lpVolumeSerialNumber Receives the volume serial number - can be
      * {@code null} if the serial number is not required
      * @param lpMaximumComponentLength Receives the maximum length of a file name
@@ -3170,7 +3163,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * of the file system. The buffer size is specified by the <tt>nFileSystemNameSize</tt>
      * parameter.
      * @param nFileSystemNameSize The length of the file system name buffer -
-     * max. size is {@link com.sun.jna.platform.win32.WinDef#MAX_PATH} + 1 - ignored if no file system name
+     * max. size is {@link WinDef#MAX_PATH} + 1 - ignored if no file system name
      * buffer provided
      * @return {@code true} if succeeds. If fails then call {@link #GetLastError()}
      * to get extended error information
@@ -3230,8 +3223,8 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * specifies a volume GUID path for the first volume that is found
      * @param cchBufferLength The length of the buffer to receive the volume GUID path
      * @return If the function succeeds, the return value is a search handle
-     * used in a subsequent call to the {@link #FindNextVolume(HANDLE, char[], int)}
-     * and {@link #FindVolumeClose(HANDLE)} functions.
+     * used in a subsequent call to the {@link #FindNextVolume(com.sun.jna.platform.win32.WinNT.HANDLE, char[], int)}
+     * and {@link #FindVolumeClose(com.sun.jna.platform.win32.WinNT.HANDLE)} functions.
      * Otherwise, the return value is the {@link #INVALID_HANDLE_VALUE}. To get
      * extended error information, call {@link #GetLastError()}.
      * @see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa364425(v=vs.85).aspx">FindFirstVolume</a>
@@ -3249,7 +3242,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * @param cchBufferLength The length of the buffer to receive the volume GUID path
      * @return {@code true} if succeeds. If fails then call {@link #GetLastError()}
      * to get extended error information. If no more volumes found then the reported
-     * error is {@code ERROR_NO_MORE_FILES}. In this case, simply call {@link #FindVolumeClose(HANDLE)}
+     * error is {@code ERROR_NO_MORE_FILES}. In this case, simply call {@link #FindVolumeClose(com.sun.jna.platform.win32.WinNT.HANDLE)}
      * @see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa364431(v=vs.85).aspx">FindNextVolume</a>
      * @see Kernel32Util#extractVolumeGUID(String)
      */
@@ -3272,10 +3265,10 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * @param hFile
      *            [in] A handle to the communications device.<br>
      *            The
-     *            {@link com.sun.jna.platform.win32.Kernel32#CreateFile(String, int, int, SECURITY_ATTRIBUTES, int, int, HANDLE)}
-     *            function returns this {@link HANDLE}.
+     *            {@link com.sun.jna.platform.win32.Kernel32#CreateFile(String, int, int, com.sun.jna.platform.win32.WinBase.SECURITY_ATTRIBUTES, int, int, com.sun.jna.platform.win32.WinNT.HANDLE)}
+     *            function returns this {@link WinNT.HANDLE}.
      * @param lpDCB
-     *            [in, out] A pointer to a {@link DCB} structure that
+     *            [in, out] A pointer to a {@link WinBase.DCB} structure that
      *            receives the control settings information.
      *
      * @return If the function succeeds, the return value is nonzero. <br>
@@ -3283,7 +3276,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *         error information, call {@link Kernel32#GetLastError()}.
      *
      */
-    boolean GetCommState(HANDLE hFile, DCB lpDCB);
+    boolean GetCommState(HANDLE hFile, WinBase.DCB lpDCB);
 
     /**
      *
@@ -3295,11 +3288,11 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *
      * @param hFile
      *            [in] A handle to the communications device. The
-     *            {@link com.sun.jna.platform.win32.Kernel32#CreateFile(String, int, int, SECURITY_ATTRIBUTES, int, int, HANDLE)}
+     *            {@link com.sun.jna.platform.win32.Kernel32#CreateFile(String, int, int, com.sun.jna.platform.win32.WinBase.SECURITY_ATTRIBUTES, int, int, com.sun.jna.platform.win32.WinNT.HANDLE)}
      *            function returns this handle.
      *
      * @param lpCommTimeouts
-     *            [in] A pointer to a {@link COMMTIMEOUTS} structure in
+     *            [in] A pointer to a {@link WinBase.COMMTIMEOUTS} structure in
      *            which the time-out information is returned.
      * @return If the function succeeds, the return value is nonzero.
      *
@@ -3309,27 +3302,27 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *
      *
      */
-    boolean GetCommTimeouts(HANDLE hFile, COMMTIMEOUTS lpCommTimeouts);
+    boolean GetCommTimeouts(HANDLE hFile, WinBase.COMMTIMEOUTS lpCommTimeouts);
 
     /**
      * Configures a communications device according to the specifications in a
-     * device-control block (a {@link DCB} structure). The function
+     * device-control block (a {@link WinBase.DCB} structure). The function
      * reinitializes all hardware and control settings, but it does not empty
      * output or input queues.
      *
      * @param hFile
      *            [in] A handle to the communications device. The
-     *            {@link com.sun.jna.platform.win32.Kernel32#CreateFile(String, int, int, SECURITY_ATTRIBUTES, int, int, HANDLE)}
+     *            {@link com.sun.jna.platform.win32.Kernel32#CreateFile(String, int, int, com.sun.jna.platform.win32.WinBase.SECURITY_ATTRIBUTES, int, int, com.sun.jna.platform.win32.WinNT.HANDLE)}
      *            function returns this handle.
      * @param lpDCB
-     *            [in] A pointer to a {@link DCB} structure that
+     *            [in] A pointer to a {@link WinBase.DCB} structure that
      *            contains the configuration information for the specified
      *            communications device.
      * @return If the function succeeds, the return value is nonzero. If the
      *         function fails, the return value is zero. To get extended error
      *         information, call {@link Kernel32#GetLastError()}.
      */
-    boolean SetCommState(HANDLE hFile, DCB lpDCB);
+    boolean SetCommState(HANDLE hFile, WinBase.DCB lpDCB);
 
     /**
      * Sets the time-out parameters for all read and write operations on a
@@ -3337,16 +3330,16 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *
      * @param hFile
      *            [in] A handle to the communications device. The
-     *            {@link com.sun.jna.platform.win32.Kernel32#CreateFile(String, int, int, SECURITY_ATTRIBUTES, int, int, HANDLE)}
+     *            {@link com.sun.jna.platform.win32.Kernel32#CreateFile(String, int, int, com.sun.jna.platform.win32.WinBase.SECURITY_ATTRIBUTES, int, int, com.sun.jna.platform.win32.WinNT.HANDLE)}
      *            function returns this handle.
      * @param lpCommTimeouts
-     *            [in] A pointer to a {@link COMMTIMEOUTS} structure
+     *            [in] A pointer to a {@link WinBase.COMMTIMEOUTS} structure
      *            that contains the new time-out values.
      * @return If the function succeeds, the return value is nonzero. <br>
      *         If the function fails, the return value is zero. To get extended
      *         error information, call {@link Kernel32#GetLastError()}.
      */
-    boolean SetCommTimeouts(HANDLE hFile, COMMTIMEOUTS lpCommTimeouts);
+    boolean SetCommTimeouts(HANDLE hFile, WinBase.COMMTIMEOUTS lpCommTimeouts);
 
     /**
      * http://msdn.microsoft.com/en-us/library/aa382990(v=vs.85).aspx<br>
@@ -3697,7 +3690,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * @return Returns TRUE if successful; otherwise, FALSE. To get extended
      *         error information, call GetLastError.
      */
-    boolean EnumResourceTypes(HMODULE hModule, EnumResTypeProc proc, Pointer lParam);
+    boolean EnumResourceTypes(HMODULE hModule, WinBase.EnumResTypeProc proc, Pointer lParam);
 
     /**
      * Enumerates resources of a specified type within a binary module. <br>
@@ -3735,7 +3728,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *         the function fails for another reason. To get extended error
      *         information, call GetLastError.
      */
-    boolean EnumResourceNames(HMODULE hModule, Pointer type, EnumResNameProc proc, Pointer lParam);
+    boolean EnumResourceNames(HMODULE hModule, Pointer type, WinBase.EnumResNameProc proc, Pointer lParam);
 
     /**
      * Retrieves information about the first module associated with a process.
@@ -3917,14 +3910,14 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *         function fails, the return value is zero. To get extended error
      *         information, call GetLastError.
      */
-    boolean GetProcessIoCounters(HANDLE hProcess, IO_COUNTERS lpIoCounters);
+    boolean GetProcessIoCounters(HANDLE hProcess, WinNT.IO_COUNTERS lpIoCounters);
 
     /**
      * Creates or opens a named or unnamed mutex object.
      *
      * @param lpMutexAttributes
      *
-     * A pointer to a {@link SECURITY_ATTRIBUTES} structure. If this
+     * A pointer to a {@link WinBase.SECURITY_ATTRIBUTES} structure. If this
      * parameter is NULL, the mutex handle cannot be inherited by child
      * processes.
      *
@@ -3949,7 +3942,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *
      * <p>
      * If lpName matches the name of an existing named mutex object, this
-     * function requests the {@link com.sun.jna.platform.win32.WinBase#MUTEX_ALL_ACCESS} access right. In
+     * function requests the {@link WinBase#MUTEX_ALL_ACCESS} access right. In
      * this case, the bInitialOwner parameter is ignored because it has already
      * been set by the creating process. If the lpMutexAttributes parameter is
      * not NULL, it determines whether the handle can be inherited, but its
@@ -3961,7 +3954,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * <p>
      * If lpName matches the name of an existing event, semaphore, waitable
      * timer, job, or file-mapping object, the function fails and the
-     * {@link Native#getLastError()} function returns
+     * {@link com.sun.jna.Native#getLastError()} function returns
      * {@link WinError#ERROR_INVALID_HANDLE}. This occurs because these objects
      * share the same namespace.</p>
      *
@@ -3977,11 +3970,11 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *
      * <p>
      * If the function fails, the return value is NULL. To get extended error
-     * information, call {@link Native#getLastError()}.</p>
+     * information, call {@link com.sun.jna.Native#getLastError()}.</p>
      *
      * <p>If the mutex is a named mutex and the object existed before this function
      * call, the return value is a handle to the existing object,
-     * {@link Native#getLastError()} returns
+     * {@link com.sun.jna.Native#getLastError()} returns
      * {@link WinError#ERROR_ALREADY_EXISTS}, bInitialOwner is ignored, and the
      * calling thread is not granted ownership. However, if the caller has
      * limited access rights, the function will fail with
@@ -3997,7 +3990,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *
      * @param dwDesiredAccess
      *
-     * The access to the mutex object. Only the {@link com.sun.jna.platform.win32.WinNT#SYNCHRONIZE} access
+     * The access to the mutex object. Only the {@link WinNT#SYNCHRONIZE} access
      * right is required to use a mutex; to change the mutex's security, specify
      * {@link WinBase#MUTEX_ALL_ACCESS}.
      *
@@ -4024,10 +4017,10 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * If the function succeeds, the return value is a handle to the mutex object.
      *
      * <p>If the function fails, the return value is NULL. To get extended error
-     * information, call {@link Native#getLastError()}.</p>
+     * information, call {@link com.sun.jna.Native#getLastError()}.</p>
      *
      * <p>If a named mutex does not exist, the function fails and
-     * {@link Native#getLastError()} returns
+     * {@link com.sun.jna.Native#getLastError()} returns
      * ERROR_FILE_NOT_FOUND.</p>
      */
     HANDLE OpenMutex(int dwDesiredAccess,
@@ -4047,7 +4040,7 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * If the function succeeds, the return value is nonzero.
      *
      * <p>If the function fails, the return value is zero. To get extended error
-     * information, call {@link Native#getLastError()}.</p>
+     * information, call {@link com.sun.jna.Native#getLastError()}.</p>
      */
     boolean ReleaseMutex(HANDLE handle);
 
@@ -4113,19 +4106,19 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      *                         must contain one of the following values.
      *
      * <ul>
-     * <li>{@link com.sun.jna.platform.win32.WinNT#MEM_COMMIT}</li>
-     * <li>{@link com.sun.jna.platform.win32.WinNT#MEM_RESERVE}</li>
-     * <li>{@link com.sun.jna.platform.win32.WinNT#MEM_RESET}</li>
-     * <li>{@link com.sun.jna.platform.win32.WinNT#MEM_RESET_UNDO}</li>
+     * <li>{@link WinNT#MEM_COMMIT}</li>
+     * <li>{@link WinNT#MEM_RESERVE}</li>
+     * <li>{@link WinNT#MEM_RESET}</li>
+     * <li>{@link WinNT#MEM_RESET_UNDO}</li>
      * </ul>
      *
      * <p>
      * This parameter can also specify the following values as indicated.</p>
      *
      * <ul>
-     * <li>{@link com.sun.jna.platform.win32.WinNT#MEM_LARGE_PAGES}</li>
-     * <li>{@link com.sun.jna.platform.win32.WinNT#MEM_PHYSICAL}</li>
-     * <li>{@link com.sun.jna.platform.win32.WinNT#MEM_TOP_DOWN}</li>
+     * <li>{@link WinNT#MEM_LARGE_PAGES}</li>
+     * <li>{@link WinNT#MEM_PHYSICAL}</li>
+     * <li>{@link WinNT#MEM_TOP_DOWN}</li>
      * </ul>
      *
      * @param flProtect        The memory protection for the region of pages to
@@ -4191,9 +4184,9 @@ public interface Kernel32 extends StdCallLibrary, com.sun.jna.platform.win32.Win
      * reserved state.</p>
      * @param dwFreeType One of the following values:
      * <ul>
-     * <li>{@link com.sun.jna.platform.win32.WinNT#MEM_COALESCE_PLACEHOLDERS}</li>
-     * <li>{@link com.sun.jna.platform.win32.WinNT#MEM_PRESERVE_PLACEHOLDER}</li>
-     * <li>{@link com.sun.jna.platform.win32.WinNT#MEM_DECOMMIT}</li>
+     * <li>{@link WinNT#MEM_COALESCE_PLACEHOLDERS}</li>
+     * <li>{@link WinNT#MEM_PRESERVE_PLACEHOLDER}</li>
+     * <li>{@link WinNT#MEM_DECOMMIT}</li>
      * <li>{@link WinNT#MEM_RELEASE}</li>
      * </ul>
      *
