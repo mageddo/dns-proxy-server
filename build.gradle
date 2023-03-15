@@ -253,6 +253,11 @@ task('proguard', type: proguard.gradle.ProGuardTask) {
   // https://stackoverflow.com/a/41064207/2979435
   keep 'class !com.sun.jna.Native,\
      !com.sun.jna.platform.KeyboardUtils**,\
+     !com.sun.jna.platform.WindowUtils**,\
+     !com.sun.jna.platform.RasterRangesUtils**,\
+     !com.sun.jna.platform.DesktopWindow**,\
+     !com.sun.jna.platform.win32.GDI32Util**,\
+     !com.sun.jna.platform.win32.WinDef**,\
      !com.sun.jna.Native**,\
      ** { *; }\
   '
