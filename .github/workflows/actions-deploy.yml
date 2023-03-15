@@ -135,7 +135,6 @@ jobs:
           java-version: '19'
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-#          native-image-job-reports: 'true'
 
       - name: Os Report ${{ matrix.os }}
         run: |
@@ -144,22 +143,13 @@ jobs:
           mkdir -p ./build/artifacts/${RUNNER_OS}-${RUNNER_ARCH} ./build/compressed-artifacts/${RUNNER_OS}-${RUNNER_ARCH}
         shell: bash
 
-#        -H:ReportAnalysisForbiddenType=java.awt.Component \
-#   | https://github.com/mageddo/dns-proxy-server/actions/runs/4412674663/jobs/7732416319
-
       - name: build native-image binary ${{ matrix.os }}
         if: runner.os == 'Windows'
-#        run: native-image -Djava.home="$env:GRAALVM_HOME" -jar ./build/artifacts/native-image-source/dns-proxy-server.jar ./tmp/dns-proxy-server
         run: |
-          cp -r ${GRAALVM_HOME}/lib ./lib &&\
           ${GRAALVM_HOME}/bin/native-image.cmd \
-          --trace-class-initialization=java.awt.Component \
           -H:ServiceLoaderFeatureExcludeServices=java.net.ContentHandlerFactory \
           -jar ./build/artifacts/native-image-source/dns-proxy-server.jar ./tmp/dns-proxy-server
         shell: bash
-#          ${GRAALVM_HOME}/bin/native-image.cmd -Djava.home="${GRAALVM_HOME}" -jar ./build/artifacts/native-image-source/dns-proxy-server.jar ./tmp/dns-proxy-server
-
-#  ${java.home}\lib\*font* to .\lib
 
       - name: build native-image binary ${{ matrix.os }}
         if: runner.os == 'macOS'
