@@ -1,5 +1,6 @@
 ---
 title: Configuring a Service Discovery solution on Docker using DNS Proxy Server and NGINX
+menuTitle: Create a Service Discovery solution
 ---
 
 ##### Requirements
