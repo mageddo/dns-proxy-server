@@ -1,3 +1,6 @@
+## 3.12
+* Also configuring resolv.conf on Mac when in standalone mode
+
 ## 3.11.0
 * Windows and MacOs binary releases (beta)
 
