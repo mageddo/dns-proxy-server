@@ -14,6 +14,7 @@ services:
     hostname: web-app.webapp.container
     volumes:
       - ./index.html:/usr/share/nginx/html/index.html
-  nginx-default-web-app:
+
+  web-app-2:
     image: nginx:1.23
-    hostname: nginx.webapp.container
+    hostname: web-app-2.webapp.container
