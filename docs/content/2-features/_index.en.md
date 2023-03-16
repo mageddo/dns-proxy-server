@@ -7,7 +7,7 @@ pre: "<b>2. </b>"
 
 {{%children style="li"  %}}
 
-## Main Features use cases
+## Main features use cases
 
 Solving container hostname
 ```bash
