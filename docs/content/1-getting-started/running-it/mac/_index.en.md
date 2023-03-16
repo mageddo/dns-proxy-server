@@ -7,8 +7,8 @@ weight: 1
 DPS actually is fully supported on MAC knowing [docker limitation features][5].
 
 ## Running as Docker as service
-It's also possible to run DPS on docker you can do it in different ways, bellow the most recommended.
 
+Running DPS as docker service
 ```bash
 $ docker run -d -p 5380:5380 -p 53:53/udp -p 53:53/tcp --restart=unless-stopped \
   -v /var/run/docker.sock:/var/run/docker.sock \
