@@ -1,5 +1,6 @@
 ## 3.12
 * Also configuring resolv.conf on Mac when in standalone mode
+* Fixing random failure on dns configs restore on MacOSX
 
 ## 3.11.0
 * Windows and MacOs binary releases (beta)
