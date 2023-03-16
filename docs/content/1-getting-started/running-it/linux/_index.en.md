@@ -3,23 +3,14 @@ title: Linux running instructions
 weight: 1
 ---
 
-### Running on Linux
+## Running on Linux
 
-#### Standalone run (Recommended)
+## Running as Docker Service
 
-Download the [latest release][3], extract and run:
-```bash
-$ sudo ./dns-proxy-server
-```
-Now DNS Proxy Server is your DNS server, to back everything to original state just press <kbd>CTRL</kbd> + <kbd>C</kbd>;
-
-#### On Docker
-
-> Actually, I recommend you to run DPS using standalone method when you want DPS to be automatically configured as the
-> default DNS
+If you are using docker on your machine that's the best choice as it will automatically start DPS on every boot:
 
 ```bash
-$ docker run --rm --hostname dns.mageddo --name dns-proxy-server -p 5380:5380 \
+$ docker run --hostname dns.mageddo --restart=unless-stopped -d \
   --network host \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v /etc/systemd/:/host/etc/systemd \
@@ -27,6 +18,7 @@ $ docker run --rm --hostname dns.mageddo --name dns-proxy-server -p 5380:5380 \
   defreitas/dns-proxy-server
 ```
 
+It will configure DPS as default DNS on systemd-resolved or vanilla resolv.conf depending on your system. 
 If you're using **system-resolved** then run command below to restart systemd-resolved service
 and make DPS as default DNS changes to take effect.
 
@@ -45,6 +37,17 @@ If you don't want to use that option then you can consider use [DPS Network feat
 
 `/etc/systemd/:/host/etc/systemd` / `/etc/:/host/etc`: Depending on your distro you may are using system-resolved or
 vanila resolv.conf to configure available DNS Servers, DPS will look at both and choose the best to be configured.
+
+
+## Standalone run
+
+Download the [latest release][3], extract and run:
+```bash
+$ sudo ./dns-proxy-server
+```
+Now DNS Proxy Server is your DNS server, to back everything to original state just press <kbd>CTRL</kbd> + <kbd>C</kbd>;
+
+## Testing
 
 
 [2]: {{%relref "2-features/dps-network-resolution/_index.md" %}}
