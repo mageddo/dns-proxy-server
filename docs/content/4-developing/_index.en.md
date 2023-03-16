@@ -1,5 +1,5 @@
 ---
-title: Developing at the project
+title: Developing
 weight: 5
 pre: "<b>5. </b>"
 ---
