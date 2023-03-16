@@ -19,14 +19,16 @@ $ docker run --hostname dns.mageddo --restart=unless-stopped -d \
 ```
 
 It will configure DPS as default DNS on systemd-resolved or vanilla resolv.conf depending on your system. 
-If you're using **system-resolved** then run command below to restart systemd-resolved service
+If you're using **system-resolved** then run command below to restart its service
 and make DPS as default DNS changes to take effect.
 
 ```bash
 $ service systemd-resolved restart
 ```
 
-Explaining:
+[Click here][1] to see usage samples
+
+Explaining the running params:
 
 `--network host`: Running on host mode make it possible to DPS bind the
 DNS server port to the host network interface, this way all containers will have access to DPS address
@@ -47,8 +49,9 @@ $ sudo ./dns-proxy-server
 ```
 Now DNS Proxy Server is your DNS server, to back everything to original state just press <kbd>CTRL</kbd> + <kbd>C</kbd>;
 
-## Testing
+[Click here][1] to see usage samples
 
 
+[1]: {{%relref "2-features/_index.md#main-features-use-cases" %}}
 [2]: {{%relref "2-features/dps-network-resolution/_index.md" %}}
 [3]: https://github.com/mageddo/dns-proxy-server/releases
