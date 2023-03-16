@@ -1,7 +1,7 @@
 ---
 title: API
-weight: 7
-pre: "<b>7. </b>"
+weight: 6
+pre: "<b>6. </b>"
 ---
 
 ### APIs
