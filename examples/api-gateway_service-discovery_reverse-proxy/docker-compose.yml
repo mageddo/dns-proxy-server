@@ -1,14 +1,19 @@
 version: '2'
 services:
 
-  api-gateway:
+  # Nginx Reverse Proxy which will listen at host machine and forward the
+  # request to the web-app container depending
+  # on the requested hostname.
+  # this app will reverse proxy all host names which connects to its 80 port querying in ${host}.container format.
+  # ex: web-app.webapp will be proxied to a container with the name: web-app.webapp.container
+  reverse-proxy:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - ':80:80'
-      - ':443:443'
 
+  # Sample web app which listen a custom HTML file and registered itself as web-app.webapp.container
   web-app:
     image: nginx:1.23
     hostname: web-app.webapp.container
