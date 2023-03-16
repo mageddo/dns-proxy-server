@@ -2,15 +2,27 @@
 title: MacOSX running instructions
 weight: 1
 ---
-
 ## Running on MAC
 
-DPS actually is fully supported on MAC knowing [docker limitation features][5]. Despite on this,
-there is **no** additional configuration to run DPS on Mac, you can do just like [on Linux](#running-on-linux).
+DPS actually is fully supported on MAC knowing [docker limitation features][5].
 
-Download the [latest release][3], extract and run:
+## Running as Docker as service
+It's also possible to run DPS on docker you can do it in different ways, bellow the most recommended.
+
 ```bash
-$ sudo ./dns-proxy-server
+$ docker run -d -p 5380:5380 -p 53:53/udp -p 53:53/tcp --restart=unless-stopped \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  defreitas/dns-proxy-server
+```
+
+* Go to [configuring DPS as default DNS][7] to complete DPS configuration.
+* [Check this][1] for usage samples.
+
+## Standalone run
+
+Download the [latest release][3] (I recomend the jar one), extract and run:
+```bash
+$ sudo java -jar ./dns-proxy-server
 ```
 
 [Check this][1] for usage samples.
@@ -18,15 +30,10 @@ $ sudo ./dns-proxy-server
 When running on standalone mode (not on docker container) DPS will be able to auto configure itself as OSX default DNS,
 after 5 seconds you see something like `usingDnsConfigurator=DnsConfiguratorOSx` at the logs.
 
-## Running on Docker
-It's also possible to run DPS on docker you can do it in different ways, bellow the most recommended.
-
-(todo: Explain)
-
 ## Configuring DPS as default DNS manually
 
 When not running in standalone mode you will need to configure DPS as default DPS manually,
-check the instructions bellow:
+check the instructions below:
 
 To list available networks:
 ```bash
@@ -46,7 +53,7 @@ If it returns some server IP then is a good idea to backup it then you can resto
 
 Let's set DPS as the default DNS Server, best option here is to get your network IP address, `Wi-Fi` in my case which
 has `192.168.0.14` set, `127.0.0.1` will partially works because this way containers won't be able 
-to solve each other in my tests. 
+to solve each other, just the host solve the containers.
 
 **Obs**: Be aware you need to run DPS in port **53** as MAC doesn't accept custom port especification.
 
@@ -65,3 +72,4 @@ See [this thread][6] with more use cases.
 [3]: https://github.com/mageddo/dns-proxy-server/releases
 [5]: https://docs.docker.com/desktop/networking/#there-is-no-docker0-bridge-on-the-host
 [6]: https://github.com/mageddo/dns-proxy-server/issues/44#issuecomment-1454379761
+[7]: #configuring-dps-as-default-dns-manually
