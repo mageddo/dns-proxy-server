@@ -17,6 +17,6 @@ public class NetworkOSX implements Network {
 
   @Override
   public List<String> findNetworkDnsServers(String network) {
-    return Networks.findNetworkDnsServersOrNull(network);
+    return Networks.findNetworkDnsServersOrEmpty(network);
   }
 }

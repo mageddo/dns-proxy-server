@@ -2,6 +2,7 @@ package com.mageddo.net.osx;
 
 import com.mageddo.commons.exec.CommandLines;
 import com.mageddo.commons.exec.ExecutionValidationFailedException;
+import com.mageddo.commons.lang.Objects;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
@@ -38,6 +39,10 @@ public class Networks {
       .of(out.split(LINE_BREAK_REGEX))
       .filter(StringUtils::isNotBlank)
       .toList();
+  }
+
+  public static List<String> findNetworkDnsServersOrEmpty(String networkName) {
+    return Objects.firstNonNull(findNetworkDnsServersOrNull(networkName), Collections.emptyList());
   }
 
   /**
