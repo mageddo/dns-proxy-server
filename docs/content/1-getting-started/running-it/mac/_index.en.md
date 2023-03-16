@@ -13,7 +13,7 @@ Download the [latest release][3], extract and run:
 $ sudo ./dns-proxy-server
 ```
 
-(todo: Add usages examples here)
+[Check this][1] for usage samples.
 
 When running on standalone mode (not on docker container) DPS will be able to auto configure itself as OSX default DNS,
 after 5 seconds you see something like `usingDnsConfigurator=DnsConfiguratorOSx` at the logs.
@@ -61,6 +61,7 @@ $ networksetup -setdnsservers Wi-Fi Empty
 
 See [this thread][6] with more use cases.
 
+[1]: {{%relref "2-features/_index.md#main-features-use-cases" %}}
 [3]: https://github.com/mageddo/dns-proxy-server/releases
 [5]: https://docs.docker.com/desktop/networking/#there-is-no-docker0-bridge-on-the-host
 [6]: https://github.com/mageddo/dns-proxy-server/issues/44#issuecomment-1454379761
