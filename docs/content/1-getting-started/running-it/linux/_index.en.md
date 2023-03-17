@@ -22,6 +22,7 @@ If you are using docker on your machine that's the best choice as it will automa
 ```bash
 $ docker run --hostname dns.mageddo --restart=unless-stopped -d \
   -p 5353:53 \
+  -p 5380:5380 \
   -v /var/run/docker.sock:/var/run/docker.sock \
   defreitas/dns-proxy-server
 ```

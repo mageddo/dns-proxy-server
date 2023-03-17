@@ -23,6 +23,6 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "proxy": "http://localhost:5380",
-  "proxy_": "http://compiler-dps:5380"
+  "proxy": "http://localhost:5381",
+  "proxy_": "http://backend:5380"
 }
