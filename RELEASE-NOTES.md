@@ -1,3 +1,8 @@
+## 3.12.1
+* Binding UDP server to anylocalhost just as TCP this way DPS can be used on any interface.
+* Disabling mac as the binary isn't working macos-latest, see #341
+* Fixing DPS network features startup
+
 ## 3.12
 * Also configuring resolv.conf on Mac when in standalone mode
 * Fixing random failure on dns configs restore on MacOSX
