@@ -44,7 +44,7 @@ class SolverDelegateTest {
 
     // assert
     assertNotNull(response);
-    validResponse(response);
+    validResponse(response.getMessage());
 
   }
 }

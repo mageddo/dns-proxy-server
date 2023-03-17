@@ -13,6 +13,7 @@ import org.xbill.DNS.Message;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.time.Duration;
 
 @Slf4j
 @Singleton
@@ -23,7 +24,7 @@ public class SolverLocalDB implements Solver {
   private final SolverDelegate solverDelegate;
 
   @Override
-  public Message handle(Message query) {
+  public Response handle(Message query) {
 
     final var stopWatch = StopWatch.createStarted();
 
@@ -50,7 +51,10 @@ public class SolverLocalDB implements Solver {
       );
 
       if (Type.is(entry.getType(), Type.A, Type.AAAA)) {
-        return Messages.aAnswer(query, entry.getIp(), entry.getTtl());
+        return Response.of(
+          Messages.aAnswer(query, entry.getIp(), entry.getTtl()),
+          Duration.ofSeconds(entry.getTtl())
+        );
       }
       return this.solverDelegate.solve(query, entry);
     }

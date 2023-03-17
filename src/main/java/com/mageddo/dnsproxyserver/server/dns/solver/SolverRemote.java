@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
+import com.mageddo.dnsproxyserver.server.dns.Messages;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ClassUtils;
@@ -21,7 +22,7 @@ public class SolverRemote implements Solver {
   private final RemoteResolvers delegate;
 
   @Override
-  public Message handle(Message query) {
+  public Response handle(Message query) {
     Message lastErrorMsg = null;
     for (int i = 0; i < this.delegate.resolvers().size(); i++) {
       final Resolver resolver = this.delegate.resolvers().get(i);
@@ -29,7 +30,7 @@ public class SolverRemote implements Solver {
         final var res = resolver.send(query);
         if (res.getRcode() == Rcode.NOERROR) {
           log.trace("status=found, i={}, req={}, res={}, server={}", i, simplePrint(query), simplePrint(res), resolver);
-          return res;
+          return Response.of(res, Messages.findTTL(res)); // fixme calculate the best ttl here
         } else {
           lastErrorMsg = res;
           log.trace("status=notFound, i={}, req={}, res={}, server={}", i, simplePrint(query), simplePrint(res), resolver);
@@ -48,6 +49,9 @@ public class SolverRemote implements Solver {
         );
       }
     }
-    return lastErrorMsg;
+    if (lastErrorMsg == null) {
+      return null;
+    }
+    return Response.of(lastErrorMsg, Messages.findTTL(lastErrorMsg)); // fixme calculate the best ttl here
   }
 }

@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
-import com.mageddo.dnsproxyserver.docker.DockerDAO;
 import com.mageddo.dnsproxyserver.docker.ContainerSolvingService;
+import com.mageddo.dnsproxyserver.docker.DockerDAO;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.server.dns.Wildcards;
 import lombok.AllArgsConstructor;
@@ -10,6 +10,7 @@ import org.xbill.DNS.Message;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.time.Duration;
 
 @Slf4j
 @Singleton
@@ -20,7 +21,7 @@ public class SolverDocker implements Solver {
   private final DockerDAO dockerDAO;
 
   @Override
-  public Message handle(Message query) {
+  public Response handle(Message query) {
 
     if (!this.dockerDAO.isConnected()) {
       log.trace("status=dockerDisconnected");
@@ -31,7 +32,8 @@ public class SolverDocker implements Solver {
     for (final var host : Wildcards.buildHostAndWildcards(askedHost)) {
       final var ip = this.containerSolvingService.findBestHostIP(host);
       if (ip != null) {
-        return Messages.aAnswer(query, ip);
+        final var ttl = 30;
+        return Response.of(Messages.aAnswer(query, ip, ttl), Duration.ofSeconds(ttl));
       }
     }
 

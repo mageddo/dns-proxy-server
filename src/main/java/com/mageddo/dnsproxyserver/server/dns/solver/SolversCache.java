@@ -24,22 +24,22 @@ public class SolversCache {
 
   private final LruTTLCache cache = new LruTTLCache(2048, Duration.ofSeconds(5), false);
 
-  public Message handle(Message query, Function<Message, Message> delegate) {
+  public Message handle(Message query, Function<Message, Response> delegate) {
     final var key = buildKey(query);
     final var res = this.cache.computeIfAbsent0(key, (k) -> {
       log.trace("status=lookup, key={}, req={}", key, Messages.simplePrint(query));
       final var _res = delegate.apply(query);
       if (_res == null) {
-        log.debug("status=noAnswer, k={}", k);
+        log.debug("status=noAnswer, action=cant-cache, k={}", k);
         return null;
       }
-      final var ttl = Messages.findTTL(_res);
+      final var ttl = _res.getTtl();
       log.debug("status=hotload, k={}, ttl={}, simpleMsg={}", k, ttl, Messages.simplePrint(query));
       return Pair.of(_res, ttl);
     });
     return Optional
-      .ofNullable(res)
-      .map(it -> Messages.matchId(query, it))
+      .of(res.getMessage())
+      .map(it -> Messages.idMatches(query, it))
       .orElse(null);
   }
 

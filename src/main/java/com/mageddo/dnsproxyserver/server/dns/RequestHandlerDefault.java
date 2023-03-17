@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
+import com.mageddo.dnsproxyserver.server.dns.solver.Response;
 import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
 import com.mageddo.dnsproxyserver.server.dns.solver.SolversCache;
 import com.mageddo.dnsproxyserver.utils.Classes;
@@ -56,7 +57,7 @@ public class RequestHandlerDefault implements RequestHandler {
     }
   }
 
-  Message solve0(Message reqMsg) {
+  Response solve0(Message reqMsg) {
     final var stopWatch = StopWatch.createStarted();
     for (final var solver : this.solvers) {
       stopWatch.split();

@@ -49,7 +49,7 @@ class SolverLocalDBTest {
     assertNotNull(res);
     assertEquals(
       "acme.com.    45  IN  A  10.10.0.1",
-      Messages.detailedPrint(res)
+      Messages.detailedPrint(res.getMessage())
     );
 
     verify(this.solver).findEntryTo(hostname);

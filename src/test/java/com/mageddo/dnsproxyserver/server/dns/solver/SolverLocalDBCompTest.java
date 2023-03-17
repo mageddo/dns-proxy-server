@@ -64,7 +64,7 @@ class SolverLocalDBCompTest {
     assertNotNull(res);
     assertEquals(
         "acme.com.    45  IN  A  10.10.0.1",
-        Messages.detailedPrint(res)
+        Messages.detailedPrint(res.getMessage())
     );
 
   }
@@ -92,7 +92,7 @@ class SolverLocalDBCompTest {
     assertNotNull(res);
     assertEquals(
         "www.acme.com.    45  IN  CNAME  acme.com. | acme.com.    30  IN  A  192.168.1.8",
-        Messages.detailedPrint(res)
+        Messages.detailedPrint(res.getMessage())
     );
 
   }
@@ -112,7 +112,7 @@ class SolverLocalDBCompTest {
     assertNotNull(res);
     assertEquals(
       "acme.com.    45  IN  A  10.10.0.1",
-      Messages.detailedPrint(res)
+      Messages.detailedPrint(res.getMessage())
     );
 
   }

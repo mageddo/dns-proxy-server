@@ -23,11 +23,11 @@ public class SolverMock implements Solver {
   }
 
   @Override
-  public Message handle(Message query) {
+  public Response handle(Message query) {
     final var hostname = Messages.findQuestionHostname(query);
     for (final var entry : this.mocks) {
       if (entry.getKey().equalsIgnoreCase(hostname.getValue())) {
-        return Messages.aAnswer(query, entry.getValue().raw());
+        return Response.of(Messages.aAnswer(query, entry.getValue().raw()));
       }
     }
     return null;

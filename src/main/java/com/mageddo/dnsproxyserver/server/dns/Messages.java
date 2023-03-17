@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.server.dns.solver.Response;
 import com.mageddo.dnsproxyserver.utils.Ips;
 import lombok.SneakyThrows;
 import org.xbill.DNS.ARecord;
@@ -18,6 +19,13 @@ import java.time.Duration;
 import java.util.Optional;
 
 public class Messages {
+
+  public static final long DEFAULT_TTL = 30L;
+  public static final Duration DEFAULT_TTL_DURATION = Duration.ofSeconds(DEFAULT_TTL);
+
+  public static String simplePrint(Response res) {
+    return simplePrint(res.getMessage());
+  }
 
   public static String simplePrint(Message message) {
     if (message == null) {
@@ -65,7 +73,7 @@ public class Messages {
   }
 
   public static Message aAnswer(Message query, String ip) {
-    return aAnswer(query, ip, 30L);
+    return aAnswer(query, ip, DEFAULT_TTL);
   }
 
   public static Message aAnswer(Message query, String ip, final long ttl) {
@@ -177,7 +185,7 @@ public class Messages {
   /**
    * Set the id of the query into the response, se the response will match if the query;
    */
-  public static Message matchId(Message req, Message res) {
+  public static Message idMatches(Message req, Message res) {
     final var reqId = req.getHeader().getID();
     res.getHeader().setID(reqId);
     return res;
