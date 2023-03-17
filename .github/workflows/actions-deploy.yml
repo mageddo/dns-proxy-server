@@ -114,7 +114,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [windows-latest]
+        # disabling mac as the binary isn't working macos-latest, see #341
     env:
       APP_VERSION: ${{ needs.primary_release.outputs.APP_VERSION }}
     steps:
