@@ -22,12 +22,7 @@ public class UDPServerPool {
 
   public void start(int port) {
     this.servers = Collections.singletonList(new UDPServer(Ips.getAnyLocalAddress(port), this.requestHandler));
-//    this.servers = Networks
-//      .findMachineIps()
-//      .stream()
-//      .map(it -> new UDPServer(Ips.toSocketAddress(it.raw(), port), this.requestHandler))
-//      .peek(UDPServer::start)
-//      .toList();
+    this.servers.forEach(UDPServer::start);
     final var addresses = this.servers
       .stream()
       .map(UDPServer::getAddress)
@@ -38,8 +33,8 @@ public class UDPServerPool {
 
   public void stop() {
     this.servers
-        .parallelStream()
-        .forEach(UDPServer::stop)
+      .parallelStream()
+      .forEach(UDPServer::stop)
     ;
   }
 }

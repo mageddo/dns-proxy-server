@@ -52,7 +52,7 @@ public class Ips {
     }
   }
 
-  public static SocketAddress getAnyLocalAddress(int port) {
+  public static InetSocketAddress getAnyLocalAddress(int port) {
     return new InetSocketAddress(getAnyLocalAddress(), port);
   }
 }

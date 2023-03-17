@@ -23,8 +23,9 @@ class EventListenerCompTest {
     // arrange
 
     // act
-    final var size = events.stream()
-        .filter(it -> Objects.equals(it.getClass(), EventListener.class))
+    final var size = this.events
+        .stream()
+        .filter(it -> Objects.equals(EventListener.class, it.getClass()))
         .count();
 
     // assert
