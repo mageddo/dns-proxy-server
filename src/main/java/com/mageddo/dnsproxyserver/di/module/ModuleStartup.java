@@ -2,15 +2,22 @@ package com.mageddo.dnsproxyserver.di.module;
 
 import com.mageddo.dnsproxyserver.di.StartupEvent;
 import com.mageddo.dnsproxyserver.dnsconfigurator.DnsConfigurators;
-import dagger.Binds;
+import com.mageddo.dnsproxyserver.docker.EventListener;
 import dagger.Module;
-import dagger.multibindings.IntoSet;
+import dagger.Provides;
+import dagger.multibindings.ElementsIntoSet;
+
+import javax.inject.Singleton;
+import java.util.Set;
 
 @Module
 public interface ModuleStartup {
 
-  @Binds
-  @IntoSet
-  StartupEvent startupBeans(DnsConfigurators b1);
+  @Provides
+  @Singleton
+  @ElementsIntoSet
+  static Set<StartupEvent> startupBeans(DnsConfigurators b1, EventListener b2){
+    return Set.of(b1, b2);
+  }
 
 }

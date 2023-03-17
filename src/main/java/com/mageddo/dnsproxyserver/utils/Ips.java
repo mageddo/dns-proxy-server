@@ -51,4 +51,8 @@ public class Ips {
       return null;
     }
   }
+
+  public static SocketAddress getAnyLocalAddress(int port) {
+    return new InetSocketAddress(getAnyLocalAddress(), port);
+  }
 }

@@ -1,26 +1,30 @@
 version: '3'
 services:
   backend:
-    image: openjdk:17-jdk
+    image: openjdk:19-jdk
     environment:
-      - MG_LOG_LEVEL=DEBUG
-      - MG_REGISTER_CONTAINER_NAMES=1
-#      - MG_RESOLVCONF=/host/etc/systemd/resolved.conf
+      MG_LOG_LEVEL: DEBUG
+      MG_DPS_NETWORK: true
+      MG_DPS_NETWORK_AUTO_CONNECT: true
+    #      - MG_LOG_LEVEL=DEBUG
+    #      - MG_REGISTER_CONTAINER_NAMES=1
+    #      - MG_RESOLVCONF=/host/etc/systemd/resolved.conf
     labels:
       - dps.container=true
     volumes:
-      - ./build:/app
+      - ./build/libs:/app
       - /var/run/docker.sock:/var/run/docker.sock
-      - /etc/systemd/:/host/etc/systemd/
+      - /etc/resolv.conf:/etc/resolv.conf
+    #      - /etc/systemd/:/host/etc/systemd/
     working_dir: /app
-    command: java -jar dns-proxy-server.jar
-#    ports:
-#      - "172.17.0.1:53:53/udp"
-#      - "192.168.0.128:53:53/udp"
-#      - "192.168.0.128:53:53/tcp"
-#      - "127.0.0.1:53:53/udp"
-#      - "127.0.0.1:53:53/tcp"
-    network_mode: host
+    command: java -jar dns-proxy-server-3.12.0-all.jar
+    #    ports:
+    #      - "172.17.0.1:53:53/udp"
+    #      - "192.168.0.128:53:53/udp"
+    #      - "192.168.0.128:53:53/tcp"
+    #      - "127.0.0.1:53:53/udp"
+    #      - "127.0.0.1:53:53/tcp"
+#    network_mode: host
 
   # https://github.com/gohugoio/hugo/releases/tag/v0.55.4
   docs:
