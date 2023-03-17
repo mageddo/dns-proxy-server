@@ -30,4 +30,7 @@ class SolverRemoteCompTest {
 
   }
 
+  // fixme must cache solved queries for 5 minutes
+  // fixme must cache not found queries for 1 hour.
+  // fixme must not cache names which got timeout
 }
