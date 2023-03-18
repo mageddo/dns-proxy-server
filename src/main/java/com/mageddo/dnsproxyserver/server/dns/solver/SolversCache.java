@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.commons.caching.LruTTLCache;
+import com.mageddo.commons.lang.Objects;
 import com.mageddo.commons.lang.tuple.Pair;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,6 @@ import org.xbill.DNS.Message;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.Duration;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -37,10 +37,10 @@ public class SolversCache {
       log.debug("status=hotload, k={}, ttl={}, simpleMsg={}", k, ttl, Messages.simplePrint(query));
       return Pair.of(_res, ttl);
     });
-    return Optional
-      .of(res.getMessage())
-      .map(it -> Messages.idMatches(query, it))
-      .orElse(null);
+    if (res == null) {
+      return null;
+    }
+    return Objects.mapOrNull(res.getMessage(), it -> Messages.idMatches(query, it));
   }
 
   static String buildKey(Message reqMsg) {
@@ -48,7 +48,7 @@ public class SolversCache {
     return String.format("%s-%s", type != null ? type : UUID.randomUUID(), findQuestionHostname(reqMsg));
   }
 
-  public int getSize(){
+  public int getSize() {
     return this.cache.getSize();
   }
 }
