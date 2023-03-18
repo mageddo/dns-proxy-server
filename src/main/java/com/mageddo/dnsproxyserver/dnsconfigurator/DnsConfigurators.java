@@ -44,7 +44,7 @@ public class DnsConfigurators implements StartupEvent {
 
   private void configurationHook(Config config) {
     ThreadPool
-      .def()
+      .scheduled()
       .scheduleWithFixedDelay(() -> {
         try {
           final var addr = this.findIpAddr();

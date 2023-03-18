@@ -40,19 +40,11 @@ class DnsQueryTCPHandler implements SocketClientMessageHandler {
         final var res = this.handler.handle(query, "tcp")
           .toWire();
 
-        try {
-          final var out = client.getOut();
-          out.write(Shorts.toBytes((short) res.length));
-          out.flush();
-          out.write(res);
-          out.flush();
-        } catch (IOException e) {
-          log.info(
-            "status=outIsClosed, query={}, msg={}, class={}",
-            Messages.simplePrint(query), e.getMessage(), ClassUtils.getSimpleName(e)
-          );
-          break;
-        }
+        final var out = client.getOut();
+        out.write(Shorts.toBytes((short) res.length));
+        out.flush();
+        out.write(res);
+        out.flush();
 
         log.debug(
           "status=success, queryMsgSize={}, resMsgSize={}, req={}",
@@ -60,6 +52,8 @@ class DnsQueryTCPHandler implements SocketClientMessageHandler {
         );
 
       }
+    } catch (UncheckedIOException | IOException e) {
+      log.debug("status=socketClosed, msg={}, class={}", e.getMessage(), ClassUtils.getSimpleName(e));
     } catch (Exception e) {
       log.warn("status=request-failed, msg={}", e.getMessage(), e);
     } finally {
@@ -103,7 +97,7 @@ class DnsQueryTCPHandler implements SocketClientMessageHandler {
       }
       return msgSizeBuf.getShort();
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new UncheckedIOException(e);
     }
   }
 
