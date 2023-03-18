@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.server.dns.solver;
 import com.mageddo.dnsproxyserver.docker.DockerDAO;
 import com.mageddo.dnsproxyserver.docker.ContainerSolvingService;
 import com.mageddo.dnsproxyserver.server.dns.Hostname;
+import com.mageddo.dnsproxyserver.templates.HostnameTemplates;
 import com.mageddo.dnsproxyserver.templates.MessageTemplates;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +39,7 @@ class SolverDockerTest {
 
     final var query = MessageTemplates.acmeAQuery();
     final var ip = "0.0.0.0";
-    final var hostname = Hostname.of(MessageTemplates.ACME_HOSTNAME);
+    final var hostname = Hostname.of(HostnameTemplates.ACME_HOSTNAME);
 
     doReturn(true)
       .when(this.dockerDAO)
@@ -64,7 +65,7 @@ class SolverDockerTest {
 
     final var query = MessageTemplates.acmeAQuery();
     final var ip = "0.0.0.0";
-    final var hostname = Hostname.of("." + MessageTemplates.ACME_HOSTNAME);
+    final var hostname = Hostname.of("." + HostnameTemplates.ACME_HOSTNAME);
 
     doReturn(true)
       .when(this.dockerDAO)

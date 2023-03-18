@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.templates.EntryTemplates;
+import com.mageddo.dnsproxyserver.templates.HostnameTemplates;
 import com.mageddo.dnsproxyserver.templates.MessageTemplates;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +29,7 @@ class SolverLocalDBTest {
 
     // arrange
     final var query = MessageTemplates.acmeAQuery();
-    final var hostname = HostnameQuery.of(MessageTemplates.ACME_HOSTNAME);
+    final var hostname = HostnameQuery.of(HostnameTemplates.ACME_HOSTNAME);
     final var wildcardHostName = HostnameQuery.ofWildcard(hostname.getHostname());
 
     doReturn(EntryTemplates.acmeAAAA())

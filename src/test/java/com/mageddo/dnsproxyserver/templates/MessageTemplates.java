@@ -8,9 +8,9 @@ import org.xbill.DNS.Name;
 import org.xbill.DNS.Record;
 import org.xbill.DNS.Type;
 
-public class MessageTemplates {
+import static com.mageddo.dnsproxyserver.templates.HostnameTemplates.ACME_HOSTNAME;
 
-  public static final String ACME_HOSTNAME = "acme.com";
+public class MessageTemplates {
 
   @SneakyThrows
   public static Message buildAQuestionFor(String hostname) {
