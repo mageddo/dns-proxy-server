@@ -1,10 +1,10 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
+import com.mageddo.commons.lang.Objects;
 import com.mageddo.dnsproxyserver.docker.ContainerSolvingService;
 import com.mageddo.dnsproxyserver.docker.DockerDAO;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
-import com.mageddo.dnsproxyserver.server.dns.Wildcards;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.Message;
 
@@ -13,7 +13,7 @@ import javax.inject.Singleton;
 
 @Slf4j
 @Singleton
-@AllArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class SolverDocker implements Solver {
 
   private final ContainerSolvingService containerSolvingService;
@@ -28,14 +28,11 @@ public class SolverDocker implements Solver {
     }
 
     final var askedHost = Messages.findQuestionHostname(query);
-    for (final var host : Wildcards.buildHostAndWildcards(askedHost)) {
-      final var ip = this.containerSolvingService.findBestHostIP(host);
-      if (ip != null) {
-        return Response.of(Messages.aAnswer(query, ip));
-      }
-    }
+    return HostnameMatcher.match(askedHost, hostname -> {
+      final var ip = this.containerSolvingService.findBestHostIP(hostname);
+      return Objects.mapOrNull(ip, (it) -> Response.of(Messages.aAnswer(query, ip)));
+    });
 
-    return null;
   }
 
 }
