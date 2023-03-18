@@ -4,13 +4,18 @@ import com.mageddo.commons.caching.LruTTLCache;
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.commons.lang.tuple.Pair;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.Message;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -52,7 +57,30 @@ public class SolversCache {
     return this.cache.getSize();
   }
 
-  public void clear(){
+  public void clear() {
     this.cache.clear();
+  }
+
+  public Map<String, Entry> asMap() {
+    final var m = this.cache.asMap();
+    final var tmpMap = new HashMap<String, Entry>();
+    final var keys = new HashSet<>(m.keySet());
+    for (final String k : keys) {
+      final var v = m.get(k);
+      final var entry = new Entry()
+        .setKey(k)
+        .setTtl(String.valueOf(v.getTtl()))
+        .setCreatedAt(String.valueOf(v.getCreatedAt()));
+      tmpMap.put(k, entry);
+    }
+    return tmpMap;
+  }
+
+  @Data
+  @Accessors(chain = true)
+  static class Entry {
+    String key;
+    String ttl;
+    String createdAt;
   }
 }

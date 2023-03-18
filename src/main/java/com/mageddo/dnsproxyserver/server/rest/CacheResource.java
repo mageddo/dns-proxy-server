@@ -41,6 +41,15 @@ public class CacheResource implements HttpMapper {
         );
       }
     );
+
+    server.get(
+      "/v1/caches",
+      exchange -> encodeJson(
+        exchange,
+        Response.Status.OK,
+        this.cache.asMap()
+      )
+    );
   }
 
 }
