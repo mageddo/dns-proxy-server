@@ -1,6 +1,6 @@
 import EnvPicker from './EnvPicker';
 import EnvForm from './EnvForm';
-import NavBar from './NavBar';
+import {NavBar} from './NavBar';
 import React from 'react'
 import $ from 'jquery';
 import {RecordForm} from './RecordForm.js'
