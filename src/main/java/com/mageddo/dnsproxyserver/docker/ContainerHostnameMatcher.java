@@ -3,7 +3,7 @@ package com.mageddo.dnsproxyserver.docker;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Configs;
-import com.mageddo.dnsproxyserver.server.dns.Hostname;
+import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 import org.apache.commons.lang3.BooleanUtils;
 
 import java.util.List;
@@ -15,15 +15,15 @@ import static com.mageddo.dnsproxyserver.docker.DpsContainer.findHostnamesFromEn
 
 public class ContainerHostnameMatcher {
 
-  public static boolean test(final InspectContainerResponse inspect, final Hostname host, final Config config) {
+  public static boolean test(final InspectContainerResponse inspect, final HostnameQuery host, final Config config) {
     return buildPredicate(host, config).test(inspect);
   }
 
-  static Predicate<InspectContainerResponse> buildPredicate(final Hostname host) {
+  static Predicate<InspectContainerResponse> buildPredicate(final HostnameQuery host) {
     return buildPredicate(host, Configs.getInstance());
   }
 
-  static Predicate<InspectContainerResponse> buildPredicate(final Hostname host, final Config config) {
+  static Predicate<InspectContainerResponse> buildPredicate(final HostnameQuery host, final Config config) {
     return container -> {
 
       final List<Predicate<InspectContainerResponse>> predicates = List.of(
@@ -44,16 +44,22 @@ public class ContainerHostnameMatcher {
     return BooleanUtils.isTrue(config.getRegisterContainerNames());
   }
 
-  public static boolean hostnameMatches(InspectContainerResponse c, Hostname host) {
-    return host.isEqualTo(findContainerHostname(c.getConfig()));
+  public static boolean hostnameMatches(InspectContainerResponse c, HostnameQuery host) {
+    return host.matches(findContainerHostname(c.getConfig()));
   }
 
-  public static boolean hostnamesEnvMatches(InspectContainerResponse c, Hostname host) {
-    return findHostnamesFromEnv(c.getConfig().getEnv()).contains(host);
+  public static boolean hostnamesEnvMatches(InspectContainerResponse c, HostnameQuery hostnameQuery) {
+    return findHostnamesFromEnv(c.getConfig().getEnv())
+      .stream()
+      .anyMatch(hostnameQuery::matches)
+      ;
   }
 
-  public static boolean serviceOrContainerNameMatches(InspectContainerResponse c, Hostname host, Config config) {
+  public static boolean serviceOrContainerNameMatches(InspectContainerResponse c, HostnameQuery hostQuery, Config config) {
     return isRegisterContainerNames(config)
-      && buildHostnamesFromServiceOrContainerNames(c, config.getDomain()).contains(host);
+      && buildHostnamesFromServiceOrContainerNames(c, config.getDomain())
+      .stream()
+      .anyMatch(hostQuery::matches)
+      ;
   }
 }

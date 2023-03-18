@@ -3,7 +3,6 @@ package com.mageddo.dnsproxyserver.docker;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 import com.mageddo.net.Networks;
-import com.mageddo.dnsproxyserver.server.dns.Hostname;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -40,7 +39,7 @@ public class ContainerSolvingService {
   private final DockerDAO dockerDAO;
   private final DockerNetworkDAO networkDAO;
 
-  public String findBestHostIP(Hostname host) {
+  public String findBestHostIP(HostnameQuery host) {
     final var stopWatch = StopWatch.createStarted();
     final var matchedContainers = this.findMatchingContainers(host);
     final var foundIp = matchedContainers
@@ -133,15 +132,11 @@ public class ContainerSolvingService {
       .collect(Collectors.toCollection(LinkedHashSet::new));
   }
 
-  private List<InspectContainerResponse> findMatchingContainers(Hostname host) {
+  List<InspectContainerResponse> findMatchingContainers(HostnameQuery host) {
     return this.dockerDAO.findActiveContainers()
       .stream()
       .map(it -> this.dockerDAO.inspect(it.getId()))
       .filter(ContainerHostnameMatcher.buildPredicate(host))
       .toList();
-  }
-
-  public String findBestHostIP(HostnameQuery hostname) {
-    throw new UnsupportedOperationException();
   }
 }
