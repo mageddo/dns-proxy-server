@@ -27,7 +27,9 @@ public class TCPServer {
   /**
    * See https://www.ietf.org/rfc/rfc1035.txt section 4.2.2
    */
-  public static final int MAX_CLIENT_ALIVE_SECS = 120;
+  public static final Duration MAX_CLIENT_ALIVE_DURATION = Duration.ofMinutes(2);
+  public static final int WATCHDOG_DELAY_SECS = 20;
+
   private final ExecutorService pool = ThreadPool.newCached(20);
   private final Set<WeakReference<SocketClient>> clients = new LinkedHashSet<>();
   private ServerSocket server;
@@ -37,7 +39,7 @@ public class TCPServer {
     this.pool.submit(() -> this.start0(port, address, handler));
     ThreadPool
       .scheduled()
-      .scheduleWithFixedDelay(this::watchDog, MAX_CLIENT_ALIVE_SECS, MAX_CLIENT_ALIVE_SECS, TimeUnit.SECONDS);
+      .scheduleWithFixedDelay(this::watchDog, WATCHDOG_DELAY_SECS, WATCHDOG_DELAY_SECS, TimeUnit.SECONDS);
   }
 
   void start0(int port, InetAddress address, SocketClientMessageHandler handler) {
@@ -99,7 +101,7 @@ public class TCPServer {
   }
 
   static boolean runningForTooLong(SocketClient client) {
-    return Duration.ofSeconds(MAX_CLIENT_ALIVE_SECS).compareTo(client.getRunningTime()) <= 0;
+    return MAX_CLIENT_ALIVE_DURATION.compareTo(client.getRunningTime()) <= 0;
   }
 
   public void stop() {

@@ -36,7 +36,7 @@ public class ServerStarter {
       config.getServerProtocol(),
       this.solvers
     );
-    log.trace("status=startingDnsServer, protocol={}, port={}", config.getServerProtocol(), port);
+    log.debug("status=startingDnsServer, protocol={}, port={}", config.getServerProtocol(), port);
     return this;
   }
 

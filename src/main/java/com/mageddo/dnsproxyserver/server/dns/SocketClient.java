@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.time.Duration;
@@ -84,7 +83,7 @@ public class SocketClient implements Runnable, AutoCloseable {
         this, stopWatch.getTime(), e.getMessage(), e
       );
     } finally {
-      log.debug("status=finalize-client, client={}, runTime={}", this, stopWatch.getTime());
+      log.debug("status=finalizeClient, client={}, runTime={}", this, stopWatch.getTime());
       this.silentClose();
     }
   }
