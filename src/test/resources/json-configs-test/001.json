@@ -29,5 +29,6 @@
     "4.4.4.4"
   ],
   "version": 2,
+  "serverProtocol" : null,
   "webServerPort": 0
 }
