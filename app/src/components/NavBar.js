@@ -34,7 +34,7 @@ export class NavBar extends React.Component {
                 <a className="nav-link" onClick={(e) => this.openSettings()} href="#">Settings</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="http://mageddo.github.io/dns-proxy-server/latest/en/2-features/">Features / Docs</a>
+                <a className="nav-link" target="_blank" href="http://mageddo.github.io/dns-proxy-server/latest/en/2-features/">Features / Docs</a>
               </li>
             </ul>
           </div>
