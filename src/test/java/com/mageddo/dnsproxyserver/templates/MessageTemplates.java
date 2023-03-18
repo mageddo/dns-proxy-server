@@ -22,7 +22,11 @@ public class MessageTemplates {
     return buildAQuestionFor(ACME_HOSTNAME + ".");
   }
 
-  public static Message buildAAnswer(Message m) {
-    return Messages.aAnswer(m, IpTemplates.LOCAL);
+  public static Message buildAAnswer(Message query) {
+    return Messages.aAnswer(query, IpTemplates.LOCAL);
+  }
+
+  public static Message buildNXAnswer(Message query) {
+    return Messages.nxDomain(query);
   }
 }

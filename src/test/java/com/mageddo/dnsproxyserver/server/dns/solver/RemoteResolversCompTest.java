@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @DaggerTest(component = Context.class, eventsHandler = Events.class)
-class SolverRemoteCompTest {
+class RemoteResolversCompTest {
 
   @Inject
   RemoteResolvers remoteResolvers;
@@ -30,7 +30,4 @@ class SolverRemoteCompTest {
 
   }
 
-  // fixme must cache solved queries for 5 minutes
-  // fixme must cache not found queries for 1 hour.
-  // fixme must not cache names which got timeout
 }

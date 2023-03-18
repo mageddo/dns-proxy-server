@@ -1,7 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
-import com.mageddo.dnsproxyserver.server.dns.Messages;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ClassUtils;
 import org.xbill.DNS.Message;
@@ -11,13 +10,17 @@ import org.xbill.DNS.Resolver;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.IOException;
+import java.time.Duration;
 
 import static com.mageddo.dnsproxyserver.server.dns.Messages.simplePrint;
 
 @Slf4j
 @Singleton
-@AllArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class SolverRemote implements Solver {
+
+  public static final Duration DEFAULT_SUCCESS_TTL = Duration.ofMinutes(5);
+  public static final Duration DEFAULT_NXDOMAIN_TTL = Duration.ofMinutes(60);
 
   private final RemoteResolvers delegate;
 
@@ -30,7 +33,7 @@ public class SolverRemote implements Solver {
         final var res = resolver.send(query);
         if (res.getRcode() == Rcode.NOERROR) {
           log.trace("status=found, i={}, req={}, res={}, server={}", i, simplePrint(query), simplePrint(res), resolver);
-          return Response.of(res, Messages.findTTL(res)); // fixme calculate the best ttl here
+          return Response.of(res, DEFAULT_SUCCESS_TTL); // fixme calculate the best ttl here
         } else {
           lastErrorMsg = res;
           log.trace("status=notFound, i={}, req={}, res={}, server={}", i, simplePrint(query), simplePrint(res), resolver);
@@ -52,6 +55,6 @@ public class SolverRemote implements Solver {
     if (lastErrorMsg == null) {
       return null;
     }
-    return Response.of(lastErrorMsg, Messages.findTTL(lastErrorMsg)); // fixme calculate the best ttl here
+    return Response.of(lastErrorMsg, DEFAULT_NXDOMAIN_TTL);
   }
 }
