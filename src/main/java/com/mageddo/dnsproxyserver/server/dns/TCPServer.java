@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
 import com.mageddo.commons.concurrent.ThreadPool;
+import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.commons.io.IoUtils;
 import com.mageddo.dnsproxyserver.utils.Ips;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.time.Duration;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -30,7 +32,7 @@ public class TCPServer {
   public static final Duration MAX_CLIENT_ALIVE_DURATION = Duration.ofMinutes(2);
   public static final int WATCHDOG_DELAY_SECS = 20;
 
-  private final ExecutorService pool = ThreadPool.newCached(20);
+  private final ExecutorService pool = Executors.newFixedThreadPool(20, Threads::createDaemonThread);
   private final Set<WeakReference<SocketClient>> clients = new LinkedHashSet<>();
   private ServerSocket server;
 

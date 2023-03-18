@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
-import com.mageddo.commons.concurrent.ThreadPool;
+import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.commons.io.IoUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.Message;
@@ -9,6 +9,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketAddress;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Slf4j
 public class UDPServer {
@@ -23,8 +24,9 @@ public class UDPServer {
   public UDPServer(SocketAddress address, RequestHandler requestHandler) {
     this.address = address;
     this.requestHandler = requestHandler;
-    this.pool = ThreadPool.newCached(20);
+    this.pool = Executors.newFixedThreadPool(20, Threads::createDaemonThread);
   }
+
 
   public void start() {
     this.pool.submit(this::start0);
