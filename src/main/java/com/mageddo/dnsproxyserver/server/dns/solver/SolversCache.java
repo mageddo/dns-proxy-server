@@ -4,9 +4,7 @@ import com.mageddo.commons.caching.LruTTLCache;
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.commons.lang.tuple.Pair;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.Message;
 
@@ -61,26 +59,19 @@ public class SolversCache {
     this.cache.clear();
   }
 
-  public Map<String, Entry> asMap() {
+  public Map<String, CacheEntry> asMap() {
     final var m = this.cache.asMap();
-    final var tmpMap = new HashMap<String, Entry>();
+    final var tmpMap = new HashMap<String, CacheEntry>();
     final var keys = new HashSet<>(m.keySet());
     for (final String k : keys) {
       final var v = m.get(k);
-      final var entry = new Entry()
+      final var entry = new CacheEntry()
         .setKey(k)
-        .setTtl(String.valueOf(v.getTtl()))
-        .setCreatedAt(String.valueOf(v.getCreatedAt()));
+        .setTtl(v.getTtl())
+        .setCreatedAt(v.getCreatedAt());
       tmpMap.put(k, entry);
     }
     return tmpMap;
   }
 
-  @Data
-  @Accessors(chain = true)
-  static class Entry {
-    String key;
-    String ttl;
-    String createdAt;
-  }
 }
