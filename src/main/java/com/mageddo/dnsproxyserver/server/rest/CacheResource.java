@@ -30,13 +30,26 @@ public class CacheResource implements HttpMapper {
 
   @Override
   public void map(WebServer server) {
-    server.map(
+
+    server.get(
       "/v1/caches/size",
       exchange -> encodeJson(
         exchange,
         Response.Status.OK,
         Map.of("size", this.cache.getSize())
       )
+    );
+
+    server.delete(
+      "/v1/caches",
+      exchange -> {
+        this.cache.clear();
+        encodeJson(
+          exchange,
+          Response.Status.OK,
+          Map.of("size", this.cache.getSize())
+        );
+      }
     );
   }
 

@@ -51,4 +51,8 @@ public class SolversCache {
   public int getSize() {
     return this.cache.getSize();
   }
+
+  public void clear(){
+    this.cache.clear();
+  }
 }
