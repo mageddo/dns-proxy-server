@@ -6,6 +6,7 @@ import com.mageddo.dnsproxyserver.server.dns.Hostname;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -30,7 +31,9 @@ public class Docker {
       .of(
         buildFromContainerName(container, domain),
         buildFromServiceName(container, domain)
-      ).map(Hostname::of)
+      )
+      .filter(Objects::nonNull)
+      .map(Hostname::of)
       .collect(Collectors.toSet())
       ;
   }
