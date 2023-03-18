@@ -1,4 +1,4 @@
-## 3.13.1-snapshot
+## 3.13.1
 * Caching remote solved hostnames for 5 minutes
 * Caching not found hostnames for 1 hour
 * Gui interface to clear the cache
