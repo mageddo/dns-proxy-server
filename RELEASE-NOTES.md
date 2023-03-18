@@ -8,6 +8,7 @@
 * Holding TCP open connections up to 2min respecting RFC-1035 section "4.2.2. TCP usage"
   * Fixed too many occurrences of "java.net.SocketException: Socket closed"
 * Limited TCP/UDP Server thread pool up to 20 threads due to control memory usage
+* Log level adjustments
 
 ## 3.12.1
 * Binding UDP server to anylocalhost just as TCP this way DPS can be used on any interface.
