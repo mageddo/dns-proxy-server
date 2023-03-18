@@ -55,7 +55,6 @@ public class UDPServer {
       final var resData = res.toWire();
 
       server.send(new DatagramPacket(resData, resData.length, datagram.getSocketAddress()));
-
       log.debug(
         "status=success, query={}, res={}, serverAddr={}, clientAddr={}, dataLength={}, datagramLength={}",
         Messages.simplePrint(query), Messages.simplePrint(res),

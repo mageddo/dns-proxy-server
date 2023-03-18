@@ -27,6 +27,7 @@ public class CacheEntryResV1 {
       .setKey(entry.getKey())
       .setTtl(String.valueOf(entry.getTtl()))
       .setCreatedAt(String.valueOf(entry.getCreatedAt()))
+      ;
   }
 
 }
