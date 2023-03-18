@@ -20,7 +20,7 @@ class ContainerHostnameMatcherTest {
   }
 
   @Test
-  void mustSolveFromContainerHostnameWithouNoDomain(){
+  void mustSolveFromContainerHostnameWithoutNoDomain(){
     // arrange
     final var inspect = InspectContainerResponseTemplates.buildWithHostnameAndWithoutDomain();
     final var hostname = HostnameQueryTemplates.nginxWildcard();
