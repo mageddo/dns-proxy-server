@@ -1,10 +1,10 @@
-## 3.13.1
+## 3.13.1-snapshot
 * Caching remote solved hostnames for 5 minutes
 * Caching not found hostnames for 1 hour
 * Gui interface to clear the cache
-* Not documented api to get cache size and values
-* Increased remote timeout to 10 seconds to make sure won't get easlily get timeout on remote server slowness
-* Order interfaces by index when choosing an IP as the machine IP, put loopback at the end of the list. 
+* Created but not documented APIs to get cache size its and values
+* Increased remote solver timeout to 10 seconds to make sure won't get easlily get timeout due to server slowness
+* Ordering interfaces by index when choosing an IP as the machine IP, put loopback at the end of the list. 
 * Holding TCP open connections up to 2min respecting RFC-1035 section "4.2.2. TCP usage"
   * Fixed too many occurrences of "java.net.SocketException: Socket closed"
 * Limited TCP/UDP Server thread pool up to 20 threads due to control memory usage
