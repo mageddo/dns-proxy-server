@@ -1,10 +1,8 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
 import com.mageddo.commons.concurrent.ThreadPool;
-import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.commons.io.IoUtils;
 import com.mageddo.dnsproxyserver.utils.Ips;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 
@@ -18,12 +16,10 @@ import java.time.Duration;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class TCPServer {
 
   /**
@@ -32,9 +28,15 @@ public class TCPServer {
   public static final Duration MAX_CLIENT_ALIVE_DURATION = Duration.ofMinutes(2);
   public static final int WATCHDOG_DELAY_SECS = 20;
 
-  private final ExecutorService pool = Executors.newFixedThreadPool(20, Threads::createDaemonThread);
-  private final Set<WeakReference<SocketClient>> clients = new LinkedHashSet<>();
+  private final ExecutorService pool;
+  private final Set<WeakReference<SocketClient>> clients;
   private ServerSocket server;
+
+  @Inject
+  public TCPServer() {
+    this.pool = ThreadPool.newFixed(20);
+    this.clients = new LinkedHashSet<>();
+  }
 
   public void start(int port, InetAddress address, SocketClientMessageHandler handler) {
     log.debug("status=tcpServerStartScheduled, port={}", port);
@@ -94,8 +96,8 @@ public class TCPServer {
         }
       }
       log.debug(
-          "status=watchdog, removed={}, before={}, actual={}",
-          clientsBefore - this.clients.size(), clientsBefore, this.clients.size()
+        "status=watchdog, removed={}, before={}, actual={}",
+        clientsBefore - this.clients.size(), clientsBefore, this.clients.size()
       );
     } catch (Throwable e) {
       log.error("status=watchdogFailed, msg={}", e.getMessage(), e);
