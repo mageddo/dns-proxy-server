@@ -27,7 +27,6 @@ public class UDPServer {
     this.pool = Executors.newFixedThreadPool(20, Threads::createDaemonThread);
   }
 
-
   public void start() {
     this.pool.submit(this::start0);
     log.trace("status=startingUdpServer, address={}", this.address);

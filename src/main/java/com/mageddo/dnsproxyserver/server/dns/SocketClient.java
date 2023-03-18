@@ -50,9 +50,9 @@ public class SocketClient implements Runnable, AutoCloseable {
   public void silentClose() {
     try {
       this.close();
-      log.info("status=silent-closed, ranFor={}", this.getRunningTime());
+      log.debug("status=silentClosed, ranFor={}", this.getRunningTime());
     } catch (Exception e) {
-      log.warn("status=couldnt-close-client, msg={}", e.getMessage(), e);
+      log.warn("status=silentClosingFailed, msg={}", e.getMessage(), e);
     }
   }
 
