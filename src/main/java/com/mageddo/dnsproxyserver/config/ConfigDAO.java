@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.config;
 
-import com.mageddo.dnsproxyserver.server.dns.Hostname;
+import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ public interface ConfigDAO {
 
   Config.Env findEnv(String env);
 
-  Config.Entry findEntryForActiveEnv(Hostname hostname);
+  Config.Entry findEntryForActiveEnv(HostnameQuery hostname);
 
   void addEntry(String env, Config.Entry entry);
 

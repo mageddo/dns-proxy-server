@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.docker;
 
 import com.github.dockerjava.api.command.InspectContainerResponse;
+import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 import com.mageddo.net.Networks;
 import com.mageddo.dnsproxyserver.server.dns.Hostname;
 import lombok.AllArgsConstructor;
@@ -140,4 +141,7 @@ public class ContainerSolvingService {
       .toList();
   }
 
+  public String findBestHostIP(HostnameQuery hostname) {
+    throw new UnsupportedOperationException();
+  }
 }

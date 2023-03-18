@@ -3,7 +3,6 @@ package com.mageddo.dnsproxyserver.server.dns.solver;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.config.ConfigDAO;
-import com.mageddo.dnsproxyserver.server.dns.Hostname;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +63,7 @@ public class SolverLocalDB implements Solver {
     return null;
   }
 
-  Config.Entry findEntryTo(Hostname host) {
+  Config.Entry findEntryTo(HostnameQuery host) {
     return this.configDAO.findEntryForActiveEnv(host);
   }
 

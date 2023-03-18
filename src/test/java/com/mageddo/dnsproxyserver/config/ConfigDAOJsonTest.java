@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.config;
 
-import com.mageddo.dnsproxyserver.server.dns.Hostname;
+import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.templates.EnvTemplates;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +23,7 @@ class ConfigDAOJsonTest {
   @Test
   void mustDoCaseInsensitiveFind() {
     // arrange
-    final var hostname = Hostname.of(EnvTemplates.MAGEDDO_COM);
+    final var hostname = HostnameQuery.of(EnvTemplates.MAGEDDO_COM);
     final var env = EnvTemplates.buildWithCamelCaseHost();
 
     doReturn(env)
