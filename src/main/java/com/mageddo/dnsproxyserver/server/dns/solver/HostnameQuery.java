@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 public class HostnameQuery {
 
   public static final String REGEX_TAG = "/";
+
   @NonNull
   private final Hostname hostname;
 
