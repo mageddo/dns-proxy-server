@@ -14,7 +14,9 @@ public class HostnameQuery {
 
   @NonNull
   private final Hostname hostname;
+
   private final boolean useWildcards;
+
   private final boolean useRegex;
 
   public static HostnameQuery of(Hostname hostname) {
@@ -54,13 +56,22 @@ public class HostnameQuery {
     return matches(hostname.getValue());
   }
 
-  public boolean matches(String hostname) {
-    final var hostnames = Wildcards.buildHostAndWildcards(this.hostname);
-    for (final var host : hostnames) {
-      if (host.isEqualTo(hostname)) {
-        return true;
+  public boolean matches(String hostnamePattern) {
+    if (this.useWildcards) {
+      final var hostnames = Wildcards.buildHostAndWildcards(this.hostname);
+      for (final var host : hostnames) {
+        if (host.isEqualTo(hostnamePattern)) {
+          return true;
+        }
       }
+      return false;
     }
-    return false;
+    if (this.useRegex) {
+      return this.hostname
+        .getCanonicalValue()
+        .matches(hostnamePattern)
+        ;
+    }
+    return this.hostname.isEqualTo(hostnamePattern);
   }
 }

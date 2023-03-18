@@ -28,6 +28,10 @@ public class Hostname {
     return Objects.equals(this.value, hostname.value);
   }
 
+  public String getCanonicalValue() {
+    return this.value;
+  }
+
   public String getValue() {
     return this.rawValue;
   }

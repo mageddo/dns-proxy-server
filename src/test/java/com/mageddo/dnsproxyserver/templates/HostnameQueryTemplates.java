@@ -4,11 +4,11 @@ import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 
 public class HostnameQueryTemplates {
 
-  public static HostnameQuery acmeCom(){
+  public static HostnameQuery acmeComWildcard(){
     return HostnameQuery.ofWildcard(HostnameTemplates.ACME_HOSTNAME);
   }
 
-  public static HostnameQuery orangeAcmeCom(){
+  public static HostnameQuery orangeAcmeComWildcard(){
     return HostnameQuery.ofWildcard(HostnameTemplates.ORANGE_ACME_HOSTNAME);
   }
 
