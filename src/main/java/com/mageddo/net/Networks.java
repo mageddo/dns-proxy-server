@@ -27,7 +27,7 @@ public class Networks {
       .stream()
       .sorted(Comparator.comparingInt(NetworkInterface::getIndex))
       .flatMap(NetworkInterface::inetAddresses)
-      .filter(it -> it.getAddress().length == IP.BYTES)
+      .filter(it -> it.getAddress().length == IP.BYTES) // todo needs a filter to exclude virtual network cards
       .map(it -> IP.of(it.getHostAddress()))
       .sorted(Comparator.comparing(it -> {
         return it.raw().startsWith("127") ? Integer.MAX_VALUE : 0;
