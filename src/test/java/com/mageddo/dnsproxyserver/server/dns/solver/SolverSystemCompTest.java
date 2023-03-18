@@ -19,7 +19,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
 @DaggerTest(component = Context.class, eventsHandler = Events.class)
-class SolverSystemTest {
+class SolverSystemCompTest {
 
   @InjectMock
   DockerDAO dockerDAO;
