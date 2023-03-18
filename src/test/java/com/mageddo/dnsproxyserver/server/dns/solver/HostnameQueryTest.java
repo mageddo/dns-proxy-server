@@ -36,7 +36,6 @@ class HostnameQueryTest {
 
   }
 
-
   @Test
   void mustMatchExactHostname(){
 
