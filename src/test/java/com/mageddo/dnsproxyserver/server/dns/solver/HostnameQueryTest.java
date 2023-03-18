@@ -4,6 +4,7 @@ import com.mageddo.dnsproxyserver.templates.HostnameQueryTemplates;
 import com.mageddo.dnsproxyserver.templates.HostnameTemplates;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class HostnameQueryTest {
@@ -55,13 +56,28 @@ class HostnameQueryTest {
 
     // arrange
     final var acme = HostnameQuery.ofRegex(HostnameTemplates.ACME_HOSTNAME);
-    final var queryRegex = "[a-z]+\\.com";
+    final var queryRegex = "/[a-z]+\\.com/";
 
     // act
     final var matches = acme.matches(queryRegex);
 
     // assert
     assertTrue(matches);
+
+  }
+
+  @Test
+  void mustRespectRegexTemplate(){
+
+    // arrange
+    final var hostname = HostnameQuery.ofRegex("a");
+    final var queryRegex = ".";
+
+    // act
+    final var matches = hostname.matches(queryRegex);
+
+    // assert
+    assertFalse(matches);
 
   }
 

@@ -6,12 +6,14 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.Value;
+import org.apache.commons.lang3.StringUtils;
 
 @Value
 @Builder
 @EqualsAndHashCode
 public class HostnameQuery {
 
+  public static final String REGEX_TAG = "/";
   @NonNull
   private final Hostname hostname;
 
@@ -66,10 +68,10 @@ public class HostnameQuery {
       }
       return false;
     }
-    if (this.useRegex) {
+    if (this.useRegex && hostnamePattern.startsWith(REGEX_TAG) && hostnamePattern.endsWith(REGEX_TAG)) {
       return this.hostname
         .getCanonicalValue()
-        .matches(hostnamePattern)
+        .matches(StringUtils.substringBetween(hostnamePattern, REGEX_TAG, REGEX_TAG))
         ;
     }
     return this.hostname.isEqualTo(hostnamePattern);
