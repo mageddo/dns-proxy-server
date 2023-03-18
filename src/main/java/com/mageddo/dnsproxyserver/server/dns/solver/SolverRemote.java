@@ -33,7 +33,7 @@ public class SolverRemote implements Solver {
         final var res = resolver.send(query);
         if (res.getRcode() == Rcode.NOERROR) {
           log.trace("status=found, i={}, req={}, res={}, server={}", i, simplePrint(query), simplePrint(res), resolver);
-          return Response.of(res, DEFAULT_SUCCESS_TTL); // fixme calculate the best ttl here
+          return Response.of(res, DEFAULT_SUCCESS_TTL);
         } else {
           lastErrorMsg = res;
           log.trace("status=notFound, i={}, req={}, res={}, server={}", i, simplePrint(query), simplePrint(res), resolver);
