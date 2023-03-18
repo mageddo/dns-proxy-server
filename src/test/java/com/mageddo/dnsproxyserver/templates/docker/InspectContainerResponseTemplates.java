@@ -21,6 +21,12 @@ public class InspectContainerResponseTemplates {
     config.put("Domainname", domain);
     return parse(tree);
   }
+  public static InspectContainerResponse buildWithHostnamesEnv(String hostname) {
+    final var tree = buildTree(NGINX);
+    final var config = (ObjectNode) tree.at("/Config");
+    config.putArray("Env").add("HOSTNAMES=" + hostname);
+    return parse(tree);
+  }
 
   public static InspectContainerResponse withDpsLabel() {
     return build();

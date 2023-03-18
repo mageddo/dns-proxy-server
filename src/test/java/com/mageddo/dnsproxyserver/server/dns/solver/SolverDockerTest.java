@@ -36,7 +36,6 @@ class SolverDockerTest {
   @Test
   void mustSolveExactHostname() {
     // arrange
-
     final var query = MessageTemplates.acmeAQuery();
     final var ip = "0.0.0.0";
     final var hostname = HostnameQuery.ofWildcard(HostnameTemplates.ACME_HOSTNAME);

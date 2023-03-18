@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.docker;
 import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.templates.HostnameQueryTemplates;
+import com.mageddo.dnsproxyserver.templates.HostnameTemplates;
 import com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,7 @@ class ContainerHostnameMatcherTest {
   }
 
   @Test
-  void mustSolveFromContainerHostnameButNoDomain(){
+  void mustSolveFromContainerHostnameWithouNoDomain(){
     // arrange
     final var inspect = InspectContainerResponseTemplates.buildWithHostnameAndWithoutDomain();
     final var hostname = HostnameQueryTemplates.nginxWildcard();
@@ -33,7 +34,7 @@ class ContainerHostnameMatcherTest {
   }
 
   @Test
-  void mustSolveFromContainerHostnameAndDomain(){
+  void mustSolveFromContainerHostnameWithDomain(){
     // arrange
     final var inspect = InspectContainerResponseTemplates.buildWithHostnameAndDomain("acme.com", "local");
     final var hostname = HostnameQueryTemplates.acmeComLocal();
@@ -50,7 +51,7 @@ class ContainerHostnameMatcherTest {
   void mustSolveFromContainerHostnameEnv(){
     // arrange
     final var inspect = InspectContainerResponseTemplates.build();
-    final var hostname = HostnameQueryTemplates.nginxComBr();
+    final var hostname = HostnameQueryTemplates.nginxComBrWildcard();
     final var config = Configs.getInstance();
 
     // act
@@ -58,6 +59,23 @@ class ContainerHostnameMatcherTest {
 
     // assert
     assertTrue(test, String.valueOf(hostname));
+  }
+
+  @Test
+  void mustSolveRegexFromContainerHostnameEnv(){
+    // arrange
+    final var inspect = InspectContainerResponseTemplates.buildWithHostnamesEnv("nginx.+,acme.+");
+    final var hostname = HostnameQuery.ofRegex(HostnameTemplates.NGINX_COM_BR);
+    final var hostnameAcme = HostnameQuery.ofRegex(HostnameTemplates.NGINX_COM_BR);
+    final var config = Configs.getInstance();
+
+    // act
+    final var testNginx = ContainerHostnameMatcher.test(inspect, hostname, config);
+    final var testAcme = ContainerHostnameMatcher.test(inspect, hostnameAcme, config);
+
+    // assert
+    assertTrue(testNginx, String.valueOf(hostname));
+    assertTrue(testAcme, String.valueOf(hostnameAcme));
   }
 
   @Test

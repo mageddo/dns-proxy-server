@@ -20,7 +20,7 @@ public class HostnameQueryTemplates {
     return HostnameQuery.ofWildcard("acme.com.local");
   }
 
-  public static HostnameQuery nginxComBr() {
-    return HostnameQuery.ofWildcard("nginx.com.br");
+  public static HostnameQuery nginxComBrWildcard() {
+    return HostnameQuery.ofWildcard(HostnameTemplates.NGINX_COM_BR);
   }
 }
