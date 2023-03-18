@@ -1,18 +1,18 @@
 package com.mageddo.dnsproxyserver.server;
 
 import com.mageddo.dnsproxyserver.config.Configs;
-import com.mageddo.dnsproxyserver.di.Context;
-import testing.Events;
+import testing.ContextSupplier;
 import dagger.sheath.junit.DaggerTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import testing.Events;
 
 import javax.ws.rs.core.Response;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 
-@DaggerTest(component = Context.class, eventsHandler = Events.class)
+@DaggerTest(initializer = ContextSupplier.class, eventsHandler = Events.class)
 class CacheResourceCompTest {
 
   @BeforeEach

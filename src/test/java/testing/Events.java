@@ -1,5 +1,6 @@
 package testing;
 
+import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.di.Context;
 import dagger.sheath.EventHandler;
 import io.restassured.RestAssured;
@@ -10,9 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 public class Events implements EventHandler<Context> {
   @Override
   public void afterSetup(Context component) {
-    log.info("status=startingDPS");
+    final var config = Configs.getInstance();
+    log.info("status=startingDPS, port={}", config.getWebServerPort());
     component.start();
-    RestAssured.port = 5380;
+    RestAssured.port = config.getWebServerPort();
     RestAssured.config = RestAssured
         .config()
         .httpClient(
