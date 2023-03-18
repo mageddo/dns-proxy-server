@@ -20,7 +20,6 @@ import static org.mockito.Mockito.verify;
 class SolverDockerTest {
 
   @Mock
-    //(strictness = Strictness.WARN)
   ContainerSolvingService containerSolvingService;
 
   @Mock
