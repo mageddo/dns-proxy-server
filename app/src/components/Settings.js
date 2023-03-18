@@ -1,4 +1,5 @@
 import React from 'react';
+import $ from "jquery";
 
 export class Settings extends React.Component {
   constructor(props) {
@@ -11,6 +12,28 @@ export class Settings extends React.Component {
 
   }
 
+  clearCache(){
+    window.$.ajax({
+      method: "DELETE",
+      url: "/v1/caches",
+      error: response => {
+        window.$.notify({
+          title: 'Ops!',
+          message: 'An error ocurred',
+        }, {
+          type: 'danger'
+        });
+      },
+      success: () => {
+        window.$.notify({
+          message: `Cache cleared`
+        }, {
+          type: 'success'
+        });
+      },
+    });
+  }
+
   render() {
     return (
       <>
@@ -19,14 +42,19 @@ export class Settings extends React.Component {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Settings</h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                <button
+                  type="button" className="close" data-dismiss="modal" aria-label="Close"
+                >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div className="modal-body">
                 <form>
                   <div className="form-group">
-                    <button type="button" className="btn btn-info" id="btnClearCache" >
+                    <button
+                      type="button" className="btn btn-info" id="btnClearCache"
+                      onClick={(e) => this.clearCache()}
+                    >
                       <i className="fa fa-trash"></i>
                     </button>&nbsp;
                     <label htmlFor="formGroupExampleInput">Clear Cache</label>
