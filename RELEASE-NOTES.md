@@ -1,3 +1,10 @@
+## 3.13.0
+* Caching remote solved hostnames for 5 minutes
+* Caching not found hostnames for 1 hour
+* Gui interface to clear the cache
+* Not documented api to get cache size and values
+* Increased remote timeout to 10 seconds to make sure won't get easlily get timeout on remote server slowness
+
 ## 3.12.1
 * Binding UDP server to anylocalhost just as TCP this way DPS can be used on any interface.
 * Disabling mac as the binary isn't working macos-latest, see #341

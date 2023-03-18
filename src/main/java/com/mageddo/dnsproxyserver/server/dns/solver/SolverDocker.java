@@ -10,7 +10,6 @@ import org.xbill.DNS.Message;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.time.Duration;
 
 @Slf4j
 @Singleton
@@ -32,8 +31,7 @@ public class SolverDocker implements Solver {
     for (final var host : Wildcards.buildHostAndWildcards(askedHost)) {
       final var ip = this.containerSolvingService.findBestHostIP(host);
       if (ip != null) {
-        final var ttl = 30;
-        return Response.of(Messages.aAnswer(query, ip, ttl), Duration.ofSeconds(ttl));
+        return Response.of(Messages.aAnswer(query, ip));
       }
     }
 
