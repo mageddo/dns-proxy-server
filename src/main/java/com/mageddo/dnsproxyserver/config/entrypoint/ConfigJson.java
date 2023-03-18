@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.config.entrypoint;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
+import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 
 import java.util.List;
 
@@ -32,4 +33,6 @@ public interface ConfigJson {
   List<IpAddr> getRemoteDnsServers();
 
   List<Config.Env> getEnvs();
+
+  SimpleServer.Protocol getServerProtocol();
 }

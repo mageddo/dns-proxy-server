@@ -73,9 +73,8 @@ public class Config {
   @NonNull
   private String resolvConfPaths;
 
-  public static SimpleServer.Protocol findDnsServerProtocol() {
-    return SimpleServer.Protocol.BOTH;
-  }
+  @NonNull
+  private SimpleServer.Protocol serverProtocol;
 
   public void resetConfigFile() {
     try {

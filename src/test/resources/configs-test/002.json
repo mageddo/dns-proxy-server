@@ -22,5 +22,6 @@
   "registerContainerNames" : null,
   "remoteDnsServers" : [ ],
   "version" : 2,
+  "serverProtocol" : null,
   "webServerPort" : null
 }

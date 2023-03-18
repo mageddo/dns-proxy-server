@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
+import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -68,6 +69,11 @@ public class ConfigJsonV1 implements ConfigJson {
   @Override
   public List<Config.Env> getEnvs() {
     return ConfigJsonV1EnvsConverter.toDomainEnvs(this._envs);
+  }
+
+  @Override
+  public SimpleServer.Protocol getServerProtocol() {
+    return null;
   }
 
   public ConfigJsonV2 toConfigV2() {

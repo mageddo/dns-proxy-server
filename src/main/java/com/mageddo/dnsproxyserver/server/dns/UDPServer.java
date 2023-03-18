@@ -23,13 +23,12 @@ public class UDPServer {
   public UDPServer(SocketAddress address, RequestHandler requestHandler) {
     this.address = address;
     this.requestHandler = requestHandler;
-    this.pool = ThreadPool.create(20);
+    this.pool = ThreadPool.newCached(20);
   }
 
   public void start() {
-    return;
-//    this.pool.submit(this::start0);
-//    log.trace("status=startingUdpServer, address={}", this.address);
+    this.pool.submit(this::start0);
+    log.trace("status=startingUdpServer, address={}", this.address);
   }
 
   private void start0() {

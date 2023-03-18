@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
+import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -46,6 +47,8 @@ public class ConfigJsonV2 implements ConfigJson {
 
   private Boolean dpsNetworkAutoConnect;
 
+  private SimpleServer.Protocol serverProtocol;
+
   @JsonIgnore
   public List<IpAddr> getRemoteDnsServers() {
     return this.remoteDnsServers
@@ -59,6 +62,7 @@ public class ConfigJsonV2 implements ConfigJson {
   public List<Config.Env> getEnvs() {
     return ConfigJsonV2EnvsConverter.toDomainEnvs(this._envs);
   }
+
 
   @Data
   @Accessors(chain = true)

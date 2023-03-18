@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.templates;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.entrypoint.ConfigEnv;
 import com.mageddo.dnsproxyserver.config.entrypoint.LogLevel;
+import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 
 import java.nio.file.Paths;
 
@@ -27,7 +28,9 @@ public class ConfigTemplates {
       .dnsServerPort(53)
       .domain("com")
       .logLevel(LogLevel.WARNING)
-      .resolvConfPaths(ConfigEnv.DEFAULT_RESOLV_CONF_PATH);
+      .resolvConfPaths(ConfigEnv.DEFAULT_RESOLV_CONF_PATH)
+      .serverProtocol(SimpleServer.Protocol.UDP_TCP)
+      ;
   }
 
 

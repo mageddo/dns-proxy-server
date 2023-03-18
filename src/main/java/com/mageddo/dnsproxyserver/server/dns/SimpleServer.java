@@ -46,7 +46,7 @@ public class SimpleServer {
   public enum Protocol {
     UDP,
     TCP,
-    BOTH
+    UDP_TCP
   }
 
 }

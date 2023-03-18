@@ -37,7 +37,7 @@ class DnsQueryTCPHandlerTest {
     final var queryOut = new PipedOutputStream(in);
 
     ThreadPool
-      .def()
+      .scheduled()
       .schedule(
         () -> {
 

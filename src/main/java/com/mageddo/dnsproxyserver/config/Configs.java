@@ -8,6 +8,7 @@ import com.mageddo.dnsproxyserver.config.entrypoint.ConfigProps;
 import com.mageddo.dnsproxyserver.config.entrypoint.JsonConfigs;
 import com.mageddo.dnsproxyserver.config.entrypoint.LogLevel;
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
+import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import com.mageddo.dnsproxyserver.utils.Numbers;
 import com.mageddo.utils.Files;
 import com.mageddo.utils.Runtime;
@@ -55,6 +56,9 @@ public class Configs {
       .remoteDnsServers(buildRemoteServers(json.getRemoteDnsServers()))
       .configPath(configPath)
       .resolvConfPaths(env.getResolvConfPath())
+      .serverProtocol(firstNonNullRequiring(
+        json.getServerProtocol(), SimpleServer.Protocol.UDP_TCP
+      ))
       .build();
   }
 
