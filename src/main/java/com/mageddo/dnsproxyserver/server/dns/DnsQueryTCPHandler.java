@@ -53,7 +53,10 @@ class DnsQueryTCPHandler implements SocketClientMessageHandler {
 
       }
     } catch (UncheckedIOException | IOException e) {
-      log.debug("status=socketClosed, msg={}, class={}", e.getMessage(), ClassUtils.getSimpleName(e));
+      log.debug(
+        "status=socketClosed, runningTime={}, msg={}, class={}",
+        client.getRunningTime(), e.getMessage(), ClassUtils.getSimpleName(e)
+      );
     } catch (Exception e) {
       log.warn("status=request-failed, msg={}", e.getMessage(), e);
     } finally {

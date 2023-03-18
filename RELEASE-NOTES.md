@@ -1,10 +1,12 @@
-## 3.13.0
+## 3.13.1
 * Caching remote solved hostnames for 5 minutes
 * Caching not found hostnames for 1 hour
 * Gui interface to clear the cache
 * Not documented api to get cache size and values
 * Increased remote timeout to 10 seconds to make sure won't get easlily get timeout on remote server slowness
 * Order interfaces by index when choosing an IP as the machine IP, put loopback at the end of the list. 
+* Holding TCP open connections up to 2min respecting RFC-1035 section "4.2.2. TCP usage"
+  * Fixed too many occurrences of "java.net.SocketException: Socket closed"
 
 ## 3.12.1
 * Binding UDP server to anylocalhost just as TCP this way DPS can be used on any interface.
