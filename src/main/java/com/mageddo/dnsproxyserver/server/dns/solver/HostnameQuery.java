@@ -53,7 +53,7 @@ public class HostnameQuery {
   }
 
   public boolean matches(Hostname hostname) {
-    return matches(hostname.getValue());
+    return matches(hostname.getCanonicalValue());
   }
 
   public boolean matches(String hostnamePattern) {
