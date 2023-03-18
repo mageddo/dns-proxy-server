@@ -64,7 +64,7 @@ class ContainerHostnameMatcherTest {
   @Test
   void mustSolveRegexFromContainerHostnameEnv(){
     // arrange
-    final var inspect = InspectContainerResponseTemplates.buildWithHostnamesEnv("nginx.+,acme.+");
+    final var inspect = InspectContainerResponseTemplates.buildWithHostnamesEnv("/nginx.+/,/acme.+/");
     final var hostname = HostnameQuery.ofRegex(HostnameTemplates.NGINX_COM_BR);
     final var hostnameAcme = HostnameQuery.ofRegex(HostnameTemplates.NGINX_COM_BR);
     final var config = Configs.getInstance();
