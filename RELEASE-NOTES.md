@@ -4,6 +4,7 @@
 * Gui interface to clear the cache
 * Not documented api to get cache size and values
 * Increased remote timeout to 10 seconds to make sure won't get easlily get timeout on remote server slowness
+* Order interfaces by index when choosing an IP as the machine IP, put loopback at the end of the list. 
 
 ## 3.12.1
 * Binding UDP server to anylocalhost just as TCP this way DPS can be used on any interface.
