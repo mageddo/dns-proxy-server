@@ -1,6 +1,5 @@
 import React from 'react';
 import {Settings} from './Settings.js'
-import $ from 'jquery';
 
 export class NavBar extends React.Component {
   constructor(props) {
@@ -14,8 +13,7 @@ export class NavBar extends React.Component {
   }
 
   openSettings(){
-    console.info("opening, ", $);
-    $('#settings-modal').modal()
+    window.$('#settings-modal').modal()
   }
 
   render() {

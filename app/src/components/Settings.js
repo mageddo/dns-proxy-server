@@ -14,7 +14,7 @@ export class Settings extends React.Component {
   render() {
     return (
       <>
-        <div className="modal" tabIndex="-1" role="dialog" id="settings-modal">
+        <div className="modal" tabIndex="-1" role="dialog" id="settings-modal" style={{zIndex: 9999}}>
           <div className="modal-dialog" role="document">
             <div className="modal-content">
               <div className="modal-header">
@@ -26,14 +26,15 @@ export class Settings extends React.Component {
               <div className="modal-body">
                 <form>
                   <div className="form-group">
+                    <button type="button" className="btn btn-info" id="btnClearCache" >
+                      <i className="fa fa-trash"></i>
+                    </button>&nbsp;
                     <label htmlFor="formGroupExampleInput">Clear Cache</label>
-                    <button type="button"  className="form-control" id="btnClearCache" ></button>
                   </div>
                 </form>
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" className="btn btn-primary">Save changes</button>
               </div>
             </div>
           </div>
