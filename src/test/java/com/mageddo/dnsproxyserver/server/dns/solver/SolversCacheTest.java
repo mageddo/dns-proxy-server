@@ -49,14 +49,4 @@ class SolversCacheTest {
     assertEquals(0, this.cache.getSize());
   }
 
-
-  @Test
-  void mustRespectSolverCaculatedCacheTime(){
-    // arrange
-
-    // act
-    // fixme #370
-    // assert
-  }
-
 }
