@@ -18,7 +18,6 @@ public class QuarkusConfig {
 
   @Produces
   @Provides
-//  @Singleton
   public RemoteResolvers remoteResolvers(Function<IpAddr, Resolver> resolverProvider) {
     final var servers = Configs
       .getInstance()
@@ -28,7 +27,6 @@ public class QuarkusConfig {
 
   @Produces
   @Provides
-//  @Singleton
   public Function<IpAddr, Resolver> getResolverProvider() {
     return it -> {
       final var resolver = new SimpleResolver(InetAddresses.toSocketAddress(it.getRawIP(), it.getPortOrDef(53)));
