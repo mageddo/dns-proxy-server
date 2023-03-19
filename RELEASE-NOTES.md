@@ -1,4 +1,4 @@
-## 3.14.2
+## 3.14.2-snapshot
 * Support for regex on localdb solver and docker container hostname and HOSTNAMES env
 * Smarter Cache for loading with Docker and LocalDB Solvers see #376
 * Docker host parameter by flag, json config or env
