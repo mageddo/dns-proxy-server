@@ -3,6 +3,7 @@ package dagger.sheath;
 import dagger.internal.DelegateFactory;
 import dagger.internal.DoubleCheck;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
@@ -75,14 +76,26 @@ public class ProviderWrapper {
         validateIsProviderClass(provider);
         return new ProviderWrapper(provider, type);
       }
-      validateIsProviderClass(o);
+      if (isDoubleCheckClass(o)) {
+        return new ProviderWrapper(o, type);
+      }
+      final var providerClass = ClassUtils.getName(o);
+      Validate.isTrue(isGeneratedFactory(providerClass), "Unknown dagger provider: %s", providerClass);
       return new ProviderWrapper(o, type);
     } catch (IllegalAccessException e) {
       throw new IllegalStateException(e);
     }
   }
 
+  private static boolean isGeneratedFactory(String providerClass) {
+    return !providerClass.startsWith("dagger.");
+  }
+
   private static void validateIsProviderClass(Object provider) {
-    Validate.isTrue(Objects.equals(DoubleCheck.class, provider.getClass()), "Not the expected provider class!: %s", provider);
+    Validate.isTrue(isDoubleCheckClass(provider), "Not the expected provider class!: %s", provider);
+  }
+
+  private static boolean isDoubleCheckClass(Object provider) {
+    return Objects.equals(DoubleCheck.class, provider.getClass());
   }
 }
