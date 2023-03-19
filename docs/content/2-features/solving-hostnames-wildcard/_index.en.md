@@ -35,7 +35,6 @@ Name:	mageddo.com
 Address: 172.17.0.5
 ```
 
-
 ## RegEx
 
 From DPS `3.14` regex is also supported on localstorage or docker container hostname/HOSTNAMES env,
