@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.commons.caching.LruTTLCache;
+import com.mageddo.commons.lang.Objects;
 import com.mageddo.commons.lang.tuple.Pair;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class SolversCache {
   private final LruTTLCache cache = new LruTTLCache(2048, Duration.ofSeconds(5), false);
 
   public Message handle(Message query, Function<Message, Response> delegate) {
-    return this.handleRes(query, delegate).getMessage();
+    return Objects.mapOrNull(this.handleRes(query, delegate), Response::getMessage);
   }
 
   public Response handleRes(Message query, Function<Message, Response> delegate) {
