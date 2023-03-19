@@ -4,8 +4,8 @@ weight: 1
 ---
 
 ## Running on Windows
-You can run DPS on Windows host without any issues except by DPS isn't capable yet
-to connect to docker API and solve containers ([see backlog issue][4]).
+DPS actually is fully supported on Windows knowing [docker limitation features][9] 
+which can be bypassed with a [reverse-proxy][10].
 
 ## Running as Docker Service
 
@@ -45,7 +45,7 @@ You can access the GUI by the address http://localhost:5380/ , see [GUI Dashboar
 * Download the [latest release][5] for Windows
 * Run dps by `dns-proxy-server.exe`
 
-If you run DPS as administrator (using administrator prompt) then it will capable of configure itself as the [default DNS][6]
+If you run DPS as administrator then it will capable of configure itself as the [default DNS][6]
 or check instructions below of how to set DPS as default DNS manually.
 
 ## Configure DPS as default DNS on Windows
@@ -86,8 +86,9 @@ then requests won't be sent to DPS, actually DPS doesn't support IPV6.
 ![Screenshot](https://i.imgur.com/0bxASqd.png?width=10pc&classes=shadow)
 
 [1]: https://imgur.com/a/LlDH8AM
-[4]: https://github.com/mageddo/dns-proxy-server/issues/314
 [5]: https://github.com/mageddo/dns-proxy-server/releases
 [6]: {{%relref "2-features/auto-configuration-as-default-dns/_index.md" %}}
 [7]: #configure-dps-as-default-dns-on-windows
 [8]: {{%relref "2-features/gui/_index.md" %}}
+[9]: https://docs.docker.com/desktop/networking/#there-is-no-docker0-bridge-on-the-host
+[10]: {{%relref "5-tutorials/docker-reverse-proxy/_index.md" %}}

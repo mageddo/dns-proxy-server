@@ -4,7 +4,8 @@ weight: 1
 ---
 ## Running on MAC
 
-DPS actually is fully supported on MAC knowing [docker limitation features][5].
+DPS actually is fully supported on MAC knowing [docker limitation features][5]
+which can be bypassed with a [reverse-proxy][10].
 
 ## Running as Docker as service
 
@@ -73,3 +74,4 @@ See [this thread][6] with more use cases.
 [5]: https://docs.docker.com/desktop/networking/#there-is-no-docker0-bridge-on-the-host
 [6]: https://github.com/mageddo/dns-proxy-server/issues/44#issuecomment-1454379761
 [7]: #configuring-dps-as-default-dns-manually
+[10]: {{%relref "5-tutorials/docker-reverse-proxy/_index.md" %}}
