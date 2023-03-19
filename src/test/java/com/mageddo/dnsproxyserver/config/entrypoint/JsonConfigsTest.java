@@ -10,7 +10,6 @@ import java.nio.file.Path;
 import static com.mageddo.dnsproxyserver.config.entrypoint.JsonConfigs.findVersion;
 import static com.mageddo.utils.TestUtils.readAndSortJson;
 import static com.mageddo.utils.TestUtils.readAsStream;
-import static com.mageddo.utils.TestUtils.sortJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,7 +35,7 @@ class JsonConfigsTest {
     final var path = JsonConfigs.buildBackupPath(tempConfigPath);
     assertTrue(Files.exists(path), path.toString());
 
-    assertEquals(readAndSortJson("/json-configs-test/001.json"), sortJson(Files.readString(tempConfigPath)));
+    assertEquals(readAndSortJson("/json-configs-test/001.json"), readAndSortJson(tempConfigPath));
   }
 
   @Test

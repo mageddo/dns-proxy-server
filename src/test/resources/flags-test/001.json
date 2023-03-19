@@ -2,6 +2,7 @@
   "version" : false,
   "webServerPort" : 5380,
   "dnsServerPort" : 53,
+  "dockerHost" : null,
   "defaultDns" : true,
   "configPath" : "conf/config.json",
   "service" : null,

@@ -1,11 +1,16 @@
 Usage: <main class> [-default-dns] [-dps-network] [-dps-network-auto-connect] [-help] [-register-container-names]
-                    [-service-publish-web-port] [-version] [-conf-path=<configPath>] [-domain=<domain>]
-                    [-host-machine-hostname=<hostMachineHostname>] [-log-file=<logToFile>] [-log-level=<logLevel>]
-                    [-server-port=<dnsServerPort>] [-service=<service>] [-web-server-port=<webServerPort>]
+                    [-service-publish-web-port] [-version] [-conf-path=<configPath>] [-docker-host=<dockerHost>]
+                    [-domain=<domain>] [-host-machine-hostname=<hostMachineHostname>] [-log-file=<logToFile>]
+                    [-log-level=<logLevel>] [-server-port=<dnsServerPort>] [-service=<service>]
+                    [-web-server-port=<webServerPort>]
       -conf-path, --conf-path=<configPath>
                             The config file path (default conf/config.json)
       -default-dns, --default-dns
                             This DNS server will be the default server for this machine (default true)
+      -docker-host, --docker-host=<dockerHost>
+                            The docker host address.
+                            (default the default docker host value based on the OS)
+
       -domain, --domain=<domain>
                             Domain utilized to solver containers and services hostnames (default docker)
       -dps-network, --dps-network
