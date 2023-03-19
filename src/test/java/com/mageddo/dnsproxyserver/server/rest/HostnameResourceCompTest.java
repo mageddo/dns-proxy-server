@@ -1,19 +1,19 @@
 package com.mageddo.dnsproxyserver.server.rest;
 
 import com.mageddo.dnsproxyserver.config.Configs;
-import com.mageddo.dnsproxyserver.di.Context;
-import testing.Events;
 import dagger.sheath.junit.DaggerTest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import testing.ContextSupplier;
+import testing.Events;
 
 import javax.ws.rs.core.Response;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 
-@DaggerTest(component = Context.class, eventsHandler = Events.class)
+@DaggerTest(initializer = ContextSupplier.class, eventsHandler = Events.class)
 class HostnameResourceCompTest {
 
   @BeforeEach

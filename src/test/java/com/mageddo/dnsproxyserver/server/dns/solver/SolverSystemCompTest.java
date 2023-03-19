@@ -1,15 +1,15 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
-import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.dnsproxyserver.docker.DockerDAO;
 import com.mageddo.dnsproxyserver.server.dns.IP;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.templates.MessageTemplates;
-import testing.Events;
-import dagger.sheath.junit.DaggerTest;
 import dagger.sheath.InjectMock;
+import dagger.sheath.junit.DaggerTest;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
+import testing.ContextSupplier;
+import testing.Events;
 
 import javax.inject.Inject;
 
@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
-@DaggerTest(component = Context.class, eventsHandler = Events.class)
+@DaggerTest(initializer = ContextSupplier.class, eventsHandler = Events.class)
 class SolverSystemCompTest {
 
   @InjectMock
