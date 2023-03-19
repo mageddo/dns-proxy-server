@@ -12,7 +12,7 @@ which can be bypassed with a [reverse-proxy][10].
 1- If you are using docker on your machine that's the best choice as it will automatically start DPS on every boot:
 
 ```bash
-$ docker run -d --restart=unless-stopped -p 53:53/udp -p 53:53/tcp -p 5380:5380 defreitas/dns-proxy-server
+$ docker run -d --restart=unless-stopped -p 53:53/udp -p 53:53/tcp -p 5380:5380 -v /var/run/docker.sock:/var/run/docker.sock defreitas/dns-proxy-server
 ```
 
 2- Set DPS as the default DNS on Windows, check the instructions below on 

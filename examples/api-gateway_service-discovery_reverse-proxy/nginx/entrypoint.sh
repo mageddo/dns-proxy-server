@@ -12,3 +12,4 @@ echo "> configured: $(cat $CONFIG_FILE)"
 echo "> starting nginx server"
 
 exec nginx -g 'daemon off;'
+

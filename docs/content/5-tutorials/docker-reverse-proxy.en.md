@@ -9,7 +9,7 @@ menuTitle: Create a Service Discovery solution
 ##### Tested on: 
 
 * DPS 3.11
-* OS: Mac, Linux
+* OS: Mac, Linux, Windows
 
 #### Introducing
 
@@ -26,9 +26,6 @@ accessible from the host.
 To fix that we will configure an API Gateway, Service Discovery, Reverse Proxy solution combining DPS with Nginx,
 see final solution below:
 
-> Obs: This tutorial won't work on Windows yet because containers solving is not support yet,
-> follow the [feature request issue][1] on github.
-
 ![][2]
 Source: [excalidraw][3]
 
@@ -38,8 +35,9 @@ The pratice is simpler than the theory, let's get it working:
 Configuring Nginx reverse proxy and two web apps for test
 ```bash
 $ git clone https://github.com/mageddo/dns-proxy-server.git
-$ cd examples/api-gateway_service-discovery_reverse-proxyame-compose-file
-$ docker-compose up --build
+$ cd examples/api-gateway_service-discovery_reverse-proxy
+$ docker-compose build --no-cache
+$ docker-compose up
 ```
 
 `docker-compose up` created three containers, the first is a nginx reverse proxy which will listen to the host machine
@@ -113,7 +111,6 @@ thanks for reading.
 
 > Service Discovery, API Gateway, Service Discovery, Reverse Proxy
 
-[1]: https://github.com/mageddo/dns-proxy-server/issues/314
 [2]: https://i.imgur.com/poI0sKZ.png
 [3]: https://excalidraw.com/#json=BuYYx179GhmvHCexDZHGv,2hN_IgZo9HTfID-neSACQw
 [4]: {{%relref "1-getting-started/running-it/_index.md" %}}

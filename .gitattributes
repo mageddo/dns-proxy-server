@@ -22,6 +22,9 @@ Dockerfile text eol=lf
 *.Dockerfile text eol=lf
 Dockerfile.* text eol=lf
 *.json text eol=lf
+*.conf text eol=lf
+*.yml text eol=lf
+*.sh text eol=lf
 *.bat text eol=crlf
 
 *.so binary
