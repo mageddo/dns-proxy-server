@@ -28,12 +28,14 @@ public interface ModuleSolver {
   }
 
   @Provides
+  @Singleton
   @CacheName(name = Name.REMOTE)
   static SolverCache remoteCache(){
     return new SolverCache(Name.REMOTE);
   }
 
   @Provides
+  @Singleton
   @CacheName(name = Name.GLOBAL)
   static SolverCache globalCache(){
     return new SolverCache(Name.GLOBAL);

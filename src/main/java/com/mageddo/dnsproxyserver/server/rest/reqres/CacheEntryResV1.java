@@ -4,7 +4,9 @@ import com.mageddo.dnsproxyserver.server.dns.solver.CacheEntry;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Data
@@ -30,4 +32,19 @@ public class CacheEntryResV1 {
       ;
   }
 
+  public static Map<String, Map<String, CacheEntryResV1>> of(Map<String, Map<String, CacheEntry>> cache) {
+    final var m = new HashMap<String, Map<String, CacheEntryResV1>>();
+    cache
+      .keySet()
+      .forEach(k -> m.computeIfAbsent(k, (k_) -> {
+        final var v = new HashMap<String, CacheEntryResV1>();
+        cache
+          .get(k)
+          .forEach((k2, v2) -> {
+            v.put(k2, of(v2));
+          });
+        return v;
+      }));
+    return m;
+  }
 }

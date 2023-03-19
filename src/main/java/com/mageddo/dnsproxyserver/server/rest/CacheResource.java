@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.server.rest;
 
 import com.mageddo.dnsproxyserver.server.dns.solver.SolverCacheFactory;
 import com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name;
+import com.mageddo.dnsproxyserver.server.rest.reqres.CacheEntryResV1;
 import com.mageddo.http.HttpMapper;
 import com.mageddo.http.Request;
 import com.mageddo.http.WebServer;
@@ -52,7 +53,7 @@ public class CacheResource implements HttpMapper {
       exchange -> encodeJson(
         exchange,
         Response.Status.OK,
-        this.factory.findCachesAsMap(buildCacheName(exchange))
+        CacheEntryResV1.of(this.factory.findCachesAsMap(buildCacheName(exchange)))
       )
     );
   }

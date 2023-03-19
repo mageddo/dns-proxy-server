@@ -46,11 +46,10 @@ public class SolverCacheFactory {
     return Collections.singletonList(this.getInstance(name));
   }
 
-  public List<Map<String, CacheEntry>> findCachesAsMap(Name name){
+  public Map<String, Map<String, CacheEntry>> findCachesAsMap(Name name) {
     return this.findInstances(name)
       .stream()
-      .map(SolverCache::asMap)
-      .toList()
+      .collect(Collectors.toMap(it -> it.name().name(), SolverCache::asMap))
       ;
   }
 
@@ -72,6 +71,6 @@ public class SolverCacheFactory {
     return this.findInstances(name)
       .stream()
       .collect(Collectors.toMap(it -> it.name().name(), SolverCache::getSize))
-    ;
+      ;
   }
 }
