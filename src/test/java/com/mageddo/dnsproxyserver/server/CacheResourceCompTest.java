@@ -18,6 +18,7 @@ import javax.ws.rs.core.Response;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 
 @DaggerTest(initializer = ContextSupplier.class, eventsHandler = Events.class)
 class CacheResourceCompTest {
@@ -54,7 +55,6 @@ class CacheResourceCompTest {
     ;
   }
 
-
   @Test
   void mustFindCaches() {
     // arrange
@@ -73,6 +73,27 @@ class CacheResourceCompTest {
       .body("GLOBAL", notNullValue())
       .body("REMOTE.'A-acme.com'", notNullValue())
       .body("REMOTE.'A-acme.com'.ttl", equalTo("PT5S"))
+      .log()
+    ;
+  }
+
+  @Test
+  void mustFilterCaches() {
+    // arrange
+
+    // act
+    final var response = given()
+      .param("name", "GLOBAL")
+      .get("/v1/caches")
+      .then()
+      .log()
+      .ifValidationFails();
+
+    // assert
+    response
+      .statusCode(Response.Status.OK.getStatusCode())
+      .body("GLOBAL", notNullValue())
+      .body("REMOTE", nullValue())
       .log()
     ;
   }
