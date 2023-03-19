@@ -29,7 +29,7 @@ public class ServerStarter {
       port,
       config.getServerProtocol()
     );
-    log.debug("status=startingDnsServer, protocol={}, port={}", config.getServerProtocol(), port);
+    log.info("status=startingDnsServer, protocol={}, port={}", config.getServerProtocol(), port);
     return this;
   }
 
