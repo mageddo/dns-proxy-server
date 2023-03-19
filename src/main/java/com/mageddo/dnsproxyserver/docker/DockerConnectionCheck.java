@@ -39,7 +39,7 @@ public class DockerConnectionCheck {
   }
 
   boolean isSupportedPlatform() {
-    return Platform.isLinux() || Platform.isMac();
+    return Platform.isLinux() || Platform.isMac() || Platform.isWindows();
   }
 
   void updateStatus() {

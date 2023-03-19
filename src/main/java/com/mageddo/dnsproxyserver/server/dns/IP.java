@@ -64,4 +64,8 @@ public class IP {
     }
     return IP.of(ip).toShortArray();
   }
+
+  public boolean isLoopback() {
+    return this.ip.startsWith("127.");
+  }
 }

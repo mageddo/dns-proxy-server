@@ -1,8 +1,8 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.config.Configs;
-import com.mageddo.dnsproxyserver.docker.DockerDAO;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
+import com.mageddo.dnsproxyserver.usecase.HostMachineService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.Message;
@@ -15,14 +15,14 @@ import javax.inject.Singleton;
 @AllArgsConstructor(onConstructor = @__({@Inject}))
 public class SolverSystem implements Solver {
 
-  private final DockerDAO dockerDAO;
+  private final HostMachineService machineService;
 
   @Override
   public Response handle(Message query) {
     final var hostname = Messages.findQuestionHostname(query);
     final var config = Configs.getInstance();
     if (hostname.isEqualTo(config.getHostMachineHostname())) { // fixme fazer case com hostname + search domain
-      final var ip = this.dockerDAO.findHostMachineIp();
+      final var ip = this.machineService.findHostMachineIP();
       if (ip == null) {
         log.debug("status=hostMachineIpNotFound, host={}", hostname);
         return null;
