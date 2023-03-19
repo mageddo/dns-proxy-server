@@ -10,6 +10,7 @@ import org.xbill.DNS.Resolver;
 import org.xbill.DNS.SimpleResolver;
 
 import javax.enterprise.inject.Produces;
+import javax.inject.Singleton;
 import java.time.Duration;
 import java.util.function.Function;
 
@@ -18,6 +19,7 @@ public class QuarkusConfig {
 
   @Produces
   @Provides
+  @Singleton
   public RemoteResolvers remoteResolvers(Function<IpAddr, Resolver> resolverProvider) {
     final var servers = Configs
       .getInstance()
@@ -27,6 +29,7 @@ public class QuarkusConfig {
 
   @Produces
   @Provides
+  @Singleton
   public Function<IpAddr, Resolver> getResolverProvider() {
     return it -> {
       final var resolver = new SimpleResolver(InetAddresses.toSocketAddress(it.getRawIP(), it.getPortOrDef(53)));
