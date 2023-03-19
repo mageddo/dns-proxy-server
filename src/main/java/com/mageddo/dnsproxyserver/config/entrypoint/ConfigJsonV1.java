@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.Accessors;
 
+import java.net.URI;
 import java.util.List;
 
 @Data
@@ -73,6 +74,11 @@ public class ConfigJsonV1 implements ConfigJson {
 
   @Override
   public SimpleServer.Protocol getServerProtocol() {
+    return null;
+  }
+
+  @Override
+  public URI getDockerHost() {
     return null;
   }
 

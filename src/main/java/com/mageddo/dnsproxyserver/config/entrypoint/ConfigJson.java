@@ -37,5 +37,5 @@ public interface ConfigJson {
 
   SimpleServer.Protocol getServerProtocol();
 
-  URI dockerHost();
+  URI getDockerHost();
 }

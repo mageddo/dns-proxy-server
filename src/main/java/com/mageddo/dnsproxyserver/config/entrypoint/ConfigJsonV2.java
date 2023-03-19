@@ -9,6 +9,7 @@ import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,6 +49,8 @@ public class ConfigJsonV2 implements ConfigJson {
   private Boolean dpsNetworkAutoConnect;
 
   private SimpleServer.Protocol serverProtocol;
+
+  private URI dockerHost;
 
   @JsonIgnore
   public List<IpAddr> getRemoteDnsServers() {

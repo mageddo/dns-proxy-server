@@ -5,7 +5,7 @@ import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Network;
 import com.mageddo.commons.lang.Objects;
-import com.mageddo.dnsproxyserver.quarkus.DockerConfig;
+import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.server.dns.IP;
 import com.mageddo.os.Platform;
 import com.mageddo.os.linux.LinuxFiles;
@@ -39,11 +39,13 @@ public class DockerDAODefault implements DockerDAO {
 
   @Override
   public boolean isConnected() {
+    final var dockerHost = Configs.getInstance()
+      .getDockerHost();
     if (Platform.isLinux()) {
-      final var path = Paths.get(DockerConfig.DOCKER_HOST_ADDRESS.getPath());
+      final var path = Paths.get(dockerHost.getPath()); // fixme, it can be a url
       return Files.exists(path) && LinuxFiles.isUnixSocket(path);
     } else if (Platform.isMac()) {
-      final var path = Paths.get(DockerConfig.DOCKER_HOST_ADDRESS.getPath());
+      final var path = Paths.get(dockerHost.getPath());
       return Files.exists(path) && !Files.isDirectory(path) && Files.isReadable(path);
     }
     log.trace("docker features still not supported on this platform :/ , hold tight I'm working hard to fix it someday :D");

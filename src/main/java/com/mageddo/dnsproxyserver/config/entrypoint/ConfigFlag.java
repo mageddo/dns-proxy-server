@@ -131,8 +131,7 @@ public class ConfigFlag implements Callable<Boolean> {
     description = """
       The docker host address.
       (default the default docker host value based on the OS)
-       """,
-    defaultValue = ""
+       """
   )
   private URI dockerHost;
 

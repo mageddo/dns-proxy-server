@@ -18,7 +18,9 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 
+import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -61,9 +63,19 @@ public class Configs {
         json.getServerProtocol(), SimpleServer.Protocol.UDP_TCP
       ))
       .dockerHost(ObjectUtils.firstNonNull(
-        flag.getDockerHost(), env.getDockerHost(), json.dockerHost()
+        flag.getDockerHost(), env.getDockerHost(), json.getDockerHost(), buildDefaultDockerHost()
       ))
       .build();
+  }
+
+  private static URI buildDefaultDockerHost() {
+    if (SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC) {
+      return URI.create("unix:///var/run/docker.sock");
+    }
+    if (SystemUtils.IS_OS_WINDOWS) {
+      return URI.create("npipe:////./pipe/docker_engine");
+    }
+    return null; // todo unsupported OS
   }
 
   static List<IpAddr> buildRemoteServers(List<IpAddr> servers) {
@@ -75,7 +87,7 @@ public class Configs {
 
   static LogLevel buildLogLevel(String logLevelName) {
     final var level = EnumUtils.getEnumIgnoreCase(LogLevel.class, logLevelName);
-    if(StringUtils.isNotBlank(logLevelName) && level == null){
+    if (StringUtils.isNotBlank(logLevelName) && level == null) {
       log.warn("status=couldntParseLogLevel, action=changesWillTakeNoEffect, proposedValue={}", logLevelName);
     }
     return level;
