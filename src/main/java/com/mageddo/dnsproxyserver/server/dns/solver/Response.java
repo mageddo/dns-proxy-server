@@ -29,10 +29,14 @@ public class Response {
   private LocalDateTime createdAt;
 
   public static Response of(Message message){
+    return of(message, Messages.DEFAULT_TTL_DURATION);
+  }
+
+  public static Response of(Message message, Duration ttl){
     return Response
       .builder()
       .message(message)
-      .ttl(Messages.DEFAULT_TTL_DURATION)
+      .ttl(ttl)
       .createdAt(LocalDateTime.now())
       .build();
   }
