@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.config.entrypoint;
 
 import com.mageddo.dnsproxyserver.utils.Envs;
+import com.mageddo.http.UriUtils;
 import lombok.Builder;
 import lombok.Value;
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +30,7 @@ public class ConfigEnv {
   public static final String MG_DPS_NETWORK_AUTO_CONNECT = "MG_DPS_NETWORK_AUTO_CONNECT";
   public static final String DEFAULT_RESOLV_CONF_PATH =
     "/host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf";
+  public static final String MG_DOCKER_HOST = "MG_DOCKER_HOST";
 
   private Path currentPath;
   private String resolvConfPath;
@@ -53,6 +55,7 @@ public class ConfigEnv {
       .domain(Envs.getStringOrNull(MG_HOST_MACHINE_HOSTNAME))
       .dpsNetwork(Envs.getBooleanOrNull(MG_DPS_NETWORK))
       .dpsNetworkAutoConnect(Envs.getBooleanOrNull(MG_DPS_NETWORK_AUTO_CONNECT))
+      .dockerHost(UriUtils.createURI(Envs.getStringOrNull(MG_DOCKER_HOST)))
       .build();
   }
 

@@ -1,5 +1,6 @@
 package com.mageddo.http;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.net.URLEncodedUtils;
 
@@ -42,5 +43,12 @@ public class UriUtils {
       return path.substring(0, path.length() - 1);
     }
     return path;
+  }
+
+  public static URI createURI(String uri) {
+    if (StringUtils.isBlank(uri)) {
+      return null;
+    }
+    return URI.create(uri);
   }
 }
