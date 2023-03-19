@@ -10,6 +10,7 @@ import lombok.Value;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -75,6 +76,8 @@ public class Config {
 
   @NonNull
   private SimpleServer.Protocol serverProtocol;
+
+  private URI dockerHost;
 
   public void resetConfigFile() {
     try {

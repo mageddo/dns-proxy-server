@@ -16,6 +16,7 @@ import com.mageddo.utils.Tests;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.nio.file.Path;
@@ -58,6 +59,9 @@ public class Configs {
       .resolvConfPaths(env.getResolvConfPath())
       .serverProtocol(firstNonNullRequiring(
         json.getServerProtocol(), SimpleServer.Protocol.UDP_TCP
+      ))
+      .dockerHost(ObjectUtils.firstNonNull(
+        flag.getDockerHost(), env.getDockerHost(), json.dockerHost()
       ))
       .build();
   }

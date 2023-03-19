@@ -4,6 +4,7 @@ import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 
+import java.net.URI;
 import java.util.List;
 
 public interface ConfigJson {
@@ -35,4 +36,6 @@ public interface ConfigJson {
   List<Config.Env> getEnvs();
 
   SimpleServer.Protocol getServerProtocol();
+
+  URI dockerHost();
 }

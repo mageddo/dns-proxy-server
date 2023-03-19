@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Value;
 import org.apache.commons.lang3.StringUtils;
 
+import java.net.URI;
 import java.nio.file.Path;
 
 @Value
@@ -38,6 +39,7 @@ public class ConfigEnv {
   private String domain;
   private Boolean dpsNetwork;
   private Boolean dpsNetworkAutoConnect;
+  private URI dockerHost;
 
   public static ConfigEnv fromEnv() {
     return ConfigEnv

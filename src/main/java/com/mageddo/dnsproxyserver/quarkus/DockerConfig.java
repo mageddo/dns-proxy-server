@@ -4,6 +4,8 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientImpl;
 import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
+import com.mageddo.commons.lang.Objects;
+import com.mageddo.dnsproxyserver.config.Configs;
 
 import javax.enterprise.inject.Produces;
 import java.net.URI;
@@ -11,12 +13,14 @@ import java.time.Duration;
 
 public class DockerConfig {
 
-  public static final URI DOCKER_HOST_ADDRESS = URI.create("unix:///var/run/docker.sock");
-
   @Produces
   public DockerClient dockerClient() {
+    final var dockerHost = Configs
+      .getInstance()
+      .getDockerHost()
+      ;
     final var config = DefaultDockerClientConfig.createDefaultConfigBuilder()
-      .withDockerHost(DOCKER_HOST_ADDRESS.toString())
+      .withDockerHost(Objects.mapOrNull(dockerHost, URI::toString))
       .withDockerTlsVerify(false)
 //      .withDockerCertPath("/home/user/.docker")
 //      .withRegistryUsername(registryUser)

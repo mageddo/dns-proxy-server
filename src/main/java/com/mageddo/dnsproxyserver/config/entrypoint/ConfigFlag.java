@@ -8,6 +8,7 @@ import picocli.CommandLine;
 import picocli.CommandLine.Option;
 
 import java.io.PrintWriter;
+import java.net.URI;
 import java.util.concurrent.Callable;
 
 
@@ -124,6 +125,16 @@ public class ConfigFlag implements Callable<Boolean> {
     defaultValue = "false"
   )
   private Boolean dpsNetworkAutoConnect;
+
+  @Option(
+    names = {"-docker-host", "--docker-host"},
+    description = """
+      The docker host address.
+      (default the default docker host value based on the OS)
+       """,
+    defaultValue = ""
+  )
+  private URI dockerHost;
 
   @Option(
     names = {"-help", "--help"},
