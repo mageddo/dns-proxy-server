@@ -37,7 +37,8 @@ class CacheResourceCompTest {
     // assert
     response
       .statusCode(Response.Status.OK.getStatusCode())
-      .body(equalTo("{\"size\":0}"))
+      .body(equalTo("""
+        {"GLOBAL":0,"REMOTE":0}"""))
       .log()
     ;
   }

@@ -5,6 +5,7 @@ import com.mageddo.commons.lang.Objects;
 import com.mageddo.commons.lang.tuple.Pair;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.Message;
@@ -25,6 +26,7 @@ public class SolverCache {
 
   private final LruTTLCache cache = new LruTTLCache(2048, Duration.ofSeconds(5), false);
 
+  @NonNull
   private final Name name;
 
   public Message handle(Message query, Function<Message, Response> delegate) {

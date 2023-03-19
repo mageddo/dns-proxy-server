@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name.GLOBAL;
 import static com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name.REMOTE;
@@ -67,11 +68,10 @@ public class SolverCacheFactory {
     this.getInstance(name).clear();
   }
 
-  public List<Integer> findInstancesSize(Name name) {
+  public Map<String, Integer> findInstancesSizeMap(Name name) {
     return this.findInstances(name)
       .stream()
-      .map(SolverCache::getSize)
-      .toList()
+      .collect(Collectors.toMap(it -> it.name().name(), SolverCache::getSize))
     ;
   }
 }

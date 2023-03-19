@@ -30,7 +30,7 @@ public class CacheResource implements HttpMapper {
         encodeJson(
           exchange,
           Response.Status.OK,
-          this.factory.findInstancesSize(buildCacheName(exchange))
+          this.factory.findInstancesSizeMap(buildCacheName(exchange))
         );
       }
     );
@@ -42,7 +42,7 @@ public class CacheResource implements HttpMapper {
         encodeJson(
           exchange,
           Response.Status.OK,
-          this.factory.findInstancesSize(buildCacheName(exchange))
+          this.factory.findInstancesSizeMap(buildCacheName(exchange))
         );
       }
     );
