@@ -23,7 +23,7 @@ public class ServerStarter {
 
   @Inject
   public ServerStarter(Instance<Solver> solvers, SimpleServer server, DpsIpDiscover dpsIpDiscover) {
-    this.solvers = new SolverProvider(solvers).getSolvers();
+    this.solvers = new SolverProvider(solvers).getSolvers(); // todo nao precisaria criar na mao, usando o lazy
     this.server = server;
     this.dpsIpDiscover = dpsIpDiscover;
   }

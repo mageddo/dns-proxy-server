@@ -4,6 +4,7 @@ import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.config.ConfigDAO;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
+import dagger.Lazy;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.StopWatch;
@@ -19,7 +20,7 @@ import java.time.Duration;
 public class SolverLocalDB implements Solver {
 
   private final ConfigDAO configDAO;
-  private final SolverDelegate solverDelegate;
+  private final Lazy<SolverDelegate> solverDelegate;
 
   @Override
   public Response handle(Message query) {
@@ -54,7 +55,7 @@ public class SolverLocalDB implements Solver {
           Duration.ofSeconds(entry.getTtl())
         );
       }
-      return this.solverDelegate.solve(query, entry);
+      return this.solverDelegate.get().solve(query, entry);
     });
     if (res != null) {
       return res;
