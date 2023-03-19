@@ -1,5 +1,6 @@
-## 3.14.0
+## 3.14.1
 * Support for regex on localdb solver and docker container hostname and HOSTNAMES env
+* Smarter Cache for loading with Docker and LocalDB Solvers see #376
 
 ## 3.13.1
 * Caching remote solved hostnames for 5 minutes
