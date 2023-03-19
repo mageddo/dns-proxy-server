@@ -1,7 +1,8 @@
-## 3.14.2-snapshot
+## 3.14.3-snapshot
 * Support for regex on localdb solver and docker container hostname and HOSTNAMES env
 * Smarter Cache for loading with Docker and LocalDB Solvers see #376
 * Docker host parameter by flag, json config or env
+* Full support for Docker containers solving on Windows Binary, DPS on docker already works on Windows
 
 ## 3.13.1
 * Caching remote solved hostnames for 5 minutes
