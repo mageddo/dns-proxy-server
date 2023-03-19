@@ -52,7 +52,7 @@ public class CacheResource implements HttpMapper {
       exchange -> encodeJson(
         exchange,
         Response.Status.OK,
-        this.factory.findInstances(buildCacheName(exchange))
+        this.factory.findCachesAsMap(buildCacheName(exchange))
       )
     );
   }

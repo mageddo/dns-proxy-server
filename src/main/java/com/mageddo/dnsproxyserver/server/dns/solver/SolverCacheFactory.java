@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.inject.Singleton;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static com.mageddo.dnsproxyserver.server.dns.solver.SolverCacheQualifier.Name.GLOBAL;
 import static com.mageddo.dnsproxyserver.server.dns.solver.SolverCacheQualifier.Name.REMOTE;
@@ -15,26 +16,34 @@ import static com.mageddo.dnsproxyserver.server.dns.solver.SolverCacheQualifier.
 public class SolverCacheFactory {
 
   @SolverCacheQualifier(name = REMOTE)
-  private SolversCache remote;
+  private SolverCache remote;
 
   @SolverCacheQualifier(name = GLOBAL)
-  private SolversCache global;
+  private SolverCache global;
 
-  public SolversCache getInstance(Name name) {
+  public SolverCache getInstance(Name name) {
     return switch (name) {
       case GLOBAL -> this.global;
       case REMOTE -> this.remote;
     };
   }
 
-  public List<SolversCache> findInstances(Name name) {
+  public List<SolverCache> findInstances(Name name) {
     if (name == null) {
       return this.getCaches();
     }
     return Collections.singletonList(this.getInstance(name));
   }
 
-  private List<SolversCache> getCaches() {
+  public List<Map<String, CacheEntry>> findCachesAsMap(Name name){
+    return this.findInstances(name)
+      .stream()
+      .map(SolverCache::asMap)
+      .toList()
+      ;
+  }
+
+  private List<SolverCache> getCaches() {
     return List.of(this.remote, this.global);
   }
 
@@ -51,7 +60,7 @@ public class SolverCacheFactory {
   public List<Integer> findInstancesSize(Name name) {
     return this.findInstances(name)
       .stream()
-      .map(SolversCache::getSize)
+      .map(SolverCache::getSize)
       .toList()
     ;
   }

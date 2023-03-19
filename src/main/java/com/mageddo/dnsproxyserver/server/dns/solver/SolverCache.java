@@ -23,7 +23,7 @@ import static com.mageddo.dnsproxyserver.server.dns.Messages.findQuestionType;
 @Slf4j
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
-public class SolversCache {
+public class SolverCache {
 
   private final LruTTLCache cache = new LruTTLCache(2048, Duration.ofSeconds(5), false);
 

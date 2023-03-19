@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(MockitoExtension.class)
 class SolversCacheTest {
 
-  SolversCache cache = new SolversCache();
+  SolverCache cache = new SolverCache();
 
   @Test
   void mustCacheAndGetValidResponse(){

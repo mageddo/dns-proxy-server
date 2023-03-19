@@ -14,12 +14,12 @@ import java.time.Duration;
 public class SolverCachedRemote implements Solver {
 
   private final SolverRemote solverRemote;
-  private final SolversCache solversCache;
+  private final SolverCache solversCache;
 
   @Inject
   public SolverCachedRemote(
     SolverRemote solverRemote,
-    @SolverCacheQualifier(name = Name.REMOTE) SolversCache cache
+    @SolverCacheQualifier(name = Name.REMOTE) SolverCache cache
   ) {
     this.solverRemote = solverRemote;
     this.solversCache = cache;
