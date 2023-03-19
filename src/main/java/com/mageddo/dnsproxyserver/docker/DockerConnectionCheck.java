@@ -19,23 +19,30 @@ public class DockerConnectionCheck {
 
   public static final Duration DEFAULT_TTL = Duration.ofSeconds(30);
 
+  volatile Status status;
   private final DockerClient client;
-  private volatile Status status;
   private final Object _lock = new Object();
 
   public boolean isConnected() {
-    if (Platform.isLinux() || Platform.isMac()) {
+    if (this.isSupportedPlatform()) {
       if (this.status == null) {
         this.updateStatus();
+      } else {
+        if (this.hasExpired()) {
+          this.triggerUpdate();
+        }
       }
       return this.status.isConnected();
     }
-    this.triggerUpdate();
     log.trace("docker features still not supported on this platform :/ , hold tight I'm working hard to fix it someday :D");
     return false; // todo support all platforms...
   }
 
-  private void updateStatus() {
+  boolean isSupportedPlatform() {
+    return Platform.isLinux() || Platform.isMac();
+  }
+
+  void updateStatus() {
     synchronized (this._lock) {
       final var expired = this.hasExpired();
       final var isNull = this.status == null;
@@ -46,7 +53,7 @@ public class DockerConnectionCheck {
     }
   }
 
-  private void triggerUpdate() {
+  void triggerUpdate() {
     ThreadPool
       .main()
       .submit(this::updateStatus);
@@ -56,7 +63,11 @@ public class DockerConnectionCheck {
     return this.status != null &&
       Duration
         .between(this.status.getCreatedAt(), LocalDateTime.now())
-        .compareTo(DEFAULT_TTL) >= 1;
+        .compareTo(getTtl()) >= 1;
+  }
+
+  static Duration getTtl() {
+    return DEFAULT_TTL;
   }
 
   private Status buildStatus() {
@@ -69,7 +80,7 @@ public class DockerConnectionCheck {
   }
 
   @Value
-  private static class Status {
+  static class Status {
 
     private final boolean connected;
     private final LocalDateTime createdAt;
