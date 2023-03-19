@@ -1,7 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.commons.caching.LruTTLCache;
-import com.mageddo.commons.lang.Objects;
 import com.mageddo.commons.lang.tuple.Pair;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import lombok.RequiredArgsConstructor;
@@ -28,12 +27,16 @@ public class SolversCache {
   private final LruTTLCache cache = new LruTTLCache(2048, Duration.ofSeconds(5), false);
 
   public Message handle(Message query, Function<Message, Response> delegate) {
+    return this.handleRes(query, delegate).getMessage();
+  }
+
+  public Response handleRes(Message query, Function<Message, Response> delegate) {
     final var key = buildKey(query);
     final var res = this.cache.computeIfAbsent0(key, (k) -> {
       log.trace("status=lookup, key={}, req={}", key, Messages.simplePrint(query));
       final var _res = delegate.apply(query);
       if (_res == null) {
-        log.debug("status=noAnswer, action=cant-cache, k={}", k);
+        log.debug("status=noAnswer, action=cantCache, k={}", k);
         return null;
       }
       final var ttl = _res.getTtl();
@@ -43,7 +46,7 @@ public class SolversCache {
     if (res == null) {
       return null;
     }
-    return Objects.mapOrNull(res.getMessage(), it -> Messages.idMatches(query, it));
+    return res.withMessage(Messages.mergeId(query, res.getMessage()));
   }
 
   static String buildKey(Message reqMsg) {

@@ -185,7 +185,7 @@ public class Messages {
   /**
    * Set the id of the query into the response, se the response will match if the query;
    */
-  public static Message idMatches(Message req, Message res) {
+  public static Message mergeId(Message req, Message res) {
     final var reqId = req.getHeader().getID();
     res.getHeader().setID(reqId);
     return res;

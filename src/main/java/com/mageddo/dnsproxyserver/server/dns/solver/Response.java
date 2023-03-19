@@ -7,6 +7,7 @@ import lombok.Value;
 import org.xbill.DNS.Message;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 
 @Value
 @Builder(toBuilder = true)
@@ -24,15 +25,15 @@ public class Response {
   @NonNull
   private Duration ttl;
 
-  public static Response of(Message message){
-    return of(message, Messages.DEFAULT_TTL_DURATION);
-  }
+  @NonNull
+  private LocalDateTime createdAt;
 
-  public static Response of(Message message, Duration ttl){
+  public static Response of(Message message){
     return Response
       .builder()
       .message(message)
-      .ttl(ttl)
+      .ttl(Messages.DEFAULT_TTL_DURATION)
+      .createdAt(LocalDateTime.now())
       .build();
   }
 
