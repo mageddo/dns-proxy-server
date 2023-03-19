@@ -50,9 +50,9 @@ $ docker run --rm --name nginx1 --hostname '/batata\.[a-z]+\.com/' -e 'HOSTNAMES
 
 Solving
 ```
-$ nslookup -po=8053 batata.whatever.com 127.0.0.1
+$ nslookup batata.whatever.com
 Server:		127.0.0.1
-Address:	127.0.0.1#8053
+Address:	127.0.0.1#53
 
 Non-authoritative answer:
 Name:	batata.whatever.com
@@ -60,17 +60,17 @@ Address: 172.17.0.4
 ```
 
 ```
-$ nslookup -po=8053 xpto.acme.com 127.0.0.1
+$ nslookup xpto.acme.com
 Server:		127.0.0.1
-Address:	127.0.0.1#8053
+Address:	127.0.0.1#53
 
 ** server can't find xpto.acme.com: NXDOMAIN
 ```
 
 ```
-$ nslookup -po=8053 123.acme.com 127.0.0.1
+$ nslookup 123.acme.com
 Server:		127.0.0.1
-Address:	127.0.0.1#8053
+Address:	127.0.0.1#53
 
 Non-authoritative answer:
 Name:	123.acme.com
@@ -78,12 +78,11 @@ Address: 172.17.0.4
 ```
 
 ```
-$ nslookup -po=8053 sub.acme.com 127.0.0.1
+$ nslookup sub.acme.com
 Server:		127.0.0.1
-Address:	127.0.0.1#8053
+Address:	127.0.0.1#53
 
 Non-authoritative answer:
 Name:	sub.acme.com
 Address: 172.17.0.4
 ```
-
