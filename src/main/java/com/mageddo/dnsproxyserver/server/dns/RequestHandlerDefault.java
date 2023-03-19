@@ -2,16 +2,17 @@ package com.mageddo.dnsproxyserver.server.dns;
 
 import com.mageddo.dnsproxyserver.server.dns.solver.Response;
 import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
+import com.mageddo.dnsproxyserver.server.dns.solver.SolverCacheQualifier;
+import com.mageddo.dnsproxyserver.server.dns.solver.SolverCacheQualifier.Name;
 import com.mageddo.dnsproxyserver.server.dns.solver.SolversCache;
 import com.mageddo.dnsproxyserver.utils.Classes;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.StopWatch;
 import org.xbill.DNS.Message;
 
-import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +22,15 @@ import static com.mageddo.dnsproxyserver.server.dns.Messages.simplePrint;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class RequestHandlerDefault implements RequestHandler {
 
+  private final List<Solver> solvers;
   private final SolversCache cache;
-  private final List<Solver> solvers = new ArrayList<>();
+
+  public RequestHandlerDefault(@SolverCacheQualifier(name = Name.GLOBAL) SolversCache cache) {
+    this.cache = cache;
+    this.solvers = new ArrayList<>();
+  }
 
   @Override
   public Message handle(Message query, String kind){

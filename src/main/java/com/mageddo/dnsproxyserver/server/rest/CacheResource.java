@@ -1,14 +1,16 @@
 package com.mageddo.dnsproxyserver.server.rest;
 
-import com.mageddo.dnsproxyserver.server.dns.solver.SolversCache;
+import com.mageddo.dnsproxyserver.server.dns.solver.SolverCacheFactory;
+import com.mageddo.dnsproxyserver.server.dns.solver.SolverCacheQualifier.Name;
 import com.mageddo.http.HttpMapper;
+import com.mageddo.http.Request;
 import com.mageddo.http.WebServer;
+import com.sun.net.httpserver.HttpExchange;
 import lombok.RequiredArgsConstructor;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.ws.rs.core.Response;
-import java.util.Map;
 
 import static com.mageddo.http.codec.Encoders.encodeJson;
 
@@ -16,28 +18,31 @@ import static com.mageddo.http.codec.Encoders.encodeJson;
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class CacheResource implements HttpMapper {
 
-  private final SolversCache cache;
+  public static final String CACHE_NAME_PARAM = "name";
+  private final SolverCacheFactory factory;
 
   @Override
   public void map(WebServer server) {
 
     server.get(
       "/v1/caches/size",
-      exchange -> encodeJson(
-        exchange,
-        Response.Status.OK,
-        Map.of("size", this.cache.getSize())
-      )
+      exchange -> {
+        encodeJson(
+          exchange,
+          Response.Status.OK,
+          this.factory.findInstancesSize(buildCacheName(exchange))
+        );
+      }
     );
 
     server.delete(
       "/v1/caches",
       exchange -> {
-        this.cache.clear();
+        this.factory.clear(buildCacheName(exchange));
         encodeJson(
           exchange,
           Response.Status.OK,
-          Map.of("size", this.cache.getSize())
+          this.factory.findInstancesSize(buildCacheName(exchange))
         );
       }
     );
@@ -47,9 +52,13 @@ public class CacheResource implements HttpMapper {
       exchange -> encodeJson(
         exchange,
         Response.Status.OK,
-        this.cache.asMap()
+        this.factory.findInstances(buildCacheName(exchange))
       )
     );
+  }
+
+  private static Name buildCacheName(HttpExchange exchange) {
+    return Name.fromName(Request.queryParam(exchange, CACHE_NAME_PARAM));
   }
 
 }
