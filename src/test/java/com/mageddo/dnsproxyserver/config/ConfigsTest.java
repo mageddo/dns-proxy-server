@@ -12,10 +12,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static com.mageddo.utils.TestUtils.readAndSortJson;
 import static com.mageddo.utils.TestUtils.readAndSortJsonExcluding;
 import static com.mageddo.utils.TestUtils.readAsStream;
-import static com.mageddo.utils.TestUtils.readString;
-import static com.mageddo.utils.TestUtils.sortJson;
 import static com.mageddo.utils.TestUtils.sortJsonExcluding;
 import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -50,8 +49,7 @@ class ConfigsTest {
       readAndSortJsonExcluding(config, excludingFields)
     );
     assertTrue(Files.exists(tmpConfigFile));
-
-    assertEquals(sortJson(readString("/configs-test/002.json")), sortJson(readString(tmpConfigFile)));
+    assertEquals(readAndSortJson("/configs-test/002.json"), readAndSortJson(tmpConfigFile));
   }
 
 

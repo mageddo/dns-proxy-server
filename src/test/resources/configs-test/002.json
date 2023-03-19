@@ -2,6 +2,7 @@
   "activeEnv" : "",
   "defaultDns" : null,
   "dnsServerPort" : null,
+  "dockerHost" : null,
   "domain" : null,
   "dpsNetwork" : null,
   "dpsNetworkAutoConnect" : null,

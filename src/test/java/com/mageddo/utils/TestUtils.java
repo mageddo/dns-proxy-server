@@ -37,6 +37,10 @@ public class TestUtils {
     return IOUtils.toString(resource, "UTF-8");
   }
 
+  public static String readAndSortJson(Path path) {
+    return sortJson(readString(path));
+  }
+
   @SneakyThrows
   public static String readAndSortJson(String path) {
     return sortJson(readString(path));
