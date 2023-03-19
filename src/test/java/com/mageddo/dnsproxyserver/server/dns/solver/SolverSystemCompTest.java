@@ -1,9 +1,9 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
-import com.mageddo.dnsproxyserver.docker.DockerDAO;
 import com.mageddo.dnsproxyserver.server.dns.IP;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.templates.MessageTemplates;
+import com.mageddo.dnsproxyserver.usecase.HostMachineService;
 import dagger.sheath.InjectMock;
 import dagger.sheath.junit.DaggerTest;
 import org.hamcrest.CoreMatchers;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 class SolverSystemCompTest {
 
   @InjectMock
-  DockerDAO dockerDAO;
+  HostMachineService machineService;
 
   @Inject
   SolverSystem solver;
@@ -34,8 +34,8 @@ class SolverSystemCompTest {
     final var query = MessageTemplates.buildAQuestionFor(hostname);
 
     doReturn(IP.of("192.168.0.1"))
-      .when(this.dockerDAO)
-      .findHostMachineIp()
+      .when(this.machineService)
+      .findHostMachineIP()
     ;
 
     // act
@@ -46,7 +46,7 @@ class SolverSystemCompTest {
     assertThat(answer, CoreMatchers.containsString(hostname));
     assertEquals("host.docker.\t\t30\tIN\tA\t192.168.0.1", answer);
 
-    verify(this.dockerDAO).findHostMachineIp();
+    verify(this.machineService).findHostMachineIP();
   }
 
 }
