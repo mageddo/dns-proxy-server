@@ -3,6 +3,7 @@
 * Smarter Cache for loading with Docker and LocalDB Solvers see #376
 * Docker host parameter by flag, json config or env
 * Full support for Docker containers solving on Windows Binary, DPS on docker already works on Windows
+* Prefer to solve real network card address when querying for `host.docker`
 
 ## 3.13.1
 * Caching remote solved hostnames for 5 minutes
