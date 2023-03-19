@@ -1,11 +1,11 @@
 package com.mageddo.dnsproxyserver.server.rest;
 
-import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.dnsproxyserver.docker.DockerNetworkService;
-import testing.Events;
-import dagger.sheath.junit.DaggerTest;
 import dagger.sheath.InjectMock;
+import dagger.sheath.junit.DaggerTest;
 import org.junit.jupiter.api.Test;
+import testing.ContextSupplier;
+import testing.Events;
 
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -15,7 +15,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 
-@DaggerTest(component = Context.class, eventsHandler = Events.class)
+@DaggerTest(initializer = ContextSupplier.class, eventsHandler = Events.class)
 class NetworkResourceCompTest {
 
   @InjectMock
