@@ -89,7 +89,7 @@ public class CtxWrapper {
       final var p = BindingMethod.findBindingMap(this);
       if (p != null) {
         log.debug("status=providerByBindings, type={}", type);
-        return new ProviderWrapper(p.get(type), type);
+        return ProviderWrapper.from(p.get(type), type);
       }
     }
     return null;
@@ -101,9 +101,8 @@ public class CtxWrapper {
       if (field == null) {
         return null;
       }
-//      Validate.notNull(field, "No provider found for type: %s", type);
       final Object provider = FieldUtils.readField(field, this.ctx, true);
-      return new ProviderWrapper(provider, type);
+      return ProviderWrapper.from(provider, type);
     } catch (IllegalAccessException e) {
       throw new IllegalStateException(e);
     }
