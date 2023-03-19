@@ -1,12 +1,10 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
-import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.List;
 
 @Slf4j
 @Singleton
@@ -17,11 +15,8 @@ public class SimpleServer {
   private final TCPServer tcpServer;
   private final RequestHandlerDefault requestHandler;
 
-  public void start(int port, Protocol protocol, List<Solver> solvers) {
-
-    solvers.forEach(this.requestHandler::bind);
+  public void start(int port, Protocol protocol) {
     this.start0(port, protocol);
-
   }
 
   void start0(int port, Protocol protocol) {

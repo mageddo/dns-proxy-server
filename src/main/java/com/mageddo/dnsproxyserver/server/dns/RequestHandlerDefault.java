@@ -1,21 +1,18 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
-import com.mageddo.dnsproxyserver.server.dns.solver.Response;
-import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
-import com.mageddo.dnsproxyserver.server.dns.solver.SolverCache;
 import com.mageddo.dnsproxyserver.server.dns.solver.CacheName;
 import com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name;
+import com.mageddo.dnsproxyserver.server.dns.solver.Response;
+import com.mageddo.dnsproxyserver.server.dns.solver.SolverCache;
+import com.mageddo.dnsproxyserver.server.dns.solver.SolverProvider;
 import com.mageddo.dnsproxyserver.utils.Classes;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ClassUtils;
-import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.StopWatch;
 import org.xbill.DNS.Message;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static com.mageddo.dnsproxyserver.server.dns.Messages.simplePrint;
@@ -24,28 +21,24 @@ import static com.mageddo.dnsproxyserver.server.dns.Messages.simplePrint;
 @Singleton
 public class RequestHandlerDefault implements RequestHandler {
 
-  private final List<Solver> solvers;
+  private final SolverProvider solverProvider;
   private final SolverCache cache;
 
   @Inject
-  public RequestHandlerDefault(@CacheName(name = Name.GLOBAL) SolverCache cache) {
+  public RequestHandlerDefault(
+    SolverProvider solverProvider,
+    @CacheName(name = Name.GLOBAL) SolverCache cache
+  ) {
+    this.solverProvider = solverProvider;
     this.cache = cache;
-    this.solvers = new ArrayList<>();
   }
 
   @Override
-  public Message handle(Message query, String kind){
+  public Message handle(Message query, String kind) {
     return this.solve(query, kind);
   }
 
-  public RequestHandlerDefault bind(Solver solver) {
-    this.solvers.add(solver);
-    return this;
-  }
-
   Message solve(Message query, String kind) {
-
-    Validate.isTrue(!this.solvers.isEmpty(), "At least one solver is required");
 
     final var stopWatch = StopWatch.createStarted();
     try {
@@ -65,7 +58,8 @@ public class RequestHandlerDefault implements RequestHandler {
 
   Response solve0(Message reqMsg) {
     final var stopWatch = StopWatch.createStarted();
-    for (final var solver : this.solvers) {
+    final var solvers = this.solverProvider.getSolvers();
+    for (final var solver : solvers) {
       stopWatch.split();
       final var solverName = Classes.findSimpleName(solver);
       try {

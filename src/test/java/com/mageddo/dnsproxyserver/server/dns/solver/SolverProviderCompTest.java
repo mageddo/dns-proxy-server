@@ -1,6 +1,5 @@
-package com.mageddo.dnsproxyserver.server.dns;
+package com.mageddo.dnsproxyserver.server.dns.solver;
 
-import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
 import dagger.sheath.junit.DaggerTest;
 import org.junit.jupiter.api.Test;
 import testing.ContextSupplier;
@@ -11,10 +10,10 @@ import javax.inject.Inject;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DaggerTest(initializer = ContextSupplier.class, eventsHandler = Events.class)
-class ServerStarterCompTest {
+class SolverProviderCompTest {
 
   @Inject
-  ServerStarter serverStarter;
+  SolverProvider provider;
 
   @Test
   void mustCreateSolverListInRightOrder(){
@@ -22,11 +21,10 @@ class ServerStarterCompTest {
     // arrange
 
     // act
-    final var names = this.serverStarter.getSolvers()
+    final var names = this.provider.getSolvers()
       .stream()
       .map(Solver::name)
       .toList();
-
 
     // assert
     assertEquals("[SolverSystem, SolverDocker, SolverLocalDB, SolverCachedRemote]", names.toString());
