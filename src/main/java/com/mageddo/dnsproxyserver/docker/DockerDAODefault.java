@@ -5,18 +5,13 @@ import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Network;
 import com.mageddo.commons.lang.Objects;
-import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.server.dns.IP;
-import com.mageddo.os.Platform;
-import com.mageddo.os.linux.LinuxFiles;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Slf4j
@@ -26,6 +21,7 @@ import java.util.List;
 public class DockerDAODefault implements DockerDAO {
 
   private final DockerClient dockerClient;
+  private final DockerConnectionCheck connectionCheck;
 
   @Override
   public IP findHostMachineIp() {
@@ -39,17 +35,7 @@ public class DockerDAODefault implements DockerDAO {
 
   @Override
   public boolean isConnected() {
-    final var dockerHost = Configs.getInstance()
-      .getDockerHost();
-    if (Platform.isLinux()) {
-      final var path = Paths.get(dockerHost.getPath()); // fixme, it can be a url
-      return Files.exists(path) && LinuxFiles.isUnixSocket(path);
-    } else if (Platform.isMac()) {
-      final var path = Paths.get(dockerHost.getPath());
-      return Files.exists(path) && !Files.isDirectory(path) && Files.isReadable(path);
-    }
-    log.trace("docker features still not supported on this platform :/ , hold tight I'm working hard to fix it someday :D");
-    return false; // todo support all plataforms...
+    return this.connectionCheck.isConnected();
   }
 
   @Override
