@@ -66,3 +66,4 @@ class ConfigFlagTest {
     assertTrue(config.isVersion());
   }
 }
+
