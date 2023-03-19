@@ -4,12 +4,11 @@ import com.mageddo.commons.caching.LruTTLCache;
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.commons.lang.tuple.Pair;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
+import com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.Message;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,11 +20,12 @@ import static com.mageddo.dnsproxyserver.server.dns.Messages.findQuestionHostnam
 import static com.mageddo.dnsproxyserver.server.dns.Messages.findQuestionType;
 
 @Slf4j
-@Singleton
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor
 public class SolverCache {
 
   private final LruTTLCache cache = new LruTTLCache(2048, Duration.ofSeconds(5), false);
+
+  private final Name name;
 
   public Message handle(Message query, Function<Message, Response> delegate) {
     return Objects.mapOrNull(this.handleRes(query, delegate), Response::getMessage);
@@ -76,6 +76,10 @@ public class SolverCache {
       tmpMap.put(k, entry);
     }
     return tmpMap;
+  }
+
+  public Name name() {
+    return this.name;
   }
 
 }

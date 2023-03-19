@@ -1,25 +1,35 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
-import com.mageddo.dnsproxyserver.server.dns.solver.SolverCacheQualifier.Name;
+import com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static com.mageddo.dnsproxyserver.server.dns.solver.SolverCacheQualifier.Name.GLOBAL;
-import static com.mageddo.dnsproxyserver.server.dns.solver.SolverCacheQualifier.Name.REMOTE;
+import static com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name.GLOBAL;
+import static com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name.REMOTE;
 
 @Slf4j
 @Singleton
 public class SolverCacheFactory {
 
-  @SolverCacheQualifier(name = REMOTE)
-  private SolverCache remote;
+  private final SolverCache remote;
+  private final SolverCache global;
 
-  @SolverCacheQualifier(name = GLOBAL)
-  private SolverCache global;
+  @Inject
+  public SolverCacheFactory(
+    @CacheName(name = REMOTE)
+    SolverCache remote,
+
+    @CacheName(name = GLOBAL)
+    SolverCache global
+  ) {
+    this.remote = remote;
+    this.global = global;
+  }
 
   public SolverCache getInstance(Name name) {
     return switch (name) {

@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.server.dns.Messages;
-import com.mageddo.dnsproxyserver.server.dns.solver.SolverCacheQualifier.Name;
+import com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.Message;
 
@@ -19,7 +19,7 @@ public class SolverCachedRemote implements Solver {
   @Inject
   public SolverCachedRemote(
     SolverRemote solverRemote,
-    @SolverCacheQualifier(name = Name.REMOTE) SolverCache cache
+    @CacheName(name = Name.REMOTE) SolverCache cache
   ) {
     this.solverRemote = solverRemote;
     this.solversCache = cache;

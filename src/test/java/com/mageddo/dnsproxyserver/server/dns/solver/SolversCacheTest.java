@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.server.dns.Messages;
+import com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name;
 import com.mageddo.dnsproxyserver.templates.MessageTemplates;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(MockitoExtension.class)
 class SolversCacheTest {
 
-  SolverCache cache = new SolverCache();
+  SolverCache cache = new SolverCache(Name.GLOBAL);
 
   @Test
   void mustCacheAndGetValidResponse(){
