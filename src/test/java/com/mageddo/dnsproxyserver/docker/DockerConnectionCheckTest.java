@@ -72,7 +72,7 @@ class DockerConnectionCheckTest {
   }
 
   @Test
-  void mustUpdateCache() throws InterruptedException {
+  void mustUpdateCache() {
     // arrange
 
     doReturn(true)
