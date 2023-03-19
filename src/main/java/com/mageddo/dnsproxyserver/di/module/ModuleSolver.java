@@ -1,9 +1,9 @@
 package com.mageddo.dnsproxyserver.di.module;
 
 import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
+import com.mageddo.dnsproxyserver.server.dns.solver.SolverCachedRemote;
 import com.mageddo.dnsproxyserver.server.dns.solver.SolverDocker;
 import com.mageddo.dnsproxyserver.server.dns.solver.SolverLocalDB;
-import com.mageddo.dnsproxyserver.server.dns.solver.SolverRemote;
 import com.mageddo.dnsproxyserver.server.dns.solver.SolverSystem;
 import dagger.Module;
 import dagger.Provides;
@@ -18,8 +18,8 @@ public interface ModuleSolver {
   @Singleton
   @ElementsIntoSet
   static Set<Solver> solvers(
-      SolverDocker o1, SolverRemote o3, SolverLocalDB o4, SolverSystem o5
+    SolverSystem o1, SolverDocker o2, SolverLocalDB o3, SolverCachedRemote o4
   ) {
-    return Set.of(o1, o3, o4, o5);
+    return Set.of(o1, o2, o3, o4);
   }
 }

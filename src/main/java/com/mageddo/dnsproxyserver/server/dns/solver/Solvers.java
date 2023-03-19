@@ -11,7 +11,7 @@ import java.util.Map;
 public class Solvers {
 
   private static final Map<String, Integer> priorities = Priorities.build(
-    "SolverCached", "SolverSystem", "SolverDocker", "SolverLocalDB", "SolverRemote"
+    "SolverCached", "SolverSystem", "SolverDocker", "SolverLocalDB", "SolverCachedRemote"
   );
 
   public static List<Solver> sorted(Collection<Solver> source) {
