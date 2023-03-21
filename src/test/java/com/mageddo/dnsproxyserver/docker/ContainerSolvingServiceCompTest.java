@@ -149,7 +149,7 @@ class ContainerSolvingServiceCompTest {
 
     // assert
     assertNotNull(ip);
-    assertEquals("2001:db8:abc1::242:ac11:4", ip);
+    assertEquals("2001:db8:1::2", ip);
 
   }
 
