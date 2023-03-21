@@ -1,4 +1,4 @@
-## 3.14.5
+## 3.15
 * Support for AAAA records on docker container solving.
 
 ## 3.14.5
