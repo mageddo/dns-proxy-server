@@ -6,6 +6,8 @@ import com.mageddo.dnsproxyserver.docker.domain.Drivers;
 import com.mageddo.json.JsonUtils;
 import lombok.SneakyThrows;
 
+import static com.mageddo.utils.TestUtils.readString;
+
 public class NetworkTemplates {
 
   @SneakyThrows
@@ -20,7 +22,7 @@ public class NetworkTemplates {
   }
 
   @SneakyThrows
-  public static Object withOverlayDriver(String name) {
+  public static Network withOverlayDriver(String name) {
     final var node = JsonNodeFactory.instance.objectNode()
       .put("Name", name)
       .put("Driver", Drivers.OVERLAY);
@@ -29,4 +31,9 @@ public class NetworkTemplates {
       .treeToValue(node, Network.class)
       ;
   }
+
+  public static Network buildBridgeIpv4AndIpv6Network() {
+    return JsonUtils.readValue(readString("/templates/docker/network/001.json"), Network.class);
+  }
+
 }

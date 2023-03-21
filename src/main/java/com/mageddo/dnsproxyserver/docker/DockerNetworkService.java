@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.docker;
 
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Network;
+import com.mageddo.dnsproxyserver.utils.Ips;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,15 +23,18 @@ public class DockerNetworkService {
   private final DockerNetworkDAO networkDAO;
   private final ContainerDAO containerDAO;
 
-  public static String findIp(Network network) {
+  public static String findGatewayIp(Network network) {
     if (network == null) {
       return null;
     }
     return network
       .getIpam()
       .getConfig()
-      .get(0)
-      .getGateway() // fixme also get ipv6.
+      .stream()
+      .map(Network.Ipam.Config::getGateway)
+      .filter(Ips::isIpv4)
+      .findFirst()
+      .orElse(null)
       ;
   }
 

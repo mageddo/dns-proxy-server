@@ -11,6 +11,10 @@ import java.net.SocketAddress;
 import java.net.UnknownHostException;
 
 public class Ips {
+
+  private Ips() {
+  }
+
   public static byte[] toBytes(String ip) {
     if (StringUtils.isBlank(ip)) {
       return null;
@@ -54,5 +58,13 @@ public class Ips {
 
   public static InetSocketAddress getAnyLocalAddress(int port) {
     return new InetSocketAddress(getAnyLocalAddress(), port);
+  }
+
+  public static boolean isIpv6(String v) {
+    return StringUtils.trimToEmpty(v).contains(":");
+  }
+
+  public static boolean isIpv4(String v) {
+    return !isIpv6(v);
   }
 }

@@ -30,7 +30,7 @@ public class DockerDAODefault implements DockerDAO {
 
   @Override
   public String findHostMachineIpRaw() {
-    return DockerNetworkService.findIp(this.findBestNetwork());
+    return DockerNetworkService.findGatewayIp(this.findBestNetwork());
   }
 
   @Override
@@ -63,7 +63,7 @@ public class DockerDAODefault implements DockerDAO {
     log.debug(
       "status=bestNetwork, network={}, ip={}",
       Objects.mapOrNull(network, Network::getName),
-      DockerNetworkService.findIp(network)
+      DockerNetworkService.findGatewayIp(network)
     );
     return network;
   }
