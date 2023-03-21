@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.docker;
 
 import com.mageddo.dnsproxyserver.di.Context;
+import com.mageddo.dnsproxyserver.server.dns.IP;
 import com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates;
 import com.mageddo.dnsproxyserver.templates.docker.NetworkTemplates;
 import dagger.sheath.InjectMock;
@@ -14,6 +15,7 @@ import javax.inject.Inject;
 import static com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates.ngixWithDefaultBridgeNetworkOnly;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
@@ -97,6 +99,20 @@ class ContainerSolvingServiceCompTest {
     // assert
     assertNotNull(ip);
     assertEquals("172.17.0.4", ip);
+
+  }
+
+  @Test
+  void mustSolveEmptyIpv6FromDefaultBridgeNetwork() {
+    // arrange
+    final var inspect = ngixWithDefaultBridgeNetworkOnly();
+    final var version = IP.Version.IPV6;
+
+    // act
+    final var ip = this.containerSolvingService.findBestIpMatch(inspect, version);
+
+    // assert
+    assertNull(ip);
 
   }
 

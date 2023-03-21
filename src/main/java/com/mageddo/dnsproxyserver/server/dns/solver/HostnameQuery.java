@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.server.dns.Hostname;
+import com.mageddo.dnsproxyserver.server.dns.IP;
 import com.mageddo.dnsproxyserver.server.dns.Wildcards;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -17,6 +18,9 @@ public class HostnameQuery {
 
   @NonNull
   private final Hostname hostname;
+
+  @NonNull
+  private final IP.Version version;
 
   private final boolean useWildcards;
 
@@ -48,6 +52,7 @@ public class HostnameQuery {
       .hostname(hostname)
       .useWildcards(wildcards)
       .useRegex(regex)
+      .version(IP.Version.IPV4)
       .build();
   }
 

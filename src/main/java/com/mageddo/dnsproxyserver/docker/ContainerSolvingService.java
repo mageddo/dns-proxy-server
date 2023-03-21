@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.docker;
 
 import com.github.dockerjava.api.command.InspectContainerResponse;
+import com.mageddo.dnsproxyserver.server.dns.IP;
 import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 import com.mageddo.net.Networks;
 import lombok.AllArgsConstructor;
@@ -44,7 +45,7 @@ public class ContainerSolvingService {
     final var matchedContainers = this.findMatchingContainers(host);
     final var foundIp = matchedContainers
       .stream()
-      .map(this::findBestIpMatch)
+      .map(it -> this.findBestIpMatch(it, host.getVersion()))
       .findFirst()
       .orElse(null);
     log.trace("status=findDone, host={}, found={}, time={}", host, foundIp, stopWatch.getTime());
@@ -52,12 +53,18 @@ public class ContainerSolvingService {
   }
 
   public String findBestIpMatch(InspectContainerResponse inspect) {
-    return this.findBestIpMatch(inspect, buildNetworks(inspect), this.dockerDAO::findHostMachineIpRaw);
+    return this.findBestIpMatch(inspect, IP.Version.IPV4);
   }
 
+  public String findBestIpMatch(InspectContainerResponse inspect, IP.Version version) {
+    return this.findBestIpMatch(inspect, buildNetworks(inspect), this.dockerDAO::findHostMachineIpRaw, version);
+  }
 
   public String findBestIpMatch(
-    InspectContainerResponse c, Collection<String> networksNames, Supplier<String> hostMachineSup
+    InspectContainerResponse c,
+    Collection<String> networksNames,
+    Supplier<String> hostMachineSup,
+    IP.Version version
   ) {
 
     final var networks = c
@@ -69,7 +76,8 @@ public class ContainerSolvingService {
         log.debug("status=networkNotFoundForContainer, name={}", name);
         continue;
       }
-      final var ip = networks.get(name).getIpAddress(); // fixme get ipv6 address
+      final var containerNetwork = networks.get(name);
+      final String ip = Networks.findIP(containerNetwork, version);
       log.debug("status=foundIp, network={}, container={}, ip={}", name, c.getName(), ip);
       return ip;
     }
