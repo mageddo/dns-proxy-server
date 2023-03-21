@@ -79,7 +79,9 @@ public class ContainerSolvingService {
       final var containerNetwork = networks.get(name);
       final String ip = Networks.findIP(containerNetwork, version);
       log.debug("status=foundIp, network={}, container={}, ip={}", name, c.getName(), ip);
-      return ip;
+      if (StringUtils.isNotBlank(ip)) {
+        return ip;
+      }
     }
     log.debug(
       "status=predefinedNetworkNotFound, action=findSecondOption, searchedNetworks={}, container={}",
