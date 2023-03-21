@@ -31,7 +31,7 @@ public class HostnameQuery {
   }
 
   public static HostnameQuery ofWildcard(String hostname) {
-    return ofWildcard(hostname);
+    return ofWildcard(hostname, IP.Version.IPV4);
   }
 
   public static HostnameQuery ofWildcard(String hostname, IP.Version version) {
