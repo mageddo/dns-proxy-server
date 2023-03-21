@@ -1,13 +1,18 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.server.dns.Hostname;
+import com.mageddo.dnsproxyserver.server.dns.IP;
 
 import java.util.List;
 import java.util.function.Function;
 
 public class HostnameMatcher {
 
-  public static <T> T match(Hostname hostname, Function<HostnameQuery, T> hostnameProviderFn) {
+  public static <T> T match(
+    Hostname hostname,
+    IP.Version version,
+    Function<HostnameQuery, T> hostnameProviderFn
+  ) {
 
     final var wildcardHostname = HostnameQuery.ofWildcard(hostname);
     final var regexHostname = HostnameQuery.ofRegex(hostname);

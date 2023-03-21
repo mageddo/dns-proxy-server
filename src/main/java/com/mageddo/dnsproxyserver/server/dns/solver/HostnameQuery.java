@@ -31,19 +31,41 @@ public class HostnameQuery {
   }
 
   public static HostnameQuery ofWildcard(String hostname) {
-    return ofWildcard(Hostname.of(hostname));
+    return ofWildcard(hostname);
+  }
+
+  public static HostnameQuery ofWildcard(String hostname, IP.Version version) {
+    return ofWildcard(Hostname.of(hostname), version);
   }
 
   public static HostnameQuery ofWildcard(Hostname hostname) {
-    return of(hostname, true, false);
+    return ofWildcard(hostname, IP.Version.IPV4);
+  }
+
+  public static HostnameQuery ofWildcard(Hostname hostname, IP.Version version) {
+    return builder()
+      .useWildcards(true)
+      .useRegex(false)
+      .build();
   }
 
   public static HostnameQuery ofRegex(String hostname) {
-    return ofRegex(Hostname.of(hostname));
+    return ofRegex(hostname, IP.Version.IPV4);
+  }
+
+  public static HostnameQuery ofRegex(String hostname, IP.Version version) {
+    return ofRegex(Hostname.of(hostname), version);
   }
 
   public static HostnameQuery ofRegex(Hostname hostname) {
-    return of(hostname, false, true);
+    return ofRegex(hostname, IP.Version.IPV4);
+  }
+
+  public static HostnameQuery ofRegex(Hostname hostname, IP.Version version) {
+    return builder()
+      .useWildcards(false)
+      .useRegex(true)
+      .build();
   }
 
   public static HostnameQuery of(Hostname hostname, boolean wildcards, boolean regex) {

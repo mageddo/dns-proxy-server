@@ -1,8 +1,10 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.commons.lang.Objects;
+import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.docker.ContainerSolvingService;
 import com.mageddo.dnsproxyserver.docker.DockerDAO;
+import com.mageddo.dnsproxyserver.server.dns.IP;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,17 +29,27 @@ public class SolverDocker implements Solver {
       return null;
     }
 
-//    final var type = Messages.findQuestionTypeCode(query);
-//    if (Type.isNot(type, Type.A)) {
-//      return Response.of(Messages.nxDomain(query), Duration.ofSeconds(1));
-//    }
+    final var type = Messages.findQuestionTypeCode(query);
+    if (Type.isNot(type, Type.AAAA, Type.A)) {
+      log.trace("status=unsupportedType, type={}", type);
+      return null;
+    }
 
     final var askedHost = Messages.findQuestionHostname(query);
-    return HostnameMatcher.match(askedHost, hostname -> {
+    final var version = toVersion(Type.of(type));
+    return HostnameMatcher.match(askedHost, version, hostname -> {
       final var ip = this.containerSolvingService.findBestHostIP(hostname);
       return Objects.mapOrNull(ip, (it) -> Response.of(Messages.aAnswer(query, ip)));
     });
 
+  }
+
+  IP.Version toVersion(Type type) {
+    return switch (type) {
+      case A -> IP.Version.IPV4;
+      case AAAA -> IP.Version.IPV6;
+      default -> throw new IllegalStateException("Unexpected value: " + type);
+    };
   }
 
 }
