@@ -41,6 +41,10 @@ public class InspectContainerResponseTemplates {
     return parse();
   }
 
+  public static InspectContainerResponse ngixWithDefaultBridgeNetworkOnly() {
+    return parse(buildTree("/templates/nginx-002.json"));
+  }
+
   private static InspectContainerResponse parse() {
     return parse(buildTree(NGINX));
   }

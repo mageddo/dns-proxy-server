@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 
+import static com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates.ngixWithDefaultBridgeNetworkOnly;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -59,7 +60,7 @@ class ContainerSolvingServiceCompTest {
     the bridge network.
     """)
   @Test
-  void mustPreferBridgeNetworkOverOtherNetworksWhenThereIsNotABetterMatch() {
+  void mustPreferCustomBridgeNetworkOverOtherNetworksWhenThereIsNotABetterMatch() {
     // arrange
 
     final var bridgeNetwork = "custom-bridge";
@@ -84,4 +85,32 @@ class ContainerSolvingServiceCompTest {
     verify(this.dockerNetworkDAO, never()).findById(anyString());
 
   }
+
+  @Test
+  void mustSolveFromDefaultBridgeNetwork() {
+    // arrange
+    final var inspect = ngixWithDefaultBridgeNetworkOnly();
+
+    // act
+    final var ip = this.containerSolvingService.findBestIpMatch(inspect);
+
+    // assert
+    assertNotNull(ip);
+    assertEquals("172.17.0.4", ip);
+
+  }
+
+//  @Test
+//  void mustSolveSpecifiedNetworkWithIpv4AndIpv6Addresses() {
+//    // arrange
+//    final var inspect = InspectContainerResponseTemplates.batataNetworkWithIpv4Ipv6();
+//
+//    // act
+//    final var ip = this.containerSolvingService.findBestIpMatch(inspect);
+//
+//    // assert
+//    assertNotNull(ip);
+//    assertEquals("172.23.0.2", ip);
+//
+//  }
 }
