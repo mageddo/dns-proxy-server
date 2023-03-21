@@ -1,3 +1,6 @@
+## 3.14.5
+* Specify minimum required docker api version `1.21` (as DPS 2)
+
 ## 3.14.4
 * Fixing regression on version 3.14 host.docker wasn't solving host IP when running inside a container, see #384.
 
