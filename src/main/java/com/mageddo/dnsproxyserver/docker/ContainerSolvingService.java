@@ -69,7 +69,7 @@ public class ContainerSolvingService {
         log.debug("status=networkNotFoundForContainer, name={}", name);
         continue;
       }
-      final var ip = networks.get(name).getIpAddress();
+      final var ip = networks.get(name).getIpAddress(); // fixme get ipv6 address
       log.debug("status=foundIp, network={}, container={}, ip={}", name, c.getName(), ip);
       return ip;
     }
@@ -92,7 +92,7 @@ public class ContainerSolvingService {
       .min(NetworkComparator::compare)
       .map(network -> {
         final var networkName = network.getName();
-        final var ip = Networks.findIpv4Address(networks.get(networkName));
+        final var ip = Networks.findIpv4Address(networks.get(networkName)); // fixme also get the ipv6 address
         log.debug(
           "status=foundIp, networks={}, networkName={}, driver={}, foundIp={}",
           networks.keySet(), networkName, network.getDriver(), ip
@@ -107,8 +107,7 @@ public class ContainerSolvingService {
             final var hostIp = hostMachineSup.get();
             log.debug("status=noNetworkAvailable, usingHostMachineIp={}", hostIp);
             return hostIp;
-          })
-          ;
+          });
       })
       ;
 
@@ -117,7 +116,7 @@ public class ContainerSolvingService {
   static String buildDefaultIp(InspectContainerResponse c) {
     return StringUtils.trimToNull(c
       .getNetworkSettings()
-      .getIpAddress()
+      .getIpAddress() // todo also return ipv6 address
     );
   }
 

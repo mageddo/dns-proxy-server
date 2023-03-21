@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
 import com.mageddo.conf.parser.ConfParser;
 import com.mageddo.conf.parser.EntryType;
-import com.mageddo.dnsproxyserver.server.dns.IpAddr;
+import com.mageddo.dnsproxyserver.server.dns.IpSockAddr;
 import com.mageddo.dnsproxyserver.utils.Dns;
 
 import java.nio.file.Path;
@@ -10,7 +10,7 @@ import java.util.function.Function;
 
 public class ResolvconfConfigurator {
 
-  public static void process(Path confFile, IpAddr addr) {
+  public static void process(Path confFile, IpSockAddr addr) {
 
     Dns.validateIsDefaultPort(addr);
 

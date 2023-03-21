@@ -7,7 +7,7 @@ import com.mageddo.dnsproxyserver.config.entrypoint.ConfigJson;
 import com.mageddo.dnsproxyserver.config.entrypoint.ConfigProps;
 import com.mageddo.dnsproxyserver.config.entrypoint.JsonConfigs;
 import com.mageddo.dnsproxyserver.config.entrypoint.LogLevel;
-import com.mageddo.dnsproxyserver.server.dns.IpAddr;
+import com.mageddo.dnsproxyserver.server.dns.IpSockAddr;
 import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import com.mageddo.dnsproxyserver.utils.Numbers;
 import com.mageddo.utils.Files;
@@ -78,9 +78,9 @@ public class Configs {
     return null; // todo unsupported OS
   }
 
-  static List<IpAddr> buildRemoteServers(List<IpAddr> servers) {
+  static List<IpSockAddr> buildRemoteServers(List<IpSockAddr> servers) {
     if (servers == null || servers.isEmpty()) {
-      return Collections.singletonList(IpAddr.of("8.8.8.8:53"));
+      return Collections.singletonList(IpSockAddr.of("8.8.8.8:53"));
     }
     return servers;
   }

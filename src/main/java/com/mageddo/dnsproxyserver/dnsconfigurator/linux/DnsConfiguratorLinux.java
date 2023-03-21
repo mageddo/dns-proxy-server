@@ -4,7 +4,7 @@ import com.mageddo.commons.lang.Objects;
 import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.dnsconfigurator.DnsConfigurator;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.ResolvFile.Type;
-import com.mageddo.dnsproxyserver.server.dns.IpAddr;
+import com.mageddo.dnsproxyserver.server.dns.IpSockAddr;
 import com.mageddo.dnsproxyserver.systemd.ResolvedService;
 import com.mageddo.utils.Tests;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ public class DnsConfiguratorLinux implements DnsConfigurator {
   private volatile AtomicReference<ResolvFile> confFile;
 
   @Override
-  public void configure(IpAddr addr) {
+  public void configure(IpSockAddr addr) {
 
     this.init();
     if (this.confFile.get() == null) {
@@ -122,7 +122,7 @@ public class DnsConfiguratorLinux implements DnsConfigurator {
     return new UnsupportedOperationException(String.format("conf file not supported: %s", confFile));
   }
 
-  private void configureResolved(IpAddr addr, ResolvFile confFile) {
+  private void configureResolved(IpSockAddr addr, ResolvFile confFile) {
     if (this.resolvedConfigured.compareAndSet(false, true)) {
       ResolvedConfigurator.configure(confFile.getPath(), addr);
       tryRestartResolved();

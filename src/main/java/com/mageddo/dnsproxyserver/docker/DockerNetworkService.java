@@ -30,7 +30,8 @@ public class DockerNetworkService {
       .getIpam()
       .getConfig()
       .get(0)
-      .getGateway();
+      .getGateway() // fixme also get ipv6.
+      ;
   }
 
   public static Boolean isHostNetwork(Container container) {

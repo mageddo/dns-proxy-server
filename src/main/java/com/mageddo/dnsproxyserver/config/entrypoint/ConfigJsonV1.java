@@ -3,7 +3,7 @@ package com.mageddo.dnsproxyserver.config.entrypoint;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.server.dns.IpAddr;
+import com.mageddo.dnsproxyserver.server.dns.IpSockAddr;
 import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -59,10 +59,10 @@ public class ConfigJsonV1 implements ConfigJson {
   }
 
   @Override
-  public List<IpAddr> getRemoteDnsServers() {
+  public List<IpSockAddr> getRemoteDnsServers() {
     return this.remoteDnsServers
       .stream()
-      .map(IpAddr::of)
+      .map(IpSockAddr::of)
       .toList();
   }
 
@@ -98,7 +98,7 @@ public class ConfigJsonV1 implements ConfigJson {
       .setRemoteDnsServers(this
         .getRemoteDnsServers()
         .stream()
-        .map(IpAddr::toString).toList()
+        .map(IpSockAddr::toString).toList()
       )
       .set_envs(this.getEnvs()
         .stream()

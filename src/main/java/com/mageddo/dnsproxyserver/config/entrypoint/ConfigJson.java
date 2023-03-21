@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.config.entrypoint;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.server.dns.IpAddr;
+import com.mageddo.dnsproxyserver.server.dns.IpSockAddr;
 import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 
 import java.net.URI;
@@ -31,7 +31,7 @@ public interface ConfigJson {
 
   Boolean getDpsNetworkAutoConnect();
 
-  List<IpAddr> getRemoteDnsServers();
+  List<IpSockAddr> getRemoteDnsServers();
 
   List<Config.Env> getEnvs();
 

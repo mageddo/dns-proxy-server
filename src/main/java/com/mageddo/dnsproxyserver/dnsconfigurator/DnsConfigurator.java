@@ -1,10 +1,10 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator;
 
-import com.mageddo.dnsproxyserver.server.dns.IpAddr;
+import com.mageddo.dnsproxyserver.server.dns.IpSockAddr;
 
 public interface DnsConfigurator {
 
-  void configure(IpAddr addr);
+  void configure(IpSockAddr addr);
 
   void restore();
 

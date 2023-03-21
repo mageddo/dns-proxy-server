@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator;
 
-import com.mageddo.dnsproxyserver.server.dns.IpAddr;
+import com.mageddo.dnsproxyserver.server.dns.IpSockAddr;
 import com.mageddo.dnsproxyserver.utils.Dns;
 import com.mageddo.net.Network;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ public class DnsConfiguratorDefault implements DnsConfigurator {
   }
 
   @Override
-  public void configure(IpAddr addr) {
+  public void configure(IpSockAddr addr) {
     this.validatePlatformIsSupported();
     Dns.validateIsDefaultPort(addr);
     for (final String network : this.findNetworks()) {

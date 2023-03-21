@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
-import com.mageddo.dnsproxyserver.server.dns.IpAddr;
+import com.mageddo.dnsproxyserver.server.dns.IpSockAddr;
 import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -53,10 +53,10 @@ public class ConfigJsonV2 implements ConfigJson {
   private URI dockerHost;
 
   @JsonIgnore
-  public List<IpAddr> getRemoteDnsServers() {
+  public List<IpSockAddr> getRemoteDnsServers() {
     return this.remoteDnsServers
       .stream()
-      .map(IpAddr::of)
+      .map(IpSockAddr::of)
       .toList();
   }
 
