@@ -29,7 +29,11 @@ public class Ips {
   }
 
   public static InetAddress toAddress(String ip) {
-    return toAddress(toBytes(ip));
+    try {
+      return InetAddress.getByName(ip);
+    } catch (UnknownHostException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   public static InetAddress toAddress(byte[] ip) {

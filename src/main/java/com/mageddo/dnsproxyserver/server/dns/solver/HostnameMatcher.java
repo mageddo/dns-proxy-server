@@ -14,8 +14,8 @@ public class HostnameMatcher {
     Function<HostnameQuery, T> hostnameProviderFn
   ) {
 
-    final var wildcardHostname = HostnameQuery.ofWildcard(hostname);
-    final var regexHostname = HostnameQuery.ofRegex(hostname);
+    final var wildcardHostname = HostnameQuery.ofWildcard(hostname, version);
+    final var regexHostname = HostnameQuery.ofRegex(hostname, version);
     final var queries = List.of(wildcardHostname, regexHostname);
 
     for (final var host : queries) {

@@ -76,5 +76,10 @@ public class IP {
   public enum Version {
     IPV4,
     IPV6,
+    ;
+
+    public boolean isIpv6() {
+      return this == IPV6;
+    }
   }
 }

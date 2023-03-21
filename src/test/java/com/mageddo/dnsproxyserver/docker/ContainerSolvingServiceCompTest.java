@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.docker;
 
 import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.dnsproxyserver.server.dns.IP;
+import com.mageddo.dnsproxyserver.templates.IpTemplates;
 import com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates;
 import com.mageddo.dnsproxyserver.templates.docker.NetworkTemplates;
 import dagger.sheath.InjectMock;
@@ -149,7 +150,7 @@ class ContainerSolvingServiceCompTest {
 
     // assert
     assertNotNull(ip);
-    assertEquals("2001:db8:1::2", ip);
+    assertEquals(IpTemplates.LOCAL_IPV6, ip);
 
   }
 

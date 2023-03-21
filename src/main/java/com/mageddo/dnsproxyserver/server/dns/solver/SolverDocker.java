@@ -39,7 +39,7 @@ public class SolverDocker implements Solver {
     final var version = toVersion(Type.of(type));
     return HostnameMatcher.match(askedHost, version, hostname -> {
       final var ip = this.containerSolvingService.findBestHostIP(hostname);
-      return Objects.mapOrNull(ip, (it) -> Response.of(Messages.aAnswer(query, ip)));
+      return Objects.mapOrNull(ip, (it) -> Response.of(Messages.answer(query, ip, hostname.getVersion())));
     });
 
   }
