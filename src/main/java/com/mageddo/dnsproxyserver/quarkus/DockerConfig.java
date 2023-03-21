@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.quarkus;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientImpl;
+import com.github.dockerjava.core.RemoteApiVersion;
 import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.dnsproxyserver.config.Configs;
@@ -22,6 +23,7 @@ public class DockerConfig {
     final var config = DefaultDockerClientConfig.createDefaultConfigBuilder()
       .withDockerHost(Objects.mapOrNull(dockerHost, URI::toString))
       .withDockerTlsVerify(false)
+      .withApiVersion(RemoteApiVersion.VERSION_1_21)
 //      .withDockerCertPath("/home/user/.docker")
 //      .withRegistryUsername(registryUser)
 //      .withRegistryPassword(registryPass)
