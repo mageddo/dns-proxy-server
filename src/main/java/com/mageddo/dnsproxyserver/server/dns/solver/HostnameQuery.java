@@ -44,6 +44,8 @@ public class HostnameQuery {
 
   public static HostnameQuery ofWildcard(Hostname hostname, IP.Version version) {
     return builder()
+      .hostname(hostname)
+      .version(version)
       .useWildcards(true)
       .useRegex(false)
       .build();
@@ -63,6 +65,8 @@ public class HostnameQuery {
 
   public static HostnameQuery ofRegex(Hostname hostname, IP.Version version) {
     return builder()
+      .hostname(hostname)
+      .version(version)
       .useWildcards(false)
       .useRegex(true)
       .build();
