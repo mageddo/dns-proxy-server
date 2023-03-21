@@ -51,5 +51,4 @@ public class SolverDocker implements Solver {
       default -> throw new IllegalStateException("Unexpected value: " + type);
     };
   }
-
 }
