@@ -7,15 +7,16 @@ import com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTempl
 import com.mageddo.dnsproxyserver.templates.docker.NetworkTemplates;
 import dagger.sheath.InjectMock;
 import dagger.sheath.junit.DaggerTest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 
 import static com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates.ngixWithDefaultBridgeNetworkOnly;
+import static com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates.ngixWithIpv4DefaultBridgeAndIpv6CustomBridgeNetwork;
 import static com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates.ngixWithIpv6CustomBridgeNetwork;
 import static com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates.ngixWithIpv6DefaultBridgeNetworkOnly;
+import static com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates.ngixWithIpv6DefaultIp;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -36,14 +37,6 @@ class ContainerSolvingServiceCompTest {
 
   @Inject
   ContainerSolvingService containerSolvingService;
-
-  @BeforeEach
-  void beforeEach() {
-    doReturn("192.168.15.1")
-      .when(this.dockerDAO)
-      .findHostMachineIpRaw()
-    ;
-  }
 
   @Test
   void mustSolveSpecifiedNetworkFirst() {
@@ -153,5 +146,41 @@ class ContainerSolvingServiceCompTest {
     assertEquals(IpTemplates.LOCAL_IPV6, ip);
 
   }
+
+  @Test
+  void mustSolveIpv6FromDefaultIPNetwork() {
+    // arrange
+    final var inspect = ngixWithIpv6DefaultIp();
+    final var version = IP.Version.IPV6;
+
+    // act
+    final var ip = this.containerSolvingService.findBestIpMatch(inspect, version);
+
+    // assert
+    assertNotNull(ip);
+    assertEquals("2001:db7:1::2", ip);
+    verify(this.dockerDAO, never()).findHostMachineIpRaw();
+  }
+
+  @Test
+  void mustNotUseAnEmptyIpSpecifiedOnPreferredNetworks() {
+    // arrange
+    final var inspect = ngixWithIpv4DefaultBridgeAndIpv6CustomBridgeNetwork();
+    final var version = IP.Version.IPV6;
+
+    doReturn(NetworkTemplates.withBridgeDriver("my-net1"))
+      .when(this.dockerNetworkDAO)
+      .findByName(anyString())
+    ;
+
+    // act
+    final var ip = this.containerSolvingService.findBestIpMatch(inspect, version);
+
+    // assert
+    assertNotNull(ip);
+    assertEquals(IpTemplates.LOCAL_IPV6, ip);
+
+  }
+
 
 }

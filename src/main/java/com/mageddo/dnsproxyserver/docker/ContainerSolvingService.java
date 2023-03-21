@@ -110,7 +110,7 @@ public class ContainerSolvingService {
       .filter(StringUtils::isNotBlank)
       .orElseGet(() -> {
         return Optional
-          .ofNullable(buildDefaultIp(c))
+          .ofNullable(buildDefaultIp(c, version))
           .orElseGet(() -> {
             final var hostIp = hostMachineSup.get();
             log.debug("status=noNetworkAvailable, usingHostMachineIp={}", hostIp);
@@ -121,11 +121,15 @@ public class ContainerSolvingService {
 
   }
 
-  static String buildDefaultIp(InspectContainerResponse c) {
-    return StringUtils.trimToNull(c
-      .getNetworkSettings()
-      .getIpAddress() // todo also return ipv6 address
-    );
+  static String buildDefaultIp(InspectContainerResponse c, IP.Version version) {
+    final var settings = c.getNetworkSettings();
+    if (settings == null) {
+      return null;
+    }
+    if (version.isIpv6()) {
+      return StringUtils.trimToNull(settings.getGlobalIPv6Address());
+    }
+    return StringUtils.trimToNull(settings.getIpAddress());
   }
 
 
