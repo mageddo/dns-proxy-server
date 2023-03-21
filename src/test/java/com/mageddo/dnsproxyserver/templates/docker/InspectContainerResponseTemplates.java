@@ -23,6 +23,11 @@ public class InspectContainerResponseTemplates {
    */
   public static final String NGINX_003 = "/templates/nginx-003.json";
 
+  /**
+   * Nginx container with no default bridge but a custom network with ipv6.
+   */
+  public static final String NGINX_004 = "/templates/nginx-004.json";
+
   public static InspectContainerResponse buildWithHostnameAndWithoutDomain() {
     return build();
   }
@@ -60,6 +65,10 @@ public class InspectContainerResponseTemplates {
 
   public static InspectContainerResponse ngixWithIpv6DefaultBridgeNetworkOnly() {
     return parse(buildTree(NGINX_003));
+  }
+
+  public static InspectContainerResponse ngixWithIpv6CustomBridgeNetwork() {
+    return parse(buildTree(NGINX_004));
   }
 
   private static InspectContainerResponse parse() {

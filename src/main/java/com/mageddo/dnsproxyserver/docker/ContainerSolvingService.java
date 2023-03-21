@@ -100,7 +100,8 @@ public class ContainerSolvingService {
       .min(NetworkComparator::compare)
       .map(network -> {
         final var networkName = network.getName();
-        final var ip = Networks.findIpv4Address(networks.get(networkName)); // fixme also get the ipv6 address
+        final var ip = Networks.findIpv4Address(networks.get(networkName));
+//        final var ip = Networks.findIP(networks.get(networkName), version);
         log.debug(
           "status=foundIp, networks={}, networkName={}, driver={}, foundIp={}",
           networks.keySet(), networkName, network.getDriver(), ip
