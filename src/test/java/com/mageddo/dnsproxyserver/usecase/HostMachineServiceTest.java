@@ -25,6 +25,11 @@ class HostMachineServiceTest {
   @Test
   void mustReturnHostIP() {
     // arrange
+    doReturn(false)
+      .when(this.machineService)
+      .isDpsRunningInsideContainer()
+    ;
+
     final var expectedIp = IpTemplates.local();
     doReturn(expectedIp)
       .when(this.machineService)
@@ -41,14 +46,15 @@ class HostMachineServiceTest {
   @Test
   void mustReturnHostIPEvenWhenRunningInsideDockerContainer() {
     // arrange
+    doReturn(true)
+      .when(this.machineService)
+      .isDpsRunningInsideContainer()
+    ;
+
     final var expectedIp = IpTemplates.local();
     doReturn(expectedIp)
       .when(this.dockerDAO)
       .findHostMachineIp()
-    ;
-    doReturn(true)
-      .when(this.machineService)
-      .isDpsRunningInsideContainer()
     ;
 
     // act
