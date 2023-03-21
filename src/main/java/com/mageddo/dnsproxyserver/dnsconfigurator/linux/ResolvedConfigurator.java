@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
 import com.mageddo.conf.parser.ConfParser;
 import com.mageddo.conf.parser.EntryType;
-import com.mageddo.dnsproxyserver.server.dns.IpSockAddr;
+import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import com.mageddo.dnsproxyserver.utils.Dns;
 
 import java.nio.file.Path;
@@ -10,7 +10,7 @@ import java.util.function.Function;
 
 public class ResolvedConfigurator {
 
-  public static void configure(Path confFile, IpSockAddr addr) {
+  public static void configure(Path confFile, IpAddr addr) {
     ConfParser.process(
       confFile,
       createParser(),
@@ -18,7 +18,7 @@ public class ResolvedConfigurator {
     );
   }
 
-  private static String formatAddr(IpSockAddr addr) {
+  private static String formatAddr(IpAddr addr) {
     if (Dns.isDefaultPortOrNull(addr)) {
       return addr.getRawIP();
     }

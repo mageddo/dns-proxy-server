@@ -5,7 +5,7 @@ import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.di.StartupEvent;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.DnsConfiguratorLinux;
-import com.mageddo.dnsproxyserver.server.dns.IpSockAddr;
+import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.OS;
@@ -65,8 +65,8 @@ public class DnsConfigurators implements StartupEvent {
       }, this.getInitialDelay(), this.getDelay(), TimeUnit.MILLISECONDS);
   }
 
-  IpSockAddr findIpAddr() {
-    return IpSockAddr.of(
+  IpAddr findIpAddr() {
+    return IpAddr.of(
       this.ipDiscover.findDpsIP(),
       Configs.getInstance().getDnsServerPort()
     );
@@ -99,7 +99,7 @@ public class DnsConfigurators implements StartupEvent {
     }));
   }
 
-  void configure(IpSockAddr addr) {
+  void configure(IpAddr addr) {
     this.getInstance().configure(addr);
   }
 
@@ -127,7 +127,7 @@ public class DnsConfigurators implements StartupEvent {
     }
     log.info("status=unsupported-platform-to-set-as-default-dns-automatically, os={}", System.getProperty("os.name"));
     return new DnsConfigurator() {
-      public void configure(IpSockAddr addr) {
+      public void configure(IpAddr addr) {
       }
 
       public void restore() {

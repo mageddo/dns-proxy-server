@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.utils;
 
-import com.mageddo.dnsproxyserver.server.dns.IpSockAddr;
+import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 
 import java.net.InetSocketAddress;
 
@@ -10,7 +10,7 @@ public class InetAddresses {
     return new InetSocketAddress(Ips.toAddress(ip), port);
   }
 
-  public static InetSocketAddress toSocketAddress(IpSockAddr dns) {
+  public static InetSocketAddress toSocketAddress(IpAddr dns) {
     return new InetSocketAddress(Ips.toAddress(dns.getIp().raw()), dns.getPort());
   }
 }

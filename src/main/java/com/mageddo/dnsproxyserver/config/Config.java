@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.config;
 
 import com.mageddo.dnsproxyserver.config.entrypoint.LogLevel;
-import com.mageddo.dnsproxyserver.server.dns.IpSockAddr;
+import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import lombok.Builder;
 import lombok.NonNull;
@@ -37,7 +37,7 @@ public class Config {
 
   @NonNull
   @Builder.Default
-  private List<IpSockAddr> remoteDnsServers = new ArrayList<>();
+  private List<IpAddr> remoteDnsServers = new ArrayList<>();
 
   @NonNull
   private Integer webServerPort;

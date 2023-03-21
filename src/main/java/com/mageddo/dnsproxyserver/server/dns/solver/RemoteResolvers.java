@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
-import com.mageddo.dnsproxyserver.server.dns.IpSockAddr;
+import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import org.xbill.DNS.Resolver;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public class RemoteResolvers {
     this.resolvers = resolvers;
   }
 
-  public static RemoteResolvers of(List<IpSockAddr> servers, final Function<IpSockAddr, Resolver> resolverProvider) {
+  public static RemoteResolvers of(List<IpAddr> servers, final Function<IpAddr, Resolver> resolverProvider) {
     final var resolvers = servers
       .stream()
       .map(resolverProvider)

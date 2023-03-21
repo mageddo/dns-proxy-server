@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.quarkus;
 
 import com.mageddo.dnsproxyserver.config.Configs;
-import com.mageddo.dnsproxyserver.server.dns.IpSockAddr;
+import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import com.mageddo.dnsproxyserver.server.dns.solver.RemoteResolvers;
 import com.mageddo.dnsproxyserver.utils.InetAddresses;
 import dagger.Module;
@@ -18,7 +18,7 @@ public class QuarkusConfig {
 
   @Produces
   @Provides
-  public RemoteResolvers remoteResolvers(Function<IpSockAddr, Resolver> resolverProvider) {
+  public RemoteResolvers remoteResolvers(Function<IpAddr, Resolver> resolverProvider) {
     final var servers = Configs
       .getInstance()
       .getRemoteDnsServers();
@@ -27,7 +27,7 @@ public class QuarkusConfig {
 
   @Produces
   @Provides
-  public Function<IpSockAddr, Resolver> getResolverProvider() {
+  public Function<IpAddr, Resolver> getResolverProvider() {
     return it -> {
       final var resolver = new SimpleResolver(InetAddresses.toSocketAddress(it.getRawIP(), it.getPortOrDef(53)));
       resolver.setTimeout(Duration.ofSeconds(10)); // default is 10 seconds

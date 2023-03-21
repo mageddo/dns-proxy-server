@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator;
 
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.DnsConfiguratorLinux;
-import com.mageddo.dnsproxyserver.server.dns.IpSockAddr;
+import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,7 +18,7 @@ public class DnsConfiguratorOSX implements DnsConfigurator {
   private final DnsConfiguratorLinux configuratorLinux;
 
   @Override
-  public void configure(IpSockAddr addr) {
+  public void configure(IpAddr addr) {
     this.configuratorDefault.configure(addr);
     this.configuratorLinux.configure(addr);
   }
