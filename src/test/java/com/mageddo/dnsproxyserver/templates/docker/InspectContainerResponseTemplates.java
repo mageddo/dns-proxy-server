@@ -8,7 +8,20 @@ import lombok.SneakyThrows;
 
 public class InspectContainerResponseTemplates {
 
+  /**
+   * Nginx container with default bridge, dps and specific network.
+   */
   public static final String NGINX = "/templates/nginx.json";
+
+  /**
+   * {@link #NGINX} container with default bridge only
+   */
+  public static final String NGINX_002 = "/templates/nginx-002.json";
+
+  /**
+   * Nginx container with default bridge only with ipv6 support.
+   */
+  public static final String NGINX_003 = "/templates/nginx-003.json";
 
   public static InspectContainerResponse buildWithHostnameAndWithoutDomain() {
     return build();
@@ -42,7 +55,11 @@ public class InspectContainerResponseTemplates {
   }
 
   public static InspectContainerResponse ngixWithDefaultBridgeNetworkOnly() {
-    return parse(buildTree("/templates/nginx-002.json"));
+    return parse(buildTree(NGINX_002));
+  }
+
+  public static InspectContainerResponse ngixWithIpv6DefaultBridgeNetworkOnly() {
+    return parse(buildTree(NGINX_003));
   }
 
   private static InspectContainerResponse parse() {

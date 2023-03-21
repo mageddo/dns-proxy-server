@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import javax.inject.Inject;
 
 import static com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates.ngixWithDefaultBridgeNetworkOnly;
+import static com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates.ngixWithIpv6DefaultBridgeNetworkOnly;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -113,6 +114,21 @@ class ContainerSolvingServiceCompTest {
 
     // assert
     assertNull(ip);
+
+  }
+
+  @Test
+  void mustSolveIpv6FromDefaultBridgeNetwork() {
+    // arrange
+    final var inspect = ngixWithIpv6DefaultBridgeNetworkOnly();
+    final var version = IP.Version.IPV6;
+
+    // act
+    final var ip = this.containerSolvingService.findBestIpMatch(inspect, version);
+
+    // assert
+    assertNotNull(ip);
+    assertEquals("2001:db8:abc1::242:ac11:4", ip);
 
   }
 
