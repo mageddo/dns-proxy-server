@@ -104,9 +104,12 @@ public class Messages {
     return section.get(0);
   }
 
-  public static Message nxDomain(Message msg) {
-    msg.getHeader().setRcode(Rcode.NXDOMAIN);
-    return msg;
+  public static Message nxDomain(Message query) {
+    final var res = query.clone();
+    final var header = res.getHeader();
+    header.setRcode(Rcode.NXDOMAIN);
+    header.setFlag(Flags.QR);
+    return res;
   }
 
   @SneakyThrows

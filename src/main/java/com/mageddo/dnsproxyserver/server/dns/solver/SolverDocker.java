@@ -27,6 +27,11 @@ public class SolverDocker implements Solver {
       return null;
     }
 
+//    final var type = Messages.findQuestionTypeCode(query);
+//    if (Type.isNot(type, Type.A)) {
+//      return Response.of(Messages.nxDomain(query), Duration.ofSeconds(1));
+//    }
+
     final var askedHost = Messages.findQuestionHostname(query);
     return HostnameMatcher.match(askedHost, hostname -> {
       final var ip = this.containerSolvingService.findBestHostIP(hostname);
