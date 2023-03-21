@@ -4,8 +4,8 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Network;
 import com.mageddo.dnsproxyserver.config.Configs;
-import com.mageddo.net.Networks;
 import com.mageddo.dnsproxyserver.server.dns.IP;
+import com.mageddo.net.Networks;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
@@ -27,6 +27,8 @@ import static com.mageddo.dnsproxyserver.docker.ContainerSolvingService.NETWORK_
 @Singleton
 @AllArgsConstructor(onConstructor = @__({@Inject}))
 public class DpsContainerManager {
+
+  static final String DPS_INSIDE_CONTAINER = "1";
 
   private final ContainerSolvingService containerSolvingService;
   private final DockerDAO dockerDAO;
@@ -118,7 +120,7 @@ public class DpsContainerManager {
   }
 
   public boolean isDpsRunningInsideContainer() {
-    return this.dockerDAO.isConnected() && this.findDpsContainer() != null;
+    return StringUtils.equals(getDpsContainerEnv(), DPS_INSIDE_CONTAINER);
   }
 
   public static boolean isDpsContainer(Container c) {
@@ -156,6 +158,10 @@ public class DpsContainerManager {
     } else {
       log.debug("status=dpsContainerAlreadyConnectedToDpsNetwork, container={}", container.getId());
     }
+  }
+
+  String getDpsContainerEnv() {
+    return System.getenv("DPS_CONTAINER");
   }
 
 }
