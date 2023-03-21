@@ -1,4 +1,7 @@
-## 3.14.3-snapshot
+## 3.14.4
+* Fixing regression on version 3.14 host.docker wasn't solving host IP when running inside a container, see #384.
+
+## 3.14.3
 * Support for regex on localdb solver and docker container hostname and HOSTNAMES env
 * Smarter Cache for loading with Docker and LocalDB Solvers see #376
 * Docker host parameter by flag, json config or env
