@@ -28,11 +28,11 @@ public class Response {
   @NonNull
   private LocalDateTime createdAt;
 
-  public static Response of(Message message){
+  public static Response of(Message message) {
     return of(message, Messages.DEFAULT_TTL_DURATION);
   }
 
-  public static Response of(Message message, Duration ttl){
+  public static Response of(Message message, Duration ttl) {
     return Response
       .builder()
       .message(message)
@@ -47,5 +47,11 @@ public class Response {
       .message(msg)
       .build()
       ;
+  }
+
+  public Response withTTL(Duration ttl) {
+    return this.toBuilder()
+      .ttl(ttl)
+      .build();
   }
 }

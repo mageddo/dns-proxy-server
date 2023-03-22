@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
+import com.mageddo.commons.lang.Objects;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name;
 import lombok.extern.slf4j.Slf4j;
@@ -31,10 +32,6 @@ public class SolverCachedRemote implements Solver {
       log.debug("status=remoteHotLoading, query={}", Messages.simplePrint(query));
       return this.solverRemote.handle(query);
     });
-    return res
-      .toBuilder()
-      .ttl(Duration.ofSeconds(20))
-      .build()
-      ;
+    return Objects.mapOrNull(res, response -> response.withTTL(Duration.ofSeconds(20)));
   }
 }
