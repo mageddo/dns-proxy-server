@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.xbill.DNS.Flags;
 import org.xbill.DNS.Resolver;
 
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
@@ -97,6 +99,32 @@ class SolverRemoteTest {
 
     // assert
     assertNull(res);
+  }
+
+
+  @Test
+  void mustReturnRaEvenWhenRemoteServerDoesntReturns() throws Exception {
+    // arrange
+    final var query = MessageTemplates.acmeAQuery();
+    final var res = MessageTemplates.buildAAnswer(query);
+    res.getHeader().unsetFlag(Flags.RA);
+
+    doReturn(res)
+      .when(this.resolver)
+      .send(any())
+    ;
+
+    doReturn(List.of(this.resolver))
+      .when(this.resolvers)
+      .resolvers()
+    ;
+
+    // act
+    final var result = this.solverRemote.handle(query);
+
+    // assert
+    assertTrue(Responses.hasFlag(result, Flags.RA));
+    assertEquals(SolverRemote.DEFAULT_SUCCESS_TTL, result.getTtl());
   }
 
 }

@@ -13,6 +13,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.xbill.DNS.Flags;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -88,7 +89,7 @@ class SolverDockerTest {
 
     // assert
     assertNotNull(res);
-
+    assertTrue(res.getMessage().getHeader().getFlag(Flags.RA));
     final var resText = res.toString();
     assertTrue(resText.contains(ip), resText);
     verify(this.containerSolvingService).findBestHostIP(this.hostnameQueryCaptor.capture());

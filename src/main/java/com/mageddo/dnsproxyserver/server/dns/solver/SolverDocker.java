@@ -41,7 +41,7 @@ public class SolverDocker implements Solver {
       final var ip = this.containerSolvingService.findBestHostIP(hostname);
       return Objects.mapOrNull(
         ip,
-        (it) -> Response.of(Messages.answer(query, ip, hostname.getVersion())) // fixme treat recursion
+        (it) -> Response.of(Messages.answer(query, ip, hostname.getVersion()))
       );
     });
 

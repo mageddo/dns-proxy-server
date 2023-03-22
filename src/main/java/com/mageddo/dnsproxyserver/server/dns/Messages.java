@@ -243,4 +243,9 @@ public class Messages {
     return msg.clone();
   }
 
+  public static Message setFlag(Message m, int flag) {
+    m.getHeader().setFlag(flag);
+    return m;
+  }
+
 }

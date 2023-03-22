@@ -1,8 +1,10 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
+import com.mageddo.dnsproxyserver.server.dns.Messages;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ClassUtils;
+import org.xbill.DNS.Flags;
 import org.xbill.DNS.Message;
 import org.xbill.DNS.Rcode;
 import org.xbill.DNS.Resolver;
@@ -30,10 +32,13 @@ public class SolverRemote implements Solver {
     for (int i = 0; i < this.delegate.resolvers().size(); i++) {
       final Resolver resolver = this.delegate.resolvers().get(i);
       try {
+
         final var res = resolver.send(query);
+        Messages.setFlag(res, Flags.RA);
+
         if (res.getRcode() == Rcode.NOERROR) {
           log.trace("status=found, i={}, req={}, res={}, server={}", i, simplePrint(query), simplePrint(res), resolver);
-          return Response.of(res, DEFAULT_SUCCESS_TTL); // fixme treat recursion when necessary
+          return Response.of(res, DEFAULT_SUCCESS_TTL);
         } else {
           lastErrorMsg = res;
           log.trace("status=notFound, i={}, req={}, res={}, server={}", i, simplePrint(query), simplePrint(res), resolver);
