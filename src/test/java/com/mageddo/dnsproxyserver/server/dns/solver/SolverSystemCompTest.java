@@ -7,6 +7,7 @@ import dagger.sheath.InjectMock;
 import dagger.sheath.junit.DaggerTest;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
+import org.xbill.DNS.Flags;
 import testing.ContextSupplier;
 import testing.Events;
 
@@ -14,6 +15,7 @@ import javax.inject.Inject;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
@@ -41,8 +43,10 @@ class SolverSystemCompTest {
     final var res = this.solver.handle(query);
 
     // assert
-    final var answer = Messages.findFirstAnswerRecordStr(res.getMessage());
+    final var msg = res.getMessage();
+    final var answer = Messages.findFirstAnswerRecordStr(msg);
     assertThat(answer, CoreMatchers.containsString(hostname));
+    assertTrue(msg.getHeader().getFlag(Flags.RA));
     assertEquals("host.docker.\t\t30\tIN\tA\t192.168.0.1", answer);
 
     verify(this.machineService).findHostMachineIP();
