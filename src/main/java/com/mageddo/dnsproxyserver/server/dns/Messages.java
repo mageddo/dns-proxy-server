@@ -21,6 +21,9 @@ import java.util.Optional;
 
 public class Messages {
 
+  private Messages() {
+  }
+
   public static final long DEFAULT_TTL = 30L;
   public static final Duration DEFAULT_TTL_DURATION = Duration.ofSeconds(DEFAULT_TTL);
 
