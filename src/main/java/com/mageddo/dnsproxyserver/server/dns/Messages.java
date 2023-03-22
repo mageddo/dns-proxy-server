@@ -6,6 +6,7 @@ import com.mageddo.dnsproxyserver.config.Config.Entry;
 import com.mageddo.dnsproxyserver.server.dns.solver.Response;
 import com.mageddo.dnsproxyserver.utils.Ips;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.AAAARecord;
 import org.xbill.DNS.ARecord;
 import org.xbill.DNS.CNAMERecord;
@@ -21,6 +22,7 @@ import org.xbill.DNS.Type;
 import java.time.Duration;
 import java.util.Optional;
 
+@Slf4j
 public class Messages {
 
   private Messages() {
@@ -37,18 +39,23 @@ public class Messages {
     if (message == null) {
       return null;
     }
-    final var answer = findFirstAnswerRecord(message);
-    final var rcode = message.getRcode();
-    if (answer != null) {
-      return String.format("rcode=%d, res=%s", rcode, simplePrint(answer));
+    try {
+      final var answer = findFirstAnswerRecord(message);
+      final var rcode = message.getRcode();
+      if (answer != null) {
+        return String.format("rcode=%d, res=%s", rcode, simplePrint(answer));
+      }
+      final var question = message.getQuestion();
+      final var type = Objects.useItOrDefault(
+        Objects2.toString(Entry.Type.of(question.getType())),
+        () -> String.valueOf(question.getType())
+      );
+      final var hostname = question.getName().toString(true);
+      return String.format("rcode=%d, type=%s, hostname=%s", rcode, type, hostname);
+    } catch (Throwable e) {
+      log.warn("status=failedToSimplePrint, msg={}", message, e);
+      return String.valueOf(message);
     }
-    final var question = message.getQuestion();
-    final var type = Objects.useItOrDefault(
-      Objects2.toString(Entry.Type.of(question.getType())),
-      () -> String.valueOf(question.getType())
-    );
-    final var hostname = question.getName().toString(true);
-    return String.format("rcode=%d, type=%s, hostname=%s", rcode, type, hostname);
   }
 
   public static String detailedPrint(Message msg) {
