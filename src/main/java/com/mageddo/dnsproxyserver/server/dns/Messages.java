@@ -38,17 +38,17 @@ public class Messages {
       return null;
     }
     final var answer = findFirstAnswerRecord(message);
+    final var rcode = message.getRcode();
     if (answer != null) {
-      return String.format("%s", simplePrint(answer));
-    } else {
-      final var question = message.getQuestion();
-      final var type = Objects.useItOrDefault(
-        Objects2.toString(Entry.Type.of(question.getType())),
-        () -> String.valueOf(question.getType())
-      );
-      final var hostname = question.getName().toString(true);
-      return String.format("%s %s", type, hostname);
+      return String.format("rcode=%d, res=%s", rcode, simplePrint(answer));
     }
+    final var question = message.getQuestion();
+    final var type = Objects.useItOrDefault(
+      Objects2.toString(Entry.Type.of(question.getType())),
+      () -> String.valueOf(question.getType())
+    );
+    final var hostname = question.getName().toString(true);
+    return String.format("rcode=%d, type=%s, hostname=%s", rcode, type, hostname);
   }
 
   public static String detailedPrint(Message msg) {

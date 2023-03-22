@@ -22,4 +22,12 @@ public class MessageTemplates {
   public static Message buildNXAnswer(Message query) {
     return Messages.nxDomain(query);
   }
+
+  public static Message acmeAResponse() {
+    return Messages.answer(MessageTemplates.acmeAQuery(), IpTemplates.LOCAL);
+  }
+
+  public static Message acmeNxDomain() {
+    return Messages.nxDomain(MessageTemplates.acmeAQuery());
+  }
 }
