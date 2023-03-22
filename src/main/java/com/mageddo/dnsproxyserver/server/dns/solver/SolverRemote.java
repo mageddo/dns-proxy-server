@@ -33,8 +33,7 @@ public class SolverRemote implements Solver {
       final Resolver resolver = this.delegate.resolvers().get(i);
       try {
 
-        final var res = resolver.send(query);
-        Messages.setFlag(res, Flags.RA);
+        final var res = Messages.setFlag(resolver.send(query), Flags.RA);
 
         if (res.getRcode() == Rcode.NOERROR) {
           log.trace("status=found, i={}, req={}, res={}, server={}", i, simplePrint(query), simplePrint(res), resolver);
