@@ -46,7 +46,7 @@ class SolverSystemCompTest {
     final var msg = res.getMessage();
     final var answer = Messages.findFirstAnswerRecordStr(msg);
     assertThat(answer, CoreMatchers.containsString(hostname));
-    assertTrue(msg.getHeader().getFlag(Flags.RA));
+    assertTrue(Messages.hasFlag(msg, Flags.RA));
     assertEquals("host.docker.\t\t30\tIN\tA\t192.168.0.1", answer);
 
     verify(this.machineService).findHostMachineIP();

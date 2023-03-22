@@ -248,4 +248,7 @@ public class Messages {
     return m;
   }
 
+  public static boolean hasFlag(Message msg, int flag) {
+    return msg.getHeader().getFlag(flag);
+  }
 }
