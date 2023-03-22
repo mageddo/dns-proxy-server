@@ -12,7 +12,7 @@ DPS uses [semantic versioning][1] for releasing.
 There are three types of docker images
 
 * Latest images are the latest stable image for Linux amd64
-* Nightly images are the latest **un**stable image for Linux amd64
+* Nightly/Unstable images are the latest **un**stable image for Linux amd64
 * Images for Linux amd64: ex: `defreitas/dns-proxy-server:3.9.0`
 * Images for Linux aarch64: ex: `defreitas/dns-proxy-server:3.9.0-aarch64`
 
