@@ -1,5 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
+import com.mageddo.commons.lang.Objects;
+import com.mageddo.commons.lang.Objects2;
 import com.mageddo.dnsproxyserver.config.Config.Entry;
 import com.mageddo.dnsproxyserver.server.dns.solver.Response;
 import com.mageddo.dnsproxyserver.utils.Ips;
@@ -36,13 +38,17 @@ public class Messages {
       return null;
     }
     final var answer = findFirstAnswerRecord(message);
-    if (answer == null) {
-      return Optional
-        .ofNullable(findQuestionHostname(message))
-        .map(Hostname::getValue)
-        .orElse("N/A");
+    if (answer != null) {
+      return String.format("%s", simplePrint(answer));
+    } else {
+      final var question = message.getQuestion();
+      final var type = Objects.useItOrDefault(
+        Objects2.toString(Entry.Type.of(question.getType())),
+        () -> String.valueOf(question.getType())
+      );
+      final var hostname = question.getName().toString(true);
+      return String.format("%s %s", type, hostname);
     }
-    return String.format("%s", simplePrint(answer));
   }
 
   public static String detailedPrint(Message msg) {

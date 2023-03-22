@@ -68,4 +68,19 @@ class MessagesTest {
 
   }
 
+  @Test
+  void mustBuildSimplePrint(){
+    // arrange
+    final var msg = MessageTemplates.acmeAQuery();
+
+    // act
+    final var str = Messages.simplePrint(msg);
+
+    // assert
+    assertEquals("""
+      A acme.com""",
+      str
+    );
+  }
+
 }

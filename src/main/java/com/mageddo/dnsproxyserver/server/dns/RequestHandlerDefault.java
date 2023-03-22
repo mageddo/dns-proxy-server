@@ -39,14 +39,15 @@ public class RequestHandlerDefault implements RequestHandler {
   }
 
   Message solve(Message query, String kind) {
-
+    final var queryStr = simplePrint(query);
     final var stopWatch = StopWatch.createStarted();
+    log.debug("status=solveReq, kind={}, query={}", kind, queryStr);
     try {
-      final var r = Optional
+      final var res = Optional
         .ofNullable(this.cache.handle(query, this::solve0))
         .orElseGet(() -> buildDefaultRes(query));
-      log.debug("status=solved, kind={}, time={}, res={}", kind, stopWatch.getTime(), simplePrint(r));
-      return r;
+      log.debug("status=solveRes, kind={}, time={}, res={}, req={}", kind, stopWatch.getTime(), simplePrint(res), queryStr);
+      return res;
     } catch (Exception e) {
       log.warn(
         "status=solverFailed, totalTime={}, eClass={}, msg={}",
