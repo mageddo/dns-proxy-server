@@ -89,7 +89,7 @@ class SolverDockerTest {
 
     // assert
     assertNotNull(res);
-    assertTrue(res.getMessage().getHeader().getFlag(Flags.RA));
+    assertTrue(Responses.hasFlag(res, Flags.RA));
     final var resText = res.toString();
     assertTrue(resText.contains(ip), resText);
     verify(this.containerSolvingService).findBestHostIP(this.hostnameQueryCaptor.capture());
