@@ -47,6 +47,7 @@ PING nginx.dev (172.17.0.4) 56(84) bytes of data.
 ```
 
 See [complete running it][5] documentation for running on Mac, Windows, Docker, etc.
+also check the [samples][9] to learn by pratice.
 
 ### Documents
 * [Full documentation](http://mageddo.github.io/dns-proxy-server/)
