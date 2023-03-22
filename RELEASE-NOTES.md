@@ -1,6 +1,8 @@
 ## 3.15
 * Support for AAAA records on docker container solving.
 * Formalize Recursion Available on query responses as DPS supports this feature already, see #392
+* Defined a new process of releasing the stable versions, see "Getting Started -> Release Version Control" 
+for more details
 
 ## 3.14.5
 * Specify minimum required docker api version `1.21` (as DPS 2)
