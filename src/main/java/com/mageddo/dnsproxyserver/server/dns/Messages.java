@@ -43,7 +43,7 @@ public class Messages {
       final var answer = findFirstAnswerRecord(message);
       final var rcode = message.getRcode();
       if (answer != null) {
-        return String.format("rcode=%d, res=%s", rcode, simplePrint(answer));
+        return String.format("rc=%d, res=%s", rcode, simplePrint(answer));
       }
       final var question = message.getQuestion();
       final var type = Objects.useItOrDefault(
@@ -51,7 +51,15 @@ public class Messages {
         () -> String.valueOf(question.getType())
       );
       final var hostname = question.getName().toString(true);
-      return String.format("rcode=%d, type=%s, hostname=%s", rcode, type, hostname);
+      final var sb = new StringBuilder();
+      if (Messages.hasFlag(message, Flags.QR)) {
+        sb.append("rc=")
+          .append(rcode)
+          .append(", ")
+        ;
+      }
+      sb.append(String.format("query=%s:%s", type, hostname));
+      return sb.toString();
     } catch (Throwable e) {
       log.warn("status=failedToSimplePrint, msg={}", message, e);
       return String.valueOf(message);

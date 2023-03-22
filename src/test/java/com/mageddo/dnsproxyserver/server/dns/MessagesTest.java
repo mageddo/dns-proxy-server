@@ -81,7 +81,7 @@ class MessagesTest {
 
     // assert
     assertEquals("""
-      rcode=0, type=A, hostname=acme.com""",
+      query=A:acme.com""",
       str
     );
   }
@@ -111,7 +111,7 @@ class MessagesTest {
 
     // assert
     assertEquals("""
-      rcode=0, res=acme.com.    30  IN  A  10.10.0.1""",
+      rc=0, res=acme.com.    30  IN  A  10.10.0.1""",
       str
     );
   }
@@ -126,7 +126,7 @@ class MessagesTest {
 
     // assert
     assertEquals("""
-      rcode=3, type=A, hostname=acme.com""",
+      rc=3, query=A:acme.com""",
       str
     );
   }
