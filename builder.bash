@@ -102,10 +102,19 @@ case $1 in
 
   docker-push )
     echo "> Push docker images to docker hub"
-    docker tag defreitas/dns-proxy-server:${APP_VERSION} defreitas/dns-proxy-server:latest &&\
+    docker tag defreitas/dns-proxy-server:${APP_VERSION} defreitas/dns-proxy-server:nightly &&\
+    docker tag defreitas/dns-proxy-server:${APP_VERSION} defreitas/dns-proxy-server:unstable &&\
     echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&\
     docker-compose push image-linux-amd64 &&\
-    docker push defreitas/dns-proxy-server:latest
+    docker push defreitas/dns-proxy-server:nightly &&\
+    docker push defreitas/dns-proxy-server:unstable
+    echo "Push done"
+  ;;
+
+  docker-push-arm )
+    echo "> Push docker images to docker hub"
+    echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&\
+    docker-compose push image-linux-aarch64
     echo "Push done"
   ;;
 
@@ -134,7 +143,7 @@ case $1 in
 
   ./builder.bash build-backend aarch64
   ./builder.bash compress-artifacts
-  ./builder.bash docker-push
+  ./builder.bash docker-push-arm
 
   echo "> arm deploy done"
   ;;
