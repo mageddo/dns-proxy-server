@@ -52,7 +52,7 @@ public class SolverLocalDB implements Solver {
 
       if (Type.is(entry.getType(), Type.A, Type.AAAA)) {
         return Response.of(
-          Messages.aAnswer(query, entry.getIp(), entry.getTtl()),
+          Messages.aAnswer(query, entry.getIp(), entry.getTtl()), // fixme treat recursion
           Duration.ofSeconds(entry.getTtl())
         );
       }

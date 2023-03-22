@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
-import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.Config.Entry;
 import com.mageddo.dnsproxyserver.server.dns.solver.Response;
 import com.mageddo.dnsproxyserver.utils.Ips;
 import lombok.SneakyThrows;
@@ -105,26 +105,6 @@ public class Messages {
     return section.get(0);
   }
 
-  public static Message nxDomain(Message query) {
-    final var res = query.clone();
-    final var header = res.getHeader();
-    header.setRcode(Rcode.NXDOMAIN);
-    header.setFlag(Flags.QR);
-    return res;
-  }
-
-  @SneakyThrows
-  public static Message cnameResponse(Message query, Integer ttl, String hostname) {
-    final var res = withNoErrorResponse(query.clone());
-    final var answer = new CNAMERecord(
-      res.getQuestion().getName(),
-      DClass.IN, ttl,
-      Name.fromString(Hostnames.toAbsoluteName(hostname))
-    );
-    res.addRecord(answer, Section.ANSWER);
-    return res;
-  }
-
   public static Message aQuestion(String host) {
     return Message.newQuery(query(host, Type.A));
   }
@@ -146,8 +126,8 @@ public class Messages {
       ;
   }
 
-  public static Config.Entry.Type findQuestionType(Message msg) {
-    return Config.Entry.Type.of(findQuestionTypeCode(msg));
+  public static Entry.Type findQuestionType(Message msg) {
+    return Entry.Type.of(findQuestionTypeCode(msg));
   }
 
   /**
@@ -195,17 +175,19 @@ public class Messages {
     return res;
   }
 
-  static Message clone(Message msg) {
-    if (msg == null) {
-      return null;
-    }
-    return msg.clone();
+  public static Message nxDomain(Message query) {
+    return withResponseCode(query.clone(), Rcode.NXDOMAIN);
   }
 
-  static Message withNoErrorResponse(Message res) {
-    final var header = res.getHeader();
-    header.setFlag(Flags.QR);
-    header.setRcode(Rcode.NOERROR);
+  @SneakyThrows
+  public static Message cnameResponse(Message query, Integer ttl, String hostname) {
+    final var res = withNoErrorResponse(query.clone());
+    final var answer = new CNAMERecord(
+      res.getQuestion().getName(),
+      DClass.IN, ttl,
+      Name.fromString(Hostnames.toAbsoluteName(hostname))
+    );
+    res.addRecord(answer, Section.ANSWER);
     return res;
   }
 
@@ -233,4 +215,29 @@ public class Messages {
     }
     return Messages.aAnswer(query, ip);
   }
+
+  static Message withNoErrorResponse(Message res) {
+    return withResponseCode(res, Rcode.NOERROR);
+  }
+
+  static Message withResponseCode(Message res, int rRode) {
+    withDefaultResponseHeaders(res);
+    res.getHeader().setRcode(rRode);
+    return res;
+  }
+
+  static Message withDefaultResponseHeaders(Message res) {
+    final var header = res.getHeader();
+    header.setFlag(Flags.QR);
+    header.setFlag(Flags.RA);
+    return res;
+  }
+
+  static Message clone(Message msg) {
+    if (msg == null) {
+      return null;
+    }
+    return msg.clone();
+  }
+
 }
