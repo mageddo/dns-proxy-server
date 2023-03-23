@@ -4,6 +4,7 @@
 * Defined a new process of releasing the stable versions, see "Getting Started -> Release Version Control" 
 for more details
 * Fixed arm64 images stopped being pushed at `3.19`
+* Adapting the cache for a concurrent approach synchronized by key
 
 ## 3.14.5
 * Specify minimum required docker api version `1.21` (as DPS 2)

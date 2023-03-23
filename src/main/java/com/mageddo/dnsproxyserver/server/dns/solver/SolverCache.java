@@ -35,7 +35,7 @@ public class SolverCache {
 
   public Response handleRes(Message query, Function<Message, Response> delegate) {
     final var key = buildKey(query);
-    final var res = this.cache.computeIfAbsent0(key, (k) -> {
+    final var res = this.cache.computeIfAbsentWithTTL(key, (k) -> {
       log.trace("status=lookup, key={}, req={}", key, Messages.simplePrint(query));
       final var _res = delegate.apply(query);
       if (_res == null) {
@@ -74,7 +74,7 @@ public class SolverCache {
       final var entry = new CacheEntry()
         .setKey(k)
         .setTtl(v.getTtl())
-        .setCreatedAt(v.getCreatedAt());
+        .setExpiresAt(v.getExpiresAt());
       tmpMap.put(k, entry);
     }
     return tmpMap;

@@ -11,5 +11,5 @@ import java.time.LocalDateTime;
 public class CacheEntry {
   private String key;
   private Duration ttl;
-  private LocalDateTime createdAt;
+  private LocalDateTime expiresAt;
 }
