@@ -23,7 +23,7 @@ public class UDPServer {
   public UDPServer(SocketAddress address, RequestHandler requestHandler) {
     this.address = address;
     this.requestHandler = requestHandler;
-    this.pool = ThreadPool.newFixed(20);
+    this.pool = ThreadPool.newFixed(50);
   }
 
   public void start() {

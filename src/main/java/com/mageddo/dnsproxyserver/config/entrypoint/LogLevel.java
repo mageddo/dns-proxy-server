@@ -9,6 +9,7 @@ public enum LogLevel {
   WARNING("WARN"),
   INFO,
   DEBUG,
+  TRACE,
   ;
 
   private final String slf4jName;

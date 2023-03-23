@@ -34,7 +34,7 @@ public class TCPServer {
 
   @Inject
   public TCPServer() {
-    this.pool = ThreadPool.newFixed(20);
+    this.pool = ThreadPool.newFixed(50);
     this.clients = new LinkedHashSet<>();
   }
 
