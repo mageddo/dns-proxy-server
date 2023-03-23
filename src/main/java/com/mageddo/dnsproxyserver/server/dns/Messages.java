@@ -1,7 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
 import com.mageddo.commons.lang.Objects;
-import com.mageddo.commons.lang.Objects2;
 import com.mageddo.dnsproxyserver.config.Config.Entry;
 import com.mageddo.dnsproxyserver.server.dns.solver.Response;
 import com.mageddo.dnsproxyserver.utils.Ips;
@@ -47,7 +46,7 @@ public class Messages {
       }
       final var question = message.getQuestion();
       final var type = Objects.useItOrDefault(
-        Objects2.toString(Entry.Type.of(question.getType())),
+        Objects.toString(Entry.Type.of(question.getType())),
         () -> String.valueOf(question.getType())
       );
       final var hostname = question.getName().toString(true);
