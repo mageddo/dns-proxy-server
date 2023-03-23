@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.docker;
 
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.Container;
-import com.mageddo.dnsproxyserver.server.dns.IP;
+import com.mageddo.net.IPI;
 import lombok.AllArgsConstructor;
 
 import javax.enterprise.inject.Alternative;
@@ -16,8 +16,8 @@ import java.util.List;
 public class DockerDAOMock implements DockerDAO {
 
   @Override
-  public IP findHostMachineIp() {
-    return IP.of("127.0.0.1");
+  public IPI findHostMachineIp() {
+    return IPI.of("127.0.0.1");
   }
 
   @Override

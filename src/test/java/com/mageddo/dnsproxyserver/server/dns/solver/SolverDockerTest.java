@@ -2,10 +2,10 @@ package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.docker.ContainerSolvingService;
 import com.mageddo.dnsproxyserver.docker.DockerDAO;
-import com.mageddo.dnsproxyserver.server.dns.IP;
 import com.mageddo.dnsproxyserver.templates.HostnameTemplates;
 import com.mageddo.dnsproxyserver.templates.IpTemplates;
 import com.mageddo.dnsproxyserver.templates.MessageTemplates;
+import com.mageddo.net.IPI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -95,7 +95,7 @@ class SolverDockerTest {
     verify(this.containerSolvingService).findBestHostIP(this.hostnameQueryCaptor.capture());
 
     final var v = this.hostnameQueryCaptor.getValue();
-    assertEquals(IP.Version.IPV6, v.getVersion());
+    assertEquals(IPI.Version.IPV6, v.getVersion());
   }
 
 }

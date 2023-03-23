@@ -11,6 +11,6 @@ public class InetAddresses {
   }
 
   public static InetSocketAddress toSocketAddress(IpAddr dns) {
-    return new InetSocketAddress(Ips.toAddress(dns.getIp().raw()), dns.getPort());
+    return new InetSocketAddress(Ips.toAddress(dns.getIp().toText()), dns.getPort());
   }
 }

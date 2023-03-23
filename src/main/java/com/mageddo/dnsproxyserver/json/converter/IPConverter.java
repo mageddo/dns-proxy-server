@@ -6,29 +6,29 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.mageddo.dnsproxyserver.server.dns.IP;
+import com.mageddo.net.IPI;
 
 import java.io.IOException;
 
 public class IPConverter {
-  public static class Serializer extends JsonSerializer<IP> {
+  public static class Serializer extends JsonSerializer<IPI> {
     @Override
-    public void serialize(IP value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+    public void serialize(IPI value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
       if (value == null) {
         gen.writeNull();
       } else {
-        gen.writeString(value.raw());
+        gen.writeString(value.toText());
       }
     }
   }
 
-  public static class Deserializer extends JsonDeserializer<IP> {
+  public static class Deserializer extends JsonDeserializer<IPI> {
     @Override
-    public IP deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public IPI deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
       if (p.currentToken() == null) {
         return null;
       }
-      return IP.of(p.getValueAsString());
+      return IPI.of(p.getValueAsString());
     }
   }
 }

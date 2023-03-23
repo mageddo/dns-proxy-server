@@ -1,10 +1,10 @@
 package com.mageddo.dnsproxyserver.docker;
 
 import com.mageddo.dnsproxyserver.di.Context;
-import com.mageddo.dnsproxyserver.server.dns.IP;
 import com.mageddo.dnsproxyserver.templates.IpTemplates;
 import com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates;
 import com.mageddo.dnsproxyserver.templates.docker.NetworkTemplates;
+import com.mageddo.net.IPI;
 import dagger.sheath.InjectMock;
 import dagger.sheath.junit.DaggerTest;
 import org.junit.jupiter.api.DisplayName;
@@ -102,7 +102,7 @@ class ContainerSolvingServiceCompTest {
   void mustSolveEmptyIpv6FromDefaultBridgeNetwork() {
     // arrange
     final var inspect = ngixWithDefaultBridgeNetworkOnly();
-    final var version = IP.Version.IPV6;
+    final var version = IPI.Version.IPV6;
 
     // act
     final var ip = this.containerSolvingService.findBestIpMatch(inspect, version);
@@ -116,7 +116,7 @@ class ContainerSolvingServiceCompTest {
   void mustSolveIpv6FromDefaultBridgeNetwork() {
     // arrange
     final var inspect = ngixWithIpv6DefaultBridgeNetworkOnly();
-    final var version = IP.Version.IPV6;
+    final var version = IPI.Version.IPV6;
 
     // act
     final var ip = this.containerSolvingService.findBestIpMatch(inspect, version);
@@ -131,7 +131,7 @@ class ContainerSolvingServiceCompTest {
   void mustSolveIpv6FromAnyOtherNetwork() {
     // arrange
     final var inspect = ngixWithIpv6CustomBridgeNetwork();
-    final var version = IP.Version.IPV6;
+    final var version = IPI.Version.IPV6;
 
     doReturn(NetworkTemplates.withBridgeDriver("my-net1"))
       .when(this.dockerNetworkDAO)
@@ -151,7 +151,7 @@ class ContainerSolvingServiceCompTest {
   void mustSolveIpv6FromDefaultIPNetwork() {
     // arrange
     final var inspect = ngixWithIpv6DefaultIp();
-    final var version = IP.Version.IPV6;
+    final var version = IPI.Version.IPV6;
 
     // act
     final var ip = this.containerSolvingService.findBestIpMatch(inspect, version);
@@ -166,7 +166,7 @@ class ContainerSolvingServiceCompTest {
   void mustNotUseAnEmptyIpSpecifiedOnPreferredNetworks() {
     // arrange
     final var inspect = ngixWithIpv4DefaultBridgeAndIpv6CustomBridgeNetwork();
-    final var version = IP.Version.IPV6;
+    final var version = IPI.Version.IPV6;
 
     doReturn(NetworkTemplates.withBridgeDriver("my-net1"))
       .when(this.dockerNetworkDAO)

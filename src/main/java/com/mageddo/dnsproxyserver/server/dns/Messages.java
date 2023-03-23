@@ -4,6 +4,7 @@ import com.mageddo.commons.lang.Objects;
 import com.mageddo.dnsproxyserver.config.Config.Entry;
 import com.mageddo.dnsproxyserver.server.dns.solver.Response;
 import com.mageddo.dnsproxyserver.utils.Ips;
+import com.mageddo.net.IPI;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.AAAARecord;
@@ -232,7 +233,7 @@ public class Messages {
     return Messages.aAnswer(query, ip);
   }
 
-  public static Message answer(Message query, String ip, IP.Version version) {
+  public static Message answer(Message query, String ip, IPI.Version version) {
     if (version.isIpv6()) {
       return Messages.quadAnswer(query, ip);
     }

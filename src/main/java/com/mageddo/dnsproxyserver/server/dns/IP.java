@@ -1,14 +1,14 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
 import com.mageddo.dnsproxyserver.utils.Ips;
+import com.mageddo.net.IPI;
 import com.mageddo.utils.Bytes;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
-public class IP {
+import java.net.InetAddress;
 
-  public static final int IPV4_BYTES = 4;
-  public static final int IPV6_BYTES = 16;
+class IP implements IPI {
 
   private final String ip;
   private final Version version;
@@ -27,12 +27,24 @@ public class IP {
     return this.ip;
   }
 
+  @Override
   public byte[] toByteArray() {
     return Ips.toBytes(this.raw());
   }
 
+  @Override
   public Short[] toShortArray() {
     return Bytes.toUnsignedShortArray(this.toByteArray());
+  }
+
+  @Override
+  public String toText() {
+    return this.raw();
+  }
+
+  @Override
+  public InetAddress toInetAddr() {
+    return Ips.toAddress(this);
   }
 
   public static IP of(String ip) {
@@ -62,24 +74,8 @@ public class IP {
     ));
   }
 
-  public static Short[] toShortArray(String ip) {
-    if (StringUtils.isBlank(ip)) {
-      return null;
-    }
-    return IP.of(ip).toShortArray();
-  }
-
   public boolean isLoopback() {
     return this.ip.startsWith("127.");
   }
 
-  public enum Version {
-    IPV4,
-    IPV6,
-    ;
-
-    public boolean isIpv6() {
-      return this == IPV6;
-    }
-  }
 }

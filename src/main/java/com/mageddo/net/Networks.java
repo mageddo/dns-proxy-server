@@ -2,7 +2,6 @@ package com.mageddo.net;
 
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.ContainerNetwork;
-import com.mageddo.dnsproxyserver.server.dns.IP;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,7 +16,7 @@ public class Networks {
   volatile static Network network = Network.getInstance();
 
   @SneakyThrows
-  public static IP findCurrentMachineIP() {
+  public static IPI findCurrentMachineIP() {
     return findMachineIps()
       .stream()
       .findFirst()
@@ -30,15 +29,15 @@ public class Networks {
    *
    * @return Machine ips ordered by relevance.
    */
-  public static List<IP> findMachineIps() {
+  public static List<IPI> findMachineIps() {
     return findInterfaces()
       .stream()
       .sorted(Comparator.comparingInt(NetworkInterface::getIndex))
       .flatMap(NetworkInterface::inetAddresses)
-      .filter(it -> it.getAddress().length == IP.IPV4_BYTES) // todo needs a filter to exclude virtual network cards
-      .map(it -> IP.of(it.getHostAddress()))
+      .filter(it -> it.getAddress().length == IPI.IPV4_BYTES) // todo needs a filter to exclude virtual network cards
+      .map(it -> IPI.of(it.getHostAddress()))
       .sorted(Comparator.comparing(it -> {
-        return it.raw().startsWith("127") ? Integer.MAX_VALUE : 0;
+        return it.toText().startsWith("127") ? Integer.MAX_VALUE : 0;
       }))
       .toList()
       ;
@@ -91,7 +90,7 @@ public class Networks {
       .orElse(null);
   }
 
-  public static String findIP(ContainerNetwork network, IP.Version version) {
+  public static String findIP(ContainerNetwork network, IPI.Version version) {
     return switch (version) {
       case IPV4 -> findIpv4Address(network);
       case IPV6 -> findIpv6Address(network);

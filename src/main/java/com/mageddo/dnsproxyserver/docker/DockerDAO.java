@@ -2,13 +2,13 @@ package com.mageddo.dnsproxyserver.docker;
 
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.Container;
-import com.mageddo.dnsproxyserver.server.dns.IP;
+import com.mageddo.net.IPI;
 
 import java.util.List;
 
 public interface DockerDAO {
 
-  IP findHostMachineIp();
+  IPI findHostMachineIp();
 
   boolean isConnected();
 

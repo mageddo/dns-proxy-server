@@ -28,7 +28,7 @@ public class SolverSystem implements Solver {
         return null;
       }
       log.debug("status=solvingHostMachineName, host={}, ip={}", hostname, ip);
-      return Response.of(Messages.aAnswer(query, ip.raw()), Messages.DEFAULT_TTL_DURATION);
+      return Response.of(Messages.aAnswer(query, ip.toText()), Messages.DEFAULT_TTL_DURATION);
     }
     return null;
   }
