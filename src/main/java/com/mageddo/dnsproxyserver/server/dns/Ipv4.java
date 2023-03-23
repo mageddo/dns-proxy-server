@@ -1,19 +1,19 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
 import com.mageddo.dnsproxyserver.utils.Ips;
-import com.mageddo.net.IPI;
+import com.mageddo.net.IP;
 import com.mageddo.utils.Bytes;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 import java.net.InetAddress;
 
-class IP implements IPI {
+public class Ipv4 implements IP {
 
   private final String ip;
   private final Version version;
 
-  public IP(String ip) {
+  public Ipv4(String ip) {
     this.ip = ip;
     this.version = Version.IPV4;
   }
@@ -47,18 +47,23 @@ class IP implements IPI {
     return Ips.toAddress(this);
   }
 
-  public static IP of(String ip) {
+  @Override
+  public Version version() {
+    return this.version;
+  }
+
+  public static Ipv4 of(String ip) {
     if (StringUtils.isBlank(ip)) {
       return null;
     }
-    return new IP(ip);
+    return new Ipv4(ip);
   }
 
-  public static IP of(Short[] ip) {
+  public static Ipv4 of(Short[] ip) {
     return of(Bytes.toNative(ip));
   }
 
-  public static IP of(byte[] data) {
+  public static Ipv4 of(byte[] data) {
     if (data == null) {
       return null;
     }

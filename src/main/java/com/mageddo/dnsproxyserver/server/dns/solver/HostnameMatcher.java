@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.server.dns.Hostname;
-import com.mageddo.net.IPI;
+import com.mageddo.net.IP;
 
 import java.util.List;
 import java.util.function.Function;
@@ -10,7 +10,7 @@ public class HostnameMatcher {
 
   public static <T> T match(
     Hostname hostname,
-    IPI.Version version,
+    IP.Version version,
     Function<HostnameQuery, T> hostnameProviderFn
   ) {
 

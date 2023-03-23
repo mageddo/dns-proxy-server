@@ -5,7 +5,7 @@ import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Network;
 import com.mageddo.commons.lang.Objects;
-import com.mageddo.net.IPI;
+import com.mageddo.net.IP;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,8 +24,8 @@ public class DockerDAODefault implements DockerDAO {
   private final DockerConnectionCheck connectionCheck;
 
   @Override
-  public IPI findHostMachineIp() {
-    return IPI.of(this.findHostMachineIpRaw());
+  public IP findHostMachineIp() {
+    return IP.of(this.findHostMachineIpRaw());
   }
 
   @Override

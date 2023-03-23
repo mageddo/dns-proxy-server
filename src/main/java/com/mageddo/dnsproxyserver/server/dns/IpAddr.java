@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.mageddo.commons.regex.Regexes;
 import com.mageddo.dnsproxyserver.json.converter.IPConverter;
-import com.mageddo.net.IPI;
+import com.mageddo.net.IP;
 import com.mageddo.utils.Bytes;
 import lombok.Builder;
 import lombok.NonNull;
@@ -24,7 +24,7 @@ public class IpAddr {
   @NonNull
   @JsonDeserialize(using = IPConverter.Deserializer.class)
   @JsonSerialize(using = IPConverter.Serializer.class)
-  private IPI ip;
+  private IP ip;
 
   private Integer port;
 
@@ -57,16 +57,16 @@ public class IpAddr {
     final var groups = Regexes.groups(addr, IP_ADDR_REGEX);
     return IpAddr
         .builder()
-        .ip(IP.of(groups.get(1)))
+        .ip(Ipv4.of(groups.get(1)))
         .port(groups.get(3, s -> StringUtils.isBlank(s) ? null : Integer.parseInt(s)))
         .build();
   }
 
-  public static IpAddr of(IPI ip) {
+  public static IpAddr of(IP ip) {
     return of(ip, null);
   }
 
-  public static IpAddr of(IPI ip, Integer port) {
+  public static IpAddr of(IP ip, Integer port) {
     return IpAddr
         .builder()
         .ip(ip)
@@ -79,7 +79,7 @@ public class IpAddr {
   }
 
   public static IpAddr of(byte[] ip) {
-    return IpAddr.of(IP.of(ip));
+    return IpAddr.of(Ipv4.of(ip));
   }
 
   public static IpAddr of(Integer[] ip) {

@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.server.dns.Hostname;
 import com.mageddo.dnsproxyserver.server.dns.Wildcards;
-import com.mageddo.net.IPI;
+import com.mageddo.net.IP;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
@@ -20,7 +20,7 @@ public class HostnameQuery {
   private final Hostname hostname;
 
   @NonNull
-  private final IPI.Version version;
+  private final IP.Version version;
 
   private final boolean useWildcards;
 
@@ -31,18 +31,18 @@ public class HostnameQuery {
   }
 
   public static HostnameQuery ofWildcard(String hostname) {
-    return ofWildcard(hostname, IPI.Version.IPV4);
+    return ofWildcard(hostname, IP.Version.IPV4);
   }
 
-  public static HostnameQuery ofWildcard(String hostname, IPI.Version version) {
+  public static HostnameQuery ofWildcard(String hostname, IP.Version version) {
     return ofWildcard(Hostname.of(hostname), version);
   }
 
   public static HostnameQuery ofWildcard(Hostname hostname) {
-    return ofWildcard(hostname, IPI.Version.IPV4);
+    return ofWildcard(hostname, IP.Version.IPV4);
   }
 
-  public static HostnameQuery ofWildcard(Hostname hostname, IPI.Version version) {
+  public static HostnameQuery ofWildcard(Hostname hostname, IP.Version version) {
     return builder()
       .hostname(hostname)
       .version(version)
@@ -52,18 +52,18 @@ public class HostnameQuery {
   }
 
   public static HostnameQuery ofRegex(String hostname) {
-    return ofRegex(hostname, IPI.Version.IPV4);
+    return ofRegex(hostname, IP.Version.IPV4);
   }
 
-  public static HostnameQuery ofRegex(String hostname, IPI.Version version) {
+  public static HostnameQuery ofRegex(String hostname, IP.Version version) {
     return ofRegex(Hostname.of(hostname), version);
   }
 
   public static HostnameQuery ofRegex(Hostname hostname) {
-    return ofRegex(hostname, IPI.Version.IPV4);
+    return ofRegex(hostname, IP.Version.IPV4);
   }
 
-  public static HostnameQuery ofRegex(Hostname hostname, IPI.Version version) {
+  public static HostnameQuery ofRegex(Hostname hostname, IP.Version version) {
     return builder()
       .hostname(hostname)
       .version(version)
@@ -78,7 +78,7 @@ public class HostnameQuery {
       .hostname(hostname)
       .useWildcards(wildcards)
       .useRegex(regex)
-      .version(IPI.Version.IPV4)
+      .version(IP.Version.IPV4)
       .build();
   }
 

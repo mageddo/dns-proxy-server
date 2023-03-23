@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.usecase.HostMachineService;
-import com.mageddo.net.IPI;
+import com.mageddo.net.IP;
 import dagger.sheath.InjectMock;
 import dagger.sheath.junit.DaggerTest;
 import org.hamcrest.CoreMatchers;
@@ -34,7 +34,7 @@ class SolverSystemCompTest {
     final var hostname = "host.docker.";
     final var query = Messages.aQuestion(hostname);
 
-    doReturn(IPI.of("192.168.0.1"))
+    doReturn(IP.of("192.168.0.1"))
       .when(this.machineService)
       .findHostMachineIP()
     ;

@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.server.dns.Messages;
-import com.mageddo.net.IPI;
+import com.mageddo.net.IP;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
 import org.xbill.DNS.Message;
@@ -12,13 +12,13 @@ import java.util.stream.Stream;
 @Slf4j
 public class SolverMock implements Solver {
 
-  private final List<Pair<String, IPI>> mocks;
+  private final List<Pair<String, IP>> mocks;
 
-  public SolverMock(Pair<String, IPI>... mocks) {
+  public SolverMock(Pair<String, IP>... mocks) {
     this(Stream.of(mocks).toList());
   }
 
-  public SolverMock(List<Pair<String, IPI>> mocks) {
+  public SolverMock(List<Pair<String, IP>> mocks) {
     this.mocks = mocks;
   }
 

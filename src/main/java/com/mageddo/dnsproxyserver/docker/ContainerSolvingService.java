@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.docker;
 
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
-import com.mageddo.net.IPI;
+import com.mageddo.net.IP;
 import com.mageddo.net.Networks;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,10 +53,10 @@ public class ContainerSolvingService {
   }
 
   public String findBestIpMatch(InspectContainerResponse inspect) {
-    return this.findBestIpMatch(inspect, IPI.Version.IPV4);
+    return this.findBestIpMatch(inspect, IP.Version.IPV4);
   }
 
-  public String findBestIpMatch(InspectContainerResponse inspect, IPI.Version version) {
+  public String findBestIpMatch(InspectContainerResponse inspect, IP.Version version) {
     return this.findBestIpMatch(inspect, buildNetworks(inspect), this.dockerDAO::findHostMachineIpRaw, version);
   }
 
@@ -64,7 +64,7 @@ public class ContainerSolvingService {
     InspectContainerResponse c,
     Collection<String> networksNames,
     Supplier<String> hostMachineSup,
-    IPI.Version version
+    IP.Version version
   ) {
 
     final var networks = c
@@ -123,7 +123,7 @@ public class ContainerSolvingService {
 
   }
 
-  static String buildDefaultIp(InspectContainerResponse c, IPI.Version version) {
+  static String buildDefaultIp(InspectContainerResponse c, IP.Version version) {
     final var settings = c.getNetworkSettings();
     if (settings == null) {
       return null;

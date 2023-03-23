@@ -2,7 +2,7 @@ package com.mageddo.net;
 
 import java.net.InetAddress;
 
-public interface IPI {
+public interface IP {
 
   int IPV4_BYTES = 4;
   int IPV6_BYTES = 16;
@@ -15,11 +15,13 @@ public interface IPI {
 
   InetAddress toInetAddr();
 
-  static IPI of(String ip) {
+  Version version();
+
+  static IP of(String ip) {
     throw new UnsupportedOperationException();
   }
 
-  static IPI of(byte[] data) {
+  static IP of(byte[] data) {
     throw new UnsupportedOperationException();
   }
 

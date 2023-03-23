@@ -4,7 +4,7 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Network;
 import com.mageddo.dnsproxyserver.config.Configs;
-import com.mageddo.net.IPI;
+import com.mageddo.net.IP;
 import com.mageddo.net.Networks;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -106,7 +106,7 @@ public class DpsContainerManager {
       .orElse(null);
   }
 
-  public IPI findDpsContainerIP() {
+  public IP findDpsContainerIP() {
     final var container = this.findDpsContainer();
     if (container == null) {
       return null;
@@ -116,7 +116,7 @@ public class DpsContainerManager {
     if (StringUtils.isBlank(ip)) {
       return null;
     }
-    return IPI.of(ip);
+    return IP.of(ip);
   }
 
   public boolean isDpsRunningInsideContainer() {

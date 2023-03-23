@@ -5,7 +5,7 @@ import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.docker.ContainerSolvingService;
 import com.mageddo.dnsproxyserver.docker.DockerDAO;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
-import com.mageddo.net.IPI;
+import com.mageddo.net.IP;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.Message;
@@ -47,10 +47,10 @@ public class SolverDocker implements Solver {
 
   }
 
-  IPI.Version toVersion(Type type) {
+  IP.Version toVersion(Type type) {
     return switch (type) {
-      case A -> IPI.Version.IPV4;
-      case AAAA -> IPI.Version.IPV6;
+      case A -> IP.Version.IPV4;
+      case AAAA -> IP.Version.IPV6;
       default -> throw new IllegalStateException("Unexpected value: " + type);
     };
   }

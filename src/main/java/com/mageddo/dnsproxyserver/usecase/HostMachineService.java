@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.usecase;
 
 import com.mageddo.dnsproxyserver.docker.DockerDAO;
 import com.mageddo.dnsproxyserver.docker.DpsContainerManager;
-import com.mageddo.net.IPI;
+import com.mageddo.net.IP;
 import com.mageddo.net.Networks;
 import lombok.RequiredArgsConstructor;
 
@@ -16,7 +16,7 @@ public class HostMachineService {
   private final DockerDAO dockerDAO;
   private final DpsContainerManager dpsContainerManager;
 
-  public IPI findHostMachineIP() {
+  public IP findHostMachineIP() {
     if (this.isDpsRunningInsideContainer()) {
       return this.dockerDAO.findHostMachineIp();
     }
@@ -27,7 +27,7 @@ public class HostMachineService {
     return this.dpsContainerManager.isDpsRunningInsideContainer();
   }
 
-  IPI findCurrentMachineIp() {
+  IP findCurrentMachineIp() {
     return Networks.findCurrentMachineIP();
   }
 }
