@@ -21,7 +21,8 @@ If you are using docker on your machine that's the best choice as it will automa
 
 ```bash
 $ docker run --hostname dns.mageddo --restart=unless-stopped -d \
-  -p 5353:53 \
+  -p 5354:53/tcp \
+  -p 5354:53/udp \
   -p 5380:5380 \
   -v /var/run/docker.sock:/var/run/docker.sock \
   defreitas/dns-proxy-server
@@ -35,7 +36,7 @@ If you don't want to use that option then you can consider use [DPS Network feat
 
 `/var/run/docker.sock`: Docker socket, so DPS can query the running containers and solve their IP when asked.
 
-`5353:53` publishing on port 5353 instead of 53 to evict port conflicts
+`5354:53` publishing on port 5354 instead of 53 to evict port conflicts
 
 #### In case you do have `systemd-resolved` installed:
 
@@ -66,7 +67,7 @@ Edit systemd-resolved conf file with the found IP
 $ cat /etc/systemd/resolved.conf 
 ...
 [Resolve]
-DNS=192.168.0.128:5353
+DNS=192.168.0.128:5354
 ```
 
 Then restart the service:
@@ -78,7 +79,7 @@ $ service systemd-resolved restart
 #### In case you don't have systemd-resolved installed:
 
 If you don't have systemd-resolved installed then you can volume resolv.conf with the option `-v /etc/:/host/etc` 
-when running the container but will need to publish DPS on port 53 instead of 5353,
+when running the container but will need to publish DPS on port 53 instead of 5354,
 don't use that if you have systemd-resolved installed because it will cause docker DNS misconfiguration.
 
 #### Testing
