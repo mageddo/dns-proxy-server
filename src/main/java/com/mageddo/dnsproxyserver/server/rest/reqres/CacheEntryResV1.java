@@ -15,7 +15,7 @@ public class CacheEntryResV1 {
 
   private String key;
   private String ttl;
-  private String createdAt;
+  private String expiresAt;
 
   public static List<CacheEntryResV1> of(List<CacheEntry> entries) {
     return entries
@@ -28,7 +28,7 @@ public class CacheEntryResV1 {
     return new CacheEntryResV1()
       .setKey(entry.getKey())
       .setTtl(String.valueOf(entry.getTtl()))
-      .setCreatedAt(String.valueOf(entry.getExpiresAt()))
+      .setExpiresAt(String.valueOf(entry.getExpiresAt()))
       ;
   }
 
