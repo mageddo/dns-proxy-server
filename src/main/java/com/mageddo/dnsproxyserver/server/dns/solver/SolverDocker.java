@@ -5,7 +5,6 @@ import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.docker.ContainerSolvingService;
 import com.mageddo.dnsproxyserver.docker.DockerDAO;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
-import com.mageddo.net.IP;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.Message;
@@ -36,7 +35,7 @@ public class SolverDocker implements Solver {
     }
 
     final var askedHost = Messages.findQuestionHostname(query);
-    final var version = toVersion(Type.of(type));
+    final var version = Type.of(type).toVersion();
     return HostnameMatcher.match(askedHost, version, hostname -> {
       final var ip = this.containerSolvingService.findBestHostIP(hostname);
       return Objects.mapOrNull(
@@ -47,11 +46,4 @@ public class SolverDocker implements Solver {
 
   }
 
-  IP.Version toVersion(Type type) {
-    return switch (type) {
-      case A -> IP.Version.IPV4;
-      case AAAA -> IP.Version.IPV6;
-      default -> throw new IllegalStateException("Unexpected value: " + type);
-    };
-  }
 }

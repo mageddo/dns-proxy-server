@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.config;
 import com.mageddo.dnsproxyserver.config.entrypoint.LogLevel;
 import com.mageddo.dnsproxyserver.server.dns.IpAddr;
 import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
+import com.mageddo.net.IP;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -155,6 +156,10 @@ public class Config {
        */
       private final int type;
 
+      public boolean isNot(Type ... types) {
+        return isNot(this.type, types);
+      }
+
       public static Type of(Integer code) {
         for (final var t : values()) {
           if (Objects.equals(t.type, code)) {
@@ -186,6 +191,15 @@ public class Config {
           .collect(Collectors.toSet())
           .contains(current);
       }
+
+      public IP.Version toVersion() {
+        return switch (this) {
+          case A -> IP.Version.IPV4;
+          case AAAA -> IP.Version.IPV6;
+          default -> throw new IllegalStateException("Unexpected value: " + this);
+        };
+      }
+
     }
   }
 }

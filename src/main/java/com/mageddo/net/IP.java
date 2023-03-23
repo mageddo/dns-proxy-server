@@ -18,12 +18,14 @@ public interface IP {
   Version version();
 
   static IP of(String ip) {
-    throw new UnsupportedOperationException();
+    return IpImpl.of(ip);
   }
 
   static IP of(byte[] data) {
-    throw new UnsupportedOperationException();
+    return IpImpl.of(data);
   }
+
+  boolean isLoopback();
 
   enum Version {
 

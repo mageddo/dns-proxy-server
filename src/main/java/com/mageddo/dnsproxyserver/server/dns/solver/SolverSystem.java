@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
+import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.usecase.HostMachineService;
@@ -20,9 +21,14 @@ public class SolverSystem implements Solver {
   @Override
   public Response handle(Message query) {
     final var hostname = Messages.findQuestionHostname(query);
+    final var questionType = Messages.findQuestionType(query);
+    if (questionType.isNot(Type.A, Type.AAAA)) {
+      log.debug("status=unsupportedType, type={}, query={}", questionType, Messages.simplePrint(query));
+      return null;
+    }
     final var config = Configs.getInstance();
     if (hostname.isEqualTo(config.getHostMachineHostname())) { // fixme fazer case com hostname + search domain
-      final var ip = this.machineService.findHostMachineIP();
+      final var ip = this.machineService.findHostMachineIP(questionType.toVersion());
       if (ip == null) {
         log.debug("status=hostMachineIpNotFound, host={}", hostname);
         return null;

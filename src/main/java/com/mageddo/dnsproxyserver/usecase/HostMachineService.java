@@ -17,6 +17,10 @@ public class HostMachineService {
   private final DpsContainerManager dpsContainerManager;
 
   public IP findHostMachineIP() {
+    return this.findHostMachineIP(IP.Version.IPV4);
+  }
+
+  public IP findHostMachineIP(IP.Version version) {
     if (this.isDpsRunningInsideContainer()) {
       return this.dockerDAO.findHostMachineIp();
     }
@@ -30,4 +34,5 @@ public class HostMachineService {
   IP findCurrentMachineIp() {
     return Networks.findCurrentMachineIP();
   }
+
 }

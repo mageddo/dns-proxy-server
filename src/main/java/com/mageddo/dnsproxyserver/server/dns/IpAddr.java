@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.mageddo.commons.regex.Regexes;
 import com.mageddo.dnsproxyserver.json.converter.IPConverter;
 import com.mageddo.net.IP;
+import com.mageddo.net.IpImpl;
 import com.mageddo.utils.Bytes;
 import lombok.Builder;
 import lombok.NonNull;
@@ -57,7 +58,7 @@ public class IpAddr {
     final var groups = Regexes.groups(addr, IP_ADDR_REGEX);
     return IpAddr
         .builder()
-        .ip(Ipv4.of(groups.get(1)))
+        .ip(IpImpl.of(groups.get(1)))
         .port(groups.get(3, s -> StringUtils.isBlank(s) ? null : Integer.parseInt(s)))
         .build();
   }
@@ -79,7 +80,7 @@ public class IpAddr {
   }
 
   public static IpAddr of(byte[] ip) {
-    return IpAddr.of(Ipv4.of(ip));
+    return IpAddr.of(IpImpl.of(ip));
   }
 
   public static IpAddr of(Integer[] ip) {
