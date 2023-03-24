@@ -23,7 +23,7 @@ class IpImpl implements IP {
 
   @Override
   public String toString() {
-    return this.ip.getHostName();
+    return this.ip.getHostAddress();
   }
 
   @Override
@@ -38,7 +38,7 @@ class IpImpl implements IP {
 
   @Override
   public String toText() {
-    return this.ip.getHostName();
+    return this.ip.getHostAddress();
   }
 
   @Override
