@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
-import com.mageddo.dnsproxyserver.server.dns.IpAddr;
+import com.mageddo.net.IpAddr;
 import org.xbill.DNS.Resolver;
 
 import java.util.List;

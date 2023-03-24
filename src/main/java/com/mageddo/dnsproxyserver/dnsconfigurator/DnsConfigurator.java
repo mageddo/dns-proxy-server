@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator;
 
-import com.mageddo.dnsproxyserver.server.dns.IpAddr;
+import com.mageddo.net.IpAddr;
 
 public interface DnsConfigurator {
 

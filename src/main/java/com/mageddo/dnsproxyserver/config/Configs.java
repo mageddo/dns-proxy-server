@@ -7,7 +7,7 @@ import com.mageddo.dnsproxyserver.config.entrypoint.ConfigJson;
 import com.mageddo.dnsproxyserver.config.entrypoint.ConfigProps;
 import com.mageddo.dnsproxyserver.config.entrypoint.JsonConfigs;
 import com.mageddo.dnsproxyserver.config.entrypoint.LogLevel;
-import com.mageddo.dnsproxyserver.server.dns.IpAddr;
+import com.mageddo.net.IpAddr;
 import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import com.mageddo.dnsproxyserver.utils.Numbers;
 import com.mageddo.utils.Files;

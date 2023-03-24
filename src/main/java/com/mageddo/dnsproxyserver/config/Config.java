@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.config;
 
 import com.mageddo.dnsproxyserver.config.entrypoint.LogLevel;
-import com.mageddo.dnsproxyserver.server.dns.IpAddr;
+import com.mageddo.net.IpAddr;
 import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import com.mageddo.net.IP;
 import lombok.Builder;

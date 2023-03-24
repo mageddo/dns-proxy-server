@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.utils;
 
-import com.mageddo.dnsproxyserver.server.dns.IpAddr;
+import com.mageddo.net.IpAddr;
 import org.apache.commons.lang3.Validate;
 
 import java.util.Objects;

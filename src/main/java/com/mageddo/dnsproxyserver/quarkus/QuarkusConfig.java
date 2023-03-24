@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.quarkus;
 
 import com.mageddo.dnsproxyserver.config.Configs;
-import com.mageddo.dnsproxyserver.server.dns.IpAddr;
+import com.mageddo.net.IpAddr;
 import com.mageddo.dnsproxyserver.server.dns.solver.RemoteResolvers;
 import com.mageddo.dnsproxyserver.utils.InetAddresses;
 import dagger.Module;

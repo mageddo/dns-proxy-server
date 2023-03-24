@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.utils;
 
-import com.mageddo.dnsproxyserver.server.dns.IpAddr;
+import com.mageddo.net.IpAddr;
 
 import java.net.InetSocketAddress;
 
