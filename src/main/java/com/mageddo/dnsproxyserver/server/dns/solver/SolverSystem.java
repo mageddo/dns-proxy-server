@@ -28,7 +28,7 @@ public class SolverSystem implements Solver {
     }
     final var config = Configs.getInstance();
     if (hostname.isEqualTo(config.getHostMachineHostname())) { // fixme fazer case com hostname + search domain
-      final var ip = this.machineService.findHostMachineIP(questionType.toVersion());
+      final var ip = this.machineService.findHostMachineIP();
       if (ip == null) {
         log.debug("status=hostMachineIpNotFound, host={}", hostname);
         return null;
