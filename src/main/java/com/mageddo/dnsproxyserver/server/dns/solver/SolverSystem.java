@@ -28,13 +28,16 @@ public class SolverSystem implements Solver {
     }
     final var config = Configs.getInstance();
     if (hostname.isEqualTo(config.getHostMachineHostname())) { // fixme fazer case com hostname + search domain
-      final var ip = this.machineService.findHostMachineIP();
+      final var ip = this.machineService.findHostMachineIP(questionType.toVersion());
       if (ip == null) {
         log.debug("status=hostMachineIpNotFound, host={}", hostname);
         return null;
       }
       log.debug("status=solvingHostMachineName, host={}, ip={}", hostname, ip);
-      return Response.of(Messages.aAnswer(query, ip.toText()), Messages.DEFAULT_TTL_DURATION);
+      return Response.of(
+        Messages.answer(query, ip.toText(), questionType.toVersion()),
+        Messages.DEFAULT_TTL_DURATION
+      );
     }
     return null;
   }

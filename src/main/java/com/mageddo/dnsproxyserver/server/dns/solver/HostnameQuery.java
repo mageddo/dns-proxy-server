@@ -30,6 +30,28 @@ public class HostnameQuery {
     return of(hostname, false, false);
   }
 
+  public static HostnameQuery of(Hostname hostname, IP.Version version) {
+    return HostnameQuery
+      .builder()
+      .hostname(hostname)
+      .version(version)
+      .build();
+  }
+
+  public static HostnameQuery of(Hostname hostname, boolean wildcards, boolean regex) {
+    return HostnameQuery
+      .builder()
+      .hostname(hostname)
+      .useWildcards(wildcards)
+      .useRegex(regex)
+      .version(IP.Version.IPV4)
+      .build();
+  }
+
+  public static HostnameQuery of(String hostname) {
+    return of(Hostname.of(hostname));
+  }
+
   public static HostnameQuery ofWildcard(String hostname) {
     return ofWildcard(hostname, IP.Version.IPV4);
   }
@@ -70,20 +92,6 @@ public class HostnameQuery {
       .useWildcards(false)
       .useRegex(true)
       .build();
-  }
-
-  public static HostnameQuery of(Hostname hostname, boolean wildcards, boolean regex) {
-    return HostnameQuery
-      .builder()
-      .hostname(hostname)
-      .useWildcards(wildcards)
-      .useRegex(regex)
-      .version(IP.Version.IPV4)
-      .build();
-  }
-
-  public static HostnameQuery of(String hostname) {
-    return of(Hostname.of(hostname));
   }
 
   public boolean matches(Hostname hostname) {

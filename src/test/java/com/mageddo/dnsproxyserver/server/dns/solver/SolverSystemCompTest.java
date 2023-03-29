@@ -16,6 +16,8 @@ import javax.inject.Inject;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
@@ -36,7 +38,7 @@ class SolverSystemCompTest {
 
     doReturn(IP.of("192.168.0.1"))
       .when(this.machineService)
-      .findHostMachineIP()
+      .findHostMachineIP(any())
     ;
 
     // act
@@ -49,7 +51,7 @@ class SolverSystemCompTest {
     assertTrue(Messages.hasFlag(msg, Flags.RA));
     assertEquals("host.docker.\t\t30\tIN\tA\t192.168.0.1", answer);
 
-    verify(this.machineService).findHostMachineIP();
+    verify(this.machineService).findHostMachineIP(eq(IP.Version.IPV4));
   }
 
 }

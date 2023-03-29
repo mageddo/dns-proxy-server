@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.server.dns;
 
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.dnsproxyserver.config.Config.Entry;
+import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.server.dns.solver.Response;
 import com.mageddo.dnsproxyserver.utils.Ips;
 import com.mageddo.net.IP;
@@ -271,5 +272,11 @@ public class Messages {
 
   public static boolean hasFlag(Message msg, int flag) {
     return msg.getHeader().getFlag(flag);
+  }
+
+  public static HostnameQuery toHostnameQuery(Message query) {
+    final var host = Messages.findQuestionHostname(query);
+    final var version = Entry.Type.of(findQuestionTypeCode(query)).toVersion();
+    return HostnameQuery.of(host, version);
   }
 }
