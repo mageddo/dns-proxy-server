@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.mageddo.dnsproxyserver.templates.docker.NetworkTemplates.buildBridgeIpv4AndIpv6Network;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class DockerNetworkServiceTest {
 
@@ -17,6 +18,7 @@ class DockerNetworkServiceTest {
     final var ip = DockerNetworkService.findGatewayIp(network);
 
     // assert
-    assertEquals("172.21.0.1", ip);
+    assertNotNull(ip);
+    assertEquals("172.21.0.1", ip.toText());
   }
 }

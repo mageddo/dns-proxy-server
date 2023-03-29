@@ -10,6 +10,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,7 +34,7 @@ class HostMachineServiceTest {
     final var expectedIp = IpTemplates.local();
     doReturn(expectedIp)
       .when(this.machineService)
-      .findCurrentMachineIp()
+      .findCurrentMachineIp(any())
     ;
 
     // act
@@ -54,7 +55,7 @@ class HostMachineServiceTest {
     final var expectedIp = IpTemplates.local();
     doReturn(expectedIp)
       .when(this.dockerDAO)
-      .findHostMachineIp()
+      .findHostMachineIp(any())
     ;
 
     // act
