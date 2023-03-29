@@ -159,7 +159,7 @@ class ContainerSolvingServiceCompTest {
     // assert
     assertNotNull(ip);
     assertEquals("2001:db7:1::2", ip);
-    verify(this.dockerDAO, never()).findHostMachineIpRaw();
+    verify(this.dockerDAO, never()).findHostMachineIp();
   }
 
   @Test

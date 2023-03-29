@@ -22,6 +22,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.mageddo.commons.lang.Objects.mapOrNull;
 import static com.mageddo.dnsproxyserver.docker.Labels.DEFAULT_NETWORK_LABEL;
 import static com.mageddo.dnsproxyserver.docker.domain.Network.BRIDGE;
 import static com.mageddo.dnsproxyserver.docker.domain.Network.DPS;
@@ -57,7 +58,12 @@ public class ContainerSolvingService {
   }
 
   public String findBestIpMatch(InspectContainerResponse inspect, IP.Version version) {
-    return this.findBestIpMatch(inspect, buildNetworks(inspect), this.dockerDAO::findHostMachineIpRaw, version);
+    return this.findBestIpMatch(
+      inspect,
+      buildNetworks(inspect),
+      () -> mapOrNull(this.dockerDAO.findHostMachineIp(version), IP::toText),
+      version
+    );
   }
 
   public String findBestIpMatch(

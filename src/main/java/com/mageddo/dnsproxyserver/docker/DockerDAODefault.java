@@ -25,12 +25,12 @@ public class DockerDAODefault implements DockerDAO {
 
   @Override
   public IP findHostMachineIp() {
-    return IP.of(this.findHostMachineIpRaw());
+    return this.findHostMachineIp(IP.Version.IPV4);
   }
 
   @Override
-  public String findHostMachineIpRaw() {
-    return DockerNetworkService.findGatewayIp(this.findBestNetwork());
+  public IP findHostMachineIp(IP.Version version) {
+    return DockerNetworkService.findGatewayIp(this.findBestNetwork(version));
   }
 
   @Override
@@ -54,10 +54,11 @@ public class DockerDAODefault implements DockerDAO {
     return this.dockerClient.inspectContainerCmd(id).exec();
   }
 
-  Network findBestNetwork() {
+  Network findBestNetwork(IP.Version version) {
     final var network = this.dockerClient.listNetworksCmd()
       .exec()
       .stream()
+      .filter(it -> java.util.Objects.equals(it.getEnableIPv6(), version.isIpv6()))
       .min(NetworkComparator::compare)
       .orElse(null);
     log.debug(

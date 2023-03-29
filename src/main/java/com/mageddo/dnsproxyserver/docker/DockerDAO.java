@@ -8,14 +8,14 @@ import java.util.List;
 
 public interface DockerDAO {
 
-  IP findHostMachineIp();
-
   boolean isConnected();
 
   List<Container> findActiveContainers();
 
   InspectContainerResponse inspect(String id);
 
-  String findHostMachineIpRaw();
+  IP findHostMachineIp();
+
+  IP findHostMachineIp(IP.Version version);
 
 }

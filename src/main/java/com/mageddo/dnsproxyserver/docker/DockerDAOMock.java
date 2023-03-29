@@ -21,6 +21,11 @@ public class DockerDAOMock implements DockerDAO {
   }
 
   @Override
+  public IP findHostMachineIp(IP.Version version) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
   public boolean isConnected() {
     return true;
   }
@@ -32,11 +37,6 @@ public class DockerDAOMock implements DockerDAO {
 
   @Override
   public InspectContainerResponse inspect(String id) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public String findHostMachineIpRaw() {
     throw new UnsupportedOperationException();
   }
 
