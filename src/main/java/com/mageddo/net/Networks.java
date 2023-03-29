@@ -16,21 +16,17 @@ public class Networks {
   volatile static Network network = Network.getInstance();
 
   public static IP findCurrentMachineIP() {
-    return findMachineIps()
-      .stream()
-      .filter(it -> it.version().isIpv4()) // todo needs a filter to exclude virtual network cards
-      .min(Comparator.comparing(it -> {
-        return it.toText().startsWith("127") ? Integer.MAX_VALUE : 0;
-      }))
-      .orElse(null);
+    return findCurrentMachineIP(IP.Version.IPV4);
   }
 
   @SneakyThrows
   public static IP findCurrentMachineIP(IP.Version version) {
     return findMachineIps()
       .stream()
-      .filter(it -> it.version() == version)
-      .findFirst()
+      .filter(it -> it.version() == version) // todo needs a filter to exclude virtual network cards
+      .min(Comparator.comparing(it -> {
+        return it.isLoopback() ? Integer.MAX_VALUE : 0;
+      }))
       .orElse(null);
   }
 
