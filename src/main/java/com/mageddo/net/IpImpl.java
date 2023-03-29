@@ -2,11 +2,13 @@ package com.mageddo.net;
 
 import com.mageddo.dnsproxyserver.utils.Ips;
 import com.mageddo.utils.Bytes;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+@EqualsAndHashCode(of = "ip")
 class IpImpl implements IP {
 
   private final InetAddress ip;

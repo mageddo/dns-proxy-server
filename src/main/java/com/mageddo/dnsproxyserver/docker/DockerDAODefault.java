@@ -30,7 +30,7 @@ public class DockerDAODefault implements DockerDAO {
 
   @Override
   public IP findHostMachineIp(IP.Version version) {
-    return DockerNetworkService.findGatewayIp(this.findBestNetwork(version));
+    return DockerNetworkService.findGatewayIp(this.findBestNetwork(version), version);
   }
 
   @Override

@@ -26,6 +26,7 @@ public class DockerNetworkService {
   public static IP findGatewayIp(Network network) {
     return findGatewayIp(network, IP.Version.IPV4);
   }
+
   public static IP findGatewayIp(Network network, IP.Version version) {
     if (network == null) {
       return null;
