@@ -1,5 +1,6 @@
 package com.mageddo.net;
 
+import com.mageddo.dnsproxyserver.templates.IpTemplates;
 import com.mageddo.dnsproxyserver.templates.NetworkInterfaceTemplates;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -73,7 +74,7 @@ class NetworksTest {
     // assert
     assertNotNull(ip);
     assertFalse(ip.isLoopback());
-    assertEquals("10.10.0.1", ip.toText());
+    assertEquals(IpTemplates.LOCAL_192, ip.toText());
   }
 
 }

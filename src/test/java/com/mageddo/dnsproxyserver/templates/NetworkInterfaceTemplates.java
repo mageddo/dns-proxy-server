@@ -14,8 +14,8 @@ public class NetworkInterfaceTemplates {
 
   public static Stream<NetworkInterface> localAndLoopback() {
     final var loopback = buildNetworkInterface(true, 0, InetAddressTemplates.loopback());
-    final var local10 = buildNetworkInterface(false, 1, InetAddressTemplates.local());
     final var local192 = buildNetworkInterface(false, 1, InetAddressTemplates.local192());
+    final var local10 = buildNetworkInterface(false, 2, InetAddressTemplates.local());
     return Stream.of(loopback, local10, local192);
   }
 
