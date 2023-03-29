@@ -36,5 +36,9 @@ public interface IP {
     public boolean isIpv6() {
       return this == IPV6;
     }
+
+    public boolean isIpv4() {
+      return this == IPV4;
+    }
   }
 }

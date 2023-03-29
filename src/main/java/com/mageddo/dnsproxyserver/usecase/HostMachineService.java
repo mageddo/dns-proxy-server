@@ -17,18 +17,25 @@ public class HostMachineService {
   private final DpsContainerManager dpsContainerManager;
 
   public IP findHostMachineIP() {
+    return this.findHostMachineIP(IP.Version.IPV4);
+  }
+
+  public IP findHostMachineIP(IP.Version version) {
     if (this.isDpsRunningInsideContainer()) {
-      return this.dockerDAO.findHostMachineIp();
+      return this.dockerDAO.findHostMachineIp(version);
     }
-    return this.findCurrentMachineIp();
+    return this.findCurrentMachineIp(version);
+  }
+
+  IP findCurrentMachineIp() {
+    return this.findCurrentMachineIp(IP.Version.IPV4);
+  }
+
+  IP findCurrentMachineIp(IP.Version version) {
+    return Networks.findCurrentMachineIP(version);
   }
 
   boolean isDpsRunningInsideContainer() {
     return this.dpsContainerManager.isDpsRunningInsideContainer();
   }
-
-  IP findCurrentMachineIp() {
-    return Networks.findCurrentMachineIP();
-  }
-
 }
