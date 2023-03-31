@@ -41,7 +41,7 @@ public class ContainerSolvingService {
   private final DockerDAO dockerDAO;
   private final DockerNetworkDAO networkDAO;
 
-  public String findBestHostIP(HostnameQuery host) {
+  public Entry findBestMatch(HostnameQuery host) {
     final var stopWatch = StopWatch.createStarted();
     final var matchedContainers = this.findMatchingContainers(host);
     final var foundIp = matchedContainers
@@ -49,8 +49,16 @@ public class ContainerSolvingService {
       .map(it -> this.findBestIpMatch(it, host.getVersion()))
       .findFirst()
       .orElse(null);
-    log.trace("status=findDone, host={}, found={}, time={}", host, foundIp, stopWatch.getTime());
-    return foundIp;
+    final var hostnameMatched = !matchedContainers.isEmpty();
+    log.trace(
+      "status=findDone, host={}, found={}, hostnameMatched={}, time={}",
+      host, foundIp, hostnameMatched, stopWatch.getTime()
+    );
+    return Entry
+      .builder()
+      .hostnameMatched(hostnameMatched)
+      .ip(IP.of(foundIp))
+      .build();
   }
 
   public String findBestIpMatch(InspectContainerResponse inspect) {

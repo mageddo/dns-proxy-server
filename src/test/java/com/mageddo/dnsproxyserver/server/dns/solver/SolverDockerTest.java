@@ -55,7 +55,7 @@ class SolverDockerTest {
     ;
     doReturn(ip)
       .when(this.containerSolvingService)
-      .findBestHostIP(eq(hostname));
+      .findBestMatch(eq(hostname));
 
     // act
     final var res = this.solver.handle(query);
@@ -65,7 +65,7 @@ class SolverDockerTest {
 
     final var resText = res.toString();
     assertTrue(resText.contains(ip), resText);
-    verify(this.containerSolvingService).findBestHostIP(hostname);
+    verify(this.containerSolvingService).findBestMatch(hostname);
   }
 
 
@@ -82,7 +82,7 @@ class SolverDockerTest {
 
     doReturn(ip)
       .when(this.containerSolvingService)
-      .findBestHostIP(any());
+      .findBestMatch(any());
 
     // act
     final var res = this.solver.handle(query);
@@ -92,7 +92,7 @@ class SolverDockerTest {
     assertTrue(Responses.hasFlag(res, Flags.RA));
     final var resText = res.toString();
     assertTrue(resText.contains(ip), resText);
-    verify(this.containerSolvingService).findBestHostIP(this.hostnameQueryCaptor.capture());
+    verify(this.containerSolvingService).findBestMatch(this.hostnameQueryCaptor.capture());
 
     final var v = this.hostnameQueryCaptor.getValue();
     assertEquals(IP.Version.IPV6, v.getVersion());
