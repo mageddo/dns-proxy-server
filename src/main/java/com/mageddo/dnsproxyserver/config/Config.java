@@ -125,9 +125,15 @@ public class Config {
     @NonNull
     private String hostname;
 
-    private String ip; // hostname ip when type=A,AAAA
+    /**
+     * Used when {@link #type} in {@link Type#AAAA} , {@link Type#A}
+     */
+    private String ip;
 
-    private String target; // target hostname when type=CNAME
+    /**
+     * Target hostname when {@link #type} = {@link Type#CNAME}
+     */
+    private String target;
 
     @NonNull
     private Integer ttl;
