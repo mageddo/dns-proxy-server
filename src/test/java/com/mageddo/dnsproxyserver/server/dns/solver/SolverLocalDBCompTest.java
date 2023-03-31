@@ -97,7 +97,6 @@ class SolverLocalDBCompTest {
 
   }
 
-
   @Test
   void mustSolveAAARecordAsAFromLocalDB() {
 
@@ -111,7 +110,7 @@ class SolverLocalDBCompTest {
     // assert
     assertNotNull(res);
     assertEquals(
-      "acme.com.    45  IN  A  10.10.0.1",
+      "acme.com.    45  IN  AAAA  2001:db8:1:0:0:0:0:2",
       Messages.detailedPrint(res.getMessage())
     );
 

@@ -33,6 +33,7 @@ public class EntryTemplates {
     return a(host)
       .toBuilder()
       .type(Type.AAAA)
+      .ip(IpTemplates.LOCAL_IPV6)
       .build();
   }
 
