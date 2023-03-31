@@ -56,14 +56,17 @@ public class DpsContainerManager {
       .withName(NETWORK_DPS)
       .withDriver(NETWORK_BRIDGE)
       .withCheckDuplicate(false)
-      .withEnableIpv6(false)
+      .withEnableIpv6(true)
       .withIpam(
         new Network.Ipam()
           .withConfig(
             new Network.Ipam.Config()
               .withSubnet("172.157.0.0/16")
               .withIpRange("172.157.5.3/24")
-              .withGateway("172.157.5.1")
+              .withGateway("172.157.5.1"),
+            new Network.Ipam.Config()
+              .withSubnet("fc00:5c6f:db50::/64")
+              .withGateway("fc00:5c6f:db50::1")
           )
       )
       .withInternal(false)
