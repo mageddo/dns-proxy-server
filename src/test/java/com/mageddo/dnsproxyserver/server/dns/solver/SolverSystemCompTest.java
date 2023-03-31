@@ -9,6 +9,7 @@ import dagger.sheath.junit.DaggerTest;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 import org.xbill.DNS.Flags;
+import org.xbill.DNS.Rcode;
 import testing.ContextSupplier;
 import testing.Events;
 
@@ -67,7 +68,9 @@ class SolverSystemCompTest {
 
     // assert
     assertNotNull(res);
-    assertEquals("", Messages.detailedPrint(res.getMessage()));
+    final var msg = res.getMessage();
+    assertEquals(Rcode.NOERROR, msg.getRcode());
+    assertEquals("", Messages.detailedPrint(msg));
 
   }
 

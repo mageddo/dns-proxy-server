@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.xbill.DNS.Rcode;
 
 import java.time.Duration;
 
@@ -82,4 +83,26 @@ class SolverLocalDBTest {
 
   }
 
+  @Test
+  void mustSolveNoErrorWhenHostIsFoundButAddressIsNot() {
+
+    // arrange
+    final var query = MessageTemplates.acmeQuadAQuery();
+    final var wildcardHostName = HostnameQuery.ofWildcard(HostnameTemplates.ACME_HOSTNAME, IP.Version.IPV6);
+
+    doReturn(EntryTemplates.acmeA())
+      .when(this.solver)
+      .findEntryTo(eq(wildcardHostName))
+    ;
+
+    // act
+    final var res = this.solver.handle(query);
+
+    // assert
+    assertNotNull(res);
+    final var msg = res.getMessage();
+    assertEquals(Rcode.NOERROR, msg.getRcode());
+    assertEquals("", Messages.detailedPrint(msg));
+
+  }
 }

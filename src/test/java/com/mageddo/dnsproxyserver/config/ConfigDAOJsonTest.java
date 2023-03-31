@@ -56,4 +56,23 @@ class ConfigDAOJsonTest {
     assertNotNull(found);
   }
 
+
+  @Test
+  void mustSolveARecordEvenWhenBothAAndQuadAAreAvailable(){
+    // arrange
+    final var query = HostnameQueryTemplates.acmeComQuadA();
+
+    final var env = EnvTemplates.acmeQuadA();
+    doReturn(env)
+      .when(this.dao)
+      .findActiveEnv();
+
+    // act
+    final var found = this.dao.findEntryForActiveEnv(query);
+
+    // assert
+    assertNotNull(found);
+  }
+
+
 }

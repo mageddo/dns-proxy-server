@@ -118,13 +118,14 @@ public class Config {
   @Value
   @Builder(builderClassName = "EntryBuilder", buildMethodName = "_build", toBuilder = true)
   public static class Entry {
+
     @NonNull
     private Long id;
 
     @NonNull
     private String hostname;
 
-    private String ip; // hostname ip when type=A
+    private String ip; // hostname ip when type=A,AAAA
 
     private String target; // target hostname when type=CNAME
 

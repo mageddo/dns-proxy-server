@@ -37,8 +37,8 @@ public class SolverLocalDB implements Solver {
     final var questionType = Messages.findQuestionType(query);
     final var res = HostnameMatcher.match(askedHost, questionType.toVersion(), hostname -> {
       stopWatch.split();
-      final var entry = this.findEntryTo(hostname);
-      if (entry == null) {
+      final var found = this.findEntryTo(hostname);
+      if (found == null) {
         log.trace(
           "status=partialNotFound, askedHost={}, time={}",
           askedHost, stopWatch.getTime() - stopWatch.getSplitTime()
@@ -47,16 +47,17 @@ public class SolverLocalDB implements Solver {
       }
       log.trace(
         "status=found, type={}, askedHost={}, time={}, totalTime={}",
-        entry.getType(), askedHost, stopWatch.getTime() - stopWatch.getSplitTime(), stopWatch.getTime()
+        found.getType(), askedHost, stopWatch.getTime() - stopWatch.getSplitTime(), stopWatch.getTime()
       );
 
-      if (entry.getType().isAddressSolving()) {
+      if (found.getType().isAddressSolving()) {
+        final var ip = found.getType().equals(questionType) ? found.getIp() : null;
         return Response.of(
-          Messages.answer(query, entry.getIp(), questionType.toVersion(), entry.getTtl()),
-          Duration.ofSeconds(entry.getTtl())
+          Messages.answer(query, ip, questionType.toVersion(), found.getTtl()),
+          Duration.ofSeconds(found.getTtl())
         );
       }
-      return this.solverDelegate.get().solve(query, entry);
+      return this.solverDelegate.get().solve(query, found);
     });
     if (res != null) {
       return res;

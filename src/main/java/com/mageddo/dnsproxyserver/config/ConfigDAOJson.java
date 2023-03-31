@@ -39,12 +39,12 @@ public class ConfigDAOJson implements ConfigDAO {
   }
 
   @Override
-  public Config.Entry findEntryForActiveEnv(HostnameQuery hostname) {
+  public Config.Entry findEntryForActiveEnv(HostnameQuery query) {
     final var env = this.findActiveEnv();
     return env.getEntries()
       .stream()
-      .filter(it -> matches(hostname, it))
-      .findFirst()
+      .filter(it -> query.matches(it.getHostname()))
+      .min((o1, o2) -> o1.getType() == o2.getType() ? 0 : 1)
       .orElse(null);
   }
 
@@ -193,14 +193,6 @@ public class ConfigDAOJson implements ConfigDAO {
       }
     }
     return false;
-  }
-
-  private static boolean matches(HostnameQuery query, Config.Entry entry) {
-    if (!entry.getType().isAddressSolving()) {
-      return query.matches(entry.getHostname());
-    }
-    final var actual = HostnameQuery.of(entry.getHostname(), entry.getType().toVersion());
-    return query.matches(actual);
   }
 
   interface TriConsumer<A, B, C> {
