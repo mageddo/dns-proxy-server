@@ -20,4 +20,12 @@ public class EntryTemplates {
       .ip(IP.of(IpTemplates.LOCAL_EXTENDED_IPV6))
       .build();
   }
+
+  public static Entry hostnameMatchedButNoAddress() {
+    return Entry
+      .builder()
+      .hostnameMatched(true)
+      .build()
+      ;
+  }
 }
