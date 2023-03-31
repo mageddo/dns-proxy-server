@@ -42,8 +42,8 @@ public class EnvTemplates {
 
   public static Config.Env acmeAAndQuadA(){
     return Config.Env.theDefault()
-      .add(EntryTemplates.acmeQuadA())
       .add(EntryTemplates.acmeA())
+      .add(EntryTemplates.acmeQuadA())
       ;
   }
 

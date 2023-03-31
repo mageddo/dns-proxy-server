@@ -44,7 +44,15 @@ public class ConfigDAOJson implements ConfigDAO {
     return env.getEntries()
       .stream()
       .filter(it -> query.matches(it.getHostname()))
-      .min((o1, o2) -> o1.getType() == o2.getType() ? 0 : 1)
+      .min((o1, o2) -> {
+        if (o1.getType() == o2.getType()) {
+          return 0;
+        }
+        if (query.isTypeEqualTo(o1.getType())) {
+          return -1;
+        }
+        return 1;
+      })
       .orElse(null);
   }
 

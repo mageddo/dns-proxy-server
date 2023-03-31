@@ -58,7 +58,7 @@ class ConfigDAOJsonTest {
   }
 
   @Test
-  void mustSolveARecordEvenWhenBothAAndQuadAAreAvailable(){
+  void mustSolveQueriedTypeWhenTwoDifferentTypesAreAvailable(){
     // arrange
     final var query = HostnameQueryTemplates.acmeComQuadA();
 
@@ -72,7 +72,7 @@ class ConfigDAOJsonTest {
 
     // assert
     assertNotNull(found);
-    assertEquals(Type.A, found.getType());
+    assertEquals(Type.AAAA, found.getType());
   }
 
 
