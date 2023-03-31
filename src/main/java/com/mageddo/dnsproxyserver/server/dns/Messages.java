@@ -8,6 +8,7 @@ import com.mageddo.dnsproxyserver.utils.Ips;
 import com.mageddo.net.IP;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.xbill.DNS.AAAARecord;
 import org.xbill.DNS.ARecord;
 import org.xbill.DNS.CNAMERecord;
@@ -73,7 +74,9 @@ public class Messages {
       sb.append(simplePrint(record));
       sb.append(" | ");
     }
-    sb.delete(sb.length() - 3, sb.length());
+    if (sb.length() > 3) {
+      sb.delete(sb.length() - 3, sb.length());
+    }
     return sb.toString();
   }
 
@@ -139,8 +142,8 @@ public class Messages {
   }
 
   @SneakyThrows
-  public static Record query(String host, final int type) {
-    return Record.newRecord(Name.fromString(host), type, DClass.IN, 0);
+  public static Record query(final String host, final int type) {
+    return Record.newRecord(Name.fromString(Hostnames.toAbsoluteName(host)), type, DClass.IN, 0);
   }
 
   public static Integer findQuestionTypeCode(Message msg) {
@@ -220,8 +223,11 @@ public class Messages {
     return quadAnswer(query, ip, DEFAULT_TTL);
   }
 
-  public static Message quadAnswer(Message query, String ip, final long ttl) {
+  public static Message quadAnswer(final Message query, final String ip, final long ttl) {
     final var res = withNoErrorResponse(query.clone());
+    if (StringUtils.isBlank(ip)) {
+      return res;
+    }
     final var answer = new AAAARecord(res.getQuestion().getName(), DClass.IN, ttl, Ips.toAddress(ip));
     res.addRecord(answer, Section.ANSWER);
     return res;

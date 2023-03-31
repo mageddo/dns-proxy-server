@@ -31,6 +31,9 @@ public class Ips {
 
   public static InetAddress toAddress(String ip) {
     try {
+      if (StringUtils.isBlank(ip)) {
+        return null;
+      }
       return InetAddress.getByName(ip);
     } catch (UnknownHostException e) {
       throw new RuntimeException(e);

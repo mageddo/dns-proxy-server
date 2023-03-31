@@ -1,9 +1,11 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
+import com.mageddo.commons.lang.Objects;
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.usecase.HostMachineService;
+import com.mageddo.net.IP;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.Message;
@@ -29,13 +31,9 @@ public class SolverSystem implements Solver {
     final var config = Configs.getInstance();
     if (hostname.isEqualTo(config.getHostMachineHostname())) { // fixme fazer case com hostname + search domain
       final var ip = this.machineService.findHostMachineIP(questionType.toVersion());
-      if (ip == null) {
-        log.debug("status=hostMachineIpNotFound, host={}", hostname);
-        return null;
-      }
       log.debug("status=solvingHostMachineName, host={}, ip={}", hostname, ip);
       return Response.of(
-        Messages.answer(query, ip.toText(), questionType.toVersion()),
+        Messages.answer(query, Objects.mapOrNull(ip, IP::toText), questionType.toVersion()),
         Messages.DEFAULT_TTL_DURATION
       );
     }
