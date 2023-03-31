@@ -9,10 +9,9 @@ import lombok.Value;
 public class Entry {
 
   private boolean hostnameMatched;
-
   private IP ip;
 
-  public String getIpIfVersionMatches(IP.Version version) {
-    return this.ip != null && this.ip.version() == version ? this.ip.toText() : null;
+  public String getIpText() {
+    return this.ip != null ? this.ip.toText() : null;
   }
 }

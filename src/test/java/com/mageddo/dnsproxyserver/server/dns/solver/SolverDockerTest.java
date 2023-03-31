@@ -19,6 +19,7 @@ import org.xbill.DNS.Flags;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -122,6 +123,28 @@ class SolverDockerTest {
     assertTrue(Responses.hasFlag(res, Flags.RA));
     assertEquals(Type.AAAA, Messages.findQuestionType(res.getMessage()));
     assertEquals("", Messages.detailedPrint(res.getMessage()));
+  }
+
+  @Test
+  void mustReturnNxDomainWhenHostnameDONTMatches() {
+    // arrange
+    final var query = MessageTemplates.acmeQuadAQuery();
+    final var entry = EntryTemplates.hostnameNotMatched();
+
+    doReturn(true)
+      .when(this.dockerDAO)
+      .isConnected()
+    ;
+
+    doReturn(entry)
+      .when(this.containerSolvingService)
+      .findBestMatch(any());
+
+    // act
+    final var res = this.solver.handle(query);
+
+    // assert
+    assertNull(res);
   }
 
 }

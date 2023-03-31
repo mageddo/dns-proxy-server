@@ -28,4 +28,11 @@ public class EntryTemplates {
       .build()
       ;
   }
+
+  public static Entry hostnameNotMatched() {
+    return Entry
+      .builder()
+      .build()
+      ;
+  }
 }
