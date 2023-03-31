@@ -43,7 +43,7 @@ public class ConfigDAOJson implements ConfigDAO {
     final var env = this.findActiveEnv();
     return env.getEntries()
       .stream()
-      .filter(it -> hostname.matches(it.getHostname()))
+      .filter(it -> matches(hostname, it))
       .findFirst()
       .orElse(null);
   }
@@ -195,8 +195,17 @@ public class ConfigDAOJson implements ConfigDAO {
     return false;
   }
 
+  private static boolean matches(HostnameQuery query, Config.Entry entry) {
+    if (!entry.getType().isAddressSolving()) {
+      return query.matches(entry.getHostname());
+    }
+    final var actual = HostnameQuery.of(entry.getHostname(), entry.getType().toVersion());
+    return query.matches(actual);
+  }
+
   interface TriConsumer<A, B, C> {
     void accept(A a, B b, C c);
   }
+
 }
 

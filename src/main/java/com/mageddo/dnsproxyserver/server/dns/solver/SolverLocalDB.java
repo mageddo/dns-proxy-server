@@ -50,7 +50,7 @@ public class SolverLocalDB implements Solver {
         entry.getType(), askedHost, stopWatch.getTime() - stopWatch.getSplitTime(), stopWatch.getTime()
       );
 
-      if (Type.is(entry.getType(), Type.A, Type.AAAA)) {
+      if (entry.getType().isAddressSolving()) {
         return Response.of(
           Messages.answer(query, entry.getIp(), questionType.toVersion()),
           Duration.ofSeconds(entry.getTtl())

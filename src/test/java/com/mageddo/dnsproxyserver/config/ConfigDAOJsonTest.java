@@ -37,4 +37,7 @@ class ConfigDAOJsonTest {
     assertNotNull(entry);
     assertEquals(MAGEDDO_COM_CAMEL_CASE, entry.getHostname());
   }
+
+  // fixme create ipv6 test
+//  findEntryForActiveEnv
 }

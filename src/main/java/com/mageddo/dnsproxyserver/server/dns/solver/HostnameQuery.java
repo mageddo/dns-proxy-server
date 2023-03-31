@@ -94,6 +94,10 @@ public class HostnameQuery {
       .build();
   }
 
+  public static HostnameQuery of(String hostname, IP.Version version) {
+    return of(Hostname.of(hostname), version);
+  }
+
   public boolean matches(Hostname hostname) {
     return matches(hostname.getCanonicalValue());
   }
@@ -115,5 +119,9 @@ public class HostnameQuery {
         ;
     }
     return this.hostname.isEqualTo(hostnamePattern);
+  }
+
+  public boolean matches(HostnameQuery actual) {
+    return this.matches(actual.getHostname()) && this.getVersion() == actual.getVersion();
   }
 }

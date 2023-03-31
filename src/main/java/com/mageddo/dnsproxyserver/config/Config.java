@@ -1,9 +1,9 @@
 package com.mageddo.dnsproxyserver.config;
 
 import com.mageddo.dnsproxyserver.config.entrypoint.LogLevel;
-import com.mageddo.net.IpAddr;
 import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import com.mageddo.net.IP;
+import com.mageddo.net.IpAddr;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -156,7 +156,7 @@ public class Config {
        */
       private final int type;
 
-      public boolean isNot(Type ... types) {
+      public boolean isNot(Type... types) {
         return isNot(this.type, types);
       }
 
@@ -200,6 +200,9 @@ public class Config {
         };
       }
 
+      public boolean isAddressSolving() {
+        return is(this, Config.Entry.Type.A, Config.Entry.Type.AAAA);
+      }
     }
   }
 }
