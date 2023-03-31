@@ -32,14 +32,24 @@ public class EnvTemplates {
   }
   public static Config.Env acmeQuadA(){
     return Config.Env.theDefault()
-      .add(Config.Entry
-        .builder()
-        .ip(IpTemplates.LOCAL_EXTENDED_IPV6)
-        .ttl(30)
-        .type(Config.Entry.Type.AAAA)
-        .hostname(HostnameTemplates.ACME_HOSTNAME)
-        .build()
-      );
+      .add(EntryTemplates.acmeQuadA());
   }
 
+  public static Config.Env acmeA(){
+    return Config.Env.theDefault()
+      .add(EntryTemplates.acmeA());
+  }
+
+  public static Config.Env acmeAAndQuadA(){
+    return Config.Env.theDefault()
+      .add(EntryTemplates.acmeQuadA())
+      .add(EntryTemplates.acmeA())
+      ;
+  }
+
+  public static Config.Env acmeCname() {
+    return Config.Env.theDefault()
+      .add(EntryTemplates.acmeCname())
+      ;
+  }
 }

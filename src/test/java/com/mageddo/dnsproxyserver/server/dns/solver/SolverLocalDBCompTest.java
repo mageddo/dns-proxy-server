@@ -101,7 +101,7 @@ class SolverLocalDBCompTest {
   void mustSolveAAARecordAsAFromLocalDB() {
 
     // arrange
-    this.configDAO.addEntry(Config.Env.DEFAULT_ENV, EntryTemplates.acmeAAAA());
+    this.configDAO.addEntry(Config.Env.DEFAULT_ENV, EntryTemplates.acmeQuadA());
     final var msg = Messages.quadAQuestion(toAbsoluteName(EntryTemplates.ACME_COM));
 
     // act

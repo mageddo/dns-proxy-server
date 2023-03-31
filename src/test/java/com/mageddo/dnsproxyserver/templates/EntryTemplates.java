@@ -37,11 +37,15 @@ public class EntryTemplates {
       .build();
   }
 
-  public static Config.Entry acmeAAAA() {
+  public static Config.Entry acmeQuadA() {
     return aaaa(ACME_COM);
   }
 
   public static Config.Entry acmeA() {
     return a(ACME_COM);
+  }
+
+  public static Config.Entry acmeCname() {
+    return cname(ACME_COM, HostnameTemplates.ORANGE_ACME_HOSTNAME);
   }
 }
