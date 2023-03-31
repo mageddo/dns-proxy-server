@@ -3,8 +3,8 @@ package com.mageddo.dnsproxyserver.server.dns.solver;
 import com.mageddo.dnsproxyserver.docker.ContainerSolvingService;
 import com.mageddo.dnsproxyserver.docker.DockerDAO;
 import com.mageddo.dnsproxyserver.templates.HostnameTemplates;
-import com.mageddo.dnsproxyserver.templates.IpTemplates;
 import com.mageddo.dnsproxyserver.templates.MessageTemplates;
+import com.mageddo.dnsproxyserver.templates.docker.EntryTemplates;
 import com.mageddo.net.IP;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,14 +46,14 @@ class SolverDockerTest {
   void mustSolveExactHostname() {
     // arrange
     final var query = MessageTemplates.acmeAQuery();
-    final var ip = "0.0.0.0";
+    final var entry = EntryTemplates.zeroIp();
     final var hostname = HostnameQuery.ofWildcard(HostnameTemplates.ACME_HOSTNAME);
 
     doReturn(true)
       .when(this.dockerDAO)
       .isConnected()
     ;
-    doReturn(ip)
+    doReturn(entry)
       .when(this.containerSolvingService)
       .findBestMatch(eq(hostname));
 
@@ -64,7 +64,7 @@ class SolverDockerTest {
     assertNotNull(res);
 
     final var resText = res.toString();
-    assertTrue(resText.contains(ip), resText);
+    assertTrue(resText.contains(entry.getIp().toText()), resText);
     verify(this.containerSolvingService).findBestMatch(hostname);
   }
 
@@ -73,7 +73,7 @@ class SolverDockerTest {
   void mustSolveQuadARecordQuery() {
     // arrange
     final var query = MessageTemplates.acmeQuadAQuery();
-    final var ip = IpTemplates.LOCAL_EXTENDED_IPV6;
+    final var ip = EntryTemplates.localIpv6();
 
     doReturn(true)
       .when(this.dockerDAO)
@@ -91,7 +91,7 @@ class SolverDockerTest {
     assertNotNull(res);
     assertTrue(Responses.hasFlag(res, Flags.RA));
     final var resText = res.toString();
-    assertTrue(resText.contains(ip), resText);
+    assertTrue(resText.contains(ip.getIp().toText()), resText);
     verify(this.containerSolvingService).findBestMatch(this.hostnameQueryCaptor.capture());
 
     final var v = this.hostnameQueryCaptor.getValue();
