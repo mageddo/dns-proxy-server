@@ -4,6 +4,7 @@ import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.templates.EntryTemplates;
 import com.mageddo.dnsproxyserver.templates.HostnameTemplates;
 import com.mageddo.dnsproxyserver.templates.MessageTemplates;
+import com.mageddo.net.IP;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -52,5 +53,31 @@ class SolverLocalDBTest {
 
   }
 
+  @Test
+  void mustSolveQuadAQueries() {
+
+    // arrange
+    final var query = MessageTemplates.acmeQuadAQuery();
+    final var wildcardHostName = HostnameQuery.ofWildcard(HostnameTemplates.ACME_HOSTNAME, IP.Version.IPV6);
+
+    doReturn(EntryTemplates.acmeAAAA())
+      .when(this.solver)
+      .findEntryTo(eq(wildcardHostName))
+    ;
+
+    // act
+    final var res = this.solver.handle(query);
+
+    // assert
+    assertNotNull(res);
+    assertEquals(
+      "acme.com.    30  IN  AAAA  ::ffff:10.10.0.1",
+      Messages.detailedPrint(res.getMessage())
+    );
+
+
+    verify(this.solver).findEntryTo(wildcardHostName);
+
+  }
 
 }

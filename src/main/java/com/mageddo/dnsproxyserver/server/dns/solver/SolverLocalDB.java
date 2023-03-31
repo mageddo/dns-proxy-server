@@ -4,7 +4,6 @@ import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.config.ConfigDAO;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
-import com.mageddo.net.IP;
 import dagger.Lazy;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +34,8 @@ public class SolverLocalDB implements Solver {
     }
 
     final var askedHost = Messages.findQuestionHostname(query);
-    final var res = HostnameMatcher.match(askedHost, IP.Version.IPV4, hostname -> {
+    final var questionType = Messages.findQuestionType(query);
+    final var res = HostnameMatcher.match(askedHost, questionType.toVersion(), hostname -> {
       stopWatch.split();
       final var entry = this.findEntryTo(hostname);
       if (entry == null) {
@@ -52,7 +52,7 @@ public class SolverLocalDB implements Solver {
 
       if (Type.is(entry.getType(), Type.A, Type.AAAA)) {
         return Response.of(
-          Messages.aAnswer(query, entry.getIp(), entry.getTtl()),
+          Messages.answer(query, entry.getIp(), questionType.toVersion()),
           Duration.ofSeconds(entry.getTtl())
         );
       }
