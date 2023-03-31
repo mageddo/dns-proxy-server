@@ -39,4 +39,8 @@ public class EntryTemplates {
   public static Config.Entry acmeAAAA() {
     return aaaa(ACME_COM);
   }
+
+  public static Config.Entry acmeA() {
+    return a(ACME_COM);
+  }
 }

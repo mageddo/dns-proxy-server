@@ -11,6 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Duration;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.eq;
@@ -33,7 +35,7 @@ class SolverLocalDBTest {
     final var hostname = HostnameQuery.of(HostnameTemplates.ACME_HOSTNAME);
     final var wildcardHostName = HostnameQuery.ofWildcard(hostname.getHostname());
 
-    doReturn(EntryTemplates.acmeAAAA())
+    doReturn(EntryTemplates.acmeA())
       .when(this.solver)
       .findEntryTo(eq(wildcardHostName))
     ;
@@ -44,9 +46,10 @@ class SolverLocalDBTest {
     // assert
     assertNotNull(res);
     assertEquals(
-      "acme.com.    45  IN  A  10.10.0.1",
+      "acme.com.    30  IN  A  10.10.0.1",
       Messages.detailedPrint(res.getMessage())
     );
+    assertEquals(Duration.ofSeconds(45), res.getTtl());
 
     verify(this.solver, never()).findEntryTo(hostname);
     verify(this.solver).findEntryTo(wildcardHostName);
