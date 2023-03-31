@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.templates;
 
 import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
+import com.mageddo.net.IP;
 
 public class HostnameQueryTemplates {
 
@@ -18,6 +19,10 @@ public class HostnameQueryTemplates {
 
   public static HostnameQuery acmeComLocal() {
     return HostnameQuery.ofWildcard("acme.com.local");
+  }
+
+  public static HostnameQuery acmeComQuadA() {
+    return HostnameQuery.of(HostnameTemplates.ACME_HOSTNAME, IP.Version.IPV6);
   }
 
   public static HostnameQuery nginxComBrWildcard() {

@@ -30,4 +30,16 @@ public class EnvTemplates {
         .build()
       );
   }
+  public static Config.Env acmeQuadA(){
+    return Config.Env.theDefault()
+      .add(Config.Entry
+        .builder()
+        .ip(IpTemplates.LOCAL_EXTENDED_IPV6)
+        .ttl(30)
+        .type(Config.Entry.Type.AAAA)
+        .hostname(HostnameTemplates.ACME_HOSTNAME)
+        .build()
+      );
+  }
+
 }

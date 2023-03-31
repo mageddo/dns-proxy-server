@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.config;
 
 import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.templates.EnvTemplates;
+import com.mageddo.dnsproxyserver.templates.HostnameQueryTemplates;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -38,6 +39,21 @@ class ConfigDAOJsonTest {
     assertEquals(MAGEDDO_COM_CAMEL_CASE, entry.getHostname());
   }
 
-  // fixme create ipv6 test
-//  findEntryForActiveEnv
+  @Test
+  void mustSolveQuadARecord(){
+    // arrange
+    final var query = HostnameQueryTemplates.acmeComQuadA();
+
+    final var env = EnvTemplates.acmeQuadA();
+    doReturn(env)
+      .when(this.dao)
+      .findActiveEnv();
+
+    // act
+    final var found = this.dao.findEntryForActiveEnv(query);
+
+    // assert
+    assertNotNull(found);
+  }
+
 }
