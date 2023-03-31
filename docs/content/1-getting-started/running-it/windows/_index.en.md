@@ -76,8 +76,7 @@ by following the pictures below
 
 ![Screenshot](https://i.imgur.com/UAVUgLf.png?width=10pc&classes=shadow)
 
-Uncheck IPV6 because Windows can try to solve hostnames by using a IPV6 DNS server,
-then requests won't be sent to DPS, actually DPS doesn't support IPV6.
+Uncheck IPV6 or also configure it with the right IPV6 address for the host machine.
 
 ![Screenshot](https://i.imgur.com/DGPdFRD.png?width=10pc&classes=shadow)
 

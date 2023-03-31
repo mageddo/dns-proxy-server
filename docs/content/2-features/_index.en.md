@@ -6,6 +6,7 @@ pre: "<b>2. </b>"
 ## Features
 
 {{%children style="li"  %}}
+* IPV4/IPV6 Support 
 
 ## Main features use cases
 
