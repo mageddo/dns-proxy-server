@@ -46,7 +46,7 @@ class SolverLocalDBTest {
     // assert
     assertNotNull(res);
     assertEquals(
-      "acme.com.    30  IN  A  10.10.0.1",
+      "acme.com.    45  IN  A  10.10.0.1",
       Messages.detailedPrint(res.getMessage())
     );
     assertEquals(Duration.ofSeconds(45), res.getTtl());
@@ -74,10 +74,9 @@ class SolverLocalDBTest {
     // assert
     assertNotNull(res);
     assertEquals(
-      "acme.com.    30  IN  AAAA  ::ffff:10.10.0.1",
+      "acme.com.    45  IN  AAAA  ::ffff:10.10.0.1",
       Messages.detailedPrint(res.getMessage())
     );
-
 
     verify(this.solver).findEntryTo(wildcardHostName);
 

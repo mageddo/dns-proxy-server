@@ -52,7 +52,7 @@ public class SolverLocalDB implements Solver {
 
       if (entry.getType().isAddressSolving()) {
         return Response.of(
-          Messages.answer(query, entry.getIp(), questionType.toVersion()),
+          Messages.answer(query, entry.getIp(), questionType.toVersion(), entry.getTtl()),
           Duration.ofSeconds(entry.getTtl())
         );
       }

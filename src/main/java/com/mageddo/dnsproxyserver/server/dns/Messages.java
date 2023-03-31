@@ -235,10 +235,14 @@ public class Messages {
   }
 
   public static Message answer(Message query, String ip, IP.Version version) {
+    return answer(query, ip, version, DEFAULT_TTL);
+  }
+
+  public static Message answer(Message query, String ip, IP.Version version, long ttl) {
     if (version.isIpv6()) {
-      return Messages.quadAnswer(query, ip);
+      return Messages.quadAnswer(query, ip, ttl);
     }
-    return Messages.aAnswer(query, ip);
+    return Messages.aAnswer(query, ip, ttl);
   }
 
   static Message withNoErrorResponse(Message res) {
@@ -279,4 +283,5 @@ public class Messages {
     final var version = Entry.Type.of(findQuestionTypeCode(query)).toVersion();
     return HostnameQuery.of(host, version);
   }
+
 }
