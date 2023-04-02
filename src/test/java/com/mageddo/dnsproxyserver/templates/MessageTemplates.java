@@ -30,4 +30,8 @@ public class MessageTemplates {
   public static Message acmeNxDomain() {
     return Messages.nxDomain(MessageTemplates.acmeAQuery());
   }
+
+  public static Message acmeSoaQuery() {
+    return Messages.soaQuestion(ACME_HOSTNAME);
+  }
 }

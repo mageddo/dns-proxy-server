@@ -8,6 +8,7 @@ for more details
 * Fixed arm64 images stopped being pushed at `3.19`
 * Cache improvement for a concurrent approach synchronized by key
 * Increasing tcp and udp server parallelism from 20 to 50 threads each, threads are created lazilly
+* Fixing solver NPE on unsupported query types
 
 ## 3.14.5
 * Specify minimum required docker api version `1.21` (as DPS 2)

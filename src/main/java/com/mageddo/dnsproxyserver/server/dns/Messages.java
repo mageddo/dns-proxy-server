@@ -107,7 +107,7 @@ public class Messages {
 
   public static Message aAnswer(Message query, String ip, long ttl) {
     final var res = withNoErrorResponse(query.clone());
-    if(StringUtils.isBlank(ip)){
+    if (StringUtils.isBlank(ip)) {
       return res;
     }
     final var answer = new ARecord(res.getQuestion().getName(), DClass.IN, ttl, Ips.toAddress(ip));
@@ -142,6 +142,10 @@ public class Messages {
 
   public static Message quadAQuestion(String host) {
     return Message.newQuery(query(host, Type.AAAA));
+  }
+
+  public static Message soaQuestion(String hostname) {
+    return Message.newQuery(query(hostname, Type.SOA));
   }
 
   @SneakyThrows

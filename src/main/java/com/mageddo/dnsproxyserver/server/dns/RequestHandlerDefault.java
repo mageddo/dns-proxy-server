@@ -88,9 +88,9 @@ public class RequestHandlerDefault implements RequestHandler {
           return res;
         } catch (Exception e) {
           log.warn(
-            "status=solverFailed, currentSolverTime={}, totalTime={}, solver={}, eClass={}, msg={}",
+            "status=solverFailed, currentSolverTime={}, totalTime={}, solver={}, query={}, eClass={}, msg={}",
             stopWatch.getTime() - stopWatch.getSplitTime(), stopWatch.getTime(), solverName,
-            ClassUtils.getSimpleName(e), e.getMessage(), e
+            simplePrint(reqMsg), ClassUtils.getSimpleName(e), e.getMessage(), e
           );
         }
       }

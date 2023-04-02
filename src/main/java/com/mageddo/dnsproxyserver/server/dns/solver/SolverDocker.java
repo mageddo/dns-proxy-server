@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
+import com.mageddo.dnsproxyserver.config.Types;
 import com.mageddo.dnsproxyserver.docker.ContainerSolvingService;
 import com.mageddo.dnsproxyserver.docker.DockerDAO;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
@@ -27,14 +28,14 @@ public class SolverDocker implements Solver {
       return null;
     }
 
-    final var type = Messages.findQuestionTypeCode(query);
-    if (Type.isNot(type, Type.AAAA, Type.A)) {
+    final var type = Messages.findQuestionType(query);
+    if (Types.isNot(type, Type.AAAA, Type.A)) {
       log.trace("status=unsupportedType, type={}", type);
       return null;
     }
 
     final var askedHost = Messages.findQuestionHostname(query);
-    final var version = Type.of(type).toVersion();
+    final var version = type.toVersion();
     return HostnameMatcher.match(askedHost, version, hostname -> {
       final var entry = this.containerSolvingService.findBestMatch(hostname);
       if (!entry.isHostnameMatched()) {

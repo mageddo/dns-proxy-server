@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.server.dns.solver;
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.config.Configs;
+import com.mageddo.dnsproxyserver.config.Types;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.usecase.HostMachineService;
 import com.mageddo.net.IP;
@@ -12,6 +13,8 @@ import org.xbill.DNS.Message;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import static com.mageddo.dnsproxyserver.server.dns.Messages.findQuestionTypeCode;
 
 @Slf4j
 @Singleton
@@ -23,9 +26,10 @@ public class SolverSystem implements Solver {
   @Override
   public Response handle(Message query) {
     final var hostname = Messages.findQuestionHostname(query);
+
     final var questionType = Messages.findQuestionType(query);
-    if (questionType.isNot(Type.A, Type.AAAA)) {
-      log.debug("status=unsupportedType, type={}, query={}", questionType, Messages.simplePrint(query));
+    if (Types.isNot(questionType, Type.A, Type.AAAA)) {
+      log.debug("status=unsupportedType, type={}, query={}", findQuestionTypeCode(query), Messages.simplePrint(query));
       return null;
     }
     final var config = Configs.getInstance();

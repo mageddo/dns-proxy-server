@@ -23,7 +23,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.mageddo.commons.lang.Objects.*;
+import static com.mageddo.commons.lang.Objects.mapOrNull;
 
 /**
  * Domain object which owns the configs.
@@ -176,7 +176,7 @@ public class Config {
       private final int type;
 
       public boolean isNot(Type... types) {
-        return isNot(this.type, types);
+        return Types.isNot(this.type, types);
       }
 
       public static Type of(Integer code) {
@@ -200,17 +200,6 @@ public class Config {
         return contains(of(type));
       }
 
-      public static boolean isNot(Integer code, Type... types) {
-        return !is(of(code), types);
-      }
-
-      public static boolean is(Type current, Type... possible) {
-        return Stream
-          .of(possible)
-          .collect(Collectors.toSet())
-          .contains(current);
-      }
-
       public IP.Version toVersion() {
         return switch (this) {
           case A -> IP.Version.IPV4;
@@ -220,7 +209,7 @@ public class Config {
       }
 
       public boolean isAddressSolving() {
-        return is(this, Config.Entry.Type.A, Config.Entry.Type.AAAA);
+        return Types.is(this, Config.Entry.Type.A, Config.Entry.Type.AAAA);
       }
     }
   }
