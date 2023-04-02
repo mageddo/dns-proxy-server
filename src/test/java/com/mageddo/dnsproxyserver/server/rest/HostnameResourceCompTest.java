@@ -40,7 +40,7 @@ class HostnameResourceCompTest {
     response
       .statusCode(Response.Status.OK.getStatusCode())
       .body(equalTo("""
-        [{"id":"1","hostname":"dps-sample.dev","ip":[192,168,0,254],"target":null,"ttl":30,"type":"A","env":null}]"""))
+        [{"id":"1","hostname":"dps-sample.dev","ip":"192.168.0.254","target":null,"ttl":30,"type":"A","env":null}]"""))
       .log()
     ;
   }
@@ -62,7 +62,7 @@ class HostnameResourceCompTest {
     response
       .statusCode(Response.Status.OK.getStatusCode())
       .body(equalTo("""
-         [{"id":"1231","hostname":"acme.com","ip":[192,168,0,1],"target":null,"ttl":31,"type":"A","env":null}]"""))
+         [{"id":"1231","hostname":"acme.com","ip":"192.168.0.1","target":null,"ttl":31,"type":"A","env":null}]"""))
       .log()
     ;
   }
@@ -75,7 +75,7 @@ class HostnameResourceCompTest {
       {
         "id": 1231,
         "hostname": "acme.com",
-        "ip": [192, 168, 0, 1],
+        "ip": "192.168.0.1",
         "ttl": 31,
         "type": "A",
         "env": "batata-env"
