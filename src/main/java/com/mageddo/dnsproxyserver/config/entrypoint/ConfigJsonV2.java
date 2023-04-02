@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
+import com.mageddo.net.IP;
 import com.mageddo.net.IpAddr;
 import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import lombok.Data;
@@ -103,7 +104,7 @@ public class ConfigJsonV2 implements ConfigJson {
       return new Entry()
         .setHostname(entry.getHostname())
         .setId(entry.getId())
-        .setIp(entry.getIp())
+        .setIp(entry.getIpAsText())
         .setTtl(entry.getTtl())
         .setTarget(entry.getTarget())
         .setType(entry.getType())
@@ -122,7 +123,7 @@ public class ConfigJsonV2 implements ConfigJson {
         .builder()
         .type(Type.A)
         .hostname("dps-sample.dev")
-        .ip("192.168.0.254")
+        .ip(IP.of("192.168.0.254"))
         .ttl(30)
         .id(1L)
         .build()

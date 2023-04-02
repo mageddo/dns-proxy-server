@@ -45,13 +45,14 @@ public class SolverLocalDB implements Solver {
         );
         return null;
       }
+      final var foundType = found.getType();
       log.trace(
         "status=found, type={}, askedHost={}, time={}, totalTime={}",
-        found.getType(), askedHost, stopWatch.getTime() - stopWatch.getSplitTime(), stopWatch.getTime()
+        foundType, askedHost, stopWatch.getTime() - stopWatch.getSplitTime(), stopWatch.getTime()
       );
 
-      if (found.getType().isAddressSolving()) {
-        final var ip = found.getType().equals(questionType) ? found.getIp() : null;
+      if (foundType.isAddressSolving()) {
+        final var ip = foundType.equals(questionType) ? found.requireTextIp(): null;
         return Response.of(
           Messages.answer(query, ip, questionType.toVersion(), found.getTtl()),
           Duration.ofSeconds(found.getTtl())

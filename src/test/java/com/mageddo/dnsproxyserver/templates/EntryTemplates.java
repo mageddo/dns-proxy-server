@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.templates;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
+import com.mageddo.net.IP;
 
 public class EntryTemplates {
 
@@ -11,7 +12,7 @@ public class EntryTemplates {
     return Config.Entry
       .builder()
       .hostname(host)
-      .ip("10.10.0.1")
+      .ip(IP.of("10.10.0.1"))
       .ttl(45)
       .type(Type.A)
       .build()
@@ -33,7 +34,7 @@ public class EntryTemplates {
     return a(host)
       .toBuilder()
       .type(Type.AAAA)
-      .ip(IpTemplates.LOCAL_IPV6)
+      .ip(IP.of(IpTemplates.LOCAL_IPV6))
       .build();
   }
 

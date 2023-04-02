@@ -30,7 +30,7 @@ public class ConfigJsonV1EnvsConverter {
       .hostname(entry.getHostname())
       .id(entry.getId())
       .ttl(entry.getTtl())
-      .ip(IpAddr.of(entry.getIp()).getRawIP())
+      .ip(IpAddr.of(entry.getIp()).getIp())
       .type(Config.Entry.Type.A)
       .build();
   }

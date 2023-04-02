@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.templates;
 
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.net.IP;
 
 public class EnvTemplates {
 
@@ -11,7 +12,7 @@ public class EnvTemplates {
     return Config.Env.theDefault()
       .add(Config.Entry
         .builder()
-        .ip("192.168.0.1")
+        .ip(IP.of("192.168.0.1"))
         .ttl(30)
         .type(Config.Entry.Type.A)
         .hostname(MAGEDDO_COM)
@@ -23,7 +24,7 @@ public class EnvTemplates {
     return Config.Env.theDefault()
       .add(Config.Entry
         .builder()
-        .ip("192.168.0.1")
+        .ip(IP.of("192.168.0.1"))
         .ttl(30)
         .type(Config.Entry.Type.A)
         .hostname(MAGEDDO_COM_CAMEL_CASE)

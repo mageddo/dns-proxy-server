@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import org.apache.commons.lang3.Validate;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -21,6 +22,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.mageddo.commons.lang.Objects.*;
 
 /**
  * Domain object which owns the configs.
@@ -128,7 +131,7 @@ public class Config {
     /**
      * Used when {@link #type} in {@link Type#AAAA} , {@link Type#A}
      */
-    private String ip;
+    private IP ip;
 
     /**
      * Target hostname when {@link #type} = {@link Type#CNAME}
@@ -140,6 +143,15 @@ public class Config {
 
     @NonNull
     private Config.Entry.Type type;
+
+    public String requireTextIp() {
+      Validate.isTrue(this.type.isAddressSolving() && this.ip != null, "IP is required");
+      return this.ip.toText();
+    }
+
+    public String getIpAsText() {
+      return mapOrNull(this.ip, IP::toText);
+    }
 
     public static class EntryBuilder {
       public Entry build() {
