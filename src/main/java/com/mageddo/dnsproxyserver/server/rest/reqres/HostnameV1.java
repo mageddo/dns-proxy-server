@@ -1,7 +1,6 @@
 package com.mageddo.dnsproxyserver.server.rest.reqres;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.utils.Ips;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
@@ -12,7 +11,7 @@ public class HostnameV1 {
 
   private String id;
   private String hostname;
-  private Short[] ip;
+  private String ip;
   private String target;
   private int ttl;
   private Config.Entry.Type type;
@@ -22,7 +21,7 @@ public class HostnameV1 {
     return new HostnameV1()
       .setHostname(entry.getHostname())
       .setId(String.valueOf(entry.getId()))
-      .setIp(Ips.toShortArray(entry.getIp()))
+      .setIp(entry.getIp())
       .setTtl(entry.getTtl())
       .setTarget(entry.getTarget())
       .setType(entry.getType())
@@ -33,7 +32,7 @@ public class HostnameV1 {
     return Config.Entry.builder()
       .hostname(this.hostname)
       .ttl(this.ttl)
-      .ip(this.ip != null ? Ips.toIp(this.ip).toText() : null)
+      .ip(this.ip)
       .type(this.type)
       .target(this.target)
       .id(StringUtils.isBlank(this.id) ? System.nanoTime() : Long.parseLong(this.id))

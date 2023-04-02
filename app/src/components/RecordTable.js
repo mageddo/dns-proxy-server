@@ -76,10 +76,6 @@ export class RecordTable extends React.Component {
 		});
 	}
 
-	formatIp(ip){
-		return ip.join('.');
-	}
-
 	handleChange(evt, row) {
 		row[evt.target.name] = evt.target.value;
 		console.info('m=handleChange, %s=%s, row=%o', evt.target.name, evt.target.value, row);
@@ -93,7 +89,7 @@ export class RecordTable extends React.Component {
 	}
 
 	handleIpChange(e, row) {
-		row[e.target.name] = e.target.value.split('.').map(it => it ? parseInt(it) : "");
+		row[e.target.name] = e.target.value;
 		this.forceUpdate();
 	}
 
@@ -107,7 +103,7 @@ export class RecordTable extends React.Component {
 		return <tr key={k}>
 			<td>{v.hostname}</td>
 			<td className="text-center">{v.type}</td>
-			{(!v.type || v.type === 'A') && <td>{this.formatIp(v.ip)}</td>}
+			{(!v.type || v.type === 'A' || v.type === 'AAAA') && <td>{v.ip}</td>}
 			{v.type === 'CNAME' && <td>{v.target}</td>}
 			<td className="text-right">{v.ttl}</td>
 			<td className="text-center records-actions">
@@ -130,9 +126,9 @@ export class RecordTable extends React.Component {
 					<option value="CNAME">CNAME</option>
 				</select>
 			</td>
-			{(v.type === 'A' || !v.type) &&
+			{(v.type === 'A' || v.type === 'AAAA' || !v.type) &&
 			<td>
-				<input className="form-control" name="ip" type="text" onChange={(e) => this.handleIpChange(e, v)} value={this.formatIp(v.ip)}/>
+				<input className="form-control" name="ip" type="text" onChange={(e) => this.handleIpChange(e, v)} value={v.ip}/>
 			</td>
 			}
 			{v.type === 'CNAME' &&

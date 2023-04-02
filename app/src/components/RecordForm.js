@@ -30,7 +30,7 @@ export class RecordForm extends React.Component {
 
 	handleIp(e){
 		let form = this.state.form;
-		form[e.target.name] = e.target.value.split('.').map(it => parseInt(it));
+    form[e.target.name] = e.target.value;
 		this.setState({ form });
 	}
 
@@ -57,7 +57,7 @@ export class RecordForm extends React.Component {
 		let showIp = false;
 		let showTarget = true;
 
-		if(targetValue === 'A'){
+		if(targetValue === 'A' || targetValue === 'AAAA'){
 			showIp = true;
 			showTarget = false;
 		}
@@ -71,6 +71,10 @@ export class RecordForm extends React.Component {
 				label: 'IP *',
 				field: 'ip'
 			},
+      'AAAA': {
+        label: 'IP *',
+        field: 'ip'
+      },
 			'CNAME': {
 				label: 'CNAME *',
 				field: 'target'
@@ -91,7 +95,7 @@ export class RecordForm extends React.Component {
 			data: JSON.stringify({
 				...this.state.form,
 				env: this.props.env,
-        ip: this.state.form.type === 'A' ? this.state.form.ip : null
+        ip: (this.state.form.type === 'A' || this.state.form.type === 'AAAA') ? this.state.form.ip : null
       }),
 		})
 		.done(function(){
@@ -171,7 +175,7 @@ export class RecordForm extends React.Component {
 								{
 									this.state.showIp &&
 									<input className="form-control"
-												 pattern="[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+"
+												 pattern=".+"
 												 title="Please provide a valid IP" name="ip" id="ip"
 												 onChange={(e) => this.handleIp(e)}
 												 required
@@ -185,6 +189,7 @@ export class RecordForm extends React.Component {
 							<td>
 								<select name="type" onChange={(e) => this.handleType(e)} className="form-control" type="text">
 									<option value="A">A</option>
+									<option value="AAAA">AAAA</option>
 									<option value="CNAME">CNAME</option>
 								</select>
 							</td>
