@@ -80,3 +80,4 @@ Or via QR code
 [7]: https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif
 [8]: http://mageddo.github.io/dns-proxy-server/latest/en/1-getting-started/versioning
 [9]: http://mageddo.github.io/dns-proxy-server/latest/en/5-tutorials/
+
