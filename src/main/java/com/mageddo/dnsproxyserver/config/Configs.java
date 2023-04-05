@@ -65,6 +65,9 @@ public class Configs {
       .dockerHost(ObjectUtils.firstNonNull(
         flag.getDockerHost(), env.getDockerHost(), json.getDockerHost(), buildDefaultDockerHost()
       ))
+      .resolvConfOverrideNameServers(firstNonNullRequiring(
+        env.getResolvConfOverrideNameServers(), json.getResolvConfOverrideNameServers(), flag.getResolvConfOverrideNameServers()
+      ))
       .build();
   }
 

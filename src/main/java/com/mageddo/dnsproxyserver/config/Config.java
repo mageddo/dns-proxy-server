@@ -83,6 +83,8 @@ public class Config {
 
   private URI dockerHost;
 
+  private boolean resolvConfOverrideNameServers;
+
   public void resetConfigFile() {
     try {
       Files.deleteIfExists(this.getConfigPath());

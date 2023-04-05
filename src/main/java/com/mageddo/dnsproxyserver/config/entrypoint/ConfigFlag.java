@@ -114,7 +114,6 @@ public class ConfigFlag implements Callable<Boolean> {
   )
   private Boolean dpsNetwork;
 
-
   @Option(
     names = {"-dps-network-auto-connect", "--dps-network-auto-connect"},
     description = """
@@ -134,6 +133,16 @@ public class ConfigFlag implements Callable<Boolean> {
        """
   )
   private URI dockerHost;
+
+  @Option(
+    names = {"-resolvconf-override-name-servers", "--resolvconf-override-name-servers"},
+    description = """
+      If must comment all existing nameservers at resolv.conf file or just put DPS at the first place.
+      (default true)
+       """,
+    defaultValue = "true"
+  )
+  private Boolean resolvConfOverrideNameServers;
 
   @Option(
     names = {"-help", "--help"},
@@ -186,4 +195,5 @@ public class ConfigFlag implements Callable<Boolean> {
     }
     return false;
   }
+
 }

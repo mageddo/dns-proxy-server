@@ -4,8 +4,8 @@ import com.mageddo.commons.lang.Objects;
 import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.dnsconfigurator.DnsConfigurator;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.ResolvFile.Type;
-import com.mageddo.net.IpAddr;
 import com.mageddo.dnsproxyserver.systemd.ResolvedService;
+import com.mageddo.net.IpAddr;
 import com.mageddo.utils.Tests;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +44,11 @@ public class DnsConfiguratorLinux implements DnsConfigurator {
     final var confFile = this.getConfFile();
 
     if (confFile.isResolvconf()) {
-      ResolvconfConfigurator.process(confFile.getPath(), addr);
+      final var overrideNameServers = Configs
+        .getInstance()
+        .isResolvConfOverrideNameServers()
+        ;
+      ResolvconfConfigurator.process(confFile.getPath(), addr, overrideNameServers);
     } else if (confFile.isResolved()) {
       this.configureResolved(addr, confFile);
     } else {

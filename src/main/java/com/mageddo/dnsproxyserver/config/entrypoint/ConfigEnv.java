@@ -42,6 +42,7 @@ public class ConfigEnv {
   private Boolean dpsNetwork;
   private Boolean dpsNetworkAutoConnect;
   private URI dockerHost;
+  private Boolean resolvConfOverrideNameServers;
 
   public static ConfigEnv fromEnv() {
     return ConfigEnv
@@ -66,4 +67,5 @@ public class ConfigEnv {
     }
     return logFile;
   }
+
 }

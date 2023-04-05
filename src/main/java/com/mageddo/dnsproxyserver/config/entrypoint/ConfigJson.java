@@ -38,4 +38,6 @@ public interface ConfigJson {
   SimpleServer.Protocol getServerProtocol();
 
   URI getDockerHost();
+
+  Boolean getResolvConfOverrideNameServers();
 }
