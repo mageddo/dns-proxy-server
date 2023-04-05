@@ -6,17 +6,17 @@ import com.mageddo.conf.parser.Transformer;
 import java.util.Set;
 import java.util.function.Supplier;
 
-public class ResolvedConfigureDPSHandler implements Transformer {
+public class ResolvconfConfigureDPSHandler implements Transformer {
 
   private final Supplier<String> dpsDnsLineBuilder;
   private final boolean overrideNameServers;
   private boolean dpsSet = false;
 
-  public ResolvedConfigureDPSHandler(Supplier<String> dpsDnsLineBuilder) {
+  public ResolvconfConfigureDPSHandler(Supplier<String> dpsDnsLineBuilder) {
     this(dpsDnsLineBuilder, true);
   }
 
-  public ResolvedConfigureDPSHandler(Supplier<String> dpsDnsLineBuilder, boolean overrideNameServers) {
+  public ResolvconfConfigureDPSHandler(Supplier<String> dpsDnsLineBuilder, boolean overrideNameServers) {
     this.dpsDnsLineBuilder = dpsDnsLineBuilder;
     this.overrideNameServers = overrideNameServers;
   }
@@ -33,7 +33,7 @@ public class ResolvedConfigureDPSHandler implements Transformer {
           }
           yield entry.getLine();
         }
-        yield entry.getLine();
+        yield DpsTokens.comment(entry.getLine());
       }
       default -> entry.getLine();
     };
@@ -43,11 +43,16 @@ public class ResolvedConfigureDPSHandler implements Transformer {
   public String after(boolean fileHasContent, Set<String> foundEntryTypes) {
     if (
       !fileHasContent
-        || (!foundEntryTypes.contains(EntryTypes.DPS_SERVER) && !foundEntryTypes.contains(EntryTypes.SERVER))
+        || (!has(foundEntryTypes, EntryTypes.DPS_SERVER) && this.overrideNameServers)
+        || (!has(foundEntryTypes, EntryTypes.DPS_SERVER) && !has(foundEntryTypes, EntryTypes.SERVER) && !this.overrideNameServers)
     ) {
       return this.dpsDnsLineBuilder.get();
     }
     return null;
+  }
+
+  private static boolean has(Set<String> foundEntryTypes, final String type) {
+    return foundEntryTypes.contains(type);
   }
 
 }
