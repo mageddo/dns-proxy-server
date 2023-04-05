@@ -1,8 +1,8 @@
 Usage: <main class> [-default-dns] [-dps-network] [-dps-network-auto-connect] [-help] [-register-container-names]
-                    [-service-publish-web-port] [-version] [-conf-path=<configPath>] [-docker-host=<dockerHost>]
-                    [-domain=<domain>] [-host-machine-hostname=<hostMachineHostname>] [-log-file=<logToFile>]
-                    [-log-level=<logLevel>] [-server-port=<dnsServerPort>] [-service=<service>]
-                    [-web-server-port=<webServerPort>]
+                    [-resolvconf-override-name-servers] [-service-publish-web-port] [-version]
+                    [-conf-path=<configPath>] [-docker-host=<dockerHost>] [-domain=<domain>]
+                    [-host-machine-hostname=<hostMachineHostname>] [-log-file=<logToFile>] [-log-level=<logLevel>]
+                    [-server-port=<dnsServerPort>] [-service=<service>] [-web-server-port=<webServerPort>]
       -conf-path, --conf-path=<configPath>
                             The config file path (default conf/config.json)
       -default-dns, --default-dns
@@ -32,6 +32,11 @@ Usage: <main class> [-default-dns] [-dps-network] [-dps-network-auto-connect] [-
                             Log Level ERROR, WARNING, INFO, DEBUG (default INFO)
       -register-container-names, --register-container-names
                             If must register container name / service name as host in DNS server (default false)
+      -resolvconf-override-name-servers, --resolvconf-override-name-servers
+                            If must comment all existing nameservers at resolv.conf file or just put DPS at the first
+                              place.
+                            (default true)
+
       -server-port, --server-port=<dnsServerPort>
                             The DNS server to start into (default 53)
       -service, --service=<service>
