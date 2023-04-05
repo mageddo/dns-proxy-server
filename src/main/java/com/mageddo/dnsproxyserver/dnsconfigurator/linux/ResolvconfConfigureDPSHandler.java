@@ -12,10 +12,6 @@ public class ResolvconfConfigureDPSHandler implements Transformer {
   private final boolean overrideNameServers;
   private boolean dpsSet = false;
 
-  public ResolvconfConfigureDPSHandler(Supplier<String> dpsDnsLineBuilder) {
-    this(dpsDnsLineBuilder, true);
-  }
-
   public ResolvconfConfigureDPSHandler(Supplier<String> dpsDnsLineBuilder, boolean overrideNameServers) {
     this.dpsDnsLineBuilder = dpsDnsLineBuilder;
     this.overrideNameServers = overrideNameServers;
