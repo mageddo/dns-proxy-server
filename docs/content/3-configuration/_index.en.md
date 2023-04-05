@@ -42,7 +42,8 @@ __Version 2__
   "defaultDns" : true, // if must be set as the default DNS
   "hostMachineHostname" : "host.docker", // hostname to solve machine IP
   "serverProtocol" : "UDP_TCP", // protocol to start the dns server
-  "dockerHost" : null, // docker host address, default value is SO dependent
+  "dockerHost" : null, // docker host address, default value is SO dependent,
+  "resolvConfOverrideNameServers": true // If must comment all existing nameservers at resolv.conf file or just put DPS at the first place.
 }
 ```
 
@@ -51,17 +52,18 @@ __Version 2__
 Boolean values
 
 > You can use `1` or `true` (case insensitive) to specify which the flag is activated, any other
-value will be considered false.
+> value will be considered false.
 
-| VARIBLE                     | DESCRIPTION                                                           | DEFAULT VALUE                                                                                     |
-|-----------------------------|-----------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
-| MG_RESOLVCONF               | Linux resolvconf or systemd-resolved path to set DPS as default DNS   | /host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf |
-| MG_LOG_LEVEL                |                                                                       | INFO                                                                                              |
-| MG_LOG_FILE                 | Path where to logs will be stored                                     | console                                                                                           |
-| MG_REGISTER_CONTAINER_NAMES | if should register container name / service name as a hostname        | false                                                                                             |
-| MG_HOST_MACHINE_HOSTNAME    | hostname to solve host machine IP                                     | host.docker                                                                                       |
-| MG_DOMAIN                   | The container names domain (requires MG_REGISTER_CONTINER_NAMES=TRUE) | .docker                                                                                           |
-| MG_DOCKER_HOST              | Docker host address                                                   | depends on the SO                                                                                 |
+| VARIBLE                            | DESCRIPTION                                                                                      | DEFAULT VALUE                                                                                     |
+|------------------------------------|--------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
+| MG_RESOLVCONF                      | Linux resolvconf or systemd-resolved path to set DPS as default DNS                              | /host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf |
+| MG_LOG_LEVEL                       |                                                                                                  | INFO                                                                                              |
+| MG_LOG_FILE                        | Path where to logs will be stored                                                                | console                                                                                           |
+| MG_REGISTER_CONTAINER_NAMES        | if should register container name / service name as a hostname                                   | false                                                                                             |
+| MG_HOST_MACHINE_HOSTNAME           | hostname to solve host machine IP                                                                | host.docker                                                                                       |
+| MG_DOMAIN                          | The container names domain (requires MG_REGISTER_CONTINER_NAMES=TRUE)                            | .docker                                                                                           |
+| MG_DOCKER_HOST                     | Docker host address                                                                              | depends on the SO                                                                                 |
+| MG_RESOLVCONF_OVERRIDE_NAMESERVERS | If must comment all existing nameservers at resolv.conf file or just put DPS at the first place. | true                                                                                              |
 
 ### Terminal configuration
 Run one of the commands below to get the commandline instructions help:
