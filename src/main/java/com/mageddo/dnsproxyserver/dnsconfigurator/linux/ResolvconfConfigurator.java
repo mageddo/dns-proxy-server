@@ -11,13 +11,20 @@ import java.util.function.Function;
 public class ResolvconfConfigurator {
 
   public static void process(Path confFile, IpAddr addr) {
+    process(confFile, addr, true);
+  }
+
+  public static void process(Path confFile, IpAddr addr, boolean overrideNameServers) {
 
     Dns.validateIsDefaultPort(addr);
 
     ConfParser.process(
         confFile,
         createParser(),
-        new ConfigureDPSHandler(() -> String.format("nameserver %s # dps-entry", addr.getIp().toText()))
+        new ConfigureDPSHandler(
+          () -> String.format("nameserver %s # dps-entry", addr.getIp().toText()),
+          overrideNameServers
+        )
     );
   }
 

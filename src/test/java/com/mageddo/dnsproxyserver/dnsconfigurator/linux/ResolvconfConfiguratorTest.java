@@ -137,7 +137,7 @@ class ResolvconfConfiguratorTest {
       """);
 
     // act
-    ResolvconfConfigurator.process(resolvFile, ip);
+    ResolvconfConfigurator.process(resolvFile, ip, false);
 
     // assert
     assertEquals(

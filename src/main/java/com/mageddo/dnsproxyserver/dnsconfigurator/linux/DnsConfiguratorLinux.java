@@ -42,6 +42,7 @@ public class DnsConfiguratorLinux implements DnsConfigurator {
     }
 
     final var confFile = this.getConfFile();
+
     if (confFile.isResolvconf()) {
       ResolvconfConfigurator.process(confFile.getPath(), addr);
     } else if (confFile.isResolved()) {
