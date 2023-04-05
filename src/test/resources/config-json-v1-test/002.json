@@ -23,6 +23,7 @@
   "registerContainerNames" : false,
   "remoteDnsServers" : [ "8.8.8.8", "4.4.4.4" ],
   "version" : 2,
+  "resolvConfOverrideNameServers" : null,
   "serverProtocol" : null,
   "webServerPort" : 0
 }
