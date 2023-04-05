@@ -23,6 +23,7 @@
   "registerContainerNames" : null,
   "remoteDnsServers" : [ ],
   "version" : 2,
+  "resolvConfOverrideNameServers" : null,
   "serverProtocol" : null,
   "webServerPort" : null
 }

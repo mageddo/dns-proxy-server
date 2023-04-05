@@ -36,9 +36,9 @@ class ConfigsTest {
   void mustParseDefaultConfigsAndCreateConfigFile(@TempDir Path tmpDir) {
 
     // arrange
-    final var tmpConfigFile = tmpDir.resolve("tmpfile.json");
-    final var args = new String[]{"--conf-path", tmpConfigFile.toString()};
-    assertFalse(Files.exists(tmpConfigFile));
+    final var jsonConfigFile = tmpDir.resolve("tmpfile.json");
+    final var args = new String[]{"--conf-path", jsonConfigFile.toString()};
+    assertFalse(Files.exists(jsonConfigFile));
 
     // act
     final var config = Configs.build(args);
@@ -48,8 +48,8 @@ class ConfigsTest {
       readAndSortJsonExcluding("/configs-test/001.json", excludingFields),
       readAndSortJsonExcluding(config, excludingFields)
     );
-    assertTrue(Files.exists(tmpConfigFile));
-    assertEquals(readAndSortJson("/configs-test/002.json"), readAndSortJson(tmpConfigFile));
+    assertTrue(Files.exists(jsonConfigFile));
+    assertEquals(readAndSortJson("/configs-test/002.json"), readAndSortJson(jsonConfigFile));
   }
 
 

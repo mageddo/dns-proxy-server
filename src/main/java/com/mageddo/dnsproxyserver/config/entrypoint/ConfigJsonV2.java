@@ -53,6 +53,8 @@ public class ConfigJsonV2 implements ConfigJson {
 
   private URI dockerHost;
 
+  private Boolean resolvConfOverrideNameServers;
+
   @JsonIgnore
   public List<IpAddr> getRemoteDnsServers() {
     return this.remoteDnsServers
