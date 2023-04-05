@@ -151,4 +151,36 @@ class ResolvconfConfiguratorTest {
       Files.readString(resolvFile)
     );
   }
+
+
+  @Test
+  void mustCreateExactlyOneDpsEntryWhenNameserversOverrideIsDisabled(@TempDir Path tmpDir) throws Exception {
+
+    // arrange
+    final var resolvFile = tmpDir.resolve("resolv.conf");
+    final var ip = IpAddrTemplates.local();
+
+    Files.writeString(resolvFile, """
+      # Provided by test
+      nameserver 7.7.7.7
+      # nameserver 8.8.8.8
+      nameserver 8.8.4.4
+      """);
+
+    // act
+    ResolvconfConfigurator.process(resolvFile, ip, false);
+    ResolvconfConfigurator.process(resolvFile, ip, false);
+
+    // assert
+    assertEquals(
+      """
+        # Provided by test
+        nameserver 10.10.0.1 # dps-entry
+        nameserver 7.7.7.7
+        # nameserver 8.8.8.8
+        nameserver 8.8.4.4
+        """,
+      Files.readString(resolvFile)
+    );
+  }
 }

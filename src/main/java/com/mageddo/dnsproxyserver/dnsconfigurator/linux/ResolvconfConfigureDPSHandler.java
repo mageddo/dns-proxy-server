@@ -24,7 +24,10 @@ public class ResolvconfConfigureDPSHandler implements Transformer {
   @Override
   public String handle(Entry entry) {
     return switch (entry.getType().name()) {
-      case EntryTypes.DPS_SERVER -> this.dpsDnsLineBuilder.get();
+      case EntryTypes.DPS_SERVER -> {
+        this.dpsSet = true;
+        yield this.dpsDnsLineBuilder.get();
+      }
       case EntryTypes.SERVER -> {
         if (!this.overrideNameServers) {
           if (!this.dpsSet) {
