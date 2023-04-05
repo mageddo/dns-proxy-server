@@ -21,7 +21,7 @@ public class ResolvconfConfigurator {
     ConfParser.process(
         confFile,
         createParser(),
-        new ConfigureDPSHandler(
+        new ResolvedConfigureDPSHandler(
           () -> String.format("nameserver %s # dps-entry", addr.getIp().toText()),
           overrideNameServers
         )
