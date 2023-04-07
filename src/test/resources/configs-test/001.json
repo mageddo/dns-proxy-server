@@ -7,6 +7,7 @@
   "hostMachineHostname" : "host.docker",
   "logFile" : "console",
   "logLevel" : "INFO",
+  "noRemoteServers" : false,
   "registerContainerNames" : false,
   "remoteDnsServers" : [ {
     "ip" : "8.8.8.8",
