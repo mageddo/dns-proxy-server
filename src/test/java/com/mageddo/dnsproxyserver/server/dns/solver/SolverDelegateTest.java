@@ -37,7 +37,7 @@ class SolverDelegateTest {
 
     doReturn(List.of(SolverMockTemplates.whateverMock("acme.com.br")))
       .when(this.solverProvider)
-      .getSolversExcludingLocalDB();
+      .getSolversExcluding(SolverLocalDB.class);
 
     // act
     final var response = this.delegate.solve(query, cname);

@@ -43,7 +43,7 @@ class SolverLocalDBCompTest {
 
     // assert
     assertNull(res);
-    verify(this.solverProvider, never()).getSolversExcludingLocalDB();
+    verify(this.solverProvider, never()).getSolversExcluding(SolverLocalDB.class);
 
   }
 
@@ -80,7 +80,7 @@ class SolverLocalDBCompTest {
 
     doReturn(SolverTemplates.mockTo192())
         .when(this.solverProvider)
-        .getSolversExcludingLocalDB()
+        .getSolversExcluding(SolverLocalDB.class)
     ;
 
     final var msg = Messages.aQuestion(toAbsoluteName(from));

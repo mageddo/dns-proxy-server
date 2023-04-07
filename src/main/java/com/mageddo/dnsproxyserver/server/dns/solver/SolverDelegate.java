@@ -12,7 +12,8 @@ import javax.inject.Singleton;
 import java.time.Duration;
 
 /**
- * When {@link SolverLocalDB} finds a wildcard hostname, delegate the found hostname to this class.
+ * Query all configured solvers to solve a cname address.
+ * @see SolverLocalDB
  */
 @Slf4j
 @Singleton
@@ -27,7 +28,8 @@ public class SolverDelegate {
     final var cnameAnswer = cnameAnswer(query, entry);
     final var question = Messages.copyQuestionForNowHostname(query, Hostnames.toAbsoluteName(entry.getTarget()));
 
-    for (final var solver : this.solverProvider.getSolversExcludingLocalDB()) {
+    final var solvers = this.solverProvider.getSolversExcluding(SolverLocalDB.class);
+    for (final var solver : solvers) {
       final var res = solver.handle(question);
       if (res != null) {
         log.debug("status=cnameARecordSolved, host={}, r={}", entry.getHostname(), Messages.simplePrint(res));

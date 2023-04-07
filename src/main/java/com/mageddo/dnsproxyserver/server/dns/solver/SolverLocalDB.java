@@ -15,6 +15,9 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.Duration;
 
+/**
+ * When finds a wildcard hostname, delegate the found hostname to {@link SolverDelegate} class.
+ */
 @Slf4j
 @Singleton
 @AllArgsConstructor(onConstructor = @__({@Inject}))
