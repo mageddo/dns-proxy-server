@@ -8,18 +8,20 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Singleton
 public class SolverProvider {
 
-  private static final Map<String, Integer> priorities = Priorities.build(
-    "SolverCached", "SolverSystem", "SolverDocker", "SolverLocalDB", "SolverCachedRemote"
-  );
+  private static final String[] solversOrder = {
+    "SolverCached",
+    "SolverSystem",
+    "SolverDocker",
+    "SolverLocalDB",
+    "SolverCachedRemote"
+  };
 
   private final List<Solver> solvers;
 
@@ -42,16 +44,12 @@ public class SolverProvider {
 
   public static List<Solver> sorted(Collection<Solver> source) {
     final var solvers = new ArrayList<>(source);
-    solvers.sort(comparator());
+    solvers.sort(Priorities.comparator(Solver::name, solversOrder));
     return solvers;
   }
 
   static List<Solver> sorted(Instance<Solver> solvers) {
     return sorted(solvers.stream().toList());
-  }
-
-  public static Comparator<Solver> comparator() {
-    return Comparator.comparing(it -> Priorities.compare(priorities, it.name()));
   }
 
 }
