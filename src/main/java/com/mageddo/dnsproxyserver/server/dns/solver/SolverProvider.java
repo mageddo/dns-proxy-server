@@ -28,20 +28,16 @@ public class SolverProvider {
     this.solvers = sorted(solvers);
   }
 
-  public List<Solver> getSolversExcluding(final Class<?> clazz) {
-    return this.solvers
-        .stream()
-        .filter(it -> it.getClass() != clazz)
-        .collect(Collectors.toList())
-        ;
-  }
-
   public List<Solver> getSolvers() {
     return this.solvers;
   }
 
-  static List<Solver> sorted(Instance<Solver> solvers) {
-    return sorted(solvers.stream().toList());
+  public List<Solver> getSolversExcluding(final Class<?> clazz) {
+    return this.solvers
+      .stream()
+      .filter(it -> it.getClass() != clazz)
+      .collect(Collectors.toList())
+      ;
   }
 
   public static List<Solver> sorted(Collection<Solver> source) {
@@ -50,7 +46,12 @@ public class SolverProvider {
     return solvers;
   }
 
+  static List<Solver> sorted(Instance<Solver> solvers) {
+    return sorted(solvers.stream().toList());
+  }
+
   public static Comparator<Solver> comparator() {
     return Comparator.comparing(it -> Priorities.compare(priorities, it.name()));
   }
+
 }
