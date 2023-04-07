@@ -5,7 +5,7 @@ weight: 3
 
 ## DPS Versioning
 
-DPS uses [semantic versioning][1] for releasing. The latest stable version is the one which is marked
+DPS uses [semantic versioning][1] \[[2][6]\] for releasing. The latest stable version is the one which is marked
 as "latest" label at Github releases or the latest docker tag. [Click here][2] to see the binary releases at Github.
 
 ## Promotion to the latest (Stable)
@@ -35,3 +35,4 @@ DPS release process was inpired on [Gradle][4] and Debian releasing process.
 [3]: https://hub.docker.com/r/defreitas/dns-proxy-server/t
 [4]: https://docs.gradle.org/7.6.1/release-notes.html
 [5]: https://github.com/mageddo/dns-proxy-server/blob/master/RELEASE-NOTES.md
+[6]: https://semver.org/
