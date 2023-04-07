@@ -1,13 +1,12 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
+import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.utils.Priorities;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,15 +18,21 @@ public class SolverProvider {
     "SolverCached",
     "SolverSystem",
     "SolverDocker",
-    "SolverLocalDB",
-    "SolverCachedRemote"
+    SolverLocalDB.NAME,
+    SolverCachedRemote.NAME
   };
 
   private final List<Solver> solvers;
 
   @Inject
   public SolverProvider(Instance<Solver> solvers) {
-    this.solvers = sorted(solvers);
+    final var config = Configs.getInstance();
+    this.solvers = solvers
+      .stream()
+      .sorted(Priorities.comparator(Solver::name, solversOrder))
+      .filter(it -> it.is(SolverCachedRemote.NAME) && !config.isNoRemoteServers())
+      .toList()
+    ;
   }
 
   public List<Solver> getSolvers() {
@@ -41,15 +46,4 @@ public class SolverProvider {
       .collect(Collectors.toList())
       ;
   }
-
-  public static List<Solver> sorted(Collection<Solver> source) {
-    final var solvers = new ArrayList<>(source);
-    solvers.sort(Priorities.comparator(Solver::name, solversOrder));
-    return solvers;
-  }
-
-  static List<Solver> sorted(Instance<Solver> solvers) {
-    return sorted(solvers.stream().toList());
-  }
-
 }

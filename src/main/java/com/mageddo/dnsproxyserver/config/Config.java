@@ -85,6 +85,8 @@ public class Config {
 
   private boolean resolvConfOverrideNameServers;
 
+  private boolean noRemoteServers;
+
   public void resetConfigFile() {
     try {
       Files.deleteIfExists(this.getConfigPath());

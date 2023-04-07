@@ -10,4 +10,8 @@ public interface Solver {
   default String name() {
     return ClassUtils.getSimpleName(getClass());
   }
+
+  default boolean is(String name){
+    return this.name().equals(name);
+  }
 }

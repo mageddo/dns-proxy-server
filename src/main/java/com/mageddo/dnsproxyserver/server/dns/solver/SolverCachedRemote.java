@@ -14,6 +14,8 @@ import java.time.Duration;
 @Singleton
 public class SolverCachedRemote implements Solver {
 
+  public static final String NAME = "SolverCachedRemote";
+
   private final SolverRemote solverRemote;
   private final SolverCache solversCache;
 
@@ -33,5 +35,10 @@ public class SolverCachedRemote implements Solver {
       return this.solverRemote.handle(query);
     });
     return Objects.mapOrNull(res, response -> response.withTTL(Duration.ofSeconds(20)));
+  }
+
+  @Override
+  public String name() {
+    return NAME;
   }
 }
