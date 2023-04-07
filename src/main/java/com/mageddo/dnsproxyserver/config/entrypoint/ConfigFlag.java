@@ -145,6 +145,17 @@ public class ConfigFlag implements Callable<Boolean> {
   private Boolean resolvConfOverrideNameServers;
 
   @Option(
+    names = {"-no-remote-servers", "--no-remote-servers"},
+    description = """
+      If remote servers like 8.8.8.8 must be disabled and only local solvers like docker containers or local db must be
+      used.
+      (default true)
+       """,
+    defaultValue = "false"
+  )
+  private Boolean noRemoteServers;
+
+  @Option(
     names = {"-help", "--help"},
     description = "This message (default false)",
     usageHelp = true

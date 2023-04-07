@@ -55,6 +55,8 @@ public class ConfigJsonV2 implements ConfigJson {
 
   private Boolean resolvConfOverrideNameServers;
 
+  private Boolean noRemoteServers;
+
   @JsonIgnore
   public List<IpAddr> getRemoteDnsServers() {
     return this.remoteDnsServers
@@ -68,7 +70,6 @@ public class ConfigJsonV2 implements ConfigJson {
   public List<Config.Env> getEnvs() {
     return ConfigJsonV2EnvsConverter.toDomainEnvs(this._envs);
   }
-
 
   @Data
   @Accessors(chain = true)

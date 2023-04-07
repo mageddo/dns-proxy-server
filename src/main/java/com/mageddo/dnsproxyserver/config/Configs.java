@@ -68,6 +68,9 @@ public class Configs {
       .resolvConfOverrideNameServers(firstNonNullRequiring(
         env.getResolvConfOverrideNameServers(), json.getResolvConfOverrideNameServers(), flag.getResolvConfOverrideNameServers()
       ))
+      .noRemoteServers(firstNonNullRequiring(
+        env.getNoRemoteServers(), json.getNoRemoteServers(), flag.getNoRemoteServers()
+      ))
       .build();
   }
 

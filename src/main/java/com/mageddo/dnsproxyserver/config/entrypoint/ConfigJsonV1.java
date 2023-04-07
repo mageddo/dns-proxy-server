@@ -87,6 +87,11 @@ public class ConfigJsonV1 implements ConfigJson {
     return null;
   }
 
+  @Override
+  public Boolean getNoRemoteServers() {
+    return null;
+  }
+
   public ConfigJsonV2 toConfigV2() {
     return new ConfigJsonV2()
       .setDomain(this.getDomain())

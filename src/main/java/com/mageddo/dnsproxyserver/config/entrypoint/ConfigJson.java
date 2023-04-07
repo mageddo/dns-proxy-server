@@ -40,4 +40,6 @@ public interface ConfigJson {
   URI getDockerHost();
 
   Boolean getResolvConfOverrideNameServers();
+
+  Boolean getNoRemoteServers();
 }

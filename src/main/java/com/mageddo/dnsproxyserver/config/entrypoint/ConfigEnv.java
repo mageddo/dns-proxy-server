@@ -16,7 +16,9 @@ public class ConfigEnv {
   public static final String MG_WORK_DIR = "MG_WORK_DIR";
 
   public static final String MG_RESOLVCONF = "MG_RESOLVCONF";
+
   public static final String MG_LOG_FILE = "MG_LOG_FILE";
+
   public static final String MG_LOG_LEVEL = "MG_LOG_LEVEL";
 
   /**
@@ -25,13 +27,21 @@ public class ConfigEnv {
   public static final String MG_REGISTER_CONTAINER_NAMES = "MG_REGISTER_CONTAINER_NAMES";
 
   public static final String MG_HOST_MACHINE_HOSTNAME = "MG_HOST_MACHINE_HOSTNAME";
+
   public static final String MG_DOMAIN = "MG_DOMAIN";
+
   public static final String MG_DPS_NETWORK = "MG_DPS_NETWORK";
+
   public static final String MG_DPS_NETWORK_AUTO_CONNECT = "MG_DPS_NETWORK_AUTO_CONNECT";
+
   public static final String DEFAULT_RESOLV_CONF_PATH =
     "/host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf";
+
   public static final String MG_DOCKER_HOST = "MG_DOCKER_HOST";
+
   public static final String MG_RESOLVCONF_OVERRIDE_NAMESERVERS = "MG_RESOLVCONF_OVERRIDE_NAMESERVERS";
+
+  private static final String MG_NO_REMOTE_SERVERS = "MG_NO_REMOTE_SERVERS";
 
   private Path currentPath;
   private String resolvConfPath;
@@ -44,6 +54,7 @@ public class ConfigEnv {
   private Boolean dpsNetworkAutoConnect;
   private URI dockerHost;
   private Boolean resolvConfOverrideNameServers;
+  private Boolean noRemoteServers;
 
   public static ConfigEnv fromEnv() {
     return ConfigEnv
@@ -59,6 +70,7 @@ public class ConfigEnv {
       .dpsNetworkAutoConnect(Envs.getBooleanOrNull(MG_DPS_NETWORK_AUTO_CONNECT))
       .dockerHost(UriUtils.createURI(Envs.getStringOrNull(MG_DOCKER_HOST)))
       .resolvConfOverrideNameServers(Envs.getBooleanOrNull(MG_RESOLVCONF_OVERRIDE_NAMESERVERS))
+      .noRemoteServers(Envs.getBooleanOrNull(MG_NO_REMOTE_SERVERS))
       .build();
   }
 
