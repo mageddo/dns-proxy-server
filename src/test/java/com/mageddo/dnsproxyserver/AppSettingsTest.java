@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver;
 
-import com.mageddo.dnsproxyserver.templates.ConfigTemplates;
+import testing.templates.ConfigTemplates;
 import com.mageddo.logback.LogbackUtils;
 import org.junit.jupiter.api.Test;
 

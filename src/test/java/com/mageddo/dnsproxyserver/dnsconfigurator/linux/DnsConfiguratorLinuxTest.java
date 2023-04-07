@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
 import com.mageddo.dnsproxyserver.config.entrypoint.ConfigEnv;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.ResolvFile.Type;
-import com.mageddo.dnsproxyserver.templates.IpAddrTemplates;
+import testing.templates.IpAddrTemplates;
 import org.apache.commons.exec.OS;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

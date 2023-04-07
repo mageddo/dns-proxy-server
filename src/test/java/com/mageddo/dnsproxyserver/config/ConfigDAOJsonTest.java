@@ -2,15 +2,15 @@ package com.mageddo.dnsproxyserver.config;
 
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
-import com.mageddo.dnsproxyserver.templates.EnvTemplates;
-import com.mageddo.dnsproxyserver.templates.HostnameQueryTemplates;
+import testing.templates.EnvTemplates;
+import testing.templates.HostnameQueryTemplates;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static com.mageddo.dnsproxyserver.templates.EnvTemplates.MAGEDDO_COM_CAMEL_CASE;
+import static testing.templates.EnvTemplates.MAGEDDO_COM_CAMEL_CASE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.doReturn;

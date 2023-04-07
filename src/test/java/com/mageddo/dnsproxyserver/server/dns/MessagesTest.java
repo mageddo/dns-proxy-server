@@ -1,13 +1,13 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
-import com.mageddo.dnsproxyserver.templates.MessageTemplates;
+import testing.templates.MessageTemplates;
 import org.junit.jupiter.api.Test;
 import org.xbill.DNS.Flags;
 import org.xbill.DNS.Rcode;
 
 import static com.mageddo.dnsproxyserver.server.dns.Messages.findFirstAnswerRecord;
-import static com.mageddo.dnsproxyserver.templates.MessageTemplates.acmeAResponse;
-import static com.mageddo.dnsproxyserver.templates.MessageTemplates.acmeNxDomain;
+import static testing.templates.MessageTemplates.acmeAResponse;
+import static testing.templates.MessageTemplates.acmeNxDomain;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

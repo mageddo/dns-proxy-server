@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.docker;
 
-import com.mageddo.dnsproxyserver.templates.docker.NetworkTemplates;
+import testing.templates.docker.NetworkTemplates;
 import com.mageddo.net.IP;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

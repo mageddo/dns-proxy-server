@@ -1,6 +1,6 @@
 package com.mageddo.net;
 
-import com.mageddo.dnsproxyserver.templates.IpTemplates;
+import testing.templates.IpTemplates;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

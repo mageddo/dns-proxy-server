@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.templates;
+package testing.templates;
 
 import lombok.SneakyThrows;
 import org.mockito.Mockito;

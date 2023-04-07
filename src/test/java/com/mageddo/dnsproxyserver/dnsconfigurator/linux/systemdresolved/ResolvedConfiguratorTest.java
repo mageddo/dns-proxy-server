@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator.linux.systemdresolved;
 
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.ResolvedConfigurator;
-import com.mageddo.dnsproxyserver.templates.IpAddrTemplates;
+import testing.templates.IpAddrTemplates;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 

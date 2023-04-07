@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.templates;
+package testing.templates;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.entrypoint.ConfigEnv;

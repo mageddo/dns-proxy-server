@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator;
 
-import com.mageddo.dnsproxyserver.templates.IpAddrTemplates;
+import testing.templates.IpAddrTemplates;
 import com.mageddo.os.Platform;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

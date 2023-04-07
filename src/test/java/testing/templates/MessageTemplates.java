@@ -1,18 +1,16 @@
-package com.mageddo.dnsproxyserver.templates;
+package testing.templates;
 
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import org.xbill.DNS.Message;
 
-import static com.mageddo.dnsproxyserver.templates.HostnameTemplates.ACME_HOSTNAME;
-
 public class MessageTemplates {
 
   public static Message acmeAQuery() {
-    return Messages.aQuestion(ACME_HOSTNAME + ".");
+    return Messages.aQuestion(HostnameTemplates.ACME_HOSTNAME + ".");
   }
 
   public static Message acmeQuadAQuery() {
-    return Messages.quadAQuestion(ACME_HOSTNAME + ".");
+    return Messages.quadAQuestion(HostnameTemplates.ACME_HOSTNAME + ".");
   }
 
   public static Message buildAAnswer(Message query) {
@@ -32,6 +30,6 @@ public class MessageTemplates {
   }
 
   public static Message acmeSoaQuery() {
-    return Messages.soaQuestion(ACME_HOSTNAME);
+    return Messages.soaQuestion(HostnameTemplates.ACME_HOSTNAME);
   }
 }

@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.docker;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.exception.DockerException;
-import com.mageddo.dnsproxyserver.templates.docker.DockerClientTemplates;
+import testing.templates.docker.DockerClientTemplates;
 import com.mageddo.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

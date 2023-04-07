@@ -1,9 +1,9 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.server.dns.Messages;
-import com.mageddo.dnsproxyserver.templates.EntryTemplates;
-import com.mageddo.dnsproxyserver.templates.HostnameTemplates;
-import com.mageddo.dnsproxyserver.templates.MessageTemplates;
+import testing.templates.EntryTemplates;
+import testing.templates.HostnameTemplates;
+import testing.templates.MessageTemplates;
 import com.mageddo.net.IP;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

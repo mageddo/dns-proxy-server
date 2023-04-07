@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.templates;
+package testing.templates;
 
 public class HostnameTemplates {
   public static final String ORANGE_ACME_HOSTNAME = "orange.acme.com";

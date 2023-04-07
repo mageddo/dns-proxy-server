@@ -1,7 +1,7 @@
 package com.mageddo.net;
 
-import com.mageddo.dnsproxyserver.templates.IpTemplates;
-import com.mageddo.dnsproxyserver.templates.NetworkInterfaceTemplates;
+import testing.templates.IpTemplates;
+import testing.templates.NetworkInterfaceTemplates;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;

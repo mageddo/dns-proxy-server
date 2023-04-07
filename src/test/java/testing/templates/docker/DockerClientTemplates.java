@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.templates.docker;
+package testing.templates.docker;
 
 import org.mockito.Mockito;
 import testing.mocks.DockerClientStub;

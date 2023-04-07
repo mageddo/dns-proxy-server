@@ -1,9 +1,9 @@
 package com.mageddo.dnsproxyserver.docker;
 
 import com.mageddo.dnsproxyserver.di.Context;
-import com.mageddo.dnsproxyserver.templates.IpTemplates;
-import com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates;
-import com.mageddo.dnsproxyserver.templates.docker.NetworkTemplates;
+import testing.templates.IpTemplates;
+import testing.templates.docker.InspectContainerResponseTemplates;
+import testing.templates.docker.NetworkTemplates;
 import com.mageddo.net.IP;
 import dagger.sheath.InjectMock;
 import dagger.sheath.junit.DaggerTest;
@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 
-import static com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates.ngixWithDefaultBridgeNetworkOnly;
-import static com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates.ngixWithIpv4DefaultBridgeAndIpv6CustomBridgeNetwork;
-import static com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates.ngixWithIpv6CustomBridgeNetwork;
-import static com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates.ngixWithIpv6DefaultBridgeNetworkOnly;
-import static com.mageddo.dnsproxyserver.templates.docker.InspectContainerResponseTemplates.ngixWithIpv6DefaultIp;
+import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithDefaultBridgeNetworkOnly;
+import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithIpv4DefaultBridgeAndIpv6CustomBridgeNetwork;
+import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithIpv6CustomBridgeNetwork;
+import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithIpv6DefaultBridgeNetworkOnly;
+import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithIpv6DefaultIp;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;

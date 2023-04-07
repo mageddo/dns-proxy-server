@@ -1,7 +1,7 @@
-package com.mageddo.dnsproxyserver.templates.docker;
+package testing.templates.docker;
 
 import com.mageddo.dnsproxyserver.docker.Entry;
-import com.mageddo.dnsproxyserver.templates.IpTemplates;
+import testing.templates.IpTemplates;
 import com.mageddo.net.IP;
 
 public class EntryTemplates {

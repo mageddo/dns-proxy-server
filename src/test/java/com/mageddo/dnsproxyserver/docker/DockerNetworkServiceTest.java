@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.docker;
 
 import org.junit.jupiter.api.Test;
 
-import static com.mageddo.dnsproxyserver.templates.docker.NetworkTemplates.buildBridgeIpv4AndIpv6Network;
+import static testing.templates.docker.NetworkTemplates.buildBridgeIpv4AndIpv6Network;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

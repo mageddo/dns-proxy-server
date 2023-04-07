@@ -2,8 +2,8 @@ package com.mageddo.dnsproxyserver.server.dns;
 
 import com.mageddo.commons.concurrent.ThreadPool;
 import com.mageddo.commons.concurrent.Threads;
-import com.mageddo.dnsproxyserver.templates.MessageTemplates;
-import com.mageddo.dnsproxyserver.templates.SocketClientTemplates;
+import testing.templates.MessageTemplates;
+import testing.templates.SocketClientTemplates;
 import com.mageddo.utils.Shorts;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.templates.docker;
+package testing.templates.docker;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.dockerjava.api.command.InspectContainerResponse;

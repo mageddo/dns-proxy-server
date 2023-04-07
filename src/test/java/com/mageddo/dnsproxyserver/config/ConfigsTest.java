@@ -1,8 +1,8 @@
 package com.mageddo.dnsproxyserver.config;
 
 import com.mageddo.dnsproxyserver.config.entrypoint.LogLevel;
-import com.mageddo.dnsproxyserver.templates.ConfigFlagTemplates;
-import com.mageddo.dnsproxyserver.templates.EnvTemplates;
+import testing.templates.ConfigFlagTemplates;
+import testing.templates.EnvTemplates;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;

@@ -1,8 +1,8 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
-import com.mageddo.dnsproxyserver.templates.EntryTemplates;
-import com.mageddo.dnsproxyserver.templates.MessageTemplates;
-import com.mageddo.dnsproxyserver.templates.SolverMockTemplates;
+import testing.templates.EntryTemplates;
+import testing.templates.MessageTemplates;
+import testing.templates.SolverMockTemplates;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

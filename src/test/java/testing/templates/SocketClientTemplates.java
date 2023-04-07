@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.templates;
+package testing.templates;
 
 import com.mageddo.dnsproxyserver.server.dns.SocketClient;
 import org.mockito.Mockito;

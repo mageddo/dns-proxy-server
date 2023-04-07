@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator;
 
 import com.mageddo.commons.concurrent.Threads;
-import com.mageddo.dnsproxyserver.templates.IpAddrTemplates;
+import testing.templates.IpAddrTemplates;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
