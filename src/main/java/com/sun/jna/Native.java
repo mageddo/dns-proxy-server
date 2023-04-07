@@ -105,6 +105,7 @@ import java.util.logging.Logger;
  * @author Todd Fast, todd.fast@sun.com
  * @author twall@users.sf.net
  */
+@SuppressWarnings("ALL")
 public final class Native implements Version {
 
     private static final Logger LOG = Logger.getLogger(Native.class.getName());
@@ -256,7 +257,7 @@ public final class Native implements Version {
 
     /** Force a dispose when the Native class is GC'd. */
     private static final Object finalizer = new Object() {
-        @Override
+      @Override
         protected void finalize() throws Throwable {
             dispose();
             super.finalize();
