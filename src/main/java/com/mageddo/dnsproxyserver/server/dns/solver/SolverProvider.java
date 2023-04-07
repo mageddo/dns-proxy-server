@@ -26,11 +26,14 @@ public class SolverProvider {
 
   @Inject
   public SolverProvider(Instance<Solver> solvers) {
-    final var config = getConfig();
+    this(solvers, Configs.getInstance());
+  }
+
+  public SolverProvider(Instance<Solver> solvers, Config config) {
     this.solvers = solvers
       .stream()
       .sorted(Priorities.comparator(Solver::name, solversOrder))
-//      .filter(it -> it.is(SolverCachedRemote.NAME) && !config.isNoRemoteServers())
+      .filter(it -> !(config.isNoRemoteServers() && it.is(SolverCachedRemote.NAME)))
       .toList()
     ;
   }
@@ -54,7 +57,4 @@ public class SolverProvider {
       .toList();
   }
 
-  Config getConfig() {
-    return Configs.getInstance();
-  }
 }

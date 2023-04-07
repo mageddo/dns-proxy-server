@@ -18,26 +18,25 @@ class SolverProviderTest {
 
   @BeforeEach
   void beforeEach(){
-    this.provider = spy(new SolverProvider(Instances.of(
+
+    final var config = spy(Configs.getInstance());
+
+    doReturn(true)
+      .when(config)
+      .isNoRemoteServers();
+
+    final var solvers = Instances.<Solver>of(
       new SolverMock("SolverSystem"),
       new SolverMock("SolverDocker"),
       new SolverMock("SolverLocalDB"),
       new SolverMock("SolverCachedRemote")
-    )));
+    );
+    this.provider = spy(new SolverProvider(solvers, config));
   }
 
   @Test
   void mustDisableRemoteSolversWhenNoRemoteServersOptionIsEnabled() {
     // arrange
-    final var config = spy(Configs.getInstance());
-    doReturn(config)
-      .when(this.provider)
-      .getConfig();
-
-    doReturn(true)
-      .when(config)
-      .isNoRemoteServers()
-    ;
 
     // act
     final var names = this.provider.getSolversNames();
