@@ -39,11 +39,12 @@ __Version 2__
   "domain": "docker", // The container names domain
   "dpsNetwork": false, // if should create a bridge network for dps container
   "dpsNetworkAutoConnect": false, // if should connect all containers to dps container
-  "defaultDns" : true, // if must be set as the default DNS
+  "defaultDns": true, // if must be set as the default DNS
   "hostMachineHostname" : "host.docker", // hostname to solve machine IP
-  "serverProtocol" : "UDP_TCP", // protocol to start the dns server
-  "dockerHost" : null, // docker host address, default value is SO dependent,
-  "resolvConfOverrideNameServers": true // If must comment all existing nameservers at resolv.conf file or just put DPS at the first place.
+  "serverProtocol": "UDP_TCP", // protocol to start the dns server
+  "dockerHost": null, // docker host address, default value is SO dependent,
+  "resolvConfOverrideNameServers": true, // If must comment all existing nameservers at resolv.conf file or just put DPS at the first place.
+  "noRemoteServers": false // If remote servers like 8.8.8.8 must be disabled and only local solvers like docker containers or local db must be used.
 }
 ```
 
@@ -54,16 +55,17 @@ Boolean values
 > You can use `1` or `true` (case insensitive) to specify which the flag is activated, any other
 > value will be considered false.
 
-| VARIBLE                            | DESCRIPTION                                                                                      | DEFAULT VALUE                                                                                     |
-|------------------------------------|--------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
-| MG_RESOLVCONF                      | Linux resolvconf or systemd-resolved path to set DPS as default DNS                              | /host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf |
-| MG_LOG_LEVEL                       |                                                                                                  | INFO                                                                                              |
-| MG_LOG_FILE                        | Path where to logs will be stored                                                                | console                                                                                           |
-| MG_REGISTER_CONTAINER_NAMES        | if should register container name / service name as a hostname                                   | false                                                                                             |
-| MG_HOST_MACHINE_HOSTNAME           | hostname to solve host machine IP                                                                | host.docker                                                                                       |
-| MG_DOMAIN                          | The container names domain (requires MG_REGISTER_CONTINER_NAMES=TRUE)                            | .docker                                                                                           |
-| MG_DOCKER_HOST                     | Docker host address                                                                              | depends on the SO                                                                                 |
-| MG_RESOLVCONF_OVERRIDE_NAMESERVERS | If must comment all existing nameservers at resolv.conf file or just put DPS at the first place. | true                                                                                              |
+| VARIBLE                            | DESCRIPTION                                                                                                                             | DEFAULT VALUE                                                                                     |
+|------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
+| MG_RESOLVCONF                      | Linux resolvconf or systemd-resolved path to set DPS as default DNS                                                                     | /host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf |
+| MG_LOG_LEVEL                       |                                                                                                                                         | INFO                                                                                              |
+| MG_LOG_FILE                        | Path where to logs will be stored                                                                                                       | console                                                                                           |
+| MG_REGISTER_CONTAINER_NAMES        | if should register container name / service name as a hostname                                                                          | false                                                                                             |
+| MG_HOST_MACHINE_HOSTNAME           | hostname to solve host machine IP                                                                                                       | host.docker                                                                                       |
+| MG_DOMAIN                          | The container names domain (requires MG_REGISTER_CONTINER_NAMES=TRUE)                                                                   | .docker                                                                                           |
+| MG_DOCKER_HOST                     | Docker host address                                                                                                                     | depends on the SO                                                                                 |
+| MG_RESOLVCONF_OVERRIDE_NAMESERVERS | If must comment all existing nameservers at resolv.conf file or just put DPS at the first place.                                        | true                                                                                              |
+| NO_REMOTE_SERVERS                  | If remote servers like 8.8.8.8 must be disabled and only local solvers like docker containers or local db must be used. (default false) | false                                                                                             |
 
 ### Terminal configuration
 Run one of the commands below to get the commandline instructions help:
