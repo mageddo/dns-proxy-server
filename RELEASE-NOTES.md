@@ -11,7 +11,7 @@ for more details
 * Fixing solver NPE on unsupported query types
 * Option to not comment out existing nameservers from resolv.conf [see the docs][1]
 * Option to disable remote solvers, see [the docs][2] for more details.
-* Leading with already connected error see #408
+* Fixing DPS auto connect feature stops work suddenly, see #408
 
 [1]: http://mageddo.github.io/dns-proxy-server/3.15/en/3-configuration/
 [2]: https://mageddo.github.io/dns-proxy-server/3.15/en/3-configuration/#no-remote-servers
