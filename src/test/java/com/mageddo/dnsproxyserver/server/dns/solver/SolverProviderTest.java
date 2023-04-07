@@ -2,7 +2,6 @@ package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.quarkus.Instances;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -14,11 +13,9 @@ import static org.mockito.Mockito.spy;
 @ExtendWith(MockitoExtension.class)
 class SolverProviderTest {
 
-  SolverProvider provider;
-
-  @BeforeEach
-  void beforeEach(){
-
+  @Test
+  void mustDisableRemoteSolversWhenNoRemoteServersOptionIsEnabled() {
+    // arrange
     final var config = spy(Configs.getInstance());
 
     doReturn(true)
@@ -31,15 +28,10 @@ class SolverProviderTest {
       new SolverMock("SolverLocalDB"),
       new SolverMock("SolverCachedRemote")
     );
-    this.provider = spy(new SolverProvider(solvers, config));
-  }
-
-  @Test
-  void mustDisableRemoteSolversWhenNoRemoteServersOptionIsEnabled() {
-    // arrange
+    final var provider = spy(new SolverProvider(solvers, config));
 
     // act
-    final var names = this.provider.getSolversNames();
+    final var names = provider.getSolversNames();
 
     // assert
     assertEquals("[SolverSystem, SolverDocker, SolverLocalDB]", names.toString());
