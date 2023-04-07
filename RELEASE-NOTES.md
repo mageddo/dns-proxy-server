@@ -7,9 +7,13 @@
 for more details
 * Fixed arm64 images stopped being pushed at `3.19`
 * Cache improvement for a concurrent approach synchronized by key
-* Increasing tcp and udp server parallelism from 20 to 50 threads each, threads are created lazilly
+* Increasing tcp and udp server parallelism from 20 to 50 threads each, threads are created lazily
 * Fixing solver NPE on unsupported query types
-* Option to not comment out existing nameservers from resolv.conf [see the docs](http://mageddo.github.io/dns-proxy-server/3.15/en/3-configuration/)
+* Option to not comment out existing nameservers from resolv.conf [see the docs][1]
+* Option to disable remote solvers, see [the docs][2] for more details.
+
+[1]: http://mageddo.github.io/dns-proxy-server/3.15/en/3-configuration/
+[2]: https://mageddo.github.io/dns-proxy-server/3.15/en/3-configuration/#no-remote-servers
 
 ## 3.14.5
 * Specify minimum required docker api version `1.21` (as DPS 2)
