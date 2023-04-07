@@ -4,25 +4,129 @@ weight: 3
 pre: "<b>3. </b>"
 ---
 
-### JSON configuration
+## Configs
+
+### Remote DNS Servers
+Remote DNS servers to be asked when can not solve from docker or local storage.
+Default: `8.8.8.8`.
+
+### Web Server Port
+Web GUI port, Default: `5380`.
+
+### DNS Server Port 
+Default: `53`.
+
+### Log Level
+Default: `INFO`.
+
+| Env            | JSON       | Terminal   |
+|----------------|------------|------------|
+| `MG_LOG_LEVEL` | `logLevel` | See --help |
+
+### Log File
+Where the log will be written. Default: console.
+
+| Env           | JSON      | Terminal   |
+|---------------|-----------|------------|
+| `MG_LOG_FILE` | `logFile` | See --help |
+
+### Register Container Names
+If should register container name / service name as a hostname. Default: false.
+
+| Env                           | JSON                     | Terminal   |
+|-------------------------------|--------------------------|------------|
+| `MG_REGISTER_CONTAINER_NAMES` | `registerContainerNames` | See --help |
+
+### Domain
+The container names domain used on the registered container, services. Default: `docker`.
+
+Ex: 
+```bash
+docker run --rm --name nginx nginx
+```
+Will register a container with the name `nginx.docker`
+
+| Env         | JSON     | Terminal   |
+|-------------|----------|------------|
+| `MG_DOMAIN` | `domain` | See --help |
+
+### DPS Network
+If should create a bridge network for dps container. Default: false.
+
+### DPS Network Auto Connect
+If should connect all containers to dps container so they can surely talk with each other. requires DPS Network Option.
+Default: false.
+
+### Default DNS
+If DPS must be set as the default DNS automatically, commonly requires DPS be run as sudo/administrator permissions,
+this options also won't work in some cases when running inside a docker container, [see the feature details][1].
+
+### Host Machine Hostname 
+Hostname to solve machine IP, domain can be changed by Domain option. Default: `host.docker`. 
+
+| Env                        | JSON                  | Terminal   |
+|----------------------------|-----------------------|------------|
+| `MG_HOST_MACHINE_HOSTNAME` | `hostMachineHostname` | See --help |
+
+### Server Protocol
+Protocol to start the dns server. Default: `UDP_TCP`.
+
+### Docker Host
+Docker host address. Default value is SO dependent.
+
+| Env              | JSON         | Terminal   |
+|------------------|--------------|------------|
+| `MG_DOCKER_HOST` | `dockerHost` | See --help |
+
+### Resolvconf Override Name Servers
+If must comment all existing nameservers at `resolv.conf` file (Linux, MacOS) or just put DPS at the first place. 
+Default: true.
+
+| Env                                  | JSON                            | Terminal   |
+|--------------------------------------|---------------------------------|------------|
+| `MG_RESOLVCONF_OVERRIDE_NAMESERVERS` | `resolvConfOverrideNameServers` | See --help |
+
+### Resolvconf
+Linux/Mac resolvconf or systemd-resolved path to set DPS as default DNS. 
+Default: `/host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf`.
+
+| Env           | JSON | Terminal   |
+|---------------|------|------------|
+| MG_RESOLVCONF |      | See --help |
+
+### No Remote Servers
+If remote servers like 8.8.8.8 must be disabled and only local solvers like docker containers or local db must be used.
+Default: false.
+
+| Env                 | JSON              | Terminal   |
+|---------------------|-------------------|------------|
+| `NO_REMOTE_SERVERS` | `noRemoteServers` | See --help |
+
+### Active Env
+Active Env used to query local db entries. Default `` (Empty String).
+
+| Env | JSON        | Terminal |
+|-----|-------------|----------|
+|     | `activeEnv` |          |
+
+### Local Entries Solving (LocalDB)
+See [Local Entries Solving][2] docs.
+
+## Example JSON configuration
 
 __Version 2__
 
 ```json
 {
   "version": 2,
-  // Remote DNS servers to be asked when can not solve from docker or local storage
-  // If no one server was specified then the 8.8.8.8 will be used
   "remoteDnsServers": [ "8.8.8.8", "4.4.4.4:54" ],
-
-  // all existent environments  
   "envs": [
     {
       "name": "", // empty string is the default enviroment
       "hostnames": [ // all local hostnames entries
         {
-          // (optional) used to control it will be automatically generated if not passed
-          "id": 1,
+          "id": 1, // (optional) used to control it will be automatically generated if not passed
+          "type": "A",
           "hostname": "github.com",
           "ip": "192.168.0.1",
           "ttl": 255 // how many seconds cache this entry
@@ -30,44 +134,32 @@ __Version 2__
       ]
     }
   ],
-  "activeEnv": "", // the current environment keyname 
-  "webServerPort": 5380, // web admin port, when null the default value is used, see --help option
-  "dnsServerPort": 53, // dns server port, when null the default value is used
+  "activeEnv": "", 
+  "webServerPort": 5380, 
+  "dnsServerPort": 53, 
   "logLevel": "INFO",
-  "logFile": "console" // where the log will be written,
-  "registerContainerNames": false, // if should register container name / service name as a hostname
-  "domain": "docker", // The container names domain
-  "dpsNetwork": false, // if should create a bridge network for dps container
-  "dpsNetworkAutoConnect": false, // if should connect all containers to dps container
-  "defaultDns": true, // if must be set as the default DNS
-  "hostMachineHostname" : "host.docker", // hostname to solve machine IP
-  "serverProtocol": "UDP_TCP", // protocol to start the dns server
-  "dockerHost": null, // docker host address, default value is SO dependent,
-  "resolvConfOverrideNameServers": true, // If must comment all existing nameservers at resolv.conf file or just put DPS at the first place.
-  "noRemoteServers": false // If remote servers like 8.8.8.8 must be disabled and only local solvers like docker containers or local db must be used.
+  "logFile": "console",
+  "registerContainerNames": false, 
+  "domain": "docker", 
+  "dpsNetwork": false,
+  "dpsNetworkAutoConnect": false, 
+  "defaultDns": true,
+  "hostMachineHostname" : "host.docker", 
+  "serverProtocol": "UDP_TCP", 
+  "dockerHost": null,
+  "resolvConfOverrideNameServers": true,
+  "noRemoteServers": false
 }
 ```
 
-### Environment variable configuration
+## Environment variable configuration
 
 Boolean values
 
 > You can use `1` or `true` (case insensitive) to specify which the flag is activated, any other
 > value will be considered false.
 
-| VARIBLE                            | DESCRIPTION                                                                                                                             | DEFAULT VALUE                                                                                     |
-|------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
-| MG_RESOLVCONF                      | Linux resolvconf or systemd-resolved path to set DPS as default DNS                                                                     | /host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf |
-| MG_LOG_LEVEL                       |                                                                                                                                         | INFO                                                                                              |
-| MG_LOG_FILE                        | Path where to logs will be stored                                                                                                       | console                                                                                           |
-| MG_REGISTER_CONTAINER_NAMES        | if should register container name / service name as a hostname                                                                          | false                                                                                             |
-| MG_HOST_MACHINE_HOSTNAME           | hostname to solve host machine IP                                                                                                       | host.docker                                                                                       |
-| MG_DOMAIN                          | The container names domain (requires MG_REGISTER_CONTINER_NAMES=TRUE)                                                                   | .docker                                                                                           |
-| MG_DOCKER_HOST                     | Docker host address                                                                                                                     | depends on the SO                                                                                 |
-| MG_RESOLVCONF_OVERRIDE_NAMESERVERS | If must comment all existing nameservers at resolv.conf file or just put DPS at the first place.                                        | true                                                                                              |
-| NO_REMOTE_SERVERS                  | If remote servers like 8.8.8.8 must be disabled and only local solvers like docker containers or local db must be used. (default false) | false                                                                                             |
-
-### Terminal configuration
+## Terminal configuration
 Run one of the commands below to get the commandline instructions help:
 
 ```bash
@@ -77,3 +169,6 @@ $ ./dns-proxy-server --help
 ```bash
 $ docker run defreitas/dns-proxy-server --help
 ```
+
+[1]: {{%relref "2-features/auto-configuration-as-default-dns/_index.md" %}}
+[2]: {{%relref "2-features/local-entries/_index.md" %}}
