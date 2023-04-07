@@ -12,13 +12,24 @@ import java.util.stream.Stream;
 @Slf4j
 public class SolverMock implements Solver {
 
+  public static final String NAME = "SolverMock";
   private final List<Pair<String, IP>> mocks;
+  private final String name;
 
   public SolverMock(Pair<String, IP>... mocks) {
-    this(Stream.of(mocks).toList());
+    this(NAME, mocks);
+  }
+
+  public SolverMock(String name, Pair<String, IP>... mocks) {
+    this(name, Stream.of(mocks).toList());
   }
 
   public SolverMock(List<Pair<String, IP>> mocks) {
+    this(NAME, mocks);
+  }
+
+  public SolverMock(String name, List<Pair<String, IP>> mocks) {
+    this.name = name;
     this.mocks = mocks;
   }
 
@@ -31,5 +42,10 @@ public class SolverMock implements Solver {
       }
     }
     return null;
+  }
+
+  @Override
+  public String name() {
+    return this.name;
   }
 }

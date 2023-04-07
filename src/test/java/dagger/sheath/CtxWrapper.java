@@ -7,6 +7,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.reflect.Field;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 @Slf4j
 public class CtxWrapper {
@@ -71,10 +72,10 @@ public class CtxWrapper {
     return ctx;
   }
 
-  public void initializeWithMockOrThrows(Class<?> type) {
+  public void initializeWithOrThrows(Class<?> type, Consumer<ProviderWrapper> c) {
     final var provider = this.findProviderFor(type);
     Validate.notNull(provider, "No provider found for: %s, try create an @IntoMap bind", type);
-    provider.mock();
+    c.accept(provider);
   }
 
   ProviderWrapper findProviderFor(Class<?> type) {

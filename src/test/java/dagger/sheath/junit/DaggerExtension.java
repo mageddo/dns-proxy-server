@@ -3,9 +3,10 @@ package dagger.sheath.junit;
 import dagger.sheath.CtxWrapper;
 import dagger.sheath.EventHandler;
 import dagger.sheath.InjectMock;
+import dagger.sheath.InjectSpy;
 import dagger.sheath.NopSupplier;
+import dagger.sheath.ProviderWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.junit.jupiter.api.extension.AfterAllCallback;
@@ -22,7 +23,10 @@ import org.mockito.internal.util.MockUtil;
 import javax.inject.Inject;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.create;
@@ -32,7 +36,7 @@ import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.create;
  */
 @Slf4j
 public class DaggerExtension implements Extension, BeforeAllCallback, AfterAllCallback,
-    BeforeEachCallback, ParameterResolver {
+  BeforeEachCallback, ParameterResolver {
 
   private final static ExtensionContext.Namespace DAGGER = create("dagger2");
   private final static String
@@ -60,7 +64,7 @@ public class DaggerExtension implements Extension, BeforeAllCallback, AfterAllCa
 
   @Override
   public void beforeEach(ExtensionContext context) throws Exception {
-    injectMocks(context);
+    injectMocksAndSpies(context);
     injectFields(context);
     resetMocks(context);
     if (!Boolean.TRUE.equals(context.getStore(DAGGER).get(DAGGER_SETUP, Boolean.class))) {
@@ -100,24 +104,52 @@ public class DaggerExtension implements Extension, BeforeAllCallback, AfterAllCa
     }
   }
 
-  void injectMocks(ExtensionContext context) {
+  void injectMocksAndSpies(ExtensionContext context) {
     final var testInstances = context.getRequiredTestInstances().getAllInstances();
     final var ctxWrapper = findCtxWrapper(context);
-    for (Object instance : testInstances) {
+    for (Object testInstance : testInstances) {
 
-      final var fields = FieldUtils.getFieldsListWithAnnotation(instance.getClass(), InjectMock.class);
-      for (Field field : fields) {
-        try {
+      {
+        final var fields = FieldUtils.getFieldsListWithAnnotation(testInstance.getClass(), InjectMock.class);
+        inject(
+          ctxWrapper,
+          testInstance,
+          fields,
+          ProviderWrapper::mock,
+          MockUtil::isMock
+        );
+      }
+      {
+        final var fields = FieldUtils.getFieldsListWithAnnotation(testInstance.getClass(), InjectSpy.class);
+        inject(
+          ctxWrapper,
+          testInstance,
+          fields,
+          ProviderWrapper::spy,
+          MockUtil::isSpy
+        );
+      }
+    }
+  }
 
-          log.debug("status=injectMockField, field={} {}", field.getType().getSimpleName(), field.getName());
-          ctxWrapper.initializeWithMockOrThrows(field.getType());
-          final var mock = ctxWrapper.get(field.getType());
-          Validate.isTrue(MockUtil.isMock(mock), "Mock didn't work for type: %s", field.getType());
-          FieldUtils.writeField(field, instance, mock, true);
-
-        } catch (IllegalAccessException e) {
-          throw new IllegalStateException(e);
+  private static void inject(
+    CtxWrapper ctxWrapper,
+    Object instance,
+    List<Field> fields,
+    Consumer<ProviderWrapper> initializer,
+    Predicate<Object> validator
+  ) {
+    for (Field field : fields) {
+      try {
+        log.debug("status=injectMockSpyInField, field={} {}", field.getType().getSimpleName(), field.getName());
+        ctxWrapper.initializeWithOrThrows(field.getType(), initializer);
+        final var mock = ctxWrapper.get(field.getType());
+        if (!validator.test(mock)) {
+          throw new IllegalStateException(String.format("Mock/Stub didn't work for type: %s", field.getType()));
         }
+        FieldUtils.writeField(field, instance, mock, true);
+      } catch (IllegalAccessException e) {
+        throw new IllegalStateException(e);
       }
     }
   }
@@ -179,22 +211,22 @@ public class DaggerExtension implements Extension, BeforeAllCallback, AfterAllCa
     final var parent = context.getParent().get();
     parent.getStore(DAGGER).put(DAGGER_SETUP, true);
     log.debug(
-        "status=triggeredSetupEvent, context={}, parent={}, root={}",
-        context.hashCode(), parent.hashCode(), context.getRoot().hashCode()
+      "status=triggeredSetupEvent, context={}, parent={}, root={}",
+      context.hashCode(), parent.hashCode(), context.getRoot().hashCode()
     );
   }
 
   private void triggerAfterAllEvent(ExtensionContext context) {
     findLifecycleHander(context).afterAll(findCtx(context));
     log.debug(
-        "status=triggeredAfterAllEvent"
+      "status=triggeredAfterAllEvent"
     );
   }
 
   private static EventHandler findLifecycleHander(ExtensionContext context) {
     return context
-        .getStore(DAGGER)
-        .get(DAGGER_LIFECYCLE_HANDLER, EventHandler.class);
+      .getStore(DAGGER)
+      .get(DAGGER_LIFECYCLE_HANDLER, EventHandler.class);
   }
 
   static Object createInstance(Class<?> clazz) throws Exception {

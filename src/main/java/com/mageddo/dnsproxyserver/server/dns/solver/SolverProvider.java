@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
+import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.utils.Priorities;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ public class SolverProvider {
 
   @Inject
   public SolverProvider(Instance<Solver> solvers) {
-    final var config = Configs.getInstance();
+    final var config = getConfig();
     this.solvers = solvers
       .stream()
       .sorted(Priorities.comparator(Solver::name, solversOrder))
@@ -44,5 +45,16 @@ public class SolverProvider {
       .filter(it -> it.getClass() != clazz)
       .collect(Collectors.toList())
       ;
+  }
+
+  public List<String> getSolversNames() {
+    return getSolvers()
+      .stream()
+      .map(Solver::name)
+      .toList();
+  }
+
+  Config getConfig() {
+    return Configs.getInstance();
   }
 }
