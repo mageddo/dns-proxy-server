@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ConfigFlagTest {
 
   @Test
-  void mustParseDefaultConfigs() throws Exception {
+  void mustParseDefaultConfigs() {
 
     // arrange
     final var args = new String[]{};

@@ -1,6 +1,6 @@
-Usage: <main class> [-default-dns] [-dps-network] [-dps-network-auto-connect] [-help] [-register-container-names]
-                    [-resolvconf-override-name-servers] [-service-publish-web-port] [-version]
-                    [-conf-path=<configPath>] [-docker-host=<dockerHost>] [-domain=<domain>]
+Usage: <main class> [-default-dns] [-dps-network] [-dps-network-auto-connect] [-help] [-no-remote-servers]
+                    [-register-container-names] [-resolvconf-override-name-servers] [-service-publish-web-port]
+                    [-version] [-conf-path=<configPath>] [-docker-host=<dockerHost>] [-domain=<domain>]
                     [-host-machine-hostname=<hostMachineHostname>] [-log-file=<logToFile>] [-log-level=<logLevel>]
                     [-server-port=<dnsServerPort>] [-service=<service>] [-web-server-port=<webServerPort>]
       -conf-path, --conf-path=<configPath>
@@ -30,11 +30,16 @@ Usage: <main class> [-default-dns] [-dps-network] [-dps-network-auto-connect] [-
 
       -log-level, --log-level=<logLevel>
                             Log Level ERROR, WARNING, INFO, DEBUG (default INFO)
+      -no-remote-servers, --no-remote-servers
+                            If remote servers like 8.8.8.8 must be disabled and only local solvers like docker
+                            containers or local db must be used.
+                            (default false)
+
       -register-container-names, --register-container-names
                             If must register container name / service name as host in DNS server (default false)
       -resolvconf-override-name-servers, --resolvconf-override-name-servers
-                            If must comment all existing nameservers at resolv.conf file or just put DPS at the first
-                              place.
+                            If must comment all existing nameservers at resolv.conf file
+                            or just put DPS at the first place.
                             (default true)
 
       -server-port, --server-port=<dnsServerPort>
