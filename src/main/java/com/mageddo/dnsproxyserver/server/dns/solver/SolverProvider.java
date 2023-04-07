@@ -14,8 +14,7 @@ import java.util.stream.Collectors;
 @Singleton
 public class SolverProvider {
 
-  private static final String[] solversOrder = {
-    "SolverCached",
+  static final String[] solversOrder = {
     "SolverSystem",
     "SolverDocker",
     SolverLocalDB.NAME,
@@ -30,7 +29,7 @@ public class SolverProvider {
     this.solvers = solvers
       .stream()
       .sorted(Priorities.comparator(Solver::name, solversOrder))
-      .filter(it -> it.is(SolverCachedRemote.NAME) && !config.isNoRemoteServers())
+//      .filter(it -> it.is(SolverCachedRemote.NAME) && !config.isNoRemoteServers())
       .toList()
     ;
   }

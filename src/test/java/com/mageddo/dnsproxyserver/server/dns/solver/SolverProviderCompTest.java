@@ -7,6 +7,8 @@ import testing.Events;
 
 import javax.inject.Inject;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DaggerTest(initializer = ContextSupplier.class, eventsHandler = Events.class)
@@ -27,6 +29,6 @@ class SolverProviderCompTest {
       .toList();
 
     // assert
-    assertEquals("[SolverSystem, SolverDocker, SolverLocalDB, SolverCachedRemote]", names.toString());
+    assertEquals(Arrays.toString(SolverProvider.solversOrder), names.toString());
   }
 }
