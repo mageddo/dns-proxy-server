@@ -57,15 +57,19 @@ public class EventListener implements StartupEvent {
 
       @Override
       public void onNext(Event event) {
-        log.debug(
-          "status=event, id={}, action={}, type={}, status={}, event={}",
-          event.getId(), event.getAction(), event.getType(), event.getStatus(), event
-        );
-        if (StringUtils.equals(event.getAction(), "start")) {
-          networkService.connect(NETWORK_DPS, event.getId());
-          return;
+        try {
+          log.debug(
+            "status=event, id={}, action={}, type={}, status={}, event={}",
+            event.getId(), event.getAction(), event.getType(), event.getStatus(), event
+          );
+          if (StringUtils.equals(event.getAction(), "start")) {
+            networkService.connect(NETWORK_DPS, event.getId());
+            return;
+          }
+          log.debug("status=eventIgnored, event={}", event);
+        } catch (Throwable e){
+          log.warn("status=errorWhenProcessingEvent, msg={}, event={}", e.getMessage(), event, e);
         }
-        log.debug("status=eventIgnore, event={}", event);
       }
 
       @Override
@@ -76,7 +80,7 @@ public class EventListener implements StartupEvent {
       public void onComplete() {
       }
     };
-    dockerClient
+    this.dockerClient
       .eventsCmd()
 //      .withEventFilter("start", "die", "stop", "destroy")
       .withEventFilter("start")

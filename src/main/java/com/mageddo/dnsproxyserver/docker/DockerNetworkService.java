@@ -71,6 +71,7 @@ public class DockerNetworkService {
       log.info("status=won't connect dps container using conventional mode, containerId={}", containerId);
       return;
     }
-    this.networkDAO.connect(networkName, containerId);
+    final var status = this.networkDAO.connect(networkName, containerId);
+    log.info("status={}, networkName={}, containerId={}", status, networkName, containerId);
   }
 }

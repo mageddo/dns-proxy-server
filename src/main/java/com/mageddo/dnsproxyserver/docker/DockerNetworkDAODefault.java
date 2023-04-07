@@ -1,10 +1,12 @@
 package com.mageddo.dnsproxyserver.docker;
 
 import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.exception.DockerException;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.ContainerNetwork;
 import com.github.dockerjava.api.model.Network;
 import com.mageddo.commons.lang.Objects;
+import com.mageddo.dnsproxyserver.docker.domain.NetworkConnectionStatus;
 import com.mageddo.net.Networks;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,9 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.List;
 import java.util.function.Predicate;
+
+import static com.mageddo.dnsproxyserver.docker.domain.NetworkConnectionStatus.ALREADY_CONNECTED;
+import static com.mageddo.dnsproxyserver.docker.domain.NetworkConnectionStatus.CONNECTED;
 
 @Slf4j
 @Default
@@ -82,14 +87,22 @@ public class DockerNetworkDAODefault implements DockerNetworkDAO {
   }
 
   @Override
-  public void connect(String networkNameOrId, String containerId) {
-    this.dockerClient
-      .connectToNetworkCmd()
-      .withNetworkId(networkNameOrId)
-      .withContainerId(containerId)
-      .exec()
-    ;
-    log.info("status=connected, networkNameOrId={}, containerId={}", networkNameOrId, containerId);
+  public NetworkConnectionStatus connect(String networkNameOrId, String containerId) {
+    try {
+      this.dockerClient
+        .connectToNetworkCmd()
+        .withNetworkId(networkNameOrId)
+        .withContainerId(containerId)
+        .exec()
+      ;
+      log.debug("status=connected, networkNameOrId={}, containerId={}", networkNameOrId, containerId);
+      return CONNECTED;
+    } catch (DockerException e) {
+      if (e.getMessage().contains("already exists in network")) {
+        return ALREADY_CONNECTED;
+      }
+      throw e;
+    }
   }
 
   @Override
