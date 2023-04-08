@@ -98,9 +98,9 @@ Default: `/host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/res
 If remote servers like 8.8.8.8 must be disabled and only local solvers like docker containers or local db must be used.
 Default: false.
 
-| Env                 | JSON              | Terminal   |
-|---------------------|-------------------|------------|
-| `NO_REMOTE_SERVERS` | `noRemoteServers` | See --help |
+| Env                    | JSON              | Terminal   |
+|------------------------|-------------------|------------|
+| `MG_NO_REMOTE_SERVERS` | `noRemoteServers` | See --help |
 
 ### Active Env
 Active Env used to query local db entries. Default `` (Empty String).
