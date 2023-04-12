@@ -112,10 +112,9 @@ Active Env used to query local db entries. Default `` (Empty String).
 ### No Entries Response Code
 Response code to use when no entries are returned by the configured solvers. Default: 3
 
-| Env | JSON        | Terminal |
-|-----|-------------|----------|
-|     | `noEntriesResponseCode` |  -no-entries-response-code        |
-
+| Env                         | JSON                    | Terminal  |
+|-----------------------------|-------------------------|-----------|
+| MG_NO_ENTRIES_RESPONSE_CODE | `noEntriesResponseCode` | See -help |
 
 ### Local Entries Solving (LocalDB)
 See [Local Entries Solving][2] docs.
