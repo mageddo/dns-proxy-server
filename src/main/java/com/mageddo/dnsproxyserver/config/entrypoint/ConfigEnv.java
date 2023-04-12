@@ -74,7 +74,7 @@ public class ConfigEnv {
       .dockerHost(UriUtils.createURI(Envs.getStringOrNull(MG_DOCKER_HOST)))
       .resolvConfOverrideNameServers(Envs.getBooleanOrNull(MG_RESOLVCONF_OVERRIDE_NAMESERVERS))
       .noRemoteServers(Envs.getBooleanOrNull(MG_NO_REMOTE_SERVERS))
-      .noEntriesResponseCode(Envs.getIntegerOrNull(MG_NO_REMOTE_SERVERS))
+      .noEntriesResponseCode(Envs.getIntegerOrNull(MG_NO_ENTRIES_RESPONSE_CODE))
       .build();
   }
 
