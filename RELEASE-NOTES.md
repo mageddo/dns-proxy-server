@@ -16,7 +16,7 @@ for more details
 
 [1]: http://mageddo.github.io/dns-proxy-server/3.15/en/3-configuration/
 [2]: https://mageddo.github.io/dns-proxy-server/3.15/en/3-configuration/#no-remote-servers
-[3]: https://mageddo.github.io/dns-proxy-server/3.15/en/3-configuration/#no-remote-servers
+[3]: https://mageddo.github.io/dns-proxy-server/3.15/en/3-configuration/#no-entries-response-code
 
 ## 3.14.5
 * Specify minimum required docker api version `1.21` (as DPS 2)
