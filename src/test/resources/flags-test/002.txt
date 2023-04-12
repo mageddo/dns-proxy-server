@@ -32,7 +32,7 @@ Usage: <main class> [-default-dns] [-dps-network] [-dps-network-auto-connect] [-
       -log-level, --log-level=<logLevel>
                             Log Level ERROR, WARNING, INFO, DEBUG (default INFO)
       -no-entries-response-code, --no-entries-response-code=<noEntriesResponseCode>
-                            Response code to use when no entries are returned by the configured remotes
+                            Response code to use when no entries are returned by the configured solvers
                             (default 3) which means NXDOMAIN
 
       -no-remote-servers, --no-remote-servers

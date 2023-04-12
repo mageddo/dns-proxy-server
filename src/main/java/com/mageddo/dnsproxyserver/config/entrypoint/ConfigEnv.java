@@ -43,6 +43,8 @@ public class ConfigEnv {
 
   private static final String MG_NO_REMOTE_SERVERS = "MG_NO_REMOTE_SERVERS";
 
+  private static final String MG_NO_ENTRIES_RESPONSE_CODE = "MG_NO_ENTRIES_RESPONSE_CODE";
+
   private Path currentPath;
   private String resolvConfPath;
   private String logFile;
@@ -72,6 +74,7 @@ public class ConfigEnv {
       .dockerHost(UriUtils.createURI(Envs.getStringOrNull(MG_DOCKER_HOST)))
       .resolvConfOverrideNameServers(Envs.getBooleanOrNull(MG_RESOLVCONF_OVERRIDE_NAMESERVERS))
       .noRemoteServers(Envs.getBooleanOrNull(MG_NO_REMOTE_SERVERS))
+      .noEntriesResponseCode(Envs.getIntegerOrNull(MG_NO_REMOTE_SERVERS))
       .build();
   }
 

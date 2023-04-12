@@ -46,4 +46,15 @@ public class Envs {
   public static String getStringOrDefault(String env, String def) {
     return StringUtils.defaultIfBlank(System.getenv(env), def);
   }
+
+  public static Integer getIntegerOrNull(String env) {
+    return getIntegerOrDefault(env, null);
+  }
+
+  public static Integer getIntegerOrDefault(String env, Integer def) {
+    if (StringUtils.isBlank(System.getenv(env))) {
+      return def;
+    }
+    return Integer.parseInt(System.getenv(env));
+  }
 }

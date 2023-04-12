@@ -12,9 +12,11 @@ for more details
 * Option to not comment out existing nameservers from resolv.conf [see the docs][1]
 * Option to disable remote solvers, see [the docs][2] for more details.
 * Fixing DPS auto connect feature stops working suddenly, see #408
+* Option to customize RCODE when no entries are found by all tried solvers [see the docs][3]
 
 [1]: http://mageddo.github.io/dns-proxy-server/3.15/en/3-configuration/
 [2]: https://mageddo.github.io/dns-proxy-server/3.15/en/3-configuration/#no-remote-servers
+[3]: https://mageddo.github.io/dns-proxy-server/3.15/en/3-configuration/#no-remote-servers
 
 ## 3.14.5
 * Specify minimum required docker api version `1.21` (as DPS 2)

@@ -159,7 +159,7 @@ public class ConfigFlag implements Callable<Boolean> {
   @Option(
     names = {"-no-entries-response-code", "--no-entries-response-code"},
     description = """
-      Response code to use when no entries are returned by the configured remotes
+      Response code to use when no entries are returned by the configured solvers
       (default 3) which means NXDOMAIN
        """,
     defaultValue = "3"

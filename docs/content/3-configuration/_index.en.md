@@ -109,6 +109,14 @@ Active Env used to query local db entries. Default `` (Empty String).
 |-----|-------------|----------|
 |     | `activeEnv` |          |
 
+### No Entries Response Code
+Response code to use when no entries are returned by the configured solvers. Default: 3
+
+| Env | JSON        | Terminal |
+|-----|-------------|----------|
+|     | `noEntriesResponseCode` |  -no-entries-response-code        |
+
+
 ### Local Entries Solving (LocalDB)
 See [Local Entries Solving][2] docs.
 
@@ -148,7 +156,8 @@ __Version 2__
   "serverProtocol": "UDP_TCP", 
   "dockerHost": null,
   "resolvConfOverrideNameServers": true,
-  "noRemoteServers": false
+  "noRemoteServers": false,
+  "noEntriesResponseCode": 3
 }
 ```
 
