@@ -87,6 +87,8 @@ public class Config {
 
   private boolean noRemoteServers;
 
+  private int noEntriesResponseCode;
+
   public void resetConfigFile() {
     try {
       Files.deleteIfExists(this.getConfigPath());

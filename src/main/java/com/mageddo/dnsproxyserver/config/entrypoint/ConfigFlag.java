@@ -157,6 +157,16 @@ public class ConfigFlag implements Callable<Boolean> {
   private Boolean noRemoteServers;
 
   @Option(
+    names = {"-no-entries-response-code", "--no-entries-response-code"},
+    description = """
+      Response code to use when no entries are returned by the configured remotes
+      (default 3) which means NXDOMAIN
+       """,
+    defaultValue = "3"
+  )
+  private Integer noEntriesResponseCode;
+
+  @Option(
     names = {"-help", "--help"},
     description = "This message (default false)",
     usageHelp = true

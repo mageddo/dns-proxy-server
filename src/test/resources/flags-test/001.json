@@ -9,6 +9,7 @@
   "publishServicePort" : true,
   "logToFile" : "console",
   "logLevel" : "INFO",
+  "noEntriesResponseCode" : 3,
   "noRemoteServers" : false,
   "registerContainerNames" : false,
   "hostMachineHostname" : "host.docker",

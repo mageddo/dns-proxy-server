@@ -55,6 +55,7 @@ public class ConfigEnv {
   private URI dockerHost;
   private Boolean resolvConfOverrideNameServers;
   private Boolean noRemoteServers;
+  private Integer noEntriesResponseCode;
 
   public static ConfigEnv fromEnv() {
     return ConfigEnv

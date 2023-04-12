@@ -71,6 +71,9 @@ public class Configs {
       .noRemoteServers(firstNonNullRequiring(
         env.getNoRemoteServers(), json.getNoRemoteServers(), flag.getNoRemoteServers()
       ))
+      .noEntriesResponseCode(firstNonNullRequiring(
+        env.getNoEntriesResponseCode(), json.getNoEntriesResponseCode(), flag.getNoEntriesResponseCode()
+      ))
       .build();
   }
 

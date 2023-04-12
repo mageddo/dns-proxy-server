@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
+import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.server.dns.solver.CacheName;
 import com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name;
 import com.mageddo.dnsproxyserver.server.dns.solver.Response;
@@ -24,6 +25,7 @@ public class RequestHandlerDefault implements RequestHandler {
 
   private final SolverProvider solverProvider;
   private final SolverCache cache;
+  private final int noEntriesRCode;
 
   @Inject
   public RequestHandlerDefault(
@@ -32,6 +34,7 @@ public class RequestHandlerDefault implements RequestHandler {
   ) {
     this.solverProvider = solverProvider;
     this.cache = cache;
+    this.noEntriesRCode = Configs.getInstance().getNoEntriesResponseCode();
   }
 
   @Override
@@ -102,7 +105,8 @@ public class RequestHandlerDefault implements RequestHandler {
     return null;
   }
 
-  public static Message buildDefaultRes(Message reqMsg) {
-    return Messages.nxDomain(reqMsg); // if all failed and returned null, then return as can't find
+  public Message buildDefaultRes(Message reqMsg) {
+    // if all failed and returned null, then return as can't find
+    return Messages.withResponseCode(reqMsg, this.noEntriesRCode);
   }
 }

@@ -2,7 +2,8 @@ Usage: <main class> [-default-dns] [-dps-network] [-dps-network-auto-connect] [-
                     [-register-container-names] [-resolvconf-override-name-servers] [-service-publish-web-port]
                     [-version] [-conf-path=<configPath>] [-docker-host=<dockerHost>] [-domain=<domain>]
                     [-host-machine-hostname=<hostMachineHostname>] [-log-file=<logToFile>] [-log-level=<logLevel>]
-                    [-server-port=<dnsServerPort>] [-service=<service>] [-web-server-port=<webServerPort>]
+                    [-no-entries-response-code=<noEntriesResponseCode>] [-server-port=<dnsServerPort>]
+                    [-service=<service>] [-web-server-port=<webServerPort>]
       -conf-path, --conf-path=<configPath>
                             The config file path (default conf/config.json)
       -default-dns, --default-dns
@@ -30,6 +31,10 @@ Usage: <main class> [-default-dns] [-dps-network] [-dps-network-auto-connect] [-
 
       -log-level, --log-level=<logLevel>
                             Log Level ERROR, WARNING, INFO, DEBUG (default INFO)
+      -no-entries-response-code, --no-entries-response-code=<noEntriesResponseCode>
+                            Response code to use when no entries are returned by the configured remotes
+                            (default 3) which means NXDOMAIN
+
       -no-remote-servers, --no-remote-servers
                             If remote servers like 8.8.8.8 must be disabled and only local solvers like docker
                             containers or local db must be used.

@@ -20,6 +20,7 @@
   "hostMachineHostname" : null,
   "logFile" : null,
   "logLevel" : null,
+  "noEntriesResponseCode" : null,
   "noRemoteServers" : null,
   "registerContainerNames" : null,
   "remoteDnsServers" : [ ],

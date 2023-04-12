@@ -42,4 +42,6 @@ public interface ConfigJson {
   Boolean getResolvConfOverrideNameServers();
 
   Boolean getNoRemoteServers();
+
+  Integer getNoEntriesResponseCode();
 }

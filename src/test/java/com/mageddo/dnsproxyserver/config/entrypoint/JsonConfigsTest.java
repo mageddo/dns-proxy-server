@@ -19,23 +19,23 @@ class JsonConfigsTest {
   @Test
   void mustParseVersion1ConvertAndSaveAsVersion2WhenChanged(@TempDir Path tempDir) throws Exception {
     // arrange
-    final var tempConfigPath = tempDir.resolve("config.tmp.json");
-    Files.copy(readAsStream("/config-json-v1-test/001.json"), tempConfigPath);
+    final var tempJsonConfigPath = tempDir.resolve("config.tmp.json");
+    Files.copy(readAsStream("/config-json-v1-test/001.json"), tempJsonConfigPath);
 
     // act
     // assert
 
-    final var configJson = JsonConfigs.loadConfig(tempConfigPath);
+    final var configJson = JsonConfigs.loadConfig(tempJsonConfigPath);
     assertTrue(configJson instanceof ConfigJsonV2, ClassUtils.getSimpleName(configJson));
-    assertEquals(JsonConfigs.VERSION_1, findVersion(tempConfigPath));
+    assertEquals(JsonConfigs.VERSION_1, findVersion(tempJsonConfigPath));
 
-    JsonConfigs.write(tempConfigPath, (ConfigJsonV2) configJson);
-    assertEquals(JsonConfigs.VERSION_2, findVersion(tempConfigPath));
+    JsonConfigs.write(tempJsonConfigPath, (ConfigJsonV2) configJson);
+    assertEquals(JsonConfigs.VERSION_2, findVersion(tempJsonConfigPath));
 
-    final var path = JsonConfigs.buildBackupPath(tempConfigPath);
+    final var path = JsonConfigs.buildBackupPath(tempJsonConfigPath);
     assertTrue(Files.exists(path), path.toString());
 
-    assertEquals(readAndSortJson("/json-configs-test/001.json"), readAndSortJson(tempConfigPath));
+    assertEquals(readAndSortJson("/json-configs-test/001.json"), readAndSortJson(tempJsonConfigPath));
   }
 
   @Test

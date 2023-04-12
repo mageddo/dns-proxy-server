@@ -7,6 +7,7 @@
   "hostMachineHostname" : "host.docker",
   "logFile" : "console",
   "logLevel" : "INFO",
+  "noEntriesResponseCode" : 3,
   "noRemoteServers" : false,
   "registerContainerNames" : false,
   "remoteDnsServers" : [ {

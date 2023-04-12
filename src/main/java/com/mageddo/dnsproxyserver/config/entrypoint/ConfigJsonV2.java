@@ -57,6 +57,8 @@ public class ConfigJsonV2 implements ConfigJson {
 
   private Boolean noRemoteServers;
 
+  private Integer noEntriesResponseCode;
+
   @JsonIgnore
   public List<IpAddr> getRemoteDnsServers() {
     return this.remoteDnsServers
