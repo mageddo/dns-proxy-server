@@ -4,7 +4,6 @@ import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.commons.concurrent.ThreadPool;
 import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
-import com.mageddo.dnsproxyserver.server.dns.SocketClient;
 import com.mageddo.net.Networks;
 import dev.failsafe.CircuitBreaker;
 import dev.failsafe.CircuitBreakerOpenException;
@@ -39,7 +38,9 @@ public class SolverRemote implements Solver {
 
   public static final Duration DEFAULT_SUCCESS_TTL = Duration.ofMinutes(5);
   public static final Duration DEFAULT_NXDOMAIN_TTL = Duration.ofMinutes(60);
+
   static final String QUERY_TIMED_OUT_MSG = "Query timed out";
+  static final long FPS_120 = 1000 / 120;
 
   private final RemoteResolvers delegate;
   private final Map<InetSocketAddress, CircuitBreaker<Response>> circuitBreakerMap = new ConcurrentHashMap<>();
@@ -100,7 +101,7 @@ public class SolverRemote implements Solver {
       if (resFuture.isDone()) {
         return this.treatResponse(i, resFuture, stopWatch, lastErrorMsg, query, resolver);
       }
-      Threads.sleep(SocketClient.FPS_60);
+      Threads.sleep(FPS_120);
     }
 
   }
