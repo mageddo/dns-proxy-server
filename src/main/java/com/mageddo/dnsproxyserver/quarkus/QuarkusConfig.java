@@ -1,13 +1,13 @@
 package com.mageddo.dnsproxyserver.quarkus;
 
 import com.mageddo.dnsproxyserver.config.Configs;
+import com.mageddo.dnsproxyserver.server.dns.solver.Resolver;
+import com.mageddo.dnsproxyserver.server.dns.solver.SimpleResolver;
 import com.mageddo.net.IpAddr;
 import com.mageddo.dnsproxyserver.server.dns.solver.RemoteResolvers;
 import com.mageddo.dnsproxyserver.utils.InetAddresses;
 import dagger.Module;
 import dagger.Provides;
-import org.xbill.DNS.Resolver;
-import org.xbill.DNS.SimpleResolver;
 
 import javax.enterprise.inject.Produces;
 import java.time.Duration;

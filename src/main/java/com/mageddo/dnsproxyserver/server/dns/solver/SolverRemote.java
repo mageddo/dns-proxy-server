@@ -16,7 +16,6 @@ import org.apache.commons.lang3.time.StopWatch;
 import org.xbill.DNS.Flags;
 import org.xbill.DNS.Message;
 import org.xbill.DNS.Rcode;
-import org.xbill.DNS.SimpleResolver;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -52,7 +51,7 @@ public class SolverRemote implements Solver {
     for (int i = 0; i < this.delegate.resolvers().size(); i++) {
 
       stopWatch.split();
-      final var resolver = (SimpleResolver) this.delegate.resolvers().get(i);
+      final var resolver = this.delegate.resolvers().get(i);
       final var circuitBreaker = this.circuitBreakerFor(resolver.getAddress());
       final var idx = i;
 
@@ -79,7 +78,7 @@ public class SolverRemote implements Solver {
   private Response handle0(
     int i,
     StopWatch stopWatch,
-    SimpleResolver resolver,
+    Resolver resolver,
     Message query,
     AtomicReference<Message> lastErrorMsg
   ) {
@@ -124,7 +123,7 @@ public class SolverRemote implements Solver {
     StopWatch stopWatch,
     AtomicReference<Message> lastErrorMsg,
     Message query,
-    SimpleResolver resolver) {
+    Resolver resolver) {
     try {
       final var res = Messages.setFlag(resFuture.get(), Flags.RA);
       if (res.getRcode() == Rcode.NOERROR) {
