@@ -164,7 +164,7 @@ public class SolverRemote implements Solver {
     return this.circuitBreakerMap.computeIfAbsent(address, inetSocketAddress -> {
       final var breaker = CircuitBreaker.<Response>builder()
         .handle(CircuitCheckException.class)
-        .withFailureThreshold(2, 10)
+        .withFailureThreshold(3, 10)
         .withSuccessThreshold(5)
         .withDelay(Duration.ofSeconds(20))
         .build();
