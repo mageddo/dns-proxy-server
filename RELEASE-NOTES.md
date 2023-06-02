@@ -1,3 +1,6 @@
+## 3.16
+* Circuit Breaker for Remote DNS Servers #415
+
 ## 3.15
 * Support for AAAA records on Docker container, LocalDB and System solving.
 * AAAA GUI records support 
