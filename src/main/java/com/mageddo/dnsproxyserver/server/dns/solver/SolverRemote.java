@@ -39,10 +39,12 @@ public class SolverRemote implements Solver {
 
   public static final Duration DEFAULT_SUCCESS_TTL = Duration.ofMinutes(5);
   public static final Duration DEFAULT_NXDOMAIN_TTL = Duration.ofMinutes(60);
+  static final String QUERY_TIMED_OUT_MSG = "Query timed out";
 
   private final RemoteResolvers delegate;
   private final Map<InetSocketAddress, CircuitBreaker<Response>> circuitBreakerMap = new ConcurrentHashMap<>();
   private final ExecutorService threadPool = ThreadPool.newFixed(50);
+  private String status;
 
   @Override
   public Response handle(Message query) {
@@ -63,7 +65,9 @@ public class SolverRemote implements Solver {
           return response;
         }
       } catch (CircuitCheckException | CircuitBreakerOpenException e) {
-        log.info("status=circuitEvent, type={}, msg={}", ClassUtils.getSimpleName(e), e.getMessage());
+        final var clazz = ClassUtils.getSimpleName(e);
+        log.info("status=circuitEvent, type={}, msg={}", clazz, e.getMessage());
+        this.status = String.format("%s for %s", clazz, resolver.getAddress());
         continue;
       }
     }
@@ -90,7 +94,7 @@ public class SolverRemote implements Solver {
     boolean mustCheckPing = true;
     while (true) {
       if (mustCheckPing && pingFuture.isDone()) {
-//        testPing(address, pingFuture);
+        testPing(address, pingFuture);
         mustCheckPing = false;
       }
       if (resFuture.isDone()) {
@@ -143,12 +147,12 @@ public class SolverRemote implements Solver {
     } catch (InterruptedException | ExecutionException e) {
       if (e.getCause() instanceof IOException) {
         final var time = stopWatch.getTime() - stopWatch.getSplitTime();
-//        if (e.getMessage().contains("Timed out while trying")) {
-        if (e.getMessage().contains("Query timed out")) {
+        if (e.getMessage().contains(QUERY_TIMED_OUT_MSG)) {
           log.info(
             "status=timedOut, i={}, time={}, req={}, msg={} class={}",
             i, time, simplePrint(query), e.getMessage(), ClassUtils.getSimpleName(e)
           );
+          throw new CircuitCheckException(e);
         }
         log.warn(
           "status=failed, i={}, time={}, req={}, server={}, errClass={}, msg={}",
@@ -170,5 +174,9 @@ public class SolverRemote implements Solver {
         .build();
       return breaker;
     });
+  }
+
+  String getStatus() {
+    return this.status;
   }
 }
