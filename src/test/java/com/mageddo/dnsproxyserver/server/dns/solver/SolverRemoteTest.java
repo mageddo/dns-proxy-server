@@ -39,10 +39,15 @@ class SolverRemoteTest {
     final var query = MessageTemplates.acmeAQuery();
     final var answer = MessageTemplates.buildAAnswer(query);
 
-    doReturn(answer)
+    doReturn(InetSocketAddressTemplates._8_8_8_8())
       .when(this.resolver)
-      .send(any())
+      .getAddress()
     ;
+
+    doReturn(CompletableFuture.completedFuture(answer))
+      .when(this.resolver)
+      .sendAsync(any());
+
 
     doReturn(List.of(this.resolver))
       .when(this.resolvers)
@@ -62,10 +67,15 @@ class SolverRemoteTest {
     final var query = MessageTemplates.acmeAQuery();
     final var answer = MessageTemplates.buildNXAnswer(query);
 
-    doReturn(answer)
+    doReturn(InetSocketAddressTemplates._8_8_8_8())
       .when(this.resolver)
-      .send(any())
+      .getAddress()
     ;
+
+    doReturn(CompletableFuture.completedFuture(answer))
+      .when(this.resolver)
+      .sendAsync(any());
+
 
     doReturn(List.of(this.resolver))
       .when(this.resolvers)
@@ -113,10 +123,14 @@ class SolverRemoteTest {
     final var res = MessageTemplates.buildAAnswer(query);
     res.getHeader().unsetFlag(Flags.RA);
 
-    doReturn(res)
+    doReturn(InetSocketAddressTemplates._8_8_8_8())
       .when(this.resolver)
-      .send(any())
+      .getAddress()
     ;
+
+    doReturn(CompletableFuture.completedFuture(res))
+      .when(this.resolver)
+      .sendAsync(any());
 
     doReturn(List.of(this.resolver))
       .when(this.resolvers)
