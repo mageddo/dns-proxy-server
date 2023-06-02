@@ -2,11 +2,16 @@ package com.mageddo.net;
 
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.ContainerNetwork;
+import com.mageddo.dnsproxyserver.utils.Ips;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
+import java.net.Socket;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -99,4 +104,23 @@ public class Networks {
       case IPV6 -> findIpv6Address(network);
     };
   }
+
+  public static boolean ping(String ip, int port, int timeout){
+    try {
+      final InetAddress addr = InetAddress.getByAddress(Ips.toBytes(ip));
+      return ping(addr, port, timeout);
+    } catch (UnknownHostException e) {
+      return false;
+    }
+  }
+
+  public static boolean ping(InetAddress address, int port, int timeout) {
+    try (var socket = new Socket()) {
+      socket.connect(new InetSocketAddress(address, port), timeout);
+      return true;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
 }
