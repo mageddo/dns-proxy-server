@@ -66,7 +66,7 @@ public class SolverRemote implements Solver {
         }
       } catch (CircuitCheckException | CircuitBreakerOpenException e) {
         final var clazz = ClassUtils.getSimpleName(e);
-        log.info("status=circuitEvent, server={}, type={}", resolver.getAddress(), clazz);
+        log.debug("status=circuitEvent, server={}, type={}", resolver.getAddress(), clazz);
         this.status = String.format("%s for %s", clazz, resolver.getAddress());
         continue;
       }
