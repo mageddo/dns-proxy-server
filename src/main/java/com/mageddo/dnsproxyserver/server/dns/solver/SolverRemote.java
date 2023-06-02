@@ -90,7 +90,7 @@ public class SolverRemote implements Solver {
     boolean mustCheckPing = true;
     while (true) {
       if (mustCheckPing && pingFuture.isDone()) {
-        testPing(address, pingFuture);
+//        testPing(address, pingFuture);
         mustCheckPing = false;
       }
       if (resFuture.isDone()) {
@@ -143,17 +143,18 @@ public class SolverRemote implements Solver {
     } catch (InterruptedException | ExecutionException e) {
       if (e.getCause() instanceof IOException) {
         final var time = stopWatch.getTime() - stopWatch.getSplitTime();
-        if (e.getMessage().contains("Timed out while trying")) {
+//        if (e.getMessage().contains("Timed out while trying")) {
+        if (e.getMessage().contains("Query timed out")) {
           log.info(
             "status=timedOut, i={}, time={}, req={}, msg={} class={}",
             i, time, simplePrint(query), e.getMessage(), ClassUtils.getSimpleName(e)
           );
-          return null;
         }
         log.warn(
           "status=failed, i={}, time={}, req={}, server={}, errClass={}, msg={}",
           i, time, simplePrint(query), resolver, ClassUtils.getSimpleName(e), e.getMessage(), e
         );
+        return null;
       }
       throw new RuntimeException(e.getMessage(), e);
     }

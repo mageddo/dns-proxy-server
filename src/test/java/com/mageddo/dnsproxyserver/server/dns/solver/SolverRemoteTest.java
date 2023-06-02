@@ -1,6 +1,5 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
-import testing.templates.MessageTemplates;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -8,17 +7,18 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.xbill.DNS.Flags;
-import org.xbill.DNS.Resolver;
+import testing.templates.InetSocketAddressTemplates;
+import testing.templates.MessageTemplates;
 
-import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
 
 @ExtendWith(MockitoExtension.class)
 class SolverRemoteTest {
@@ -84,10 +84,14 @@ class SolverRemoteTest {
     // arrange
     final var query = MessageTemplates.acmeAQuery();
 
-    doThrow(new IOException("Deu ruim"))
+    doReturn(InetSocketAddressTemplates._8_8_8_8())
       .when(this.resolver)
-      .send(any())
+      .getAddress()
     ;
+
+    doReturn(CompletableFuture.failedFuture(new SocketTimeoutException("Deu ruim")))
+      .when(this.resolver)
+        .sendAsync(any());
 
     doReturn(List.of(this.resolver))
       .when(this.resolvers)
