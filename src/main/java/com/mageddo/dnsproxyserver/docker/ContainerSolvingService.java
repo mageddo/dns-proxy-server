@@ -47,6 +47,7 @@ public class ContainerSolvingService {
     final var foundIp = matchedContainers
       .stream()
       .map(it -> this.findBestIpMatch(it, host.getVersion()))
+      .filter(Objects::nonNull)
       .findFirst()
       .orElse(null);
     final var hostnameMatched = !matchedContainers.isEmpty();
