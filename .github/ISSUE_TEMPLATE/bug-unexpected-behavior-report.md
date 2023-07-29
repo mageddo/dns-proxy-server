@@ -16,5 +16,5 @@ assignees: ''
 * Docker Version: `docker version`
 * DPS Version: 
   * When running on standalone mode: `./dns-proxy-server --version`
-  * When using dokcer: the docker image version or run the following if you are using the latest `docker run --rm  defreitas/dns-proxy-server --version`
+  * When using docker: the docker image version or run the following if you are using the latest `docker run --rm  defreitas/dns-proxy-server --version`
 * Attach DPS Log file
