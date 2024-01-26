@@ -23,7 +23,7 @@ public class DockerConfig {
     final var config = DefaultDockerClientConfig.createDefaultConfigBuilder()
       .withDockerHost(Objects.mapOrNull(dockerHost, URI::toString))
       .withDockerTlsVerify(false)
-      .withApiVersion(RemoteApiVersion.VERSION_1_21)
+      .withApiVersion(RemoteApiVersion.VERSION_1_24)
 //      .withDockerCertPath("/home/user/.docker")
 //      .withRegistryUsername(registryUser)
 //      .withRegistryPassword(registryPass)

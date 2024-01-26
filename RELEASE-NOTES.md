@@ -1,3 +1,6 @@
+## 3.16.1
+* Bump Docker client API to fix compatibility with Docker version 25 #432
+
 ## 3.16
 * Circuit Breaker for Remote DNS Servers #415
 
