@@ -1,3 +1,6 @@
+## 3.16.3
+* Fixing Native Image Reflection JSON Parsing #437
+
 ## 3.16.1
 * Bump Docker client API to fix compatibility with Docker version 25 #432
 
