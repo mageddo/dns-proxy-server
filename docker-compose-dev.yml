@@ -21,7 +21,7 @@ services:
 #      - /etc/resolv.conf:/etc/resolv.conf
     #      - /etc/systemd/:/host/etc/systemd/
     working_dir: /app
-    command: java -jar dns-proxy-server-3.15.12-snapshot-all.jar
+    command: java -jar dns-proxy-server-3.16.1-snapshot-all.jar
     #    ports:
     #      - "172.17.0.1:53:53/udp"
     #      - "192.168.0.128:53:53/udp"

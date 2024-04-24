@@ -27,15 +27,16 @@ Then access http://localhost:3000/ , front end will proxy to http://localhost:53
 ## With Docker
 
 ```bash
-$ ./gradlew build -Dquarkus.package.type=uber-jar -i -x check
+$ ./gradlew clean build shadowJar
 $ docker-compose -f docker-compose-dev.yml up backend
 ```
 
 or 
 
 ```bash
-$ ./gradlew build -Dquarkus.package.type=uber-jar -i -x check
+$ ./gradlew clean build shadowJar -i -x check
 $ docker-compose -f docker-compose-dev.yml run --rm -it backend bash
+$ java -jar dns-proxy-server-*-all.jar
 ```
 
 ## Releasing
