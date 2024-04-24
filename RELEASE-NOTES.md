@@ -1,4 +1,4 @@
-## 3.16.3
+## 3.16.2
 * Fixing Native Image Reflection JSON Parsing #437
 
 ## 3.16.1
