@@ -6,11 +6,14 @@ pre: "<b>5. </b>"
 
 ### Vanilla Developing
 
-Backend
+#### Backend
+
+Play class `com.mageddo.dnsproxyserver.App` or run
 
 ```bash
-$ ./gradlew quarkusDev
+$  ./gradlew clean shadowJar && java -jar ./build/libs/dns-proxy-server-*-all.jar 
 ```
+
 Make your DNS queries to IP and TCP/UDP ports indicated at the console log.
 
 Front end app (optional)
@@ -25,7 +28,7 @@ Then access http://localhost:3000/ , front end will proxy to http://localhost:53
 
 ```bash
 $ ./gradlew build -Dquarkus.package.type=uber-jar -i -x check
-$ docker-compose -f docker-compose-dev.yml up
+$ docker-compose -f docker-compose-dev.yml up backend
 ```
 
 or 
