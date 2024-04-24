@@ -1,0 +1,11 @@
+[
+  {
+    "name" : "com.github.dockerjava.core.DockerConfigFile",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allPublicFields" : true,
+    "allDeclaredFields" : true
+  }
+]
