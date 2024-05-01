@@ -1,23 +1,22 @@
 package com.mageddo.dnsproxyserver.docker;
 
 import com.mageddo.dnsproxyserver.di.Context;
-import testing.templates.IpTemplates;
-import testing.templates.docker.InspectContainerResponseTemplates;
-import testing.templates.docker.NetworkTemplates;
-import com.mageddo.net.IP;
+import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
+import com.mageddo.net.IP.Version;
 import dagger.sheath.InjectMock;
 import dagger.sheath.junit.DaggerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import testing.templates.IpTemplates;
+import testing.templates.docker.InspectContainerResponseTemplates;
+import testing.templates.docker.NetworkTemplates;
 
 import javax.inject.Inject;
 
-import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithDefaultBridgeNetworkOnly;
-import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithIpv4DefaultBridgeAndIpv6CustomBridgeNetwork;
-import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithIpv6CustomBridgeNetwork;
-import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithIpv6DefaultBridgeNetworkOnly;
-import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithIpv6DefaultIp;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -25,6 +24,11 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithDefaultBridgeNetworkOnly;
+import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithIpv4DefaultBridgeAndIpv6CustomBridgeNetwork;
+import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithIpv6CustomBridgeNetwork;
+import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithIpv6DefaultBridgeNetworkOnly;
+import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithIpv6DefaultIp;
 
 @DaggerTest(component = Context.class)
 class ContainerSolvingServiceCompTest {
@@ -34,6 +38,9 @@ class ContainerSolvingServiceCompTest {
 
   @InjectMock
   DockerNetworkDAO dockerNetworkDAO;
+
+  @InjectMock
+  MatchingContainerService matchingContainerService;
 
   @Inject
   ContainerSolvingService containerSolvingService;
@@ -102,7 +109,7 @@ class ContainerSolvingServiceCompTest {
   void mustSolveEmptyIpv6FromDefaultBridgeNetwork() {
     // arrange
     final var inspect = ngixWithDefaultBridgeNetworkOnly();
-    final var version = IP.Version.IPV6;
+    final var version = Version.IPV6;
 
     // act
     final var ip = this.containerSolvingService.findBestIpMatch(inspect, version);
@@ -116,7 +123,7 @@ class ContainerSolvingServiceCompTest {
   void mustSolveIpv6FromDefaultBridgeNetwork() {
     // arrange
     final var inspect = ngixWithIpv6DefaultBridgeNetworkOnly();
-    final var version = IP.Version.IPV6;
+    final var version = Version.IPV6;
 
     // act
     final var ip = this.containerSolvingService.findBestIpMatch(inspect, version);
@@ -131,7 +138,7 @@ class ContainerSolvingServiceCompTest {
   void mustSolveIpv6FromAnyOtherNetwork() {
     // arrange
     final var inspect = ngixWithIpv6CustomBridgeNetwork();
-    final var version = IP.Version.IPV6;
+    final var version = Version.IPV6;
 
     doReturn(NetworkTemplates.withBridgeDriver("my-net1"))
       .when(this.dockerNetworkDAO)
@@ -151,7 +158,7 @@ class ContainerSolvingServiceCompTest {
   void mustSolveIpv6FromDefaultIPNetwork() {
     // arrange
     final var inspect = ngixWithIpv6DefaultIp();
-    final var version = IP.Version.IPV6;
+    final var version = Version.IPV6;
 
     // act
     final var ip = this.containerSolvingService.findBestIpMatch(inspect, version);
@@ -166,7 +173,7 @@ class ContainerSolvingServiceCompTest {
   void mustNotUseAnEmptyIpSpecifiedOnPreferredNetworks() {
     // arrange
     final var inspect = ngixWithIpv4DefaultBridgeAndIpv6CustomBridgeNetwork();
-    final var version = IP.Version.IPV6;
+    final var version = Version.IPV6;
 
     doReturn(NetworkTemplates.withBridgeDriver("my-net1"))
       .when(this.dockerNetworkDAO)
@@ -179,6 +186,26 @@ class ContainerSolvingServiceCompTest {
     // assert
     assertNotNull(ip);
     assertEquals(IpTemplates.LOCAL_IPV6, ip);
+
+  }
+
+  @Test
+  void mustLeadWithNoneIPV6ReturnedFromDockerSolver() {
+    // arrange
+    final var hostnameQuery = HostnameQuery.of("nginx-2.dev", Version.IPV6);
+    final var inspect = ngixWithDefaultBridgeNetworkOnly();
+
+    doReturn(List.of(inspect))
+      .when(this.matchingContainerService)
+      .findMatchingContainers(eq(hostnameQuery));
+
+    // act
+    final var ip = this.containerSolvingService.findBestMatch(hostnameQuery);
+
+    // assert
+    assertNotNull(ip);
+    assertFalse(ip.isHostnameMatched());
+    assertNull(ip.getIp());
 
   }
 

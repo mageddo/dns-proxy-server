@@ -14,7 +14,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Collection;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -40,16 +39,18 @@ public class ContainerSolvingService {
 
   private final DockerDAO dockerDAO;
   private final DockerNetworkDAO networkDAO;
+  private final MatchingContainerService matchingContainerService;
 
   public Entry findBestMatch(HostnameQuery host) {
     final var stopWatch = StopWatch.createStarted();
-    final var matchedContainers = this.findMatchingContainers(host);
+    final var matchedContainers = this.matchingContainerService.findMatchingContainers(host);
     final var foundIp = matchedContainers
       .stream()
       .map(it -> this.findBestIpMatch(it, host.getVersion()))
+      .filter(Objects::nonNull)
       .findFirst()
       .orElse(null);
-    final var hostnameMatched = !matchedContainers.isEmpty();
+    final var hostnameMatched = !matchedContainers.isEmpty() && foundIp != null;
     log.trace(
       "status=findDone, host={}, found={}, hostnameMatched={}, time={}",
       host, foundIp, hostnameMatched, stopWatch.getTime()
@@ -159,11 +160,4 @@ public class ContainerSolvingService {
       .collect(Collectors.toCollection(LinkedHashSet::new));
   }
 
-  List<InspectContainerResponse> findMatchingContainers(HostnameQuery host) {
-    return this.dockerDAO.findActiveContainers()
-      .stream()
-      .map(it -> this.dockerDAO.inspect(it.getId()))
-      .filter(ContainerHostnameMatcher.buildPredicate(host))
-      .toList();
-  }
 }
