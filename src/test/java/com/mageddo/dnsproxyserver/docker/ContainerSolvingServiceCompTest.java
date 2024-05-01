@@ -12,7 +12,6 @@ import testing.templates.docker.InspectContainerResponseTemplates;
 import testing.templates.docker.NetworkTemplates;
 
 import javax.inject.Inject;
-
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
