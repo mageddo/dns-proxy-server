@@ -1,3 +1,6 @@
+## 3.16.3
+* Fixed NPE when no IPV6 is found to answer to the client #428
+
 ## 3.16.2
 * Fixing Native Image Reflection JSON Parsing #437
 
