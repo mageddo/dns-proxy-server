@@ -119,6 +119,16 @@ Response code to use when no entries are returned by the configured solvers. Def
 ### Local Entries Solving (LocalDB)
 See [Local Entries Solving][2] docs.
 
+### Docker Solver Host Machine IP Fallback
+
+Whether should answer host machine IP when a matching container is found but it hasn't
+an IP to be answered, see Github Issue [#442](https://github.com/mageddo/dns-proxy-server/issues/442).
+Default: true
+
+| Env                                           | JSON                                    | Terminal  |
+|-----------------------------------------------|-----------------------------------------|-----------|
+| MG_DOCKER_SOLVER_HOST_MACHINE_FALLBACK_ACTIVE | `dockerSolverHostMachineFallbackActive` | See -help |
+
 ## Example JSON configuration
 
 __Version 2__
@@ -156,7 +166,8 @@ __Version 2__
   "dockerHost": null,
   "resolvConfOverrideNameServers": true,
   "noRemoteServers": false,
-  "noEntriesResponseCode": 3
+  "noEntriesResponseCode": 3,
+  "dockerSolverHostMachineFallbackActive": true
 }
 ```
 
