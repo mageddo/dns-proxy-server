@@ -76,7 +76,7 @@ public class Configs {
       ))
       .dockerSolverHostMachineFallbackActive(firstNonNullRequiring(
         env.getDockerSolverHostMachineFallbackActive(),
-        json.isDockerSolverHostMachineFallbackActive(),
+        json.getDockerSolverHostMachineFallbackActive(),
         flag.getDockerSolverHostMachineFallbackActive()
       ))
       .build();

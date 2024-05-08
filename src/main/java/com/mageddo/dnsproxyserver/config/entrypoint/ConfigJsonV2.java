@@ -59,6 +59,8 @@ public class ConfigJsonV2 implements ConfigJson {
 
   private Integer noEntriesResponseCode;
 
+  private Boolean dockerSolverHostMachineFallbackActive;
+
   @JsonIgnore
   public List<IpAddr> getRemoteDnsServers() {
     return this.remoteDnsServers
@@ -71,6 +73,11 @@ public class ConfigJsonV2 implements ConfigJson {
   @Override
   public List<Config.Env> getEnvs() {
     return ConfigJsonV2EnvsConverter.toDomainEnvs(this._envs);
+  }
+
+  @Override
+  public Boolean getDockerSolverHostMachineFallbackActive() {
+    return this.dockerSolverHostMachineFallbackActive;
   }
 
   @Data

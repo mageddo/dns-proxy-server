@@ -45,5 +45,5 @@ public interface ConfigJson {
 
   Integer getNoEntriesResponseCode();
 
-  Boolean isDockerSolverHostMachineFallbackActive();
+  Boolean getDockerSolverHostMachineFallbackActive();
 }

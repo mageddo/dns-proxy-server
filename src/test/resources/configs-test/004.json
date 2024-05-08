@@ -1,6 +1,7 @@
 {
   "defaultDns" : false,
   "dnsServerPort" : 5391,
+  "dockerSolverHostMachineFallbackActive" : true,
   "domain" : "acme",
   "dpsNetwork" : true,
   "dpsNetworkAutoConnect" : true,

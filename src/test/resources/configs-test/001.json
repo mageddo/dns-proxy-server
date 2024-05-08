@@ -1,6 +1,7 @@
 {
   "defaultDns" : true,
   "dnsServerPort" : 53,
+  "dockerSolverHostMachineFallbackActive" : true,
   "domain" : "docker",
   "dpsNetwork" : false,
   "dpsNetworkAutoConnect" : false,
