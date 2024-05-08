@@ -173,6 +173,16 @@ public class ConfigFlag implements Callable<Boolean> {
   )
   private Boolean help;
 
+  @Option(
+    names = {"-docker-solver-host-machine-fallback", "--docker-solver-host-machine-fallback"},
+    description = """
+      Whether should answer host machine IP when a matching container is found but it hasn't an IP to be answered.
+      See Github Issue #442
+      """,
+    defaultValue = "true"
+  )
+  private Boolean dockerSolverHostMachineFallbackActive;
+
   @JsonIgnore
   private String[] args;
 

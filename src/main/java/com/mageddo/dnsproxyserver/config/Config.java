@@ -89,6 +89,8 @@ public class Config {
 
   private int noEntriesResponseCode;
 
+  private boolean dockerSolverHostMachineFallbackActive;
+
   public void resetConfigFile() {
     try {
       Files.deleteIfExists(this.getConfigPath());

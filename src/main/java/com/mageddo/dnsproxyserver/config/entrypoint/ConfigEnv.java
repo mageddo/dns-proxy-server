@@ -45,6 +45,8 @@ public class ConfigEnv {
 
   private static final String MG_NO_ENTRIES_RESPONSE_CODE = "MG_NO_ENTRIES_RESPONSE_CODE";
 
+  private static final String MG_DOCKER_SOLVER_HOST_MACHINE_FALLBACK_ACTIVE = "MG_DOCKER_SOLVER_HOST_MACHINE_FALLBACK_ACTIVE";
+
   private Path currentPath;
   private String resolvConfPath;
   private String logFile;
@@ -58,6 +60,7 @@ public class ConfigEnv {
   private Boolean resolvConfOverrideNameServers;
   private Boolean noRemoteServers;
   private Integer noEntriesResponseCode;
+  private Boolean dockerSolverHostMachineFallbackActive;
 
   public static ConfigEnv fromEnv() {
     return ConfigEnv
@@ -75,6 +78,7 @@ public class ConfigEnv {
       .resolvConfOverrideNameServers(Envs.getBooleanOrNull(MG_RESOLVCONF_OVERRIDE_NAMESERVERS))
       .noRemoteServers(Envs.getBooleanOrNull(MG_NO_REMOTE_SERVERS))
       .noEntriesResponseCode(Envs.getIntegerOrNull(MG_NO_ENTRIES_RESPONSE_CODE))
+      .dockerSolverHostMachineFallbackActive(Envs.getBooleanOrNull(MG_DOCKER_SOLVER_HOST_MACHINE_FALLBACK_ACTIVE))
       .build();
   }
 

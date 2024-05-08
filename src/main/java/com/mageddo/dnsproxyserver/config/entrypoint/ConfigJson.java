@@ -44,4 +44,6 @@ public interface ConfigJson {
   Boolean getNoRemoteServers();
 
   Integer getNoEntriesResponseCode();
+
+  Boolean isDockerSolverHostMachineFallbackActive();
 }

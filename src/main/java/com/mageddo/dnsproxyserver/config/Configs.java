@@ -74,6 +74,11 @@ public class Configs {
       .noEntriesResponseCode(firstNonNullRequiring(
         env.getNoEntriesResponseCode(), json.getNoEntriesResponseCode(), flag.getNoEntriesResponseCode()
       ))
+      .dockerSolverHostMachineFallbackActive(firstNonNullRequiring(
+        env.getDockerSolverHostMachineFallbackActive(),
+        json.isDockerSolverHostMachineFallbackActive(),
+        flag.getDockerSolverHostMachineFallbackActive()
+      ))
       .build();
   }
 
