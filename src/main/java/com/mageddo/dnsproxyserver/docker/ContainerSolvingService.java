@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.docker;
 
 import com.github.dockerjava.api.command.InspectContainerResponse;
+import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 import com.mageddo.net.IP;
 import com.mageddo.net.Networks;
@@ -75,7 +76,7 @@ public class ContainerSolvingService {
     );
   }
 
-  public String findBestIpMatch(
+  private String findBestIpMatch(
     InspectContainerResponse c,
     Collection<String> networksNames,
     Supplier<String> hostMachineSup,
@@ -128,14 +129,24 @@ public class ContainerSolvingService {
       .orElseGet(() -> {
         return Optional
           .ofNullable(buildDefaultIp(c, version))
-          .orElseGet(() -> {
-            final var hostIp = hostMachineSup.get();
-            log.debug("status=noNetworkAvailable, usingHostMachineIp={}", hostIp);
-            return hostIp;
-          });
+          .orElseGet(() -> buildHostMachineIpWhenActive(hostMachineSup));
       })
       ;
 
+  }
+
+  static String buildHostMachineIpWhenActive(Supplier<String> hostMachineSup) {
+    if(isDockerSolverHostMachineFallbackActive()){
+      final var hostIp = hostMachineSup.get();
+      log.debug("status=noNetworkAvailable, usingHostMachineIp={}", hostIp);
+      return hostIp;
+    }
+    log.debug("dockerSolverHostMachineFallback=inactive");
+    return null;
+  }
+
+  static boolean isDockerSolverHostMachineFallbackActive() {
+    return Configs.getInstance().isDockerSolverHostMachineFallbackActive();
   }
 
   static String buildDefaultIp(InspectContainerResponse c, IP.Version version) {
