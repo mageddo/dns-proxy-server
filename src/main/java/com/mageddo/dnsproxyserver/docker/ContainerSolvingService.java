@@ -28,6 +28,12 @@ import static com.mageddo.dnsproxyserver.docker.domain.Network.BRIDGE;
 import static com.mageddo.dnsproxyserver.docker.domain.Network.DPS;
 import static com.mageddo.dnsproxyserver.docker.domain.Network.HOST;
 
+/**
+ * Todo that's an application service which is high coupled to infrastructure docker adapter,
+ * the docker api classes  must be isolated to a port then that port be used on that service.
+ * See hexagonal architecture.
+ */
+
 @Slf4j
 @Default
 @Singleton
@@ -76,7 +82,7 @@ public class ContainerSolvingService {
     );
   }
 
-  private String findBestIpMatch(
+  String findBestIpMatch(
     InspectContainerResponse c,
     Collection<String> networksNames,
     Supplier<String> hostMachineSup,
