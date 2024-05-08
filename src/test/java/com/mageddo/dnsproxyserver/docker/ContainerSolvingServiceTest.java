@@ -11,8 +11,11 @@ import testing.templates.IpTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithDefaultBridgeNetworkOnly;
 
 
@@ -45,6 +48,11 @@ class ContainerSolvingServiceTest {
       .findHostMachineIp(eq(version))
     ;
 
+    doReturn(true)
+      .when(this.containerSolvingService)
+      .isDockerSolverHostMachineFallbackActive()
+    ;
+
     // act
     final var ip = this.containerSolvingService.findBestIpMatch(inspect, version);
 
@@ -59,13 +67,19 @@ class ContainerSolvingServiceTest {
 
     // arrange
     final var inspect = ngixWithDefaultBridgeNetworkOnly();
+    final var version = IP.Version.IPV6;
+
+    doReturn(false)
+      .when(this.containerSolvingService)
+      .isDockerSolverHostMachineFallbackActive()
+    ;
 
     // act
-    final var ip = this.containerSolvingService.findBestIpMatch(inspect);
+    final var ip = this.containerSolvingService.findBestIpMatch(inspect, version);
 
     // assert
-    assertNotNull(ip);
-    assertEquals("172.17.0.4", ip);
+    assertNull(ip);
+    verify(this.dockerDAO, never()).findHostMachineIp(eq(version));
 
   }
 
