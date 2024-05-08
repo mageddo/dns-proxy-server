@@ -1,3 +1,6 @@
+## 3.17.0 
+* Feature toggle to turn off Docker Solver Host Machine IP fallback, see #442
+
 ## 3.16.3
 * Fixed NPE when no IPV6 is found to answer to the client #428
 
