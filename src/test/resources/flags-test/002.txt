@@ -13,9 +13,8 @@ Usage: <main class> [-default-dns] [-docker-solver-host-machine-fallback] [-dps-
                             (default the default docker host value based on the OS)
 
       -docker-solver-host-machine-fallback, --docker-solver-host-machine-fallback
-                            Whether should answer host machine IP when a matching container is found but it hasn't an
-                              IP to be answered.
-                            See Github Issue #442
+                            Whether should answer host machine IP when a matching container is found but it hasn't
+                            an IP to be answered. See Github Issue #442
 
       -domain, --domain=<domain>
                             Domain utilized to solver containers and services hostnames (default docker)
