@@ -3,6 +3,7 @@
   "webServerPort" : 5380,
   "dnsServerPort" : 53,
   "dockerHost" : null,
+  "dockerSolverHostMachineFallbackActive" : true,
   "defaultDns" : true,
   "configPath" : "conf/config.json",
   "service" : null,

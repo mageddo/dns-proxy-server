@@ -3,6 +3,7 @@
   "defaultDns" : null,
   "dnsServerPort" : 8980,
   "dockerHost" : null,
+  "dockerSolverHostMachineFallbackActive" : null,
   "domain" : null,
   "dpsNetwork" : null,
   "dpsNetworkAutoConnect" : null,

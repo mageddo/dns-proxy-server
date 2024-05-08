@@ -1,9 +1,9 @@
-Usage: <main class> [-default-dns] [-dps-network] [-dps-network-auto-connect] [-help] [-no-remote-servers]
-                    [-register-container-names] [-resolvconf-override-name-servers] [-service-publish-web-port]
-                    [-version] [-conf-path=<configPath>] [-docker-host=<dockerHost>] [-domain=<domain>]
-                    [-host-machine-hostname=<hostMachineHostname>] [-log-file=<logToFile>] [-log-level=<logLevel>]
-                    [-no-entries-response-code=<noEntriesResponseCode>] [-server-port=<dnsServerPort>]
-                    [-service=<service>] [-web-server-port=<webServerPort>]
+Usage: <main class> [-default-dns] [-docker-solver-host-machine-fallback] [-dps-network] [-dps-network-auto-connect]
+                    [-help] [-no-remote-servers] [-register-container-names] [-resolvconf-override-name-servers]
+                    [-service-publish-web-port] [-version] [-conf-path=<configPath>] [-docker-host=<dockerHost>]
+                    [-domain=<domain>] [-host-machine-hostname=<hostMachineHostname>] [-log-file=<logToFile>]
+                    [-log-level=<logLevel>] [-no-entries-response-code=<noEntriesResponseCode>]
+                    [-server-port=<dnsServerPort>] [-service=<service>] [-web-server-port=<webServerPort>]
       -conf-path, --conf-path=<configPath>
                             The config file path (default conf/config.json)
       -default-dns, --default-dns
@@ -11,6 +11,11 @@ Usage: <main class> [-default-dns] [-dps-network] [-dps-network-auto-connect] [-
       -docker-host, --docker-host=<dockerHost>
                             The docker host address.
                             (default the default docker host value based on the OS)
+
+      -docker-solver-host-machine-fallback, --docker-solver-host-machine-fallback
+                            Whether should answer host machine IP when a matching container is found but it hasn't an
+                              IP to be answered.
+                            See Github Issue #442
 
       -domain, --domain=<domain>
                             Domain utilized to solver containers and services hostnames (default docker)
