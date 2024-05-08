@@ -29,9 +29,9 @@ import static com.mageddo.dnsproxyserver.docker.domain.Network.DPS;
 import static com.mageddo.dnsproxyserver.docker.domain.Network.HOST;
 
 /**
- * Todo that's an application service which is high coupled to infrastructure docker adapter,
- * the docker api classes  must be isolated to a port then that port be used on that service.
- * See hexagonal architecture.
+ * Todo that's an application service with is high coupled to infrastructure docker adapter,
+ *      the docker api classes  must be isolated to a port then that port be used on that service.
+ *      See hexagonal architecture.
  */
 
 @Slf4j
