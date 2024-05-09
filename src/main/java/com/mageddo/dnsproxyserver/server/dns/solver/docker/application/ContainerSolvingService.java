@@ -67,7 +67,7 @@ public class ContainerSolvingService {
         continue;
       }
       final var containerNetwork = networks.get(name);
-      final String ip = containerNetwork.getIp(version);
+      final String ip = containerNetwork.getIpAsText(version);
       log.debug("status=foundIp, network={}, container={}, ip={}", name, c.getName(), ip);
       if (StringUtils.isNotBlank(ip)) {
         return ip;
@@ -92,7 +92,7 @@ public class ContainerSolvingService {
       .min(NetworkComparator::compare)
       .map(network -> {
         final var networkName = network.getName();
-        final var ip = networks.get(networkName).getIp(version);
+        final var ip = networks.get(networkName).getIpAsText(version);
         log.debug(
           "status=foundIp, networks={}, networkName={}, driver={}, foundIp={}",
           networks.keySet(), networkName, network.getDriver(), ip

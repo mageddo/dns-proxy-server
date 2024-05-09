@@ -7,6 +7,7 @@ import lombok.Value;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 @Value
@@ -50,8 +51,12 @@ public class Container {
 
     List<IP> ips;
 
-    public String getIp(IP.Version version) {
-      throw new UnsupportedOperationException();
+    public String getIpAsText(IP.Version version) {
+      return this.ips.stream()
+        .filter(it -> Objects.equals(it.version(), version))
+        .findFirst()
+        .map(IP::toText)
+        .orElse(null);
     }
   }
 }
