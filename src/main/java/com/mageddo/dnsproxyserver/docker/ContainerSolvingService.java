@@ -77,7 +77,6 @@ public class ContainerSolvingService {
     return this.findBestIpMatch(
       inspect,
       buildNetworks(inspect),
-      () -> mapOrNull(this.dockerDAO.findHostMachineIp(version), IP::toText), // todo there is no need to pass it as an argument, just build this supplier when it is needled
       version
     );
   }
@@ -85,7 +84,6 @@ public class ContainerSolvingService {
   String findBestIpMatch(
     InspectContainerResponse c,
     Collection<String> networksNames,
-    Supplier<String> hostMachineSup,
     IP.Version version
   ) {
 
@@ -135,14 +133,15 @@ public class ContainerSolvingService {
       .orElseGet(() -> {
         return Optional
           .ofNullable(buildDefaultIp(c, version))
-          .orElseGet(() -> buildHostMachineIpWhenActive(hostMachineSup));
+          .orElseGet(() -> buildHostMachineIpWhenActive(version));
       })
       ;
 
   }
 
-  String buildHostMachineIpWhenActive(Supplier<String> hostMachineSup) {
+  String buildHostMachineIpWhenActive(IP.Version version) {
     if(isDockerSolverHostMachineFallbackActive()){
+      final Supplier<String> hostMachineSup = () -> mapOrNull(this.dockerDAO.findHostMachineIp(version), IP::toText);
       final var hostIp = hostMachineSup.get();
       log.debug("status=noNetworkAvailable, usingHostMachineIp={}", hostIp);
       return hostIp;
