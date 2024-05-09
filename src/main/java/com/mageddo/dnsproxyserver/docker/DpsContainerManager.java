@@ -4,6 +4,7 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Network;
 import com.mageddo.dnsproxyserver.config.Configs;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.ContainerSolvingService;
 import com.mageddo.net.IP;
 import com.mageddo.net.Networks;
 import lombok.AllArgsConstructor;
@@ -19,8 +20,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.mageddo.dnsproxyserver.docker.ContainerSolvingService.NETWORK_BRIDGE;
-import static com.mageddo.dnsproxyserver.docker.ContainerSolvingService.NETWORK_DPS;
+import static com.mageddo.dnsproxyserver.server.dns.solver.docker.application.ContainerSolvingService.NETWORK_BRIDGE;
+import static com.mageddo.dnsproxyserver.server.dns.solver.docker.application.ContainerSolvingService.NETWORK_DPS;
 
 @Slf4j
 @Default

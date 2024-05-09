@@ -7,7 +7,7 @@ import com.mageddo.dnsproxyserver.di.module.ModuleMain;
 import com.mageddo.dnsproxyserver.di.module.ModuleMap;
 import com.mageddo.dnsproxyserver.di.module.ModuleSolver;
 import com.mageddo.dnsproxyserver.di.module.ModuleStartup;
-import com.mageddo.dnsproxyserver.docker.ContainerSolvingService;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.ContainerSolvingService;
 import com.mageddo.dnsproxyserver.docker.DockerDAO;
 import com.mageddo.dnsproxyserver.docker.DockerDAOMock;
 import com.mageddo.dnsproxyserver.docker.DockerNetworkDAO;

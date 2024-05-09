@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.docker;
+package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.mageddo.dnsproxyserver.config.Config;
@@ -9,8 +9,8 @@ import org.apache.commons.lang3.BooleanUtils;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static com.mageddo.dnsproxyserver.docker.Docker.buildHostnamesFromServiceOrContainerNames;
-import static com.mageddo.dnsproxyserver.docker.Docker.findContainerHostname;
+import static com.mageddo.dnsproxyserver.server.dns.solver.docker.application.Docker.buildHostnamesFromServiceOrContainerNames;
+import static com.mageddo.dnsproxyserver.server.dns.solver.docker.application.Docker.findContainerHostname;
 import static com.mageddo.dnsproxyserver.docker.DpsContainer.findHostnamesFromEnv;
 
 public class ContainerHostnameMatcher {

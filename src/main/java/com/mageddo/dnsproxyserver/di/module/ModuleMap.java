@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.di.module;
 
 import com.mageddo.dnsproxyserver.config.ConfigDAO;
-import com.mageddo.dnsproxyserver.docker.ContainerSolvingService;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.ContainerSolvingService;
 import com.mageddo.dnsproxyserver.docker.DockerDAO;
 import com.mageddo.dnsproxyserver.docker.DockerNetworkDAO;
 import com.mageddo.dnsproxyserver.server.dns.ServerStarter;

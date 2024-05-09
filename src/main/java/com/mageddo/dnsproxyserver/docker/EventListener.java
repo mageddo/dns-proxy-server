@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.Closeable;
 
-import static com.mageddo.dnsproxyserver.docker.ContainerSolvingService.NETWORK_DPS;
+import static com.mageddo.dnsproxyserver.server.dns.solver.docker.application.ContainerSolvingService.NETWORK_DPS;
 
 @Slf4j
 @Singleton
