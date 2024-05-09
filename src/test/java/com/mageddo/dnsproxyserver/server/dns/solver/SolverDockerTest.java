@@ -1,8 +1,8 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.ContainerSolvingService;
-import com.mageddo.dnsproxyserver.docker.DockerDAO;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerSolvingAdapter;
+import com.mageddo.dnsproxyserver.docker.DockerFacade;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import testing.templates.HostnameTemplates;
 import testing.templates.MessageTemplates;
@@ -30,10 +30,10 @@ import static org.mockito.Mockito.verify;
 class SolverDockerTest {
 
   @Mock
-  ContainerSolvingService containerSolvingService;
+  ContainerSolvingAdapter containerSolvingService;
 
   @Mock
-  DockerDAO dockerDAO;
+  DockerFacade dockerFacade;
 
   @Captor
   ArgumentCaptor<HostnameQuery> hostnameQueryCaptor;
@@ -42,7 +42,7 @@ class SolverDockerTest {
 
   @BeforeEach
   void beforeEach() {
-    this.solver = new SolverDocker(this.containerSolvingService, this.dockerDAO);
+    this.solver = new SolverDocker(this.containerSolvingService, this.dockerFacade);
   }
 
   @Test
@@ -53,7 +53,7 @@ class SolverDockerTest {
     final var hostname = HostnameQuery.ofWildcard(HostnameTemplates.ACME_HOSTNAME);
 
     doReturn(true)
-      .when(this.dockerDAO)
+      .when(this.dockerFacade)
       .isConnected()
     ;
     doReturn(entry)
@@ -78,7 +78,7 @@ class SolverDockerTest {
     final var entry = EntryTemplates.localIpv6();
 
     doReturn(true)
-      .when(this.dockerDAO)
+      .when(this.dockerFacade)
       .isConnected()
     ;
 
@@ -107,7 +107,7 @@ class SolverDockerTest {
     final var entry = EntryTemplates.hostnameMatchedButNoAddress();
 
     doReturn(true)
-      .when(this.dockerDAO)
+      .when(this.dockerFacade)
       .isConnected()
     ;
 
@@ -132,7 +132,7 @@ class SolverDockerTest {
     final var entry = EntryTemplates.hostnameNotMatched();
 
     doReturn(true)
-      .when(this.dockerDAO)
+      .when(this.dockerFacade)
       .isConnected()
     ;
 

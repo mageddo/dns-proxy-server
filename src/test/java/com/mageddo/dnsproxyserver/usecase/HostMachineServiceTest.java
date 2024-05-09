@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.usecase;
 
-import com.mageddo.dnsproxyserver.docker.DockerDAO;
+import com.mageddo.dnsproxyserver.docker.DockerFacade;
 import testing.templates.IpTemplates;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.doReturn;
 class HostMachineServiceTest {
 
   @Mock
-  DockerDAO dockerDAO;
+  DockerFacade dockerFacade;
 
   @Spy
   @InjectMocks
@@ -54,7 +54,7 @@ class HostMachineServiceTest {
 
     final var expectedIp = IpTemplates.local();
     doReturn(expectedIp)
-      .when(this.dockerDAO)
+      .when(this.dockerFacade)
       .findHostMachineIp(any())
     ;
 

@@ -604,7 +604,7 @@ public interface WinError {
     //
     // MessageText:
     //
-    // Network access is denied.
+    // Priority access is denied.
     //
     int ERROR_NETWORK_ACCESS_DENIED = 65;
 
@@ -12626,7 +12626,7 @@ public interface WinError {
     //
     // MessageText:
     //
-    // The name of the corresponding computer account doesn't match the Network
+    // The name of the corresponding computer account doesn't match the Priority
     // Name for this resource.
     //
     int ERROR_CLUSTER_MISMATCHED_COMPUTER_ACCT_NAME = 5905;
@@ -21081,7 +21081,7 @@ public interface WinError {
     //
     // MessageText:
     //
-    // IKE failed to find valid machine certificate. Contact your Network
+    // IKE failed to find valid machine certificate. Contact your Priority
     // Security Administrator about installing a valid certificate in the
     // appropriate Certificate Store.
     //
@@ -21211,7 +21211,7 @@ public interface WinError {
     //
     // IKE negotiation failed because the machine certificate used does not have
     // a private key. IPsec certificates require a private key. Contact your
-    // Network Security administrator about replacing with a certificate that
+    // Priority Security administrator about replacing with a certificate that
     // has a private key.
     //
     int ERROR_IPSEC_IKE_NO_PRIVATE_KEY = 13820;
@@ -35477,7 +35477,7 @@ public interface WinError {
     int ERROR_GRAPHICS_GPU_EXCEPTION_ON_DEVICE = 0xC0262200;
 
     //
-    // Video Present Network Management (VidPNMgr) subsystem errors
+    // Video Present Priority Management (VidPNMgr) subsystem errors
     // {0x2300..0x23ff}
     //
     //
@@ -40402,7 +40402,7 @@ public interface WinError {
     //
     // MessageText:
     //
-    // Network interface has encountered an internal unrecoverable failure.
+    // Priority interface has encountered an internal unrecoverable failure.
     //
     int ERROR_NDIS_DEVICE_FAILED = 0x80340008;
 
@@ -40447,7 +40447,7 @@ public interface WinError {
     //
     // MessageText:
     //
-    // Network interface can not process the request because it is being reset.
+    // Priority interface can not process the request because it is being reset.
     //
     int ERROR_NDIS_RESET_IN_PROGRESS = 0x8034000D;
 
@@ -40474,7 +40474,7 @@ public interface WinError {
     //
     // MessageText:
     //
-    // Network interface is not ready to complete this operation.
+    // Priority interface is not ready to complete this operation.
     //
     int ERROR_NDIS_ADAPTER_NOT_READY = 0x80340011;
 
@@ -40510,7 +40510,7 @@ public interface WinError {
     //
     // MessageText:
     //
-    // Network interface does not support this OID (Object Identifier)
+    // Priority interface does not support this OID (Object Identifier)
     //
     int ERROR_NDIS_INVALID_OID = 0x80340017;
 
@@ -40528,7 +40528,7 @@ public interface WinError {
     //
     // MessageText:
     //
-    // Network interface does not support this media type.
+    // Priority interface does not support this media type.
     //
     int ERROR_NDIS_UNSUPPORTED_MEDIA = 0x80340019;
 
@@ -40621,7 +40621,7 @@ public interface WinError {
     //
     // MessageText:
     //
-    // Network interface was not found.
+    // Priority interface was not found.
     //
     int ERROR_NDIS_INTERFACE_NOT_FOUND = 0x8034002B;
 

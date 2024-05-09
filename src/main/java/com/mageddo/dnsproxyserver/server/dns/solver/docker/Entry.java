@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.docker;
+package com.mageddo.dnsproxyserver.server.dns.solver.docker;
 
 import com.mageddo.net.IP;
 import lombok.Builder;

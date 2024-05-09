@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
+package com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider;
 
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.ContainerConfig;

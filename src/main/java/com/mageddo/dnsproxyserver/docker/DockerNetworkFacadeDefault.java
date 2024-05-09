@@ -27,7 +27,7 @@ import static com.mageddo.dnsproxyserver.docker.domain.NetworkConnectionStatus.C
 @Default
 @Singleton
 @AllArgsConstructor(onConstructor = @__({@Inject}))
-public class DockerNetworkDAODefault implements DockerNetworkDAO {
+public class DockerNetworkFacadeDefault implements DockerNetworkFacade {
 
   private final DockerClient dockerClient;
 

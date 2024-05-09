@@ -14,11 +14,11 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
-class DockerDAODefaultTest {
+class DockerFacadeDefaultTest {
 
   @Spy
   @InjectMocks
-  DockerDAODefault dockerDAO;
+  DockerFacadeDefault dockerDAO;
 
   @Test
   void mustSolveIpv6IP() {

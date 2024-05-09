@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.mageddo.dnsproxyserver.server.dns.solver.docker.application.ContainerSolvingService.NETWORK_MODE_HOST;
+import static com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerSolvingAdapter.NETWORK_MODE_HOST;
 import static com.mageddo.dnsproxyserver.docker.DpsContainerManager.isDpsContainer;
 
 @Slf4j
@@ -20,7 +20,7 @@ import static com.mageddo.dnsproxyserver.docker.DpsContainerManager.isDpsContain
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class DockerNetworkService {
 
-  private final DockerNetworkDAO networkDAO;
+  private final DockerNetworkFacade networkDAO;
   private final ContainerDAO containerDAO;
 
   public static IP findGatewayIp(Network network) {

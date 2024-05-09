@@ -5,6 +5,7 @@ import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Network;
 import com.mageddo.commons.lang.Objects;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.NetworkComparator;
 import com.mageddo.net.IP;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,7 @@ import java.util.List;
 @Default
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
-public class DockerDAODefault implements DockerDAO {
+public class DockerFacadeDefault implements DockerFacade {
 
   private final DockerClient dockerClient;
   private final DockerConnectionCheck connectionCheck;

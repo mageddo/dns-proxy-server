@@ -15,16 +15,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doThrow;
 
 @ExtendWith(MockitoExtension.class)
-class DockerNetworkDAODefaultTest {
+class DockerNetworkFacadeDefaultTest {
 
-  DockerNetworkDAODefault dao;
+  DockerNetworkFacadeDefault dao;
 
   DockerClient dockerClient;
 
   @BeforeEach
   void before(){
     this.dockerClient = DockerClientTemplates.buildSpy();
-    this.dao = new DockerNetworkDAODefault(this.dockerClient);
+    this.dao = new DockerNetworkFacadeDefault(this.dockerClient);
   }
 
   @Test

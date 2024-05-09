@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.docker;
 
 import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.ContainerHostnameMatcher;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerHostnameMatcher;
 import testing.templates.HostnameQueryTemplates;
 import testing.templates.HostnameTemplates;
 import testing.templates.docker.InspectContainerResponseTemplates;

@@ -1,13 +1,15 @@
-package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
+package com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider;
 
+import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.mageddo.dnsproxyserver.config.Configs;
-import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.Container;
+import com.mageddo.dnsproxyserver.docker.DockerFacade;
+import com.mageddo.dnsproxyserver.docker.DockerNetworkFacade;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Entry;
+import com.mageddo.dnsproxyserver.docker.Labels;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.NetworkComparator;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerNetworkDAO;
+import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 import com.mageddo.net.IP;
+import com.mageddo.net.Networks;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -16,21 +18,40 @@ import org.apache.commons.lang3.time.StopWatch;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.mageddo.commons.lang.Objects.mapOrNull;
+import static com.mageddo.dnsproxyserver.docker.Labels.DEFAULT_NETWORK_LABEL;
+import static com.mageddo.dnsproxyserver.server.dns.solver.docker.Network.Priority.BRIDGE;
+import static com.mageddo.dnsproxyserver.server.dns.solver.docker.Network.Priority.DPS;
+import static com.mageddo.dnsproxyserver.server.dns.solver.docker.Network.Priority.HOST;
+
+/**
+ * Todo that's an application service with is high coupled to infrastructure docker adapter,
+ *      the docker api classes  must be isolated to a port then that port be used on that service.
+ *      See hexagonal architecture.
+ */
 
 @Slf4j
 @Default
 @Singleton
 @AllArgsConstructor(onConstructor = @__({@Inject}))
-public class ContainerSolvingService {
+public class ContainerSolvingAdapter {
 
+  public static final String NETWORK_DPS = DPS.lowerCaseName();
+  public static final String NETWORK_BRIDGE = BRIDGE.lowerCaseName();
+  public static final String NETWORK_MODE_HOST = HOST.lowerCaseName();
+
+  private final DockerFacade dockerFacade;
+  private final DockerNetworkFacade networkDAO;
   private final MatchingContainerService matchingContainerService;
-  private final DockerNetworkDAO dockerNetworkDAO;
-  private final DockerDAO dockerDAO;
 
   public Entry findBestMatch(HostnameQuery host) {
     final var stopWatch = StopWatch.createStarted();
@@ -53,17 +74,35 @@ public class ContainerSolvingService {
       .build();
   }
 
-  private String findBestIpMatch(Container c, IP.Version version) {
+  public String findBestIpMatch(InspectContainerResponse inspect) {
+    return this.findBestIpMatch(inspect, IP.Version.IPV4);
+  }
 
-    final var networks = c.getNetworks();
-    final var networksNames = c.getNetworkNames();
+  public String findBestIpMatch(InspectContainerResponse inspect, IP.Version version) {
+    return this.findBestIpMatch(
+      inspect,
+      buildNetworks(inspect),
+      version
+    );
+  }
+
+  String findBestIpMatch(
+    InspectContainerResponse c,
+    Collection<String> networksNames,
+    IP.Version version
+  ) {
+
+    final var networks = c
+      .getNetworkSettings()
+      .getNetworks();
+
     for (final var name : networksNames) {
       if (!networks.containsKey(name)) {
         log.debug("status=networkNotFoundForContainer, name={}", name);
         continue;
       }
       final var containerNetwork = networks.get(name);
-      final String ip = containerNetwork.getIp(version);
+      final String ip = Networks.findIP(containerNetwork, version);
       log.debug("status=foundIp, network={}, container={}, ip={}", name, c.getName(), ip);
       if (StringUtils.isNotBlank(ip)) {
         return ip;
@@ -78,7 +117,7 @@ public class ContainerSolvingService {
       .keySet()
       .stream()
       .map(nId -> {
-        final var network = this.dockerNetworkDAO.findByNetworkId(nId);
+        final var network = this.networkDAO.findByName(nId);
         if (network == null) {
           log.warn("status=networkIsNull, id={}", nId);
         }
@@ -88,7 +127,7 @@ public class ContainerSolvingService {
       .min(NetworkComparator::compare)
       .map(network -> {
         final var networkName = network.getName();
-        final var ip = networks.get(networkName).getIp(version);
+        final var ip = Networks.findIP(networks.get(networkName), version);
         log.debug(
           "status=foundIp, networks={}, networkName={}, driver={}, foundIp={}",
           networks.keySet(), networkName, network.getDriver(), ip
@@ -98,15 +137,16 @@ public class ContainerSolvingService {
       .filter(StringUtils::isNotBlank)
       .orElseGet(() -> {
         return Optional
-          .ofNullable(mapOrNull(c.getIp(version), IP::toText))
+          .ofNullable(buildDefaultIp(c, version))
           .orElseGet(() -> buildHostMachineIpWhenActive(version));
       })
       ;
+
   }
 
   String buildHostMachineIpWhenActive(IP.Version version) {
     if(isDockerSolverHostMachineFallbackActive()){
-      final Supplier<String> hostMachineSup = () -> mapOrNull(this.dockerDAO.findHostMachineIp(version), IP::toText);
+      final Supplier<String> hostMachineSup = () -> mapOrNull(this.dockerFacade.findHostMachineIp(version), IP::toText);
       final var hostIp = hostMachineSup.get();
       log.debug("status=noNetworkAvailable, usingHostMachineIp={}", hostIp);
       return hostIp;
@@ -118,4 +158,27 @@ public class ContainerSolvingService {
   boolean isDockerSolverHostMachineFallbackActive() {
     return Configs.getInstance().isDockerSolverHostMachineFallbackActive();
   }
+
+  static String buildDefaultIp(InspectContainerResponse c, IP.Version version) {
+    final var settings = c.getNetworkSettings();
+    if (settings == null) {
+      return null;
+    }
+    if (version.isIpv6()) {
+      return StringUtils.trimToNull(settings.getGlobalIPv6Address());
+    }
+    return StringUtils.trimToNull(settings.getIpAddress());
+  }
+
+
+  public static Set<String> buildNetworks(InspectContainerResponse c) {
+    return Stream.of(
+        Labels.findLabelValue(c.getConfig(), DEFAULT_NETWORK_LABEL),
+        NETWORK_DPS,
+        NETWORK_BRIDGE
+      )
+      .filter(Objects::nonNull)
+      .collect(Collectors.toCollection(LinkedHashSet::new));
+  }
+
 }

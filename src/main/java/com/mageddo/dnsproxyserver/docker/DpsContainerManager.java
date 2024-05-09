@@ -4,7 +4,7 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Network;
 import com.mageddo.dnsproxyserver.config.Configs;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.ContainerSolvingService;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerSolvingAdapter;
 import com.mageddo.net.IP;
 import com.mageddo.net.Networks;
 import lombok.AllArgsConstructor;
@@ -20,8 +20,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.mageddo.dnsproxyserver.server.dns.solver.docker.application.ContainerSolvingService.NETWORK_BRIDGE;
-import static com.mageddo.dnsproxyserver.server.dns.solver.docker.application.ContainerSolvingService.NETWORK_DPS;
+import static com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerSolvingAdapter.NETWORK_BRIDGE;
+import static com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerSolvingAdapter.NETWORK_DPS;
 
 @Slf4j
 @Default
@@ -31,10 +31,10 @@ public class DpsContainerManager {
 
   static final String DPS_INSIDE_CONTAINER = "1";
 
-  private final ContainerSolvingService containerSolvingService;
-  private final DockerDAO dockerDAO;
+  private final ContainerSolvingAdapter containerSolvingService;
+  private final DockerFacade dockerFacade;
   private final DockerClient dockerClient;
-  private final DockerNetworkDAO dockerNetworkDAO;
+  private final DockerNetworkFacade dockerNetworkDAO;
 
   public void setupNetwork() {
     final var configureNetwork = BooleanUtils.isTrue(Configs.getInstance().getDpsNetwork());
@@ -73,7 +73,7 @@ public class DpsContainerManager {
       .withInternal(false)
       .withAttachable(true)
       .withLabels(Map.of(
-        "description", "Dns Proxy Server Network: https://github.com/mageddo/dns-proxy-server",
+        "description", "Dns Proxy Server Priority: https://github.com/mageddo/dns-proxy-server",
         "version", currentVersion
       ))
       .exec();
@@ -115,7 +115,7 @@ public class DpsContainerManager {
     if (container == null) {
       return null;
     }
-    final var containerInsp = this.dockerDAO.inspect(container.getId());
+    final var containerInsp = this.dockerFacade.inspect(container.getId());
     final var ip = this.containerSolvingService.findBestIpMatch(containerInsp);
     if (StringUtils.isBlank(ip)) {
       return null;

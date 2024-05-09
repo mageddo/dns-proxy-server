@@ -1,7 +1,8 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 
-import com.mageddo.dnsproxyserver.docker.DockerDAO;
-import com.mageddo.dnsproxyserver.docker.DockerNetworkDAO;
+import com.mageddo.dnsproxyserver.docker.DockerFacade;
+import com.mageddo.dnsproxyserver.docker.DockerNetworkFacade;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerSolvingAdapter;
 import com.mageddo.net.IP;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,22 +21,22 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithDefaultBridgeNetworkOnly;
 
-
+// todo #444
 @ExtendWith(MockitoExtension.class)
 class ContainerSolvingServiceTest {
 
   @Mock
-  DockerDAO dockerDAO;
+  DockerFacade dockerFacade;
 
   @Mock
-  DockerNetworkDAO networkDAO;
+  DockerNetworkFacade networkDAO;
 
   @Mock
   MatchingContainerService matchingContainerService;
 
   @Spy
   @InjectMocks
-  ContainerSolvingService containerSolvingService;
+  ContainerSolvingAdapter containerSolvingService;
 
   @Test
   void mustReturnHostMachineIPWhenThereIsNoBetterMatch() {
@@ -46,7 +47,7 @@ class ContainerSolvingServiceTest {
     final var expectedIp = IP.of(IpTemplates.LOCAL_IPV6);
 
     doReturn(expectedIp)
-      .when(this.dockerDAO)
+      .when(this.dockerFacade)
       .findHostMachineIp(eq(version))
     ;
 
@@ -81,7 +82,7 @@ class ContainerSolvingServiceTest {
 
     // assert
     assertNull(ip);
-    verify(this.dockerDAO, never()).findHostMachineIp(eq(version));
+    verify(this.dockerFacade, never()).findHostMachineIp(eq(version));
 
   }
 

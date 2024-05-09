@@ -6,7 +6,7 @@ import com.mageddo.net.IP;
 
 import java.util.List;
 
-public interface DockerDAO {
+public interface DockerFacade {
 
   boolean isConnected();
 

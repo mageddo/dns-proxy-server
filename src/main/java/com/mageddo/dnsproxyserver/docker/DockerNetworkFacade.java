@@ -9,7 +9,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.List;
 import java.util.function.Predicate;
 
-public interface DockerNetworkDAO {
+public interface DockerNetworkFacade {
 
   Network findById(String id);
 

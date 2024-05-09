@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.Closeable;
 
-import static com.mageddo.dnsproxyserver.server.dns.solver.docker.application.ContainerSolvingService.NETWORK_DPS;
+import static com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerSolvingAdapter.NETWORK_DPS;
 
 @Slf4j
 @Singleton
@@ -21,15 +21,15 @@ import static com.mageddo.dnsproxyserver.server.dns.solver.docker.application.Co
 public class EventListener implements StartupEvent {
 
   private final DockerClient dockerClient;
-  private final DockerDAO dockerDAO;
+  private final DockerFacade dockerFacade;
   private final DpsContainerManager dpsContainerManager;
-  private final DockerNetworkDAO dockerNetworkDAO;
+  private final DockerNetworkFacade dockerNetworkDAO;
   private final DockerNetworkService networkService;
 
   @Override
   public void onStart() {
 
-    final var dockerConnected = this.dockerDAO.isConnected();
+    final var dockerConnected = this.dockerFacade.isConnected();
     log.info("status=binding-docker-events, dockerConnected={}", dockerConnected);
     if (!dockerConnected) {
       return;

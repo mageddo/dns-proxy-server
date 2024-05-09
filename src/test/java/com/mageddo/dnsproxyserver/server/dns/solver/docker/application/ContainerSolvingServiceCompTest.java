@@ -1,9 +1,10 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 
 import com.mageddo.dnsproxyserver.di.Context;
-import com.mageddo.dnsproxyserver.docker.DockerDAO;
-import com.mageddo.dnsproxyserver.docker.DockerNetworkDAO;
+import com.mageddo.dnsproxyserver.docker.DockerFacade;
+import com.mageddo.dnsproxyserver.docker.DockerNetworkFacade;
 import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerSolvingAdapter;
 import com.mageddo.net.IP;
 import dagger.sheath.InjectMock;
 import dagger.sheath.junit.DaggerTest;
@@ -31,20 +32,21 @@ import static testing.templates.docker.InspectContainerResponseTemplates.ngixWit
 import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithIpv6DefaultBridgeNetworkOnly;
 import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithIpv6DefaultIp;
 
+// todo #444
 @DaggerTest(component = Context.class)
 class ContainerSolvingServiceCompTest {
 
   @InjectMock
-  DockerDAO dockerDAO;
+  DockerFacade dockerFacade;
 
   @InjectMock
-  DockerNetworkDAO dockerNetworkDAO;
+  DockerNetworkFacade dockerNetworkDAO;
 
   @InjectMock
   MatchingContainerService matchingContainerService;
 
   @Inject
-  ContainerSolvingService containerSolvingService;
+  ContainerSolvingAdapter containerSolvingService;
 
   @Test
   void mustSolveSpecifiedNetworkFirst() {
@@ -167,7 +169,7 @@ class ContainerSolvingServiceCompTest {
     // assert
     assertNotNull(ip);
     assertEquals("2001:db7:1::2", ip);
-    verify(this.dockerDAO, never()).findHostMachineIp();
+    verify(this.dockerFacade, never()).findHostMachineIp();
   }
 
   @Test

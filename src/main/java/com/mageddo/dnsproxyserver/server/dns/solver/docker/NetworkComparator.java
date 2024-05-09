@@ -1,16 +1,13 @@
-package com.mageddo.dnsproxyserver.docker;
+package com.mageddo.dnsproxyserver.server.dns.solver.docker;
 
-import com.github.dockerjava.api.model.Network;
-
-import static com.mageddo.dnsproxyserver.docker.domain.Network.OTHER;
-import static com.mageddo.dnsproxyserver.docker.domain.Network.of;
+import static com.mageddo.dnsproxyserver.server.dns.solver.docker.Network.Priority.OTHER;
 
 public class NetworkComparator {
 
   static int toPriorityOrder(Network n) {
-    final var network = of(n.getName());
+    final var network = Network.Priority.of(n.getName());
     if(network == OTHER){
-      return of(n.getDriver()).ordinal();
+      return Network.Priority.of(n.getDriver()).ordinal();
     }
     return network.ordinal();
   }

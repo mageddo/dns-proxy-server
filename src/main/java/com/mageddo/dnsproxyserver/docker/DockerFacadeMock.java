@@ -13,7 +13,7 @@ import java.util.List;
 @Singleton
 @Alternative
 @AllArgsConstructor(onConstructor = @__({@Inject}))
-public class DockerDAOMock implements DockerDAO {
+public class DockerFacadeMock implements DockerFacade {
 
   @Override
   public IP findHostMachineIp() {

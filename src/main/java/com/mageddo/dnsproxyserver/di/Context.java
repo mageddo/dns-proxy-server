@@ -7,10 +7,10 @@ import com.mageddo.dnsproxyserver.di.module.ModuleMain;
 import com.mageddo.dnsproxyserver.di.module.ModuleMap;
 import com.mageddo.dnsproxyserver.di.module.ModuleSolver;
 import com.mageddo.dnsproxyserver.di.module.ModuleStartup;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.ContainerSolvingService;
-import com.mageddo.dnsproxyserver.docker.DockerDAO;
-import com.mageddo.dnsproxyserver.docker.DockerDAOMock;
-import com.mageddo.dnsproxyserver.docker.DockerNetworkDAO;
+import com.mageddo.dnsproxyserver.docker.DockerFacadeMock;
+import com.mageddo.dnsproxyserver.docker.DockerNetworkFacade;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerSolvingAdapter;
+import com.mageddo.dnsproxyserver.docker.DockerFacade;
 import com.mageddo.dnsproxyserver.quarkus.QuarkusConfig;
 import com.mageddo.dnsproxyserver.server.Starter;
 import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
@@ -58,13 +58,13 @@ public interface Context {
 
   Instance<Solver> solvers();
 
-  ContainerSolvingService containerSolvingService();
+  ContainerSolvingAdapter containerSolvingService();
 
-  DockerNetworkDAO dockerNetworkDAO();
+  DockerNetworkFacade dockerNetworkDAO();
 
-  DockerDAO dockerDAO();
+  DockerFacade dockerDAO();
 
-  DockerDAOMock dockerDAOMock();
+  DockerFacadeMock dockerDAOMock();
 
   @Name("bindings")
   Map<Class<?>, Provider<Object>> bindings();

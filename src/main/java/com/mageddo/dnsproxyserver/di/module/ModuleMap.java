@@ -1,9 +1,9 @@
 package com.mageddo.dnsproxyserver.di.module;
 
 import com.mageddo.dnsproxyserver.config.ConfigDAO;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.ContainerSolvingService;
-import com.mageddo.dnsproxyserver.docker.DockerDAO;
-import com.mageddo.dnsproxyserver.docker.DockerNetworkDAO;
+import com.mageddo.dnsproxyserver.docker.DockerFacade;
+import com.mageddo.dnsproxyserver.docker.DockerNetworkFacade;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerSolvingAdapter;
 import com.mageddo.dnsproxyserver.server.dns.ServerStarter;
 import com.mageddo.dnsproxyserver.server.dns.solver.SolverLocalDB;
 import dagger.Binds;
@@ -23,18 +23,18 @@ public interface ModuleMap {
 
   @Binds
   @IntoMap
-  @ClassKey(DockerDAO.class)
-  Object b1(DockerDAO bean);
+  @ClassKey(DockerFacade.class)
+  Object b1(DockerFacade bean);
 
   @Binds
   @IntoMap
-  @ClassKey(ContainerSolvingService.class)
-  Object b2(ContainerSolvingService bean);
+  @ClassKey(ContainerSolvingAdapter.class)
+  Object b2(ContainerSolvingAdapter bean);
 
   @Binds
   @IntoMap
-  @ClassKey(DockerNetworkDAO.class)
-  Object b3(DockerNetworkDAO bean);
+  @ClassKey(DockerNetworkFacade.class)
+  Object b3(DockerNetworkFacade bean);
 
   @Binds
   @IntoMap
