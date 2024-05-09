@@ -1,11 +1,17 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.mapper;
 
 import com.github.dockerjava.api.command.InspectContainerResponse;
+import com.github.dockerjava.api.model.ContainerNetwork;
 import com.mageddo.dnsproxyserver.docker.Labels;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Container;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Network;
+import com.mageddo.net.IP;
+import com.mageddo.net.Networks;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -17,11 +23,44 @@ public class ContainerMapper {
     return Container
       .builder()
       .id(inspect.getId())
-      .networkNames(buildNetworks(inspect))
+      .name(inspect.getName())
+      .networkNames(buildNetworkNames(inspect))
+      .networks(buildNetworks(inspect))
+      .ips(Stream.of(
+            buildDefaultIp(inspect, IP.Version.IPV4),
+            buildDefaultIp(inspect, IP.Version.IPV6)
+          )
+          .filter(Objects::nonNull)
+          .toList()
+      )
       .build();
   }
 
-  static Set<String> buildNetworks(InspectContainerResponse c) {
+  static Map<String, Container.Network> buildNetworks(InspectContainerResponse inspect) {
+    final var networks = new HashMap<String, Container.Network>();
+    inspect.getNetworkSettings()
+      .getNetworks()
+      .forEach((k, v) -> {
+        networks.put(k, toNetwork(v));
+      });
+    return networks;
+  }
+
+  static Container.Network toNetwork(ContainerNetwork n) {
+    return Container.Network
+      .builder()
+      .ips(Stream.of(
+          IP.of(Networks.findIpv4Address(n)),
+          IP.of(Networks.findIpv6Address(n)
+          ))
+        .filter(Objects::nonNull)
+        .toList()
+      )
+      .build()
+      ;
+  }
+
+  static Set<String> buildNetworkNames(InspectContainerResponse c) {
     return Stream.of(
         Labels.findLabelValue(c.getConfig(), Labels.DEFAULT_NETWORK_LABEL),
         Network.Name.DPS.lowerCaseName(),
@@ -29,5 +68,16 @@ public class ContainerMapper {
       )
       .filter(Objects::nonNull)
       .collect(Collectors.toCollection(LinkedHashSet::new));
+  }
+
+  static IP buildDefaultIp(InspectContainerResponse c, IP.Version version) {
+    final var settings = c.getNetworkSettings();
+    if (settings == null) {
+      return null;
+    }
+    if (version.isIpv6()) {
+      return IP.of(StringUtils.trimToNull(settings.getGlobalIPv6Address()));
+    }
+    return IP.of(StringUtils.trimToNull(settings.getIpAddress()));
   }
 }

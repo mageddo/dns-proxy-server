@@ -36,6 +36,14 @@ public class Container {
     throw new UnsupportedOperationException();
   }
 
+  public String getFirstNetworkName() {
+    return this.networkNames
+      .stream()
+      .findFirst()
+      .orElse(null)
+      ;
+  }
+
   @Value
   @Builder
   public static class Network {
