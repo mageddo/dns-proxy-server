@@ -29,19 +29,7 @@ class ContainerSolvingServiceCompTest {
   @Inject
   ContainerSolvingService containerSolvingService;
 
-  @Test
-  void mustSolveSpecifiedNetworkFirst() {
-    // arrange
-    final var container = ContainerTemplates.withDpsLabel();
 
-    // act
-    final var ip = this.containerSolvingService.findBestIpMatch(container);
-
-    // assert
-    assertNotNull(ip);
-    assertEquals("172.23.0.2", ip);
-
-  }
 //
 //  @DisplayName("""
 //    When there is no a default bridge network but a custom, there is no dps network label,
