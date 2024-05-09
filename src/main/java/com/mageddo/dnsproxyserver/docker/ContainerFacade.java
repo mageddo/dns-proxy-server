@@ -4,11 +4,9 @@ import com.github.dockerjava.api.model.Container;
 
 import java.util.List;
 
-public interface ContainerDAO {
+public interface ContainerFacade {
 
   List<Container> findNetworkContainers(String networkId);
 
   Container findById(String containerId);
-
-  boolean isDpsContainer(String containerId);
 }

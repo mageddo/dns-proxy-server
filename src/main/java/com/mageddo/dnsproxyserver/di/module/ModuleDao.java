@@ -2,12 +2,18 @@ package com.mageddo.dnsproxyserver.di.module;
 
 import com.mageddo.dnsproxyserver.config.ConfigDAO;
 import com.mageddo.dnsproxyserver.config.ConfigDAOJson;
-import com.mageddo.dnsproxyserver.docker.ContainerDAO;
-import com.mageddo.dnsproxyserver.docker.ContainerDAODefault;
+import com.mageddo.dnsproxyserver.docker.ContainerFacade;
+import com.mageddo.dnsproxyserver.docker.ContainerFacadeDefault;
 import com.mageddo.dnsproxyserver.docker.DockerFacade;
 import com.mageddo.dnsproxyserver.docker.DockerFacadeDefault;
 import com.mageddo.dnsproxyserver.docker.DockerNetworkFacade;
 import com.mageddo.dnsproxyserver.docker.DockerNetworkFacadeDefault;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerDAO;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerDAODefault;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAODefault;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerNetworkDAO;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerNetworkDAODefault;
 import dagger.Binds;
 import dagger.Module;
 
@@ -18,11 +24,18 @@ public interface ModuleDao {
 
   @Binds
   @Singleton
-  DockerFacade dockerDAO(DockerFacadeDefault impl);
+  DockerFacade dockerFacade(DockerFacadeDefault impl);
 
   @Binds
   @Singleton
-  DockerNetworkFacade dockerNetworkDAO(DockerNetworkFacadeDefault impl);
+  DockerNetworkFacade dockerNetworkFacade(DockerNetworkFacadeDefault impl);
+
+
+  @Binds
+  @Singleton
+  ContainerFacade containerFacade(ContainerFacadeDefault impl);
+
+  // ---------------- END:FACADE --------------- //
 
   @Binds
   @Singleton
@@ -31,5 +44,13 @@ public interface ModuleDao {
   @Binds
   @Singleton
   ContainerDAO containerDAO(ContainerDAODefault impl);
+
+  @Binds
+  @Singleton
+  DockerNetworkDAO dockerNetworkDAO(DockerNetworkDAODefault impl);
+
+  @Binds
+  @Singleton
+  DockerDAO dockerDAO(DockerDAODefault impl);
 
 }

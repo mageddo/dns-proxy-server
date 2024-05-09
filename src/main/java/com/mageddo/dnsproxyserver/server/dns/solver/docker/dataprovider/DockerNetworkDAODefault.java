@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider;
 
+import com.github.dockerjava.api.model.Container;
 import com.mageddo.dnsproxyserver.docker.DockerNetworkFacade;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Network;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.mapper.NetworkMapper;
@@ -9,6 +10,8 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import java.util.function.Predicate;
 
 import static com.mageddo.commons.lang.Objects.mapOrNull;
 
@@ -38,5 +41,20 @@ public class DockerNetworkDAODefault implements DockerNetworkDAO {
   @Override
   public void disconnect(String networkId, String containerId) {
     this.dockerNetworkFacade.disconnect(networkId, containerId);
+  }
+
+  @Override
+  public void connect(String networkNameOrId, String containerId) {
+    this.dockerNetworkFacade.connect(networkNameOrId, containerId);
+  }
+
+  @Override
+  public void connect(String networkNameOrId, String containerId, String networkIp) {
+    this.dockerNetworkFacade.connect(networkNameOrId, containerId, networkIp);
+  }
+
+  @Override
+  public void connectRunningContainers(String networkName, Predicate<Container> p) {
+    this.dockerNetworkFacade.connectRunningContainers(networkName, p);
   }
 }

@@ -34,5 +34,4 @@ public interface DockerNetworkFacade {
 
   boolean exists(String networkId);
 
-  boolean existsByName(String name);
 }

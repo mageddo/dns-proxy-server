@@ -19,7 +19,6 @@ public class DockerFacadeDefault implements DockerFacade {
 
   private final DockerClient dockerClient;
 
-
   @Override
   public List<Container> findActiveContainers() {
     final var activeContainers = this.dockerClient

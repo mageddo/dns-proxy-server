@@ -4,6 +4,7 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Network;
 import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.DpsContainerService;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerNetworkDAO;
 import com.mageddo.net.IP;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class DpsContainerManager {
 
   private final DpsContainerService dpsContainerService;
   private final DockerClient dockerClient;
-  private final DockerNetworkFacade dockerNetworkFacade;
+  private final DockerNetworkDAO dockerNetworkDAO;
 
   public void setupNetwork() {
     final var configureNetwork = BooleanUtils.isTrue(Configs.getInstance().getDpsNetwork());
@@ -41,7 +42,7 @@ public class DpsContainerManager {
   }
 
   void createWhereNotExists() {
-    if (this.dockerNetworkFacade.existsByName(Name.DPS.lowerCaseName())) {
+    if (this.dockerNetworkDAO.existsByName(Name.DPS.lowerCaseName())) {
       log.debug("status=dpsNetworkAlreadyExists");
       return;
     }

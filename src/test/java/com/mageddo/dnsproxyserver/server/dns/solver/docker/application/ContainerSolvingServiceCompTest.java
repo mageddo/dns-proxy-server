@@ -4,7 +4,6 @@ import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.dnsproxyserver.docker.DockerFacade;
 import com.mageddo.dnsproxyserver.docker.DockerNetworkFacade;
 import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerSolvingAdapter;
 import com.mageddo.net.IP;
 import dagger.sheath.InjectMock;
 import dagger.sheath.junit.DaggerTest;

@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider;
 
 import com.github.dockerjava.api.DockerClient;
+import com.mageddo.dnsproxyserver.docker.ContainerFacade;
 import com.mageddo.dnsproxyserver.docker.Containers;
 import com.mageddo.dnsproxyserver.docker.DockerFacade;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Container;
@@ -14,13 +15,14 @@ import javax.inject.Singleton;
 import java.util.Collections;
 
 @Slf4j
-@Default
 @Singleton
+@Default
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class ContainerDAODefault implements ContainerDAO {
 
   private final DockerClient dockerClient;
   private final DockerFacade dockerFacade;
+  private final ContainerFacade containerFacade;
 
   public Container findDPSContainer() {
 
@@ -41,5 +43,10 @@ public class ContainerDAODefault implements ContainerDAO {
       .map(it -> this.dockerFacade.inspect(it.getId()))
       .map(ContainerMapper::of)
       .orElse(null);
+  }
+
+  @Override
+  public boolean isDpsContainer(String containerId) {
+    return DpsContainerUtils.isDpsContainer(this.containerFacade.findById(containerId));
   }
 }

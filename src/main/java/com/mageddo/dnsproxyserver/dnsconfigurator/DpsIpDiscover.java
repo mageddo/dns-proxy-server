@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator;
 
-import com.mageddo.dnsproxyserver.docker.DockerFacade;
 import com.mageddo.dnsproxyserver.docker.DpsContainerManager;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
 import com.mageddo.net.IP;
 import com.mageddo.net.Networks;
 import lombok.AllArgsConstructor;
@@ -16,14 +16,14 @@ import java.util.Optional;
 @AllArgsConstructor(onConstructor = @__({@Inject}))
 public class DpsIpDiscover {
 
-  private final DockerFacade dockerFacade;
+  private final DockerDAO dockerDAO;
   private final DpsContainerManager dpsContainerManager;
 
   public IP findDpsIP() {
     if (this.dpsContainerManager.isDpsRunningInsideContainer()) {
       return Optional
         .ofNullable(this.dpsContainerManager.findDpsContainerIP())
-        .orElseGet(this.dockerFacade::findHostMachineIp);
+        .orElseGet(this.dockerDAO::findHostMachineIp);
     }
     return Networks.findCurrentMachineIP();
   }

@@ -2,9 +2,9 @@ package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.config.Types;
-import com.mageddo.dnsproxyserver.docker.DockerFacade;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.ContainerSolvingService;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.Message;
@@ -18,12 +18,12 @@ import javax.inject.Singleton;
 public class SolverDocker implements Solver {
 
   private final ContainerSolvingService containerSolvingService;
-  private final DockerFacade dockerFacade;
+  private final DockerDAO dockerDAO;
 
   @Override
   public Response handle(Message query) {
 
-    if (!this.dockerFacade.isConnected()) {
+    if (!this.dockerDAO.isConnected()) {
       log.trace("status=dockerDisconnected");
       return null;
     }

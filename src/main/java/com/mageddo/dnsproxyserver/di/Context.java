@@ -7,9 +7,8 @@ import com.mageddo.dnsproxyserver.di.module.ModuleMain;
 import com.mageddo.dnsproxyserver.di.module.ModuleMap;
 import com.mageddo.dnsproxyserver.di.module.ModuleSolver;
 import com.mageddo.dnsproxyserver.di.module.ModuleStartup;
-import com.mageddo.dnsproxyserver.docker.DockerFacadeMock;
-import com.mageddo.dnsproxyserver.docker.DockerNetworkFacade;
 import com.mageddo.dnsproxyserver.docker.DockerFacade;
+import com.mageddo.dnsproxyserver.docker.DockerNetworkFacade;
 import com.mageddo.dnsproxyserver.quarkus.QuarkusConfig;
 import com.mageddo.dnsproxyserver.server.Starter;
 import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
@@ -64,7 +63,7 @@ public interface Context {
 
   DockerFacade dockerDAO();
 
-  DockerFacadeMock dockerDAOMock();
+//  DockerFacadeMock dockerDAOMock(); FIXME
 
   @Name("bindings")
   Map<Class<?>, Provider<Object>> bindings();

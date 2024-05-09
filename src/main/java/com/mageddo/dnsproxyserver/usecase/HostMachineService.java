@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.usecase;
 
-import com.mageddo.dnsproxyserver.docker.DockerFacade;
 import com.mageddo.dnsproxyserver.docker.DpsContainerManager;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
 import com.mageddo.net.IP;
 import com.mageddo.net.Networks;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ import javax.inject.Singleton;
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class HostMachineService {
 
-  private final DockerFacade dockerFacade;
+  private final DockerDAO dockerDAO;
   private final DpsContainerManager dpsContainerManager;
 
   public IP findHostMachineIP() {
@@ -22,7 +22,7 @@ public class HostMachineService {
 
   public IP findHostMachineIP(IP.Version version) {
     if (this.isDpsRunningInsideContainer()) {
-      return this.dockerFacade.findHostMachineIp(version);
+      return this.dockerDAO.findHostMachineIp(version);
     }
     return this.findCurrentMachineIp(version);
   }

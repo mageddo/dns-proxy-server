@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.docker;
 
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Network;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerDAO;
 import com.mageddo.net.IP;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import static com.mageddo.dnsproxyserver.server.dns.solver.docker.Network.Name;
 public class DockerNetworkService {
 
   private final DockerNetworkFacade networkDAO;
+  private final ContainerFacade containerFacade;
   private final ContainerDAO containerDAO;
 
   public static IP findGatewayIp(Network network) {
@@ -57,7 +59,7 @@ public class DockerNetworkService {
     if (network == null) {
       return null;
     }
-    final var containers = this.containerDAO.findNetworkContainers(id);
+    final var containers = this.containerFacade.findNetworkContainers(id);
     for (final var container : containers) {
       this.networkDAO.disconnect(id, container.getId());
       removedContainers.add(container.getId());

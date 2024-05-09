@@ -152,5 +152,4 @@ public class DockerNetworkFacadeDefault implements DockerNetworkFacade {
     return this.findById(networkId) != null;
   }
 
-
 }
