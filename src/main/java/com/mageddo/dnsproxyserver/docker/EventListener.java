@@ -5,6 +5,9 @@ import com.github.dockerjava.api.async.ResultCallback;
 import com.github.dockerjava.api.model.Event;
 import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.di.StartupEvent;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.Network;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.ContainerService;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -13,7 +16,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.Closeable;
 
-import static com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerSolvingAdapter.NETWORK_DPS;
 
 @Slf4j
 @Singleton
@@ -21,15 +23,16 @@ import static com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.C
 public class EventListener implements StartupEvent {
 
   private final DockerClient dockerClient;
-  private final DockerFacade dockerFacade;
+  private final DockerDAO dockerDAO;
   private final DpsContainerManager dpsContainerManager;
   private final DockerNetworkFacade dockerNetworkDAO;
   private final DockerNetworkService networkService;
+  private final ContainerService containerService;
 
   @Override
   public void onStart() {
 
-    final var dockerConnected = this.dockerFacade.isConnected();
+    final var dockerConnected = this.dockerDAO.isConnected();
     log.info("status=binding-docker-events, dockerConnected={}", dockerConnected);
     if (!dockerConnected) {
       return;
@@ -44,7 +47,7 @@ public class EventListener implements StartupEvent {
       );
       return;
     }
-    this.dockerNetworkDAO.connectRunningContainers(NETWORK_DPS, DpsContainerManager::isNotDpsContainer);
+    this.containerService.connectRunningContainers();
 
     final var callback = new ResultCallback<Event>() {
       @Override
@@ -63,7 +66,7 @@ public class EventListener implements StartupEvent {
             event.getId(), event.getAction(), event.getType(), event.getStatus(), event
           );
           if (StringUtils.equals(event.getAction(), "start")) {
-            networkService.connect(NETWORK_DPS, event.getId());
+            networkService.connect(Network.Name.DPS.lowerCaseName(), event.getId());
             return;
           }
           log.debug("status=eventIgnored, event={}", event);

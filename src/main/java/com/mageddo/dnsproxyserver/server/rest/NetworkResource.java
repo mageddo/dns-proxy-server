@@ -27,7 +27,7 @@ public class NetworkResource implements HttpMapper {
       Encoders.encodeJson(
           exchange,
           Status.OK,
-          Objects.useItOrDefault(containers, () -> Collections.singletonList("Priority not found"))
+          Objects.useItOrDefault(containers, () -> Collections.singletonList("Name not found"))
       );
     });
   }

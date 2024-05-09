@@ -17,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class MatchingContainerService {
 
+  // todo #444 must inject dao instead to decouple
   private final DockerFacade dockerFacade;
 
   List<Container> findMatchingContainers(HostnameQuery host) {

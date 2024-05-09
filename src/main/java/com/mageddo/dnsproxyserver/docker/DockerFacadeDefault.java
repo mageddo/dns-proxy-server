@@ -3,10 +3,6 @@ package com.mageddo.dnsproxyserver.docker;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.Container;
-import com.github.dockerjava.api.model.Network;
-import com.mageddo.commons.lang.Objects;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.NetworkComparator;
-import com.mageddo.net.IP;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,22 +18,7 @@ import java.util.List;
 public class DockerFacadeDefault implements DockerFacade {
 
   private final DockerClient dockerClient;
-  private final DockerConnectionCheck connectionCheck;
 
-  @Override
-  public IP findHostMachineIp() {
-    return this.findHostMachineIp(IP.Version.IPV4);
-  }
-
-  @Override
-  public IP findHostMachineIp(IP.Version version) {
-    return DockerNetworkService.findGatewayIp(this.findBestNetwork(version), version);
-  }
-
-  @Override
-  public boolean isConnected() {
-    return this.connectionCheck.isConnected();
-  }
 
   @Override
   public List<Container> findActiveContainers() {
@@ -55,20 +36,7 @@ public class DockerFacadeDefault implements DockerFacade {
     return this.dockerClient.inspectContainerCmd(id).exec();
   }
 
-  Network findBestNetwork(IP.Version version) {
-    final var network = this.dockerClient.listNetworksCmd()
-      .exec()
-      .stream()
-      .filter(it -> java.util.Objects.equals(it.getEnableIPv6(), version.isIpv6()))
-      .min(NetworkComparator::compare)
-      .orElse(null);
-    log.debug(
-      "status=bestNetwork, network={}, ip={}",
-      Objects.mapOrNull(network, Network::getName),
-      DockerNetworkService.findGatewayIp(network)
-    );
-    return network;
-  }
+
 
 
 }

@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.docker;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DpsContainerUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,5 +36,10 @@ public class ContainerDAODefault implements ContainerDAO {
       .findFirst()
       .orElse(null)
       ;
+  }
+
+  @Override
+  public boolean isDpsContainer(String containerId) {
+    return DpsContainerUtils.isDpsContainer(this.findById(containerId));
   }
 }

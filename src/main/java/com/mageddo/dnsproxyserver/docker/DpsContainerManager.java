@@ -1,12 +1,10 @@
 package com.mageddo.dnsproxyserver.docker;
 
 import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Network;
 import com.mageddo.dnsproxyserver.config.Configs;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerSolvingAdapter;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.DpsContainerService;
 import com.mageddo.net.IP;
-import com.mageddo.net.Networks;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
@@ -16,12 +14,9 @@ import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Map;
-import java.util.Objects;
 
-import static com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerSolvingAdapter.NETWORK_BRIDGE;
-import static com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerSolvingAdapter.NETWORK_DPS;
+import static com.mageddo.dnsproxyserver.server.dns.solver.docker.Network.Name;
 
 @Slf4j
 @Default
@@ -31,10 +26,9 @@ public class DpsContainerManager {
 
   static final String DPS_INSIDE_CONTAINER = "1";
 
-  private final ContainerSolvingAdapter containerSolvingService;
-  private final DockerFacade dockerFacade;
+  private final DpsContainerService dpsContainerService;
   private final DockerClient dockerClient;
-  private final DockerNetworkFacade dockerNetworkDAO;
+  private final DockerNetworkFacade dockerNetworkFacade;
 
   public void setupNetwork() {
     final var configureNetwork = BooleanUtils.isTrue(Configs.getInstance().getDpsNetwork());
@@ -43,19 +37,19 @@ public class DpsContainerManager {
       return;
     }
     this.createWhereNotExists();
-    this.connectDpsContainer();
+    this.dpsContainerService.connectDpsContainer();
   }
 
   void createWhereNotExists() {
-    if (this.dockerNetworkDAO.existsByName(NETWORK_DPS)) {
+    if (this.dockerNetworkFacade.existsByName(Name.DPS.lowerCaseName())) {
       log.debug("status=dpsNetworkAlreadyExists");
       return;
     }
     final var currentVersion = Configs.getInstance().getVersion();
     final var res = this.dockerClient
       .createNetworkCmd()
-      .withName(NETWORK_DPS)
-      .withDriver(NETWORK_BRIDGE)
+      .withName(Name.DPS.lowerCaseName())
+      .withDriver(Name.BRIDGE.lowerCaseName())
       .withCheckDuplicate(false)
       .withEnableIpv6(true)
       .withIpam(
@@ -73,95 +67,19 @@ public class DpsContainerManager {
       .withInternal(false)
       .withAttachable(true)
       .withLabels(Map.of(
-        "description", "Dns Proxy Server Priority: https://github.com/mageddo/dns-proxy-server",
+        "description", "Dns Proxy Server Name: https://github.com/mageddo/dns-proxy-server",
         "version", currentVersion
       ))
       .exec();
     log.info("status=networkCreated, id={}, warnings={}", res.getId(), Arrays.toString(res.getWarnings()));
   }
 
-  void connectDpsContainer() {
-    final var container = this.findDpsContainer();
-    if (container == null) {
-      log.info("status=dps-container-not-found");
-      return;
-    }
-    final var dpsContainerIP = "172.157.5.249";
-    this.disconnectAnotherContainerWithSameIPFromDpsNetowrk(container.getId(), dpsContainerIP);
-    this.connectDpsContainerToDpsNetwork(container, dpsContainerIP);
-  }
-
-  public Container findDpsContainer() {
-
-    final var containers = this.dockerClient
-      .listContainersCmd()
-      .withStatusFilter(Collections.singletonList("running"))
-      .withLabelFilter(Collections.singletonList("dps.container=true"))
-      .exec();
-
-    if (containers.size() > 1) {
-      log.warn("status=multiple-dps-containers-found, action=using-the-first, containers={}", Containers.toNames(containers));
-    } else {
-      log.debug("dpsContainersFound={}", containers.size());
-    }
-    return containers
-      .stream()
-      .findFirst()
-      .orElse(null);
-  }
-
   public IP findDpsContainerIP() {
-    final var container = this.findDpsContainer();
-    if (container == null) {
-      return null;
-    }
-    final var containerInsp = this.dockerFacade.inspect(container.getId());
-    final var ip = this.containerSolvingService.findBestIpMatch(containerInsp);
-    if (StringUtils.isBlank(ip)) {
-      return null;
-    }
-    return IP.of(ip);
+    return this.dpsContainerService.findDpsContainerIP();
   }
 
   public boolean isDpsRunningInsideContainer() {
     return StringUtils.equals(getDpsContainerEnv(), DPS_INSIDE_CONTAINER);
-  }
-
-  public static boolean isDpsContainer(Container c) {
-    final var lbl = c.getLabels().get("dps.container");
-    return Objects.equals(lbl, "true");
-  }
-
-  public static boolean isNotDpsContainer(Container container) {
-    return !isDpsContainer(container);
-  }
-
-  void disconnectAnotherContainerWithSameIPFromDpsNetowrk(String containerId, String ip) {
-    final var container = this.dockerNetworkDAO.findContainerWithIp(NETWORK_DPS, ip);
-    if (container != null && !Objects.equals(containerId, container.getKey())) {
-      log.info(
-        "status=detachingContainerUsingDPSIpFromDpsNetwork, ip={}, oldContainerId={}, newContainerId={}",
-        ip, containerId, container.getKey()
-      );
-      this.dockerNetworkDAO.disconnect(NETWORK_DPS, container.getKey());
-    }
-  }
-
-  void connectDpsContainerToDpsNetwork(Container container, String ip) {
-    final var foundIp = Networks.findIpv4Address(NETWORK_DPS, container);
-    if (foundIp == null) {
-      this.dockerNetworkDAO.connect(NETWORK_DPS, container.getId());
-      log.info("status=dpsContainerConnectedToDpsNetwork, containerId={}, ip={}", container.getId(), ip);
-    } else if (!Objects.equals(foundIp, ip)) {
-      this.dockerNetworkDAO.disconnect(NETWORK_DPS, container.getId());
-      this.dockerNetworkDAO.connect(NETWORK_DPS, container.getId(), ip);
-      log.info(
-        "status=dpsWasConnectedWithWrongIp, action=fixing, foundIp={}, rightIp={}, container={}",
-        foundIp, ip, container.getId()
-      );
-    } else {
-      log.debug("status=dpsContainerAlreadyConnectedToDpsNetwork, container={}", container.getId());
-    }
   }
 
   String getDpsContainerEnv() {

@@ -9,4 +9,6 @@ public interface ContainerDAO {
   List<Container> findNetworkContainers(String networkId);
 
   Container findById(String containerId);
+
+  boolean isDpsContainer(String containerId);
 }

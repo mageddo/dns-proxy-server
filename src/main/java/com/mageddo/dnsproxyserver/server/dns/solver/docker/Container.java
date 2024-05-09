@@ -32,6 +32,10 @@ public class Container {
     throw new UnsupportedOperationException();
   }
 
+  public IP getIp(IP.Version version, String networkName) {
+    throw new UnsupportedOperationException();
+  }
+
   @Value
   @Builder
   public static class Network {

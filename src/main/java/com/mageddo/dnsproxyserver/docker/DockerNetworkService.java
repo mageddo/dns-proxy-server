@@ -10,10 +10,9 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import static com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerSolvingAdapter.NETWORK_MODE_HOST;
-import static com.mageddo.dnsproxyserver.docker.DpsContainerManager.isDpsContainer;
+
+import static com.mageddo.dnsproxyserver.server.dns.solver.docker.Network.Name;
 
 @Slf4j
 @Singleton
@@ -49,7 +48,7 @@ public class DockerNetworkService {
       return null;
     }
     final var networkMode = config.getNetworkMode();
-    return Objects.equals(networkMode, NETWORK_MODE_HOST);
+    return Name.HOST.equalTo(networkMode);
   }
 
   public List<String> disconnectContainers(String id) {
@@ -67,7 +66,7 @@ public class DockerNetworkService {
   }
 
   public void connect(String networkName, String containerId) {
-    if (isDpsContainer(this.containerDAO.findById(containerId))) {
+    if (this.containerDAO.isDpsContainer(containerId)) {
       log.info("status=won't connect dps container using conventional mode, containerId={}", containerId);
       return;
     }

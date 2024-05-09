@@ -152,9 +152,5 @@ public class DockerNetworkFacadeDefault implements DockerNetworkFacade {
     return this.findById(networkId) != null;
   }
 
-  @Override
-  public boolean existsByName(String networkName) {
-    return this.findByName(networkName) != null;
-  }
 
 }

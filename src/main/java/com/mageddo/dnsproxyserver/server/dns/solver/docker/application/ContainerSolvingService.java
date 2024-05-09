@@ -53,7 +53,10 @@ public class ContainerSolvingService {
       .build();
   }
 
-  private String findBestIpMatch(Container c, IP.Version version) {
+  public String findBestIpMatch(Container c) {
+    return this.findBestIpMatch(c, IP.Version.IPV4);
+  }
+  public String findBestIpMatch(Container c, IP.Version version) {
 
     final var networks = c.getNetworks();
     final var networksNames = c.getNetworkNames();
@@ -78,7 +81,7 @@ public class ContainerSolvingService {
       .keySet()
       .stream()
       .map(nId -> {
-        final var network = this.dockerNetworkDAO.findByNetworkId(nId);
+        final var network = this.dockerNetworkDAO.findById(nId);
         if (network == null) {
           log.warn("status=networkIsNull, id={}", nId);
         }
