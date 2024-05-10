@@ -63,8 +63,6 @@ public interface Context {
 
   DockerDAO dockerDAO();
 
-//  DockerFacadeMock dockerDAOMock(); FIXME
-
   @Name("bindings")
   Map<Class<?>, Provider<Object>> bindings();
 
