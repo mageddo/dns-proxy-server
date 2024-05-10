@@ -56,6 +56,15 @@ public class ContainerTemplates {
       .build();
   }
 
+  public static Container withDefaultIpv6Only() {
+    return builder()
+      .networks(Map.of(
+        "my-net1", ContainerNetworkTemplates.build("172.21.0.2")
+      ))
+      .ips(IP.listOf("2001:db8:1:0:0:0:0:2"))
+      .build();
+  }
+
   private static Container.ContainerBuilder builder() {
     return Container.builder()
       .id("ccb1becce0235218556b8de161d54383782f0ac6de5f83eff88d4c360068c536")

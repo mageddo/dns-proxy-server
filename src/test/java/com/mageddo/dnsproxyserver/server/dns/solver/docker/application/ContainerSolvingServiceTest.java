@@ -195,4 +195,21 @@ class ContainerSolvingServiceTest {
 
   }
 
+
+
+  @Test
+  void mustSolveIpv6FromDefaultIPNetwork() {
+    // arrange
+    final var container = ContainerTemplates.withDefaultIpv6Only();
+    final var version = IP.Version.IPV6;
+
+    // act
+    final var ip = this.containerSolvingService.findBestIpMatch(container, version);
+
+    // assert
+    assertNotNull(ip);
+    assertEquals("2001:db8:1:0:0:0:0:2", ip);
+    verify(this.dockerDAO, never()).findHostMachineIp();
+  }
+
 }

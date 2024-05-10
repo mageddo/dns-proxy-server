@@ -29,21 +29,6 @@ class ContainerSolvingServiceCompTest {
 
 //
 //  @Test
-//  void mustSolveIpv6FromDefaultIPNetwork() {
-//    // arrange
-//    final var inspect = ngixWithIpv6DefaultIp();
-//    final var version = IP.Version.IPV6;
-//
-//    // act
-//    final var ip = this.containerSolvingService.findBestIpMatch(inspect, version);
-//
-//    // assert
-//    assertNotNull(ip);
-//    assertEquals("2001:db7:1::2", ip);
-//    verify(this.dockerFacade, never()).findHostMachineIp();
-//  }
-//
-//  @Test
 //  void mustNotUseAnEmptyIpSpecifiedOnPreferredNetworks() {
 //    // arrange
 //    final var inspect = ngixWithIpv4DefaultBridgeAndIpv6CustomBridgeNetwork();
