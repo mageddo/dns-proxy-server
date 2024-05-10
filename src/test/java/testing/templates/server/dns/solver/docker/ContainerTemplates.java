@@ -49,7 +49,7 @@ public class ContainerTemplates {
         "shibata", ContainerNetworkTemplates.build("172.23.0.2"),
         "bridge", ContainerNetworkTemplates.build("172.17.0.4")
       ))
-      .ips(List.of(IP.of("172.17.0.4")));
+      .ips(List.of(IP.of("172.17.0.5")));
   }
 
 }

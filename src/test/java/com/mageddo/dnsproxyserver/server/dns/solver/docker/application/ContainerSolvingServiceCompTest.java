@@ -7,13 +7,6 @@ import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDA
 import dagger.sheath.InjectMock;
 import dagger.sheath.InjectSpy;
 import dagger.sheath.junit.DaggerTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import testing.templates.docker.InspectContainerResponseTemplates;
-import testing.templates.docker.NetworkTemplates;
-
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doReturn;
 
 // todo #444
 @DaggerTest(component = Context.class)
@@ -34,19 +27,6 @@ class ContainerSolvingServiceCompTest {
   @InjectSpy
   ContainerSolvingService containerSolvingService;
 
-//  @Test
-//  void mustSolveFromDefaultBridgeNetwork() {
-//    // arrange
-//    final var inspect = ngixWithDefaultBridgeNetworkOnly();
-//
-//    // act
-//    final var ip = this.containerSolvingService.findBestIpMatch(inspect);
-//
-//    // assert
-//    assertNotNull(ip);
-//    assertEquals("172.17.0.4", ip);
-//
-//  }
 //
 //  @Test
 //  void mustSolveEmptyIpv6FromDefaultBridgeNetwork() {

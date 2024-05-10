@@ -23,7 +23,6 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-// todo #444
 @ExtendWith(MockitoExtension.class)
 class ContainerSolvingServiceTest {
 
@@ -130,6 +129,20 @@ class ContainerSolvingServiceTest {
     // assert
     assertNull(ip);
     verify(this.dockerDAO, never()).findHostMachineIp(eq(version));
+
+  }
+
+  @Test
+  void mustSolveFromDefaultBridgeNetwork() {
+    // arrange
+    final var container = ContainerTemplates.withDefaultBridgeNetworkOnly();
+
+    // act
+    final var ip = this.containerSolvingService.findBestIpMatch(container);
+
+    // assert
+    assertNotNull(ip);
+    assertEquals("172.17.0.4", ip);
 
   }
 
