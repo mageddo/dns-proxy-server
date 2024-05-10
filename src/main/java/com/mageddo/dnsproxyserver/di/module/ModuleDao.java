@@ -4,8 +4,6 @@ import com.mageddo.dnsproxyserver.config.ConfigDAO;
 import com.mageddo.dnsproxyserver.config.ConfigDAOJson;
 import com.mageddo.dnsproxyserver.docker.ContainerFacade;
 import com.mageddo.dnsproxyserver.docker.ContainerFacadeDefault;
-import com.mageddo.dnsproxyserver.docker.DockerFacade;
-import com.mageddo.dnsproxyserver.docker.DockerFacadeDefault;
 import com.mageddo.dnsproxyserver.docker.DockerNetworkFacade;
 import com.mageddo.dnsproxyserver.docker.DockerNetworkFacadeDefault;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerDAO;
@@ -21,10 +19,6 @@ import javax.inject.Singleton;
 
 @Module
 public interface ModuleDao {
-
-  @Binds
-  @Singleton
-  DockerFacade dockerFacade(DockerFacadeDefault impl);
 
   @Binds
   @Singleton

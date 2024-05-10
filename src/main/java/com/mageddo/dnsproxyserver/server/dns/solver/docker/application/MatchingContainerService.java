@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 
-import com.mageddo.dnsproxyserver.docker.DockerFacade;
+import com.mageddo.dnsproxyserver.docker.ContainerFacade;
 import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Container;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerHostnameMatcher;
@@ -18,12 +18,12 @@ import java.util.List;
 public class MatchingContainerService {
 
   // todo #444 must inject dao instead to decouple
-  private final DockerFacade dockerFacade;
+  private final ContainerFacade containerFacade;
 
   List<Container> findMatchingContainers(HostnameQuery host) {
-    return this.dockerFacade.findActiveContainers()
+    return this.containerFacade.findActiveContainers()
       .stream()
-      .map(it -> this.dockerFacade.inspect(it.getId()))
+      .map(it -> this.containerFacade.inspect(it.getId()))
       .filter(ContainerHostnameMatcher.buildPredicate(host))
       .map(ContainerMapper::of)
       .toList();

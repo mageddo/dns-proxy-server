@@ -7,12 +7,12 @@ import com.mageddo.dnsproxyserver.di.module.ModuleMain;
 import com.mageddo.dnsproxyserver.di.module.ModuleMap;
 import com.mageddo.dnsproxyserver.di.module.ModuleSolver;
 import com.mageddo.dnsproxyserver.di.module.ModuleStartup;
-import com.mageddo.dnsproxyserver.docker.DockerFacade;
 import com.mageddo.dnsproxyserver.docker.DockerNetworkFacade;
 import com.mageddo.dnsproxyserver.quarkus.QuarkusConfig;
 import com.mageddo.dnsproxyserver.server.Starter;
 import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.ContainerSolvingService;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
 import dagger.Component;
 import jdk.jfr.Name;
 import org.apache.commons.lang3.Validate;
@@ -61,7 +61,7 @@ public interface Context {
 
   DockerNetworkFacade dockerNetworkDAO();
 
-  DockerFacade dockerDAO();
+  DockerDAO dockerDAO();
 
 //  DockerFacadeMock dockerDAOMock(); FIXME
 
