@@ -1,4 +1,6 @@
-package com.mageddo.dnsproxyserver.server.dns.solver.docker;
+package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
+
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.Network;
 
 import static com.mageddo.dnsproxyserver.server.dns.solver.docker.Network.Name.OTHER;
 

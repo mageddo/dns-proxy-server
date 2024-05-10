@@ -4,7 +4,6 @@ import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Container;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Entry;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.NetworkComparator;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerNetworkDAO;
@@ -59,7 +58,7 @@ public class ContainerSolvingService {
   }
 
   public String findBestIpMatch(Container c, IP.Version version) {
-    // todo move to another method findAtPreferredNetworks
+    // todo #444 move to another method findAtPreferredNetworks
     final var networks = c.getNetworks();
     final var preferredNetworkNames = c.getPreferredNetworkNames();
     for (final var name : preferredNetworkNames) {
@@ -79,7 +78,7 @@ public class ContainerSolvingService {
       preferredNetworkNames, c.getName()
     );
 
-    // todo extract to another method, findAtAvailableNetworks
+    // todo #444 extract to another method, findAtAvailableNetworks
     return networks
       .keySet()
       .stream()

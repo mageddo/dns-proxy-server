@@ -9,6 +9,7 @@ import lombok.Value;
 public class Entry {
 
   private boolean hostnameMatched;
+
   private IP ip;
 
   public String getIpText() {
