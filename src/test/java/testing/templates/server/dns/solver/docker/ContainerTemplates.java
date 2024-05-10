@@ -36,6 +36,16 @@ public class ContainerTemplates {
       .build();
   }
 
+  public static Container withIpv6DefaultBridgeNetworkOnly() {
+    return builder()
+      .networks(Map.of(
+        "bridge", ContainerNetworkTemplates.build("172.17.0.4", "2001:db8:abc1::242:ac11:4")
+      ))
+      .ips(IP.listOf("172.17.0.4", "2001:db8:abc1::242:ac11:4"))
+      .build();
+
+  }
+
   private static Container.ContainerBuilder builder() {
     return Container.builder()
       .id("ccb1becce0235218556b8de161d54383782f0ac6de5f83eff88d4c360068c536")

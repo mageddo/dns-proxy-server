@@ -52,6 +52,10 @@ public class Container {
     return this.networks.keySet();
   }
 
+  public Network getNetwork(String name) {
+    return this.networks.get(name);
+  }
+
   @Value
   @Builder
   public static class Network {

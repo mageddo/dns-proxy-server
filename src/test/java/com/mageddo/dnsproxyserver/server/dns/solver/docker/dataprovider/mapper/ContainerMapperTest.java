@@ -1,11 +1,13 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.mapper;
 
+import com.mageddo.net.IP;
 import org.junit.jupiter.api.Test;
 import testing.templates.docker.InspectContainerResponseTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithDefaultBridgeNetworkOnly;
+import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithIpv6DefaultBridgeNetworkOnly;
 
 class ContainerMapperTest {
 
@@ -52,4 +54,26 @@ class ContainerMapperTest {
     assertEquals("[172.17.0.4]", String.valueOf(container.getIps()));
     assertEquals("[shibata, custom-bridge]", String.valueOf(container.getNetworksNames()));
   }
+
+  @Test
+  void mustSolveIpv6FromDefaultBridgeNetwork() {
+    // arrange
+    final var inspect = ngixWithIpv6DefaultBridgeNetworkOnly();
+    final var version = IP.Version.IPV6;
+
+    // act
+    final var container = ContainerMapper.of(inspect);
+
+    // assert
+    assertNotNull(container);
+
+    final var network = container.getNetwork("bridge");
+    assertNotNull(network);
+    assertEquals("2001:db8:abc1:0:0:242:ac11:4", network.getIpAsText(version));
+
+  }
+
+
+
+
 }

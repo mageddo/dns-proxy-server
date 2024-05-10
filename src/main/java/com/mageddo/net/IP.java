@@ -1,6 +1,8 @@
 package com.mageddo.net;
 
 import java.net.InetAddress;
+import java.util.List;
+import java.util.stream.Stream;
 
 public interface IP {
 
@@ -23,6 +25,12 @@ public interface IP {
 
   static IP of(byte[] data) {
     return IpImpl.of(data);
+  }
+
+  static List<IP> listOf(String ... ips) {
+    return Stream.of(ips)
+      .map(IP::of)
+      .toList();
   }
 
   boolean isLoopback();

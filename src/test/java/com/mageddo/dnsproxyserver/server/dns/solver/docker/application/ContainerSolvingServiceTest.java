@@ -146,4 +146,33 @@ class ContainerSolvingServiceTest {
 
   }
 
+  @Test
+  void mustSolveEmptyIpv6FromDefaultBridgeNetwork() {
+    // arrange
+    final var container = ContainerTemplates.withDefaultBridgeNetworkOnly();
+    final var version = IP.Version.IPV6;
+
+    // act
+    final var ip = this.containerSolvingService.findBestIpMatch(container, version);
+
+    // assert
+    assertNull(ip);
+
+  }
+
+  @Test
+  void mustSolveIpv6FromDefaultBridgeNetwork() {
+    // arrange
+    final var container = ContainerTemplates.withIpv6DefaultBridgeNetworkOnly();
+    final var version = IP.Version.IPV6;
+
+    // act
+    final var ip = this.containerSolvingService.findBestIpMatch(container, version);
+
+    // assert
+    assertNotNull(ip);
+    assertEquals("2001:db8:abc1:0:0:242:ac11:4", ip);
+
+  }
+
 }

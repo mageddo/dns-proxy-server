@@ -29,35 +29,6 @@ class ContainerSolvingServiceCompTest {
 
 //
 //  @Test
-//  void mustSolveEmptyIpv6FromDefaultBridgeNetwork() {
-//    // arrange
-//    final var inspect = ngixWithDefaultBridgeNetworkOnly();
-//    final var version = IP.Version.IPV6;
-//
-//    // act
-//    final var ip = this.containerSolvingService.findBestIpMatch(inspect, version);
-//
-//    // assert
-//    assertNull(ip);
-//
-//  }
-//
-//  @Test
-//  void mustSolveIpv6FromDefaultBridgeNetwork() {
-//    // arrange
-//    final var inspect = ngixWithIpv6DefaultBridgeNetworkOnly();
-//    final var version = IP.Version.IPV6;
-//
-//    // act
-//    final var ip = this.containerSolvingService.findBestIpMatch(inspect, version);
-//
-//    // assert
-//    assertNotNull(ip);
-//    assertEquals("2001:db8:abc1::242:ac11:4", ip);
-//
-//  }
-//
-//  @Test
 //  void mustSolveIpv6FromAnyOtherNetwork() {
 //    // arrange
 //    final var inspect = ngixWithIpv6CustomBridgeNetwork();
