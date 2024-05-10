@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.docker;
+package com.mageddo.dnsproxyserver.docker.application;
 
 import com.github.dockerjava.api.model.Container;
 
@@ -20,7 +20,10 @@ public class Containers {
   }
 
   public static String firstNameOrId(Container c) {
-    return Stream.of(c.getNames()).findFirst().orElse(c.getId());
+    return Stream.of(c.getNames())
+      .findFirst()
+      .orElse(c.getId())
+      ;
   }
 
   public static boolean containsNetworkName(Container container, String networkName) {

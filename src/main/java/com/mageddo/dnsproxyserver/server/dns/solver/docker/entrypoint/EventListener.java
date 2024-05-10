@@ -1,12 +1,15 @@
-package com.mageddo.dnsproxyserver.docker;
+package com.mageddo.dnsproxyserver.server.dns.solver.docker.entrypoint;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.async.ResultCallback;
 import com.github.dockerjava.api.model.Event;
 import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.di.StartupEvent;
+import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacade;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Network;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.ContainerService;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.DockerNetworkService;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.DpsContainerManager;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

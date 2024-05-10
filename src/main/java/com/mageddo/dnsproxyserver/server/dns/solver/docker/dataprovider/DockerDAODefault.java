@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider;
 
 import com.github.dockerjava.api.DockerClient;
 import com.mageddo.commons.lang.Objects;
-import com.mageddo.dnsproxyserver.docker.DockerConnectionCheck;
+import com.mageddo.dnsproxyserver.docker.application.DockerConnectionCheck;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Network;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.NetworkComparator;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.mapper.NetworkMapper;

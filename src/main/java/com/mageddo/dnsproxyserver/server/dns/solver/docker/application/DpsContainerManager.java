@@ -1,9 +1,8 @@
-package com.mageddo.dnsproxyserver.docker;
+package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Network;
 import com.mageddo.dnsproxyserver.config.Configs;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.DpsContainerService;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerNetworkDAO;
 import com.mageddo.net.IP;
 import lombok.AllArgsConstructor;
@@ -19,6 +18,7 @@ import java.util.Map;
 
 import static com.mageddo.dnsproxyserver.server.dns.solver.docker.Network.Name;
 
+// fixme #444 - acoplado a infraestrutura
 @Slf4j
 @Default
 @Singleton

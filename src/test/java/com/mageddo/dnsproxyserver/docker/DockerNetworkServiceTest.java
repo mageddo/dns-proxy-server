@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.docker;
 
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.DockerNetworkService;
 import org.junit.jupiter.api.Test;
 
 import static testing.templates.docker.NetworkTemplates.buildBridgeIpv4AndIpv6Network;

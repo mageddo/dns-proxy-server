@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.docker;
 
 import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.dnsproxyserver.di.StartupEvent;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.entrypoint.EventListener;
 import dagger.sheath.junit.DaggerTest;
 import org.junit.jupiter.api.Test;
 

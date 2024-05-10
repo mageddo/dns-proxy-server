@@ -5,7 +5,7 @@ import com.mageddo.net.IP;
 
 import java.util.List;
 
-import static com.mageddo.dnsproxyserver.docker.DockerNetworkService.findGatewayIp;
+import static com.mageddo.dnsproxyserver.server.dns.solver.docker.application.DockerNetworkService.findGatewayIp;
 
 public class NetworkMapper {
   public static Network of(com.github.dockerjava.api.model.Network n){

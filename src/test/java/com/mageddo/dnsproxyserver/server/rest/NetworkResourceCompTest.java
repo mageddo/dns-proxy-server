@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.server.rest;
 
-import com.mageddo.dnsproxyserver.docker.DockerNetworkService;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.DockerNetworkService;
 import dagger.sheath.InjectMock;
 import dagger.sheath.junit.DaggerTest;
 import org.junit.jupiter.api.Test;

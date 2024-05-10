@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.docker;
+package com.mageddo.dnsproxyserver.docker.dataprovider;
 
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.ContainerNetwork;

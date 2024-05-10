@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.docker;
+package com.mageddo.dnsproxyserver.docker.application;
 
 import com.github.dockerjava.api.DockerClient;
 import com.mageddo.commons.concurrent.ThreadPool;

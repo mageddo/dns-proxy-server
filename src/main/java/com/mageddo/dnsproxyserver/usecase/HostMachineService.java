@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.usecase;
 
-import com.mageddo.dnsproxyserver.docker.DpsContainerManager;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.DpsContainerManager;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
 import com.mageddo.net.IP;
 import com.mageddo.net.Networks;

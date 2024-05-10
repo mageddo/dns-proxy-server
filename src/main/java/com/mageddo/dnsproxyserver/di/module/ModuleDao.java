@@ -2,10 +2,10 @@ package com.mageddo.dnsproxyserver.di.module;
 
 import com.mageddo.dnsproxyserver.config.ConfigDAO;
 import com.mageddo.dnsproxyserver.config.ConfigDAOJson;
-import com.mageddo.dnsproxyserver.docker.ContainerFacade;
-import com.mageddo.dnsproxyserver.docker.ContainerFacadeDefault;
-import com.mageddo.dnsproxyserver.docker.DockerNetworkFacade;
-import com.mageddo.dnsproxyserver.docker.DockerNetworkFacadeDefault;
+import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacade;
+import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacadeDefault;
+import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacade;
+import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacadeDefault;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerDAODefault;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;

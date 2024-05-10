@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 
 import static com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.Docker.buildHostnamesFromServiceOrContainerNames;
 import static com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.Docker.findContainerHostname;
-import static com.mageddo.dnsproxyserver.docker.DpsContainer.findHostnamesFromEnv;
+import static com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.mapper.DpsContainer.findHostnamesFromEnv;
 
 public class ContainerHostnameMatcher {
 

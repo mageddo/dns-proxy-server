@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.docker;
+package com.mageddo.dnsproxyserver.docker.application;
 
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.ContainerConfig;
@@ -7,7 +7,6 @@ import java.util.Map;
 
 public class Labels {
 
-  public static final String DEFAULT_NETWORK_LABEL = "dps.network";
   public static final String SERVICE_NAME_LABEL = "com.docker.compose.service";
 
   public static String findLabelValue(ContainerConfig c, String label) {

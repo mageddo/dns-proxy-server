@@ -1,8 +1,8 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider;
 
 import com.github.dockerjava.api.DockerClient;
-import com.mageddo.dnsproxyserver.docker.ContainerFacade;
-import com.mageddo.dnsproxyserver.docker.Containers;
+import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacade;
+import com.mageddo.dnsproxyserver.docker.application.Containers;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Container;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.mapper.ContainerMapper;
 import lombok.RequiredArgsConstructor;

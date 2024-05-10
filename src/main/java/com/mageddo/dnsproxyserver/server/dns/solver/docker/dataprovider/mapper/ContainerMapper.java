@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.mapper;
 
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.ContainerNetwork;
-import com.mageddo.dnsproxyserver.docker.Labels;
+import com.mageddo.dnsproxyserver.docker.application.Labels;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Container;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Network;
 import com.mageddo.net.IP;
@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ContainerMapper {
+
+  public static final String DEFAULT_NETWORK_LABEL = "dps.network";
 
   public static Container of(InspectContainerResponse inspect) {
     final var foundNetworks = buildNetworks(inspect);
@@ -64,7 +66,7 @@ public class ContainerMapper {
 
   static Set<String> buildNetworkNames(InspectContainerResponse c) {
     return Stream.of(
-        Labels.findLabelValue(c.getConfig(), Labels.DEFAULT_NETWORK_LABEL),
+        Labels.findLabelValue(c.getConfig(), DEFAULT_NETWORK_LABEL),
         Network.Name.DPS.lowerCaseName(),
         Network.Name.BRIDGE.lowerCaseName()
       )
