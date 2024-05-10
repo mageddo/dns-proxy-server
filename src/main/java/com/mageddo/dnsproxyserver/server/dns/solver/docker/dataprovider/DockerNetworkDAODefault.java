@@ -59,7 +59,7 @@ public class DockerNetworkDAODefault implements DockerNetworkDAO {
   }
 
   @Override
-  public void connectRunningContainers(String networkName, Predicate<Container> p) {
+  public void connectRunningContainersToNetwork(String networkName, Predicate<Container> p) {
     this.dockerNetworkFacade.connectRunningContainers(networkName, p);
   }
 }

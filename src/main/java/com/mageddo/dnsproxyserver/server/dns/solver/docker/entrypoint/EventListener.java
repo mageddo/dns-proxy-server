@@ -35,6 +35,7 @@ public class EventListener implements StartupEvent {
   @Override
   public void onStart() {
 
+    // tag:newMethod todo this code is responsability of an application service
     final var dockerConnected = this.dockerDAO.isConnected();
     log.info("status=binding-docker-events, dockerConnected={}", dockerConnected);
     if (!dockerConnected) {
@@ -51,6 +52,7 @@ public class EventListener implements StartupEvent {
       return;
     }
     this.containerService.connectRunningContainers();
+    // end:newMethod
 
     final var callback = new ResultCallback<Event>() {
       @Override

@@ -22,5 +22,5 @@ public interface DockerNetworkDAO {
 
   void connect(String networkNameOrId, String containerId, String networkIp);
 
-  void connectRunningContainers(String networkName, Predicate<Container> p);
+  void connectRunningContainersToNetwork(String networkName, Predicate<Container> p);
 }

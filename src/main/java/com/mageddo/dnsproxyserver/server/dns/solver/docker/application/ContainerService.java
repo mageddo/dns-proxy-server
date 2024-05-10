@@ -17,7 +17,7 @@ public class ContainerService {
   private final DockerNetworkDAO dockerNetworkDAO;
 
   public void connectRunningContainers(){
-    this.dockerNetworkDAO.connectRunningContainers(
+    this.dockerNetworkDAO.connectRunningContainersToNetwork(
       Network.Name.DPS.lowerCaseName(), DpsContainerUtils::isNotDpsContainer
     );
   }
