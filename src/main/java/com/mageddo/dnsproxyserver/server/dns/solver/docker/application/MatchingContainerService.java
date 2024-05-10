@@ -1,10 +1,8 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 
-import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacade;
 import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Container;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerHostnameMatcher;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.mapper.ContainerMapper;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerDAO;
 import lombok.RequiredArgsConstructor;
 
 import javax.enterprise.inject.Default;
@@ -17,15 +15,9 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class MatchingContainerService {
 
-  // todo #444 must inject dao instead to decouple
-  private final ContainerFacade containerFacade;
+  private final ContainerDAO containerDAO;
 
   List<Container> findMatchingContainers(HostnameQuery host) {
-    return this.containerFacade.findActiveContainers()
-      .stream()
-      .map(it -> this.containerFacade.inspect(it.getId()))
-      .filter(ContainerHostnameMatcher.buildPredicate(host))
-      .map(ContainerMapper::of)
-      .toList();
+    return this.containerDAO.findActiveContainersInspectMatching(host);
   }
 }

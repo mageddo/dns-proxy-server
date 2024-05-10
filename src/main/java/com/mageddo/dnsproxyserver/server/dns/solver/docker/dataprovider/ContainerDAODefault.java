@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider;
 import com.github.dockerjava.api.DockerClient;
 import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacade;
 import com.mageddo.dnsproxyserver.docker.application.Containers;
+import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Container;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.mapper.ContainerMapper;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Collections;
+import java.util.List;
 
 @Slf4j
 @Singleton
@@ -41,6 +43,16 @@ public class ContainerDAODefault implements ContainerDAO {
       .map(it -> this.containerFacade.inspect(it.getId()))
       .map(ContainerMapper::of)
       .orElse(null);
+  }
+
+  @Override
+  public List<Container> findActiveContainersInspectMatching(HostnameQuery query) {
+    return this.containerFacade.findActiveContainers()
+      .stream()
+      .map(it -> this.containerFacade.inspect(it.getId()))
+      .filter(ContainerHostnameMatcher.buildPredicate(query))
+      .map(ContainerMapper::of)
+      .toList();
   }
 
   @Override
