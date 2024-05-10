@@ -7,6 +7,7 @@ import lombok.Value;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,11 +21,15 @@ public class Network {
   @NonNull
   private String driver;
 
+  @Builder.Default
   @NonNull
-  private List<IP> gateways;
+  private List<IP> gateways = Collections.emptyList();
 
   public IP getGateway(IP.Version version) {
-    throw new UnsupportedOperationException();
+    return this.gateways.stream()
+      .filter(it -> Objects.equals(it.version(), version))
+      .findFirst()
+      .orElse(null);
   }
 
   public enum Name {
