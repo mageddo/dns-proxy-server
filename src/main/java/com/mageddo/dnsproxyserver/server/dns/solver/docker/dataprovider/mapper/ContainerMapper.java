@@ -9,7 +9,7 @@ import com.mageddo.net.IP;
 import com.mageddo.net.Networks;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Objects;
@@ -39,7 +39,7 @@ public class ContainerMapper {
   }
 
   static Map<String, Container.Network> buildNetworks(InspectContainerResponse inspect) {
-    final var networks = new HashMap<String, Container.Network>();
+    final var networks = new LinkedHashMap<String, Container.Network>();
     inspect.getNetworkSettings()
       .getNetworks()
       .forEach((k, v) -> {

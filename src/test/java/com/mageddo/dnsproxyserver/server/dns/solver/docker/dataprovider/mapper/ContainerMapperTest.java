@@ -29,12 +29,12 @@ class ContainerMapperTest {
     final var inspect = ngixWithDefaultBridgeNetworkOnly();
 
     // act
-    final var ip = ContainerMapper.of(inspect);
+    final var container = ContainerMapper.of(inspect);
 
     // assert
-    assertNotNull(ip);
-    assertEquals("[172.17.0.4]", String.valueOf(ip.getIps()));
-    assertEquals("[bridge]", String.valueOf(ip.getPreferredNetworkNames()));
+    assertNotNull(container);
+    assertEquals("[172.17.0.4]", String.valueOf(container.getIps()));
+    assertEquals("[shibata, dps, bridge]", String.valueOf(container.getPreferredNetworkNames()));
 
   }
 
@@ -44,11 +44,12 @@ class ContainerMapperTest {
     final var inspect = InspectContainerResponseTemplates.withCustomBridgeAndOverlayNetwork();
 
     // act
-    final var ip = ContainerMapper.of(inspect);
+    final var container = ContainerMapper.of(inspect);
 
     // assert
-    assertNotNull(ip);
-    assertEquals("[]", String.valueOf(ip.getPreferredNetworkNames()));
-    assertEquals("[172.17.0.4]", String.valueOf(ip.getIps()));
+    assertNotNull(container);
+    assertEquals("[dps, bridge]", String.valueOf(container.getPreferredNetworkNames()));
+    assertEquals("[172.17.0.4]", String.valueOf(container.getIps()));
+    assertEquals("[shibata, custom-bridge]", String.valueOf(container.getNetworksNames()));
   }
 }

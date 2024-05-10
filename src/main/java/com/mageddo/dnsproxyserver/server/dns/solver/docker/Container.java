@@ -48,6 +48,10 @@ public class Container {
       ;
   }
 
+  public Set<String> getNetworksNames() {
+    return this.networks.keySet();
+  }
+
   @Value
   @Builder
   public static class Network {
