@@ -4,6 +4,7 @@ import com.mageddo.dnsproxyserver.server.dns.solver.docker.Container;
 import com.mageddo.net.IP;
 import com.mageddo.utils.Sets;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -62,6 +63,17 @@ public class ContainerTemplates {
         "my-net1", ContainerNetworkTemplates.build("172.21.0.2")
       ))
       .ips(IP.listOf("2001:db8:1:0:0:0:0:2"))
+      .build();
+  }
+
+
+  public static Container withIpv4DefaultBridgeAndIpv6CustomBridgeNetwork() {
+    return builder()
+      .networks(Map.of(
+        "bridge", ContainerNetworkTemplates.build("172.17.0.4"),
+        "my-net1", ContainerNetworkTemplates.build("172.21.0.2", "2001:db8:1::2")
+      ))
+      .ips(Collections.emptyList())
       .build();
   }
 

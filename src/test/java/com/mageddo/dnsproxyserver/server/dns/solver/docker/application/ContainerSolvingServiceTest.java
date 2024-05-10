@@ -195,8 +195,6 @@ class ContainerSolvingServiceTest {
 
   }
 
-
-
   @Test
   void mustSolveIpv6FromDefaultIPNetwork() {
     // arrange
@@ -212,4 +210,24 @@ class ContainerSolvingServiceTest {
     verify(this.dockerDAO, never()).findHostMachineIp();
   }
 
+
+  @Test
+  void mustSolveIpv6AndDontUseEmptyIpSpecifiedOnBridgeWhichIsThePreferredNetwork() {
+    // arrange
+    final var container = ContainerTemplates.withIpv4DefaultBridgeAndIpv6CustomBridgeNetwork();
+    final var version = IP.Version.IPV6;
+
+    doReturn(NetworkTemplates.withBridgeDriver("my-net1"))
+      .when(this.dockerNetworkDAO)
+      .findByName(anyString())
+    ;
+
+    // act
+    final var ip = this.containerSolvingService.findBestIpMatch(container, version);
+
+    // assert
+    assertNotNull(ip);
+    assertEquals(IpTemplates.LOCAL_EXTENDED_IPV6, ip);
+
+  }
 }
