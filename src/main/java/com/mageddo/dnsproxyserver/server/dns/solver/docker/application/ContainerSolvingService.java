@@ -102,7 +102,7 @@ public class ContainerSolvingService {
       .filter(StringUtils::isNotBlank)
       .orElseGet(() -> {
         return Optional
-          .ofNullable(mapOrNull(c.getIp(version), IP::toText))
+          .ofNullable(mapOrNull(c.geDefaultIp(version), IP::toText))
           .orElseGet(() -> buildHostMachineIpWhenActive(version));
       })
       ;

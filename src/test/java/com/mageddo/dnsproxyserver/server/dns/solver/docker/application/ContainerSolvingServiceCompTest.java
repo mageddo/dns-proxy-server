@@ -3,15 +3,10 @@ package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.dnsproxyserver.docker.DockerFacade;
 import com.mageddo.dnsproxyserver.docker.DockerNetworkFacade;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
 import dagger.sheath.InjectMock;
+import dagger.sheath.InjectSpy;
 import dagger.sheath.junit.DaggerTest;
-import org.junit.jupiter.api.Test;
-import testing.templates.server.dns.solver.docker.ContainerTemplates;
-
-import javax.inject.Inject;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 // todo #444
 @DaggerTest(component = Context.class)
@@ -21,12 +16,15 @@ class ContainerSolvingServiceCompTest {
   DockerFacade dockerFacade;
 
   @InjectMock
+  DockerDAO dockerDAO;
+
+  @InjectMock
   DockerNetworkFacade dockerNetworkDAO;
 
   @InjectMock
   MatchingContainerService matchingContainerService;
 
-  @Inject
+  @InjectSpy
   ContainerSolvingService containerSolvingService;
 
 

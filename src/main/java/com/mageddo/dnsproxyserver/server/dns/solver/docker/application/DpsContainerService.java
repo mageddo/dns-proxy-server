@@ -60,7 +60,7 @@ public class DpsContainerService {
   }
 
   void connectDpsContainerToDpsNetwork(Container container, String ip) {
-    final var foundIp = container.getIp(IP.Version.IPV4, Network.Name.DPS.lowerCaseName());
+    final var foundIp = container.geDefaultIp(IP.Version.IPV4, Network.Name.DPS.lowerCaseName());
     if (foundIp == null) {
       this.dockerNetworkDAO.connect(Network.Name.DPS.lowerCaseName(), container.getId());
       log.info("status=dpsContainerConnectedToDpsNetwork, containerId={}, ip={}", container.getId(), ip);

@@ -1,27 +1,31 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 
-import com.mageddo.dnsproxyserver.docker.DockerFacade;
-import com.mageddo.dnsproxyserver.docker.DockerNetworkFacade;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerNetworkDAO;
+import com.mageddo.net.IP;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import testing.templates.IpTemplates;
 import testing.templates.server.dns.solver.docker.ContainerTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
 
 // todo #444
 @ExtendWith(MockitoExtension.class)
 class ContainerSolvingServiceTest {
 
   @Mock
-  DockerFacade dockerFacade;
+  DockerDAO dockerDAO;
 
   @Mock
-  DockerNetworkFacade networkDAO;
+  DockerNetworkDAO dockerNetworkDAO;
 
   @Mock
   MatchingContainerService matchingContainerService;
@@ -44,31 +48,34 @@ class ContainerSolvingServiceTest {
 
   }
 
-//  @Test
-//  void mustReturnHostMachineIPWhenThereIsNoBetterMatch() {
-//
-//    // arrange
-//    final var inspect = ngixWithDefaultBridgeNetworkOnly();
-//    final var version = IP.Version.IPV6;
-//    final var expectedIp = IP.of(IpTemplates.LOCAL_IPV6);
-//
-//    doReturn(expectedIp)
-//      .when(this.dockerFacade)
-//      .findHostMachineIp(eq(version))
-//    ;
-//
-//    doReturn(true)
-//      .when(this.containerSolvingService)
-//      .isDockerSolverHostMachineFallbackActive()
-//    ;
-//
-//    // act
-//    final var ip = this.containerSolvingService.findBestIpMatch(inspect, version);
-//
-//    // assert
-//    assertNotNull(ip);
-//    assertEquals(expectedIp.toText(), ip);
-//
+
+  @Test
+  void mustReturnHostMachineIPWhenThereIsNoBetterMatch() {
+
+    // arrange
+    final var inspect = ContainerTemplates.withDefaultBridgeNetworkOnly();
+    final var version = IP.Version.IPV6;
+    final var expectedIp = IP.of(IpTemplates.LOCAL_IPV6);
+
+    doReturn(expectedIp)
+      .when(this.dockerDAO)
+      .findHostMachineIp(eq(version))
+    ;
+
+    doReturn(true)
+      .when(this.containerSolvingService)
+      .isDockerSolverHostMachineFallbackActive()
+    ;
+
+    // act
+    final var ip = this.containerSolvingService.findBestIpMatch(inspect, version);
+
+    // assert
+    assertNotNull(ip);
+    assertEquals(expectedIp.toText(), ip);
+
+  }
+
 //  }
 //
 //  @Test

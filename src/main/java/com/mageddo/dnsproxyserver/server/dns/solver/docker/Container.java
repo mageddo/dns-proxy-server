@@ -29,11 +29,14 @@ public class Container {
   @NonNull
   private List<IP> ips;
 
-  public IP getIp(IP.Version version) {
-    throw new UnsupportedOperationException();
+  public IP geDefaultIp(IP.Version version) {
+    return this.ips.stream()
+      .filter(it -> Objects.equals(it.version(), version))
+      .findFirst()
+      .orElse(null);
   }
 
-  public IP getIp(IP.Version version, String networkName) {
+  public IP geDefaultIp(IP.Version version, String networkName) {
     throw new UnsupportedOperationException();
   }
 
