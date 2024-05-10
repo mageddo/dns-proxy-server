@@ -27,26 +27,6 @@ class ContainerSolvingServiceCompTest {
   @InjectSpy
   ContainerSolvingService containerSolvingService;
 
-//
-//  @Test
-//  void mustLeadWithNoneIPV6ReturnedFromDockerSolver() {
-//    // arrange
-//    final var hostnameQuery = HostnameQuery.of("nginx-2.dev", IP.Version.IPV6);
-//    final var inspect = ngixWithDefaultBridgeNetworkOnly();
-//
-//    doReturn(List.of(inspect))
-//      .when(this.matchingContainerService)
-//      .findMatchingContainers(eq(hostnameQuery));
-//
-//    // act
-//    final var ip = this.containerSolvingService.findBestMatch(hostnameQuery);
-//
-//    // assert
-//    assertNotNull(ip);
-//    assertFalse(ip.isHostnameMatched());
-//    assertNull(ip.getIp());
-//
-//  }
 
 
 }

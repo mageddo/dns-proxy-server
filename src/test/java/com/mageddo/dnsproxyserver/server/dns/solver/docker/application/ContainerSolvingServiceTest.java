@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 
+import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerNetworkDAO;
 import com.mageddo.net.IP;
@@ -14,7 +15,10 @@ import testing.templates.IpTemplates;
 import testing.templates.server.dns.solver.docker.ContainerTemplates;
 import testing.templates.server.dns.solver.docker.NetworkTemplates;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -228,6 +232,26 @@ class ContainerSolvingServiceTest {
     // assert
     assertNotNull(ip);
     assertEquals(IpTemplates.LOCAL_EXTENDED_IPV6, ip);
+
+  }
+
+  @Test
+  void mustReturnNoIpWhenNoIpv6ReturnedFromDockerSolver() {
+    // arrange
+    final var hostnameQuery = HostnameQuery.of("nginx-2.dev", IP.Version.IPV6);
+    final var container = ContainerTemplates.withDefaultBridgeNetworkOnly();
+
+    doReturn(List.of(container))
+      .when(this.matchingContainerService)
+      .findMatchingContainers(eq(hostnameQuery));
+
+    // act
+    final var ip = this.containerSolvingService.findBestMatch(hostnameQuery);
+
+    // assert
+    assertNotNull(ip);
+    assertFalse(ip.isHostnameMatched());
+    assertNull(ip.getIp());
 
   }
 }
