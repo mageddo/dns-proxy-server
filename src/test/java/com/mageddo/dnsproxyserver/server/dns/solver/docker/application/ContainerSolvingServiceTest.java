@@ -16,6 +16,7 @@ import testing.templates.server.dns.solver.docker.NetworkTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
@@ -111,28 +112,25 @@ class ContainerSolvingServiceTest {
 
   }
 
+  @Test
+  void mustReturnNoIPWhenHostMachineFallbackIsDisabled() {
 
-//  }
-//
-//  @Test
-//  void mustReturnNoIPWhenHostMachineFallbackIsDisabled() {
-//
-//    // arrange
-//    final var inspect = ngixWithDefaultBridgeNetworkOnly();
-//    final var version = IP.Version.IPV6;
-//
-//    doReturn(false)
-//      .when(this.containerSolvingService)
-//      .isDockerSolverHostMachineFallbackActive()
-//    ;
-//
-//    // act
-//    final var ip = this.containerSolvingService.findBestIpMatch(inspect, version);
-//
-//    // assert
-//    assertNull(ip);
-//    verify(this.dockerFacade, never()).findHostMachineIp(eq(version));
-//
-//  }
+    // arrange
+    final var container = ContainerTemplates.withDefaultBridgeNetworkOnly();
+    final var version = IP.Version.IPV6;
+
+    doReturn(false)
+      .when(this.containerSolvingService)
+      .isDockerSolverHostMachineFallbackActive()
+    ;
+
+    // act
+    final var ip = this.containerSolvingService.findBestIpMatch(container, version);
+
+    // assert
+    assertNull(ip);
+    verify(this.dockerDAO, never()).findHostMachineIp(eq(version));
+
+  }
 
 }
