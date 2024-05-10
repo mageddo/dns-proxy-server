@@ -175,4 +175,24 @@ class ContainerSolvingServiceTest {
 
   }
 
+  @Test
+  void mustSolveIpv6FromAnyOtherNetworkWhenThereIsNoBetterMatch() {
+    // arrange
+    final var inspect = ContainerTemplates.withIpv6CustomBridgeNetwork();
+    final var version = IP.Version.IPV6;
+
+    doReturn(NetworkTemplates.withBridgeDriver("my-net1"))
+      .when(this.dockerNetworkDAO)
+      .findByName(anyString())
+    ;
+
+    // act
+    final var ip = this.containerSolvingService.findBestIpMatch(inspect, version);
+
+    // assert
+    assertNotNull(ip);
+    assertEquals(IpTemplates.LOCAL_EXTENDED_IPV6, ip);
+
+  }
+
 }

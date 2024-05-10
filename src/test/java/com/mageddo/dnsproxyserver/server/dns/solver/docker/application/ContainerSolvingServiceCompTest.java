@@ -29,26 +29,6 @@ class ContainerSolvingServiceCompTest {
 
 //
 //  @Test
-//  void mustSolveIpv6FromAnyOtherNetwork() {
-//    // arrange
-//    final var inspect = ngixWithIpv6CustomBridgeNetwork();
-//    final var version = IP.Version.IPV6;
-//
-//    doReturn(NetworkTemplates.withBridgeDriver("my-net1"))
-//      .when(this.dockerNetworkDAO)
-//      .findByName(anyString())
-//    ;
-//
-//    // act
-//    final var ip = this.containerSolvingService.findBestIpMatch(inspect, version);
-//
-//    // assert
-//    assertNotNull(ip);
-//    assertEquals(IpTemplates.LOCAL_IPV6, ip);
-//
-//  }
-//
-//  @Test
 //  void mustSolveIpv6FromDefaultIPNetwork() {
 //    // arrange
 //    final var inspect = ngixWithIpv6DefaultIp();

@@ -7,6 +7,7 @@ import testing.templates.docker.InspectContainerResponseTemplates;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithDefaultBridgeNetworkOnly;
+import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithIpv6CustomBridgeNetwork;
 import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithIpv6DefaultBridgeNetworkOnly;
 
 class ContainerMapperTest {
@@ -73,7 +74,20 @@ class ContainerMapperTest {
 
   }
 
+  @Test
+  void mustSolveIpv6FromAnyOtherNetworkWhenThereIsNoBetterMatch() {
+    // arrange
+    final var inspect = ngixWithIpv6CustomBridgeNetwork();
 
+    // act
+    final var container = ContainerMapper.of(inspect);
+
+    // assert
+    assertNotNull(container);
+    assertEquals("[]", String.valueOf(container.getIps()));
+    assertEquals("[my-net1]", String.valueOf(container.getNetworksNames()));
+
+  }
 
 
 }

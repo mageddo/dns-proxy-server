@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -24,10 +25,12 @@ public class Container {
   private Set<String> preferredNetworkNames;
 
   @NonNull
-  private Map<String, Network> networks;
+  @Builder.Default
+  private Map<String, Network> networks = Collections.emptyMap();
 
   @NonNull
-  private List<IP> ips;
+  @Builder.Default
+  private List<IP> ips = Collections.emptyList();
 
   public IP geDefaultIp(IP.Version version) {
     return this.ips.stream()
