@@ -27,6 +27,8 @@ public interface IP {
 
   boolean isLoopback();
 
+  boolean notEqualTo(String ip);
+
   enum Version {
 
     IPV4,

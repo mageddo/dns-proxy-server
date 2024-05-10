@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Objects;
 
 @EqualsAndHashCode(of = "ip")
 class IpImpl implements IP {
@@ -78,6 +79,11 @@ class IpImpl implements IP {
   @Override
   public boolean isLoopback() {
     return this.ip.isLoopbackAddress();
+  }
+
+  @Override
+  public boolean notEqualTo(String ip) {
+    return !Objects.equals(this, IP.of(ip));
   }
 
   private static InetAddress build(String ip) {

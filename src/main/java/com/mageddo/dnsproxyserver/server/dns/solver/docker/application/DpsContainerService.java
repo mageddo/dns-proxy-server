@@ -64,7 +64,7 @@ public class DpsContainerService {
     if (foundIp == null) {
       this.dockerNetworkDAO.connect(Network.Name.DPS.lowerCaseName(), container.getId());
       log.info("status=dpsContainerConnectedToDpsNetwork, containerId={}, ip={}", container.getId(), ip);
-    } else if (!Objects.equals(foundIp, ip)) {
+    } else if (foundIp.notEqualTo(ip)) {
       this.dockerNetworkDAO.disconnect(Network.Name.DPS.lowerCaseName(), container.getId());
       this.dockerNetworkDAO.connect(Network.Name.DPS.lowerCaseName(), container.getId(), ip);
       log.info(
