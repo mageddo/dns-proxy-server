@@ -53,7 +53,6 @@ class ContainerSolvingServiceTest {
 
   }
 
-
   @Test
   void mustReturnHostMachineIPWhenThereIsNoBetterMatch() {
 
