@@ -1,10 +1,9 @@
-package com.mageddo.dnsproxyserver.docker;
+package com.mageddo.dnsproxyserver.docker.application;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.VersionCmd;
 import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dnsproxyserver.di.module.ModuleDockerClient;
-import com.mageddo.dnsproxyserver.docker.application.DockerConnectionCheck;
 import com.mageddo.dnsproxyserver.docker.application.DockerConnectionCheck.Status;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
