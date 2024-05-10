@@ -5,6 +5,7 @@ import testing.templates.docker.InspectContainerResponseTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithDefaultBridgeNetworkOnly;
 
 class ContainerMapperTest {
 
@@ -19,5 +20,22 @@ class ContainerMapperTest {
     // assert
     assertNotNull(container);
     assertEquals("shibata", container.getFirstNetworkName());
+  }
+
+  @Test
+  void mustMapBridgeNetwork() {
+
+    // arrange
+    final var inspect = ngixWithDefaultBridgeNetworkOnly();
+
+
+    // act
+    final var ip = ContainerMapper.of(inspect);
+
+    // assert
+    assertNotNull(ip);
+    assertEquals("[172.17.0.4]", String.valueOf(ip.getIps()));
+    assertEquals("[bridge]", String.valueOf(ip.getNetworkNames()));
+
   }
 }

@@ -20,12 +20,15 @@ import java.util.stream.Stream;
 public class ContainerMapper {
 
   public static Container of(InspectContainerResponse inspect) {
+    final var foundNetworks = buildNetworks(inspect);
+    final var possibleNetworksNames = buildNetworkNames(inspect);
+    possibleNetworksNames.retainAll(foundNetworks.keySet());
     return Container
       .builder()
       .id(inspect.getId())
       .name(inspect.getName())
-      .networkNames(buildNetworkNames(inspect))
-      .networks(buildNetworks(inspect))
+      .networkNames(possibleNetworksNames)
+      .networks(foundNetworks)
       .ips(Stream.of(
             buildDefaultIp(inspect, IP.Version.IPV4),
             buildDefaultIp(inspect, IP.Version.IPV6)
