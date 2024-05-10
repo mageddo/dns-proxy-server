@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 
 import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerNetworkDAO;
 import com.mageddo.net.IP;
@@ -37,7 +38,7 @@ class ContainerSolvingServiceTest {
   DockerNetworkDAO dockerNetworkDAO;
 
   @Mock
-  MatchingContainerService matchingContainerService;
+  ContainerDAO containerDAO;
 
   @Spy
   @InjectMocks
@@ -242,8 +243,8 @@ class ContainerSolvingServiceTest {
     final var container = ContainerTemplates.withDefaultBridgeNetworkOnly();
 
     doReturn(List.of(container))
-      .when(this.matchingContainerService)
-      .findMatchingContainers(eq(hostnameQuery));
+      .when(this.containerDAO)
+      .findActiveContainersInspectMatching(eq(hostnameQuery));
 
     // act
     final var ip = this.containerSolvingService.findBestMatch(hostnameQuery);

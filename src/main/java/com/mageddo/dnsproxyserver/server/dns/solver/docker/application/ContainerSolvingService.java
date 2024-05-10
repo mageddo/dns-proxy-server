@@ -5,6 +5,7 @@ import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Container;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Entry;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.NetworkComparator;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerNetworkDAO;
 import com.mageddo.net.IP;
@@ -28,13 +29,13 @@ import static com.mageddo.commons.lang.Objects.mapOrNull;
 @AllArgsConstructor(onConstructor = @__({@Inject}))
 public class ContainerSolvingService {
 
-  private final MatchingContainerService matchingContainerService;
   private final DockerNetworkDAO dockerNetworkDAO;
   private final DockerDAO dockerDAO;
+  private final ContainerDAO containerDAO;
 
   public Entry findBestMatch(HostnameQuery host) {
     final var stopWatch = StopWatch.createStarted();
-    final var matchedContainers = this.matchingContainerService.findMatchingContainers(host);
+    final var matchedContainers = this.containerDAO.findActiveContainersInspectMatching(host);
     final var foundIp = matchedContainers
       .stream()
       .map(it -> this.findBestIpMatch(it, host.getVersion()))
