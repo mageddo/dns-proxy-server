@@ -58,10 +58,10 @@ public class ContainerSolvingService {
   }
 
   public String findBestIpMatch(Container c, IP.Version version) {
-
+    // todo move to another method findAtPreferredNetworks
     final var networks = c.getNetworks();
-    final var networksNames = c.getNetworkNames();
-    for (final var name : networksNames) {
+    final var preferredNetworkNames = c.getPreferredNetworkNames();
+    for (final var name : preferredNetworkNames) {
       if (!networks.containsKey(name)) {
         log.debug("status=networkNotFoundForContainer, name={}", name);
         continue;
@@ -75,14 +75,15 @@ public class ContainerSolvingService {
     }
     log.debug(
       "status=predefinedNetworkNotFound, action=findSecondOption, searchedNetworks={}, container={}",
-      networksNames, c.getName()
+      preferredNetworkNames, c.getName()
     );
 
+    // todo extract to another method, findAtAvailableNetworks
     return networks
       .keySet()
       .stream()
       .map(nId -> {
-        final var network = this.dockerNetworkDAO.findById(nId);
+        final var network = this.dockerNetworkDAO.findByName(nId);
         if (network == null) {
           log.warn("status=networkIsNull, id={}", nId);
         }

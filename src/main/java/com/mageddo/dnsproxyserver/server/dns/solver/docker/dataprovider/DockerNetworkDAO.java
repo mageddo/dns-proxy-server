@@ -10,6 +10,8 @@ public interface DockerNetworkDAO {
 
   Network findById(String networkId);
 
+  Network findByName(String networkName);
+
   boolean existsByName(String networkName);
 
   String findContainerWithNetworkAndIp(String networkName, String ip);

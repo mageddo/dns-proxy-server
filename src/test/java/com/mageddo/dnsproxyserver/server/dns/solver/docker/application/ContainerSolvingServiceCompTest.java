@@ -7,6 +7,13 @@ import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDA
 import dagger.sheath.InjectMock;
 import dagger.sheath.InjectSpy;
 import dagger.sheath.junit.DaggerTest;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import testing.templates.docker.InspectContainerResponseTemplates;
+import testing.templates.docker.NetworkTemplates;
+
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
 
 // todo #444
 @DaggerTest(component = Context.class)
@@ -27,40 +34,6 @@ class ContainerSolvingServiceCompTest {
   @InjectSpy
   ContainerSolvingService containerSolvingService;
 
-
-//
-//  @DisplayName("""
-//    When there is no a default bridge network but a custom, there is no dps network label,
-//    there is no a DPS network but there is a custom bridge network and a other like overlay, must prioritize to use
-//    the bridge network.
-//    """)
-//  @Test
-//  void mustPreferCustomBridgeNetworkOverOtherNetworksWhenThereIsNotABetterMatch() {
-//    // arrange
-//
-//    final var bridgeNetwork = "custom-bridge";
-//    final var overlayNetwork = "shibata";
-//
-//    final var inspect = InspectContainerResponseTemplates.withCustomBridgeAndOverylayNetwork();
-//    doReturn(NetworkTemplates.withOverlayDriver(overlayNetwork))
-//      .when(this.dockerNetworkDAO)
-//      .findByName(eq(overlayNetwork))
-//    ;
-//    doReturn(NetworkTemplates.withBridgeDriver(bridgeNetwork))
-//      .when(this.dockerNetworkDAO)
-//      .findByName(eq(bridgeNetwork))
-//    ;
-//
-//    // act
-//    final var ip = this.containerSolvingService.findBestIpMatch(inspect);
-//
-//    // assert
-//    assertNotNull(ip);
-//    assertEquals("172.17.0.4", ip);
-//    verify(this.dockerNetworkDAO, never()).findById(anyString());
-//
-//  }
-//
 //  @Test
 //  void mustSolveFromDefaultBridgeNetwork() {
 //    // arrange

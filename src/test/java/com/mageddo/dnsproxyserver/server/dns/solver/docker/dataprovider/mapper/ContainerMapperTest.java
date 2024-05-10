@@ -28,14 +28,27 @@ class ContainerMapperTest {
     // arrange
     final var inspect = ngixWithDefaultBridgeNetworkOnly();
 
-
     // act
     final var ip = ContainerMapper.of(inspect);
 
     // assert
     assertNotNull(ip);
     assertEquals("[172.17.0.4]", String.valueOf(ip.getIps()));
-    assertEquals("[bridge]", String.valueOf(ip.getNetworkNames()));
+    assertEquals("[bridge]", String.valueOf(ip.getPreferredNetworkNames()));
 
+  }
+
+  @Test
+  void mustMapOverlayNetwork(){
+    // arrange
+    final var inspect = InspectContainerResponseTemplates.withCustomBridgeAndOverlayNetwork();
+
+    // act
+    final var ip = ContainerMapper.of(inspect);
+
+    // assert
+    assertNotNull(ip);
+    assertEquals("[]", String.valueOf(ip.getPreferredNetworkNames()));
+    assertEquals("[172.17.0.4]", String.valueOf(ip.getIps()));
   }
 }

@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerNetworkDAO;
 import com.mageddo.net.IP;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,11 +12,15 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import testing.templates.IpTemplates;
 import testing.templates.server.dns.solver.docker.ContainerTemplates;
+import testing.templates.server.dns.solver.docker.NetworkTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 // todo #444
 @ExtendWith(MockitoExtension.class)
@@ -75,6 +80,38 @@ class ContainerSolvingServiceTest {
     assertEquals(expectedIp.toText(), ip);
 
   }
+
+  @DisplayName("""
+    When there is no a default bridge network but a custom, there is no dps network label,
+    there is no a DPS network but there is a custom bridge network and a other like overlay, must prioritize to use
+    the bridge network.
+    """)
+  @Test
+  void mustPreferCustomBridgeNetworkOverOtherNetworksWhenThereIsNotABetterMatch() {
+    // arrange
+    final var bridgeNetwork = "custom-bridge";
+    final var overlayNetwork = "shibata";
+
+    final var container = ContainerTemplates.withCustomBridgeAndOverlayNetwork();
+    doReturn(NetworkTemplates.withOverlayDriver(overlayNetwork))
+      .when(this.dockerNetworkDAO)
+      .findByName(eq(overlayNetwork))
+    ;
+    doReturn(NetworkTemplates.withBridgeDriver(bridgeNetwork))
+      .when(this.dockerNetworkDAO)
+      .findByName(eq(bridgeNetwork))
+    ;
+
+    // act
+    final var ip = this.containerSolvingService.findBestIpMatch(container);
+
+    // assert
+    assertNotNull(ip);
+    assertEquals("172.17.0.8", ip);
+    verify(this.dockerNetworkDAO, never()).findById(anyString());
+
+  }
+
 
 //  }
 //

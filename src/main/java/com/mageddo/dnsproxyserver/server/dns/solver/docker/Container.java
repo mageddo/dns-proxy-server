@@ -21,7 +21,7 @@ public class Container {
   private String name;
 
   @NonNull
-  private Set<String> networkNames;
+  private Set<String> preferredNetworkNames;
 
   @NonNull
   private Map<String, Network> networks;
@@ -41,7 +41,7 @@ public class Container {
   }
 
   public String getFirstNetworkName() {
-    return this.networkNames
+    return this.preferredNetworkNames
       .stream()
       .findFirst()
       .orElse(null)

@@ -2,6 +2,7 @@ package testing.templates.server.dns.solver.docker;
 
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Container;
 import com.mageddo.net.IP;
+import com.mageddo.utils.Sets;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -18,9 +19,19 @@ public class ContainerTemplates {
 
   public static Container withDefaultBridgeNetworkOnly() {
     return builder()
-      .networkNames(Set.of("bridge"))
+      .preferredNetworkNames(Set.of("bridge"))
       .networks(Map.of(
-          "bridge", ContainerNetworkTemplates.build("172.17.0.4")
+        "bridge", ContainerNetworkTemplates.build("172.17.0.4")
+      ))
+      .build();
+  }
+
+  public static Container withCustomBridgeAndOverlayNetwork() {
+    return builder()
+      .preferredNetworkNames(Sets.ordered("dps", "bridge"))
+      .networks(Map.of(
+        "shibata", ContainerNetworkTemplates.build("172.23.0.2"),
+        "custom-bridge", ContainerNetworkTemplates.build("172.17.0.8")
       ))
       .build();
   }
@@ -29,7 +40,7 @@ public class ContainerTemplates {
     return Container.builder()
       .id("ccb1becce0235218556b8de161d54383782f0ac6de5f83eff88d4c360068c536")
       .name("/laughing_swanson")
-      .networkNames(
+      .preferredNetworkNames(
         Stream.of("shibata", "dps", "bridge")
           .collect(Collectors.toCollection(LinkedHashSet::new))
       )

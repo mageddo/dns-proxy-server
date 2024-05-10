@@ -22,12 +22,11 @@ public class ContainerMapper {
   public static Container of(InspectContainerResponse inspect) {
     final var foundNetworks = buildNetworks(inspect);
     final var possibleNetworksNames = buildNetworkNames(inspect);
-    possibleNetworksNames.retainAll(foundNetworks.keySet());
     return Container
       .builder()
       .id(inspect.getId())
       .name(inspect.getName())
-      .networkNames(possibleNetworksNames)
+      .preferredNetworkNames(possibleNetworksNames)
       .networks(foundNetworks)
       .ips(Stream.of(
             buildDefaultIp(inspect, IP.Version.IPV4),

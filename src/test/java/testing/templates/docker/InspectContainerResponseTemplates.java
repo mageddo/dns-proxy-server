@@ -61,7 +61,7 @@ public class InspectContainerResponseTemplates {
     return build();
   }
 
-  public static InspectContainerResponse withCustomBridgeAndOverylayNetwork() {
+  public static InspectContainerResponse withCustomBridgeAndOverlayNetwork() {
     return parse(buildTree("/templates/002.json"));
   }
 

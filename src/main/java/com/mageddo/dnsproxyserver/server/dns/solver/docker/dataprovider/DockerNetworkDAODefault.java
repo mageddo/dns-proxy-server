@@ -28,6 +28,11 @@ public class DockerNetworkDAODefault implements DockerNetworkDAO {
   }
 
   @Override
+  public Network findByName(String networkName) {
+    return NetworkMapper.of(this.dockerNetworkFacade.findByName(networkName));
+  }
+
+  @Override
   public boolean existsByName(String networkName) {
     return this.dockerNetworkFacade.findByName(networkName) != null;
   }
