@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.List;
 
 @Slf4j
 @Default
@@ -35,14 +36,20 @@ public class DockerDAODefault implements DockerDAO {
   }
 
   Network findBestNetwork(IP.Version version) {
-    final var network = this.dockerClient.listNetworksCmd()
-      .exec()
+    final var network = this.findNetworks()
       .stream()
-      .filter(it -> java.util.Objects.equals(it.getEnableIPv6(), version.isIpv6()))
-      .map(NetworkMapper::of)
+      .filter(it -> java.util.Objects.equals(it.isIpv6Active(), version.isIpv6()))
       .min(NetworkComparator::compare)
       .orElse(null);
     log.debug("status=bestNetwork, network={}", network);
     return network;
+  }
+
+  List<Network> findNetworks() {
+    return this.dockerClient.listNetworksCmd()
+      .exec()
+      .stream()
+      .map(NetworkMapper::of)
+      .toList();
   }
 }

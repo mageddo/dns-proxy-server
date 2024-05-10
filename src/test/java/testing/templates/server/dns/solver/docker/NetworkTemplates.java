@@ -7,6 +7,7 @@ import com.mageddo.net.IP;
 import java.util.Collections;
 
 public class NetworkTemplates {
+
   public static Network withOverlayDriver(String name) {
     return builder()
       .name(name)
@@ -28,8 +29,20 @@ public class NetworkTemplates {
       .name("my-net1")
       .driver(Drivers.BRIDGE)
       .gateways(IP.listOf("2001:db8:1::1", "172.21.0.1"))
+      .ipv6Active(true)
       .build()
     ;
+  }
+
+
+  public static Network withOverlayIpv4AndIpv6Network() {
+    return builder()
+      .name("overlay-net1")
+      .driver(Drivers.OVERLAY)
+      .gateways(IP.listOf("2001:db4:1::1", "172.24.0.1"))
+      .ipv6Active(true)
+      .build()
+      ;
   }
 
   static Network.NetworkBuilder builder() {

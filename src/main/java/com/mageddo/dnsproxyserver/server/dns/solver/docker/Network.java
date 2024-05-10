@@ -25,6 +25,8 @@ public class Network {
   @NonNull
   private List<IP> gateways = Collections.emptyList();
 
+  private boolean ipv6Active;
+
   public IP getGateway(IP.Version version) {
     return this.gateways.stream()
       .filter(it -> Objects.equals(it.version(), version))
