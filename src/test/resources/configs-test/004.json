@@ -3,7 +3,7 @@
   "dnsServerPort" : 5391,
   "dockerSolverHostMachineFallbackActive" : true,
   "domain" : "acme",
-  "dpsNetwork" : true,
+  "mustConfigureDpsNetwork" : true,
   "dpsNetworkAutoConnect" : true,
   "hostMachineHostname" : "batata.com",
   "logFile" : "/var/log/dns-proxy-server.log",

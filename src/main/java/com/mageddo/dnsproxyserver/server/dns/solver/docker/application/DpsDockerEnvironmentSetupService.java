@@ -37,7 +37,7 @@ public class DpsDockerEnvironmentSetupService {
   }
 
   boolean isMustConfigureDpsNetwork() {
-    return Configs.getInstance().isMustConfigureDpsNetwork();
+    return Configs.getInstance().getMustConfigureDpsNetwork();
   }
 
   void createNetworkIfAbsent() {

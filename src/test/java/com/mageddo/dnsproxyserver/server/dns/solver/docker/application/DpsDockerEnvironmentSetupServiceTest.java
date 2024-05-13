@@ -12,4 +12,7 @@ class DpsDockerEnvironmentSetupServiceTest {
   @InjectMocks
   DpsDockerEnvironmentSetupService dpsDockerEnvironmentSetupService;
 
+
+  // fixme #444 criar tests
+
 }

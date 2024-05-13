@@ -3,7 +3,7 @@
   "dnsServerPort" : 53,
   "dockerSolverHostMachineFallbackActive" : true,
   "domain" : "docker",
-  "dpsNetwork" : false,
+  "mustConfigureDpsNetwork" : false,
   "dpsNetworkAutoConnect" : false,
   "hostMachineHostname" : "host.docker",
   "logFile" : "console",

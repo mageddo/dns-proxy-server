@@ -44,10 +44,10 @@ public class EventListener implements StartupEvent {
 
     this.dpsDockerEnvironmentSetupService.setup();
     final var config = Configs.getInstance();
-    if (!config.isMustConfigureDpsNetwork() || !config.getDpsNetworkAutoConnect()) {
+    if (!config.getMustConfigureDpsNetwork() || !config.getDpsNetworkAutoConnect()) {
       log.info(
         "status=autoConnectDpsNetworkDisabled, dpsNetwork={}, dpsNetworkAutoConnect={}",
-        config.isMustConfigureDpsNetwork(), config.getDpsNetworkAutoConnect()
+        config.getMustConfigureDpsNetwork(), config.getDpsNetworkAutoConnect()
       );
       return;
     }
