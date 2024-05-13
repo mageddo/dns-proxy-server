@@ -17,7 +17,7 @@ import java.util.List;
 public class DockerNetworkService {
 
   private final DockerNetworkFacade networkDAO;
-  private final ContainerFacade containerFacade;
+  private final ContainerFacade containerFacade; // fixme #444 remove this dependency from app module
   private final DpsContainerDAO dpsContainerDAO;
 
   public List<String> disconnectContainers(String id) {
