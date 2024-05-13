@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.docker;
 
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.mapper.DpsContainer;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DpsContainerUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,7 +12,7 @@ class DpsContainerTest {
     final var envs = new String[]{"HOSTNAME=xxx", "HOSTNAMES=acme.com"};
 
     // act
-    final var hostnames = DpsContainer.findHostnamesFromEnv(envs);
+    final var hostnames = DpsContainerUtils.findHostnamesFromEnv(envs);
 
     // assert
     assertEquals(1, hostnames.size(), String.valueOf(hostnames));
@@ -25,7 +25,7 @@ class DpsContainerTest {
     final var envs = new String[]{"HOSTNAME=xxx", "HOSTNAMES=acme.com, mageddo.com , ahnegao.com.br"};
 
     // act
-    final var hostnames = DpsContainer.findHostnamesFromEnv(envs);
+    final var hostnames = DpsContainerUtils.findHostnamesFromEnv(envs);
 
     // assert
     assertEquals(3, hostnames.size(), String.valueOf(hostnames));
@@ -38,7 +38,7 @@ class DpsContainerTest {
     final var envs = new String[]{"HOSTNAME=xxx", "HOSTNAMES=acme.com,mageddo.com"};
 
     // act
-    final var hostnames = DpsContainer.findHostnamesFromEnv(envs);
+    final var hostnames = DpsContainerUtils.findHostnamesFromEnv(envs);
 
     // assert
     assertEquals(2, hostnames.size(), String.valueOf(hostnames));
@@ -51,7 +51,7 @@ class DpsContainerTest {
     final var envs = new String[]{"HOSTNAME=xxx", "HOSTNAMES=.localhost,.subdomain"};
 
     // act
-    final var hostnames = DpsContainer.findHostnamesFromEnv(envs);
+    final var hostnames = DpsContainerUtils.findHostnamesFromEnv(envs);
 
     // assert
     assertEquals(2, hostnames.size(), String.valueOf(hostnames));

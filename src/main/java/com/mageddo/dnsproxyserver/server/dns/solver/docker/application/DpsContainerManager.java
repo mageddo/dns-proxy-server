@@ -37,11 +37,11 @@ public class DpsContainerManager {
     if (!configureNetwork) {
       return;
     }
-    this.createWhereNotExists();
+    this.createIfAbsent();
     this.dpsContainerService.connectDpsContainer();
   }
 
-  void createWhereNotExists() {
+  void createIfAbsent() {
     if (this.dockerNetworkDAO.existsByName(Name.DPS.lowerCaseName())) {
       log.debug("status=dpsNetworkAlreadyExists");
       return;
