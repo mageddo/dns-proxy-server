@@ -41,7 +41,7 @@ public class DpsContainerService {
     return IP.of(ip);
   }
 
-  public void connectDpsContainerTpItsNetwork() {
+  public void connectDpsContainerToDpsNetwork() {
     final var container = this.dpsContainerDAO.findDPSContainer();
     if (container == null) {
       log.info("status=dps-container-not-found");

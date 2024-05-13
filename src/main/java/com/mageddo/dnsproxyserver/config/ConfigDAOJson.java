@@ -25,6 +25,11 @@ import java.util.function.Predicate;
 public class ConfigDAOJson implements ConfigDAO {
 
   @Override
+  public Config findActive() {
+    return Configs.getInstance();
+  }
+
+  @Override
   public Config.Env findActiveEnv() {
     final var configJson = JsonConfigs.loadConfigJson();
     return findEnv(configJson.getActiveEnv(), configJson);

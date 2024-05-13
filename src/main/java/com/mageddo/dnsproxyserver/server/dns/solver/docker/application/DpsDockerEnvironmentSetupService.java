@@ -27,13 +27,17 @@ public class DpsDockerEnvironmentSetupService {
   }
 
   void setupNetwork() {
-    final var configureNetwork = Configs.getInstance().isMustConfigureDpsNetwork();
+    final var configureNetwork = this.isMustConfigureDpsNetwork();
     log.info("status=dpsNetwork, active={}", configureNetwork);
     if (!configureNetwork) {
       return;
     }
     this.createNetworkIfAbsent();
-    this.dpsContainerService.connectDpsContainerTpItsNetwork();
+    this.dpsContainerService.connectDpsContainerToDpsNetwork();
+  }
+
+  boolean isMustConfigureDpsNetwork() {
+    return Configs.getInstance().isMustConfigureDpsNetwork();
   }
 
   void createNetworkIfAbsent() {

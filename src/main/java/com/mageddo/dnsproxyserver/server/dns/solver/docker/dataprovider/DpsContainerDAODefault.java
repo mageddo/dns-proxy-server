@@ -23,14 +23,14 @@ import java.util.Map;
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class DpsContainerDAODefault implements DpsContainerDAO {
 
-  static final String DPS_INSIDE_CONTAINER = "1";
+  static final String DPS_INSIDE_CONTAINER_YES = "1";
 
   private final DockerClient dockerClient;
   private final ContainerFacade containerFacade;
 
   @Override
   public boolean isDpsRunningInsideContainer() {
-    return StringUtils.equals(this.getDpsContainerEnv(), DPS_INSIDE_CONTAINER);
+    return StringUtils.equals(this.getDpsContainerEnvValue(), DPS_INSIDE_CONTAINER_YES);
   }
 
   @Override
@@ -93,7 +93,7 @@ public class DpsContainerDAODefault implements DpsContainerDAO {
       );
   }
 
-  String getDpsContainerEnv() {
+  String getDpsContainerEnvValue() {
     return System.getenv("DPS_CONTAINER");
   }
 }

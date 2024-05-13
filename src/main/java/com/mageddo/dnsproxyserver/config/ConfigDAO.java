@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface ConfigDAO {
 
+  Config findActive();
+
   Config.Env findActiveEnv();
 
   Config.Env findEnv(String env);
