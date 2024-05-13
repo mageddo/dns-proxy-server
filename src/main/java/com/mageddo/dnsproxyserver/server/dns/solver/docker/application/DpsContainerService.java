@@ -1,10 +1,12 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 
+import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Container;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Network;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerNetworkDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DpsContainerDAO;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DpsContainerUtils;
 import com.mageddo.net.IP;
 import com.mageddo.net.Networks;
 import lombok.RequiredArgsConstructor;
@@ -87,5 +89,20 @@ public class DpsContainerService {
         .orElseGet(this.dockerDAO::findHostMachineIp);
     }
     return Networks.findCurrentMachineIP();
+  }
+
+  public boolean connectRunningContainersToDpsNetwork(){
+    final var config = Configs.getInstance();
+    if (!config.getMustConfigureDpsNetwork() || !config.getDpsNetworkAutoConnect()) {
+      log.info(
+        "status=autoConnectDpsNetworkDisabled, dpsNetwork={}, dpsNetworkAutoConnect={}",
+        config.getMustConfigureDpsNetwork(), config.getDpsNetworkAutoConnect()
+      );
+      return false;
+    }
+    this.dockerNetworkDAO.connectRunningContainersToNetwork(
+      Network.Name.DPS.lowerCaseName(), DpsContainerUtils::isNotDpsContainer
+    );
+    return true;
   }
 }

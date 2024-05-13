@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 
 import com.mageddo.dnsproxyserver.config.Configs;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerNetworkDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DpsContainerDAO;
 import lombok.AllArgsConstructor;
@@ -18,12 +19,25 @@ import static com.mageddo.dnsproxyserver.server.dns.solver.docker.Network.Name;
 @AllArgsConstructor(onConstructor = @__({@Inject}))
 public class DpsDockerEnvironmentSetupService {
 
+  private final DockerDAO dockerDAO;
   private final DpsContainerService dpsContainerService;
   private final DockerNetworkDAO dockerNetworkDAO;
   public final DpsContainerDAO dpsContainerDAO;
 
-  public void setup() {
+  /**
+   * @return true if connected all running containers to DPS network.
+   */
+  public boolean setup() {
+
+    final var connectedToDocker = this.dockerDAO.isConnected();
+    log.info("status=binding-docker-events, connectedToDocker={}", connectedToDocker);
+    if (!connectedToDocker) {
+      return false;
+    }
+
     this.setupNetwork();
+
+    return this.dpsContainerService.connectRunningContainersToDpsNetwork();
   }
 
   void setupNetwork() {
