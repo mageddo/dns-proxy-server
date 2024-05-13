@@ -34,19 +34,19 @@ public class ContainerSolvingService {
   private final DockerDAO dockerDAO;
   private final ContainerDAO containerDAO;
 
-  public Entry findBestMatch(HostnameQuery host) {
+  public Entry findBestMatch(HostnameQuery query) {
     final var stopWatch = StopWatch.createStarted();
-    final var matchedContainers = this.containerDAO.findActiveContainersMatching(host);
+    final var matchedContainers = this.containerDAO.findActiveContainersMatching(query);
     final var foundIp = matchedContainers
       .stream()
-      .map(it -> this.findBestIpMatch(it, host.getVersion()))
+      .map(it -> this.findBestIpMatch(it, query.getVersion()))
       .filter(Objects::nonNull)
       .findFirst()
       .orElse(null);
     final var hostnameMatched = !matchedContainers.isEmpty() && foundIp != null;
     log.trace(
-      "status=findDone, host={}, found={}, hostnameMatched={}, time={}",
-      host, foundIp, hostnameMatched, stopWatch.getTime()
+      "status=findDone, query={}, found={}, hostnameMatched={}, time={}",
+      query, foundIp, hostnameMatched, stopWatch.getTime()
     );
     return Entry
       .builder()
