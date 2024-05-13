@@ -23,6 +23,8 @@ import java.util.Optional;
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class DpsContainerService {
 
+  public static final String DPS_CONTAINER_IP = "172.157.5.249";
+
   private final DockerDAO dockerDAO;
   private final DpsContainerDAO dpsContainerDAO;
   private final DockerNetworkDAO dockerNetworkDAO;
@@ -49,9 +51,29 @@ public class DpsContainerService {
       log.info("status=dps-container-not-found");
       return;
     }
-    final var dpsContainerIP = "172.157.5.249";
-    this.disconnectAnotherContainerWithSameIPFromDpsNetwork(container.getId(), dpsContainerIP);
-    this.connectDpsContainerToDpsNetwork(container, dpsContainerIP);
+    this.disconnectAnotherContainerWithSameIPFromDpsNetwork(container.getId(), DPS_CONTAINER_IP);
+    this.connectDpsContainerToDpsNetwork(container);
+  }
+
+  void connectDpsContainerToDpsNetwork(Container container) {
+    final var containerIpAtDpsNetwork = container.getNetworkIp(IP.Version.IPV4, Network.Name.DPS.lowerCaseName());
+    if (containerIpAtDpsNetwork == null) {
+      this.dockerNetworkDAO.connect(Network.Name.DPS.lowerCaseName(), container.getId());
+      log.info("status=dpsContainerConnectedToDpsNetwork, containerId={}, ip={}", container.getId(), DPS_CONTAINER_IP);
+    } else if (containerIpAtDpsNetwork.notEqualTo(DPS_CONTAINER_IP)) {
+      this.fixDpsContainerIpAtDpsNetwork(container, containerIpAtDpsNetwork);
+    } else {
+      log.debug("status=dpsContainerAlreadyConnectedToDpsNetwork, container={}", container.getId());
+    }
+  }
+
+  void fixDpsContainerIpAtDpsNetwork(Container container, IP containerIpAtDpsNetwork) {
+    this.dockerNetworkDAO.disconnect(Network.Name.DPS.lowerCaseName(), container.getId());
+    this.dockerNetworkDAO.connect(Network.Name.DPS.lowerCaseName(), container.getId(), DPS_CONTAINER_IP);
+    log.info(
+      "status=dpsWasConnectedWithWrongIp, action=fixing, containerIpAtDpsNetwork={}, correctIp={}, container={}",
+      containerIpAtDpsNetwork, DPS_CONTAINER_IP, container.getId()
+    );
   }
 
   void disconnectAnotherContainerWithSameIPFromDpsNetwork(String containerId, String ip) {
@@ -62,23 +84,6 @@ public class DpsContainerService {
         ip, containerId, cId
       );
       this.dockerNetworkDAO.disconnect(Network.Name.DPS.lowerCaseName(), cId);
-    }
-  }
-
-  void connectDpsContainerToDpsNetwork(Container container, String ip) {
-    final var foundIp = container.geDefaultIp(IP.Version.IPV4, Network.Name.DPS.lowerCaseName());
-    if (foundIp == null) {
-      this.dockerNetworkDAO.connect(Network.Name.DPS.lowerCaseName(), container.getId());
-      log.info("status=dpsContainerConnectedToDpsNetwork, containerId={}, ip={}", container.getId(), ip);
-    } else if (foundIp.notEqualTo(ip)) {
-      this.dockerNetworkDAO.disconnect(Network.Name.DPS.lowerCaseName(), container.getId());
-      this.dockerNetworkDAO.connect(Network.Name.DPS.lowerCaseName(), container.getId(), ip);
-      log.info(
-        "status=dpsWasConnectedWithWrongIp, action=fixing, foundIp={}, rightIp={}, container={}",
-        foundIp, ip, container.getId()
-      );
-    } else {
-      log.debug("status=dpsContainerAlreadyConnectedToDpsNetwork, container={}", container.getId());
     }
   }
 

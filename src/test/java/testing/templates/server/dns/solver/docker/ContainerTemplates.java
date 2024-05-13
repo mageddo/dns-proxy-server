@@ -1,6 +1,7 @@
 package testing.templates.server.dns.solver.docker;
 
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Container;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.DpsContainerService;
 import com.mageddo.net.IP;
 import com.mageddo.utils.Sets;
 
@@ -9,6 +10,19 @@ import java.util.List;
 import java.util.Map;
 
 public class ContainerTemplates {
+
+  public static Container dpsContainer() {
+    return builder()
+      .preferredNetworkNames(Sets.ordered("shibata", "dps", "bridge"))
+      .networks(Map.of(
+        "dps", ContainerNetworkTemplates.build(DpsContainerService.DPS_CONTAINER_IP),
+        "shibata", ContainerNetworkTemplates.build("172.23.0.2"),
+        "bridge", ContainerNetworkTemplates.build("172.17.0.4")
+      ))
+      .ips(List.of(IP.of("172.17.0.5")))
+      .build();
+  }
+
   public static Container withDpsLabel() {
     return builder()
       .preferredNetworkNames(Sets.ordered("shibata", "dps", "bridge"))

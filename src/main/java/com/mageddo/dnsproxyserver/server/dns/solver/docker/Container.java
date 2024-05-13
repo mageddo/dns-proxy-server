@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 @Value
@@ -39,9 +40,10 @@ public class Container {
       .orElse(null);
   }
 
-  public IP geDefaultIp(IP.Version version, String networkName) {
-    // fixme #444 must implement it
-    throw new UnsupportedOperationException();
+  public IP getNetworkIp(IP.Version version, String networkName) {
+    return this.getNetworkOptional(networkName)
+      .map(it -> it.getIp(version))
+      .orElse(null);
   }
 
   public String getFirstNetworkName() {
@@ -60,6 +62,10 @@ public class Container {
     return this.networks.get(name);
   }
 
+  public Optional<Network> getNetworkOptional(String name) {
+    return Optional.ofNullable(this.getNetwork(name));
+  }
+
   @Value
   @Builder
   public static class Network {
@@ -67,11 +73,17 @@ public class Container {
     List<IP> ips;
 
     public String getIpAsText(IP.Version version) {
-      return this.ips.stream()
-        .filter(it -> Objects.equals(it.version(), version))
-        .findFirst()
+      return Optional.ofNullable(this.getIp(version))
         .map(IP::toText)
         .orElse(null);
     }
+
+    public IP getIp(IP.Version version) {
+      return this.ips.stream()
+        .filter(it -> Objects.equals(it.version(), version))
+        .findFirst()
+        .orElse(null);
+    }
+
   }
 }
