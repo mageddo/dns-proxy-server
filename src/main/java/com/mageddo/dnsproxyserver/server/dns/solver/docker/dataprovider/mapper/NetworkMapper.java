@@ -20,7 +20,11 @@ public class NetworkMapper {
       ;
   }
 
-  private static IP findGatewayIp(com.github.dockerjava.api.model.Network network, IP.Version version) {
+  static IP findGatewayIp(com.github.dockerjava.api.model.Network network) {
+    return findGatewayIp(network, IP.Version.IPV4);
+  }
+
+  static IP findGatewayIp(com.github.dockerjava.api.model.Network network, IP.Version version) {
     if (network == null) {
       return null;
     }
@@ -34,9 +38,5 @@ public class NetworkMapper {
       .findFirst()
       .orElse(null)
       ;
-  }
-
-  static IP findGatewayIp(com.github.dockerjava.api.model.Network network) {
-    return findGatewayIp(network, IP.Version.IPV4);
   }
 }
