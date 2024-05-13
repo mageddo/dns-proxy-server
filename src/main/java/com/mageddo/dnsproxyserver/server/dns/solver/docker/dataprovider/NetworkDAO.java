@@ -23,5 +23,5 @@ public interface NetworkDAO {
 
   void connect(String networkNameOrId, String containerId, String networkIp);
 
-  void connectRunningContainersToNetwork(String networkName, Predicate<ContainerCompact> p); // fixme #444 remove infrastructure dep
+  void connectRunningContainersToNetwork(String networkName, Predicate<ContainerCompact> p);
 }
