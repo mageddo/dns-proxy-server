@@ -25,7 +25,7 @@ public interface Network {
 
   /**
    * Find current configured DNS for the specified network, it may not return anything in cases the
-   * Name is using a DNS provided the Router or Modem.
+   * Network is using a DNS provided the Router or Modem.
    */
   List<String> findNetworkDnsServers(String network);
 
