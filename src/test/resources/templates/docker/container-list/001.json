@@ -1,0 +1,52 @@
+{
+  "Id": "e7a629b149e358bcd14a49b2654937b67f26417daffa083876fb195db17e261b",
+  "Names": [
+    "/nice_bell"
+  ],
+  "Image": "defreitas/dns-proxy-server",
+  "ImageID": "sha256:9fac9b168004ce7847cdd1597f4561416a759e50604f802743c91dfa563f5c23",
+  "Command": "/app/dns-proxy-server",
+  "Created": 1691432065,
+  "Ports": [],
+  "Labels": {
+    "com.docker.compose.project": "app",
+    "com.docker.compose.service": "image-linux-amd64",
+    "com.docker.compose.version": "2.15.1",
+    "dps.container": "true"
+  },
+  "State": "exited",
+  "Status": "Exited (143) 9 months ago",
+  "HostConfig": {
+    "NetworkMode": "bridge"
+  },
+  "NetworkSettings": {
+    "Networks": {
+      "bridge": {
+        "IPAMConfig": null,
+        "Links": null,
+        "Aliases": null,
+        "MacAddress": "",
+        "NetworkID": "4362caa1fe1e86a8dc460707191f212fa4e7bfbf2f362fe5fc46190f8dda50d5",
+        "EndpointID": "",
+        "Gateway": "",
+        "IPAddress": "",
+        "IPPrefixLen": 0,
+        "IPv6Gateway": "",
+        "GlobalIPv6Address": "",
+        "GlobalIPv6PrefixLen": 0,
+        "DriverOpts": null,
+        "DNSNames": null
+      }
+    }
+  },
+  "Mounts": [
+    {
+      "Type": "bind",
+      "Source": "/var/run/docker.sock",
+      "Destination": "/var/run/docker.sock",
+      "Mode": "",
+      "RW": true,
+      "Propagation": "rprivate"
+    }
+  ]
+}

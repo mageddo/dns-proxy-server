@@ -6,9 +6,7 @@ import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.ContainerNetwork;
 import com.github.dockerjava.api.model.Network;
 import com.mageddo.commons.lang.Objects;
-import com.mageddo.dnsproxyserver.docker.application.Containers;
 import com.mageddo.dnsproxyserver.docker.domain.NetworkConnectionStatus;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.Network.Name;
 import com.mageddo.net.Networks;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +18,6 @@ import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.List;
-import java.util.function.Predicate;
 
 import static com.mageddo.dnsproxyserver.docker.domain.NetworkConnectionStatus.ALREADY_CONNECTED;
 import static com.mageddo.dnsproxyserver.docker.domain.NetworkConnectionStatus.CONNECTED;
@@ -131,36 +128,9 @@ public class DockerNetworkFacadeDefault implements DockerNetworkFacade {
   }
 
   @Override
-  public void connectRunningContainers(String networkName) {
-    this.connectRunningContainers(networkName, container -> true);
-  }
-
-  @Override
-  public void connectRunningContainers(String networkName, Predicate<Container> p) {
-    this.dockerClient
-      .listContainersCmd()
-      .withStatusFilter(Containers.RUNNING_STATUS_LIST)
-      .exec()
-      .stream()
-      .filter(it -> Boolean.FALSE.equals(isHostNetwork(it)))
-      .filter(it -> !Containers.containsNetworkName(it, networkName))
-      .filter(p)
-      .forEach(container -> this.connect(networkName, container.getId()))
-    ;
-  }
-
-  @Override
   public boolean exists(String networkId) {
     return this.findById(networkId) != null;
   }
 
-  private static Boolean isHostNetwork(Container container) {
-    final var config = container.getHostConfig();
-    if (config == null) {
-      return null;
-    }
-    final var networkMode = config.getNetworkMode();
-    return Name.HOST.equalTo(networkMode);
-  }
 
 }

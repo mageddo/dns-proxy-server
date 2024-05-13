@@ -10,9 +10,14 @@ import lombok.Value;
 @Value
 @Builder
 public class ContainerCompact {
+
   @NonNull
   private String id;
 
   @NonNull
   private String name;
+
+  @NonNull
+  private Boolean dpsContainer;
+
 }

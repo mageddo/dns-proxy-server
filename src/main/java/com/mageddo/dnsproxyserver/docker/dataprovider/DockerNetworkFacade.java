@@ -7,7 +7,6 @@ import com.mageddo.dnsproxyserver.docker.domain.NetworkConnectionStatus;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 public interface DockerNetworkFacade {
 
@@ -27,10 +26,6 @@ public interface DockerNetworkFacade {
   NetworkConnectionStatus connect(String networkNameOrId, String containerId);
 
   void connect(String networkNameOrId, String containerId, String ip);
-
-  void connectRunningContainers(String networkName);
-
-  void connectRunningContainers(String networkName, Predicate<Container> p);
 
   boolean exists(String networkId);
 

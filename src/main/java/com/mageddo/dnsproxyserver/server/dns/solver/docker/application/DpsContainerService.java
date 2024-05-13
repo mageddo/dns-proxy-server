@@ -2,11 +2,11 @@ package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 
 import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Container;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.ContainerCompact;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Network;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.NetworkDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DpsContainerDAO;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DpsContainerUtils;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.NetworkDAO;
 import com.mageddo.net.IP;
 import com.mageddo.net.Networks;
 import lombok.RequiredArgsConstructor;
@@ -106,7 +106,7 @@ public class DpsContainerService {
       return false;
     }
     this.networkDAO.connectRunningContainersToNetwork(
-      Network.Name.DPS.lowerCaseName(), DpsContainerUtils::isNotDpsContainer
+      Network.Name.DPS.lowerCaseName(), ContainerCompact::getDpsContainer
     );
     return true;
   }

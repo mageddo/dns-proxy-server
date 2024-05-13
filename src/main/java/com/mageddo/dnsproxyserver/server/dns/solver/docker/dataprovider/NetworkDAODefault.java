@@ -1,9 +1,13 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider;
 
+import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
+import com.mageddo.dnsproxyserver.docker.application.Containers;
 import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacade;
 import com.mageddo.dnsproxyserver.docker.domain.NetworkConnectionStatus;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.ContainerCompact;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Network;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.mapper.ContainerCompactMapper;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.mapper.NetworkMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +25,7 @@ import static com.mageddo.commons.lang.Objects.mapOrNull;
 @AllArgsConstructor(onConstructor = @__({@Inject}))
 public class NetworkDAODefault implements NetworkDAO {
 
+  private final DockerClient dockerClient;
   private final DockerNetworkFacade dockerNetworkFacade;
 
   @Override
@@ -60,7 +65,25 @@ public class NetworkDAODefault implements NetworkDAO {
   }
 
   @Override
-  public void connectRunningContainersToNetwork(String networkName, Predicate<Container> p) {
-    this.dockerNetworkFacade.connectRunningContainers(networkName, p);
+  public void connectRunningContainersToNetwork(String networkName, Predicate<ContainerCompact> p) {
+    this.dockerClient
+      .listContainersCmd()
+      .withStatusFilter(Containers.RUNNING_STATUS_LIST)
+      .exec()
+      .stream()
+      .filter(it -> Boolean.FALSE.equals(isHostNetwork(it)))
+      .filter(it -> !Containers.containsNetworkName(it, networkName))
+      .filter(it -> p.test(ContainerCompactMapper.of(it)))
+      .forEach(container -> this.connect(networkName, container.getId()))
+    ;
+  }
+
+  static Boolean isHostNetwork(Container container) {
+    final var config = container.getHostConfig();
+    if (config == null) {
+      return null;
+    }
+    final var networkMode = config.getNetworkMode();
+    return Network.Name.HOST.equalTo(networkMode);
   }
 }
