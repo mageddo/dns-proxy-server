@@ -1,0 +1,50 @@
+{
+  "Id": "e3485f240269afeb6c3adb6d1936e761a06836675c808934d97a513ad5eb8895",
+  "Names": [
+    "/coffee-maker-checkout_build_run_5c85fb54c596"
+  ],
+  "Image": "sha256:8903806f01fb89994d64136e0325555c9610bef6b496d7f5c91b5052f85e0927",
+  "ImageID": "sha256:8903806f01fb89994d64136e0325555c9610bef6b496d7f5c91b5052f85e0927",
+  "Command": "java -jar '/app/coffee-maker-checkout-all.jar ' ls /app",
+  "Created": 1691430216,
+  "Ports": [],
+  "Labels": {
+    "com.docker.compose.config-hash": "ad98c983e61020ee454ed3ebe23fe937407a5c5d4fd713518400d2e4106c3329",
+    "com.docker.compose.container-number": "1",
+    "com.docker.compose.depends_on": "",
+    "com.docker.compose.image": "sha256:8903806f01fb89994d64136e0325555c9610bef6b496d7f5c91b5052f85e0927",
+    "com.docker.compose.oneoff": "True",
+    "com.docker.compose.project": "coffee-maker-checkout",
+    "com.docker.compose.project.config_files": "/home/typer/dev/projects/java-examples/observability/grafana-prometheus-open-telemetry/coffee-maker-checkout/docker-compose.yml",
+    "com.docker.compose.project.working_dir": "/home/typer/dev/projects/java-examples/observability/grafana-prometheus-open-telemetry/coffee-maker-checkout",
+    "com.docker.compose.service": "build",
+    "com.docker.compose.slug": "5c85fb54c5965619f4efeeba19d3aa3432d0eee88eae77226564072bed8fbbb4",
+    "com.docker.compose.version": "2.15.1"
+  },
+  "State": "exited",
+  "Status": "Exited (1) 9 months ago",
+  "HostConfig": {
+    "NetworkMode": "coffee-maker-checkout_default"
+  },
+  "NetworkSettings": {
+    "Networks": {
+      "coffee-maker-checkout_default": {
+        "IPAMConfig": null,
+        "Links": null,
+        "Aliases": null,
+        "MacAddress": "",
+        "NetworkID": "781f452decdd8d69edc2053552c14f09d2e8477453b8bae984a08f1d51675812",
+        "EndpointID": "",
+        "Gateway": "",
+        "IPAddress": "",
+        "IPPrefixLen": 0,
+        "IPv6Gateway": "",
+        "GlobalIPv6Address": "",
+        "GlobalIPv6PrefixLen": 0,
+        "DriverOpts": null,
+        "DNSNames": null
+      }
+    }
+  },
+  "Mounts": []
+}
