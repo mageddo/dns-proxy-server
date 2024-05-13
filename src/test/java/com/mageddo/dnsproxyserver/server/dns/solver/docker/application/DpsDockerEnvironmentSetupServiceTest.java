@@ -6,27 +6,26 @@ import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static com.mageddo.dnsproxyserver.server.dns.solver.docker.application.DpsContainerManager.DPS_INSIDE_CONTAINER;
+import static com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DpsContainerDAODefault.DPS_INSIDE_CONTAINER;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
-class DpsContainerManagerTest {
+class DpsDockerEnvironmentSetupServiceTest {
 
   @Spy
   @InjectMocks
-  DpsContainerManager dpsContainerManager;
+  DpsDockerEnvironmentSetupService dpsDockerEnvironmentSetupService;
 
   @Test
   void mustCheckIsRunningInsideContainer() {
     // arrange
     doReturn(DPS_INSIDE_CONTAINER)
-      .when(this.dpsContainerManager)
-      .getDpsContainerEnv()
+      .when(this.dpsDockerEnvironmentSetupService).dpsContainerDAO.getDpsContainerEnv()
     ;
 
     // act
-    final var insideContainer = this.dpsContainerManager.isDpsRunningInsideContainer();
+    final var insideContainer = this.dpsDockerEnvironmentSetupService.dpsContainerDAO.isDpsRunningInsideContainer(this.dpsDockerEnvironmentSetupService);
 
     // assert
     assertTrue(insideContainer);

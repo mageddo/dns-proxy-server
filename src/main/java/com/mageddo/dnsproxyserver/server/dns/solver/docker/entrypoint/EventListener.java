@@ -9,7 +9,7 @@ import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacade;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Network;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.ContainerService;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.DockerNetworkService;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.DpsContainerManager;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.DpsDockerEnvironmentSetupService;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ public class EventListener implements StartupEvent {
 
   private final DockerClient dockerClient;
   private final DockerDAO dockerDAO;
-  private final DpsContainerManager dpsContainerManager;
+  private final DpsDockerEnvironmentSetupService dpsDockerEnvironmentSetupService;
   private final DockerNetworkFacade dockerNetworkDAO;
   private final DockerNetworkService networkService;
   private final ContainerService containerService;
@@ -42,12 +42,12 @@ public class EventListener implements StartupEvent {
       return;
     }
 
-    this.dpsContainerManager.setupNetwork();
+    this.dpsDockerEnvironmentSetupService.setup();
     final var config = Configs.getInstance();
-    if (!config.getDpsNetwork() || !config.getDpsNetworkAutoConnect()) {
+    if (!config.isMustConfigureDpsNetwork() || !config.getDpsNetworkAutoConnect()) {
       log.info(
         "status=autoConnectDpsNetworkDisabled, dpsNetwork={}, dpsNetworkAutoConnect={}",
-        config.getDpsNetwork(), config.getDpsNetworkAutoConnect()
+        config.isMustConfigureDpsNetwork(), config.getDpsNetworkAutoConnect()
       );
       return;
     }

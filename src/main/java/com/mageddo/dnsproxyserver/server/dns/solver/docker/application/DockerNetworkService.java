@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 
 import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacade;
 import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacade;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerDAO;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DpsContainerDAO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,7 +18,7 @@ public class DockerNetworkService {
 
   private final DockerNetworkFacade networkDAO;
   private final ContainerFacade containerFacade;
-  private final ContainerDAO containerDAO;
+  private final DpsContainerDAO dpsContainerDAO;
 
   public List<String> disconnectContainers(String id) {
     final var removedContainers = new ArrayList<String>();
@@ -35,7 +35,7 @@ public class DockerNetworkService {
   }
 
   public void connectContainerTo(String networkName, String containerId) {
-    if (this.containerDAO.isDpsContainer(containerId)) {
+    if (this.dpsContainerDAO.isDpsContainer(containerId)) {
       log.info("status=won't connect dps container using conventional mode, containerId={}", containerId);
       return;
     }

@@ -50,7 +50,7 @@ public class Configs {
       .domain(firstNonBlankRequiring(
         env.getDomain(), json.getDomain(), flag.getDomain()
       ))
-      .dpsNetwork(firstNonNullRequiring(
+      .mustConfigureDpsNetwork(firstNonNullRequiring(
         env.getDpsNetwork(), json.getDpsNetwork(), flag.getDpsNetwork()
       ))
       .dpsNetworkAutoConnect(firstNonNullRequiring(

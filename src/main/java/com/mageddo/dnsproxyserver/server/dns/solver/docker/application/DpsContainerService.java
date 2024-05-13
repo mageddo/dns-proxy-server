@@ -2,9 +2,11 @@ package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Container;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Network;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerDAO;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerNetworkDAO;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DpsContainerDAO;
 import com.mageddo.net.IP;
+import com.mageddo.net.Networks;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -12,19 +14,21 @@ import org.apache.commons.lang3.StringUtils;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class DpsContainerService {
 
-  private final ContainerDAO containerDAO;
+  private final DockerDAO dockerDAO;
+  private final DpsContainerDAO dpsContainerDAO;
   private final DockerNetworkDAO dockerNetworkDAO;
   private final ContainerSolvingService containerSolvingService;
 
   public IP findDpsContainerIP() {
 
-    final var container = this.containerDAO.findDPSContainer();
+    final var container = this.dpsContainerDAO.findDPSContainer();
     if (container == null) {
       log.debug("status=no-dps-container-found");
       return null;
@@ -37,8 +41,8 @@ public class DpsContainerService {
     return IP.of(ip);
   }
 
-  public void connectDpsContainer() {
-    final var container = this.containerDAO.findDPSContainer();
+  public void connectDpsContainerTpItsNetwork() {
+    final var container = this.dpsContainerDAO.findDPSContainer();
     if (container == null) {
       log.info("status=dps-container-not-found");
       return;
@@ -76,4 +80,12 @@ public class DpsContainerService {
     }
   }
 
+  public IP findDpsIP() {
+    if (this.dpsContainerDAO.isDpsRunningInsideContainer()) {
+      return Optional
+        .ofNullable(this.findDpsContainerIP())
+        .orElseGet(this.dockerDAO::findHostMachineIp);
+    }
+    return Networks.findCurrentMachineIP();
+  }
 }

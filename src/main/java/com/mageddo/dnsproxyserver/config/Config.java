@@ -66,8 +66,7 @@ public class Config {
   @NonNull
   private String domain;
 
-  @NonNull
-  private Boolean dpsNetwork;
+  private boolean mustConfigureDpsNetwork;
 
   @NonNull
   private Boolean dpsNetworkAutoConnect;

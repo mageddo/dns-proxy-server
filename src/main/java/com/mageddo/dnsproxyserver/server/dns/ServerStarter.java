@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
 import com.mageddo.dnsproxyserver.config.Configs;
-import com.mageddo.dnsproxyserver.dnsconfigurator.DpsIpDiscover;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.DpsContainerService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,12 +14,12 @@ import javax.inject.Singleton;
 public class ServerStarter {
 
   private final SimpleServer server;
-  private final DpsIpDiscover dpsIpDiscover;
+  private final DpsContainerService dpsContainerService;
 
   @Inject
-  public ServerStarter(SimpleServer server, DpsIpDiscover dpsIpDiscover) {
+  public ServerStarter(SimpleServer server, DpsContainerService dpsContainerService) {
     this.server = server;
-    this.dpsIpDiscover = dpsIpDiscover;
+    this.dpsContainerService = dpsContainerService;
   }
 
   public ServerStarter start() {

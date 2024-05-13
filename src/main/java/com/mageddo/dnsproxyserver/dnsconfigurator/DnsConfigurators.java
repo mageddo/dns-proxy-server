@@ -5,6 +5,7 @@ import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.di.StartupEvent;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.DnsConfiguratorLinux;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.DpsContainerService;
 import com.mageddo.net.IpAddr;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ public class DnsConfigurators implements StartupEvent {
   private final DnsConfiguratorLinux linuxConfigurator;
   private final DnsConfiguratorOSX osxConfigurator;
   private final DnsConfiguratorDefault configuratorDefault;
-  private final DpsIpDiscover ipDiscover;
+  private final DpsContainerService dpsContainerService;
   private final AtomicInteger failures = new AtomicInteger();
 
   private volatile DnsConfigurator instance;
@@ -67,7 +68,7 @@ public class DnsConfigurators implements StartupEvent {
 
   IpAddr findIpAddr() {
     return IpAddr.of(
-      this.ipDiscover.findDpsIP(),
+      this.dpsContainerService.findDpsIP(),
       Configs.getInstance().getDnsServerPort()
     );
   }
