@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ContainerDAO {
 
-  List<Container> findActiveContainersInspectMatching(HostnameQuery query);
+  List<Container> findActiveContainersMatching(HostnameQuery query);
 }

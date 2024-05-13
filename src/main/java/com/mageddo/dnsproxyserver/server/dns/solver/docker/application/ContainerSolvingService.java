@@ -36,7 +36,7 @@ public class ContainerSolvingService {
 
   public Entry findBestMatch(HostnameQuery host) {
     final var stopWatch = StopWatch.createStarted();
-    final var matchedContainers = this.containerDAO.findActiveContainersInspectMatching(host);
+    final var matchedContainers = this.containerDAO.findActiveContainersMatching(host);
     final var foundIp = matchedContainers
       .stream()
       .map(it -> this.findBestIpMatch(it, host.getVersion()))

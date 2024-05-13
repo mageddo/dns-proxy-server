@@ -244,7 +244,7 @@ class ContainerSolvingServiceTest {
 
     doReturn(List.of(container))
       .when(this.containerDAO)
-      .findActiveContainersInspectMatching(eq(hostnameQuery));
+      .findActiveContainersMatching(eq(hostnameQuery));
 
     // act
     final var ip = this.containerSolvingService.findBestMatch(hostnameQuery);

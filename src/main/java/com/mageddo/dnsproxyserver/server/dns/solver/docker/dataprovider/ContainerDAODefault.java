@@ -21,7 +21,7 @@ public class ContainerDAODefault implements ContainerDAO {
   private final ContainerFacade containerFacade;
 
   @Override
-  public List<Container> findActiveContainersInspectMatching(HostnameQuery query) {
+  public List<Container> findActiveContainersMatching(HostnameQuery query) {
     return this.containerFacade.findActiveContainers()
       .stream()
       .map(it -> this.containerFacade.inspect(it.getId()))
