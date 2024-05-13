@@ -4,7 +4,7 @@ import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Container;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Network;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerNetworkDAO;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.NetworkDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DpsContainerDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DpsContainerUtils;
 import com.mageddo.net.IP;
@@ -27,7 +27,7 @@ public class DpsContainerService {
 
   private final DockerDAO dockerDAO;
   private final DpsContainerDAO dpsContainerDAO;
-  private final DockerNetworkDAO dockerNetworkDAO;
+  private final NetworkDAO networkDAO;
   private final ContainerSolvingService containerSolvingService;
 
   public IP findDpsContainerIP() {
@@ -58,7 +58,7 @@ public class DpsContainerService {
   void connectDpsContainerToDpsNetwork(Container container) {
     final var containerIpAtDpsNetwork = container.getNetworkIp(IP.Version.IPV4, Network.Name.DPS.lowerCaseName());
     if (containerIpAtDpsNetwork == null) {
-      this.dockerNetworkDAO.connect(Network.Name.DPS.lowerCaseName(), container.getId());
+      this.networkDAO.connect(Network.Name.DPS.lowerCaseName(), container.getId());
       log.info("status=dpsContainerConnectedToDpsNetwork, containerId={}, ip={}", container.getId(), DPS_CONTAINER_IP);
     } else if (containerIpAtDpsNetwork.notEqualTo(DPS_CONTAINER_IP)) {
       this.fixDpsContainerIpAtDpsNetwork(container, containerIpAtDpsNetwork);
@@ -68,8 +68,8 @@ public class DpsContainerService {
   }
 
   void fixDpsContainerIpAtDpsNetwork(Container container, IP containerIpAtDpsNetwork) {
-    this.dockerNetworkDAO.disconnect(Network.Name.DPS.lowerCaseName(), container.getId());
-    this.dockerNetworkDAO.connect(Network.Name.DPS.lowerCaseName(), container.getId(), DPS_CONTAINER_IP);
+    this.networkDAO.disconnect(Network.Name.DPS.lowerCaseName(), container.getId());
+    this.networkDAO.connect(Network.Name.DPS.lowerCaseName(), container.getId(), DPS_CONTAINER_IP);
     log.info(
       "status=dpsWasConnectedWithWrongIp, action=fixing, containerIpAtDpsNetwork={}, correctIp={}, container={}",
       containerIpAtDpsNetwork, DPS_CONTAINER_IP, container.getId()
@@ -77,13 +77,13 @@ public class DpsContainerService {
   }
 
   void disconnectAnotherContainerWithSameIPFromDpsNetwork(String containerId, String ip) {
-    final var cId = this.dockerNetworkDAO.findContainerWithNetworkAndIp(Network.Name.DPS.lowerCaseName(), ip);
+    final var cId = this.networkDAO.findContainerWithNetworkAndIp(Network.Name.DPS.lowerCaseName(), ip);
     if (cId != null && !Objects.equals(containerId, cId)) {
       log.info(
         "status=detachingContainerUsingDPSIpFromDpsNetwork, ip={}, oldContainerId={}, newContainerId={}",
         ip, containerId, cId
       );
-      this.dockerNetworkDAO.disconnect(Network.Name.DPS.lowerCaseName(), cId);
+      this.networkDAO.disconnect(Network.Name.DPS.lowerCaseName(), cId);
     }
   }
 
@@ -105,7 +105,7 @@ public class DpsContainerService {
       );
       return false;
     }
-    this.dockerNetworkDAO.connectRunningContainersToNetwork(
+    this.networkDAO.connectRunningContainersToNetwork(
       Network.Name.DPS.lowerCaseName(), DpsContainerUtils::isNotDpsContainer
     );
     return true;

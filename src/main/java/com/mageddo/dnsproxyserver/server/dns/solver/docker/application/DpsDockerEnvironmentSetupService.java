@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 
 import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerNetworkDAO;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.NetworkDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DpsContainerDAO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ public class DpsDockerEnvironmentSetupService {
 
   private final DockerDAO dockerDAO;
   private final DpsContainerService dpsContainerService;
-  private final DockerNetworkDAO dockerNetworkDAO;
+  private final NetworkDAO networkDAO;
   public final DpsContainerDAO dpsContainerDAO;
 
   /**
@@ -55,7 +55,7 @@ public class DpsDockerEnvironmentSetupService {
   }
 
   void createNetworkIfAbsent() {
-    if (this.dockerNetworkDAO.existsByName(Name.DPS.lowerCaseName())) {
+    if (this.networkDAO.existsByName(Name.DPS.lowerCaseName())) {
       log.debug("status=dpsNetworkAlreadyExists");
       return;
     }

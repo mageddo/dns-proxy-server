@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 
-import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacade;
-import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacade;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerDAO;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.NetworkDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DpsContainerDAO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +16,8 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class DockerNetworkService {
 
-  private final DockerNetworkFacade networkDAO;
-  private final ContainerFacade containerFacade; // fixme #444 remove this dependency from app module
+  private final NetworkDAO networkDAO;
+  private final ContainerDAO containerDAO;
   private final DpsContainerDAO dpsContainerDAO;
 
   public List<String> disconnectContainers(String id) {
@@ -26,7 +26,7 @@ public class DockerNetworkService {
     if (network == null) {
       return null;
     }
-    final var containers = this.containerFacade.findNetworkContainers(id);
+    final var containers = this.containerDAO.findNetworkContainers(id);
     for (final var container : containers) {
       this.networkDAO.disconnect(id, container.getId());
       removedContainers.add(container.getId());

@@ -7,7 +7,7 @@ import com.mageddo.dnsproxyserver.server.dns.solver.docker.Entry;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Network;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerNetworkDAO;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.NetworkDAO;
 import com.mageddo.net.IP;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ import static com.mageddo.commons.lang.Objects.mapOrNull;
 @AllArgsConstructor(onConstructor = @__({@Inject}))
 public class ContainerSolvingService {
 
-  private final DockerNetworkDAO dockerNetworkDAO;
+  private final NetworkDAO networkDAO;
   private final DockerDAO dockerDAO;
   private final ContainerDAO containerDAO;
 
@@ -95,7 +95,7 @@ public class ContainerSolvingService {
       .keySet()
       .stream()
       .map(nId -> {
-        final var network = this.dockerNetworkDAO.findByName(nId);
+        final var network = this.networkDAO.findByName(nId);
         if (network == null) {
           log.warn("status=networkIsNull, id={}", nId);
         }

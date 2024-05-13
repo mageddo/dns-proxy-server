@@ -3,7 +3,7 @@ package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerNetworkDAO;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.NetworkDAO;
 import com.mageddo.net.IP;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ class ContainerSolvingServiceTest {
   DockerDAO dockerDAO;
 
   @Mock
-  DockerNetworkDAO dockerNetworkDAO;
+  NetworkDAO networkDAO;
 
   @Mock
   ContainerDAO containerDAO;
@@ -98,11 +98,11 @@ class ContainerSolvingServiceTest {
 
     final var container = ContainerTemplates.withCustomBridgeAndOverlayNetwork();
     doReturn(NetworkTemplates.withOverlayDriver(overlayNetwork))
-      .when(this.dockerNetworkDAO)
+      .when(this.networkDAO)
       .findByName(eq(overlayNetwork))
     ;
     doReturn(NetworkTemplates.withBridgeDriver(bridgeNetwork))
-      .when(this.dockerNetworkDAO)
+      .when(this.networkDAO)
       .findByName(eq(bridgeNetwork))
     ;
 
@@ -112,7 +112,7 @@ class ContainerSolvingServiceTest {
     // assert
     assertNotNull(ip);
     assertEquals("172.17.0.8", ip);
-    verify(this.dockerNetworkDAO, never()).findById(anyString());
+    verify(this.networkDAO, never()).findById(anyString());
 
   }
 
@@ -187,7 +187,7 @@ class ContainerSolvingServiceTest {
     final var version = IP.Version.IPV6;
 
     doReturn(NetworkTemplates.withBridgeDriver("my-net1"))
-      .when(this.dockerNetworkDAO)
+      .when(this.networkDAO)
       .findByName(anyString())
     ;
 
@@ -223,7 +223,7 @@ class ContainerSolvingServiceTest {
     final var version = IP.Version.IPV6;
 
     doReturn(NetworkTemplates.withBridgeDriver("my-net1"))
-      .when(this.dockerNetworkDAO)
+      .when(this.networkDAO)
       .findByName(anyString())
     ;
 

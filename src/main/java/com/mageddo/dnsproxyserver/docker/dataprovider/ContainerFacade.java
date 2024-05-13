@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface ContainerFacade {
 
-  List<Container> findNetworkContainers(String networkId);
-
   Container findById(String containerId);
 
   List<Container> findActiveContainers();

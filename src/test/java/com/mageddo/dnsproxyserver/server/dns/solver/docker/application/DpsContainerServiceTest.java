@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerNetworkDAO;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.NetworkDAO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
 class DpsContainerServiceTest {
 
   @Mock
-  DockerNetworkDAO dockerNetworkDAO;
+  NetworkDAO networkDAO;
 
   @Spy
   @InjectMocks
@@ -34,7 +34,7 @@ class DpsContainerServiceTest {
     this.dpsContainerService.connectDpsContainerToDpsNetwork(container);
 
     // assert
-    verify(this.dockerNetworkDAO).connect(anyString(), anyString());
+    verify(this.networkDAO).connect(anyString(), anyString());
     verify(this.dpsContainerService, never()).fixDpsContainerIpAtDpsNetwork(any(), any());
   }
 
@@ -48,7 +48,7 @@ class DpsContainerServiceTest {
     this.dpsContainerService.connectDpsContainerToDpsNetwork(container);
 
     // assert
-    verify(this.dockerNetworkDAO, never()).connect(anyString(), anyString());
+    verify(this.networkDAO, never()).connect(anyString(), anyString());
     verify(this.dpsContainerService).fixDpsContainerIpAtDpsNetwork(any(), any());
   }
 
@@ -62,7 +62,7 @@ class DpsContainerServiceTest {
     this.dpsContainerService.connectDpsContainerToDpsNetwork(container);
 
     // assert
-    verify(this.dockerNetworkDAO, never()).connect(anyString(), anyString());
+    verify(this.networkDAO, never()).connect(anyString(), anyString());
     verify(this.dpsContainerService, never()).fixDpsContainerIpAtDpsNetwork(any(), any());
   }
 }

@@ -10,8 +10,8 @@ import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.Containe
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerDAODefault;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAODefault;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerNetworkDAO;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerNetworkDAODefault;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.NetworkDAO;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.NetworkDAODefault;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DpsContainerDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DpsContainerDAODefault;
 import dagger.Binds;
@@ -43,7 +43,7 @@ public interface ModuleDao {
 
   @Binds
   @Singleton
-  DockerNetworkDAO dockerNetworkDAO(DockerNetworkDAODefault impl);
+  NetworkDAO dockerNetworkDAO(NetworkDAODefault impl);
 
   @Binds
   @Singleton

@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider;
 
 import com.github.dockerjava.api.model.Container;
 import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacade;
+import com.mageddo.dnsproxyserver.docker.domain.NetworkConnectionStatus;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Network;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.mapper.NetworkMapper;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ import static com.mageddo.commons.lang.Objects.mapOrNull;
 @Slf4j
 @Singleton
 @AllArgsConstructor(onConstructor = @__({@Inject}))
-public class DockerNetworkDAODefault implements DockerNetworkDAO {
+public class NetworkDAODefault implements NetworkDAO {
 
   private final DockerNetworkFacade dockerNetworkFacade;
 
@@ -49,8 +50,8 @@ public class DockerNetworkDAODefault implements DockerNetworkDAO {
   }
 
   @Override
-  public void connect(String networkNameOrId, String containerId) {
-    this.dockerNetworkFacade.connect(networkNameOrId, containerId);
+  public NetworkConnectionStatus connect(String networkNameOrId, String containerId) {
+    return this.dockerNetworkFacade.connect(networkNameOrId, containerId);
   }
 
   @Override

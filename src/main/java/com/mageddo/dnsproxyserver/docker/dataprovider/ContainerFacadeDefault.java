@@ -22,13 +22,6 @@ public class ContainerFacadeDefault implements ContainerFacade {
   private final DockerClient dockerClient;
 
   @Override
-  public List<Container> findNetworkContainers(String networkId) {
-    return this.dockerClient.listContainersCmd()
-      .withNetworkFilter(List.of(networkId))
-      .exec();
-  }
-
-  @Override
   public Container findById(String containerId) {
     return this.dockerClient.listContainersCmd()
       .withIdFilter(Collections.singleton(containerId))

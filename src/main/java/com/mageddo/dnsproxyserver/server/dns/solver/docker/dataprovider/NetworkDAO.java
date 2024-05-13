@@ -2,11 +2,12 @@ package com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider;
 
 
 import com.github.dockerjava.api.model.Container;
+import com.mageddo.dnsproxyserver.docker.domain.NetworkConnectionStatus;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Network;
 
 import java.util.function.Predicate;
 
-public interface DockerNetworkDAO {
+public interface NetworkDAO {
 
   Network findById(String networkId);
 
@@ -18,7 +19,7 @@ public interface DockerNetworkDAO {
 
   void disconnect(String networkId, String containerId);
 
-  void connect(String networkNameOrId, String containerId);
+  NetworkConnectionStatus connect(String networkNameOrId, String containerId);
 
   void connect(String networkNameOrId, String containerId, String networkIp);
 
