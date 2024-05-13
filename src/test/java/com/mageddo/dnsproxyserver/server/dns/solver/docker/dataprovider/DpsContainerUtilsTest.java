@@ -1,11 +1,10 @@
-package com.mageddo.dnsproxyserver.docker;
+package com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider;
 
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DpsContainerUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class DpsContainerTest {
+class DpsContainerUtilsTest {
   @Test
   void mustParseWhenSingleHostname() {
     // arrange
