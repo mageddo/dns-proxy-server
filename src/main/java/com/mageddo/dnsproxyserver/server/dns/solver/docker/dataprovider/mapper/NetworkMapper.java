@@ -5,8 +5,6 @@ import com.mageddo.net.IP;
 
 import java.util.List;
 
-import static com.mageddo.dnsproxyserver.server.dns.solver.docker.application.DockerNetworkService.findGatewayIp;
-
 public class NetworkMapper {
   public static Network of(com.github.dockerjava.api.model.Network n){
     return Network.builder()
@@ -19,5 +17,25 @@ public class NetworkMapper {
       .ipv6Active(n.getEnableIPv6())
       .build()
       ;
+  }
+
+  public static IP findGatewayIp(com.github.dockerjava.api.model.Network network, IP.Version version) {
+    if (network == null) {
+      return null;
+    }
+    return network
+      .getIpam()
+      .getConfig()
+      .stream()
+      .map(com.github.dockerjava.api.model.Network.Ipam.Config::getGateway)
+      .map(IP::of)
+      .filter(it -> it.version() == version)
+      .findFirst()
+      .orElse(null)
+      ;
+  }
+
+  public static IP findGatewayIp(com.github.dockerjava.api.model.Network network) {
+    return findGatewayIp(network, IP.Version.IPV4);
   }
 }

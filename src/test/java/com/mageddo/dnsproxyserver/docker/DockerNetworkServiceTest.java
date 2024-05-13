@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.docker;
 
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.DockerNetworkService;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.mapper.NetworkMapper;
 import org.junit.jupiter.api.Test;
 
 import static testing.templates.docker.NetworkTemplates.buildBridgeIpv4AndIpv6Network;
@@ -16,7 +16,7 @@ class DockerNetworkServiceTest {
     final var network = buildBridgeIpv4AndIpv6Network();
 
     // act
-    final var ip = DockerNetworkService.findGatewayIp(network);
+    final var ip = NetworkMapper.findGatewayIp(network);
 
     // assert
     assertNotNull(ip);

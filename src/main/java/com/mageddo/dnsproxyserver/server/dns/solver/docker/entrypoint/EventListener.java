@@ -71,7 +71,7 @@ public class EventListener implements StartupEvent {
             event.getId(), event.getAction(), event.getType(), event.getStatus(), event
           );
           if (StringUtils.equals(event.getAction(), "start")) {
-            networkService.connect(Network.Name.DPS.lowerCaseName(), event.getId());
+            networkService.connectContainerTo(Network.Name.DPS.lowerCaseName(), event.getId());
             return;
           }
           log.debug("status=eventIgnored, event={}", event);

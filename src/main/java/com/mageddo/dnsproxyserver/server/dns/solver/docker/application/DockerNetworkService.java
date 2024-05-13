@@ -1,11 +1,8 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 
-import com.github.dockerjava.api.model.Container;
-import com.github.dockerjava.api.model.Network;
 import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacade;
 import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacade;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerDAO;
-import com.mageddo.net.IP;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,9 +11,6 @@ import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mageddo.dnsproxyserver.server.dns.solver.docker.Network.Name;
-
-// fixme #444 acoplado a infraestrutura
 @Slf4j
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
@@ -25,35 +19,6 @@ public class DockerNetworkService {
   private final DockerNetworkFacade networkDAO;
   private final ContainerFacade containerFacade;
   private final ContainerDAO containerDAO;
-
-  public static IP findGatewayIp(Network network) {
-    return findGatewayIp(network, IP.Version.IPV4);
-  }
-
-  public static IP findGatewayIp(Network network, IP.Version version) {
-    if (network == null) {
-      return null;
-    }
-    return network
-      .getIpam()
-      .getConfig()
-      .stream()
-      .map(Network.Ipam.Config::getGateway)
-      .map(IP::of)
-      .filter(it -> it.version() == version)
-      .findFirst()
-      .orElse(null)
-      ;
-  }
-
-  public static Boolean isHostNetwork(Container container) {
-    final var config = container.getHostConfig();
-    if (config == null) {
-      return null;
-    }
-    final var networkMode = config.getNetworkMode();
-    return Name.HOST.equalTo(networkMode);
-  }
 
   public List<String> disconnectContainers(String id) {
     final var removedContainers = new ArrayList<String>();
@@ -69,7 +34,7 @@ public class DockerNetworkService {
     return removedContainers;
   }
 
-  public void connect(String networkName, String containerId) {
+  public void connectContainerTo(String networkName, String containerId) {
     if (this.containerDAO.isDpsContainer(containerId)) {
       log.info("status=won't connect dps container using conventional mode, containerId={}", containerId);
       return;
