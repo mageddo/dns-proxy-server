@@ -106,7 +106,7 @@ public class DpsContainerService {
       return false;
     }
     this.networkDAO.connectRunningContainersToNetwork(
-      Network.Name.DPS.lowerCaseName(), ContainerCompact::getDpsContainer
+      Network.Name.DPS.lowerCaseName(), ContainerCompact::isNotDpsContainer
     );
     return true;
   }

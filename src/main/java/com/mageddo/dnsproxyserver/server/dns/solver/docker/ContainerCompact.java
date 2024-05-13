@@ -20,4 +20,7 @@ public class ContainerCompact {
   @NonNull
   private Boolean dpsContainer;
 
+  public boolean isNotDpsContainer() {
+    return !this.dpsContainer;
+  }
 }
