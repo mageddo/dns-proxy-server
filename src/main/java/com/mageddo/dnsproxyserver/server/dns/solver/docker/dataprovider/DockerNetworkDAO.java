@@ -22,5 +22,5 @@ public interface DockerNetworkDAO {
 
   void connect(String networkNameOrId, String containerId, String networkIp);
 
-  void connectRunningContainersToNetwork(String networkName, Predicate<Container> p);
+  void connectRunningContainersToNetwork(String networkName, Predicate<Container> p); // fixme #444 remove infrastructure dep
 }

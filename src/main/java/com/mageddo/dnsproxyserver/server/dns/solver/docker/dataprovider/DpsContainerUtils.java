@@ -14,9 +14,10 @@ import java.util.stream.Collectors;
 public class DpsContainerUtils {
 
   public static final String HOSTNAME_ENV = "HOSTNAMES=";
+  public static final String DPS_CONTAINER_LABEL = "dps.container";
 
   public static boolean isDpsContainer(Container c) {
-    final var lbl = c.getLabels().get("dps.container");
+    final var lbl = c.getLabels().get(DPS_CONTAINER_LABEL);
     return Objects.equals(lbl, "true");
   }
 
