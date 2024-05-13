@@ -4,6 +4,7 @@ import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Container;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Entry;
+import com.mageddo.dnsproxyserver.server.dns.solver.docker.Network;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerNetworkDAO;
@@ -16,6 +17,7 @@ import org.apache.commons.lang3.time.StopWatch;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -58,7 +60,14 @@ public class ContainerSolvingService {
   }
 
   public String findBestIpMatch(Container c, IP.Version version) {
-    // todo #444 move to another method findAtPreferredNetworks
+    final var foundIp = this.findAtPreferredNetworks(c, version);
+    if (StringUtils.isNotBlank(foundIp)) {
+      return foundIp;
+    }
+    return this.findAtAvailableNetworks(c, version);
+  }
+
+  String findAtPreferredNetworks(Container c, IP.Version version) {
     final var networks = c.getNetworks();
     final var preferredNetworkNames = c.getPreferredNetworkNames();
     for (final var name : preferredNetworkNames) {
@@ -77,9 +86,19 @@ public class ContainerSolvingService {
       "status=predefinedNetworkNotFound, action=findSecondOption, searchedNetworks={}, container={}",
       preferredNetworkNames, c.getName()
     );
+    return null;
+  }
 
-    // todo #444 extract to another method, findAtAvailableNetworks
-    return networks
+  String findAtAvailableNetworks(Container c, IP.Version version) {
+    final var containerNetworks = c.getNetworks();
+    return this.findBestContainerNetworkIpToUse(containerNetworks, version)
+      .orElseGet(() -> findSecondaryIp(c, version));
+  }
+
+  Optional<String> findBestContainerNetworkIpToUse(
+    Map<String, Container.Network> containerNetworks, IP.Version version
+  ) {
+    return containerNetworks
       .keySet()
       .stream()
       .map(nId -> {
@@ -91,26 +110,31 @@ public class ContainerSolvingService {
       })
       .filter(Objects::nonNull)
       .min(NetworkComparator::compare)
-      .map(network -> {
-        final var networkName = network.getName();
-        final var ip = networks.get(networkName).getIpAsText(version);
-        log.debug(
-          "status=foundIp, networks={}, networkName={}, driver={}, foundIp={}",
-          networks.keySet(), networkName, network.getDriver(), ip
-        );
-        return StringUtils.trimToNull(ip);
-      })
+      .map(network -> findContainerNetworkIp(containerNetworks, network, version))
       .filter(StringUtils::isNotBlank)
-      .orElseGet(() -> {
-        return Optional
-          .ofNullable(mapOrNull(c.geDefaultIp(version), IP::toText))
-          .orElseGet(() -> buildHostMachineIpWhenActive(version));
-      })
       ;
   }
 
+  String findSecondaryIp(Container c, IP.Version version) {
+    return Optional
+      .ofNullable(mapOrNull(c.geDefaultIp(version), IP::toText))
+      .orElseGet(() -> buildHostMachineIpWhenActive(version));
+  }
+
+  static String findContainerNetworkIp(
+    Map<String, Container.Network> containerNetworks, Network network, IP.Version version
+  ) {
+    final var networkName = network.getName();
+    final var ip = containerNetworks.get(networkName).getIpAsText(version);
+    log.debug(
+      "status=foundIp, containerNetworks={}, networkName={}, driver={}, foundIp={}",
+      containerNetworks.keySet(), networkName, network.getDriver(), ip
+    );
+    return StringUtils.trimToNull(ip);
+  }
+
   String buildHostMachineIpWhenActive(IP.Version version) {
-    if(isDockerSolverHostMachineFallbackActive()){
+    if (isDockerSolverHostMachineFallbackActive()) {
       final Supplier<String> hostMachineSup = () -> mapOrNull(this.dockerDAO.findHostMachineIp(version), IP::toText);
       final var hostIp = hostMachineSup.get();
       log.debug("status=noNetworkAvailable, usingHostMachineIp={}", hostIp);
