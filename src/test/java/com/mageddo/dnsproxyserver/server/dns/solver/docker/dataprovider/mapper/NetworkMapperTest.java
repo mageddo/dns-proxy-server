@@ -7,7 +7,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import testing.templates.docker.NetworkTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static testing.templates.docker.NetworkTemplates.buildBridgeIpv4AndIpv6Network;
 
 @ExtendWith(MockitoExtension.class)
 class NetworkMapperTest {
@@ -26,5 +28,19 @@ class NetworkMapperTest {
     assertEquals("[172.21.0.1, 2001:db8:1:0:0:0:0:1]", String.valueOf(network.getGateways()));
     assertTrue(network.isIpv6Active());
 
+  }
+
+  @Test
+  void mustSolveIpv4AddressEvenWhenIpv6IsAvailable(){
+
+    // arrange
+    final var network = buildBridgeIpv4AndIpv6Network();
+
+    // act
+    final var ip = NetworkMapper.findGatewayIp(network);
+
+    // assert
+    assertNotNull(ip);
+    assertEquals("172.21.0.1", ip.toText());
   }
 }

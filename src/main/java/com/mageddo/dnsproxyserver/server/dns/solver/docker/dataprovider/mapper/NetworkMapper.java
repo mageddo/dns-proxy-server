@@ -6,7 +6,8 @@ import com.mageddo.net.IP;
 import java.util.List;
 
 public class NetworkMapper {
-  public static Network of(com.github.dockerjava.api.model.Network n){
+
+  public static Network of(com.github.dockerjava.api.model.Network n) {
     return Network.builder()
       .name(n.getName())
       .driver(n.getDriver())
@@ -19,7 +20,7 @@ public class NetworkMapper {
       ;
   }
 
-  public static IP findGatewayIp(com.github.dockerjava.api.model.Network network, IP.Version version) {
+  private static IP findGatewayIp(com.github.dockerjava.api.model.Network network, IP.Version version) {
     if (network == null) {
       return null;
     }
@@ -35,7 +36,7 @@ public class NetworkMapper {
       ;
   }
 
-  public static IP findGatewayIp(com.github.dockerjava.api.model.Network network) {
+  static IP findGatewayIp(com.github.dockerjava.api.model.Network network) {
     return findGatewayIp(network, IP.Version.IPV4);
   }
 }
