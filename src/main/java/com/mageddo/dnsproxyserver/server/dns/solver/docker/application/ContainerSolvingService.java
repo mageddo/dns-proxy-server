@@ -60,11 +60,11 @@ public class ContainerSolvingService {
   }
 
   public String findBestIpMatch(Container c, IP.Version version) {
-    final var foundIp = this.findAtPreferredNetworks(c, version);
-    if (StringUtils.isNotBlank(foundIp)) {
-      return foundIp;
-    }
-    return this.findAtAvailableNetworks(c, version);
+    return Optional
+      .ofNullable(this.findAtPreferredNetworks(c, version))
+      .or(() -> this.findAtAvailableNetworksOptional(c, version))
+      .orElseGet(() -> this.findSecondaryIp(c, version))
+      ;
   }
 
   String findAtPreferredNetworks(Container c, IP.Version version) {
@@ -89,15 +89,8 @@ public class ContainerSolvingService {
     return null;
   }
 
-  String findAtAvailableNetworks(Container c, IP.Version version) {
+  Optional<String> findAtAvailableNetworksOptional(Container c, IP.Version version) {
     final var containerNetworks = c.getNetworks();
-    return this.findBestContainerNetworkIpToUse(containerNetworks, version)
-      .orElseGet(() -> findSecondaryIp(c, version));
-  }
-
-  Optional<String> findBestContainerNetworkIpToUse(
-    Map<String, Container.Network> containerNetworks, IP.Version version
-  ) {
     return containerNetworks
       .keySet()
       .stream()
