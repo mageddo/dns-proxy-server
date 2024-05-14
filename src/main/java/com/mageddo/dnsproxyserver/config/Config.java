@@ -91,6 +91,9 @@ public class Config {
 
   private boolean dockerSolverHostMachineFallbackActive;
 
+  @NonNull
+  private SolverRemote solverRemote;
+
   public void resetConfigFile() {
     try {
       Files.deleteIfExists(this.getConfigPath());
