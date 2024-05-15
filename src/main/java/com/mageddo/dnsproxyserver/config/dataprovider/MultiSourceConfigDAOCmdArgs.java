@@ -12,24 +12,26 @@ public class MultiSourceConfigDAOCmdArgs implements MultiSourceConfigDAO {
 
   @Override
   public Config find() {
-    return build(args);
+    return toConfig(this.findRaw());
+  }
+
+  public ConfigFlag findRaw() {
+    return ConfigFlag.parse(args);
   }
 
   @Override
   public int priority() {
-    throw new UnsupportedOperationException();
+    return 3;
   }
 
   public static void setArgs(String[] args) {
     MultiSourceConfigDAOCmdArgs.args = args;
   }
 
-  public static Config build(String[] args) {
-    final var config = ConfigFlag.parse(args);
-    return toConfig(config);
-  }
-
-  private static Config toConfig(ConfigFlag config) {
+  static Config toConfig(ConfigFlag config) {
     throw new UnsupportedOperationException();
+  }
+  static String[] getArgs() {
+    return args;
   }
 }
