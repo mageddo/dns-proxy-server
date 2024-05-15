@@ -1,6 +1,5 @@
 package com.mageddo.dnsproxyserver.config.dataprovider;
 
-import com.mageddo.dnsproxyserver.config.dataprovider.mapper.DataproviderVoToConfigDomainMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import testing.templates.ConfigFlagTemplates;
@@ -8,15 +7,16 @@ import testing.templates.ConfigFlagTemplates;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MultiSourceConfigDAOJsonTest {
 
   @Test
   void mustBuildConfPathRelativeToWorkDir(@TempDir Path tmpDir){
     // arrange
-    final var flags = ConfigFlagTemplates.defaultWithConfigPath(Paths.get("conf/config.json"));
     final var workDir = tmpDir.resolve("custom-work-dir");
+    final var flags = ConfigFlagTemplates.defaultWithConfigPath(Paths.get("conf/config.json"));
+    MultiSourceConfigDAOCmdArgs.setArgs(flags.getArgs());
 
     // act
     final var configPath = MultiSourceConfigDAOJson.buildConfigPath(workDir, flags.getConfigPath());
