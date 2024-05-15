@@ -11,7 +11,7 @@ class AppSettingsTest {
   @Test
   void mustLogLevelInSl4jConvetion(){
     // arrange
-    final var config = ConfigTemplates.withoutId();
+    final var config = ConfigTemplates.defaultWithoutId();
 
     // act
     new AppSettings().setupLogs(config);

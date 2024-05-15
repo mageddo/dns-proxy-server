@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator;
 
 import com.mageddo.commons.concurrent.Threads;
+import testing.templates.ConfigTemplates;
 import testing.templates.IpAddrTemplates;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,6 +25,10 @@ class DnsConfiguratorsTest {
   @Test
   void mustFailAndStopAfterMaxTries(){
     // arrange
+    doReturn(ConfigTemplates.defaultWithoutId())
+      .when(this.configurators)
+      .findConfig()
+    ;
     doNothing().when(this.configurators).configureShutdownHook(any());
     doReturn(2).when(this.configurators).getInitialDelay();
     doReturn(5).when(this.configurators).getDelay();

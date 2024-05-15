@@ -8,7 +8,7 @@ import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import java.nio.file.Paths;
 
 public class ConfigTemplates {
-  public static Config withoutId() {
+  public static Config defaultWithoutId() {
     return defaultBuilder()
       .build();
   }
@@ -17,7 +17,7 @@ public class ConfigTemplates {
     return Config
       .builder()
       .logFile("/tmp/dps.log")
-      .defaultDns(false)
+      .defaultDns(true)
       .dpsNetworkAutoConnect(false)
       .hostMachineHostname("host.docker")
       .configPath(Paths.get("/tmp/config.json"))

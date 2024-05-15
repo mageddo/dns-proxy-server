@@ -33,7 +33,7 @@ public class DnsConfigurators implements StartupEvent {
 
   @Override
   public void onStart() {
-    final var config = Configs.getInstance();
+    final var config = this.findConfig();
     log.debug("action=setAsDefaultDns, active={}", config.getDefaultDns());
     if (!Boolean.TRUE.equals(config.getDefaultDns())) {
       return;
@@ -69,7 +69,7 @@ public class DnsConfigurators implements StartupEvent {
   IpAddr findIpAddr() {
     return IpAddr.of(
       this.dpsContainerService.findDpsIP(),
-      Configs.getInstance().getDnsServerPort()
+      findConfig().getDnsServerPort()
     );
   }
 
@@ -134,6 +134,10 @@ public class DnsConfigurators implements StartupEvent {
       public void restore() {
       }
     };
+  }
+
+  Config findConfig() {
+    return Configs.getInstance();
   }
 
 }
