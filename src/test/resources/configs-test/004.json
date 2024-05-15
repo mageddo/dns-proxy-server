@@ -3,12 +3,13 @@
   "dnsServerPort" : 5391,
   "dockerSolverHostMachineFallbackActive" : true,
   "domain" : "acme",
-  "mustConfigureDpsNetwork" : true,
   "dpsNetworkAutoConnect" : true,
+  "helpCmd" : false,
   "hostMachineHostname" : "batata.com",
   "logFile" : "/var/log/dns-proxy-server.log",
   "logLevel" : "DEBUG",
-  "noEntriesResponseCode": 3,
+  "mustConfigureDpsNetwork" : true,
+  "noEntriesResponseCode" : 3,
   "noRemoteServers" : false,
   "registerContainerNames" : true,
   "remoteDnsServers" : [ {
@@ -18,5 +19,6 @@
   } ],
   "resolvConfOverrideNameServers" : true,
   "serverProtocol" : "UDP_TCP",
+  "versionCmd" : false,
   "webServerPort" : 9393
 }

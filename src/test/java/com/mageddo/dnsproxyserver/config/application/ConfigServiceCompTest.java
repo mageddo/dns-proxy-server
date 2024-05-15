@@ -1,7 +1,6 @@
-package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
+package com.mageddo.dnsproxyserver.config.application;
 
 import com.mageddo.dnsproxyserver.config.LogLevel;
-import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.config.dataprovider.MultiSourceConfigDAOCmdArgs;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
@@ -23,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static testing.JsonAssertion.jsonPath;
 
-class DataproviderVoToConfigDomainMapperTest {
+class ConfigServiceCompTest {
 
   static final String[] excludingFields = new String[]{
     "version", "configPath", "resolvConfPaths",
