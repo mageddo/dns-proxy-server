@@ -34,4 +34,9 @@ public class ConfigTemplates {
   }
 
 
+  public static Config withRegisterContainerNames() {
+    return defaultBuilder()
+      .registerContainerNames(true)
+      .build();
+  }
 }
