@@ -14,7 +14,7 @@ class AppSettingsTest {
     final var config = ConfigTemplates.withoutId();
 
     // act
-    AppSettings.setupLogs(config);
+    new AppSettings().setupLogs(config);
 
     // assert
     assertEquals("WARN", LogbackUtils.getLogLevel("com.mageddo").levelStr);

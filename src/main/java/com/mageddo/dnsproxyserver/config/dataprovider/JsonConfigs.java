@@ -94,14 +94,14 @@ public class JsonConfigs {
   }
 
   @SneakyThrows
-  static Integer findVersion(Path configPath) {
+  public static Integer findVersion(Path configPath) {
     final var node = JsonUtils
       .instance()
       .readTree(configPath.toFile());
     return findVersion(node);
   }
 
-  static Integer findVersion(JsonNode tree) {
+  public static Integer findVersion(JsonNode tree) {
     return tree.at("/version").asInt(VERSION_1);
   }
 
