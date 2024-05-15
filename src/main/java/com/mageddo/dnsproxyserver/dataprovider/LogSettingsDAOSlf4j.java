@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver;
+package com.mageddo.dnsproxyserver.dataprovider;
 
 import ch.qos.logback.classic.Level;
 import com.mageddo.commons.io.IoUtils;
@@ -7,17 +7,18 @@ import com.mageddo.dnsproxyserver.config.dataprovider.mapper.DataproviderVoToCon
 import com.mageddo.logback.LogbackUtils;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.enterprise.inject.Default;
+import javax.inject.Singleton;
+
 import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 
 @Slf4j
-public class AppSettings {
+@Default
+@Singleton
+public class LogSettingsDAOSlf4j implements LogSettingsDAO {
 
-  static void setupLogs(Config config) {
-    setupLogFile(config);
-    setupLogLevel(config);
-  }
-
-  static void setupLogFile(Config config) {
+  @Override
+  public void setupLogFile(Config config) {
     final var logFile = DataproviderVoToConfigDomainMapper.parseLogFile(config.getLogFile());
     if (logFile == null) {
       disableLogging();
@@ -26,7 +27,8 @@ public class AppSettings {
     }
   }
 
-  static void setupLogLevel(Config config) {
+  @Override
+  public void setupLogLevel(Config config) {
     if (isSpecificLogLevel(config)) {
       changeLogLevelToSpecifiedFromConfig(config);
     }
