@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.entrypoint;
+package com.mageddo.dnsproxyserver.config.dataprovider.vo;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.net.IpAddr;

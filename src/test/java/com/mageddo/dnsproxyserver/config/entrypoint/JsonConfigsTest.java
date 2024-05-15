@@ -1,5 +1,7 @@
 package com.mageddo.dnsproxyserver.config.entrypoint;
 
+import com.mageddo.dnsproxyserver.config.dataprovider.JsonConfigs;
+import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2;
 import org.apache.commons.lang3.ClassUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -7,7 +9,7 @@ import org.junit.jupiter.api.io.TempDir;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static com.mageddo.dnsproxyserver.config.entrypoint.JsonConfigs.findVersion;
+import static com.mageddo.dnsproxyserver.config.dataprovider.JsonConfigs.findVersion;
 import static com.mageddo.utils.TestUtils.readAndSortJson;
 import static com.mageddo.utils.TestUtils.readAsStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -1,27 +1,28 @@
-package com.mageddo.dnsproxyserver.config.entrypoint;
+package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
 
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2;
 import com.mageddo.net.IP;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
-public class ConfigJsonV2EnvsConverter {
+public class ConfigJsonV2EnvsMapper {
 
   static List<Config.Env> toDomainEnvs(List<ConfigJsonV2.Env> envs) {
     return envs.stream()
-      .map(ConfigJsonV2EnvsConverter::toDomainEnv)
+      .map(ConfigJsonV2EnvsMapper::toDomainEnv)
       .toList();
   }
 
   static Config.Env toDomainEnv(ConfigJsonV2.Env env) {
-    return new Config.Env(env.getName(), ConfigJsonV2EnvsConverter.toDomainEntries(env.getHostnames()));
+    return new Config.Env(env.getName(), ConfigJsonV2EnvsMapper.toDomainEntries(env.getHostnames()));
   }
 
   static List<Config.Entry> toDomainEntries(List<ConfigJsonV2.Entry> hostnames) {
     return hostnames
       .stream()
-      .map(ConfigJsonV2EnvsConverter::toDomainEntry)
+      .map(ConfigJsonV2EnvsMapper::toDomainEntry)
       .toList();
   }
 

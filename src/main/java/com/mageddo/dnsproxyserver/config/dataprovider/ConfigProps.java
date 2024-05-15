@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.entrypoint;
+package com.mageddo.dnsproxyserver.config.dataprovider;
 
 import java.util.Properties;
 

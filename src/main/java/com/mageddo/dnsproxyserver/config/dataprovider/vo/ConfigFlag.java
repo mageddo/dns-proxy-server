@@ -1,6 +1,7 @@
-package com.mageddo.dnsproxyserver.config.entrypoint;
+package com.mageddo.dnsproxyserver.config.dataprovider.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mageddo.dnsproxyserver.config.dataprovider.ConfigProps;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.Validate;

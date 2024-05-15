@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.entrypoint;
+package com.mageddo.dnsproxyserver.config;
 
 import ch.qos.logback.classic.Level;
 import org.apache.commons.lang3.StringUtils;

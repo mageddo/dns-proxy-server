@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
-import com.mageddo.dnsproxyserver.config.entrypoint.ConfigEnv;
+import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigEnv;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.ResolvFile.Type;
 import testing.templates.IpAddrTemplates;
 import org.apache.commons.exec.OS;

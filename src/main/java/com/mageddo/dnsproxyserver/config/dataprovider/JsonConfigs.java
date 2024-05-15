@@ -1,10 +1,13 @@
-package com.mageddo.dnsproxyserver.config.entrypoint;
+package com.mageddo.dnsproxyserver.config.dataprovider;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Configs;
-import com.mageddo.dnsproxyserver.config.entrypoint.ConfigJsonV2.Entry;
-import com.mageddo.dnsproxyserver.config.entrypoint.ConfigJsonV2.Env;
+import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJson;
+import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV1;
+import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2;
+import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2.Entry;
+import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2.Env;
 import com.mageddo.json.JsonUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;

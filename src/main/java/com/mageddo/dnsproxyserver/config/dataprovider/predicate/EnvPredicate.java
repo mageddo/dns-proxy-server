@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.predicate;
+package com.mageddo.dnsproxyserver.config.dataprovider.predicate;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import org.apache.commons.lang3.StringUtils;

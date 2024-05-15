@@ -1,6 +1,6 @@
 package testing.templates;
 
-import com.mageddo.dnsproxyserver.config.entrypoint.ConfigFlag;
+import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigFlag;
 
 import java.nio.file.Path;
 

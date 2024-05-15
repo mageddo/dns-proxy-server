@@ -1,15 +1,14 @@
 package com.mageddo.dnsproxyserver.config;
 
 import com.mageddo.commons.lang.Singletons;
-import com.mageddo.dnsproxyserver.config.entrypoint.ConfigEnv;
-import com.mageddo.dnsproxyserver.config.entrypoint.ConfigFlag;
-import com.mageddo.dnsproxyserver.config.entrypoint.ConfigJson;
-import com.mageddo.dnsproxyserver.config.entrypoint.ConfigProps;
-import com.mageddo.dnsproxyserver.config.entrypoint.JsonConfigs;
-import com.mageddo.dnsproxyserver.config.entrypoint.LogLevel;
-import com.mageddo.net.IpAddr;
+import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigEnv;
+import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigFlag;
+import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJson;
+import com.mageddo.dnsproxyserver.config.dataprovider.ConfigProps;
+import com.mageddo.dnsproxyserver.config.dataprovider.JsonConfigs;
 import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import com.mageddo.dnsproxyserver.utils.Numbers;
+import com.mageddo.net.IpAddr;
 import com.mageddo.utils.Files;
 import com.mageddo.utils.Runtime;
 import com.mageddo.utils.Tests;

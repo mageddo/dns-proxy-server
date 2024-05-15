@@ -1,8 +1,9 @@
-package com.mageddo.dnsproxyserver.config.entrypoint;
+package com.mageddo.dnsproxyserver.config.dataprovider.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.dataprovider.mapper.ConfigJsonV1EnvsMapper;
 import com.mageddo.net.IpAddr;
 import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import lombok.Data;
@@ -74,7 +75,7 @@ public class ConfigJsonV1 implements ConfigJson {
   @JsonIgnore
   @Override
   public List<Config.Env> getEnvs() {
-    return ConfigJsonV1EnvsConverter.toDomainEnvs(this._envs);
+    return ConfigJsonV1EnvsMapper.toDomainEnvs(this._envs);
   }
 
   @Override

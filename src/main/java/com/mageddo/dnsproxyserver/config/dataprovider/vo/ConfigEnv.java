@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.entrypoint;
+package com.mageddo.dnsproxyserver.config.dataprovider.vo;
 
 import com.mageddo.dnsproxyserver.utils.Envs;
 import com.mageddo.http.UriUtils;
