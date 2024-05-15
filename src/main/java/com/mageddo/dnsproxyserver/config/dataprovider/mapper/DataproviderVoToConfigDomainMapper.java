@@ -92,7 +92,7 @@ public class DataproviderVoToConfigDomainMapper {
     return servers;
   }
 
-  static LogLevel buildLogLevel(String logLevelName) {
+  public static LogLevel buildLogLevel(String logLevelName) {
     final var level = EnumUtils.getEnumIgnoreCase(LogLevel.class, logLevelName);
     if (StringUtils.isNotBlank(logLevelName) && level == null) {
       log.warn("status=couldntParseLogLevel, action=changesWillTakeNoEffect, proposedValue={}", logLevelName);

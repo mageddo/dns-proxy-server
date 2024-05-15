@@ -20,7 +20,7 @@ class SolverProviderTest {
 
     doReturn(true)
       .when(config)
-      .isNoRemoteServers();
+      .getNoRemoteServers();
 
     final var solvers = Instances.<Solver>of(
       new SolverMock("SolverSystem"),

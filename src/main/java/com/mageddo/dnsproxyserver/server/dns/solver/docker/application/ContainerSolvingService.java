@@ -138,6 +138,6 @@ public class ContainerSolvingService {
   }
 
   boolean isDockerSolverHostMachineFallbackActive() {
-    return Configs.getInstance().isDockerSolverHostMachineFallbackActive();
+    return Configs.getInstance().getDockerSolverHostMachineFallbackActive();
   }
 }

@@ -33,7 +33,7 @@ public class SolverProvider {
     this.solvers = solvers
       .stream()
       .sorted(Priorities.comparator(Solver::name, solversOrder))
-      .filter(it -> !(config.isNoRemoteServers() && it.is(SolverCachedRemote.NAME)))
+      .filter(it -> !(config.getNoRemoteServers() && it.is(SolverCachedRemote.NAME)))
       .toList()
     ;
   }

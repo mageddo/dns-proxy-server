@@ -38,60 +38,59 @@ import static com.mageddo.commons.lang.Objects.mapOrNull;
 @Builder
 public class Config {
 
-  @NonNull
+//  @NonNull
   private String version;
 
-  @NonNull
+//  @NonNull
   @Builder.Default
   private List<IpAddr> remoteDnsServers = new ArrayList<>();
 
-  @NonNull
+//  @NonNull
   private Integer webServerPort;
 
-  @NonNull
+//  @NonNull
   private Integer dnsServerPort;
 
-  @NonNull
   private Boolean defaultDns;
 
   private LogLevel logLevel;
 
-  @NonNull
+//  @NonNull
   private String logFile;
 
-  @NonNull
+//  @NonNull
   private Boolean registerContainerNames;
 
-  @NonNull
+//  @NonNull
   private String hostMachineHostname;
 
-  @NonNull
+//  @NonNull
   private String domain;
 
-  @NonNull
+//  @NonNull
   private Boolean mustConfigureDpsNetwork;
 
-  @NonNull
+//  @NonNull
   private Boolean dpsNetworkAutoConnect;
 
-  @NonNull
+//  @NonNull
   private Path configPath;
 
-  @NonNull
+//  @NonNull
   private String resolvConfPaths;
 
-  @NonNull
+//  @NonNull
   private SimpleServer.Protocol serverProtocol;
 
   private URI dockerHost;
 
-  private boolean resolvConfOverrideNameServers;
+  private Boolean resolvConfOverrideNameServers;
 
-  private boolean noRemoteServers;
+  private Boolean noRemoteServers;
 
-  private int noEntriesResponseCode;
+  private Integer noEntriesResponseCode;
 
-  private boolean dockerSolverHostMachineFallbackActive;
+  private Boolean dockerSolverHostMachineFallbackActive;
 
   public void resetConfigFile() {
     try {

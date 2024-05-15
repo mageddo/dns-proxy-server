@@ -46,7 +46,7 @@ public class DnsConfiguratorLinux implements DnsConfigurator {
     if (confFile.isResolvconf()) {
       final var overrideNameServers = Configs
         .getInstance()
-        .isResolvConfOverrideNameServers()
+        .getResolvConfOverrideNameServers()
         ;
       ResolvconfConfigurator.process(confFile.getPath(), addr, overrideNameServers);
     } else if (confFile.isResolved()) {
