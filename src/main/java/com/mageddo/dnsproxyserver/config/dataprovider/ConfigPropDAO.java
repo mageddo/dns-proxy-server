@@ -4,7 +4,7 @@ import java.util.Properties;
 
 import static com.mageddo.commons.io.IoUtils.loadPropertiesFromResources;
 
-public class ConfigProps {
+public class ConfigPropDAO {
 
   private static final Properties resources = loadPropertiesFromResources("/application.properties");
 

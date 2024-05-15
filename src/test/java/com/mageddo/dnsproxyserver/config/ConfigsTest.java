@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.config;
 
+import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.config.entrypoint.LogLevel;
 import testing.templates.ConfigFlagTemplates;
 import testing.templates.EnvTemplates;

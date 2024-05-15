@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.config.dataprovider.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mageddo.dnsproxyserver.config.dataprovider.ConfigProps;
+import com.mageddo.dnsproxyserver.config.dataprovider.ConfigPropDAO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.Validate;
@@ -223,7 +223,7 @@ public class ConfigFlag implements Callable<Boolean> {
   @Override
   public Boolean call() {
     if (this.version) {
-      this.commandLine.getOut().write(ConfigProps.getVersion());
+      this.commandLine.getOut().write(ConfigPropDAO.getVersion());
       return true;
     }
     return false;

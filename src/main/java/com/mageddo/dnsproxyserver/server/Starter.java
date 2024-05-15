@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.server;
 
-import com.mageddo.dnsproxyserver.config.Configs;
+import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.server.dns.ServerStarter;
 import com.mageddo.http.WebServer;
 import lombok.RequiredArgsConstructor;

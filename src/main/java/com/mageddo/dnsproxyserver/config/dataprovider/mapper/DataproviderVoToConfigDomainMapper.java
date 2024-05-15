@@ -1,11 +1,12 @@
-package com.mageddo.dnsproxyserver.config;
+package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
 
-import com.mageddo.commons.lang.Singletons;
+import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.LogLevel;
+import com.mageddo.dnsproxyserver.config.dataprovider.ConfigPropDAO;
+import com.mageddo.dnsproxyserver.config.dataprovider.JsonConfigs;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigEnv;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigFlag;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJson;
-import com.mageddo.dnsproxyserver.config.dataprovider.ConfigProps;
-import com.mageddo.dnsproxyserver.config.dataprovider.JsonConfigs;
 import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import com.mageddo.dnsproxyserver.utils.Numbers;
 import com.mageddo.net.IpAddr;
@@ -30,11 +31,11 @@ import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonBlankRequirin
 import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonNullRequiring;
 
 @Slf4j
-public class Configs {
+public class DataproviderVoToConfigDomainMapper {
 
   public static Config build(ConfigFlag flag, ConfigEnv env, ConfigJson json, Path configPath) {
     return Config.builder()
-      .version(ConfigProps.getVersion())
+      .version(ConfigPropDAO.getVersion())
       .webServerPort(Numbers.positiveOrDefault(json.getWebServerPort(), flag.getWebServerPort()))
       .dnsServerPort(Numbers.positiveOrDefault(json.getDnsServerPort(), flag.getDnsServerPort()))
       .defaultDns(firstNonNullRequiring(json.getDefaultDns(), flag.getDefaultDns()))
@@ -114,25 +115,8 @@ public class Configs {
     };
   }
 
-  public static Config getInstance() {
-    return getInstance(new String[]{});
-  }
-
-  public static Config getInstance(String[] args) {
-    final Config v = Singletons.get(Config.class);
-    if (v != null) {
-      return v;
-    } else {
-      return Singletons.createOrGet(Config.class, () -> build(args));
-    }
-  }
-
-  public static void clear() {
-    Singletons.clear(Config.class);
-  }
-
   /**
-   * @see #getInstance(String[])
+   * @see com.mageddo.dnsproxyserver.config.application.Configs#getInstance(String[])
    */
   public static Config build(String[] args) {
     final var config = ConfigFlag.parse(args);
@@ -174,6 +158,5 @@ public class Configs {
   static boolean runningInTestsAndNoCustomConfigPath(ConfigFlag configFlag) {
     return !Arrays.toString(configFlag.getArgs()).contains("--conf-path") && Tests.inTest();
   }
-
 
 }

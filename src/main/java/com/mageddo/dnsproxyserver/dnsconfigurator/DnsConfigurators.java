@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.dnsconfigurator;
 
 import com.mageddo.commons.concurrent.ThreadPool;
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.Configs;
+import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.di.StartupEvent;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.DnsConfiguratorLinux;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.DpsContainerService;

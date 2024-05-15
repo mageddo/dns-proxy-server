@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
-import com.mageddo.dnsproxyserver.config.Configs;
+import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.server.dns.solver.CacheName;
 import com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name;
 import com.mageddo.dnsproxyserver.server.dns.solver.Response;

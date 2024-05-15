@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
 import com.mageddo.commons.lang.Objects;
-import com.mageddo.dnsproxyserver.config.Configs;
+import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.dnsconfigurator.DnsConfigurator;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.ResolvFile.Type;
 import com.mageddo.dnsproxyserver.systemd.ResolvedService;

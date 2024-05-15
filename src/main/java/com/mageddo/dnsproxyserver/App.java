@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver;
 
-import com.mageddo.dnsproxyserver.config.Configs;
+import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.di.Context;
 
 public class App {

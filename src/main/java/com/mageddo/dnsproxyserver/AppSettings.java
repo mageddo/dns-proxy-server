@@ -3,7 +3,7 @@ package com.mageddo.dnsproxyserver;
 import ch.qos.logback.classic.Level;
 import com.mageddo.commons.io.IoUtils;
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.Configs;
+import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.logback.LogbackUtils;
 import lombok.extern.slf4j.Slf4j;
 
