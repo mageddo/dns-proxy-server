@@ -9,7 +9,7 @@ public class ContextSupplier implements Supplier<Context> {
   @Override
   public Context get() {
     Configs.clear();
-    Configs.getInstance(new String[]{"--web-server-port=9944"});
+    Configs.getInstance();
     return Context.create();
   }
 

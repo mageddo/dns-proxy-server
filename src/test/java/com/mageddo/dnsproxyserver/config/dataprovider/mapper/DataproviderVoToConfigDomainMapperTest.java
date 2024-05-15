@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
 
 import com.mageddo.dnsproxyserver.config.LogLevel;
+import com.mageddo.dnsproxyserver.config.dataprovider.MultiSourceConfigDAOCmdArgs;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ class DataproviderVoToConfigDomainMapperTest {
     assertFalse(Files.exists(jsonConfigFile));
 
     // act
-    final var config = DataproviderVoToConfigDomainMapper.build(args);
+    final var config = MultiSourceConfigDAOCmdArgs.build(args);
 
     // assert
     assertEquals(
@@ -65,7 +66,7 @@ class DataproviderVoToConfigDomainMapperTest {
     final var args = new String[]{"--conf-path", tmpConfigFile.toString()};
 
     // act
-    final var config = DataproviderVoToConfigDomainMapper.build(args);
+    final var config = MultiSourceConfigDAOCmdArgs.build(args);
 
     // assert
     assertEquals(
@@ -100,7 +101,7 @@ class DataproviderVoToConfigDomainMapperTest {
     final var args = new String[]{"--log-level", "warning"};
 
     // act
-    final var config = DataproviderVoToConfigDomainMapper.build(args);
+    final var config = MultiSourceConfigDAOCmdArgs.build(args);
 
     // assert
     assertEquals(LogLevel.WARNING, config.getLogLevel());

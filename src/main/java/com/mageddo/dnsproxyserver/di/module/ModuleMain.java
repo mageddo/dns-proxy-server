@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.di.module;
 
-import com.mageddo.dnsproxyserver.di.InstanceImpl;
+import com.mageddo.di.InstanceImpl;
 import com.mageddo.dnsproxyserver.server.dns.RequestHandler;
 import com.mageddo.dnsproxyserver.server.dns.RequestHandlerDefault;
 import com.mageddo.dnsproxyserver.server.dns.solver.Solver;

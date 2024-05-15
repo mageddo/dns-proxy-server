@@ -14,7 +14,6 @@ import com.mageddo.utils.Files;
 import com.mageddo.utils.Runtime;
 import com.mageddo.utils.Tests;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -113,17 +112,6 @@ public class DataproviderVoToConfigDomainMapper {
       case "false" -> null;
       default -> v;
     };
-  }
-
-  /**
-   * @see com.mageddo.dnsproxyserver.config.application.Configs#getInstance(String[])
-   */
-  public static Config build(String[] args) {
-    final var config = ConfigFlag.parse(args);
-    if (BooleanUtils.isTrue(config.getHelp()) || config.isVersion()) {
-      System.exit(0);
-    }
-    return build(config);
   }
 
   public static Path buildConfigPath(ConfigFlag configFlag, Path workDir) {

@@ -4,4 +4,5 @@ import com.mageddo.dnsproxyserver.config.Config;
 
 public interface MultiSourceConfigDAO {
   Config find();
+  int priority();
 }

@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider;
 
 import com.mageddo.dnsproxyserver.config.application.Configs;
-import com.mageddo.dnsproxyserver.config.dataprovider.mapper.DataproviderVoToConfigDomainMapper;
+import com.mageddo.dnsproxyserver.config.dataprovider.MultiSourceConfigDAOCmdArgs;
 import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -84,7 +84,7 @@ class ContainerHostnameMatcherTest {
     // arrange
     final var inspect = InspectContainerResponseTemplates.build();
     final var hostname = HostnameQuery.ofWildcard("laughing_swanson.docker");
-    final var config = DataproviderVoToConfigDomainMapper.build(new String[]{"--register-container-names"});
+    final var config = MultiSourceConfigDAOCmdArgs.build(new String[]{"--register-container-names"});
 
     // act
     final var test = ContainerHostnameMatcher.test(inspect, hostname, config);
@@ -100,7 +100,7 @@ class ContainerHostnameMatcherTest {
     // arrange
     final var inspect = InspectContainerResponseTemplates.build();
     final var hostname = HostnameQuery.of("nginx-service.docker");
-    final var config = DataproviderVoToConfigDomainMapper.build(new String[]{"--register-container-names"});
+    final var config = MultiSourceConfigDAOCmdArgs.build(new String[]{"--register-container-names"});
 
     // act
     final var test = ContainerHostnameMatcher.test(inspect, hostname, config);

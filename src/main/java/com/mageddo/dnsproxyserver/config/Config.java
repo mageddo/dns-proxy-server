@@ -101,6 +101,14 @@ public class Config {
     }
   }
 
+  public boolean isHelp() {
+    throw new UnsupportedOperationException();
+  }
+
+  public boolean isVersion() {
+    throw new UnsupportedOperationException();
+  }
+
   @Value
   public static class Env {
 
