@@ -7,7 +7,7 @@ public class App {
   public static void main(String[] args) {
 
     final var config = Configs.getInstance(args);
-    AppSettings.setup(config);
+    AppSettings.setupLogs(config);
 
     final var context = Context.create();
 

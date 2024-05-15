@@ -3,7 +3,6 @@ package com.mageddo.dnsproxyserver.config;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigEnv;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigFlag;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJson;
-import com.mageddo.dnsproxyserver.config.entrypoint.LogLevel;
 import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import com.mageddo.net.IP;
 import com.mageddo.net.IpAddr;
