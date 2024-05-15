@@ -126,7 +126,7 @@ public class DataproviderVoToConfigDomainMapper {
     return build(config);
   }
 
-  static Path buildConfigPath(ConfigFlag configFlag, Path workDir) {
+  public static Path buildConfigPath(ConfigFlag configFlag, Path workDir) {
     if (runningInTestsAndNoCustomConfigPath(configFlag)) {
       return Files.createTempFileDeleteOnExit("dns-proxy-server-junit", ".json");
     }
