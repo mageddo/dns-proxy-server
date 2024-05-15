@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.config.dataprovider;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.dataprovider.mapper.DataproviderVoToConfigDomainMapper;
+import com.mageddo.dnsproxyserver.config.dataprovider.mapper.ConfigFieldsValuesMapper;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigEnv;
 import lombok.RequiredArgsConstructor;
 
@@ -32,7 +32,7 @@ public class MultiSourceConfigDAOEnv implements MultiSourceConfigDAO {
       .registerContainerNames(config.getRegisterContainerNames())
       .domain(config.getDomain())
       .logFile(config.getLogFile())
-      .logLevel(DataproviderVoToConfigDomainMapper.buildLogLevel(config.getLogLevel()))
+      .logLevel(ConfigFieldsValuesMapper.mapLogLevelFrom(config.getLogLevel()))
       .dockerHost(config.getDockerHost())
       .hostMachineHostname(config.getHostMachineHostname())
       .noRemoteServers(config.getNoRemoteServers())

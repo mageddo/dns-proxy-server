@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.config.dataprovider;
 
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.dataprovider.mapper.ConfigFieldsValuesMapper;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJson;
 import com.mageddo.utils.Files;
 import com.mageddo.utils.Runtime;
@@ -58,8 +59,26 @@ public class MultiSourceConfigDAOJson implements MultiSourceConfigDAO {
     return !Arrays.toString(MultiSourceConfigDAOCmdArgs.getArgs()).contains("--conf-path") && Tests.inTest();
   }
 
-  Config toConfig(ConfigJson config) {
-    return null;
+  Config toConfig(ConfigJson json) {
+    return Config.builder()
+      .webServerPort(json.getWebServerPort())
+      .dnsServerPort(json.getDnsServerPort())
+      .defaultDns(json.getDefaultDns())
+      .logLevel(ConfigFieldsValuesMapper.mapLogLevelFrom(json.getLogLevel()))
+      .logFile(ConfigFieldsValuesMapper.mapLogFileFrom(json.getLogFile()))
+      .registerContainerNames(json.getRegisterContainerNames())
+      .hostMachineHostname(json.getHostMachineHostname())
+      .domain(json.getDomain())
+      .mustConfigureDpsNetwork(json.getDpsNetwork())
+      .dpsNetworkAutoConnect(json.getDpsNetworkAutoConnect())
+      .remoteDnsServers(json.getRemoteDnsServers())
+      .serverProtocol(json.getServerProtocol())
+      .dockerHost(json.getDockerHost())
+      .resolvConfOverrideNameServers(json.getResolvConfOverrideNameServers())
+      .noRemoteServers(json.getNoRemoteServers())
+      .noEntriesResponseCode(json.getNoEntriesResponseCode())
+      .dockerSolverHostMachineFallbackActive(json.getDockerSolverHostMachineFallbackActive())
+      .build();
   }
 
   @Override

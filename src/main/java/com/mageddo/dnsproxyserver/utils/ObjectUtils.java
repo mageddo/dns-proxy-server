@@ -16,6 +16,16 @@ public class ObjectUtils {
       .orElseThrow(throwError())
       ;
   }
+
+  public static <T> List<T> firstNonEmptyListRequiring(List<List<T>> lists) {
+    for (final var list : lists) {
+      if (!list.isEmpty()) {
+        return list;
+      }
+    }
+    throw throwError().get();
+  }
+
   public static <T> T firstNonNullRequiring(List<T> args) {
     return (T) firstNonNullRequiring(args.toArray(Object[]::new));
   }

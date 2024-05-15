@@ -4,12 +4,15 @@ import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigPropDAO;
 import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import com.mageddo.dnsproxyserver.utils.Numbers;
+import com.mageddo.net.IpAddr;
 import org.apache.commons.lang3.SystemUtils;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 
 import static com.mageddo.dnsproxyserver.utils.ListOfObjectUtils.mapField;
+import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonEmptyListRequiring;
 import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonNullRequiring;
 
 public class ConfigMapper {
@@ -26,7 +29,7 @@ public class ConfigMapper {
       .domain(firstNonNullRequiring(mapField(Config::getDomain, configs)))
       .mustConfigureDpsNetwork(firstNonNullRequiring(mapField(Config::getMustConfigureDpsNetwork, configs)))
       .dpsNetworkAutoConnect(firstNonNullRequiring(mapField(Config::getDpsNetworkAutoConnect, configs)))
-      .remoteDnsServers(firstNonNullRequiring(mapField(Config::getRemoteDnsServers, configs)))
+      .remoteDnsServers(firstNonEmptyListRequiring(mapField(Config::getRemoteDnsServers, configs, buildDefaultDnsServers())))
       .configFileRelativePath(firstNonNullRequiring(mapField(Config::getConfigFileRelativePath, configs)))
       .resolvConfPaths(firstNonNullRequiring(mapField(Config::getResolvConfPaths, configs)))
       .serverProtocol(firstNonNullRequiring(mapField(Config::getServerProtocol, configs, SimpleServer.Protocol.UDP_TCP)))
@@ -42,6 +45,10 @@ public class ConfigMapper {
 
   static void validate(Config config) {
     // todo #440 validate fields which must not be null
+  }
+
+  static List<IpAddr> buildDefaultDnsServers() {
+    return Collections.singletonList(IpAddr.of("8.8.8.8:53"));
   }
 
   private static URI buildDefaultDockerHost() {
