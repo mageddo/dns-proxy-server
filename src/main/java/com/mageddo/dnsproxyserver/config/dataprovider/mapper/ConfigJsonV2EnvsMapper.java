@@ -9,24 +9,24 @@ import java.util.List;
 
 public class ConfigJsonV2EnvsMapper {
 
-  static List<Config.Env> toDomainEnvs(List<ConfigJsonV2.Env> envs) {
+  public static List<Config.Env> toDomainEnvs(List<ConfigJsonV2.Env> envs) {
     return envs.stream()
       .map(ConfigJsonV2EnvsMapper::toDomainEnv)
       .toList();
   }
 
-  static Config.Env toDomainEnv(ConfigJsonV2.Env env) {
+  public static Config.Env toDomainEnv(ConfigJsonV2.Env env) {
     return new Config.Env(env.getName(), ConfigJsonV2EnvsMapper.toDomainEntries(env.getHostnames()));
   }
 
-  static List<Config.Entry> toDomainEntries(List<ConfigJsonV2.Entry> hostnames) {
+  public static List<Config.Entry> toDomainEntries(List<ConfigJsonV2.Entry> hostnames) {
     return hostnames
       .stream()
       .map(ConfigJsonV2EnvsMapper::toDomainEntry)
       .toList();
   }
 
-  static Config.Entry toDomainEntry(ConfigJsonV2.Entry hostname) {
+  public static Config.Entry toDomainEntry(ConfigJsonV2.Entry hostname) {
     return Config.Entry
       .builder()
       .hostname(hostname.getHostname())
