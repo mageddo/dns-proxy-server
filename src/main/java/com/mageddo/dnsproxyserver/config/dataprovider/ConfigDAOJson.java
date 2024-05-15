@@ -1,5 +1,7 @@
-package com.mageddo.dnsproxyserver.config;
+package com.mageddo.dnsproxyserver.config.dataprovider;
 
+import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.Configs;
 import com.mageddo.dnsproxyserver.config.entrypoint.ConfigJson;
 import com.mageddo.dnsproxyserver.config.entrypoint.ConfigJsonV2;
 import com.mageddo.dnsproxyserver.config.entrypoint.JsonConfigs;

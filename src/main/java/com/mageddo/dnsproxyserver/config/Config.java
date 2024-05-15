@@ -184,7 +184,7 @@ public class Config {
       private final int type;
 
       public boolean isNot(Type... types) {
-        return Types.isNot(this.type, types);
+        return ConfigEntryTypes.isNot(this.type, types);
       }
 
       public static Type of(Integer code) {
@@ -217,7 +217,7 @@ public class Config {
       }
 
       public boolean isAddressSolving() {
-        return Types.is(this, Config.Entry.Type.A, Config.Entry.Type.AAAA);
+        return ConfigEntryTypes.is(this, Config.Entry.Type.A, Config.Entry.Type.AAAA);
       }
     }
   }

@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.server.rest;
 
-import com.mageddo.dnsproxyserver.config.ConfigDAO;
+import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAO;
 import com.mageddo.dnsproxyserver.server.rest.reqres.HostnameV1;
 import com.mageddo.dnsproxyserver.server.rest.reqres.Message;
 import com.mageddo.http.HttpMapper;

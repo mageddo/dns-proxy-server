@@ -5,7 +5,7 @@ import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Types {
+public class ConfigEntryTypes {
 
   public static boolean isNot(Type current, Type... possible) {
     return !is(current, possible);

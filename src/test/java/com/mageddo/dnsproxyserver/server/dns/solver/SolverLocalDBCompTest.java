@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.ConfigDAO;
+import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAO;
 import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import testing.templates.EntryTemplates;
