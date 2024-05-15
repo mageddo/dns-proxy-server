@@ -35,7 +35,7 @@ import static com.mageddo.commons.lang.Objects.mapOrNull;
  * @see ConfigEnv
  */
 @Value
-@Builder
+@Builder(toBuilder = true)
 public class Config {
 
 //  @NonNull
@@ -73,8 +73,12 @@ public class Config {
 //  @NonNull
   private Boolean dpsNetworkAutoConnect;
 
+  private Path workDir;
+
+  private Path configFileRelativePath;
+
 //  @NonNull
-  private Path configPath;
+  private Path configFileAbsolutePath;
 
 //  @NonNull
   private String resolvConfPaths;
@@ -94,7 +98,7 @@ public class Config {
 
   public void resetConfigFile() {
     try {
-      Files.deleteIfExists(this.getConfigPath());
+      Files.deleteIfExists(this.getConfigFileRelativePath());
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }

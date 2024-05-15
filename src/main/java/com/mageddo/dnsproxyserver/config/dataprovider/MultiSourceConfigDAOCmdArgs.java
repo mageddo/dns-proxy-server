@@ -1,7 +1,9 @@
 package com.mageddo.dnsproxyserver.config.dataprovider;
 
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.dataprovider.mapper.DataproviderVoToConfigDomainMapper;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigFlag;
+import com.mageddo.utils.Files;
 import lombok.RequiredArgsConstructor;
 
 import javax.inject.Inject;
@@ -32,8 +34,26 @@ public class MultiSourceConfigDAOCmdArgs implements MultiSourceConfigDAO {
   }
 
   static Config toConfig(ConfigFlag config) {
-    throw new UnsupportedOperationException();
+    return Config.builder()
+      .configFileRelativePath(Files.pathOf(config.getConfigPath()))
+      .registerContainerNames(config.getRegisterContainerNames())
+      .domain(config.getDomain())
+      .logFile(config.getLogToFile())
+      .logLevel(DataproviderVoToConfigDomainMapper.buildLogLevel(config.getLogLevel()))
+      .dockerHost(config.getDockerHost())
+      .hostMachineHostname(config.getHostMachineHostname())
+      .noRemoteServers(config.getNoRemoteServers())
+      .dpsNetworkAutoConnect(config.getDpsNetworkAutoConnect())
+      .noEntriesResponseCode(config.getNoEntriesResponseCode())
+      .dockerSolverHostMachineFallbackActive(config.getDockerSolverHostMachineFallbackActive())
+      .resolvConfOverrideNameServers(config.getResolvConfOverrideNameServers())
+      .mustConfigureDpsNetwork(config.getDpsNetwork())
+      .webServerPort(config.getWebServerPort())
+      .dnsServerPort(config.getDnsServerPort())
+      .defaultDns(config.getDefaultDns())
+      .build();
   }
+
   static String[] getArgs() {
     return args;
   }

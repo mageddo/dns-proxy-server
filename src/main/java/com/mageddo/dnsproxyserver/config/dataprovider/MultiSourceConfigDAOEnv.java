@@ -28,7 +28,7 @@ public class MultiSourceConfigDAOEnv implements MultiSourceConfigDAO {
 
   static Config toConfig(ConfigEnv config) {
     return Config.builder()
-      .configPath(config.getCurrentPath())
+      .workDir(config.getCurrentPath())
       .registerContainerNames(config.getRegisterContainerNames())
       .domain(config.getDomain())
       .logFile(config.getLogFile())

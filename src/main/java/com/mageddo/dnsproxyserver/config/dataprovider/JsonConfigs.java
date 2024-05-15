@@ -108,7 +108,7 @@ public class JsonConfigs {
   public static ConfigJsonV2 loadConfigJson() {
     final var configPath = Configs
       .getInstance()
-      .getConfigPath();
+      .getConfigFileRelativePath();
     return (ConfigJsonV2) loadConfig(configPath);
   }
 }

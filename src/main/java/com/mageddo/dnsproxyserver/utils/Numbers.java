@@ -7,4 +7,10 @@ public class Numbers {
     }
     return v;
   }
+  public static Integer positiveOrNull(Integer v) {
+    if (v == null || v <= 0) {
+      return null;
+    }
+    return v;
+  }
 }

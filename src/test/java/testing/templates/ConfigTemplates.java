@@ -20,7 +20,7 @@ public class ConfigTemplates {
       .defaultDns(false)
       .dpsNetworkAutoConnect(false)
       .hostMachineHostname("host.docker")
-      .configPath(Paths.get("/tmp/config.json"))
+      .configFileRelativePath(Paths.get("/tmp/config.json"))
       .registerContainerNames(false)
       .mustConfigureDpsNetwork(false)
       .webServerPort(8080)

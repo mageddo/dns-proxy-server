@@ -50,7 +50,7 @@ public class DataproviderVoToConfigDomainMapper {
         env.getDpsNetworkAutoConnect(), json.getDpsNetworkAutoConnect(), flag.getDpsNetworkAutoConnect()
       ))
       .remoteDnsServers(buildRemoteServers(json.getRemoteDnsServers()))
-      .configPath(configPath)
+      .configFileRelativePath(configPath)
       .resolvConfPaths(env.getResolvConfPath())
       .serverProtocol(firstNonNullRequiring(
         json.getServerProtocol(), SimpleServer.Protocol.UDP_TCP
