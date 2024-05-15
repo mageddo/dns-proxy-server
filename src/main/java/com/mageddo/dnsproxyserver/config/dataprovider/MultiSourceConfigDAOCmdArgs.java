@@ -13,7 +13,7 @@ import javax.inject.Singleton;
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class MultiSourceConfigDAOCmdArgs implements MultiSourceConfigDAO {
 
-  private static String[] args;
+  private static String[] args = new String[]{};
 
   @Override
   public Config find() {
