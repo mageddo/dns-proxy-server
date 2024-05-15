@@ -25,5 +25,7 @@ public class Configs {
     Singletons.clear(Config.class);
   }
 
-
+  public static Context getContext() {
+    return context;
+  }
 }

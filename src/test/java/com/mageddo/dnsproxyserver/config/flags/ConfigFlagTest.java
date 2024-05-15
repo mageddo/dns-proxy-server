@@ -65,5 +65,18 @@ class ConfigFlagTest {
     assertTrue(validVersion, sw.toString());
     assertTrue(config.isVersion());
   }
+
+
+  @Test
+  void mustParseLowerCaseLogLevel(){
+    // arrange
+    final var args = new String[]{"--log-level", "warning"};
+
+    // act
+    final var config = ConfigFlag.parse(args);
+
+    // assert
+    assertEquals("warning", config.getLogLevel());
+  }
 }
 

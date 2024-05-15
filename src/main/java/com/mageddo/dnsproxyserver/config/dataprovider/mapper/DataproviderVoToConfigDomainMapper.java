@@ -3,16 +3,12 @@ package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.LogLevel;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigPropDAO;
-import com.mageddo.dnsproxyserver.config.dataprovider.JsonConfigs;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigEnv;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigFlag;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJson;
 import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import com.mageddo.dnsproxyserver.utils.Numbers;
 import com.mageddo.net.IpAddr;
-import com.mageddo.utils.Files;
-import com.mageddo.utils.Runtime;
-import com.mageddo.utils.Tests;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -21,8 +17,6 @@ import org.apache.commons.lang3.SystemUtils;
 
 import java.net.URI;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -112,39 +106,6 @@ public class DataproviderVoToConfigDomainMapper {
       case "false" -> null;
       default -> v;
     };
-  }
-
-  public static Path buildConfigPath(ConfigFlag configFlag, Path workDir) {
-    if (runningInTestsAndNoCustomConfigPath(configFlag)) {
-      return Files.createTempFileDeleteOnExit("dns-proxy-server-junit", ".json");
-    }
-    if (workDir != null) {
-      return workDir
-        .resolve(configFlag.getConfigPath())
-        .toAbsolutePath()
-        ;
-    }
-    final var confRelativeToCurrDir = Paths
-      .get(configFlag.getConfigPath())
-      .toAbsolutePath();
-    if (Files.exists(confRelativeToCurrDir)) {
-      return confRelativeToCurrDir;
-    }
-    return Runtime.getRunningDir()
-      .resolve(configFlag.getConfigPath())
-      .toAbsolutePath();
-  }
-
-  static Config build(ConfigFlag configFlag) {
-    final var configEnv = ConfigEnv.fromEnv();
-    final var configPath = buildConfigPath(configFlag, configEnv.getCurrentPath());
-    final var jsonConfig = JsonConfigs.loadConfig(configPath);
-    log.info("status=configuring, configFile={}", configPath);
-    return build(configFlag, configEnv, jsonConfig, configPath);
-  }
-
-  static boolean runningInTestsAndNoCustomConfigPath(ConfigFlag configFlag) {
-    return !Arrays.toString(configFlag.getArgs()).contains("--conf-path") && Tests.inTest();
   }
 
 }
