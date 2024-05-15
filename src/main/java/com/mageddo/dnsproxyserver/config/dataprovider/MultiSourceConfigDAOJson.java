@@ -25,13 +25,12 @@ public class MultiSourceConfigDAOJson implements MultiSourceConfigDAO {
 
   @Override
   public Config find() {
-    final var configPath = buildConfigPath(
-      this.configDAOEnv.findRaw().getCurrentPath(),
-      this.configDAOCmdArgs.findRaw().getConfigPath()
-    );
-    final var jsonConfig = JsonConfigs.loadConfig(configPath);
-    log.info("status=configuring, configFile={}", configPath);
-    return toConfig(jsonConfig);
+    final var workDir = this.configDAOEnv.findRaw().getCurrentPath();
+    final var relativeConfigFilePath = this.configDAOCmdArgs.findRaw().getConfigPath();
+    final var configFileAbsolutePath = buildConfigPath(workDir, relativeConfigFilePath);
+    final var jsonConfig = JsonConfigs.loadConfig(configFileAbsolutePath);
+    log.info("status=configuring, configFile={}", configFileAbsolutePath);
+    return toConfig(jsonConfig, configFileAbsolutePath);
   }
 
   public static Path buildConfigPath(Path workDir, String configPath) {
@@ -59,7 +58,7 @@ public class MultiSourceConfigDAOJson implements MultiSourceConfigDAO {
     return !Arrays.toString(MultiSourceConfigDAOCmdArgs.getArgs()).contains("--conf-path") && Tests.inTest();
   }
 
-  Config toConfig(ConfigJson json) {
+  Config toConfig(ConfigJson json, Path configFileAbsolutePath) {
     return Config.builder()
       .webServerPort(json.getWebServerPort())
       .dnsServerPort(json.getDnsServerPort())
@@ -78,6 +77,7 @@ public class MultiSourceConfigDAOJson implements MultiSourceConfigDAO {
       .noRemoteServers(json.getNoRemoteServers())
       .noEntriesResponseCode(json.getNoEntriesResponseCode())
       .dockerSolverHostMachineFallbackActive(json.getDockerSolverHostMachineFallbackActive())
+      .configPath(configFileAbsolutePath)
       .build();
   }
 

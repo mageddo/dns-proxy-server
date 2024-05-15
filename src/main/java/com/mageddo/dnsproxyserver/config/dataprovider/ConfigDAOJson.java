@@ -40,7 +40,7 @@ public class ConfigDAOJson implements ConfigDAO {
   public Config.Env findEnv(String envKey) {
     final var configPath = Configs
       .getInstance()
-      .getConfigFileRelativePath();
+      .getConfigPath();
     return findEnv(envKey, JsonConfigs.loadConfig(configPath));
   }
 
@@ -189,7 +189,7 @@ public class ConfigDAOJson implements ConfigDAO {
   static void save(ConfigJsonV2 config) {
     final var configPath = Configs
       .getInstance()
-      .getConfigFileRelativePath();
+      .getConfigPath();
     JsonConfigs.write(configPath, config);
   }
 

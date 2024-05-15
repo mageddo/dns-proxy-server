@@ -73,12 +73,7 @@ public class Config {
 //  @NonNull
   private Boolean dpsNetworkAutoConnect;
 
-  private Path workDir;
-
-  private Path configFileRelativePath;
-
-//  @NonNull
-  private Path configFileAbsolutePath;
+  private Path configPath;
 
 //  @NonNull
   private String resolvConfPaths;
@@ -96,20 +91,16 @@ public class Config {
 
   private Boolean dockerSolverHostMachineFallbackActive;
 
+  private boolean helpCmd;
+
+  private boolean versionCmd;
+
   public void resetConfigFile() {
     try {
-      Files.deleteIfExists(this.getConfigFileRelativePath());
+      Files.deleteIfExists(this.getConfigPath());
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
-  }
-
-  public boolean isHelp() {
-    throw new UnsupportedOperationException();
-  }
-
-  public boolean isVersion() {
-    throw new UnsupportedOperationException();
   }
 
   @Value

@@ -16,6 +16,9 @@ public class ConfigFieldsValuesMapper {
   }
 
   public static String mapLogFileFrom(String v) {
+    if (StringUtils.isBlank(v)) {
+      return null;
+    }
     return switch (StringUtils.lowerCase(v)) {
       case "true" -> "/var/log/dns-proxy-server.log";
       case "false" -> null;

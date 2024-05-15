@@ -35,7 +35,7 @@ public class MultiSourceConfigDAOCmdArgs implements MultiSourceConfigDAO {
 
   static Config toConfig(ConfigFlag config) {
     return Config.builder()
-      .configFileRelativePath(Files.pathOf(config.getConfigPath()))
+      .configPath(Files.pathOf(config.getConfigPath()))
       .registerContainerNames(config.getRegisterContainerNames())
       .domain(config.getDomain())
       .logFile(config.getLogToFile())

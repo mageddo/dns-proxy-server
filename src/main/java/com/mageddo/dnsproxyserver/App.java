@@ -28,7 +28,7 @@ public class App {
   }
 
   static void checkExitCommands(Config config) {
-    if (BooleanUtils.isTrue(config.isHelp()) || config.isVersion()) {
+    if (BooleanUtils.isTrue(config.isHelpCmd()) || config.isVersionCmd()) {
       System.exit(0);
     }
   }

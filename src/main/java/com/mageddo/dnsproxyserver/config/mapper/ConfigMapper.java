@@ -30,7 +30,7 @@ public class ConfigMapper {
       .mustConfigureDpsNetwork(firstNonNullRequiring(mapField(Config::getMustConfigureDpsNetwork, configs)))
       .dpsNetworkAutoConnect(firstNonNullRequiring(mapField(Config::getDpsNetworkAutoConnect, configs)))
       .remoteDnsServers(firstNonEmptyListRequiring(mapField(Config::getRemoteDnsServers, configs, buildDefaultDnsServers())))
-      .configFileRelativePath(firstNonNullRequiring(mapField(Config::getConfigFileRelativePath, configs)))
+      .configPath(firstNonNullRequiring(mapField(Config::getConfigPath, configs)))
       .resolvConfPaths(firstNonNullRequiring(mapField(Config::getResolvConfPaths, configs)))
       .serverProtocol(firstNonNullRequiring(mapField(Config::getServerProtocol, configs, SimpleServer.Protocol.UDP_TCP)))
       .dockerHost(firstNonNullRequiring(mapField(Config::getDockerHost, configs, buildDefaultDockerHost())))
