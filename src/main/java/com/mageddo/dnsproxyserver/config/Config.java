@@ -1,8 +1,5 @@
 package com.mageddo.dnsproxyserver.config;
 
-import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigEnv;
-import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigFlag;
-import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJson;
 import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import com.mageddo.net.IP;
 import com.mageddo.net.IpAddr;
@@ -28,11 +25,8 @@ import java.util.stream.Stream;
 import static com.mageddo.commons.lang.Objects.mapOrNull;
 
 /**
- * Domain object which owns the configs.
  *
- * @see ConfigJson
- * @see ConfigFlag
- * @see ConfigEnv
+ * @see com.mageddo.dnsproxyserver.config.application.ConfigService
  */
 @Value
 @Builder(toBuilder = true)
