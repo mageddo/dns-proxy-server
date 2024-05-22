@@ -1,6 +1,8 @@
 package com.mageddo.dnsproxyserver.config.mapper;
 
+import com.mageddo.dnsproxyserver.config.CircuitBreaker;
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigPropDAO;
 import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import com.mageddo.dnsproxyserver.utils.Numbers;
@@ -9,6 +11,8 @@ import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.Validate;
 
 import java.net.URI;
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,6 +22,12 @@ import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonNullRequiring
 
 public class ConfigMapper {
   public static Config mapFrom(List<Config> configs) {
+    final var configsWithDefault = new ArrayList<>(configs);
+    configsWithDefault.add(buildDefault());
+    return mapFrom0(configsWithDefault);
+  }
+
+  private static Config mapFrom0(List<Config> configs) {
     final var config = Config.builder()
       .version(ConfigPropDAO.getVersion())
       .webServerPort(Numbers.firstPositive(mapField(Config::getWebServerPort, configs)))
@@ -33,7 +43,7 @@ public class ConfigMapper {
       .remoteDnsServers(firstNonEmptyListRequiring(mapField(Config::getRemoteDnsServers, configs, buildDefaultDnsServers())))
       .configPath(firstNonNullRequiring(mapField(Config::getConfigPath, configs)))
       .resolvConfPaths(firstNonNullRequiring(mapField(Config::getResolvConfPaths, configs)))
-      .serverProtocol(firstNonNullRequiring(mapField(Config::getServerProtocol, configs, SimpleServer.Protocol.UDP_TCP)))
+      .serverProtocol(firstNonNullRequiring(mapField(Config::getServerProtocol, configs)))
       .dockerHost(firstNonNullRequiring(mapField(Config::getDockerHost, configs, buildDefaultDockerHost())))
       .resolvConfOverrideNameServers(firstNonNullRequiring(mapField(Config::getResolvConfOverrideNameServers, configs)))
       .noRemoteServers(firstNonNullRequiring(mapField(Config::getNoRemoteServers, configs)))
@@ -45,7 +55,26 @@ public class ConfigMapper {
     return config;
   }
 
-  static void validate(Config config) {
+  private static Config buildDefault() {
+    return Config
+      .builder()
+      .serverProtocol(SimpleServer.Protocol.UDP_TCP)
+      .solverRemote(SolverRemote
+        .builder()
+        .circuitBreaker(CircuitBreaker
+          .builder()
+          .failureThreshold(3)
+          .failureThresholdCapacity(10)
+          .successThreshold(5)
+          .testDelay(Duration.ofSeconds(20))
+          .build()
+        )
+        .build()
+      )
+      .build();
+  }
+
+  private static void validate(Config config) {
     Validate.notNull(config.getVersion());
     Validate.notNull(config.getRemoteDnsServers());
     Validate.isTrue(config.getWebServerPort() != null && config.getWebServerPort() > 0);
