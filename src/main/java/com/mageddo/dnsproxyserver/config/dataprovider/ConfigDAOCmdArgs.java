@@ -2,7 +2,8 @@ package com.mageddo.dnsproxyserver.config.dataprovider;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.dataprovider.mapper.ConfigFieldsValuesMapper;
-import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigEnv;
+import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigFlag;
+import com.mageddo.utils.Files;
 import lombok.RequiredArgsConstructor;
 
 import javax.inject.Inject;
@@ -10,27 +11,34 @@ import javax.inject.Singleton;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
-public class MultiSourceConfigDAOEnv implements MultiSourceConfigDAO {
+public class ConfigDAOCmdArgs implements ConfigDAO {
+
+  private static String[] args = new String[]{};
 
   @Override
   public Config find() {
     return toConfig(this.findRaw());
   }
 
-  public ConfigEnv findRaw() {
-    return ConfigEnv.fromEnv();
+  public ConfigFlag findRaw() {
+    return ConfigFlag.parse(args);
   }
 
   @Override
   public int priority() {
-    return 1;
+    return 3;
   }
 
-  static Config toConfig(ConfigEnv config) {
+  public static void setArgs(String[] args) {
+    ConfigDAOCmdArgs.args = args;
+  }
+
+  static Config toConfig(ConfigFlag config) {
     return Config.builder()
+      .configPath(Files.pathOf(config.getConfigPath()))
       .registerContainerNames(config.getRegisterContainerNames())
       .domain(config.getDomain())
-      .logFile(config.getLogFile())
+      .logFile(config.getLogToFile())
       .logLevel(ConfigFieldsValuesMapper.mapLogLevelFrom(config.getLogLevel()))
       .dockerHost(config.getDockerHost())
       .hostMachineHostname(config.getHostMachineHostname())
@@ -40,8 +48,13 @@ public class MultiSourceConfigDAOEnv implements MultiSourceConfigDAO {
       .dockerSolverHostMachineFallbackActive(config.getDockerSolverHostMachineFallbackActive())
       .resolvConfOverrideNameServers(config.getResolvConfOverrideNameServers())
       .mustConfigureDpsNetwork(config.getDpsNetwork())
-      .resolvConfPaths(config.getResolvConfPath())
+      .webServerPort(config.getWebServerPort())
+      .dnsServerPort(config.getDnsServerPort())
+      .defaultDns(config.getDefaultDns())
       .build();
   }
 
+  static String[] getArgs() {
+    return args;
+  }
 }

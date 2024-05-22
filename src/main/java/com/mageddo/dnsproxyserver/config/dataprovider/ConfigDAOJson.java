@@ -18,10 +18,10 @@ import java.util.Arrays;
 @Slf4j
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
-public class MultiSourceConfigDAOJson implements MultiSourceConfigDAO {
+public class ConfigDAOJson implements ConfigDAO {
 
-  private final MultiSourceConfigDAOEnv configDAOEnv;
-  private final MultiSourceConfigDAOCmdArgs configDAOCmdArgs;
+  private final ConfigDAOEnv configDAOEnv;
+  private final ConfigDAOCmdArgs configDAOCmdArgs;
 
   @Override
   public Config find() {
@@ -55,7 +55,7 @@ public class MultiSourceConfigDAOJson implements MultiSourceConfigDAO {
   }
 
   static boolean runningInTestsAndNoCustomConfigPath() {
-    return !Arrays.toString(MultiSourceConfigDAOCmdArgs.getArgs()).contains("--conf-path") && Tests.inTest();
+    return !Arrays.toString(ConfigDAOCmdArgs.getArgs()).contains("--conf-path") && Tests.inTest();
   }
 
   Config toConfig(ConfigJson json, Path configFileAbsolutePath) {

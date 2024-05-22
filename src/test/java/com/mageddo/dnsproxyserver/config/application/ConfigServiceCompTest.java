@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.config.application;
 
 import com.mageddo.dnsproxyserver.config.LogLevel;
-import com.mageddo.dnsproxyserver.config.dataprovider.MultiSourceConfigDAOCmdArgs;
+import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOCmdArgs;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ class ConfigServiceCompTest {
 
     // arrange
     final var jsonConfigFile = tmpDir.resolve("tmpfile.json");
-    MultiSourceConfigDAOCmdArgs.setArgs(new String[]{"--conf-path", jsonConfigFile.toString()});
+    ConfigDAOCmdArgs.setArgs(new String[]{"--conf-path", jsonConfigFile.toString()});
     assertFalse(Files.exists(jsonConfigFile));
 
     // act
@@ -66,7 +66,7 @@ class ConfigServiceCompTest {
     }
     assertTrue(Files.exists(tmpConfigFile));
 
-    MultiSourceConfigDAOCmdArgs.setArgs(new String[]{"--conf-path", tmpConfigFile.toString()});
+    ConfigDAOCmdArgs.setArgs(new String[]{"--conf-path", tmpConfigFile.toString()});
 
     // act
     final var config = Configs.getContext()
@@ -89,7 +89,7 @@ class ConfigServiceCompTest {
   @Test
   void mustParseLowerCaseLogLevel(){
     // arrange
-    MultiSourceConfigDAOCmdArgs.setArgs(new String[]{"--log-level", "warning"});
+    ConfigDAOCmdArgs.setArgs(new String[]{"--log-level", "warning"});
 
     // act
     final var config = Configs.getContext()

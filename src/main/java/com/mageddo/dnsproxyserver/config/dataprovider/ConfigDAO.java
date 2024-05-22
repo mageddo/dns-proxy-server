@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.config.dataprovider;
 
 import com.mageddo.dnsproxyserver.config.Config;
 
-public interface MultiSourceConfigDAO {
+public interface ConfigDAO {
   Config find();
   int priority();
 }

@@ -9,17 +9,17 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class MultiSourceConfigDAOJsonTest {
+class ConfigDAOJsonTest {
 
   @Test
   void mustBuildConfPathRelativeToWorkDir(@TempDir Path tmpDir){
     // arrange
     final var workDir = tmpDir.resolve("custom-work-dir");
     final var flags = ConfigFlagTemplates.defaultWithConfigPath(Paths.get("conf/config.json"));
-    MultiSourceConfigDAOCmdArgs.setArgs(flags.getArgs());
+    ConfigDAOCmdArgs.setArgs(flags.getArgs());
 
     // act
-    final var configPath = MultiSourceConfigDAOJson.buildConfigPath(workDir, flags.getConfigPath());
+    final var configPath = ConfigDAOJson.buildConfigPath(workDir, flags.getConfigPath());
 
     // assert
     assertEquals("config.json", configPath.getFileName().toString());

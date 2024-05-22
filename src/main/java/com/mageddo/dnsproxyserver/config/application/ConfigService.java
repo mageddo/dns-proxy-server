@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.config.application;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.dataprovider.MultiSourceConfigDAO;
+import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAO;
 import com.mageddo.dnsproxyserver.config.mapper.ConfigMapper;
 
 import javax.enterprise.inject.Instance;
@@ -14,10 +14,10 @@ import java.util.stream.Stream;
 @Singleton
 public class ConfigService {
 
-  private final List<MultiSourceConfigDAO> configDAOS;
+  private final List<ConfigDAO> configDAOS;
 
   @Inject
-  public ConfigService(Instance<MultiSourceConfigDAO> configDAOS) {
+  public ConfigService(Instance<ConfigDAO> configDAOS) {
     this.configDAOS = configDAOS
       .stream()
       .toList()
@@ -30,13 +30,13 @@ public class ConfigService {
 
   List<Config> findConfigs() {
     return this.findConfigDaos()
-      .map(MultiSourceConfigDAO::find)
+      .map(ConfigDAO::find)
       .toList();
   }
 
-  Stream<MultiSourceConfigDAO> findConfigDaos() {
+  Stream<ConfigDAO> findConfigDaos() {
     return this.configDAOS
       .stream()
-      .sorted(Comparator.comparingInt(MultiSourceConfigDAO::priority));
+      .sorted(Comparator.comparingInt(ConfigDAO::priority));
   }
 }
