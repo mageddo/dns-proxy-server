@@ -43,7 +43,6 @@ class ConfigDAOJsonTest {
     assertEquals(workDir.getFileName().toString(), configPath.getParent().getParent().getFileName().toString());
   }
 
-
   @Test
   void mustReadAndRespectStoredConfigFile(@TempDir Path tmpDir) {
     // arrange
@@ -60,7 +59,6 @@ class ConfigDAOJsonTest {
       readAndSortJsonExcluding("/configs-test/004.json", excludingFields),
       sortJsonExcluding(config, excludingFields)
     );
-
   }
 
   @SneakyThrows

@@ -28,5 +28,6 @@
   "version" : 2,
   "resolvConfOverrideNameServers" : null,
   "serverProtocol" : null,
-  "webServerPort" : null
+  "webServerPort" : null,
+  "solverRemote": null
 }

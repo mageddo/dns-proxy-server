@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.config.application;
 
+import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.LogLevel;
 import com.mageddo.dnsproxyserver.config.configurator.Context;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOCmdArgs;
@@ -54,10 +55,18 @@ class ConfigServiceCompTest {
       ;
 
     // assert
+    assertParsedConfig(config);
+    assertWrittenFile(jsonConfigFile);
+  }
+
+  static void assertParsedConfig(Config config) {
     assertEquals(
       readAndSortJsonExcluding("/configs-test/001.json", excludingFields),
       readAndSortJsonExcluding(config, excludingFields)
     );
+  }
+
+  static void assertWrittenFile(Path jsonConfigFile) {
     assertTrue(Files.exists(jsonConfigFile));
     assertEquals(readAndSortJson("/configs-test/002.json"), readAndSortJson(jsonConfigFile));
   }
