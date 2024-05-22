@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.dnsconfigurator;
 
 import com.mageddo.commons.concurrent.ThreadPool;
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.Configs;
+import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.di.StartupEvent;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.DnsConfiguratorLinux;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.DpsContainerService;
@@ -33,7 +33,7 @@ public class DnsConfigurators implements StartupEvent {
 
   @Override
   public void onStart() {
-    final var config = Configs.getInstance();
+    final var config = this.findConfig();
     log.debug("action=setAsDefaultDns, active={}", config.getDefaultDns());
     if (!Boolean.TRUE.equals(config.getDefaultDns())) {
       return;
@@ -69,7 +69,7 @@ public class DnsConfigurators implements StartupEvent {
   IpAddr findIpAddr() {
     return IpAddr.of(
       this.dpsContainerService.findDpsIP(),
-      Configs.getInstance().getDnsServerPort()
+      findConfig().getDnsServerPort()
     );
   }
 
@@ -134,6 +134,10 @@ public class DnsConfigurators implements StartupEvent {
       public void restore() {
       }
     };
+  }
+
+  Config findConfig() {
+    return Configs.getInstance();
   }
 
 }

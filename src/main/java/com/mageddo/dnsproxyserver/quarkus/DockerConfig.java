@@ -6,7 +6,7 @@ import com.github.dockerjava.core.DockerClientImpl;
 import com.github.dockerjava.core.RemoteApiVersion;
 import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import com.mageddo.commons.lang.Objects;
-import com.mageddo.dnsproxyserver.config.Configs;
+import com.mageddo.dnsproxyserver.config.application.Configs;
 
 import javax.enterprise.inject.Produces;
 import java.net.URI;

@@ -2,8 +2,8 @@ package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
-import com.mageddo.dnsproxyserver.config.Configs;
-import com.mageddo.dnsproxyserver.config.Types;
+import com.mageddo.dnsproxyserver.config.application.Configs;
+import com.mageddo.dnsproxyserver.config.ConfigEntryTypes;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.usecase.HostMachineService;
 import com.mageddo.net.IP;
@@ -28,7 +28,7 @@ public class SolverSystem implements Solver {
     final var hostname = Messages.findQuestionHostname(query);
 
     final var questionType = Messages.findQuestionType(query);
-    if (Types.isNot(questionType, Type.A, Type.AAAA)) {
+    if (ConfigEntryTypes.isNot(questionType, Type.A, Type.AAAA)) {
       log.debug("status=unsupportedType, type={}, query={}", findQuestionTypeCode(query), Messages.simplePrint(query));
       return null;
     }

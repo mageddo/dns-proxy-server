@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.di.module;
 
-import com.mageddo.dnsproxyserver.config.ConfigDAO;
+import com.mageddo.dnsproxyserver.config.dataprovider.PersistentConfigDAO;
 import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacade;
 import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacade;
 import com.mageddo.dnsproxyserver.server.dns.ServerStarter;
@@ -43,8 +43,8 @@ public interface ModuleMap {
 
   @Binds
   @IntoMap
-  @ClassKey(ConfigDAO.class)
-  Object b6(ConfigDAO bean);
+  @ClassKey(PersistentConfigDAO.class)
+  Object b6(PersistentConfigDAO bean);
 
   @Binds
   @IntoMap

@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.di;
 
+import com.mageddo.di.CDIImpl;
 import com.mageddo.dnsproxyserver.di.module.ModuleDao;
 import com.mageddo.dnsproxyserver.di.module.ModuleDockerClient;
 import com.mageddo.dnsproxyserver.di.module.ModuleHttpMapper;
@@ -18,6 +19,7 @@ import jdk.jfr.Name;
 import org.apache.commons.lang3.Validate;
 
 import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.spi.CDI;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import java.util.Map;
@@ -25,19 +27,21 @@ import java.util.Set;
 
 @Singleton
 @Component(modules = {
-    ModuleMain.class,
-    ModuleDao.class,
-    ModuleDockerClient.class,
-    QuarkusConfig.class,
-    ModuleHttpMapper.class,
-    ModuleSolver.class,
-    ModuleStartup.class,
-    ModuleMap.class
+  ModuleMain.class,
+  ModuleDao.class,
+  ModuleDockerClient.class,
+  QuarkusConfig.class,
+  ModuleHttpMapper.class,
+  ModuleSolver.class,
+  ModuleStartup.class,
+  ModuleMap.class
 })
 public interface Context {
 
   static Context create() {
-    return DaggerContext.create();
+    final var context = DaggerContext.create();
+    CDI.setCDIProvider(() -> new CDIImpl(context));
+    return context;
   }
 
   Starter starter();

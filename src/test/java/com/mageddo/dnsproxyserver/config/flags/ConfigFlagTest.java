@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.config.flags;
 
 import com.mageddo.commons.regex.Regexes;
-import com.mageddo.dnsproxyserver.config.entrypoint.ConfigFlag;
+import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigFlag;
 import org.junit.jupiter.api.Test;
 
 import java.io.PrintWriter;
@@ -64,6 +64,19 @@ class ConfigFlagTest {
     final var validVersion = Regexes.matcher(sw.toString(), Pattern.compile("\\d+\\.\\d+.\\d+.*")).matches();
     assertTrue(validVersion, sw.toString());
     assertTrue(config.isVersion());
+  }
+
+
+  @Test
+  void mustParseLowerCaseLogLevel(){
+    // arrange
+    final var args = new String[]{"--log-level", "warning"};
+
+    // act
+    final var config = ConfigFlag.parse(args);
+
+    // assert
+    assertEquals("warning", config.getLogLevel());
   }
 }
 

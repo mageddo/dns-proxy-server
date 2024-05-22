@@ -2,8 +2,8 @@ package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
-import com.mageddo.dnsproxyserver.config.ConfigDAO;
-import com.mageddo.dnsproxyserver.config.Types;
+import com.mageddo.dnsproxyserver.config.dataprovider.PersistentConfigDAO;
+import com.mageddo.dnsproxyserver.config.ConfigEntryTypes;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import dagger.Lazy;
 import lombok.AllArgsConstructor;
@@ -25,7 +25,7 @@ public class SolverLocalDB implements Solver {
 
   public  static final String NAME = "SolverLocalDB";
 
-  private final ConfigDAO configDAO;
+  private final PersistentConfigDAO persistentConfigDAO;
   private final Lazy<SolverDelegate> solverDelegate;
 
   @Override
@@ -34,7 +34,7 @@ public class SolverLocalDB implements Solver {
     final var stopWatch = StopWatch.createStarted();
 
     final var type = Messages.findQuestionTypeCode(query);
-    if (Types.isNot(type, Type.A, Type.CNAME, Type.AAAA)) {
+    if (ConfigEntryTypes.isNot(type, Type.A, Type.CNAME, Type.AAAA)) {
       log.debug("status=typeNotSupported, action=continue, type={}, time={}", type, stopWatch.getTime());
       return null;
     }
@@ -79,7 +79,7 @@ public class SolverLocalDB implements Solver {
   }
 
   Config.Entry findEntryTo(HostnameQuery host) {
-    return this.configDAO.findEntryForActiveEnv(host);
+    return this.persistentConfigDAO.findEntryForActiveEnv(host);
   }
 
 }

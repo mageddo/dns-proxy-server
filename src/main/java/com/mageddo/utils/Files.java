@@ -5,6 +5,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static java.nio.file.Files.newInputStream;
 import static java.nio.file.Files.newOutputStream;
@@ -53,5 +54,12 @@ public class Files {
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
+  }
+
+  public static Path pathOf(String path) {
+    if(path == null){
+      return null;
+    }
+    return Paths.get(path);
   }
 }

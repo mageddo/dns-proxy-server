@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.server.rest;
 
-import com.mageddo.dnsproxyserver.config.ConfigDAO;
+import com.mageddo.dnsproxyserver.config.dataprovider.PersistentConfigDAO;
 import com.mageddo.dnsproxyserver.server.rest.reqres.HostnameV1;
 import com.mageddo.dnsproxyserver.server.rest.reqres.Message;
 import com.mageddo.http.HttpMapper;
@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response.Status;
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class HostnameResource implements HttpMapper {
 
-  private final ConfigDAO configDAO;
+  private final PersistentConfigDAO persistentConfigDAO;
 
   @Override
   public void map(WebServer server) {
@@ -26,7 +26,7 @@ public class HostnameResource implements HttpMapper {
     server.get("/hostname/find", exchange -> {
       final var env = Request.queryParam(exchange, "env");
       final var hostname = Request.queryParam(exchange, "hostname");
-      final var hostnames = this.configDAO.findHostnamesBy(env, hostname);
+      final var hostnames = this.persistentConfigDAO.findHostnamesBy(env, hostname);
       if (hostnames == null) {
         Encoders.encodeJson(exchange, Status.OK, new Object[]{});
       } else {
@@ -40,17 +40,17 @@ public class HostnameResource implements HttpMapper {
 
     server.post("/hostname", exchange -> {
       final var hostname = Decoders.jsonDecode(exchange, HostnameV1.class);
-      this.configDAO.addEntry(hostname.getEnv(), hostname.toEntry());
+      this.persistentConfigDAO.addEntry(hostname.getEnv(), hostname.toEntry());
     });
 
     server.put("/hostname", exchange -> {
       final var hostname = Decoders.jsonDecode(exchange, HostnameV1.class);
-      this.configDAO.updateEntry(hostname.getEnv(), hostname.toEntry());
+      this.persistentConfigDAO.updateEntry(hostname.getEnv(), hostname.toEntry());
     });
 
     server.delete("/hostname", exchange -> {
       final var hostname = Decoders.jsonDecode(exchange, HostnameV1.class);
-      final var removed = this.configDAO.removeEntry(hostname.getEnv(), hostname.getHostname());
+      final var removed = this.persistentConfigDAO.removeEntry(hostname.getEnv(), hostname.getHostname());
       if (removed) {
         Encoders.status(exchange, Status.OK);
       } else {

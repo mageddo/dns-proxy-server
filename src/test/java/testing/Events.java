@@ -1,6 +1,6 @@
 package testing;
 
-import com.mageddo.dnsproxyserver.config.Configs;
+import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.di.Context;
 import dagger.sheath.EventHandler;
 import io.restassured.RestAssured;

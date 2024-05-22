@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.server.rest;
 
-import com.mageddo.dnsproxyserver.config.Configs;
+import com.mageddo.dnsproxyserver.config.application.Configs;
 import dagger.sheath.junit.DaggerTest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.ConfigDAO;
+import com.mageddo.dnsproxyserver.config.dataprovider.PersistentConfigDAO;
 import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import testing.templates.EntryTemplates;
@@ -27,7 +27,7 @@ class SolverLocalDBCompTest {
   SolverLocalDB solver;
 
   @Inject
-  ConfigDAO configDAO;
+  PersistentConfigDAO persistentConfigDAO;
 
   @InjectMock
   SolverProvider solverProvider;
@@ -53,7 +53,7 @@ class SolverLocalDBCompTest {
     // arrange
     final var host = "acme.com";
     final var entry = EntryTemplates.a(host);
-    this.configDAO.addEntry(Config.Env.DEFAULT_ENV, entry);
+    this.persistentConfigDAO.addEntry(Config.Env.DEFAULT_ENV, entry);
 
     final var msg = Messages.aQuestion(toAbsoluteName(host));
 
@@ -76,7 +76,7 @@ class SolverLocalDBCompTest {
     final var from = "www.acme.com";
     final var to = "acme.com";
     final var entry = EntryTemplates.cname(from, to);
-    this.configDAO.addEntry(Config.Env.DEFAULT_ENV, entry);
+    this.persistentConfigDAO.addEntry(Config.Env.DEFAULT_ENV, entry);
 
     doReturn(SolverTemplates.mockTo192())
         .when(this.solverProvider)
@@ -101,7 +101,7 @@ class SolverLocalDBCompTest {
   void mustSolveAAARecordAsAFromLocalDB() {
 
     // arrange
-    this.configDAO.addEntry(Config.Env.DEFAULT_ENV, EntryTemplates.acmeQuadA());
+    this.persistentConfigDAO.addEntry(Config.Env.DEFAULT_ENV, EntryTemplates.acmeQuadA());
     final var msg = Messages.quadAQuestion(toAbsoluteName(EntryTemplates.ACME_COM));
 
     // act

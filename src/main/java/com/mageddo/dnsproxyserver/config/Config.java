@@ -1,6 +1,5 @@
 package com.mageddo.dnsproxyserver.config;
 
-import com.mageddo.dnsproxyserver.config.entrypoint.LogLevel;
 import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import com.mageddo.net.IP;
 import com.mageddo.net.IpAddr;
@@ -26,70 +25,57 @@ import java.util.stream.Stream;
 import static com.mageddo.commons.lang.Objects.mapOrNull;
 
 /**
- * Domain object which owns the configs.
  *
- * @see com.mageddo.dnsproxyserver.config.entrypoint.ConfigJson
- * @see com.mageddo.dnsproxyserver.config.entrypoint.ConfigFlag
- * @see com.mageddo.dnsproxyserver.config.entrypoint.ConfigEnv
+ * @see com.mageddo.dnsproxyserver.config.application.ConfigService
  */
 @Value
-@Builder
+@Builder(toBuilder = true)
 public class Config {
 
-  @NonNull
   private String version;
 
-  @NonNull
   @Builder.Default
   private List<IpAddr> remoteDnsServers = new ArrayList<>();
 
-  @NonNull
   private Integer webServerPort;
 
-  @NonNull
   private Integer dnsServerPort;
 
-  @NonNull
   private Boolean defaultDns;
 
   private LogLevel logLevel;
 
-  @NonNull
   private String logFile;
 
-  @NonNull
   private Boolean registerContainerNames;
 
-  @NonNull
   private String hostMachineHostname;
 
-  @NonNull
   private String domain;
 
-  @NonNull
   private Boolean mustConfigureDpsNetwork;
 
-  @NonNull
   private Boolean dpsNetworkAutoConnect;
 
-  @NonNull
   private Path configPath;
 
-  @NonNull
   private String resolvConfPaths;
 
-  @NonNull
   private SimpleServer.Protocol serverProtocol;
 
   private URI dockerHost;
 
-  private boolean resolvConfOverrideNameServers;
+  private Boolean resolvConfOverrideNameServers;
 
-  private boolean noRemoteServers;
+  private Boolean noRemoteServers;
 
-  private int noEntriesResponseCode;
+  private Integer noEntriesResponseCode;
 
-  private boolean dockerSolverHostMachineFallbackActive;
+  private Boolean dockerSolverHostMachineFallbackActive;
+
+  private boolean helpCmd;
+
+  private boolean versionCmd;
 
   @NonNull
   private SolverRemote solverRemote;
@@ -187,7 +173,7 @@ public class Config {
       private final int type;
 
       public boolean isNot(Type... types) {
-        return Types.isNot(this.type, types);
+        return ConfigEntryTypes.isNot(this.type, types);
       }
 
       public static Type of(Integer code) {
@@ -220,7 +206,7 @@ public class Config {
       }
 
       public boolean isAddressSolving() {
-        return Types.is(this, Config.Entry.Type.A, Config.Entry.Type.AAAA);
+        return ConfigEntryTypes.is(this, Config.Entry.Type.A, Config.Entry.Type.AAAA);
       }
     }
   }

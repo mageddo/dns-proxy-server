@@ -3,11 +3,12 @@
   "dnsServerPort" : 53,
   "dockerSolverHostMachineFallbackActive" : true,
   "domain" : "docker",
-  "mustConfigureDpsNetwork" : false,
   "dpsNetworkAutoConnect" : false,
+  "helpCmd" : false,
   "hostMachineHostname" : "host.docker",
   "logFile" : "console",
   "logLevel" : "INFO",
+  "mustConfigureDpsNetwork" : false,
   "noEntriesResponseCode" : 3,
   "noRemoteServers" : false,
   "registerContainerNames" : false,
@@ -18,5 +19,6 @@
   } ],
   "resolvConfOverrideNameServers" : true,
   "serverProtocol" : "UDP_TCP",
+  "versionCmd" : false,
   "webServerPort" : 5380
 }

@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.di.module;
 
-import com.mageddo.dnsproxyserver.config.ConfigDAO;
-import com.mageddo.dnsproxyserver.config.ConfigDAOJson;
+import com.mageddo.dnsproxyserver.config.dataprovider.PersistentConfigDAO;
+import com.mageddo.dnsproxyserver.config.dataprovider.PersistentConfigDAOJson;
 import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacade;
 import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacadeDefault;
 import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacade;
@@ -26,7 +26,6 @@ public interface ModuleDao {
   @Singleton
   DockerNetworkFacade dockerNetworkFacade(DockerNetworkFacadeDefault impl);
 
-
   @Binds
   @Singleton
   ContainerFacade containerFacade(ContainerFacadeDefault impl);
@@ -35,7 +34,7 @@ public interface ModuleDao {
 
   @Binds
   @Singleton
-  ConfigDAO configDAO(ConfigDAOJson impl);
+  PersistentConfigDAO configDAO(PersistentConfigDAOJson impl);
 
   @Binds
   @Singleton

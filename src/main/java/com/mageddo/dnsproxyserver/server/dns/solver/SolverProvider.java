@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.Configs;
+import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.utils.Priorities;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,7 +33,7 @@ public class SolverProvider {
     this.solvers = solvers
       .stream()
       .sorted(Priorities.comparator(Solver::name, solversOrder))
-      .filter(it -> !(config.isNoRemoteServers() && it.is(SolverCachedRemote.NAME)))
+      .filter(it -> !(config.getNoRemoteServers() && it.is(SolverCachedRemote.NAME)))
       .toList()
     ;
   }

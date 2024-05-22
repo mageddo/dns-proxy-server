@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.quarkus;
 
-import com.mageddo.dnsproxyserver.di.InstanceImpl;
+import com.mageddo.di.InstanceImpl;
 
 import javax.enterprise.inject.Instance;
 import java.util.List;

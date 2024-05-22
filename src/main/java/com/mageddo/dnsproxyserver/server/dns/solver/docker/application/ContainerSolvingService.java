@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 
-import com.mageddo.dnsproxyserver.config.Configs;
+import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Container;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Entry;
@@ -138,6 +138,6 @@ public class ContainerSolvingService {
   }
 
   boolean isDockerSolverHostMachineFallbackActive() {
-    return Configs.getInstance().isDockerSolverHostMachineFallbackActive();
+    return Configs.getInstance().getDockerSolverHostMachineFallbackActive();
   }
 }

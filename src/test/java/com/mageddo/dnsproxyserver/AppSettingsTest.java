@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver;
 
+import com.mageddo.dnsproxyserver.application.AppSettings;
 import testing.templates.ConfigTemplates;
 import com.mageddo.logback.LogbackUtils;
 import org.junit.jupiter.api.Test;
@@ -10,10 +11,10 @@ class AppSettingsTest {
   @Test
   void mustLogLevelInSl4jConvetion(){
     // arrange
-    final var config = ConfigTemplates.withoutId();
+    final var config = ConfigTemplates.defaultWithoutId();
 
     // act
-    AppSettings.setup(config);
+    new AppSettings().setupLogs(config);
 
     // assert
     assertEquals("WARN", LogbackUtils.getLogLevel("com.mageddo").levelStr);

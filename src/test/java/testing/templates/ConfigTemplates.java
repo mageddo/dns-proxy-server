@@ -1,14 +1,14 @@
 package testing.templates;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.entrypoint.ConfigEnv;
-import com.mageddo.dnsproxyserver.config.entrypoint.LogLevel;
+import com.mageddo.dnsproxyserver.config.LogLevel;
+import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigEnv;
 import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 
 import java.nio.file.Paths;
 
 public class ConfigTemplates {
-  public static Config withoutId() {
+  public static Config defaultWithoutId() {
     return defaultBuilder()
       .build();
   }
@@ -17,7 +17,7 @@ public class ConfigTemplates {
     return Config
       .builder()
       .logFile("/tmp/dps.log")
-      .defaultDns(false)
+      .defaultDns(true)
       .dpsNetworkAutoConnect(false)
       .hostMachineHostname("host.docker")
       .configPath(Paths.get("/tmp/config.json"))
@@ -26,7 +26,7 @@ public class ConfigTemplates {
       .webServerPort(8080)
       .version("3.0.0")
       .dnsServerPort(53)
-      .domain("com")
+      .domain("docker")
       .logLevel(LogLevel.WARNING)
       .resolvConfPaths(ConfigEnv.DEFAULT_RESOLV_CONF_PATH)
       .serverProtocol(SimpleServer.Protocol.UDP_TCP)
@@ -34,4 +34,9 @@ public class ConfigTemplates {
   }
 
 
+  public static Config withRegisterContainerNames() {
+    return defaultBuilder()
+      .registerContainerNames(true)
+      .build();
+  }
 }
