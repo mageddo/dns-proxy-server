@@ -2,16 +2,21 @@ package com.mageddo.dnsproxyserver.config.dataprovider.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.DurationDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.DurationSerializer;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.config.dataprovider.mapper.ConfigJsonV2EnvsMapper;
+import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import com.mageddo.net.IP;
 import com.mageddo.net.IpAddr;
-import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,6 +66,8 @@ public class ConfigJsonV2 implements ConfigJson {
   private Integer noEntriesResponseCode;
 
   private Boolean dockerSolverHostMachineFallbackActive;
+
+  private SolverRemote solverRemote;
 
   @JsonIgnore
   public List<IpAddr> getRemoteDnsServers() {
@@ -144,4 +151,22 @@ public class ConfigJsonV2 implements ConfigJson {
     }
   }
 
+  @Data
+  public static class SolverRemote {
+
+    private CircuitBreaker circuitBreaker;
+
+    @Data
+    public static class CircuitBreaker {
+
+      private Integer failureThreshold;
+      private Integer failureThresholdCapacity;
+      private Integer successThreshold;
+
+      @JsonSerialize(using = DurationSerializer.class)
+      @JsonDeserialize(using = DurationDeserializer.class)
+      private Duration testDelay;
+    }
+
+  }
 }

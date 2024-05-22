@@ -50,6 +50,7 @@ dependencies {
   implementation('com.github.docker-java:docker-java-transport-httpclient5:3.3.4')
 
   implementation('info.picocli:picocli:4.7.1')
+  implementation('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1')
 
   testAnnotationProcessor("com.google.dagger:dagger-compiler:2.45")
   testCompileOnly('org.projectlombok:lombok:1.18.+')
@@ -58,6 +59,7 @@ dependencies {
   testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
   testImplementation('org.mockito:mockito-junit-jupiter:5.1.+')
   testImplementation('io.rest-assured:rest-assured:5.3.0')
+
 
 }
 
