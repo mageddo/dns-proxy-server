@@ -3,7 +3,8 @@ package com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.mapper;
 import com.mageddo.dnsproxyserver.server.dns.solver.docker.Network;
 import com.mageddo.net.IP;
 
-import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 public class NetworkMapper {
 
@@ -11,10 +12,14 @@ public class NetworkMapper {
     return Network.builder()
       .name(n.getName())
       .driver(n.getDriver())
-      .gateways(List.of(
-        findGatewayIp(n, IP.Version.IPV4),
-        findGatewayIp(n, IP.Version.IPV6)
-      ))
+      .gateways(Stream
+        .of(
+          findGatewayIp(n, IP.Version.IPV4),
+          findGatewayIp(n, IP.Version.IPV6)
+        )
+        .filter(Objects::nonNull)
+        .toList()
+      )
       .ipv6Active(n.getEnableIPv6())
       .build()
       ;
