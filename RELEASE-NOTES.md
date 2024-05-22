@@ -1,4 +1,4 @@
-## 3.17.1
+## 3.17.2
 * Fixing regression, leading with no ipv6 response, see #446
 
 ## 3.17.1
