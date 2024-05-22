@@ -57,6 +57,7 @@ public class ConfigMapper {
     Validate.notNull(config.getDpsNetworkAutoConnect());
     Validate.notNull(config.getResolvConfPaths());
     Validate.notNull(config.getServerProtocol());
+    Validate.notNull(config.getSolverRemote());
   }
 
   static List<IpAddr> buildDefaultDnsServers() {

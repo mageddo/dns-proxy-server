@@ -30,6 +30,10 @@ public class ConfigTemplates {
       .logLevel(LogLevel.WARNING)
       .resolvConfPaths(ConfigEnv.DEFAULT_RESOLV_CONF_PATH)
       .serverProtocol(SimpleServer.Protocol.UDP_TCP)
+      .resolvConfOverrideNameServers(true)
+      .noRemoteServers(false)
+      .noEntriesResponseCode(3)
+      .dockerSolverHostMachineFallbackActive(true)
       ;
   }
 

@@ -77,7 +77,6 @@ public class Config {
 
   private boolean versionCmd;
 
-  @NonNull
   private SolverRemote solverRemote;
 
   public void resetConfigFile() {
