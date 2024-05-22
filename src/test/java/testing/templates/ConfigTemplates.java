@@ -26,7 +26,7 @@ public class ConfigTemplates {
       .webServerPort(8080)
       .version("3.0.0")
       .dnsServerPort(53)
-      .domain("com")
+      .domain("docker")
       .logLevel(LogLevel.WARNING)
       .resolvConfPaths(ConfigEnv.DEFAULT_RESOLV_CONF_PATH)
       .serverProtocol(SimpleServer.Protocol.UDP_TCP)
