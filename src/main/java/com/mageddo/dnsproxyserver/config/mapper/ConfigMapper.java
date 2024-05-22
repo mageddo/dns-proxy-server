@@ -6,6 +6,7 @@ import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
 import com.mageddo.dnsproxyserver.utils.Numbers;
 import com.mageddo.net.IpAddr;
 import org.apache.commons.lang3.SystemUtils;
+import org.apache.commons.lang3.Validate;
 
 import java.net.URI;
 import java.util.Collections;
@@ -44,7 +45,18 @@ public class ConfigMapper {
   }
 
   static void validate(Config config) {
-    // todo #440 validate fields which must not be null
+    Validate.notNull(config.getVersion());
+    Validate.notNull(config.getRemoteDnsServers());
+    Validate.isTrue(config.getWebServerPort() != null && config.getWebServerPort() > 0);
+    Validate.isTrue(config.getDnsServerPort() != null && config.getDnsServerPort() > 0);
+    Validate.notNull(config.getLogFile());
+    Validate.notNull(config.getRegisterContainerNames());
+    Validate.notNull(config.getHostMachineHostname());
+    Validate.notNull(config.getDomain());
+    Validate.notNull(config.getMustConfigureDpsNetwork());
+    Validate.notNull(config.getDpsNetworkAutoConnect());
+    Validate.notNull(config.getResolvConfPaths());
+    Validate.notNull(config.getServerProtocol());
   }
 
   static List<IpAddr> buildDefaultDnsServers() {

@@ -38,47 +38,35 @@ import static com.mageddo.commons.lang.Objects.mapOrNull;
 @Builder(toBuilder = true)
 public class Config {
 
-//  @NonNull
   private String version;
 
-//  @NonNull
   @Builder.Default
   private List<IpAddr> remoteDnsServers = new ArrayList<>();
 
-//  @NonNull
   private Integer webServerPort;
 
-//  @NonNull
   private Integer dnsServerPort;
 
   private Boolean defaultDns;
 
   private LogLevel logLevel;
 
-//  @NonNull
   private String logFile;
 
-//  @NonNull
   private Boolean registerContainerNames;
 
-//  @NonNull
   private String hostMachineHostname;
 
-//  @NonNull
   private String domain;
 
-//  @NonNull
   private Boolean mustConfigureDpsNetwork;
 
-//  @NonNull
   private Boolean dpsNetworkAutoConnect;
 
   private Path configPath;
 
-//  @NonNull
   private String resolvConfPaths;
 
-//  @NonNull
   private SimpleServer.Protocol serverProtocol;
 
   private URI dockerHost;
