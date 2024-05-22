@@ -4,27 +4,18 @@ import com.mageddo.dnsproxyserver.config.LogLevel;
 import com.mageddo.dnsproxyserver.config.configurator.Context;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOCmdArgs;
 import dagger.sheath.junit.DaggerTest;
-import lombok.SneakyThrows;
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import javax.inject.Inject;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static com.mageddo.utils.TestUtils.readAndSortJson;
 import static com.mageddo.utils.TestUtils.readAndSortJsonExcluding;
-import static com.mageddo.utils.TestUtils.readAsStream;
-import static com.mageddo.utils.TestUtils.sortJsonExcluding;
-import static org.hamcrest.CoreMatchers.anyOf;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static testing.JsonAssertion.jsonPath;
 
 @DaggerTest(component = Context.class)
 class ConfigServiceCompTest {
@@ -49,7 +40,7 @@ class ConfigServiceCompTest {
   }
 
   @Test
-  void mustParseDefaultConfigsAndCreateConfigFile(@TempDir Path tmpDir) {
+  void mustParseDefaultConfigsAndCreateJsonConfigFile(@TempDir Path tmpDir) {
 
     // arrange
     final var jsonConfigFile = tmpDir.resolve("tmpfile.json");
@@ -69,44 +60,6 @@ class ConfigServiceCompTest {
     );
     assertTrue(Files.exists(jsonConfigFile));
     assertEquals(readAndSortJson("/configs-test/002.json"), readAndSortJson(jsonConfigFile));
-  }
-
-
-  @Test
-  @SneakyThrows
-  void mustRespectStoredConfig(@TempDir Path tmpDir) {
-
-    // arrange
-    final var sorceConfigFile = "/configs-test/003.json";
-    final var configPathToUse = tmpDir.resolve("tmpfile.json");
-
-    writeCurrentConfigFile(sorceConfigFile, configPathToUse);
-    assertTrue(Files.exists(configPathToUse));
-
-    ConfigDAOCmdArgs.setArgs(new String[]{"--conf-path", configPathToUse.toString()});
-
-    // act
-    final var config = Configs.getContext()
-      .configService()
-      .findCurrentConfig()
-      ;
-
-    // assert
-    assertEquals(
-      readAndSortJsonExcluding("/configs-test/004.json", excludingFields),
-      sortJsonExcluding(config, excludingFields)
-    );
-    assertThat(
-      jsonPath(config).getString("dockerHost"),
-      anyOf(containsString("unix:"), containsString("npipe"))
-    );
-
-  }
-
-  private static void writeCurrentConfigFile(String sourceResource, Path target) throws IOException {
-    try (var out = Files.newOutputStream(target)) {
-      IOUtils.copy(readAsStream(sourceResource), out);
-    }
   }
 
   @Test

@@ -40,11 +40,11 @@ public class ConfigMapper {
       .domain(firstNonNullRequiring(mapField(Config::getDomain, configs)))
       .mustConfigureDpsNetwork(firstNonNullRequiring(mapField(Config::getMustConfigureDpsNetwork, configs)))
       .dpsNetworkAutoConnect(firstNonNullRequiring(mapField(Config::getDpsNetworkAutoConnect, configs)))
-      .remoteDnsServers(firstNonEmptyListRequiring(mapField(Config::getRemoteDnsServers, configs, buildDefaultDnsServers())))
+      .remoteDnsServers(firstNonEmptyListRequiring(mapField(Config::getRemoteDnsServers, configs)))
       .configPath(firstNonNullRequiring(mapField(Config::getConfigPath, configs)))
       .resolvConfPaths(firstNonNullRequiring(mapField(Config::getResolvConfPaths, configs)))
       .serverProtocol(firstNonNullRequiring(mapField(Config::getServerProtocol, configs)))
-      .dockerHost(firstNonNullRequiring(mapField(Config::getDockerHost, configs, buildDefaultDockerHost())))
+      .dockerHost(firstNonNullRequiring(mapField(Config::getDockerHost, configs)))
       .resolvConfOverrideNameServers(firstNonNullRequiring(mapField(Config::getResolvConfOverrideNameServers, configs)))
       .noRemoteServers(firstNonNullRequiring(mapField(Config::getNoRemoteServers, configs)))
       .noEntriesResponseCode(firstNonNullRequiring(mapField(Config::getNoEntriesResponseCode, configs)))
@@ -59,6 +59,8 @@ public class ConfigMapper {
     return Config
       .builder()
       .serverProtocol(SimpleServer.Protocol.UDP_TCP)
+      .dockerHost(buildDefaultDockerHost())
+      .remoteDnsServers(Collections.singletonList(IpAddr.of("8.8.8.8:53")))
       .solverRemote(SolverRemote
         .builder()
         .circuitBreaker(CircuitBreaker
@@ -88,10 +90,6 @@ public class ConfigMapper {
     Validate.notNull(config.getResolvConfPaths());
     Validate.notNull(config.getServerProtocol());
     Validate.notNull(config.getSolverRemote());
-  }
-
-  static List<IpAddr> buildDefaultDnsServers() {
-    return Collections.singletonList(IpAddr.of("8.8.8.8:53"));
   }
 
   private static URI buildDefaultDockerHost() {

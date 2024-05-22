@@ -1,7 +1,7 @@
 {
   "defaultDns" : false,
   "dnsServerPort" : 5391,
-  "dockerSolverHostMachineFallbackActive" : true,
+  "dockerSolverHostMachineFallbackActive" : null,
   "domain" : "acme",
   "dpsNetworkAutoConnect" : true,
   "helpCmd" : false,
@@ -9,31 +9,13 @@
   "logFile" : "/var/log/dns-proxy-server.log",
   "logLevel" : "DEBUG",
   "mustConfigureDpsNetwork" : true,
-  "noEntriesResponseCode" : 3,
-  "noRemoteServers" : false,
+  "noEntriesResponseCode" : null,
+  "noRemoteServers" : null,
   "registerContainerNames" : true,
-  "remoteDnsServers" : [ {
-    "ip" : "8.8.8.8",
-    "port" : 53,
-    "rawIP" : "8.8.8.8"
-  } ],
-  "resolvConfOverrideNameServers" : true,
-  "serverProtocol" : "UDP_TCP",
-  "solverRemote" : {
-    "circuitBreaker" : {
-      "failureThreshold" : 3,
-      "failureThresholdCapacity" : 10,
-      "successThreshold" : 5,
-      "testDelay" : {
-        "nano" : 0,
-        "negative" : false,
-        "positive" : true,
-        "seconds" : 20,
-        "units" : [ "SECONDS", "NANOS" ],
-        "zero" : false
-      }
-    }
-  },
+  "remoteDnsServers" : [ ],
+  "resolvConfOverrideNameServers" : null,
+  "serverProtocol" : null,
+  "solverRemote" : null,
   "versionCmd" : false,
   "webServerPort" : 9393
 }

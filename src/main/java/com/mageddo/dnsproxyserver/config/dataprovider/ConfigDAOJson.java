@@ -28,9 +28,13 @@ public class ConfigDAOJson implements ConfigDAO {
     final var workDir = this.configDAOEnv.findRaw().getCurrentPath();
     final var relativeConfigFilePath = this.configDAOCmdArgs.findRaw().getConfigPath();
     final var configFileAbsolutePath = buildConfigPath(workDir, relativeConfigFilePath);
-    final var jsonConfig = JsonConfigs.loadConfig(configFileAbsolutePath);
-    log.info("status=configuring, configFile={}", configFileAbsolutePath);
-    return toConfig(jsonConfig, configFileAbsolutePath);
+    return this.find(configFileAbsolutePath);
+  }
+
+  public Config find(Path configPath) {
+    final var jsonConfig = JsonConfigs.loadConfig(configPath);
+    log.info("status=configuring, configPath={}", configPath);
+    return toConfig(jsonConfig, configPath);
   }
 
   public static Path buildConfigPath(Path workDir, String configPath) {
