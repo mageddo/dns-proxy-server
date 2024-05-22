@@ -1,12 +1,15 @@
 package com.mageddo.dnsproxyserver.config.application;
 
 import com.mageddo.dnsproxyserver.config.LogLevel;
+import com.mageddo.dnsproxyserver.config.configurator.Context;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOCmdArgs;
+import dagger.sheath.junit.DaggerTest;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import javax.inject.Inject;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -22,12 +25,27 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static testing.JsonAssertion.jsonPath;
 
+@DaggerTest(component = Context.class)
 class ConfigServiceCompTest {
 
   static final String[] excludingFields = new String[]{
     "version", "configPath", "resolvConfPaths",
     "dockerHost"
   };
+
+  @Inject
+  ConfigService service;
+
+  @Test
+  void mustPutDaosInTheExpectedOrder() {
+    // arrange
+
+    // act
+    final var names = this.service.findConfigNames();
+
+    // assert
+    assertEquals("[ConfigDAOEnv, ConfigDAOJson, ConfigDAOCmdArgs]", names.toString());
+  }
 
   @Test
   void mustParseDefaultConfigsAndCreateConfigFile(@TempDir Path tmpDir) {

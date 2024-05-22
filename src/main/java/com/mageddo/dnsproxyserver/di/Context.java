@@ -27,14 +27,14 @@ import java.util.Set;
 
 @Singleton
 @Component(modules = {
-    ModuleMain.class,
-    ModuleDao.class,
-    ModuleDockerClient.class,
-    QuarkusConfig.class,
-    ModuleHttpMapper.class,
-    ModuleSolver.class,
-    ModuleStartup.class,
-    ModuleMap.class
+  ModuleMain.class,
+  ModuleDao.class,
+  ModuleDockerClient.class,
+  QuarkusConfig.class,
+  ModuleHttpMapper.class,
+  ModuleSolver.class,
+  ModuleStartup.class,
+  ModuleMap.class
 })
 public interface Context {
 

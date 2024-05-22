@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.config.application;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAO;
 import com.mageddo.dnsproxyserver.config.mapper.ConfigMapper;
+import org.apache.commons.lang3.ClassUtils;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
@@ -38,5 +39,11 @@ public class ConfigService {
     return this.configDAOS
       .stream()
       .sorted(Comparator.comparingInt(ConfigDAO::priority));
+  }
+
+  public List<String> findConfigNames(){
+    return this.findConfigDaos()
+      .map(ClassUtils::getSimpleName)
+      .toList();
   }
 }

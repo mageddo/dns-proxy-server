@@ -26,7 +26,6 @@ public interface ModuleDao {
   @Singleton
   DockerNetworkFacade dockerNetworkFacade(DockerNetworkFacadeDefault impl);
 
-
   @Binds
   @Singleton
   ContainerFacade containerFacade(ContainerFacadeDefault impl);
