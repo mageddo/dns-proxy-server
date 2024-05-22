@@ -5,7 +5,7 @@ import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 
 import java.util.List;
 
-public interface ConfigDAO {
+public interface PersistentConfigDAO {
 
   Config findActive();
 

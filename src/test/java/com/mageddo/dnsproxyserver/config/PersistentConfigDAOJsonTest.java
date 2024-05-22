@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.config;
 
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
-import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOJson;
+import com.mageddo.dnsproxyserver.config.dataprovider.PersistentConfigDAOJson;
 import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 import testing.templates.EnvTemplates;
 import testing.templates.HostnameQueryTemplates;
@@ -17,11 +17,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
-class ConfigDAOJsonTest {
+class PersistentConfigDAOJsonTest {
 
   @Spy
   @InjectMocks
-  ConfigDAOJson dao;
+  PersistentConfigDAOJson dao;
 
   @Test
   void mustDoCaseInsensitiveFind() {

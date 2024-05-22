@@ -23,7 +23,7 @@ import java.util.function.Predicate;
 @Slf4j
 @Singleton
 @NoArgsConstructor(onConstructor = @__({@Inject}))
-public class ConfigDAOJson implements ConfigDAO {
+public class PersistentConfigDAOJson implements PersistentConfigDAO {
 
   @Override
   public Config findActive() {

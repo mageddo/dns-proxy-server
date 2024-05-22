@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Singleton
 public class ConfigService {
@@ -28,10 +29,14 @@ public class ConfigService {
   }
 
   List<Config> findConfigs() {
-    return this.configDAOS
-      .stream()
-      .sorted(Comparator.comparingInt(MultiSourceConfigDAO::priority))
+    return this.findConfigDaos()
       .map(MultiSourceConfigDAO::find)
       .toList();
+  }
+
+  Stream<MultiSourceConfigDAO> findConfigDaos() {
+    return this.configDAOS
+      .stream()
+      .sorted(Comparator.comparingInt(MultiSourceConfigDAO::priority));
   }
 }
