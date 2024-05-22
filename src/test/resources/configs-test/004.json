@@ -19,6 +19,21 @@
   } ],
   "resolvConfOverrideNameServers" : true,
   "serverProtocol" : "UDP_TCP",
+  "solverRemote" : {
+    "circuitBreaker" : {
+      "failureThreshold" : 3,
+      "failureThresholdCapacity" : 10,
+      "successThreshold" : 5,
+      "testDelay" : {
+        "nano" : 0,
+        "negative" : false,
+        "positive" : true,
+        "seconds" : 20,
+        "units" : [ "SECONDS", "NANOS" ],
+        "zero" : false
+      }
+    }
+  },
   "versionCmd" : false,
   "webServerPort" : 9393
 }

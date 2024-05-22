@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -76,15 +77,13 @@ class ConfigServiceCompTest {
   void mustRespectStoredConfig(@TempDir Path tmpDir) {
 
     // arrange
-    final var jsonConfigFile = "/configs-test/003.json";
-    final var tmpConfigFile = tmpDir.resolve("tmpfile.json");
+    final var sorceConfigFile = "/configs-test/003.json";
+    final var configPathToUse = tmpDir.resolve("tmpfile.json");
 
-    try (var out = Files.newOutputStream(tmpConfigFile)) {
-      IOUtils.copy(readAsStream(jsonConfigFile), out);
-    }
-    assertTrue(Files.exists(tmpConfigFile));
+    writeCurrentConfigFile(sorceConfigFile, configPathToUse);
+    assertTrue(Files.exists(configPathToUse));
 
-    ConfigDAOCmdArgs.setArgs(new String[]{"--conf-path", tmpConfigFile.toString()});
+    ConfigDAOCmdArgs.setArgs(new String[]{"--conf-path", configPathToUse.toString()});
 
     // act
     final var config = Configs.getContext()
@@ -102,6 +101,12 @@ class ConfigServiceCompTest {
       anyOf(containsString("unix:"), containsString("npipe"))
     );
 
+  }
+
+  private static void writeCurrentConfigFile(String sourceResource, Path target) throws IOException {
+    try (var out = Files.newOutputStream(target)) {
+      IOUtils.copy(readAsStream(sourceResource), out);
+    }
   }
 
   @Test
