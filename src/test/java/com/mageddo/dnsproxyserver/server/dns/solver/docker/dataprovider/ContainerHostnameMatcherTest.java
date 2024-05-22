@@ -21,11 +21,11 @@ class ContainerHostnameMatcherTest {
   }
 
   @Test
-  void mustSolveFromContainerHostnameWithoutNoDomain(){
+  void mustSolveFromContainerHostnameWithoutDomain(){
     // arrange
     final var inspect = InspectContainerResponseTemplates.buildWithHostnameAndWithoutDomain();
     final var hostname = HostnameQueryTemplates.nginxWildcard();
-    final var config = Configs.getInstance();
+    final var config = ConfigTemplates.defaultWithoutId();
 
     // act
     final var test = ContainerHostnameMatcher.test(inspect, hostname, config);
@@ -39,7 +39,7 @@ class ContainerHostnameMatcherTest {
     // arrange
     final var inspect = InspectContainerResponseTemplates.buildWithHostnameAndDomain("acme.com", "local");
     final var hostname = HostnameQueryTemplates.acmeComLocal();
-    final var config = Configs.getInstance();
+    final var config = ConfigTemplates.defaultWithoutId();
 
     // act
     final var test = ContainerHostnameMatcher.test(inspect, hostname, config);
@@ -53,7 +53,7 @@ class ContainerHostnameMatcherTest {
     // arrange
     final var inspect = InspectContainerResponseTemplates.build();
     final var hostname = HostnameQueryTemplates.nginxComBrWildcard();
-    final var config = Configs.getInstance();
+    final var config = ConfigTemplates.defaultWithoutId();
 
     // act
     final var test = ContainerHostnameMatcher.test(inspect, hostname, config);
@@ -68,7 +68,7 @@ class ContainerHostnameMatcherTest {
     final var inspect = InspectContainerResponseTemplates.buildWithHostnamesEnv("/nginx.+/,/acme.+/");
     final var hostname = HostnameQuery.ofRegex(HostnameTemplates.NGINX_COM_BR);
     final var hostnameAcme = HostnameQuery.ofRegex(HostnameTemplates.NGINX_COM_BR);
-    final var config = Configs.getInstance();
+    final var config = ConfigTemplates.defaultWithoutId();
 
     // act
     final var testNginx = ContainerHostnameMatcher.test(inspect, hostname, config);
@@ -117,7 +117,7 @@ class ContainerHostnameMatcherTest {
     // arrange
     final var inspect = InspectContainerResponseTemplates.build();
     final var hostname = HostnameQuery.of("shibata.docker");
-    final var config = Configs.getInstance();
+    final var config = ConfigTemplates.defaultWithoutId();
 
     // act
     final var test = ContainerHostnameMatcher.test(inspect, hostname, config);
