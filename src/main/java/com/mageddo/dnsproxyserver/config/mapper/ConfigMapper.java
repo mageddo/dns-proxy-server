@@ -39,6 +39,7 @@ public class ConfigMapper {
       .noRemoteServers(firstNonNullRequiring(mapField(Config::getNoRemoteServers, configs)))
       .noEntriesResponseCode(firstNonNullRequiring(mapField(Config::getNoEntriesResponseCode, configs)))
       .dockerSolverHostMachineFallbackActive(firstNonNullRequiring(mapField(Config::getDockerSolverHostMachineFallbackActive, configs)))
+      .solverRemote(firstNonNullRequiring(mapField(Config::getSolverRemote, configs)))
       .build();
     validate(config);
     return config;
