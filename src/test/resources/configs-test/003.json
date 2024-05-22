@@ -15,5 +15,13 @@
   "hostMachineHostname" : "batata.com",
   "domain" : "acme",
   "dpsNetwork" : true,
-  "dpsNetworkAutoConnect" : true
+  "dpsNetworkAutoConnect" : true,
+  "solverRemote" : {
+    "circuitBreaker" : {
+      "failureThreshold" : 3,
+      "failureThresholdCapacity" : 10,
+      "successThreshold" : 5,
+      "testDelay" : "PT1M"
+    }
+  }
 }

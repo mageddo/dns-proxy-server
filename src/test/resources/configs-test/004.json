@@ -15,7 +15,14 @@
   "remoteDnsServers" : [ ],
   "resolvConfOverrideNameServers" : null,
   "serverProtocol" : null,
-  "solverRemote" : null,
+  "solverRemote" : {
+    "circuitBreaker" : {
+      "failureThreshold" : 3,
+      "failureThresholdCapacity" : 10,
+      "successThreshold" : 5,
+      "testDelay" : 60.0
+    }
+  },
   "versionCmd" : false,
   "webServerPort" : 9393
 }

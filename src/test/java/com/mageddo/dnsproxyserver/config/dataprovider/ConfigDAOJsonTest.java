@@ -62,7 +62,7 @@ class ConfigDAOJsonTest {
   }
 
   @SneakyThrows
-  private static void writeCurrentConfigFile(String sourceResource, Path target) {
+  static void writeCurrentConfigFile(String sourceResource, Path target) {
     try (var out = Files.newOutputStream(target)) {
       IOUtils.copy(readAsStream(sourceResource), out);
     }
