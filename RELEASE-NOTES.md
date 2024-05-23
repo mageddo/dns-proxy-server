@@ -1,3 +1,6 @@
+## 3.18.0
+* Parameters for Remote Solver Circuit Breaker, see #440.
+
 ## 3.17.3
 * DPS Config module refactoring due #440, see #447 
 
