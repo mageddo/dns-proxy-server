@@ -91,8 +91,11 @@ public class ConfigMapper {
     Validate.notNull(config.getMustConfigureDpsNetwork());
     Validate.notNull(config.getDpsNetworkAutoConnect());
     Validate.notNull(config.getResolvConfPaths());
-    Validate.notNull(config.getServerProtocol());
     Validate.notNull(config.getSolverRemote());
+    Validate.notNull(config.getDockerSolverHostMachineFallbackActive());
+    Validate.notNull(config.getNoRemoteServers());
+    Validate.notNull(config.getServerProtocol());
+    Validate.notNull(config.getResolvConfOverrideNameServers());
   }
 
   private static URI buildDefaultDockerHost() {
