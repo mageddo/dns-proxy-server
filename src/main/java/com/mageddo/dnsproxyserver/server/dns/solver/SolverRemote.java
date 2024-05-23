@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.server.dns.solver;
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.commons.concurrent.ThreadPool;
 import com.mageddo.commons.concurrent.Threads;
+import com.mageddo.dnsproxyserver.config.application.ConfigService;
 import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.net.Networks;
 import dev.failsafe.CircuitBreaker;
@@ -45,6 +46,7 @@ public class SolverRemote implements Solver {
   private final RemoteResolvers delegate;
   private final Map<InetSocketAddress, CircuitBreaker<Response>> circuitBreakerMap = new ConcurrentHashMap<>();
   private final ExecutorService threadPool = ThreadPool.newFixed(50);
+  private final ConfigService configService;
   private String status;
 
   @Override
@@ -166,15 +168,23 @@ public class SolverRemote implements Solver {
   }
 
   private CircuitBreaker<Response> circuitBreakerFor(InetSocketAddress address) {
-    return this.circuitBreakerMap.computeIfAbsent(address, inetSocketAddress -> {
-      final var breaker = CircuitBreaker.<Response>builder()
-        .handle(CircuitCheckException.class)
-        .withFailureThreshold(3, 10)
-        .withSuccessThreshold(5)
-        .withDelay(Duration.ofSeconds(20))
-        .build();
-      return breaker;
-    });
+    final var config = this.findCircuitBreakerConfig();
+    return this.circuitBreakerMap.computeIfAbsent(address, inetSocketAddress -> buildCircuitBreaker(config));
+  }
+
+  private static CircuitBreaker<Response> buildCircuitBreaker(com.mageddo.dnsproxyserver.config.CircuitBreaker config) {
+    return CircuitBreaker.<Response>builder()
+      .handle(CircuitCheckException.class)
+      .withFailureThreshold(config.getFailureThreshold(), config.getFailureThresholdCapacity())
+      .withSuccessThreshold(config.getSuccessThreshold())
+      .withDelay(config.getTestDelay())
+      .build();
+  }
+
+  com.mageddo.dnsproxyserver.config.CircuitBreaker findCircuitBreakerConfig() {
+    return this.configService.findCurrentConfig()
+      .getSolverRemote()
+      .getCircuitBreaker();
   }
 
   String getStatus() {

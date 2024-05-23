@@ -1,8 +1,8 @@
-package com.mageddo.dnsproxyserver.config.configurator;
+package com.mageddo.dnsproxyserver.config.di;
 
 
 import com.mageddo.dnsproxyserver.config.application.ConfigService;
-import com.mageddo.dnsproxyserver.config.configurator.module.ModuleConfigDAO;
+import com.mageddo.dnsproxyserver.config.di.module.ModuleConfigDAO;
 import dagger.Component;
 
 import javax.inject.Singleton;

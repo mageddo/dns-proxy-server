@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.config.application;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.LogLevel;
-import com.mageddo.dnsproxyserver.config.configurator.Context;
+import com.mageddo.dnsproxyserver.config.di.Context;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOCmdArgs;
 import dagger.sheath.junit.DaggerTest;
 import org.junit.jupiter.api.Test;

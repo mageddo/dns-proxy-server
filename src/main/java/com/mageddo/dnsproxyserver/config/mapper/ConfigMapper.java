@@ -63,16 +63,19 @@ public class ConfigMapper {
       .remoteDnsServers(Collections.singletonList(IpAddr.of("8.8.8.8:53")))
       .solverRemote(SolverRemote
         .builder()
-        .circuitBreaker(CircuitBreaker
-          .builder()
-          .failureThreshold(3)
-          .failureThresholdCapacity(10)
-          .successThreshold(5)
-          .testDelay(Duration.ofSeconds(20))
-          .build()
-        )
+        .circuitBreaker(defaultCircuitBreaker())
         .build()
       )
+      .build();
+  }
+
+  public static CircuitBreaker defaultCircuitBreaker() {
+    return CircuitBreaker
+      .builder()
+      .failureThreshold(3)
+      .failureThresholdCapacity(10)
+      .successThreshold(5)
+      .testDelay(Duration.ofSeconds(20))
       .build();
   }
 

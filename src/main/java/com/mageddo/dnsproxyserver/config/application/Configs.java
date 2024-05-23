@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.config.application;
 
 import com.mageddo.commons.lang.Singletons;
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.configurator.Context;
+import com.mageddo.dnsproxyserver.config.di.Context;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

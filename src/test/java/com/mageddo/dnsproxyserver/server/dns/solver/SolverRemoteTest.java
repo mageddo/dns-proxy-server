@@ -8,6 +8,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.xbill.DNS.Flags;
 import org.xbill.DNS.Rcode;
+import testing.templates.CircuitBreakerTemplates;
 import testing.templates.InetSocketAddressTemplates;
 import testing.templates.MessageTemplates;
 
@@ -44,6 +45,10 @@ class SolverRemoteTest {
     final var query = MessageTemplates.acmeAQuery();
     final var answer = MessageTemplates.buildAAnswer(query);
 
+    doReturn(CircuitBreakerTemplates.buildDefault())
+      .when(this.solverRemote)
+      .findCircuitBreakerConfig();
+
     doReturn(InetSocketAddressTemplates._8_8_8_8())
       .when(this.resolver)
       .getAddress()
@@ -72,6 +77,10 @@ class SolverRemoteTest {
     final var query = MessageTemplates.acmeAQuery();
     final var answer = MessageTemplates.buildNXAnswer(query);
 
+    doReturn(CircuitBreakerTemplates.buildDefault())
+      .when(this.solverRemote)
+      .findCircuitBreakerConfig();
+
     doReturn(InetSocketAddressTemplates._8_8_8_8())
       .when(this.resolver)
       .getAddress()
@@ -95,9 +104,12 @@ class SolverRemoteTest {
   }
 
   @Test
-  void mustReturnNullWhenGetTimeout() throws Exception {
+  void mustReturnNullWhenGetTimeout() {
+
     // arrange
-    final var query = MessageTemplates.acmeAQuery();
+    doReturn(CircuitBreakerTemplates.buildDefault())
+      .when(this.solverRemote)
+      .findCircuitBreakerConfig();
 
     doReturn(InetSocketAddressTemplates._8_8_8_8())
       .when(this.resolver)
@@ -106,12 +118,14 @@ class SolverRemoteTest {
 
     doReturn(CompletableFuture.failedFuture(new SocketTimeoutException("Deu ruim")))
       .when(this.resolver)
-        .sendAsync(any());
+      .sendAsync(any());
 
     doReturn(List.of(this.resolver))
       .when(this.resolvers)
       .resolvers()
     ;
+
+    final var query = MessageTemplates.acmeAQuery();
 
     // act
     final var res = this.solverRemote.handle(query);
@@ -126,6 +140,10 @@ class SolverRemoteTest {
     final var query = MessageTemplates.acmeAQuery();
     final var res = MessageTemplates.buildAAnswer(query);
     res.getHeader().unsetFlag(Flags.RA);
+
+    doReturn(CircuitBreakerTemplates.buildDefault())
+      .when(this.solverRemote)
+      .findCircuitBreakerConfig();
 
     doReturn(InetSocketAddressTemplates._8_8_8_8())
       .when(this.resolver)
@@ -153,9 +171,11 @@ class SolverRemoteTest {
   @Test
   void mustOpenCircuitAfterThresholdFailures() throws Exception {
     // arrange
-    final var query = MessageTemplates.acmeAQuery();
+    doReturn(CircuitBreakerTemplates.buildDefault())
+      .when(this.solverRemote)
+      .findCircuitBreakerConfig();
 
-    doReturn(InetSocketAddressTemplates._8_8_8_8())
+     doReturn(InetSocketAddressTemplates._8_8_8_8())
       .when(this.resolver)
       .getAddress()
     ;
@@ -168,18 +188,19 @@ class SolverRemoteTest {
       .when(this.resolvers)
       .resolvers()
     ;
+    final var query = MessageTemplates.acmeAQuery();
 
     // act
+    assertNull(this.solverRemote.handle(query));
+    assertEquals("CircuitCheckException for /8.8.8.8:53", this.solverRemote.getStatus());
+
+    assertNull(this.solverRemote.handle(query));
+    assertEquals("CircuitCheckException for /8.8.8.8:53", this.solverRemote.getStatus());
+
+    assertNull(this.solverRemote.handle(query));
+    assertEquals("CircuitCheckException for /8.8.8.8:53", this.solverRemote.getStatus());
+
     // assert
-    assertNull(this.solverRemote.handle(query));
-    assertEquals("CircuitCheckException for /8.8.8.8:53", this.solverRemote.getStatus());
-
-    assertNull(this.solverRemote.handle(query));
-    assertEquals("CircuitCheckException for /8.8.8.8:53", this.solverRemote.getStatus());
-
-    assertNull(this.solverRemote.handle(query));
-    assertEquals("CircuitCheckException for /8.8.8.8:53", this.solverRemote.getStatus());
-
     assertNull(this.solverRemote.handle(query));
     assertEquals("CircuitBreakerOpenException for /8.8.8.8:53", this.solverRemote.getStatus());
 
@@ -191,6 +212,10 @@ class SolverRemoteTest {
     // arrange
     final var query = MessageTemplates.acmeAQuery();
     final var res = MessageTemplates.acmeAResponse();
+
+    doReturn(CircuitBreakerTemplates.buildDefault())
+      .when(this.solverRemote)
+      .findCircuitBreakerConfig();
 
     doReturn(InetSocketAddressTemplates._8_8_8_8())
       .when(this.resolver)

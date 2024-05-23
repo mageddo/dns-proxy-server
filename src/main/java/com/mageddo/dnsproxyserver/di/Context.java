@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.di;
 
 import com.mageddo.di.CDIImpl;
+import com.mageddo.dnsproxyserver.config.di.module.ModuleConfigDAO;
 import com.mageddo.dnsproxyserver.di.module.ModuleDao;
 import com.mageddo.dnsproxyserver.di.module.ModuleDockerClient;
 import com.mageddo.dnsproxyserver.di.module.ModuleHttpMapper;
@@ -34,7 +35,8 @@ import java.util.Set;
   ModuleHttpMapper.class,
   ModuleSolver.class,
   ModuleStartup.class,
-  ModuleMap.class
+  ModuleMap.class,
+  ModuleConfigDAO.class
 })
 public interface Context {
 
