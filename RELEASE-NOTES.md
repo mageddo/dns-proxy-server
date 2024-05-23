@@ -1,3 +1,6 @@
+## 3.17.3
+* DPS Config module refactoring due #440, see #447 
+
 ## 3.17.2
 * Fixing regression, leading with no ipv6 response, see #446
 
