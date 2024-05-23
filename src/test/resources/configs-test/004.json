@@ -1,7 +1,7 @@
 {
   "defaultDns" : false,
   "dnsServerPort" : 5391,
-  "dockerSolverHostMachineFallbackActive" : null,
+  "dockerSolverHostMachineFallbackActive" : true,
   "domain" : "acme",
   "dpsNetworkAutoConnect" : true,
   "helpCmd" : false,
@@ -10,11 +10,11 @@
   "logLevel" : "DEBUG",
   "mustConfigureDpsNetwork" : true,
   "noEntriesResponseCode" : null,
-  "noRemoteServers" : null,
+  "noRemoteServers" : false,
   "registerContainerNames" : true,
   "remoteDnsServers" : [ ],
-  "resolvConfOverrideNameServers" : null,
-  "serverProtocol" : null,
+  "resolvConfOverrideNameServers" : true,
+  "serverProtocol" : "UDP_TCP",
   "solverRemote" : {
     "circuitBreaker" : {
       "failureThreshold" : 3,
