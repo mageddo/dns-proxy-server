@@ -36,4 +36,8 @@ public class NetworkTemplates {
     return JsonUtils.readValue(readString("/templates/docker/network/001.json"), Network.class);
   }
 
+  public static Network buildBridgeIpv4OnlyNetwork() {
+    return JsonUtils.readValue(readString("/templates/docker/network/002.json"), Network.class);
+  }
+
 }
