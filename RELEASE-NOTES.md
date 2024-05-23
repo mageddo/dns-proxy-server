@@ -1,3 +1,6 @@
+## 3.18.1
+*  Fixing native image JSON config parse, bug introduced on 3.17.3
+
 ## 3.18.0
 * Parameters for Remote Solver Circuit Breaker, see #440.
 
