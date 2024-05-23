@@ -167,7 +167,15 @@ __Version 2__
   "resolvConfOverrideNameServers": true,
   "noRemoteServers": false,
   "noEntriesResponseCode": 3,
-  "dockerSolverHostMachineFallbackActive": true
+  "dockerSolverHostMachineFallbackActive": true,
+  "solverRemote" : {
+    "circuitBreaker" : { 
+      "failureThreshold" : 3, // how many attempts before open the circuit?
+      "failureThresholdCapacity" : 10, // how many attempts store to the stack?
+      "successThreshold" : 5, // how many attempts before close the circuit?
+      "testDelay" : "PT1M" // how many time to wait before test the circuit again?
+    }
+  }
 }
 ```
 
