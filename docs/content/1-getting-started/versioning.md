@@ -28,11 +28,11 @@ There are three types of docker images
 You can see every release note on the [releases download page][2] or at the [release notes.md][5] file
 
 ## Reference
-DPS release process was inpired on [Gradle][4] and Debian releasing process.
+DPS release process was inspired on [Gradle][4] and Debian releasing process.
 
 [1]: https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning
 [2]: https://github.com/mageddo/dns-proxy-server/releases
-[3]: https://hub.docker.com/r/defreitas/dns-proxy-server/t
+[3]: https://hub.docker.com/r/defreitas/dns-proxy-server/
 [4]: https://docs.gradle.org/7.6.1/release-notes.html
 [5]: https://github.com/mageddo/dns-proxy-server/blob/master/RELEASE-NOTES.md
 [6]: https://semver.org/
