@@ -156,17 +156,17 @@ public class ConfigJsonV2 implements ConfigJson {
 
     private CircuitBreaker circuitBreaker;
 
-    @Data
-    public static class CircuitBreaker {
+  }
 
-      private Integer failureThreshold;
-      private Integer failureThresholdCapacity;
-      private Integer successThreshold;
+  @Data
+  public static class CircuitBreaker {
 
-      @JsonSerialize(using = DurationSerializer.class)
-      @JsonDeserialize(using = DurationDeserializer.class)
-      private Duration testDelay;
-    }
+    private Integer failureThreshold;
+    private Integer failureThresholdCapacity;
+    private Integer successThreshold;
 
+    @JsonSerialize(using = DurationSerializer.class)
+    @JsonDeserialize(using = DurationDeserializer.class)
+    private Duration testDelay;
   }
 }

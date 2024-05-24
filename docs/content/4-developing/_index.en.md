@@ -39,6 +39,12 @@ $ docker-compose -f docker-compose-dev.yml run --rm -it backend bash
 $ java -jar dns-proxy-server-*-all.jar
 ```
 
+## Native Image
+
+```shell
+$ ./gradlew clean build -x check shadowJar nativeCompile
+```
+
 ## Releasing
 
 Patch version
