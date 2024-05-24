@@ -173,7 +173,7 @@ __Version 2__
       "failureThreshold" : 3, // how many attempts before open the circuit?
       "failureThresholdCapacity" : 10, // how many attempts store to the stack?
       "successThreshold" : 5, // how many attempts before close the circuit?
-      "testDelay" : "PT1M" // how many time to wait before test the circuit again?
+      "testDelay" : "PT20S" // how many time to wait before test the circuit again?, see https://docs.oracle.com/javase/8/docs/api/java/time/Duration.html#toString-- for format explanation
     }
   }
 }
