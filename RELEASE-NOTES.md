@@ -1,5 +1,5 @@
 ## 3.18.2
-*  Fixing native image JSON config reflection interpretation.
+*  Fixing native image JSON config parse, bug introduced on 3.18.0
 
 ## 3.18.1
 *  Fixing native image JSON config parse, bug introduced on 3.17.3
