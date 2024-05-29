@@ -29,7 +29,7 @@ $ VERSION=3.18.0 && ./gradlew release -Prelease.releaseVersion=${VERSION} -Prele
 
 ## Release Latest - Phase 3
 
-* Define a pre-release version which will be promoted to the latest by following the rules at {{%relref "1-getting-started/versioning/versioning.en.md" %}}.
+* Define a pre-release version which will be promoted to the latest by following the rules at {{%relref "1-getting-started/versioning.en.md" %}}.
 * Edit the github release setting the pre-release version as the latest, remove the `-snapshot` suffix from the title 
 and from the attachments names.
 * Locally tag the latest docker image as the pre-release version
