@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.commons.lang.Objects;
-import com.mageddo.dnsproxyserver.server.dns.Messages;
+import com.mageddo.dns.Messages;
 import com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.Message;

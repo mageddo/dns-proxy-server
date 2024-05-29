@@ -3,7 +3,7 @@ package com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.ContainerConfig;
 import com.mageddo.dnsproxyserver.docker.application.Labels;
-import com.mageddo.dnsproxyserver.server.dns.Hostname;
+import com.mageddo.dns.Hostname;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 

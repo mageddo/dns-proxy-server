@@ -1,6 +1,6 @@
 package testing.templates;
 
-import com.mageddo.dnsproxyserver.server.dns.Messages;
+import com.mageddo.dns.Messages;
 import com.mageddo.dnsproxyserver.server.dns.solver.Response;
 import org.xbill.DNS.Message;
 

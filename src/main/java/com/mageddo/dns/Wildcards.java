@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.server.dns;
+package com.mageddo.dns;
 
 import java.util.ArrayList;
 import java.util.List;

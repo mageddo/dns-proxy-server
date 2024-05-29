@@ -4,7 +4,7 @@ import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.config.dataprovider.PersistentConfigDAO;
 import com.mageddo.dnsproxyserver.config.ConfigEntryTypes;
-import com.mageddo.dnsproxyserver.server.dns.Messages;
+import com.mageddo.dns.Messages;
 import dagger.Lazy;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

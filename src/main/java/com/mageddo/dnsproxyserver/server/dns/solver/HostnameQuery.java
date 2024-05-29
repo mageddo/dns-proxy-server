@@ -1,8 +1,8 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
-import com.mageddo.dnsproxyserver.server.dns.Hostname;
-import com.mageddo.dnsproxyserver.server.dns.Wildcards;
+import com.mageddo.dns.Hostname;
+import com.mageddo.dns.Wildcards;
 import com.mageddo.net.IP;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

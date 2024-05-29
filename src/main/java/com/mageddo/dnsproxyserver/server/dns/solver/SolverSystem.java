@@ -4,7 +4,7 @@ import com.mageddo.commons.lang.Objects;
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.config.ConfigEntryTypes;
-import com.mageddo.dnsproxyserver.server.dns.Messages;
+import com.mageddo.dns.Messages;
 import com.mageddo.dnsproxyserver.usecase.HostMachineService;
 import com.mageddo.net.IP;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import org.xbill.DNS.Message;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import static com.mageddo.dnsproxyserver.server.dns.Messages.findQuestionTypeCode;
+import static com.mageddo.dns.Messages.findQuestionTypeCode;
 
 @Slf4j
 @Singleton

@@ -1,9 +1,9 @@
 package com.mageddo.dnsproxyserver.dns.server.solver;
 
-import com.mageddo.dnsproxyserver.server.dns.Hostname;
+import com.mageddo.dns.Hostname;
 import org.junit.jupiter.api.Test;
 
-import static com.mageddo.dnsproxyserver.server.dns.Wildcards.buildHostAndWildcards;
+import static com.mageddo.dns.Wildcards.buildHostAndWildcards;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class WildcardsTest {

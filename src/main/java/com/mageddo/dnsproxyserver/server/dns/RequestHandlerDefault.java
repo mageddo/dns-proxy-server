@@ -1,12 +1,13 @@
-package com.mageddo.dnsserver;
+package com.mageddo.dnsproxyserver.server.dns;
 
+import com.mageddo.dns.Messages;
 import com.mageddo.dnsproxyserver.config.application.Configs;
-import com.mageddo.dnsproxyserver.server.dns.Messages;
 import com.mageddo.dnsproxyserver.server.dns.solver.CacheName;
 import com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name;
 import com.mageddo.dnsproxyserver.server.dns.solver.Response;
 import com.mageddo.dnsproxyserver.server.dns.solver.SolverCache;
 import com.mageddo.dnsproxyserver.server.dns.solver.SolverProvider;
+import com.mageddo.dnsserver.RequestHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.time.StopWatch;
@@ -18,7 +19,7 @@ import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static com.mageddo.dnsproxyserver.server.dns.Messages.simplePrint;
+import static com.mageddo.dns.Messages.simplePrint;
 
 @Slf4j
 @Singleton

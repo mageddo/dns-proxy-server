@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.server;
 
 import com.mageddo.dnsproxyserver.config.application.Configs;
-import com.mageddo.dnsserver.ServerStarter;
+import com.mageddo.dnsproxyserver.server.dns.DnsServerStarter;
 import com.mageddo.http.WebServer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ import static com.mageddo.dnsproxyserver.quarkus.Quarkus.isTest;
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class Starter {
 
-  private final ServerStarter dnsServerStarter;
+  private final DnsServerStarter dnsServerStarter;
   private final WebServer webServer;
 
   public void start() {

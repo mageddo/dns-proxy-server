@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.server.dns;
+package com.mageddo.dns;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

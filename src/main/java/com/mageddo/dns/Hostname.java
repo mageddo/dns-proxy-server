@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.server.dns;
+package com.mageddo.dns;
 
 import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;

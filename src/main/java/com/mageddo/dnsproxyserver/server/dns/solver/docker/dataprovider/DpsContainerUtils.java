@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider;
 
 import com.github.dockerjava.api.model.Container;
-import com.mageddo.dnsproxyserver.server.dns.Hostname;
+import com.mageddo.dns.Hostname;
 import com.mageddo.dnsproxyserver.utils.Splits;
 
 import java.util.Arrays;

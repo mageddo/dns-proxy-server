@@ -3,7 +3,7 @@ package com.mageddo.dnsproxyserver.server.dns.solver;
 import com.mageddo.commons.caching.LruTTLCache;
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.commons.lang.tuple.Pair;
-import com.mageddo.dnsproxyserver.server.dns.Messages;
+import com.mageddo.dns.Messages;
 import com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +16,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 
-import static com.mageddo.dnsproxyserver.server.dns.Messages.findQuestionHostname;
-import static com.mageddo.dnsproxyserver.server.dns.Messages.findQuestionType;
+import static com.mageddo.dns.Messages.findQuestionHostname;
+import static com.mageddo.dns.Messages.findQuestionType;
 
 @Slf4j
 @RequiredArgsConstructor

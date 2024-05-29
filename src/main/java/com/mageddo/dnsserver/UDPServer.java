@@ -2,7 +2,7 @@ package com.mageddo.dnsserver;
 
 import com.mageddo.commons.concurrent.ThreadPool;
 import com.mageddo.commons.io.IoUtils;
-import com.mageddo.dnsproxyserver.server.dns.Messages;
+import com.mageddo.dns.Messages;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.Message;
 
