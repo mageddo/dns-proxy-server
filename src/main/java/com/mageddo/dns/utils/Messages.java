@@ -1,6 +1,7 @@
-package com.mageddo.dns;
+package com.mageddo.dns.utils;
 
 import com.mageddo.commons.lang.Objects;
+import com.mageddo.dns.Hostname;
 import com.mageddo.dnsproxyserver.config.Config.Entry;
 import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.server.dns.solver.Response;

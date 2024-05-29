@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
-import com.mageddo.dns.Messages;
+import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.server.dns.solver.CacheName;
 import com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name;
@@ -19,7 +19,7 @@ import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static com.mageddo.dns.Messages.simplePrint;
+import static com.mageddo.dns.utils.Messages.simplePrint;
 
 @Slf4j
 @Singleton

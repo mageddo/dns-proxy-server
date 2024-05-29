@@ -1,6 +1,6 @@
 package com.mageddo.dnsserver;
 
-import com.mageddo.dns.Messages;
+import com.mageddo.dns.utils.Messages;
 import com.mageddo.utils.Shorts;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ClassUtils;

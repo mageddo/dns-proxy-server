@@ -1,8 +1,8 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dns.Hostnames;
-import com.mageddo.dns.Messages;
+import com.mageddo.dns.utils.Hostnames;
+import com.mageddo.dns.utils.Messages;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.Message;

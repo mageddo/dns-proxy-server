@@ -1,4 +1,6 @@
-package com.mageddo.dns;
+package com.mageddo.dns.utils;
+
+import com.mageddo.dns.Hostname;
 
 import java.util.ArrayList;
 import java.util.List;

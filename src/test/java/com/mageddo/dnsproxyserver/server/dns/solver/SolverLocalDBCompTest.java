@@ -3,7 +3,7 @@ package com.mageddo.dnsproxyserver.server.dns.solver;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.dataprovider.PersistentConfigDAO;
 import com.mageddo.dnsproxyserver.di.Context;
-import com.mageddo.dns.Messages;
+import com.mageddo.dns.utils.Messages;
 import testing.templates.EntryTemplates;
 import testing.templates.docker.SolverTemplates;
 import dagger.sheath.InjectMock;
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 
-import static com.mageddo.dns.Hostnames.toAbsoluteName;
+import static com.mageddo.dns.utils.Hostnames.toAbsoluteName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;

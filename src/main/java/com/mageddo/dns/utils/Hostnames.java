@@ -1,4 +1,4 @@
-package com.mageddo.dns;
+package com.mageddo.dns.utils;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

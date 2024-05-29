@@ -1,6 +1,6 @@
 package testing.templates;
 
-import com.mageddo.dns.Messages;
+import com.mageddo.dns.utils.Messages;
 import org.xbill.DNS.Message;
 
 public class MessageTemplates {

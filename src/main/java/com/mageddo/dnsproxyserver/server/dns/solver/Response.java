@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
-import com.mageddo.dns.Messages;
+import com.mageddo.dns.utils.Messages;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
