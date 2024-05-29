@@ -9,7 +9,7 @@ import java.util.List;
 public class SolverTemplates {
   public static List<Solver> mockTo192() {
     return List.of(reqMsg -> {
-      return Response.of(Messages.aAnswer(reqMsg, "192.168.1.8"));
+      return Response.internalSuccess(Messages.aAnswer(reqMsg, "192.168.1.8"));
     });
   }
 }

@@ -38,7 +38,7 @@ public class SolverMock implements Solver {
     final var hostname = Messages.findQuestionHostname(query);
     for (final var entry : this.mocks) {
       if (entry.getKey().equalsIgnoreCase(hostname.getValue())) {
-        return Response.of(Messages.aAnswer(query, entry.getValue().toText()));
+        return Response.internalSuccess(Messages.aAnswer(query, entry.getValue().toText()));
       }
     }
     return null;

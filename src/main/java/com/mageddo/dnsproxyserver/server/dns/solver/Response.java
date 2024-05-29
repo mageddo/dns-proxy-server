@@ -13,6 +13,9 @@ import java.time.LocalDateTime;
 @Builder(toBuilder = true)
 public class Response {
 
+  public static final Duration DEFAULT_SUCCESS_TTL = Duration.ofMinutes(5);
+  public static final Duration DEFAULT_NXDOMAIN_TTL = Duration.ofMinutes(60);
+
   /**
    * The effective response.
    */
@@ -20,17 +23,14 @@ public class Response {
   private Message message;
 
   /**
-   * the calculated ttl, can be the specified on the message or calculated to a different one.
+   * The calculated TTL which will be answered to the client, can also be used to cache entries on DPS,
+   * it's not the same specified at {@link #message}. It is calculated
    */
   @NonNull
   private Duration ttl;
 
   @NonNull
   private LocalDateTime createdAt;
-
-  public static Response of(Message message) {
-    return of(message, Messages.DEFAULT_TTL_DURATION);
-  }
 
   public static Response of(Message message, Duration ttl) {
     return Response
@@ -39,6 +39,18 @@ public class Response {
       .ttl(ttl)
       .createdAt(LocalDateTime.now())
       .build();
+  }
+
+  public static Response nxDomain(Message message) {
+    return of(message, DEFAULT_NXDOMAIN_TTL);
+  }
+
+  public static Response success(Message message) {
+    return of(message, DEFAULT_SUCCESS_TTL);
+  }
+
+  public static Response internalSuccess(Message message) {
+    return of(message, Messages.DEFAULT_TTL_DURATION);
   }
 
   public Response withMessage(Message msg) {

@@ -41,7 +41,7 @@ public class SolverDocker implements Solver {
       if (!entry.isHostnameMatched()) {
         return null;
       }
-      return Response.of(Messages.answer(
+      return Response.internalSuccess(Messages.answer(
         query,
         entry.getIpText(),
         hostname.getVersion()

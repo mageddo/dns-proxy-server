@@ -21,7 +21,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,9 +35,6 @@ import static com.mageddo.dnsproxyserver.server.dns.Messages.simplePrint;
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class SolverRemote implements Solver {
-
-  public static final Duration DEFAULT_SUCCESS_TTL = Duration.ofMinutes(5);
-  public static final Duration DEFAULT_NXDOMAIN_TTL = Duration.ofMinutes(60);
 
   static final String QUERY_TIMED_OUT_MSG = "Query timed out";
   static final long FPS_120 = 1000 / 120;
@@ -79,7 +75,7 @@ public class SolverRemote implements Solver {
     if (hasErrorResult) {
       return null;
     }
-    return Response.of(lastErrorMsg.get(), DEFAULT_NXDOMAIN_TTL);
+    return Response.nxDomain(lastErrorMsg.get());
   }
 
   private Response handle0(
@@ -138,7 +134,7 @@ public class SolverRemote implements Solver {
           "status=found, i={}, time={}, req={}, res={}, server={}",
           i, stopWatch.getTime(), simplePrint(query), simplePrint(res), resolver
         );
-        return Response.of(res, DEFAULT_SUCCESS_TTL);
+        return Response.success(res);
       } else {
         lastErrorMsg.set(res);
         log.trace(
