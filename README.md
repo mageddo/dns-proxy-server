@@ -53,7 +53,7 @@ also check the [samples][9] to learn by pratice.
 * [Full documentation](http://mageddo.github.io/dns-proxy-server/)
 * [Running it documentation][5]
 * [Tutorials and Examples][9]
-* [Coding at the DPS](http://mageddo.github.io/dns-proxy-server/latest/en/5-developing/)
+* [Coding at the DPS][10]
 * [RFC-1035][1]
 
 ### Versioning and Releasing
@@ -80,4 +80,4 @@ Or via QR code
 [7]: https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif
 [8]: http://mageddo.github.io/dns-proxy-server/latest/en/1-getting-started/versioning
 [9]: http://mageddo.github.io/dns-proxy-server/latest/en/5-tutorials/
-
+[10]: http://mageddo.github.io/dns-proxy-server/latest/en/4-developing/
