@@ -68,7 +68,7 @@ class SolverRemoteTest {
     final var res = this.solverRemote.handle(query);
 
     // assert
-    assertEquals(Response.DEFAULT_SUCCESS_TTL, res.getTtl());
+    assertEquals(Response.DEFAULT_SUCCESS_TTL, res.getDpsTtl());
   }
 
   @Test
@@ -100,7 +100,7 @@ class SolverRemoteTest {
     final var res = this.solverRemote.handle(query);
 
     // assert
-    assertEquals(Response.DEFAULT_NXDOMAIN_TTL, res.getTtl());
+    assertEquals(Response.DEFAULT_NXDOMAIN_TTL, res.getDpsTtl());
   }
 
   @Test
@@ -164,7 +164,7 @@ class SolverRemoteTest {
 
     // assert
     assertTrue(Responses.hasFlag(result, Flags.RA));
-    assertEquals(Response.DEFAULT_SUCCESS_TTL, result.getTtl());
+    assertEquals(Response.DEFAULT_SUCCESS_TTL, result.getDpsTtl());
   }
 
 

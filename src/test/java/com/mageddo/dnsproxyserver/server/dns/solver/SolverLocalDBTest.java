@@ -50,7 +50,7 @@ class SolverLocalDBTest {
       "acme.com.    45  IN  A  10.10.0.1",
       Messages.detailedPrint(res.getMessage())
     );
-    assertEquals(Duration.ofSeconds(45), res.getTtl());
+    assertEquals(Duration.ofSeconds(45), res.getDpsTtl());
 
     verify(this.solver, never()).findEntryTo(hostname);
     verify(this.solver).findEntryTo(wildcardHostName);

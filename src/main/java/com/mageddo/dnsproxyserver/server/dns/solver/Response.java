@@ -30,21 +30,21 @@ public class Response {
   private Message message;
 
   /**
-   * The calculated TTL which will be used by the system to cache entries on DPS,
+   * The calculated TTL which will be used by DPS to cache entries,
    * it's not the same specified at {@link #message}. It is calculated with default values based on the scenario,
-   * see {@link #nxDomain(Message)} or {@link #success(Message)} for examples.
+   * see {@link #DEFAULT_SUCCESS_TTL} for more explanations.
    */
   @NonNull
-  private Duration ttl;
+  private Duration dpsTtl;
 
   @NonNull
   private LocalDateTime createdAt;
 
-  public static Response of(Message message, Duration ttl) {
+  public static Response of(Message message, Duration dpsTtl) {
     return Response
       .builder()
       .message(message)
-      .ttl(ttl)
+      .dpsTtl(dpsTtl)
       .createdAt(LocalDateTime.now())
       .build();
   }
@@ -71,7 +71,7 @@ public class Response {
 
   public Response withTTL(Duration ttl) {
     return this.toBuilder()
-      .ttl(ttl)
+      .dpsTtl(ttl)
       .build();
   }
 }

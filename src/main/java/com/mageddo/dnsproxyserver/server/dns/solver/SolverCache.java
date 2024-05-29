@@ -40,7 +40,7 @@ public class SolverCache {
         log.debug("status=noAnswer, action=cantCache, k={}", k);
         return null;
       }
-      final var ttl = _res.getTtl();
+      final var ttl = _res.getDpsTtl();
       log.debug("status=hotload, k={}, ttl={}, simpleMsg={}", k, ttl, Messages.simplePrint(query));
       return Pair.of(_res, ttl);
     });
