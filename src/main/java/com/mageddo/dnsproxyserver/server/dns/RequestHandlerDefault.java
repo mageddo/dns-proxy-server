@@ -50,7 +50,7 @@ public class RequestHandlerDefault implements RequestHandler {
     log.debug("status=solveReq, kind={}, query={}", kind, queryStr);
     try {
       final var res = Optional
-        .ofNullable(this.cache.handle(query, this::solve0))
+        .ofNullable(this.cache.handle(query, this::solve0)) // todo #449 fixar aqui o cache de 20 segundos que hoje está no SolverCachedRemote
         .orElseGet(() -> buildDefaultRes(query));
       log.debug("status=solveRes, kind={}, time={}, res={}, req={}", kind, stopWatch.getTime(), simplePrint(res), queryStr);
       return res;

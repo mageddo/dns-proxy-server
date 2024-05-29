@@ -11,16 +11,16 @@ import javax.inject.Singleton;
 @Slf4j
 @Getter
 @Singleton
-public class DnsServerStarter {
+public class ServerStarter {
 
   private final SimpleServer server;
 
   @Inject
-  public DnsServerStarter(SimpleServer server) {
+  public ServerStarter(SimpleServer server) {
     this.server = server;
   }
 
-  public DnsServerStarter start() {
+  public ServerStarter start() {
     final var config = Configs.getInstance();
     final var port = config.getDnsServerPort();
     this.server.start(
