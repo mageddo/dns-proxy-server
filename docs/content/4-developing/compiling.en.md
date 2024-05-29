@@ -4,10 +4,11 @@ weight: 4
 pre: "<b>4. </b>"
 ---
 
-### Requirements
-* JDK 17+
+## Requirements
 
-### Building from source
+See {{%relref "1-getting-started/requirements/_index.en.md" %}}.
+
+## Building from Source
 
 Build the frontend files (optional)
 
@@ -16,8 +17,16 @@ Build the frontend files (optional)
 ```
 
 Build and run the program
-```bash
 
-$ ./gradlew build compTest -Dquarkus.package.type=uber-jar && java -jar ./build/dns-proxy-server.jar
+#### Jar file
+```bash
+$ ./gradlew clean build compTest shadowJar -i
+$ java -jar dns-proxy-server-*-all.jar
 ```
 
+### Native Image
+
+```shell
+$ ./gradlew clean build compTest shadowJar nativeCompile
+$ ./build/native/nativeCompile/dns-proxy-server
+```
