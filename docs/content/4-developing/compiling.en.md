@@ -5,8 +5,7 @@ pre: "<b>4. </b>"
 ---
 
 ## Requirements
-
-See {{%relref "1-getting-started/requirements/_index.en.md" %}}.
+See the [requirements][1].
 
 ## Building from Source
 
@@ -30,3 +29,5 @@ $ java -jar dns-proxy-server-*-all.jar
 $ ./gradlew clean build compTest shadowJar nativeCompile
 $ ./build/native/nativeCompile/dns-proxy-server
 ```
+
+[1]: {{%relref "1-getting-started/requirements/_index.en.md" %}}

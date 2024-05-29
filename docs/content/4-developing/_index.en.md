@@ -5,9 +5,7 @@ pre: "<b>5. </b>"
 ---
 
 ## Requirements 
-
-See {{%relref "1-getting-started/requirements/_index.en.md" %}}.
-
+See the [requirements][1].
 
 ## Vanilla Developing
 
@@ -43,3 +41,5 @@ $ ./gradlew clean build shadowJar -i -x check
 $ docker-compose -f docker-compose-dev.yml run --rm -it backend bash
 $ java -jar dns-proxy-server-*-all.jar
 ```
+
+[1]: {{%relref "1-getting-started/requirements/_index.en.md" %}}

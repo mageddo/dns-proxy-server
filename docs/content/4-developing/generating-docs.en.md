@@ -7,17 +7,24 @@ pre: "<b>6. </b>"
 ### Requirements
 * Hugo 0.55.4
 
-### Live docs preview
+### Live Docs Preview
 
-To se the current docs just type
+#### Vanilla
 
-	hugo server --source docs
+```bash
+$ hugo server --source docs
+```
 
-### Generating doc statics
+#### Docker
+
+```bash
+$ docker-compose -f docker-compose-dev.yml up docs
+```
+
+### Generating Doc Statics
 
 DPS uses Hugo to generate static docs. To generate the HTML use the following
 
 ```bash
 $ ./builder.bash docs
 ```
-
