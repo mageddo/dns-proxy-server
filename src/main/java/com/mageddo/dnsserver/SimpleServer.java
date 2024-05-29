@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.server.dns;
+package com.mageddo.dnsserver;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

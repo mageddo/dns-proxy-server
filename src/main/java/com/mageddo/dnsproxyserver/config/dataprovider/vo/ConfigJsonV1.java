@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.dataprovider.mapper.ConfigJsonV1EnvsMapper;
-import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
+import com.mageddo.dnsserver.SimpleServer;
 import com.mageddo.net.IpAddr;
 import lombok.Data;
 import lombok.NoArgsConstructor;

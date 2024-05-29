@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.server.dns;
+package com.mageddo.dnsserver;
 
 import com.mageddo.commons.concurrent.ThreadPool;
 import com.mageddo.commons.io.IoUtils;

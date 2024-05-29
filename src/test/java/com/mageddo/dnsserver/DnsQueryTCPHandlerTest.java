@@ -1,12 +1,12 @@
-package com.mageddo.dnsproxyserver.server.dns;
+package com.mageddo.dnsserver;
 
 import com.mageddo.commons.concurrent.ThreadPool;
 import com.mageddo.commons.concurrent.Threads;
-import testing.templates.MessageTemplates;
-import testing.templates.SocketClientTemplates;
 import com.mageddo.utils.Shorts;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
+import testing.templates.MessageTemplates;
+import testing.templates.SocketClientTemplates;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

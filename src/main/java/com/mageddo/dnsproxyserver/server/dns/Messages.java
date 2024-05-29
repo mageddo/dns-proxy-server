@@ -262,7 +262,7 @@ public class Messages {
     return withResponseCode(res, Rcode.NOERROR);
   }
 
-  static Message withResponseCode(Message res, int rRode) {
+  public static Message withResponseCode(Message res, int rRode) {
     withDefaultResponseHeaders(res);
     res.getHeader().setRcode(rRode);
     return res;

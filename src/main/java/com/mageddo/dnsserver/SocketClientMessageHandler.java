@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.server.dns;
+package com.mageddo.dnsserver;
 
 /**
  * Lead and treat TCP Socket Client messages to something useful.

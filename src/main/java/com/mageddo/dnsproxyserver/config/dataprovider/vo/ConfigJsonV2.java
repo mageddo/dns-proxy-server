@@ -9,7 +9,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.DurationSerializer;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.config.dataprovider.mapper.ConfigJsonV2EnvsMapper;
-import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
+import com.mageddo.dnsserver.SimpleServer;
 import com.mageddo.net.IP;
 import com.mageddo.net.IpAddr;
 import lombok.Data;

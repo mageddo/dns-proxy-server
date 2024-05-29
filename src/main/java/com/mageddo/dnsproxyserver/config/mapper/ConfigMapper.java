@@ -4,7 +4,7 @@ import com.mageddo.dnsproxyserver.config.CircuitBreaker;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigPropDAO;
-import com.mageddo.dnsproxyserver.server.dns.SimpleServer;
+import com.mageddo.dnsserver.SimpleServer;
 import com.mageddo.dnsproxyserver.utils.Numbers;
 import com.mageddo.net.IpAddr;
 import org.apache.commons.lang3.SystemUtils;

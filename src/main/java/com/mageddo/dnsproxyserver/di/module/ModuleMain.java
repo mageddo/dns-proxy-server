@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.di.module;
 
-import com.mageddo.dnsproxyserver.server.dns.RequestHandler;
-import com.mageddo.dnsproxyserver.server.dns.RequestHandlerDefault;
+import com.mageddo.dnsserver.RequestHandler;
+import com.mageddo.dnsserver.RequestHandlerDefault;
 import dagger.Binds;
 import dagger.Module;
 
