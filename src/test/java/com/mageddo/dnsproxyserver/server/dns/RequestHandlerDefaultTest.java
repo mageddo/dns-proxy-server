@@ -27,11 +27,11 @@ class RequestHandlerDefaultTest {
 
     doReturn(ResponseTemplates.acmeAResponse())
       .when(this.handler)
-      .solveHandling(eq(mesRes))
+      .solve(eq(mesRes))
     ;
 
     // act
-    final var res = this.handler.solveCaching(mesRes);
+    final var res = this.handler.solveFixingCacheTTL(mesRes);
 
     // assert
     assertEquals(DEFAULT_GLOBAL_CACHE_DURATION, res.getDpsTtl());

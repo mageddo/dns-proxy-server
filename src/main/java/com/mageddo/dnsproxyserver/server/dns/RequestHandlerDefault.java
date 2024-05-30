@@ -21,7 +21,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static com.mageddo.dns.utils.Messages.simplePrint;
@@ -52,11 +51,7 @@ public class RequestHandlerDefault implements RequestHandler {
     final var stopWatch = StopWatch.createStarted();
     log.debug("status=solveReq, kind={}, query={}", kind, queryStr);
     try {
-      final var res = Optional
-        .ofNullable(this.cache.handle(query, this::solveCaching))
-        .orElseGet(() -> this.buildDefaultRes(query));
-      log.debug("status=solveRes, kind={}, time={}, res={}, req={}", kind, stopWatch.getTime(), simplePrint(res), queryStr);
-      return res;
+      return this.solveCaching(query, kind, stopWatch, queryStr);
     } catch (Exception e) {
       log.warn(
         "status=solverFailed, totalTime={}, eClass={}, msg={}",
@@ -66,30 +61,33 @@ public class RequestHandlerDefault implements RequestHandler {
     }
   }
 
-  Response solveCaching(Message reqMsg) {
-    return Objects.mapOrNull(this.solveHandling(reqMsg), res -> res.withTTL(DEFAULT_GLOBAL_CACHE_DURATION));
+  Message solveCaching(Message query, String kind, StopWatch stopWatch, String queryStr) {
+    final var res = Optional
+      .ofNullable(this.cache.handle(query, this::solveFixingCacheTTL))
+      .orElseGet(() -> this.buildDefaultRes(query));
+    log.debug("status=solveRes, kind={}, time={}, res={}, req={}", kind, stopWatch.getTime(), simplePrint(res), queryStr);
+    return res;
   }
 
-  Response solveHandling(Message reqMsg) {
+  Response solveFixingCacheTTL(Message reqMsg) {
+    return Objects.mapOrNull(this.solve(reqMsg), res -> res.withTTL(DEFAULT_GLOBAL_CACHE_DURATION));
+  }
+
+  Response solve(Message reqMsg) {
     final var timeSummary = new ArrayList<>();
     try {
-      this.solve(timeSummary, reqMsg);
+      final var stopWatch = StopWatch.createStarted();
+      final var solvers = this.solverProvider.getSolvers();
+      for (final var solver : solvers) {
+        final var triple = this.solveAndSummarizeHandlingError(reqMsg, solver, stopWatch);
+        timeSummary.add(Pair.of(triple.getLeft(), triple.getMiddle()));
+        if (triple.getRight() != null) {
+          return triple.getRight();
+        }
+      }
     } finally {
       if (log.isDebugEnabled()) {
         log.debug("status=solveSummary, summary={}", timeSummary);
-      }
-    }
-    return null;
-  }
-
-  Response solve(List<Object> timeSummary, Message reqMsg) {
-    final var stopWatch = StopWatch.createStarted();
-    final var solvers = this.solverProvider.getSolvers();
-    for (final var solver : solvers) {
-      final var triple = this.solveAndSummarizeHandlingError(reqMsg, solver, stopWatch);
-      timeSummary.add(Pair.of(triple.getLeft(), triple.getMiddle()));
-      if (triple.getRight() != null) {
-        return triple.getRight();
       }
     }
     return null;
