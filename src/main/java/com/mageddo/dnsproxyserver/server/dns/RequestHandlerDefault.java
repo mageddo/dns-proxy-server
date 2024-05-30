@@ -53,7 +53,7 @@ public class RequestHandlerDefault implements RequestHandler {
     try {
       final var res = Optional
         .ofNullable(this.cache.handle(query, this::solveCaching))
-        .orElseGet(() -> buildDefaultRes(query));
+        .orElseGet(() -> this.buildDefaultRes(query));
       log.debug("status=solveRes, kind={}, time={}, res={}, req={}", kind, stopWatch.getTime(), simplePrint(res), queryStr);
       return res;
     } catch (Exception e) {
@@ -61,7 +61,7 @@ public class RequestHandlerDefault implements RequestHandler {
         "status=solverFailed, totalTime={}, eClass={}, msg={}",
         stopWatch.getTime(), ClassUtils.getSimpleName(e), e.getMessage(), e
       );
-      return buildDefaultRes(query);
+      return this.buildDefaultRes(query);
     }
   }
 
