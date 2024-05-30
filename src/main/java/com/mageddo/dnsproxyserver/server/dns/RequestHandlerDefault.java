@@ -75,7 +75,7 @@ public class RequestHandlerDefault implements RequestHandler {
     final var timeSummary = new ArrayList<>();
     try {
       for (final var solver : solvers) {
-        final var res = this.solve(timeSummary, reqMsg, solver, stopWatch);
+        final var res = this.solveAndSummarize(timeSummary, reqMsg, solver, stopWatch);
         if (res != null) {
           return res;
         }
@@ -88,7 +88,7 @@ public class RequestHandlerDefault implements RequestHandler {
     return null;
   }
 
-  Response solve(List<Object> timeSummary, Message reqMsg, Solver solver, StopWatch stopWatch) {
+  Response solveAndSummarize(List<Object> timeSummary, Message reqMsg, Solver solver, StopWatch stopWatch) {
     stopWatch.split();
     final var solverName = solver.name();
     try {
