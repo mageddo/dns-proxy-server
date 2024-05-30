@@ -25,6 +25,8 @@ import java.util.Optional;
 
 import static com.mageddo.dns.utils.Messages.simplePrint;
 
+// fixme #449 revisado, fazer teste manual com binario native image para poder entregar e gerar nova release
+
 @Slf4j
 @Singleton
 public class RequestHandlerDefault implements RequestHandler {
