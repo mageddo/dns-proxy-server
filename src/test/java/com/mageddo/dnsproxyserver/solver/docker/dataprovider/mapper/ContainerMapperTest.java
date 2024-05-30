@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.mapper;
+package com.mageddo.dnsproxyserver.solver.docker.dataprovider.mapper;
 
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.mapper.ContainerMapper;
 import com.mageddo.net.IP;

@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.server.dns.solver.docker.entrypoint;
+package com.mageddo.dnsproxyserver.solver.docker.entrypoint;
 
 import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.dnsproxyserver.di.StartupEvent;

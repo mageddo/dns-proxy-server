@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.server.dns.solver;
+package com.mageddo.dnsproxyserver.solver;
 
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dns.utils.Messages;

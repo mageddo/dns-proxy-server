@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.server.dns.solver;
+package com.mageddo.dnsproxyserver.solver;
 
 import com.mageddo.dnsproxyserver.solver.SolverProvider;
 import dagger.sheath.junit.DaggerTest;

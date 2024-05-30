@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
+package com.mageddo.dnsproxyserver.solver.docker.application;
 
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.solver.docker.application.ContainerSolvingService;
