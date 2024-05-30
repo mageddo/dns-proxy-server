@@ -6,6 +6,7 @@ import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.server.dns.solver.CacheName;
 import com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name;
 import com.mageddo.dnsproxyserver.server.dns.solver.Response;
+import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
 import com.mageddo.dnsproxyserver.server.dns.solver.SolverCache;
 import com.mageddo.dnsproxyserver.server.dns.solver.SolverProvider;
 import com.mageddo.dnsserver.RequestHandler;
@@ -19,6 +20,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static com.mageddo.dns.utils.Messages.simplePrint;
@@ -68,44 +70,18 @@ public class RequestHandlerDefault implements RequestHandler {
   }
 
   Response solveCaching(Message reqMsg) {
-    return Objects.mapOrNull(this.solve0(reqMsg), res -> res.withTTL(DEFAULT_GLOBAL_CACHE_DURATION));
+    return Objects.mapOrNull(this.solve(reqMsg), res -> res.withTTL(DEFAULT_GLOBAL_CACHE_DURATION));
   }
 
-  // todo #449 quebrar esse método
-  Response solve0(Message reqMsg) {
+  Response solve(Message reqMsg) {
     final var stopWatch = StopWatch.createStarted();
     final var solvers = this.solverProvider.getSolvers();
     final var timeSummary = new ArrayList<>();
     try {
       for (final var solver : solvers) {
-        stopWatch.split();
-        final var solverName = solver.name();
-        try {
-          final var reqStr = simplePrint(reqMsg);
-          log.trace("status=trySolve, solver={}, req={}", solverName, reqStr);
-          final var res = solver.handle(reqMsg);
-          final var solverTime = stopWatch.getTime() - stopWatch.getSplitTime();
-          if (log.isDebugEnabled()) {
-            timeSummary.add(Pair.of(solverName, solverTime));
-          }
-          if (res == null) {
-            log.trace(
-              "status=notSolved, currentSolverTime={}, totalTime={}, solver={}, req={}",
-              solverTime, stopWatch.getTime(), solverName, reqStr
-            );
-            continue;
-          }
-          log.debug(
-            "status=solved, currentSolverTime={}, totalTime={}, solver={}, req={}, res={}",
-            solverTime, stopWatch.getTime(), solverName, reqStr, simplePrint(res)
-          );
+        final var res = this.solve(timeSummary, reqMsg, solver, stopWatch);
+        if (res != null) {
           return res;
-        } catch (Exception e) {
-          log.warn(
-            "status=solverFailed, currentSolverTime={}, totalTime={}, solver={}, query={}, eClass={}, msg={}",
-            stopWatch.getTime() - stopWatch.getSplitTime(), stopWatch.getTime(), solverName,
-            simplePrint(reqMsg), ClassUtils.getSimpleName(e), e.getMessage(), e
-          );
         }
       }
     } finally {
@@ -114,6 +90,39 @@ public class RequestHandlerDefault implements RequestHandler {
       }
     }
     return null;
+  }
+
+  Response solve(List<Object> timeSummary, Message reqMsg, Solver solver, StopWatch stopWatch) {
+    stopWatch.split();
+    final var solverName = solver.name();
+    try {
+      final var reqStr = simplePrint(reqMsg);
+      log.trace("status=trySolve, solver={}, req={}", solverName, reqStr);
+      final var res = solver.handle(reqMsg);
+      final var solverTime = stopWatch.getTime() - stopWatch.getSplitTime();
+      if (log.isDebugEnabled()) {
+        timeSummary.add(Pair.of(solverName, solverTime));
+      }
+      if (res == null) {
+        log.trace(
+          "status=notSolved, currentSolverTime={}, totalTime={}, solver={}, req={}",
+          solverTime, stopWatch.getTime(), solverName, reqStr
+        );
+        return null;
+      }
+      log.debug(
+        "status=solved, currentSolverTime={}, totalTime={}, solver={}, req={}, res={}",
+        solverTime, stopWatch.getTime(), solverName, reqStr, simplePrint(res)
+      );
+      return res;
+    } catch (Exception e) {
+      log.warn(
+        "status=solverFailed, currentSolverTime={}, totalTime={}, solver={}, query={}, eClass={}, msg={}",
+        stopWatch.getTime() - stopWatch.getSplitTime(), stopWatch.getTime(), solverName,
+        simplePrint(reqMsg), ClassUtils.getSimpleName(e), e.getMessage(), e
+      );
+      return null;
+    }
   }
 
   public Message buildDefaultRes(Message reqMsg) {
