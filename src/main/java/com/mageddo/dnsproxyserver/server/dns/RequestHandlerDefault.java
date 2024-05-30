@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
+import com.mageddo.commons.lang.Objects;
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.server.dns.solver.CacheName;
@@ -16,6 +17,7 @@ import org.xbill.DNS.Message;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -24,6 +26,8 @@ import static com.mageddo.dns.utils.Messages.simplePrint;
 @Slf4j
 @Singleton
 public class RequestHandlerDefault implements RequestHandler {
+
+  public static final Duration DEFAULT_GLOBAL_CACHE_DURATION = Duration.ofSeconds(20);
 
   private final SolverProvider solverProvider;
   private final SolverCache cache;
@@ -50,7 +54,7 @@ public class RequestHandlerDefault implements RequestHandler {
     log.debug("status=solveReq, kind={}, query={}", kind, queryStr);
     try {
       final var res = Optional
-        .ofNullable(this.cache.handle(query, this::solve0)) // todo #449 fixar aqui o cache de 20 segundos que hoje está no SolverCachedRemote
+        .ofNullable(this.cache.handle(query, this::solveCaching))
         .orElseGet(() -> buildDefaultRes(query));
       log.debug("status=solveRes, kind={}, time={}, res={}, req={}", kind, stopWatch.getTime(), simplePrint(res), queryStr);
       return res;
@@ -63,6 +67,11 @@ public class RequestHandlerDefault implements RequestHandler {
     }
   }
 
+  Response solveCaching(Message reqMsg) {
+    return Objects.mapOrNull(this.solve0(reqMsg), res -> res.withTTL(DEFAULT_GLOBAL_CACHE_DURATION));
+  }
+
+  // todo #449 quebrar esse método
   Response solve0(Message reqMsg) {
     final var stopWatch = StopWatch.createStarted();
     final var solvers = this.solverProvider.getSolvers();
