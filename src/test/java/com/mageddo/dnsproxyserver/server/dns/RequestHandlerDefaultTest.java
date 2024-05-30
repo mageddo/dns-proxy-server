@@ -27,7 +27,7 @@ class RequestHandlerDefaultTest {
 
     doReturn(ResponseTemplates.acmeAResponse())
       .when(this.handler)
-      .solve(eq(mesRes))
+      .solveHandling(eq(mesRes))
     ;
 
     // act
