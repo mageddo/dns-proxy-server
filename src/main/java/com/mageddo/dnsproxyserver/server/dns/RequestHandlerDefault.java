@@ -47,10 +47,6 @@ public class RequestHandlerDefault implements RequestHandler {
 
   @Override
   public Message handle(Message query, String kind) {
-    return this.solve(query, kind);
-  }
-
-  Message solve(Message query, String kind) {
     final var queryStr = simplePrint(query);
     final var stopWatch = StopWatch.createStarted();
     log.debug("status=solveReq, kind={}, query={}", kind, queryStr);
