@@ -2,6 +2,9 @@ package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.quarkus.Instances;
+import com.mageddo.dnsproxyserver.solver.Solver;
+import com.mageddo.dnsproxyserver.solver.SolverMock;
+import com.mageddo.dnsproxyserver.solver.SolverProvider;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

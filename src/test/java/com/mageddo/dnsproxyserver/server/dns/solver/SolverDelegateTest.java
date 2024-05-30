@@ -1,5 +1,8 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
+import com.mageddo.dnsproxyserver.solver.SolverDelegate;
+import com.mageddo.dnsproxyserver.solver.SolverLocalDB;
+import com.mageddo.dnsproxyserver.solver.SolverProvider;
 import testing.templates.EntryTemplates;
 import testing.templates.MessageTemplates;
 import testing.templates.SolverMockTemplates;

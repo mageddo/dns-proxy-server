@@ -1,9 +1,10 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 
-import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.ContainerDAO;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.NetworkDAO;
+import com.mageddo.dnsproxyserver.solver.HostnameQuery;
+import com.mageddo.dnsproxyserver.solver.docker.application.ContainerSolvingService;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.ContainerDAO;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.NetworkDAO;
 import com.mageddo.net.IP;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

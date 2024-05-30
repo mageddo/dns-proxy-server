@@ -1,7 +1,7 @@
 package testing.templates.server.dns.solver.docker;
 
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.Container;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.DpsContainerService;
+import com.mageddo.dnsproxyserver.solver.docker.Container;
+import com.mageddo.dnsproxyserver.solver.docker.application.DpsContainerService;
 import com.mageddo.net.IP;
 import com.mageddo.utils.Sets;
 

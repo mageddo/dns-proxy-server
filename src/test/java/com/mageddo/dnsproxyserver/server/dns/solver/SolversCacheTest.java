@@ -1,7 +1,9 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dns.utils.Messages;
-import com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name;
+import com.mageddo.dnsproxyserver.solver.CacheName.Name;
+import com.mageddo.dnsproxyserver.solver.Response;
+import com.mageddo.dnsproxyserver.solver.SolverCache;
 import testing.templates.MessageTemplates;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

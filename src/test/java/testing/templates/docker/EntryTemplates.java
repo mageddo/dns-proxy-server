@@ -1,6 +1,6 @@
 package testing.templates.docker;
 
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.Entry;
+import com.mageddo.dnsproxyserver.solver.docker.Entry;
 import testing.templates.IpTemplates;
 import com.mageddo.net.IP;
 

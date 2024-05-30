@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider;
 
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAODefault;
 import com.mageddo.net.IP;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.server.rest;
 
 import com.mageddo.commons.lang.Objects;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.application.DockerNetworkService;
+import com.mageddo.dnsproxyserver.solver.docker.application.DockerNetworkService;
 import com.mageddo.http.HttpMapper;
 import com.mageddo.http.Request;
 import com.mageddo.http.WebServer;

@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
+import com.mageddo.dnsproxyserver.solver.HostnameQuery;
 import testing.templates.HostnameQueryTemplates;
 import testing.templates.HostnameTemplates;
 import org.junit.jupiter.api.Test;

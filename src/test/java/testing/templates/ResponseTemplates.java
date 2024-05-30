@@ -1,7 +1,7 @@
 package testing.templates;
 
 import com.mageddo.dns.utils.Messages;
-import com.mageddo.dnsproxyserver.server.dns.solver.Response;
+import com.mageddo.dnsproxyserver.solver.Response;
 import org.xbill.DNS.Message;
 
 import java.time.Duration;

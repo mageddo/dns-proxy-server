@@ -1,5 +1,10 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
+import com.mageddo.dnsproxyserver.solver.RemoteResolvers;
+import com.mageddo.dnsproxyserver.solver.Resolver;
+import com.mageddo.dnsproxyserver.solver.Response;
+import com.mageddo.dnsproxyserver.solver.Responses;
+import com.mageddo.dnsproxyserver.solver.SolverRemote;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

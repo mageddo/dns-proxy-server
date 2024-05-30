@@ -1,5 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
+import com.mageddo.dnsproxyserver.solver.SolverCache;
+import com.mageddo.dnsproxyserver.solver.SolverCachedRemote;
 import testing.templates.MessageTemplates;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,6 +1,8 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dns.utils.Messages;
+import com.mageddo.dnsproxyserver.solver.HostnameQuery;
+import com.mageddo.dnsproxyserver.solver.SolverLocalDB;
 import testing.templates.EntryTemplates;
 import testing.templates.HostnameTemplates;
 import testing.templates.MessageTemplates;

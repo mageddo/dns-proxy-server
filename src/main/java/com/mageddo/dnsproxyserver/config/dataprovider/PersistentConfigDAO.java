@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.config.dataprovider;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
+import com.mageddo.dnsproxyserver.solver.HostnameQuery;
 
 import java.util.List;
 

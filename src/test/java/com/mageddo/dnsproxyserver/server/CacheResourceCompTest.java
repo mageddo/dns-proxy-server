@@ -1,9 +1,9 @@
 package com.mageddo.dnsproxyserver.server;
 
 import com.mageddo.dnsproxyserver.config.application.Configs;
-import com.mageddo.dnsproxyserver.server.dns.solver.CacheName;
-import com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name;
-import com.mageddo.dnsproxyserver.server.dns.solver.SolverCache;
+import com.mageddo.dnsproxyserver.solver.CacheName;
+import com.mageddo.dnsproxyserver.solver.CacheName.Name;
+import com.mageddo.dnsproxyserver.solver.SolverCache;
 import testing.templates.MessageTemplates;
 import testing.templates.ResponseTemplates;
 import dagger.sheath.junit.DaggerTest;

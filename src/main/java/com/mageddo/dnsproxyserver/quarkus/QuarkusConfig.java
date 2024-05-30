@@ -1,10 +1,10 @@
 package com.mageddo.dnsproxyserver.quarkus;
 
 import com.mageddo.dnsproxyserver.config.application.Configs;
-import com.mageddo.dnsproxyserver.server.dns.solver.Resolver;
-import com.mageddo.dnsproxyserver.server.dns.solver.SimpleResolver;
+import com.mageddo.dnsproxyserver.solver.Resolver;
+import com.mageddo.dnsproxyserver.solver.SimpleResolver;
 import com.mageddo.net.IpAddr;
-import com.mageddo.dnsproxyserver.server.dns.solver.RemoteResolvers;
+import com.mageddo.dnsproxyserver.solver.RemoteResolvers;
 import com.mageddo.dnsproxyserver.utils.InetAddresses;
 import dagger.Module;
 import dagger.Provides;

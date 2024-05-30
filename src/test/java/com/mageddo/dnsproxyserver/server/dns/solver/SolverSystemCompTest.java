@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver;
 
 import com.mageddo.dns.utils.Messages;
+import com.mageddo.dnsproxyserver.solver.SolverSystem;
 import testing.templates.HostnameTemplates;
 import com.mageddo.dnsproxyserver.usecase.HostMachineService;
 import com.mageddo.net.IP;

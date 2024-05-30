@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.usecase;
 
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DockerDAO;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.DpsContainerDAO;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DpsContainerDAO;
 import com.mageddo.net.IP;
 import com.mageddo.net.Networks;
 import lombok.RequiredArgsConstructor;

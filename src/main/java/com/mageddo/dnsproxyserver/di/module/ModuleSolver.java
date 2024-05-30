@@ -1,14 +1,14 @@
 package com.mageddo.dnsproxyserver.di.module;
 
 import com.mageddo.di.InstanceImpl;
-import com.mageddo.dnsproxyserver.server.dns.solver.CacheName;
-import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
-import com.mageddo.dnsproxyserver.server.dns.solver.SolverCache;
-import com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name;
-import com.mageddo.dnsproxyserver.server.dns.solver.SolverCachedRemote;
-import com.mageddo.dnsproxyserver.server.dns.solver.SolverDocker;
-import com.mageddo.dnsproxyserver.server.dns.solver.SolverLocalDB;
-import com.mageddo.dnsproxyserver.server.dns.solver.SolverSystem;
+import com.mageddo.dnsproxyserver.solver.CacheName;
+import com.mageddo.dnsproxyserver.solver.Solver;
+import com.mageddo.dnsproxyserver.solver.SolverCache;
+import com.mageddo.dnsproxyserver.solver.CacheName.Name;
+import com.mageddo.dnsproxyserver.solver.SolverCachedRemote;
+import com.mageddo.dnsproxyserver.solver.SolverDocker;
+import com.mageddo.dnsproxyserver.solver.SolverLocalDB;
+import com.mageddo.dnsproxyserver.solver.SolverSystem;
 import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.ElementsIntoSet;

@@ -1,8 +1,8 @@
 package testing.templates.docker;
 
 import com.mageddo.dns.utils.Messages;
-import com.mageddo.dnsproxyserver.server.dns.solver.Response;
-import com.mageddo.dnsproxyserver.server.dns.solver.Solver;
+import com.mageddo.dnsproxyserver.solver.Response;
+import com.mageddo.dnsproxyserver.solver.Solver;
 
 import java.util.List;
 

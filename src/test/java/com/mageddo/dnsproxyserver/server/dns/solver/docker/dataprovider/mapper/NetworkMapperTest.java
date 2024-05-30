@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider.mapper;
 
 import com.mageddo.dnsproxyserver.docker.domain.Drivers;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.mapper.NetworkMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

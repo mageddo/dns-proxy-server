@@ -1,7 +1,7 @@
 package testing.templates.server.dns.solver.docker;
 
 import com.mageddo.dnsproxyserver.docker.domain.Drivers;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.Network;
+import com.mageddo.dnsproxyserver.solver.docker.Network;
 import com.mageddo.net.IP;
 
 import java.util.Collections;

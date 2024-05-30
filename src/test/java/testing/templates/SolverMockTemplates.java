@@ -1,6 +1,6 @@
 package testing.templates;
 
-import com.mageddo.dnsproxyserver.server.dns.solver.SolverMock;
+import com.mageddo.dnsproxyserver.solver.SolverMock;
 import com.mageddo.net.IP;
 import org.apache.commons.lang3.tuple.Pair;
 

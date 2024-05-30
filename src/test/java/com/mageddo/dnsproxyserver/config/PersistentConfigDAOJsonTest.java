@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.config;
 
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.config.dataprovider.PersistentConfigDAOJson;
-import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
+import com.mageddo.dnsproxyserver.solver.HostnameQuery;
 import testing.templates.EnvTemplates;
 import testing.templates.HostnameQueryTemplates;
 import org.junit.jupiter.api.Test;

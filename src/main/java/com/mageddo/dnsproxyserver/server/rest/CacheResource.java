@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.server.rest;
 
-import com.mageddo.dnsproxyserver.server.dns.solver.SolverCacheFactory;
-import com.mageddo.dnsproxyserver.server.dns.solver.CacheName.Name;
+import com.mageddo.dnsproxyserver.solver.SolverCacheFactory;
+import com.mageddo.dnsproxyserver.solver.CacheName.Name;
 import com.mageddo.dnsproxyserver.server.rest.reqres.CacheEntryResV1;
 import com.mageddo.http.HttpMapper;
 import com.mageddo.http.Request;

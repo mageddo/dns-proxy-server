@@ -1,7 +1,8 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.dataprovider;
 
 import com.mageddo.dnsproxyserver.config.application.Configs;
-import com.mageddo.dnsproxyserver.server.dns.solver.HostnameQuery;
+import com.mageddo.dnsproxyserver.solver.HostnameQuery;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.ContainerHostnameMatcher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import testing.templates.ConfigTemplates;

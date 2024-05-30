@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.di.module;
 
 import com.mageddo.dnsproxyserver.di.StartupEvent;
 import com.mageddo.dnsproxyserver.dnsconfigurator.DnsConfigurators;
-import com.mageddo.dnsproxyserver.server.dns.solver.docker.entrypoint.EventListener;
+import com.mageddo.dnsproxyserver.solver.docker.entrypoint.EventListener;
 import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.ElementsIntoSet;

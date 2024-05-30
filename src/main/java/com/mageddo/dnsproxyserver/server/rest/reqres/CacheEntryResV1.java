@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.server.rest.reqres;
 
-import com.mageddo.dnsproxyserver.server.dns.solver.CacheEntry;
+import com.mageddo.dnsproxyserver.solver.CacheEntry;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

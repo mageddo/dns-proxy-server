@@ -1,5 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns.solver.docker.application;
 
+import com.mageddo.dnsproxyserver.solver.docker.application.DpsContainerService;
+import com.mageddo.dnsproxyserver.solver.docker.application.DpsDockerEnvironmentSetupService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
