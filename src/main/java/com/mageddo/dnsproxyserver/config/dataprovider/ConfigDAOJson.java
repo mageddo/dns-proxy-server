@@ -35,7 +35,7 @@ public class ConfigDAOJson implements ConfigDAO {
 
   public Config find(Path configPath) {
     final var jsonConfig = JsonConfigs.loadConfig(configPath);
-    log.info("status=configuring, configPath={}", configPath);
+    log.debug("configPath={}", configPath);
     return toConfig(jsonConfig, configPath);
   }
 

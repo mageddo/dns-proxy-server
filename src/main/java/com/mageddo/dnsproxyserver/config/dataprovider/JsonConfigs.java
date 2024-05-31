@@ -72,6 +72,7 @@ public class JsonConfigs {
     JsonUtils
       .prettyInstance()
       .writeValue(configPath.toFile(), config);
+    log.info("status=createdDefaultConfigFile, path={}", configPath);
   }
 
   @SneakyThrows

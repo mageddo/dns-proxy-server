@@ -107,7 +107,7 @@ public class SolverRemote implements Solver {
   private static void testPing(InetSocketAddress address, Future<Boolean> pingFuture) {
     try {
       final var pingSuccess = pingFuture.get();
-      log.info(
+      log.debug(
         "stats=pingTested, success={}, address={}:{}", pingSuccess, address.getAddress(), address.getPort()
       );
       if (!pingSuccess) {
