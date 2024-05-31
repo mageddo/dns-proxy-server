@@ -28,7 +28,7 @@ public class TCPServer {
   public static final Duration MAX_CLIENT_ALIVE_DURATION = Duration.ofMinutes(2);
   public static final int WATCHDOG_DELAY_SECS = 20;
 
-  private final ExecutorService pool;
+  private final ExecutorService pool; // fixme #455 needs to close this at #stop method
   private final Set<WeakReference<SocketClient>> clients;
   private ServerSocket server;
 
@@ -42,7 +42,7 @@ public class TCPServer {
     log.debug("status=tcpServerStartScheduled, port={}", port);
     this.pool.submit(() -> this.start0(port, address, handler));
     ThreadPool
-      .scheduled()
+      .scheduled() // fixme #455 should put this threadpool to instance veriable and close it.
       .scheduleWithFixedDelay(this::watchDog, WATCHDOG_DELAY_SECS, WATCHDOG_DELAY_SECS, TimeUnit.SECONDS);
   }
 
