@@ -37,8 +37,6 @@ import static com.mageddo.dns.utils.Messages.simplePrint;
 public class SolverRemote implements Solver, AutoCloseable {
 
   static final String QUERY_TIMED_OUT_MSG = "Query timed out";
-  static final long FPS_120 = 1000 / 120;
-  public static final int PING_TIMEOUT_IN_MS = 1_500;
 
   private final RemoteResolvers delegate;
   private final Map<InetSocketAddress, CircuitBreaker<Result>> circuitBreakerMap = new ConcurrentHashMap<>();
