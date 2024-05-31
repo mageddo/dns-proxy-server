@@ -135,7 +135,7 @@ class SolverRemoteTest {
   }
 
   @Test
-  void mustReturnRaEvenWhenRemoteServerDoesntReturns() throws Exception {
+  void mustReturnRaEvenWhenRemoteServerDoesntReturnsRA() throws Exception {
     // arrange
     final var query = MessageTemplates.acmeAQuery();
     final var res = MessageTemplates.buildAAnswer(query);
