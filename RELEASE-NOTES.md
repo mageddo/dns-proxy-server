@@ -1,5 +1,6 @@
 ## 3.18.3
-*  Refactoring proposed at #449.
+* Refactoring proposed at #449.
+* Log changes
 
 ## 3.18.2
 *  Fixing native image JSON config parse, bug introduced on 3.18.0
