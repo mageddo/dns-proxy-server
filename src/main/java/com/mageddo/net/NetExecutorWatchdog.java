@@ -13,7 +13,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 @Slf4j
-public class NetExecutorWatchdog {
+public class NetExecutorWatchdog implements AutoCloseable {
 
   public static final int PING_TIMEOUT_IN_MS = 1_500;
   public static final int FPS_120 = 1000 / 120;
@@ -59,5 +59,10 @@ public class NetExecutorWatchdog {
     } catch (InterruptedException | ExecutionException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  @Override
+  public void close() throws Exception {
+    this.threadPool.close();
   }
 }

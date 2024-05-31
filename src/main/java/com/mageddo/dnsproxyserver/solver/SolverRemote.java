@@ -34,7 +34,7 @@ import static com.mageddo.dns.utils.Messages.simplePrint;
 @Slf4j
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
-public class SolverRemote implements Solver {
+public class SolverRemote implements Solver, AutoCloseable {
 
   static final String QUERY_TIMED_OUT_MSG = "Query timed out";
   static final long FPS_120 = 1000 / 120;
@@ -176,6 +176,11 @@ public class SolverRemote implements Solver {
 
   String getStatus() {
     return this.status;
+  }
+
+  @Override
+  public void close() throws Exception {
+    this.netWatchdog.close();
   }
 
   @Value
