@@ -104,6 +104,7 @@ public class SolverRemote implements Solver {
 
   }
 
+  // todo #455 create an watchdog for this method, keep the circuit uptodate and updates the cache
   private static void testPing(InetSocketAddress address, Future<Boolean> pingFuture) {
     try {
       final var pingSuccess = pingFuture.get();
