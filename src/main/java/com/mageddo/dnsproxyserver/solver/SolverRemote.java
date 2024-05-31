@@ -42,7 +42,7 @@ public class SolverRemote implements Solver {
   static final long FPS_120 = 1000 / 120;
 
   private final RemoteResolvers delegate;
-  private final Map<InetSocketAddress, CircuitBreaker<Response>> circuitBreakerMap = new ConcurrentHashMap<>();
+  private final Map<InetSocketAddress, CircuitBreaker<Result>> circuitBreakerMap = new ConcurrentHashMap<>();
   private final ExecutorService threadPool = ThreadPool.newFixed(50);
   private final ConfigService configService;
   private String status;
@@ -56,7 +56,7 @@ public class SolverRemote implements Solver {
       final var resolver = this.delegate.resolvers().get(i);
       final var request = this.buildRequest(query, i, stopWatch, resolver);
 
-      final var result = this.findResultFor(request);
+      final var result = this.safeHandle(request);
       if (result.hasSuccessMessage()) {
         return result.getSuccessResponse();
       } else if (result.hasErrorMessage()) {
@@ -82,13 +82,13 @@ public class SolverRemote implements Solver {
       .build();
   }
 
-  Result findResultFor(Request req) {
+  Result safeHandle(Request req) {
     req.splitStopWatch();
     final var circuitBreaker = this.circuitBreakerFor(req.getResolverAddress());
     try {
       return Failsafe
         .with(circuitBreaker)
-        .get((ctx) -> this.handle0(req));
+        .get((ctx) -> this.handle(req));
     } catch (CircuitCheckException | CircuitBreakerOpenException e) {
       final var clazz = ClassUtils.getSimpleName(e);
       log.debug("status=circuitEvent, server={}, type={}", req.getResolverAddress(), clazz);
@@ -97,7 +97,7 @@ public class SolverRemote implements Solver {
     return Result.empty();
   }
 
-  Response handle0(final Request req) {
+  Result handle(final Request req) {
 
     final var resFuture = req.sendQueryAsyncToResolver();
     final var address = req.getResolverAddress();
@@ -110,7 +110,7 @@ public class SolverRemote implements Solver {
         mustCheckPing = false;
       }
       if (resFuture.isDone()) {
-        return this.safeTransformToResult(resFuture);
+        return this.transformToResult(resFuture, req);
       }
       Threads.sleep(FPS_120);
     }
@@ -134,52 +134,66 @@ public class SolverRemote implements Solver {
     }
   }
 
-  Result safeTransformToResult(CompletableFuture<Message> resFuture, Request request) {
-    try {
-      final var res = Messages.setFlag(resFuture.get(), Flags.RA);
-      if (Messages.isSuccess(res)) {
-        log.trace(
-          "status=found, i={}, time={}, req={}, res={}, server={}",
-          request.getResolverIndex(), request.getTime(), simplePrint(request.getQuery()),
-          simplePrint(res), request.getResolverAddress()
+  void checkCircuitError(Exception e, Request request) {
+    if (e.getCause() instanceof IOException) {
+      final var time = request.getElapsedTimeInMs();
+      if (e.getMessage().contains(QUERY_TIMED_OUT_MSG)) {
+        log.info(
+          "status=timedOut, i={}, time={}, req={}, msg={} class={}",
+          request.getResolverIndex(), time, simplePrint(request.getQuery()), e.getMessage(), ClassUtils.getSimpleName(e)
         );
-        return Result.fromSuccessResponse(Response.success(res));
-      } else {
-        log.trace(
-          "status=notFound, i={}, time={}, req={}, res={}, server={}",
-          request.getResolverIndex(), request.getTime(), simplePrint(request.getQuery()),
-          simplePrint(res), request.getResolverAddress()
-        );
-        return Result.fromErrorMessage(res);
+        throw new CircuitCheckException(e);
       }
-    } catch (InterruptedException | ExecutionException e) {
-      if (e.getCause() instanceof IOException) {
-        final var time = request.getElapsedTimeInMs();
-        if (e.getMessage().contains(QUERY_TIMED_OUT_MSG)) {
-          log.info(
-            "status=timedOut, i={}, time={}, req={}, msg={} class={}",
-            request.getResolverIndex(), time, simplePrint(request.getQuery()), e.getMessage(), ClassUtils.getSimpleName(e)
-          );
-          throw new CircuitCheckException(e);
-        }
-        log.warn(
-          "status=failed, i={}, time={}, req={}, server={}, errClass={}, msg={}",
-          request.getResolverIndex(), time, simplePrint(request.getQuery()), request.getResolverAddress(),
-          ClassUtils.getSimpleName(e), e.getMessage(), e
-        );
-        return null;
-      }
+      log.warn(
+        "status=failed, i={}, time={}, req={}, server={}, errClass={}, msg={}",
+        request.getResolverIndex(), time, simplePrint(request.getQuery()), request.getResolverAddress(),
+        ClassUtils.getSimpleName(e), e.getMessage(), e
+      );
+    } else {
       throw new RuntimeException(e.getMessage(), e);
     }
   }
 
-  private CircuitBreaker<Response> circuitBreakerFor(InetSocketAddress address) {
+  Result transformToResult(CompletableFuture<Message> resFuture, Request request) {
+
+    final var res = this.findFutureRes(resFuture, request);
+    if (res == null) {
+      return Result.empty();
+    }
+
+    if (Messages.isSuccess(res)) {
+      log.trace(
+        "status=found, i={}, time={}, req={}, res={}, server={}",
+        request.getResolverIndex(), request.getTime(), simplePrint(request.getQuery()),
+        simplePrint(res), request.getResolverAddress()
+      );
+      return Result.fromSuccessResponse(Response.success(res));
+    } else {
+      log.trace(
+        "status=notFound, i={}, time={}, req={}, res={}, server={}",
+        request.getResolverIndex(), request.getTime(), simplePrint(request.getQuery()),
+        simplePrint(res), request.getResolverAddress()
+      );
+      return Result.fromErrorMessage(res);
+    }
+  }
+
+  Message findFutureRes(CompletableFuture<Message> resFuture, Request request) {
+    try {
+      return Messages.setFlag(resFuture.get(), Flags.RA);
+    } catch (InterruptedException | ExecutionException e) {
+      this.checkCircuitError(e, request);
+      return null;
+    }
+  }
+
+  CircuitBreaker<Result> circuitBreakerFor(InetSocketAddress address) {
     final var config = this.findCircuitBreakerConfig();
     return this.circuitBreakerMap.computeIfAbsent(address, inetSocketAddress -> buildCircuitBreaker(config));
   }
 
-  private static CircuitBreaker<Response> buildCircuitBreaker(com.mageddo.dnsproxyserver.config.CircuitBreaker config) {
-    return CircuitBreaker.<Response>builder()
+  static CircuitBreaker<Result> buildCircuitBreaker(com.mageddo.dnsproxyserver.config.CircuitBreaker config) {
+    return CircuitBreaker.<Result>builder()
       .handle(CircuitCheckException.class)
       .withFailureThreshold(config.getFailureThreshold(), config.getFailureThresholdCapacity())
       .withSuccessThreshold(config.getSuccessThreshold())
