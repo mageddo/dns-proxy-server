@@ -40,10 +40,11 @@ public class SolverRemote implements Solver {
 
   static final String QUERY_TIMED_OUT_MSG = "Query timed out";
   static final long FPS_120 = 1000 / 120;
+  public static final int PING_TIMEOUT_IN_MS = 1_500;
 
   private final RemoteResolvers delegate;
   private final Map<InetSocketAddress, CircuitBreaker<Result>> circuitBreakerMap = new ConcurrentHashMap<>();
-  private final ExecutorService threadPool = ThreadPool.newFixed(50);
+  private final ExecutorService pingThreadPool = ThreadPool.newFixed(50);
   private final ConfigService configService;
   private String status;
 
@@ -88,7 +89,7 @@ public class SolverRemote implements Solver {
     try {
       return Failsafe
         .with(circuitBreaker)
-        .get((ctx) -> this.handle(req));
+        .get((ctx) -> this.queryResultWhilePingingResolver(req));
     } catch (CircuitCheckException | CircuitBreakerOpenException e) {
       final var clazz = ClassUtils.getSimpleName(e);
       log.debug("status=circuitEvent, server={}, type={}", req.getResolverAddress(), clazz);
@@ -97,19 +98,22 @@ public class SolverRemote implements Solver {
     return Result.empty();
   }
 
-  Result handle(final Request req) {
+  Result queryResultWhilePingingResolver(final Request req) {
 
     final var resFuture = req.sendQueryAsyncToResolver();
     final var address = req.getResolverAddress();
-    final var pingFuture = this.threadPool.submit(() -> Networks.ping(address.getAddress(), address.getPort(), 1_500));
+    final var pingFuture = this.pingThreadPool.submit(
+      () -> Networks.ping(address.getAddress(), address.getPort(), PING_TIMEOUT_IN_MS)
+    );
 
     boolean mustCheckPing = true;
     while (true) {
       if (mustCheckPing && pingFuture.isDone()) {
-        testPing(address, pingFuture);
+        checkPing(pingFuture, address);
         mustCheckPing = false;
       }
       if (resFuture.isDone()) {
+        // fixme #455 deveria cancelar o ping aqui pingFuture.cancel(true)
         return this.transformToResult(resFuture, req);
       }
       Threads.sleep(FPS_120);
@@ -118,7 +122,7 @@ public class SolverRemote implements Solver {
   }
 
   // todo #455 create an watchdog for this method, keep the circuit uptodate and updates the cache
-  private static void testPing(InetSocketAddress address, Future<Boolean> pingFuture) {
+  private static void checkPing(Future<Boolean> pingFuture, InetSocketAddress address) {
     try {
       final var pingSuccess = pingFuture.get();
       log.debug(
@@ -126,7 +130,7 @@ public class SolverRemote implements Solver {
       );
       if (!pingSuccess) {
         throw new CircuitCheckException(String.format(
-          "Failed to ping: %s:%s", address.getAddress(), address.getPort()
+          "Failed to ping address: %s:%s", address.getAddress(), address.getPort()
         ));
       }
     } catch (InterruptedException | ExecutionException e) {

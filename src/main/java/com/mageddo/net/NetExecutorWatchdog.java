@@ -1,0 +1,63 @@
+package com.mageddo.net;
+
+import com.mageddo.commons.circuitbreaker.CircuitCheckException;
+import com.mageddo.commons.concurrent.ThreadPool;
+import com.mageddo.commons.concurrent.Threads;
+import com.mageddo.dnsproxyserver.utils.InetAddresses;
+import lombok.extern.slf4j.Slf4j;
+
+import java.net.InetSocketAddress;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+
+@Slf4j
+public class NetExecutorWatchdog {
+
+  public static final int PING_TIMEOUT_IN_MS = 1_500;
+  public static final int FPS_120 = 1000 / 120;
+
+  private final ExecutorService threadPool = ThreadPool.newFixed(50);
+
+  /**
+   * Will ping the #pingAddr while waiting the future to be done, which occurs first will return,
+   * if ping fails, exception is thrown. future.get won't be called.
+   */
+  public <T> CompletableFuture<T> watch(IpAddr pingAddr, CompletableFuture<T> future) {
+
+    final var pingFuture = this.threadPool.submit(
+      () -> Networks.ping(pingAddr.getRawIP(), pingAddr.getPort(), PING_TIMEOUT_IN_MS)
+    );
+
+    boolean mustCheckPing = true;
+    while (true) {
+      if (mustCheckPing && pingFuture.isDone()) {
+        checkPing(pingFuture, InetAddresses.toSocketAddress(pingAddr));
+        mustCheckPing = false;
+      }
+      if (future.isDone()) {
+        return future;
+      }
+      Threads.sleep(FPS_120);
+    }
+
+  }
+
+  // todo #455 create an watchdog for this method, keep the circuit uptodate and updates the cache
+  void checkPing(Future<Boolean> pingFuture, InetSocketAddress address) {
+    try {
+      final var pingSuccess = pingFuture.get();
+      log.debug(
+        "stats=pingTested, success={}, address={}:{}", pingSuccess, address.getAddress(), address.getPort()
+      );
+      if (!pingSuccess) {
+        throw new CircuitCheckException(String.format(
+          "Failed to ping address: %s:%s", address.getAddress(), address.getPort()
+        ));
+      }
+    } catch (InterruptedException | ExecutionException e) {
+      throw new RuntimeException(e);
+    }
+  }
+}
