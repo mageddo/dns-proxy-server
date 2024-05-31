@@ -1,11 +1,11 @@
 package com.mageddo.dnsproxyserver.solver;
 
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
-import com.mageddo.commons.concurrent.ThreadPool;
-import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.config.application.ConfigService;
-import com.mageddo.net.Networks;
+import com.mageddo.net.IpAddr;
+import com.mageddo.net.IpAddrs;
+import com.mageddo.net.NetExecutorWatchdog;
 import dev.failsafe.CircuitBreaker;
 import dev.failsafe.CircuitBreakerOpenException;
 import dev.failsafe.Failsafe;
@@ -27,8 +27,6 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.mageddo.dns.utils.Messages.simplePrint;
@@ -44,7 +42,7 @@ public class SolverRemote implements Solver {
 
   private final RemoteResolvers delegate;
   private final Map<InetSocketAddress, CircuitBreaker<Result>> circuitBreakerMap = new ConcurrentHashMap<>();
-  private final ExecutorService pingThreadPool = ThreadPool.newFixed(50);
+  private final NetExecutorWatchdog netWatchdog = new NetExecutorWatchdog();
   private final ConfigService configService;
   private String status;
 
@@ -98,44 +96,10 @@ public class SolverRemote implements Solver {
     return Result.empty();
   }
 
-  Result queryResultWhilePingingResolver(final Request req) {
-
+  Result queryResultWhilePingingResolver(Request req) {
     final var resFuture = req.sendQueryAsyncToResolver();
-    final var address = req.getResolverAddress();
-    final var pingFuture = this.pingThreadPool.submit(
-      () -> Networks.ping(address.getAddress(), address.getPort(), PING_TIMEOUT_IN_MS)
-    );
-
-    boolean mustCheckPing = true;
-    while (true) {
-      if (mustCheckPing && pingFuture.isDone()) {
-        checkPing(pingFuture, address);
-        mustCheckPing = false;
-      }
-      if (resFuture.isDone()) {
-        // fixme #455 deveria cancelar o ping aqui pingFuture.cancel(true)
-        return this.transformToResult(resFuture, req);
-      }
-      Threads.sleep(FPS_120);
-    }
-
-  }
-
-  // todo #455 create an watchdog for this method, keep the circuit uptodate and updates the cache
-  private static void checkPing(Future<Boolean> pingFuture, InetSocketAddress address) {
-    try {
-      final var pingSuccess = pingFuture.get();
-      log.debug(
-        "stats=pingTested, success={}, address={}:{}", pingSuccess, address.getAddress(), address.getPort()
-      );
-      if (!pingSuccess) {
-        throw new CircuitCheckException(String.format(
-          "Failed to ping address: %s:%s", address.getAddress(), address.getPort()
-        ));
-      }
-    } catch (InterruptedException | ExecutionException e) {
-      throw new RuntimeException(e);
-    }
+    this.netWatchdog.watch(req.getResolverAddr(), resFuture);
+    return this.transformToResult(resFuture, req);
   }
 
   void checkCircuitError(Exception e, Request request) {
@@ -230,6 +194,10 @@ public class SolverRemote implements Solver {
 
     @NonNull
     StopWatch stopWatch;
+
+    public IpAddr getResolverAddr() {
+      return IpAddrs.from(this.getResolverAddress());
+    }
 
     public InetSocketAddress getResolverAddress() {
       return this.getResolver().getAddress();

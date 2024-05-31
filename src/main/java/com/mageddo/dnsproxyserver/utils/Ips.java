@@ -86,4 +86,8 @@ public class Ips {
   public static IP toIp(Short[] ip) {
     return IP.of(Bytes.toNative(ip));
   }
+
+  public static IP from(InetAddress address) {
+    return IP.of(address.getAddress());
+  }
 }

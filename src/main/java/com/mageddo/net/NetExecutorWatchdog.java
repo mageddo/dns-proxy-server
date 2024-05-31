@@ -22,7 +22,7 @@ public class NetExecutorWatchdog {
 
   /**
    * Will ping the #pingAddr while waiting the future to be done, which occurs first will return,
-   * if ping fails, exception is thrown. future.get won't be called.
+   * if ping fails, exception is thrown. "future.get()" won't be called.
    */
   public <T> CompletableFuture<T> watch(IpAddr pingAddr, CompletableFuture<T> future) {
 
@@ -33,10 +33,11 @@ public class NetExecutorWatchdog {
     boolean mustCheckPing = true;
     while (true) {
       if (mustCheckPing && pingFuture.isDone()) {
-        checkPing(pingFuture, InetAddresses.toSocketAddress(pingAddr));
+        this.checkConnection(pingFuture, InetAddresses.toSocketAddress(pingAddr));
         mustCheckPing = false;
       }
       if (future.isDone()) {
+        // fixme #455 deveria cancelar o ping aqui pingFuture.cancel(true)
         return future;
       }
       Threads.sleep(FPS_120);
@@ -44,8 +45,7 @@ public class NetExecutorWatchdog {
 
   }
 
-  // todo #455 create an watchdog for this method, keep the circuit uptodate and updates the cache
-  void checkPing(Future<Boolean> pingFuture, InetSocketAddress address) {
+  void checkConnection(Future<Boolean> pingFuture, InetSocketAddress address) {
     try {
       final var pingSuccess = pingFuture.get();
       log.debug(
