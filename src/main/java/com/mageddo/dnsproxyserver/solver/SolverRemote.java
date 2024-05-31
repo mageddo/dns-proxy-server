@@ -123,7 +123,6 @@ public class SolverRemote implements Solver {
   }
 
   Result transformToResult(CompletableFuture<Message> resFuture, Request request) {
-
     final var res = this.findFutureRes(resFuture, request);
     if (res == null) {
       return Result.empty();
