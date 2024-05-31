@@ -298,4 +298,7 @@ public class Messages {
     return HostnameQuery.of(host, version);
   }
 
+  public static boolean isSuccess(Message res) {
+    return res.getRcode() == Rcode.NOERROR;
+  }
 }

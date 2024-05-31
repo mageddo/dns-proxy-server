@@ -3,19 +3,21 @@ package com.mageddo.dnsproxyserver.solver;
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.commons.concurrent.ThreadPool;
 import com.mageddo.commons.concurrent.Threads;
-import com.mageddo.dnsproxyserver.config.application.ConfigService;
 import com.mageddo.dns.utils.Messages;
+import com.mageddo.dnsproxyserver.config.application.ConfigService;
 import com.mageddo.net.Networks;
 import dev.failsafe.CircuitBreaker;
 import dev.failsafe.CircuitBreakerOpenException;
 import dev.failsafe.Failsafe;
+import lombok.Builder;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.xbill.DNS.Flags;
 import org.xbill.DNS.Message;
-import org.xbill.DNS.Rcode;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -51,24 +53,16 @@ public class SolverRemote implements Solver {
     final var lastErrorMsg = new AtomicReference<Message>();
     for (int i = 0; i < this.delegate.resolvers().size(); i++) {
 
-      stopWatch.split();
       final var resolver = this.delegate.resolvers().get(i);
-      final var circuitBreaker = this.circuitBreakerFor(resolver.getAddress());
-      final var idx = i;
+      final var request = this.buildRequest(query, i, stopWatch, resolver);
 
-      try {
-        final var response = Failsafe
-          .with(circuitBreaker)
-          .get((ctx) -> this.handle0(idx, stopWatch, resolver, query, lastErrorMsg));
-        if (response != null) {
-          return response;
-        }
-      } catch (CircuitCheckException | CircuitBreakerOpenException e) {
-        final var clazz = ClassUtils.getSimpleName(e);
-        log.debug("status=circuitEvent, server={}, type={}", resolver.getAddress(), clazz);
-        this.status = String.format("%s for %s", clazz, resolver.getAddress());
-        continue;
+      final var result = this.findResultFor(request);
+      if (result.hasSuccessMessage()) {
+        return result.getSuccessResponse();
+      } else if (result.hasErrorMessage()) {
+        lastErrorMsg.set(result.getErrorMessage());
       }
+
     }
     final var hasErrorResult = lastErrorMsg.get() == null;
     log.debug("status=finally, time={}, hasErrorResult={}", stopWatch.getTime(), hasErrorResult);
@@ -78,16 +72,35 @@ public class SolverRemote implements Solver {
     return Response.nxDomain(lastErrorMsg.get());
   }
 
-  private Response handle0(
-    int i,
-    StopWatch stopWatch,
-    Resolver resolver,
-    Message query,
-    AtomicReference<Message> lastErrorMsg
-  ) {
+  static Request buildRequest(Message query, int i, StopWatch stopWatch, Resolver resolver) {
+    return Request
+      .builder()
+      .resolverIndex(i)
+      .query(query)
+      .stopWatch(stopWatch)
+      .resolver(resolver)
+      .build();
+  }
 
-    final var resFuture = resolver.sendAsync(query).toCompletableFuture();
-    final var address = resolver.getAddress();
+  Result findResultFor(Request req) {
+    req.splitStopWatch();
+    final var circuitBreaker = this.circuitBreakerFor(req.getResolverAddress());
+    try {
+      return Failsafe
+        .with(circuitBreaker)
+        .get((ctx) -> this.handle0(req));
+    } catch (CircuitCheckException | CircuitBreakerOpenException e) {
+      final var clazz = ClassUtils.getSimpleName(e);
+      log.debug("status=circuitEvent, server={}, type={}", req.getResolverAddress(), clazz);
+      this.status = String.format("%s for %s", clazz, req.getResolverAddress());
+    }
+    return Result.empty();
+  }
+
+  Response handle0(final Request req) {
+
+    final var resFuture = req.sendQueryAsyncToResolver();
+    final var address = req.getResolverAddress();
     final var pingFuture = this.threadPool.submit(() -> Networks.ping(address.getAddress(), address.getPort(), 1_500));
 
     boolean mustCheckPing = true;
@@ -97,7 +110,7 @@ public class SolverRemote implements Solver {
         mustCheckPing = false;
       }
       if (resFuture.isDone()) {
-        return this.treatResponse(i, resFuture, stopWatch, lastErrorMsg, query, resolver);
+        return this.safeTransformToResult(resFuture);
       }
       Threads.sleep(FPS_120);
     }
@@ -121,42 +134,38 @@ public class SolverRemote implements Solver {
     }
   }
 
-  private Response treatResponse(
-    int i,
-    CompletableFuture<Message> resFuture,
-    StopWatch stopWatch,
-    AtomicReference<Message> lastErrorMsg,
-    Message query,
-    Resolver resolver) {
+  Result safeTransformToResult(CompletableFuture<Message> resFuture, Request request) {
     try {
       final var res = Messages.setFlag(resFuture.get(), Flags.RA);
-      if (res.getRcode() == Rcode.NOERROR) {
+      if (Messages.isSuccess(res)) {
         log.trace(
           "status=found, i={}, time={}, req={}, res={}, server={}",
-          i, stopWatch.getTime(), simplePrint(query), simplePrint(res), resolver
+          request.getResolverIndex(), request.getTime(), simplePrint(request.getQuery()),
+          simplePrint(res), request.getResolverAddress()
         );
-        return Response.success(res);
+        return Result.fromSuccessResponse(Response.success(res));
       } else {
-        lastErrorMsg.set(res);
         log.trace(
           "status=notFound, i={}, time={}, req={}, res={}, server={}",
-          i, stopWatch.getTime(), simplePrint(query), simplePrint(res), resolver
+          request.getResolverIndex(), request.getTime(), simplePrint(request.getQuery()),
+          simplePrint(res), request.getResolverAddress()
         );
-        return null;
+        return Result.fromErrorMessage(res);
       }
     } catch (InterruptedException | ExecutionException e) {
       if (e.getCause() instanceof IOException) {
-        final var time = stopWatch.getTime() - stopWatch.getSplitTime();
+        final var time = request.getElapsedTimeInMs();
         if (e.getMessage().contains(QUERY_TIMED_OUT_MSG)) {
           log.info(
             "status=timedOut, i={}, time={}, req={}, msg={} class={}",
-            i, time, simplePrint(query), e.getMessage(), ClassUtils.getSimpleName(e)
+            request.getResolverIndex(), time, simplePrint(request.getQuery()), e.getMessage(), ClassUtils.getSimpleName(e)
           );
           throw new CircuitCheckException(e);
         }
         log.warn(
           "status=failed, i={}, time={}, req={}, server={}, errClass={}, msg={}",
-          i, time, simplePrint(query), resolver, ClassUtils.getSimpleName(e), e.getMessage(), e
+          request.getResolverIndex(), time, simplePrint(request.getQuery()), request.getResolverAddress(),
+          ClassUtils.getSimpleName(e), e.getMessage(), e
         );
         return null;
       }
@@ -186,5 +195,70 @@ public class SolverRemote implements Solver {
 
   String getStatus() {
     return this.status;
+  }
+
+  @Value
+  @Builder
+  static class Request {
+
+    @NonNull
+    Message query;
+
+    @NonNull
+    Resolver resolver;
+
+    @NonNull
+    Integer resolverIndex;
+
+    @NonNull
+    StopWatch stopWatch;
+
+    public InetSocketAddress getResolverAddress() {
+      return this.getResolver().getAddress();
+    }
+
+    public void splitStopWatch() {
+      this.stopWatch.split();
+    }
+
+    public CompletableFuture<Message> sendQueryAsyncToResolver() {
+      return this.resolver.sendAsync(this.query).toCompletableFuture();
+    }
+
+    public long getElapsedTimeInMs() {
+      return this.stopWatch.getTime() - this.stopWatch.getSplitTime();
+    }
+
+    public long getTime() {
+      return this.stopWatch.getTime();
+    }
+  }
+
+  @Value
+  @Builder
+  static class Result {
+
+    private Response successResponse;
+    private Message errorMessage;
+
+    public static Result empty() {
+      return Result.builder().build();
+    }
+
+    public static Result fromErrorMessage(Message message) {
+      return builder().errorMessage(message).build();
+    }
+
+    public static Result fromSuccessResponse(Response res) {
+      return Result.builder().successResponse(res).build();
+    }
+
+    public boolean hasSuccessMessage() {
+      return this.successResponse != null;
+    }
+
+    public boolean hasErrorMessage() {
+      return this.errorMessage != null;
+    }
   }
 }
