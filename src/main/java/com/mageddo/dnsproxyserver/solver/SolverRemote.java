@@ -24,10 +24,12 @@ import javax.inject.Singleton;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
 import static com.mageddo.dns.utils.Messages.simplePrint;
 
@@ -47,39 +49,49 @@ public class SolverRemote implements Solver, AutoCloseable {
   @Override
   public Response handle(Message query) {
     final var stopWatch = StopWatch.createStarted();
+
+    final var result = this.queryResultFromAvailableResolvers(query, stopWatch);
+    log.debug(
+      "status=finally, time={}, success={}, error={}",
+      stopWatch.getTime(), result.hasSuccessMessage(), result.hasErrorMessage()
+    );
+    return Stream
+      .of(result.getSuccessResponse(), result.getErrorResponse())
+      .filter(Objects::nonNull)
+      .findFirst()
+      .orElse(null);
+  }
+
+  Result queryResultFromAvailableResolvers(Message query, StopWatch stopWatch) {
     final var lastErrorMsg = new AtomicReference<Message>();
+
     for (int i = 0; i < this.delegate.resolvers().size(); i++) {
 
       final var resolver = this.delegate.resolvers().get(i);
       final var request = this.buildRequest(query, i, stopWatch, resolver);
 
-      final var result = this.safeHandle(request);
+      final var result = this.safeQueryResult(request);
       if (result.hasSuccessMessage()) {
-        return result.getSuccessResponse();
+        return result;
       } else if (result.hasErrorMessage()) {
         lastErrorMsg.set(result.getErrorMessage());
       }
 
     }
-    final var hasErrorResult = lastErrorMsg.get() == null;
-    log.debug("status=finally, time={}, hasErrorResult={}", stopWatch.getTime(), hasErrorResult);
-    if (hasErrorResult) {
-      return null;
-    }
-    return Response.nxDomain(lastErrorMsg.get());
+    return Result.fromErrorMessage(lastErrorMsg.get());
   }
 
-  static Request buildRequest(Message query, int i, StopWatch stopWatch, Resolver resolver) {
+  Request buildRequest(Message query, int resolverIndex, StopWatch stopWatch, Resolver resolver) {
     return Request
       .builder()
-      .resolverIndex(i)
+      .resolverIndex(resolverIndex)
       .query(query)
       .stopWatch(stopWatch)
       .resolver(resolver)
       .build();
   }
 
-  Result safeHandle(Request req) {
+  Result safeQueryResult(Request req) {
     req.splitStopWatch();
     final var circuitBreaker = this.circuitBreakerFor(req.getResolverAddress());
     try {
@@ -90,34 +102,14 @@ public class SolverRemote implements Solver, AutoCloseable {
       final var clazz = ClassUtils.getSimpleName(e);
       log.debug("status=circuitEvent, server={}, type={}", req.getResolverAddress(), clazz);
       this.status = String.format("%s for %s", clazz, req.getResolverAddress());
+      return Result.empty();
     }
-    return Result.empty();
   }
 
   Result queryResultWhilePingingResolver(Request req) {
     final var resFuture = req.sendQueryAsyncToResolver();
     this.netWatchdog.watch(req.getResolverAddr(), resFuture);
     return this.transformToResult(resFuture, req);
-  }
-
-  void checkCircuitError(Exception e, Request request) {
-    if (e.getCause() instanceof IOException) {
-      final var time = request.getElapsedTimeInMs();
-      if (e.getMessage().contains(QUERY_TIMED_OUT_MSG)) {
-        log.info(
-          "status=timedOut, i={}, time={}, req={}, msg={} class={}",
-          request.getResolverIndex(), time, simplePrint(request.getQuery()), e.getMessage(), ClassUtils.getSimpleName(e)
-        );
-        throw new CircuitCheckException(e);
-      }
-      log.warn(
-        "status=failed, i={}, time={}, req={}, server={}, errClass={}, msg={}",
-        request.getResolverIndex(), time, simplePrint(request.getQuery()), request.getResolverAddress(),
-        ClassUtils.getSimpleName(e), e.getMessage(), e
-      );
-    } else {
-      throw new RuntimeException(e.getMessage(), e);
-    }
   }
 
   Result transformToResult(CompletableFuture<Message> resFuture, Request request) {
@@ -149,6 +141,26 @@ public class SolverRemote implements Solver, AutoCloseable {
     } catch (InterruptedException | ExecutionException e) {
       this.checkCircuitError(e, request);
       return null;
+    }
+  }
+
+  void checkCircuitError(Exception e, Request request) {
+    if (e.getCause() instanceof IOException) {
+      final var time = request.getElapsedTimeInMs();
+      if (e.getMessage().contains(QUERY_TIMED_OUT_MSG)) {
+        log.info(
+          "status=timedOut, i={}, time={}, req={}, msg={} class={}",
+          request.getResolverIndex(), time, simplePrint(request.getQuery()), e.getMessage(), ClassUtils.getSimpleName(e)
+        );
+        throw new CircuitCheckException(e);
+      }
+      log.warn(
+        "status=failed, i={}, time={}, req={}, server={}, errClass={}, msg={}",
+        request.getResolverIndex(), time, simplePrint(request.getQuery()), request.getResolverAddress(),
+        ClassUtils.getSimpleName(e), e.getMessage(), e
+      );
+    } else {
+      throw new RuntimeException(e.getMessage(), e);
     }
   }
 
@@ -247,6 +259,10 @@ public class SolverRemote implements Solver, AutoCloseable {
 
     public boolean hasErrorMessage() {
       return this.errorMessage != null;
+    }
+
+    public Response getErrorResponse() {
+      return Response.nxDomain(this.errorMessage);
     }
   }
 }
