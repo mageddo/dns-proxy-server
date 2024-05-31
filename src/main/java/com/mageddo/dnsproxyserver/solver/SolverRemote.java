@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
@@ -262,7 +263,9 @@ public class SolverRemote implements Solver, AutoCloseable {
     }
 
     public Response getErrorResponse() {
-      return Response.nxDomain(this.errorMessage);
+      return Optional.ofNullable(this.errorMessage)
+        .map(Response::nxDomain)
+        .orElse(null);
     }
   }
 }
