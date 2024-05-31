@@ -1,3 +1,6 @@
+## 3.18.4
+* Refactor `SolverRemote` solver class, see #459.
+
 ## 3.18.3
 * Refactoring proposed at #449.
 * Log changes
