@@ -43,7 +43,7 @@ public class CircuitBreakerFactory {
       .build();
   }
 
-  EventListener<CircuitBreakerStateChangedEvent> bindStateChangeEvent(String actualStateName, InetSocketAddress address) {
+  EventListener<CircuitBreakerStateChangedEvent> build(String actualStateName, InetSocketAddress address) {
     return event -> {
       final var previousStateName = CircuitBreakerStateMapper.toStateNameFrom(event);
       this.solverConsistencyGuaranteeDAO.flushCachesFromCircuitBreakerStateChange();
