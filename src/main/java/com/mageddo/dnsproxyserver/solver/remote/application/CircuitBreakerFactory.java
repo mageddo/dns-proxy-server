@@ -37,9 +37,9 @@ public class CircuitBreakerFactory {
       .withFailureThreshold(config.getFailureThreshold(), config.getFailureThresholdCapacity())
       .withSuccessThreshold(config.getSuccessThreshold())
       .withDelay(config.getTestDelay())
-//      .onClose(bindStateChangeEvent("closed", address))
-//      .onOpen(bindStateChangeEvent("open", address))
-//      .onHalfOpen(bindStateChangeEvent("half-open", address))
+      .onClose(build("CLOSED", address))
+      .onOpen(build("OPEN", address))
+      .onHalfOpen(build("HALF_OPEN", address))
       .build();
   }
 
