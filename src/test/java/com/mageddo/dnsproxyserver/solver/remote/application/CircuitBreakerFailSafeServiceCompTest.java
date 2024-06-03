@@ -1,13 +1,14 @@
 package com.mageddo.dnsproxyserver.solver.remote.application;
 
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
-import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.dnsproxyserver.solver.remote.Request;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.dataprovider.SolverConsistencyGuaranteeDAO;
 import dagger.sheath.InjectMock;
 import dagger.sheath.junit.DaggerTest;
 import org.junit.jupiter.api.Test;
+import testing.ContextSupplier;
+import testing.Events;
 import testing.templates.solver.remote.RequestTemplates;
 
 import javax.inject.Inject;
@@ -17,7 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 
-@DaggerTest(component = Context.class)
+// todo #455 precisa desligar o CircuitBreakerWatchDogScheduler aqui para ele não afetar os checks dos circuito,
+//      talvez desligar todos os StartupEvents.
+@DaggerTest(initializer = ContextSupplier.class, eventsHandler = Events.class)
 class CircuitBreakerFailSafeServiceCompTest {
 
   @Inject
