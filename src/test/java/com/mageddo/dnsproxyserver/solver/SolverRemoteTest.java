@@ -7,13 +7,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.xbill.DNS.Flags;
 import testing.templates.InetSocketAddressTemplates;
 import testing.templates.MessageTemplates;
 
+import java.net.SocketTimeoutException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
@@ -63,103 +67,91 @@ class SolverRemoteTest {
     // assert
     assertEquals(Response.DEFAULT_SUCCESS_TTL, res.getDpsTtl());
   }
-//
-//  @Test
-//  void mustCacheNxDomainQueryFor1Hour() throws Exception {
-//    // arrange
-//    final var query = MessageTemplates.acmeAQuery();
-//    final var answer = MessageTemplates.buildNXAnswer(query);
-//
-//    doReturn(CircuitBreakerTemplates.buildDefault())
-//      .when(this.solverRemote)
-//      .findCircuitBreakerConfig();
-//
-//    doReturn(InetSocketAddressTemplates._8_8_8_8())
-//      .when(this.resolver)
-//      .getAddress()
-//    ;
-//
-//    doReturn(CompletableFuture.completedFuture(answer))
-//      .when(this.resolver)
-//      .sendAsync(any());
-//
-//
-//    doReturn(List.of(this.resolver))
-//      .when(this.resolvers)
-//      .resolvers()
-//    ;
-//
-//    // act
-//    final var res = this.solverRemote.handle(query);
-//
-//    // assert
-//    assertEquals(Response.DEFAULT_NXDOMAIN_TTL, res.getDpsTtl());
-//  }
-//
-//  @Test
-//  void mustReturnNullWhenGetTimeout() {
-//
-//    // arrange
-//    doReturn(CircuitBreakerTemplates.buildDefault())
-//      .when(this.solverRemote)
-//      .findCircuitBreakerConfig();
-//
-//    doReturn(InetSocketAddressTemplates._8_8_8_8())
-//      .when(this.resolver)
-//      .getAddress()
-//    ;
-//
-//    doReturn(CompletableFuture.failedFuture(new SocketTimeoutException("Deu ruim")))
-//      .when(this.resolver)
-//      .sendAsync(any());
-//
-//    doReturn(List.of(this.resolver))
-//      .when(this.resolvers)
-//      .resolvers()
-//    ;
-//
-//    final var query = MessageTemplates.acmeAQuery();
-//
-//    // act
-//    final var res = this.solverRemote.handle(query);
-//
-//    // assert
-//    assertNull(res);
-//  }
-//
-//  @Test
-//  void mustReturnRaEvenWhenRemoteServerDoesntReturnsRA() throws Exception {
-//    // arrange
-//    final var query = MessageTemplates.acmeAQuery();
-//    final var res = MessageTemplates.buildAAnswer(query);
-//    res.getHeader().unsetFlag(Flags.RA);
-//
-//    doReturn(CircuitBreakerTemplates.buildDefault())
-//      .when(this.solverRemote)
-//      .findCircuitBreakerConfig();
-//
-//    doReturn(InetSocketAddressTemplates._8_8_8_8())
-//      .when(this.resolver)
-//      .getAddress()
-//    ;
-//
-//    doReturn(CompletableFuture.completedFuture(res))
-//      .when(this.resolver)
-//      .sendAsync(any());
-//
-//    doReturn(List.of(this.resolver))
-//      .when(this.resolvers)
-//      .resolvers()
-//    ;
-//
-//    // act
-//    final var result = this.solverRemote.handle(query);
-//
-//    // assert
-//    assertTrue(Responses.hasFlag(result, Flags.RA));
-//    assertEquals(Response.DEFAULT_SUCCESS_TTL, result.getDpsTtl());
-//  }
-//
+
+  @Test
+  void mustCacheNxDomainQueryFor1Hour() throws Exception {
+    // arrange
+    final var query = MessageTemplates.acmeAQuery();
+    final var answer = MessageTemplates.buildNXAnswer(query);
+
+    doReturn(InetSocketAddressTemplates._8_8_8_8())
+      .when(this.resolver)
+      .getAddress()
+    ;
+
+    doReturn(CompletableFuture.completedFuture(answer))
+      .when(this.resolver)
+      .sendAsync(any());
+
+
+    doReturn(List.of(this.resolver))
+      .when(this.resolvers)
+      .resolvers()
+    ;
+
+    // act
+    final var res = this.solverRemote.handle(query);
+
+    // assert
+    assertEquals(Response.DEFAULT_NXDOMAIN_TTL, res.getDpsTtl());
+  }
+
+  @Test
+  void mustReturnNullWhenGetTimeout() {
+
+    // arrange
+    doReturn(InetSocketAddressTemplates._8_8_8_8())
+      .when(this.resolver)
+      .getAddress()
+    ;
+
+    doReturn(CompletableFuture.failedFuture(new SocketTimeoutException("Deu ruim")))
+      .when(this.resolver)
+      .sendAsync(any());
+
+    doReturn(List.of(this.resolver))
+      .when(this.resolvers)
+      .resolvers()
+    ;
+
+    final var query = MessageTemplates.acmeAQuery();
+
+    // act
+    final var res = this.solverRemote.handle(query);
+
+    // assert
+    assertNull(res);
+  }
+
+  @Test
+  void mustReturnRaEvenWhenRemoteServerDoesntReturnsRA() throws Exception {
+    // arrange
+    final var query = MessageTemplates.acmeAQuery();
+    final var res = MessageTemplates.buildAAnswer(query);
+    res.getHeader().unsetFlag(Flags.RA);
+
+    doReturn(InetSocketAddressTemplates._8_8_8_8())
+      .when(this.resolver)
+      .getAddress()
+    ;
+
+    doReturn(CompletableFuture.completedFuture(res))
+      .when(this.resolver)
+      .sendAsync(any());
+
+    doReturn(List.of(this.resolver))
+      .when(this.resolvers)
+      .resolvers()
+    ;
+
+    // act
+    final var result = this.solverRemote.handle(query);
+
+    // assert
+    assertTrue(Responses.hasFlag(result, Flags.RA));
+    assertEquals(Response.DEFAULT_SUCCESS_TTL, result.getDpsTtl());
+  }
+
 //
 //  @Test
 //  void mustOpenCircuitAfterThresholdFailures() throws Exception {
@@ -185,17 +177,17 @@ class SolverRemoteTest {
 //
 //    // act
 //    assertNull(this.solverRemote.handle(query));
-//    assertEquals("CircuitCheckException for /8.8.8.8:53", this.solverRemote.getStatus());
+//    assertEquals("CircuitCheckException for /8.8.8.8:53", this.solverRemote.getCircuitBreakerStatus());
 //
 //    assertNull(this.solverRemote.handle(query));
-//    assertEquals("CircuitCheckException for /8.8.8.8:53", this.solverRemote.getStatus());
+//    assertEquals("CircuitCheckException for /8.8.8.8:53", this.solverRemote.getCircuitBreakerStatus());
 //
 //    assertNull(this.solverRemote.handle(query));
-//    assertEquals("CircuitCheckException for /8.8.8.8:53", this.solverRemote.getStatus());
+//    assertEquals("CircuitCheckException for /8.8.8.8:53", this.solverRemote.getCircuitBreakerStatus());
 //
 //    // assert
 //    assertNull(this.solverRemote.handle(query));
-//    assertEquals("CircuitBreakerOpenException for /8.8.8.8:53", this.solverRemote.getStatus());
+//    assertEquals("CircuitBreakerOpenException for /8.8.8.8:53", this.solverRemote.getCircuitBreakerStatus());
 //
 //  }
 //

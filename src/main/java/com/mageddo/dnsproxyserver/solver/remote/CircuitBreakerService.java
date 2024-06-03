@@ -6,4 +6,5 @@ public interface CircuitBreakerService {
 
   Result handle(Request req, Supplier<Result> sup);
 
+  String getStatus();
 }

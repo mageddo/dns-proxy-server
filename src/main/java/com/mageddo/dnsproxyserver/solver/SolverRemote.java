@@ -81,6 +81,7 @@ public class SolverRemote implements Solver, AutoCloseable {
   }
 
   Result safeQueryResult(Request req) {
+    req.splitStopWatch();
     return this.circuitBreakerService.handle(req, () -> this.queryResultWhilePingingResolver(req));
   }
 
@@ -147,4 +148,7 @@ public class SolverRemote implements Solver, AutoCloseable {
     this.netWatchdog.close();
   }
 
+  public String getCircuitBreakerStatus() {
+    return this.circuitBreakerService.getStatus();
+  }
 }

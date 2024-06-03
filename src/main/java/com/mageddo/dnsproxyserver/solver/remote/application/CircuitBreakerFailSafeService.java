@@ -25,7 +25,6 @@ public class CircuitBreakerFailSafeService implements CircuitBreakerService {
 
   @Override
   public Result handle(Request req, Supplier<Result> sup) {
-    req.splitStopWatch();
     final var circuitBreaker = this.circuitBreakerFactory.createCircuitBreakerFor(req.getResolverAddress());
     try {
       return Failsafe
