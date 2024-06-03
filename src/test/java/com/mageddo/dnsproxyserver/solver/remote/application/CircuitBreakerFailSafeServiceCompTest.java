@@ -4,6 +4,8 @@ import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.dnsproxyserver.solver.remote.Request;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
+import com.mageddo.dnsproxyserver.solver.remote.dataprovider.SolverConsistencyGuaranteeDAO;
+import dagger.sheath.InjectMock;
 import dagger.sheath.junit.DaggerTest;
 import org.junit.jupiter.api.Test;
 import testing.templates.solver.remote.RequestTemplates;
@@ -13,6 +15,7 @@ import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
 
 @DaggerTest(component = Context.class)
 class CircuitBreakerFailSafeServiceCompTest {
@@ -20,8 +23,11 @@ class CircuitBreakerFailSafeServiceCompTest {
   @Inject
   CircuitBreakerFailSafeService service;
 
+  @InjectMock
+  SolverConsistencyGuaranteeDAO consistencyGuaranteeDAO;
+
   @Test
-  void mustOpenCircuitAfterThresholdFailures() throws Exception {
+  void mustOpenCircuitAfterThresholdFailures() {
     // arrange
     final var req = RequestTemplates.buildDefault();
     final Supplier<Result> failureSup = () -> {
@@ -36,6 +42,15 @@ class CircuitBreakerFailSafeServiceCompTest {
     assertTrue(result.isEmpty());
     assertEquals("CircuitBreakerOpenException for /8.8.8.8:53", this.service.getStatus());
 
+  }
+
+  @Test
+  void mustFlushCachesWhenCircuitBreakerStateChanges(){
+    // arrange // act
+    this.mustOpenCircuitAfterThresholdFailures();
+
+    // assert
+    verify(this.consistencyGuaranteeDAO).flushCachesFromCircuitBreakerStateChange();
   }
 
   void tryHandleReqThreeTimes(Request req, Supplier<Result> failureSup) {

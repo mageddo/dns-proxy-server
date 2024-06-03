@@ -6,6 +6,7 @@ import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacade;
 import com.mageddo.dnsproxyserver.server.dns.ServerStarter;
 import com.mageddo.dnsproxyserver.solver.SolverLocalDB;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
+import com.mageddo.dnsproxyserver.solver.remote.dataprovider.SolverConsistencyGuaranteeDAO;
 import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.ClassKey;
@@ -50,5 +51,10 @@ public interface ModuleMap {
   @IntoMap
   @ClassKey(DockerDAO.class)
   Object b7(DockerDAO bean);
+
+  @Binds
+  @IntoMap
+  @ClassKey(SolverConsistencyGuaranteeDAO.class)
+  Object b8(SolverConsistencyGuaranteeDAO bean);
 
 }

@@ -76,6 +76,7 @@ public class ProviderWrapper {
         validateIsProviderClass(provider);
         return new ProviderWrapper(provider, type);
       }
+      Validate.notNull(o, "Object is type=%s", type);
       if (isDoubleCheckClass(o)) {
         return new ProviderWrapper(o, type);
       }

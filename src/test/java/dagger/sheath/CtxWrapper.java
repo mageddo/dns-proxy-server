@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
+import javax.inject.Provider;
 import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -90,7 +91,9 @@ public class CtxWrapper {
       final var p = BindingMethod.findBindingMap(this);
       if (p != null) {
         log.debug("status=providerByBindings, type={}", type);
-        return ProviderWrapper.from(p.get(type), type);
+        final Provider<?> provider = p.get(type);
+        Validate.notNull(provider, "No provider found for: %s, try create an @IntoMap bind", type);
+        return ProviderWrapper.from(provider, type);
       }
     }
     return null;
