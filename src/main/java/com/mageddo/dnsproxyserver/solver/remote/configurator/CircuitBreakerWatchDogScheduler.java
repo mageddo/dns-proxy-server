@@ -19,6 +19,6 @@ public class CircuitBreakerWatchDogScheduler implements StartupEvent {
 
   @Override
   public void onStart() {
-    this.executor.schedule(circuitBreakerFactory::checkCreatedCircuits, 10, TimeUnit.SECONDS);
+    this.executor.scheduleWithFixedDelay(this.circuitBreakerFactory::checkCreatedCircuits, 0, 10, TimeUnit.SECONDS);
   }
 }
