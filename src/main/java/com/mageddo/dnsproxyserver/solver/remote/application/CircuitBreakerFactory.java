@@ -13,11 +13,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.StopWatch;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.net.InetSocketAddress;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
+@Singleton
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class CircuitBreakerFactory {
 
