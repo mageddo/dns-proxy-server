@@ -1,9 +1,10 @@
-package com.mageddo.dnsproxyserver.solver.remote;
+package com.mageddo.dnsproxyserver.solver.remote.application;
 
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.dnsproxyserver.config.application.ConfigService;
 import com.mageddo.dnsproxyserver.solver.application.CircuitBreakerStateMapper;
-import com.mageddo.dnsproxyserver.solver.dataprovider.SolverRemoteConsistencyGuaranteeDAO;
+import com.mageddo.dnsproxyserver.solver.remote.Result;
+import com.mageddo.dnsproxyserver.solver.remote.dataprovider.SolverConsistencyGuaranteeDAO;
 import dev.failsafe.CircuitBreaker;
 import dev.failsafe.event.CircuitBreakerStateChangedEvent;
 import dev.failsafe.event.EventListener;
@@ -21,7 +22,7 @@ public class CircuitBreakerFactory {
 
   private final Map<InetSocketAddress, CircuitBreaker<Result>> circuitBreakerMap = new ConcurrentHashMap<>();
   private final ConfigService configService;
-  private final SolverRemoteConsistencyGuaranteeDAO consistencyGuaranteeDAO;
+  private final SolverConsistencyGuaranteeDAO solverConsistencyGuaranteeDAO;
 
   public CircuitBreaker<Result> createCircuitBreakerFor(InetSocketAddress address) {
     final var config = this.findCircuitBreakerConfig();
@@ -45,7 +46,7 @@ public class CircuitBreakerFactory {
   EventListener<CircuitBreakerStateChangedEvent> bindStateChangeEvent(String actualStateName, InetSocketAddress address) {
     return event -> {
       final var previousStateName = CircuitBreakerStateMapper.toStateNameFrom(event);
-      this.consistencyGuaranteeDAO.flushCachesFromCircuitBreakerStateChange();
+      this.solverConsistencyGuaranteeDAO.flushCachesFromCircuitBreakerStateChange();
       log.debug(
         "status=clearedCache, address={}, previousStateName={}, actualStateName={}",
         address, previousStateName, actualStateName

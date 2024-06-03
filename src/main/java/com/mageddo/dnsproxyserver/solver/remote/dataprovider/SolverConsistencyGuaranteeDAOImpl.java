@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.solver.dataprovider;
+package com.mageddo.dnsproxyserver.solver.remote.dataprovider;
 
 import com.mageddo.dnsproxyserver.solver.SolverCacheFactory;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,7 @@ import javax.inject.Singleton;
 @Slf4j
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
-public class SolverRemoteConsistencyGuaranteeDAOImpl implements SolverRemoteConsistencyGuaranteeDAO {
+public class SolverConsistencyGuaranteeDAOImpl implements SolverConsistencyGuaranteeDAO {
 
   private final SolverCacheFactory solverCacheFactory;
 
