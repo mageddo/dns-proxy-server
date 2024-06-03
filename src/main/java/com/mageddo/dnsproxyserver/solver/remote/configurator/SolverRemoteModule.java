@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.di.module;
+package com.mageddo.dnsproxyserver.solver.remote.configurator;
 
 import com.mageddo.dnsproxyserver.solver.remote.CircuitBreakerService;
 import com.mageddo.dnsproxyserver.solver.remote.application.CircuitBreakerFailSafeService;

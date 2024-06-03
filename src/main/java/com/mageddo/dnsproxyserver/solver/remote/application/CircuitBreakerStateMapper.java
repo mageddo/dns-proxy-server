@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.solver.application;
+package com.mageddo.dnsproxyserver.solver.remote.application;
 
 import dev.failsafe.event.CircuitBreakerStateChangedEvent;
 
