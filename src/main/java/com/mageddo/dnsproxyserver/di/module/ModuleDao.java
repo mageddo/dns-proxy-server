@@ -10,10 +10,10 @@ import com.mageddo.dnsproxyserver.solver.docker.dataprovider.ContainerDAO;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.ContainerDAODefault;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAODefault;
-import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DpsContainerDAO;
-import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DpsContainerDAODefault;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.NetworkDAO;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.NetworkDAODefault;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DpsContainerDAO;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DpsContainerDAODefault;
 import dagger.Binds;
 import dagger.Module;
 
