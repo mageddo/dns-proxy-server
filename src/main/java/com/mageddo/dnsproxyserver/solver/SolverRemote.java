@@ -2,12 +2,10 @@ package com.mageddo.dnsproxyserver.solver;
 
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.dns.utils.Messages;
-import com.mageddo.dnsproxyserver.solver.remote.application.CircuitBreakerFactory;
 import com.mageddo.dnsproxyserver.solver.remote.Request;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
+import com.mageddo.dnsproxyserver.solver.remote.CircuitBreakerService;
 import com.mageddo.net.NetExecutorWatchdog;
-import dev.failsafe.CircuitBreakerOpenException;
-import dev.failsafe.Failsafe;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ClassUtils;
@@ -35,8 +33,7 @@ public class SolverRemote implements Solver, AutoCloseable {
 
   private final RemoteResolvers delegate;
   private final NetExecutorWatchdog netWatchdog = new NetExecutorWatchdog();
-  private final CircuitBreakerFactory circuitBreakerFactory;
-  private String status;
+  private final CircuitBreakerService circuitBreakerService;
 
   @Override
   public Response handle(Message query) {
@@ -84,18 +81,7 @@ public class SolverRemote implements Solver, AutoCloseable {
   }
 
   Result safeQueryResult(Request req) {
-    req.splitStopWatch();
-    final var circuitBreaker = this.circuitBreakerFactory.createCircuitBreakerFor(req.getResolverAddress());
-    try {
-      return Failsafe
-        .with(circuitBreaker)
-        .get((ctx) -> this.queryResultWhilePingingResolver(req));
-    } catch (CircuitCheckException | CircuitBreakerOpenException e) {
-      final var clazz = ClassUtils.getSimpleName(e);
-      log.debug("status=circuitEvent, server={}, type={}", req.getResolverAddress(), clazz);
-      this.status = String.format("%s for %s", clazz, req.getResolverAddress());
-      return Result.empty();
-    }
+    return this.circuitBreakerService.handle(req, () -> this.queryResultWhilePingingResolver(req));
   }
 
   Result queryResultWhilePingingResolver(Request req) {
@@ -154,10 +140,6 @@ public class SolverRemote implements Solver, AutoCloseable {
     } else {
       throw new RuntimeException(e.getMessage(), e);
     }
-  }
-
-  String getStatus() {
-    return this.status;
   }
 
   @Override
