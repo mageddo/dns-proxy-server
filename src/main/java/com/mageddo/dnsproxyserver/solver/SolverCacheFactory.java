@@ -59,9 +59,7 @@ public class SolverCacheFactory {
 
   public void clear(Name name) {
     if (name == null) {
-      for (final var cache : this.getCaches()) {
-        cache.clear();
-      }
+      this.clearCaches();
       return;
     }
     this.getInstance(name).clear();
@@ -72,5 +70,11 @@ public class SolverCacheFactory {
       .stream()
       .collect(Collectors.toMap(it -> it.name().name(), SolverCache::getSize))
       ;
+  }
+
+  public void clearCaches() {
+    for (final var cache : this.getCaches()) {
+      cache.clear();
+    }
   }
 }

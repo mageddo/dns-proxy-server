@@ -3,12 +3,15 @@ package com.mageddo.dnsproxyserver.solver;
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.config.application.ConfigService;
+import com.mageddo.dnsproxyserver.solver.dataprovider.SolverRemoteConsistencyGuaranteeDAO;
 import com.mageddo.net.IpAddr;
 import com.mageddo.net.IpAddrs;
 import com.mageddo.net.NetExecutorWatchdog;
 import dev.failsafe.CircuitBreaker;
 import dev.failsafe.CircuitBreakerOpenException;
 import dev.failsafe.Failsafe;
+import dev.failsafe.event.CircuitBreakerStateChangedEvent;
+import dev.failsafe.event.EventListener;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +36,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import static com.mageddo.dns.utils.Messages.simplePrint;
+import static com.mageddo.dnsproxyserver.solver.application.CircuitBreakerStateMapper.toStateNameFrom;
 
 @Slf4j
 @Singleton
@@ -45,6 +49,7 @@ public class SolverRemote implements Solver, AutoCloseable {
   private final Map<InetSocketAddress, CircuitBreaker<Result>> circuitBreakerMap = new ConcurrentHashMap<>();
   private final NetExecutorWatchdog netWatchdog = new NetExecutorWatchdog();
   private final ConfigService configService;
+  private final SolverRemoteConsistencyGuaranteeDAO consistencyGuaranteeDAO;
   private String status;
 
   @Override
@@ -170,13 +175,20 @@ public class SolverRemote implements Solver, AutoCloseable {
     return this.circuitBreakerMap.computeIfAbsent(address, inetSocketAddress -> buildCircuitBreaker(config));
   }
 
-  static CircuitBreaker<Result> buildCircuitBreaker(com.mageddo.dnsproxyserver.config.CircuitBreaker config) {
+  CircuitBreaker<Result> buildCircuitBreaker(com.mageddo.dnsproxyserver.config.CircuitBreaker config) {
     return CircuitBreaker.<Result>builder()
       .handle(CircuitCheckException.class)
       .withFailureThreshold(config.getFailureThreshold(), config.getFailureThresholdCapacity())
       .withSuccessThreshold(config.getSuccessThreshold())
       .withDelay(config.getTestDelay())
+      .onClose(bindStateChangeEvent("closed"))
+      .onOpen(bindStateChangeEvent("open"))
+      .onHalfOpen(bindStateChangeEvent("half-open"))
       .build();
+  }
+
+  EventListener<CircuitBreakerStateChangedEvent> bindStateChangeEvent(String newStateName) {
+    return event -> this.consistencyGuaranteeDAO.flushCachesFromCircuitBreakerStateChange(toStateNameFrom(event), newStateName);
   }
 
   com.mageddo.dnsproxyserver.config.CircuitBreaker findCircuitBreakerConfig() {
