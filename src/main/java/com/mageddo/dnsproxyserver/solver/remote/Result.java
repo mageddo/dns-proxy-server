@@ -1,9 +1,9 @@
 package com.mageddo.dnsproxyserver.solver.remote;
 
 import com.mageddo.dnsproxyserver.solver.Response;
-import com.mageddo.dnsproxyserver.solver.SolverRemote;
 import lombok.Builder;
 import lombok.Value;
+import org.apache.commons.lang3.ObjectUtils;
 import org.xbill.DNS.Message;
 
 import java.util.Optional;
@@ -39,5 +39,9 @@ public class Result {
     return Optional.ofNullable(this.errorMessage)
       .map(Response::nxDomain)
       .orElse(null);
+  }
+
+  public boolean isEmpty() {
+    return ObjectUtils.allNull(this.errorMessage, this.successResponse);
   }
 }

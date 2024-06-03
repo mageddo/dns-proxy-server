@@ -148,7 +148,4 @@ public class SolverRemote implements Solver, AutoCloseable {
     this.netWatchdog.close();
   }
 
-  public String getCircuitBreakerStatus() {
-    return this.circuitBreakerService.getStatus();
-  }
 }

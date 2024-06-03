@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.solver.remote.application;
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.dnsproxyserver.config.application.ConfigService;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
+import com.mageddo.dnsproxyserver.solver.remote.mapper.CircuitBreakerStateMapper;
 import com.mageddo.dnsproxyserver.solver.remote.dataprovider.SolverConsistencyGuaranteeDAO;
 import dev.failsafe.CircuitBreaker;
 import dev.failsafe.event.CircuitBreakerStateChangedEvent;
