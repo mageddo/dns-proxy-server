@@ -46,46 +46,4 @@ class CircuitBreakerFailSafeServiceCompTest {
     }
   }
 
-//
-//  @Test
-//  void mustCheckNextServerAfterCircuitFailure() throws Exception {
-//    // arrange
-//    final var query = MessageTemplates.acmeAQuery();
-//    final var res = MessageTemplates.acmeAResponse();
-//
-//    doReturn(CircuitBreakerTemplates.buildDefault())
-//      .when(this.solverRemote)
-//      .findCircuitBreakerConfig();
-//
-//    doReturn(InetSocketAddressTemplates._8_8_8_8())
-//      .when(this.resolver)
-//      .getAddress()
-//    ;
-//
-//    doReturn(InetSocketAddressTemplates._8_8_8_8())
-//      .when(this.resolver2)
-//      .getAddress()
-//    ;
-//
-//    doReturn(CompletableFuture.failedFuture(new SocketTimeoutException(SolverRemote.QUERY_TIMED_OUT_MSG)))
-//      .when(this.resolver)
-//      .sendAsync(any());
-//
-//    doReturn(CompletableFuture.completedFuture(res))
-//      .when(this.resolver2)
-//      .sendAsync(any());
-//
-//    doReturn(List.of(this.resolver, this.resolver2))
-//      .when(this.resolvers)
-//      .resolvers()
-//    ;
-//
-//    // act
-//    // assert
-//    final var msg = this.solverRemote.handle(query);
-//    assertNotNull(msg);
-//    assertEquals("CircuitCheckException for /8.8.8.8:53", this.solverRemote.getStatus());
-//    assertEquals(Rcode.NOERROR, msg.getMessage().getRcode());
-//
-//  }
 }
