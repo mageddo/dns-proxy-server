@@ -6,16 +6,14 @@ import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacade;
 import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacadeDefault;
 import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacade;
 import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacadeDefault;
-import com.mageddo.dnsproxyserver.solver.remote.dataprovider.SolverConsistencyGuaranteeDAO;
-import com.mageddo.dnsproxyserver.solver.remote.dataprovider.SolverConsistencyGuaranteeDAOImpl;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.ContainerDAO;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.ContainerDAODefault;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAODefault;
-import com.mageddo.dnsproxyserver.solver.docker.dataprovider.NetworkDAO;
-import com.mageddo.dnsproxyserver.solver.docker.dataprovider.NetworkDAODefault;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DpsContainerDAO;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DpsContainerDAODefault;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.NetworkDAO;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.NetworkDAODefault;
 import dagger.Binds;
 import dagger.Module;
 
@@ -54,7 +52,4 @@ public interface ModuleDao {
   @Singleton
   DpsContainerDAO dpsContainerDAO(DpsContainerDAODefault impl);
 
-  @Binds
-  @Singleton
-  SolverConsistencyGuaranteeDAO consistencyGuaranteeDAO(SolverConsistencyGuaranteeDAOImpl impl);
 }
