@@ -15,8 +15,7 @@ public class SolverRemoteConsistencyGuaranteeDAOImpl implements SolverRemoteCons
   private final SolverCacheFactory solverCacheFactory;
 
   @Override
-  public void flushCachesFromCircuitBreakerStateChange(String previousStateName, String actualStateName) {
+  public void flushCachesFromCircuitBreakerStateChange() {
     this.solverCacheFactory.clearCaches();
-    log.debug("status=clearedCache, previousStateName={}, actualStateName={}", previousStateName, actualStateName);
   }
 }

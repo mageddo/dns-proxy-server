@@ -2,20 +2,13 @@ package com.mageddo.dnsproxyserver.solver;
 
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.dns.utils.Messages;
-import com.mageddo.dnsproxyserver.config.application.ConfigService;
-import com.mageddo.dnsproxyserver.solver.dataprovider.SolverRemoteConsistencyGuaranteeDAO;
-import com.mageddo.net.IpAddr;
-import com.mageddo.net.IpAddrs;
+import com.mageddo.dnsproxyserver.solver.remote.CircuitBreakerFactory;
+import com.mageddo.dnsproxyserver.solver.remote.Request;
+import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.net.NetExecutorWatchdog;
-import dev.failsafe.CircuitBreaker;
 import dev.failsafe.CircuitBreakerOpenException;
 import dev.failsafe.Failsafe;
-import dev.failsafe.event.CircuitBreakerStateChangedEvent;
-import dev.failsafe.event.EventListener;
-import lombok.Builder;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.time.StopWatch;
@@ -25,18 +18,13 @@ import org.xbill.DNS.Message;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import static com.mageddo.dns.utils.Messages.simplePrint;
-import static com.mageddo.dnsproxyserver.solver.application.CircuitBreakerStateMapper.toStateNameFrom;
 
 @Slf4j
 @Singleton
@@ -46,10 +34,8 @@ public class SolverRemote implements Solver, AutoCloseable {
   static final String QUERY_TIMED_OUT_MSG = "Query timed out";
 
   private final RemoteResolvers delegate;
-  private final Map<InetSocketAddress, CircuitBreaker<Result>> circuitBreakerMap = new ConcurrentHashMap<>();
   private final NetExecutorWatchdog netWatchdog = new NetExecutorWatchdog();
-  private final ConfigService configService;
-  private final SolverRemoteConsistencyGuaranteeDAO consistencyGuaranteeDAO;
+  private final CircuitBreakerFactory circuitBreakerFactory;
   private String status;
 
   @Override
@@ -99,7 +85,7 @@ public class SolverRemote implements Solver, AutoCloseable {
 
   Result safeQueryResult(Request req) {
     req.splitStopWatch();
-    final var circuitBreaker = this.circuitBreakerFor(req.getResolverAddress());
+    final var circuitBreaker = this.circuitBreakerFactory.createCircuitBreakerFor(req.getResolverAddress());
     try {
       return Failsafe
         .with(circuitBreaker)
@@ -170,33 +156,6 @@ public class SolverRemote implements Solver, AutoCloseable {
     }
   }
 
-  CircuitBreaker<Result> circuitBreakerFor(InetSocketAddress address) {
-    final var config = this.findCircuitBreakerConfig();
-    return this.circuitBreakerMap.computeIfAbsent(address, inetSocketAddress -> buildCircuitBreaker(config));
-  }
-
-  CircuitBreaker<Result> buildCircuitBreaker(com.mageddo.dnsproxyserver.config.CircuitBreaker config) {
-    return CircuitBreaker.<Result>builder()
-      .handle(CircuitCheckException.class)
-      .withFailureThreshold(config.getFailureThreshold(), config.getFailureThresholdCapacity())
-      .withSuccessThreshold(config.getSuccessThreshold())
-      .withDelay(config.getTestDelay())
-      .onClose(bindStateChangeEvent("closed"))
-      .onOpen(bindStateChangeEvent("open"))
-      .onHalfOpen(bindStateChangeEvent("half-open"))
-      .build();
-  }
-
-  EventListener<CircuitBreakerStateChangedEvent> bindStateChangeEvent(String newStateName) {
-    return event -> this.consistencyGuaranteeDAO.flushCachesFromCircuitBreakerStateChange(toStateNameFrom(event), newStateName);
-  }
-
-  com.mageddo.dnsproxyserver.config.CircuitBreaker findCircuitBreakerConfig() {
-    return this.configService.findCurrentConfig()
-      .getSolverRemote()
-      .getCircuitBreaker();
-  }
-
   String getStatus() {
     return this.status;
   }
@@ -206,78 +165,4 @@ public class SolverRemote implements Solver, AutoCloseable {
     this.netWatchdog.close();
   }
 
-  @Value
-  @Builder
-  static class Request {
-
-    @NonNull
-    Message query;
-
-    @NonNull
-    Resolver resolver;
-
-    @NonNull
-    Integer resolverIndex;
-
-    @NonNull
-    StopWatch stopWatch;
-
-    public IpAddr getResolverAddr() {
-      return IpAddrs.from(this.getResolverAddress());
-    }
-
-    public InetSocketAddress getResolverAddress() {
-      return this.getResolver().getAddress();
-    }
-
-    public void splitStopWatch() {
-      this.stopWatch.split();
-    }
-
-    public CompletableFuture<Message> sendQueryAsyncToResolver() {
-      return this.resolver.sendAsync(this.query).toCompletableFuture();
-    }
-
-    public long getElapsedTimeInMs() {
-      return this.stopWatch.getTime() - this.stopWatch.getSplitTime();
-    }
-
-    public long getTime() {
-      return this.stopWatch.getTime();
-    }
-  }
-
-  @Value
-  @Builder
-  static class Result {
-
-    private Response successResponse;
-    private Message errorMessage;
-
-    public static Result empty() {
-      return Result.builder().build();
-    }
-
-    public static Result fromErrorMessage(Message message) {
-      return builder().errorMessage(message).build();
-    }
-
-    public static Result fromSuccessResponse(Response res) {
-      return Result.builder().successResponse(res).build();
-    }
-
-    public boolean hasSuccessMessage() {
-      return this.successResponse != null;
-    }
-
-    public boolean hasErrorMessage() {
-      return this.errorMessage != null;
-    }
-
-    public Response getErrorResponse() {
-      return Optional.ofNullable(this.errorMessage)
-        .map(Response::nxDomain)
-        .orElse(null);
-    }
-  }
 }
