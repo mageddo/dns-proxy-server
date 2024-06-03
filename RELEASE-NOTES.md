@@ -1,5 +1,8 @@
+## 3.19.0
+* Remote Server Solver Cache Consistency Guarantee, see #455.
+
 ## 3.18.5
-* Refactor `SolverRemote` module, see #459.
+* Refactor `SolverRemote` module, see #460.
 
 ## 3.18.4
 * Refactor `SolverRemote` solver class, see #459.
