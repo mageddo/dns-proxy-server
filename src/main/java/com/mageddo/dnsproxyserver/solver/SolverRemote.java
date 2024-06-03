@@ -30,6 +30,7 @@ import static com.mageddo.dns.utils.Messages.simplePrint;
 public class SolverRemote implements Solver, AutoCloseable {
 
   static final String QUERY_TIMED_OUT_MSG = "Query timed out";
+  public static final int PING_TIMEOUT_IN_MS = 1_500;
 
   private final RemoteResolvers delegate;
   private final NetExecutorWatchdog netWatchdog = new NetExecutorWatchdog();
@@ -82,12 +83,12 @@ public class SolverRemote implements Solver, AutoCloseable {
 
   Result safeQueryResult(Request req) {
     req.splitStopWatch();
-    return this.circuitBreakerService.handle(req, () -> this.queryResultWhilePingingResolver(req));
+    return this.circuitBreakerService.safeHandle(req.getResolverAddress(), () -> this.queryResultWhilePingingResolver(req));
   }
 
   Result queryResultWhilePingingResolver(Request req) {
     final var resFuture = req.sendQueryAsyncToResolver();
-    this.netWatchdog.watch(req.getResolverAddr(), resFuture);
+    this.netWatchdog.watch(req.getResolverAddr(), resFuture, PING_TIMEOUT_IN_MS);
     return this.transformToResult(resFuture, req);
   }
 

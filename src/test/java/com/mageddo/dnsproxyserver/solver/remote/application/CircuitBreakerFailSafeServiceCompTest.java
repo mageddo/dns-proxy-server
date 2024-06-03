@@ -35,10 +35,10 @@ class CircuitBreakerFailSafeServiceCompTest {
     };
 
     // act
-    this.tryHandleReqThreeTimes(req, failureSup);
+    this.trySafeHandleReqThreeTimes(req, failureSup);
 
     // assert
-    final var result = this.service.handle(req, failureSup);
+    final var result = this.service.safeHandle(req.getResolverAddress(), failureSup);
     assertTrue(result.isEmpty());
     assertEquals("CircuitBreakerOpenException for /8.8.8.8:53", this.service.getStatus());
 
@@ -53,9 +53,9 @@ class CircuitBreakerFailSafeServiceCompTest {
     verify(this.consistencyGuaranteeDAO).flushCachesFromCircuitBreakerStateChange();
   }
 
-  void tryHandleReqThreeTimes(Request req, Supplier<Result> failureSup) {
+  void trySafeHandleReqThreeTimes(Request req, Supplier<Result> failureSup) {
     for (int i = 0; i < 3; i++) {
-      final var result = this.service.handle(req, failureSup);
+      final var result = this.service.safeHandle(req.getResolverAddress(), failureSup);
       assertTrue(result.isEmpty());
       assertEquals("CircuitCheckException for /8.8.8.8:53", this.service.getStatus());
     }

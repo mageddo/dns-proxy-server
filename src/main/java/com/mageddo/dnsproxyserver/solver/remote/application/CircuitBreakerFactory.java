@@ -3,13 +3,14 @@ package com.mageddo.dnsproxyserver.solver.remote.application;
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.dnsproxyserver.config.application.ConfigService;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
-import com.mageddo.dnsproxyserver.solver.remote.mapper.CircuitBreakerStateMapper;
 import com.mageddo.dnsproxyserver.solver.remote.dataprovider.SolverConsistencyGuaranteeDAO;
+import com.mageddo.dnsproxyserver.solver.remote.mapper.CircuitBreakerStateMapper;
 import dev.failsafe.CircuitBreaker;
 import dev.failsafe.event.CircuitBreakerStateChangedEvent;
 import dev.failsafe.event.EventListener;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.StopWatch;
 
 import javax.inject.Inject;
 import java.net.InetSocketAddress;
@@ -22,6 +23,7 @@ public class CircuitBreakerFactory {
 
   private final Map<InetSocketAddress, CircuitBreaker<Result>> circuitBreakerMap = new ConcurrentHashMap<>();
   private final ConfigService configService;
+  private final CircuitBreakerCheckerService circuitBreakerCheckerService;
   private final SolverConsistencyGuaranteeDAO solverConsistencyGuaranteeDAO;
 
   public CircuitBreaker<Result> createCircuitBreakerFor(InetSocketAddress address) {
@@ -58,5 +60,22 @@ public class CircuitBreakerFactory {
     return this.configService.findCurrentConfig()
       .getSolverRemote()
       .getCircuitBreaker();
+  }
+
+  public void checkCreatedCircuits() {
+    final var stopWatch = StopWatch.createStarted();
+    log.debug("status=checkingCreatedCircuits, circuits={}", this.circuitBreakerMap.size());
+    int successes = 0, errors = 0;
+    for (final var entry : this.circuitBreakerMap.entrySet()) {
+      if (this.circuitBreakerCheckerService.safeCheck(entry.getKey(), entry.getValue())) {
+        successes++;
+      } else {
+        errors++;
+      }
+    }
+    log.debug(
+      "status=checkEnded, successes={}, errors={}, circuits={}, timeElapsed={}",
+      successes, errors, this.circuitBreakerMap.size(), stopWatch.getTime()
+    );
   }
 }

@@ -15,7 +15,6 @@ import java.util.concurrent.Future;
 @Slf4j
 public class NetExecutorWatchdog implements AutoCloseable {
 
-  public static final int PING_TIMEOUT_IN_MS = 1_500;
   public static final int FPS_120 = 1000 / 120;
 
   private final ExecutorService threadPool = ThreadPool.newFixed(50);
@@ -24,10 +23,10 @@ public class NetExecutorWatchdog implements AutoCloseable {
    * Will ping the #pingAddr while waiting the future to be done, which occurs first will return,
    * if ping fails, exception is thrown. "future.get()" won't be called.
    */
-  public <T> CompletableFuture<T> watch(IpAddr pingAddr, CompletableFuture<T> future) {
+  public <T> CompletableFuture<T> watch(IpAddr pingAddr, CompletableFuture<T> future, int pingTimeoutInMs) {
 
     final var pingFuture = this.threadPool.submit(
-      () -> Networks.ping(pingAddr.getRawIP(), pingAddr.getPort(), PING_TIMEOUT_IN_MS)
+      () -> Networks.ping(pingAddr.getRawIP(), pingAddr.getPort(), pingTimeoutInMs)
     );
 
     boolean mustCheckPing = true;
