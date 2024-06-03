@@ -1,3 +1,6 @@
+## 3.18.5
+* Refactor `SolverRemote` module, see #459.
+
 ## 3.18.4
 * Refactor `SolverRemote` solver class, see #459.
 
