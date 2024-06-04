@@ -1,3 +1,6 @@
+## 3.19.1
+* Resources optimization
+
 ## 3.19.0
 * Remote Server Solver Cache Consistency Guarantee, see #455.
 
