@@ -25,6 +25,7 @@ import javax.enterprise.inject.spi.CDI;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import java.util.Map;
+import java.util.Set;
 
 @Singleton
 @Component(modules = {
@@ -48,6 +49,8 @@ public interface Context {
   }
 
   Starter starter();
+
+  Set<StartupEvent> events();
 
   default void start() {
     this.starter().start();

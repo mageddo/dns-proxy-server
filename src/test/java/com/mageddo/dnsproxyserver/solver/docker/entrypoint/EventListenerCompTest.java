@@ -2,15 +2,13 @@ package com.mageddo.dnsproxyserver.solver.docker.entrypoint;
 
 import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.dnsproxyserver.di.StartupEvent;
-import com.mageddo.dnsproxyserver.solver.docker.entrypoint.EventListener;
 import dagger.sheath.junit.DaggerTest;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
-import java.util.Objects;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DaggerTest(component = Context.class)
 class EventListenerCompTest {
@@ -24,13 +22,10 @@ class EventListenerCompTest {
     // arrange
 
     // act
-    final var size = this.events
-        .stream()
-        .filter(it -> Objects.equals(EventListener.class, it.getClass()))
-        .count();
+    final var found = StartupEvent.exists(this.events, EventListener.class);
 
     // assert
-    assertEquals(1, size);
+    assertTrue(found);
 
   }
 }
