@@ -16,11 +16,12 @@ import java.time.Duration;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Singleton
-public class TCPServer {
+public class TCPServer implements AutoCloseable {
 
   /**
    * See https://www.ietf.org/rfc/rfc1035.txt section 4.2.2
@@ -28,22 +29,26 @@ public class TCPServer {
   public static final Duration MAX_CLIENT_ALIVE_DURATION = Duration.ofMinutes(2);
   public static final int WATCHDOG_DELAY_SECS = 20;
 
-  private final ExecutorService pool; // fixme #455 needs to close this at #stop method
+  private final ExecutorService serverThreadPool;
   private final Set<WeakReference<SocketClient>> clients;
   private ServerSocket server;
 
   @Inject
   public TCPServer() {
-    this.pool = ThreadPool.newFixed(50);
+    this.serverThreadPool = ThreadPool.newFixed(50);
     this.clients = new LinkedHashSet<>();
   }
 
   public void start(int port, InetAddress address, SocketClientMessageHandler handler) {
     log.debug("status=tcpServerStartScheduled, port={}", port);
-    this.pool.submit(() -> this.start0(port, address, handler));
-    ThreadPool
-      .scheduled() // fixme #455 should put this threadpool to instance veriable and close it.
-      .scheduleWithFixedDelay(this::watchDog, WATCHDOG_DELAY_SECS, WATCHDOG_DELAY_SECS, TimeUnit.SECONDS);
+    this.serverThreadPool.submit(() -> this.start0(port, address, handler));
+    getGlobalScheduledThreadPool().scheduleWithFixedDelay(
+      this::watchDog, WATCHDOG_DELAY_SECS, WATCHDOG_DELAY_SECS, TimeUnit.SECONDS
+    );
+  }
+
+  private static ScheduledExecutorService getGlobalScheduledThreadPool() {
+    return ThreadPool.scheduled();
   }
 
   void start0(int port, InetAddress address, SocketClientMessageHandler handler) {
@@ -55,7 +60,7 @@ public class TCPServer {
       while (!server.isClosed() && (socket = server.accept()) != null) {
         final var client = new SocketClient(socket, handler);
         this.clients.add(new WeakReference<>(client));
-        this.pool.submit(client);
+        this.serverThreadPool.submit(client);
       }
 
     } catch (Throwable e) {
@@ -110,5 +115,11 @@ public class TCPServer {
 
   public void stop() {
     IoUtils.silentClose(this.server);
+  }
+
+  @Override
+  public void close() throws Exception {
+    this.stop();
+    this.serverThreadPool.close();
   }
 }

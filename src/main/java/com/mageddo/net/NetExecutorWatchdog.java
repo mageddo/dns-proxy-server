@@ -36,7 +36,7 @@ public class NetExecutorWatchdog implements AutoCloseable {
         mustCheckPing = false;
       }
       if (future.isDone()) {
-        // fixme #455 deveria cancelar o ping aqui pingFuture.cancel(true)
+        pingFuture.cancel(true);
         return future;
       }
       Threads.sleep(FPS_120);
@@ -55,7 +55,8 @@ public class NetExecutorWatchdog implements AutoCloseable {
           "Failed to ping address: %s:%s", address.getAddress(), address.getPort()
         ));
       }
-    } catch (InterruptedException | ExecutionException e) {
+    } catch (InterruptedException ignored) {
+    } catch (ExecutionException e) {
       throw new RuntimeException(e);
     }
   }

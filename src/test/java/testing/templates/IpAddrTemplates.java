@@ -23,4 +23,11 @@ public class IpAddrTemplates {
   public static IpAddr loopback() {
     return IpAddr.of(IpTemplates.loopback());
   }
+
+  /**
+   * https://serverfault.com/a/471106/321018
+   */
+  public static IpAddr unknown() {
+    return IpAddr.of("192.0.2.0:999");
+  }
 }
