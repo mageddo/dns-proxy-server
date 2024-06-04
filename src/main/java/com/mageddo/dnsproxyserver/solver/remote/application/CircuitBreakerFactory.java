@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.solver.remote.application;
 
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
+import com.mageddo.commons.lang.tuple.Pair;
 import com.mageddo.dnsproxyserver.config.application.ConfigService;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.dataprovider.SolverConsistencyGuaranteeDAO;
@@ -65,12 +66,12 @@ public class CircuitBreakerFactory {
   }
 
   // todo #455 teste automatizado
-  public void checkCreatedCircuits() {
+  public Pair<Integer, Integer> checkCreatedCircuits() {
     final var stopWatch = StopWatch.createStarted();
     log.debug("status=checkingCreatedCircuits, circuits={}", this.circuitBreakerMap.size());
     int successes = 0, errors = 0;
     for (final var entry : this.circuitBreakerMap.entrySet()) {
-      if (this.circuitBreakerCheckerService.safeCheck(entry.getKey(), entry.getValue())) {
+      if (this.circuitBreakerSafeCheck(entry)) {
         successes++;
       } else {
         errors++;
@@ -80,5 +81,10 @@ public class CircuitBreakerFactory {
       "status=checkEnded, successes={}, errors={}, circuits={}, timeElapsed={}",
       successes, errors, this.circuitBreakerMap.size(), stopWatch.getTime()
     );
+    return Pair.of(successes, errors);
+  }
+
+  boolean circuitBreakerSafeCheck(Map.Entry<InetSocketAddress, CircuitBreaker<Result>> entry) {
+    return this.circuitBreakerCheckerService.safeCheck(entry.getKey(), entry.getValue());
   }
 }
