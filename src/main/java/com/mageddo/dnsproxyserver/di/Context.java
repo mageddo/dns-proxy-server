@@ -9,13 +9,13 @@ import com.mageddo.dnsproxyserver.di.module.ModuleMain;
 import com.mageddo.dnsproxyserver.di.module.ModuleMap;
 import com.mageddo.dnsproxyserver.di.module.ModuleSolver;
 import com.mageddo.dnsproxyserver.di.module.ModuleStartup;
-import com.mageddo.dnsproxyserver.solver.remote.configurator.SolverRemoteModule;
 import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacade;
 import com.mageddo.dnsproxyserver.quarkus.QuarkusConfig;
 import com.mageddo.dnsproxyserver.server.Starter;
 import com.mageddo.dnsproxyserver.solver.Solver;
 import com.mageddo.dnsproxyserver.solver.docker.application.ContainerSolvingService;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
+import com.mageddo.dnsproxyserver.solver.remote.configurator.SolverRemoteModule;
 import dagger.Component;
 import jdk.jfr.Name;
 import org.apache.commons.lang3.Validate;
@@ -25,7 +25,6 @@ import javax.enterprise.inject.spi.CDI;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import java.util.Map;
-import java.util.Set;
 
 @Singleton
 @Component(modules = {
@@ -50,10 +49,7 @@ public interface Context {
 
   Starter starter();
 
-  Set<StartupEvent> events();
-
   default void start() {
-    this.events().forEach(StartupEvent::onStart);
     this.starter().start();
   }
 

@@ -65,7 +65,6 @@ public class CircuitBreakerFactory {
       .getCircuitBreaker();
   }
 
-  // todo #455 teste automatizado
   public Pair<Integer, Integer> checkCreatedCircuits() {
     final var stopWatch = StopWatch.createStarted();
     log.debug("status=checkingCreatedCircuits, circuits={}", this.circuitBreakerMap.size());
