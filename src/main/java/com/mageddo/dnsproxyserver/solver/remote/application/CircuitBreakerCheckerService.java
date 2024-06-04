@@ -38,10 +38,14 @@ public class CircuitBreakerCheckerService {
     Failsafe
       .with(circuitBreaker)
       .run((ctx) -> {
-        if (!Networks.ping(server, SolverRemote.PING_TIMEOUT_IN_MS)) {
+        if (!this.ping(server)) {
           throw new CircuitCheckException("circuit breaker failed for " + server);
         }
         log.debug("status=serverIsHealthy, server={}", server);
       });
+  }
+
+  boolean ping(InetSocketAddress server) {
+    return Networks.ping(server, SolverRemote.PING_TIMEOUT_IN_MS);
   }
 }
