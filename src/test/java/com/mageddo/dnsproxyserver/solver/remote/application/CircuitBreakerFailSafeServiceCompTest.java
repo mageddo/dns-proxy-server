@@ -19,8 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 
-// todo #455 precisa desligar o CircuitBreakerWatchDogScheduler aqui para ele não afetar os checks dos circuito,
-//      talvez desligar todos os StartupEvents.
 @DaggerTest(initializer = ContextSupplier.class, eventsHandler = Events.class)
 class CircuitBreakerFailSafeServiceCompTest {
 
