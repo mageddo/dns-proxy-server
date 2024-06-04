@@ -86,4 +86,8 @@ public class CircuitBreakerFactory {
   boolean circuitBreakerSafeCheck(Map.Entry<InetSocketAddress, CircuitBreaker<Result>> entry) {
     return this.circuitBreakerCheckerService.safeCheck(entry.getKey(), entry.getValue());
   }
+
+  public void reset(){
+    this.circuitBreakerMap.clear();
+  }
 }

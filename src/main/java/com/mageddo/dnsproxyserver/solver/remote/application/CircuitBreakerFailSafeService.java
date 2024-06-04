@@ -45,4 +45,8 @@ public class CircuitBreakerFailSafeService implements CircuitBreakerService {
   public String getStatus() {
     return this.status;
   }
+
+  public void resetCircuitBreakerFactory() {
+    this.circuitBreakerFactory.reset();
+  }
 }

@@ -6,6 +6,7 @@ import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.dataprovider.SolverConsistencyGuaranteeDAO;
 import dagger.sheath.InjectMock;
 import dagger.sheath.junit.DaggerTest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import testing.ContextSupplier;
 import testing.Events;
@@ -29,6 +30,11 @@ class CircuitBreakerFailSafeServiceCompTest {
   @InjectMock
   SolverConsistencyGuaranteeDAO consistencyGuaranteeDAO;
 
+  @BeforeEach
+  void beforeEach() {
+    this.service.resetCircuitBreakerFactory();
+  }
+
   @Test
   void mustOpenCircuitAfterThresholdFailures() {
     // arrange
@@ -48,7 +54,7 @@ class CircuitBreakerFailSafeServiceCompTest {
   }
 
   @Test
-  void mustFlushCachesWhenCircuitBreakerStateChanges(){
+  void mustFlushCachesWhenCircuitBreakerStateChanges() {
     // arrange // act
     this.mustOpenCircuitAfterThresholdFailures();
 
