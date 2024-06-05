@@ -1,4 +1,6 @@
 FROM defreitas/tools_graalvm-22.3_java-19_debian-9_aarch64:0.1.3
+# source: https://github.com/mageddo/dockerized-database-servers/tree/master/_hub/graalvm
+
 WORKDIR /app/build
 COPY ./build/artifacts/native-image-source/ /app/build
 

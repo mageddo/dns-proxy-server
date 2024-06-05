@@ -1,4 +1,6 @@
 FROM defreitas/tools_graalvm-22.3_java-19_debian-9:0.1.2 AS BUILDER
+# source: https://github.com/mageddo/dockerized-database-servers/tree/master/_hub/graalvm
+
 COPY ./ /app
 WORKDIR /app
 RUN ./gradlew clean build compTest shadowJar nativeCompile -i &&\
