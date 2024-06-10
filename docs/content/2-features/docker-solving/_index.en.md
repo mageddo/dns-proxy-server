@@ -2,3 +2,93 @@
 title: Docker Solving
 weight: 4
 ---
+
+DPS can assign a hostname to your docker containers to solve it's IPs by the :
+
+* `HOSTNAMES` env
+* Container Hostname
+* Container Name
+* Docker Compose Service Name
+
+These are indivual forms of set a hostname to a container to query it, so you only need to use one of them.
+
+## Hostnames Env
+
+Creating a test container 
+```bash
+$ docker run -e HOSTNAMES="nginx1.dev,nginx1.docker" nginx
+```
+
+Solving from `HOSTNAMES` env
+
+```bash
+$ dig nginx1.dev @127.0.0.1 +noall +answer
+nginx1.dev.		30	IN	A	172.17.0.2
+
+$ dig nginx1.docker @127.0.0.1 +noall +answer
+nginx1.docker.		30	IN	A	172.17.0.2
+```
+
+## Container Hostname
+
+DPS will register the Container Hostname + '.' Domain Name when Domain Name is set, if not set
+only the Hostname will be used.
+
+Creating a test container (way 1)
+```bash
+$ docker run --rm  --hostname nginx1 --domainname app nginx
+```
+
+Creating a test container (way 2)
+```bash
+$ docker run --rm  --hostname nginx1.app nginx
+```
+
+Testing hostname
+```bash
+$ dig nginx1.app @127.0.0.1 +noall +answer
+nginx1.app.		30	IN	A	172.17.0.2
+```
+
+### Container Name
+
+You can solve by the container name, this feature is disabled by default,
+so you need to enable it using `MG_REGISTER_CONTAINER_NAMES=1` env, see [the docs][1] for more details.
+
+Creating a test container 
+
+```bash
+$ docker run --rm --name nginx1 nginx
+```
+
+Testing 
+```bash
+$ dig nginx1.docker @127.0.0.1 +noall +answer
+nginx1.docker.		30	IN	A	172.17.0.2
+```
+
+You can customize the `.docker` domain, with the `MG_DOMAIN` env, [see the docs][2] 
+for more details.
+
+
+### Docker Compose Service Name
+Works like [Container Name][3] feature, but in this case you can solve by the service name
+used at the container docker-compose.yml file.
+
+docker-compose.yml
+```yaml
+services:
+  nginx:
+    image: nginx
+```
+
+```bash
+$ dig nginx.docker @127.0.0.1 +noall +answer
+nginx.docker.		30	IN	A	172.23.0.3
+```
+
+
+[1]: /dns-proxy-server/3.18/en/3-configuration/#register-container-names
+[2]: /3.18/en/3-configuration/#domain
+[3]: #container-name
+
