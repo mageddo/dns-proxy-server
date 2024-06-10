@@ -1,5 +1,5 @@
 ---
-title: Docker Solving
+title: Solving Docker Containers from Hostname
 weight: 4
 ---
 
