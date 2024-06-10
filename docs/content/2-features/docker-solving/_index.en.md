@@ -31,7 +31,7 @@ nginx1.docker.		30	IN	A	172.17.0.2
 
 ## Container Hostname
 
-DPS will register the Container Hostname + '.' Domain Name when Domain Name is set, if not set
+DPS will register the `${Container Hostname} + '.' ${Domain Name}` when Domain Name is set, if not set
 only the Hostname will be used.
 
 Creating a test container (way 1)
