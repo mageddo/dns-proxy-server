@@ -33,9 +33,13 @@ public class SolverProvider {
     this.solvers = solvers
       .stream()
       .sorted(Priorities.comparator(Solver::name, solversOrder))
-      .filter(it -> !(config.isSolverRemoteActive() && it.is(SolverCachedRemote.NAME)))
+      .filter(it -> !isSolverRemoteWhenItsDisabled(config, it))
       .toList()
     ;
+  }
+
+  private static boolean isSolverRemoteWhenItsDisabled(Config config, Solver solver) {
+    return !config.isSolverRemoteActive() && solver.is(SolverCachedRemote.NAME);
   }
 
   public List<Solver> getSolvers() {
