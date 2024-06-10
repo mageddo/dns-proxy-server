@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.config;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mageddo.dnsserver.SimpleServer;
 import com.mageddo.net.IP;
 import com.mageddo.net.IpAddr;
@@ -77,6 +78,7 @@ public class Config {
 
   private SolverRemote solverRemote;
 
+  @JsonIgnore
   public Boolean isSolverRemoteActive(){
     return this.solverRemote.getActive();
   }

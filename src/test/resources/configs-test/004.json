@@ -10,12 +10,12 @@
   "logLevel" : "DEBUG",
   "mustConfigureDpsNetwork" : true,
   "noEntriesResponseCode" : null,
-  "noRemoteServers" : null,
   "registerContainerNames" : true,
   "remoteDnsServers" : [ ],
   "resolvConfOverrideNameServers" : null,
   "serverProtocol" : null,
   "solverRemote" : {
+    "active" : null,
     "circuitBreaker" : {
       "failureThreshold" : 3,
       "failureThresholdCapacity" : 10,
