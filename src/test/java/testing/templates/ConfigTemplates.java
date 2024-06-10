@@ -1,6 +1,5 @@
 package testing.templates;
 
-import com.mageddo.dnsproxyserver.config.CircuitBreaker;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.LogLevel;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
@@ -36,7 +35,6 @@ public class ConfigTemplates {
       .solverRemote(SolverRemote
         .builder()
         .active(true)
-        .circuitBreaker(CircuitBreaker.empty())
         .build()
       )
       .noEntriesResponseCode(3)
@@ -56,7 +54,6 @@ public class ConfigTemplates {
       .solverRemote(SolverRemote
         .builder()
         .active(false)
-        .circuitBreaker(CircuitBreaker.empty())
         .build()
       )
       .build();

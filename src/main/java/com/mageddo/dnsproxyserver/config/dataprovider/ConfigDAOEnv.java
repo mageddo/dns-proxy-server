@@ -1,6 +1,5 @@
 package com.mageddo.dnsproxyserver.config.dataprovider;
 
-import com.mageddo.dnsproxyserver.config.CircuitBreaker;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.dataprovider.mapper.ConfigFieldsValuesMapper;
@@ -46,7 +45,6 @@ public class ConfigDAOEnv implements ConfigDAO {
       .solverRemote(SolverRemote
         .builder()
         .active(Booleans.reverseWhenNotNull(config.getNoRemoteServers()))
-        .circuitBreaker(CircuitBreaker.empty())
         .build())
       .build();
   }

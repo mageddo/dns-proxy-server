@@ -91,6 +91,10 @@ public class Config {
     }
   }
 
+  public CircuitBreaker getSolverRemoteCircuitBreaker() {
+    return this.solverRemote.getCircuitBreaker();
+  }
+
   @Value
   public static class Env {
 

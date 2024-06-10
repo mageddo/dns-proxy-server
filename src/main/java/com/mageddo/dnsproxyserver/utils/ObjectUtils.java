@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
@@ -34,6 +35,15 @@ public class ObjectUtils {
     return Optional
       .ofNullable(firstNonNull(args))
       .orElseThrow(throwError())
+      ;
+  }
+
+  public static <T> T firstMatchRequiring(List<T> args, Predicate<T> predicate) {
+    return args
+      .stream()
+      .filter(predicate)
+      .findFirst()
+      .orElseThrow(() -> new IllegalArgumentException("At least one argument should match the predicate!"))
       ;
   }
 

@@ -1,7 +1,6 @@
 package com.mageddo.dnsproxyserver.config;
 
 import lombok.Builder;
-import lombok.NonNull;
 import lombok.Value;
 
 @Value
@@ -10,6 +9,5 @@ public class SolverRemote {
 
   private Boolean active;
 
-  @NonNull
   private CircuitBreaker circuitBreaker;
 }
