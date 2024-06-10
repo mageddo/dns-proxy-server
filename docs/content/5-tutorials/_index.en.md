@@ -6,7 +6,7 @@ pre: "<b>4. </b>"
 
 ## Tutorials
 
-* How to Docker Container Solving Works
+* [How to Docker Container Solving Works][3]
 {{%children style="li"  %}}
 * [Click here][1] to see a set of pratical samples using docker and docker-compose
 
