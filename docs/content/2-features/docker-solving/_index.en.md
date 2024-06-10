@@ -73,6 +73,7 @@ for more details.
 
 
 ### Docker Compose Service Name
+
 Works like [Container Name][3] feature, but in this case you can solve by the service name
 used at the container docker-compose.yml file.
 
@@ -88,7 +89,14 @@ $ dig nginx.docker @127.0.0.1 +noall +answer
 nginx.docker.		30	IN	A	172.23.0.3
 ```
 
+**Important** 
+Be aware, when using docker-compose, specially with different docker-compose files you may have to lead with different 
+[docker networks limitations][5].
+
+Related Reading
+
 [1]: {{%relref "2-configuration/_index.md" %}}#register-container-names
 [2]: {{%relref "2-configuration/_index.md" %}}#domain
 [3]: #container-name
 [4]: {{%relref "2-features/accessing-container-by-name/_index.md" %}}
+[5]: {{%relref "2-features/docker-different-networks-solving/_index.md" %}}

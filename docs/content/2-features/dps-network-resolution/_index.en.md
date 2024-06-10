@@ -1,5 +1,5 @@
 ---
-title: DPS docker network
+title: DPS Docker Network
 weight: 9
 ---
 Since: 2.15.0
