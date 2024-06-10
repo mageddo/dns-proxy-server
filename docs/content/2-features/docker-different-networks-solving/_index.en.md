@@ -1,6 +1,5 @@
 ---
 title: Different Docker Networks Solving
-weight: 3
 ---
 
 DPS can lead with docker containers with different networks, it will find the target container best matching IP, 
