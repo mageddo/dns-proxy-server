@@ -46,7 +46,6 @@ public class ConfigMapper {
       .serverProtocol(firstNonNullRequiring(mapField(Config::getServerProtocol, configs)))
       .dockerHost(firstNonNullRequiring(mapField(Config::getDockerHost, configs)))
       .resolvConfOverrideNameServers(firstNonNullRequiring(mapField(Config::getResolvConfOverrideNameServers, configs)))
-      .noRemoteServers(firstNonNullRequiring(mapField(Config::getNoRemoteServers, configs)))
       .noEntriesResponseCode(firstNonNullRequiring(mapField(Config::getNoEntriesResponseCode, configs)))
       .dockerSolverHostMachineFallbackActive(firstNonNullRequiring(mapField(Config::getDockerSolverHostMachineFallbackActive, configs)))
       .solverRemote(firstNonNullRequiring(mapField(Config::getSolverRemote, configs)))
@@ -63,6 +62,7 @@ public class ConfigMapper {
       .remoteDnsServers(Collections.singletonList(IpAddr.of("8.8.8.8:53")))
       .solverRemote(SolverRemote
         .builder()
+        .active(true)
         .circuitBreaker(defaultCircuitBreaker())
         .build()
       )
@@ -93,7 +93,7 @@ public class ConfigMapper {
     Validate.notNull(config.getResolvConfPaths());
     Validate.notNull(config.getSolverRemote());
     Validate.notNull(config.getDockerSolverHostMachineFallbackActive());
-    Validate.notNull(config.getNoRemoteServers());
+    Validate.notNull(config.isSolverRemoteActive());
     Validate.notNull(config.getServerProtocol());
     Validate.notNull(config.getResolvConfOverrideNameServers());
   }

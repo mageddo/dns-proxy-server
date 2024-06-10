@@ -5,6 +5,7 @@ import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.dataprovider.mapper.ConfigFieldsValuesMapper;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJson;
+import com.mageddo.dnsproxyserver.utils.Booleans;
 import com.mageddo.utils.Files;
 import com.mageddo.utils.Runtime;
 import com.mageddo.utils.Tests;
@@ -98,7 +99,7 @@ public class ConfigDAOJson implements ConfigDAO {
     }
     return SolverRemote
       .builder()
-      .active(!Boolean.TRUE.equals(json.getNoRemoteServers()))
+      .active(Booleans.reverseWhenNotNull(json.getNoRemoteServers()))
       .circuitBreaker(CircuitBreaker
         .builder()
         .failureThreshold(circuitBreaker.getFailureThreshold())

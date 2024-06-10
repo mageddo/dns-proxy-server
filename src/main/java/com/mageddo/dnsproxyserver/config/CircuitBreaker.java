@@ -25,4 +25,8 @@ public class CircuitBreaker {
    * @see dev.failsafe.CircuitBreakerBuilder#withDelay(Duration)
    */
   private Duration testDelay;
+
+  public static CircuitBreaker empty() {
+    return CircuitBreaker.builder().build();
+  }
 }

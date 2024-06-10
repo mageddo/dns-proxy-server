@@ -4,8 +4,8 @@ import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.dataprovider.mapper.ConfigFieldsValuesMapper;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigEnv;
+import com.mageddo.dnsproxyserver.utils.Booleans;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.BooleanUtils;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -44,7 +44,7 @@ public class ConfigDAOEnv implements ConfigDAO {
       .resolvConfPaths(config.getResolvConfPath())
       .solverRemote(SolverRemote
         .builder()
-        .active(!BooleanUtils.isTrue(config.getNoRemoteServers()))
+        .active(Booleans.reverseWhenNotNull(config.getNoRemoteServers()))
         .build())
       .build();
   }

@@ -8,7 +8,6 @@ import lombok.Value;
 @Builder
 public class SolverRemote {
 
-  @NonNull
   private Boolean active;
 
   @NonNull

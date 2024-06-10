@@ -77,7 +77,7 @@ public class Config {
 
   private SolverRemote solverRemote;
 
-  public boolean isSolverRemoteActive(){
+  public Boolean isSolverRemoteActive(){
     return this.solverRemote.getActive();
   }
 

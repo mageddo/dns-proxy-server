@@ -1,9 +1,11 @@
 package com.mageddo.dnsproxyserver.config.dataprovider;
 
+import com.mageddo.dnsproxyserver.config.CircuitBreaker;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.dataprovider.mapper.ConfigFieldsValuesMapper;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigFlag;
+import com.mageddo.dnsproxyserver.utils.Booleans;
 import com.mageddo.utils.Files;
 import lombok.RequiredArgsConstructor;
 
@@ -53,7 +55,8 @@ public class ConfigDAOCmdArgs implements ConfigDAO {
       .defaultDns(config.getDefaultDns())
       .solverRemote(SolverRemote
         .builder()
-        .active(!Boolean.TRUE.equals(config.getNoRemoteServers()))
+        .active(Booleans.reverseWhenNotNull(config.getNoRemoteServers()))
+        .circuitBreaker(CircuitBreaker.empty())
         .build()
       )
       .build();
