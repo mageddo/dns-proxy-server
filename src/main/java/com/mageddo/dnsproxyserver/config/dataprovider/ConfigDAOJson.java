@@ -80,7 +80,6 @@ public class ConfigDAOJson implements ConfigDAO {
       .serverProtocol(json.getServerProtocol())
       .dockerHost(json.getDockerHost())
       .resolvConfOverrideNameServers(json.getResolvConfOverrideNameServers())
-      .noRemoteServers(json.getNoRemoteServers())
       .noEntriesResponseCode(json.getNoEntriesResponseCode())
       .dockerSolverHostMachineFallbackActive(json.getDockerSolverHostMachineFallbackActive())
       .configPath(configFileAbsolutePath)
@@ -99,6 +98,7 @@ public class ConfigDAOJson implements ConfigDAO {
     }
     return SolverRemote
       .builder()
+      .active(!Boolean.TRUE.equals(json.getNoRemoteServers()))
       .circuitBreaker(CircuitBreaker
         .builder()
         .failureThreshold(circuitBreaker.getFailureThreshold())

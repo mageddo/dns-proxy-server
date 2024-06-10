@@ -67,8 +67,6 @@ public class Config {
 
   private Boolean resolvConfOverrideNameServers;
 
-  private Boolean noRemoteServers;
-
   private Integer noEntriesResponseCode;
 
   private Boolean dockerSolverHostMachineFallbackActive;
@@ -78,6 +76,10 @@ public class Config {
   private boolean versionCmd;
 
   private SolverRemote solverRemote;
+
+  public boolean isSolverRemoteActive(){
+    return this.solverRemote.getActive();
+  }
 
   public void resetConfigFile() {
     try {

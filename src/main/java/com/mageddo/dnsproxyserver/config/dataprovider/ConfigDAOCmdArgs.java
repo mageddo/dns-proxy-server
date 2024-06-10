@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.config.dataprovider;
 
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.dataprovider.mapper.ConfigFieldsValuesMapper;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigFlag;
 import com.mageddo.utils.Files;
@@ -42,7 +43,6 @@ public class ConfigDAOCmdArgs implements ConfigDAO {
       .logLevel(ConfigFieldsValuesMapper.mapLogLevelFrom(config.getLogLevel()))
       .dockerHost(config.getDockerHost())
       .hostMachineHostname(config.getHostMachineHostname())
-      .noRemoteServers(config.getNoRemoteServers())
       .dpsNetworkAutoConnect(config.getDpsNetworkAutoConnect())
       .noEntriesResponseCode(config.getNoEntriesResponseCode())
       .dockerSolverHostMachineFallbackActive(config.getDockerSolverHostMachineFallbackActive())
@@ -51,6 +51,11 @@ public class ConfigDAOCmdArgs implements ConfigDAO {
       .webServerPort(config.getWebServerPort())
       .dnsServerPort(config.getDnsServerPort())
       .defaultDns(config.getDefaultDns())
+      .solverRemote(SolverRemote
+        .builder()
+        .active(!Boolean.TRUE.equals(config.getNoRemoteServers()))
+        .build()
+      )
       .build();
   }
 
