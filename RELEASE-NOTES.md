@@ -1,3 +1,6 @@
+## 3.19.2
+* Config module domain refactoring, see #470
+
 ## 3.19.1
 * Resources usage optimization identified at #455
 
