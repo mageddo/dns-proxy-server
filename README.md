@@ -80,4 +80,4 @@ Or via QR code
 [8]: http://mageddo.github.io/dns-proxy-server/latest/en/1-getting-started/versioning
 [9]: http://mageddo.github.io/dns-proxy-server/latest/en/5-tutorials/
 [10]: http://mageddo.github.io/dns-proxy-server/latest/en/4-developing/
-[11]: http://mageddo.github.io/dns-proxy-server/latest/2-features/docker-solving/
+[11]: https://mageddo.github.io/dns-proxy-server/latest/en/2-features/docker-solving/
