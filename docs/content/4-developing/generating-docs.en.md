@@ -4,26 +4,31 @@ weight: 6
 pre: "<b>6. </b>"
 ---
 
-### Requirements
+## Introduction
+
+DPS uses Hugo and the theme-learn to generate static docs.
+
+
+## Requirements
 * Hugo 0.55.4
 
-### Live Docs Preview
+## Live Docs Preview
 
-#### Vanilla
+### Vanilla
 
 ```bash
 $ hugo server --source docs
 ```
 
-#### Docker
+### Docker
 
 ```bash
 $ docker-compose -f docker-compose-dev.yml up docs
 ```
 
-### Generating Doc Statics
+## Generating Doc Statics
 
-DPS uses Hugo to generate static docs. To generate the HTML use the following
+To generate the HTML use the following
 
 ```bash
 $ ./builder.bash docs
