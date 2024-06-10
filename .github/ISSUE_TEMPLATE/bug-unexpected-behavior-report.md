@@ -7,15 +7,15 @@ assignees: ''
 
 ---
 
-### What is Happening
+## What is Happening
 
 Please describe how to reproduce the issue with a [MRE - Minimal Reproducible Example][1].
 
-### What is Expected
+## What is Expected
 
 Describe what you expected to happen.
 
-### Specs
+## Specs
 * Docker Version: `docker version`
 * DPS Version: 
   * When running on standalone mode: `./dns-proxy-server --version`
