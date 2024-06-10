@@ -8,13 +8,12 @@ which make it easy to develop in systems where one hostname can solve to differe
 on the configured environment, so you can:
 
 * Solve hostnames from local configuration database
-* Solve hostnames from docker containers using docker **hostname** option or **HOSTNAMES** env
+* Solve hostnames from [docker containers][11]
 * Solve hostnames from a list of configured remote DNS servers(as a proxy) if no answer of two above
 * Solve hostnames using wildcards
 * Graphic interface to Create/List/Update/Delete **A/CNAME** records
 * Solve host machine IP using `host.docker` hostname
-* Access container by its container name / service name
-* Specify from which network solve container IP 
+
 
 Checkout the [full list of features][4] with examples
 
@@ -81,3 +80,4 @@ Or via QR code
 [8]: http://mageddo.github.io/dns-proxy-server/latest/en/1-getting-started/versioning
 [9]: http://mageddo.github.io/dns-proxy-server/latest/en/5-tutorials/
 [10]: http://mageddo.github.io/dns-proxy-server/latest/en/4-developing/
+[11]: http://mageddo.github.io/dns-proxy-server/latest/2-features/docker-solving/
