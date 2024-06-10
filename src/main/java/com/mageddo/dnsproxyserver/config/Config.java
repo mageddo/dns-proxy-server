@@ -91,6 +91,7 @@ public class Config {
     }
   }
 
+  @JsonIgnore
   public CircuitBreaker getSolverRemoteCircuitBreaker() {
     return this.solverRemote.getCircuitBreaker();
   }
