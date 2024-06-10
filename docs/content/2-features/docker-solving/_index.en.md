@@ -93,8 +93,6 @@ nginx.docker.		30	IN	A	172.23.0.3
 Be aware, when using docker-compose, specially with different docker-compose files you may have to lead with different 
 [docker networks limitations][5].
 
-Related Reading
-
 [1]: {{%relref "2-configuration/_index.md" %}}#register-container-names
 [2]: {{%relref "2-configuration/_index.md" %}}#domain
 [3]: #container-name
