@@ -53,7 +53,8 @@ nginx1.app.		30	IN	A	172.17.0.2
 ### Container Name
 
 You can solve by the container name, this feature is disabled by default,
-so you need to enable it using `MG_REGISTER_CONTAINER_NAMES=1` env, see [the docs][1] for more details.
+so you need to enable it using `MG_REGISTER_CONTAINER_NAMES=1` env, 
+see a [complete tutorial about this feature][4] for more details.
 
 Creating a test container 
 
@@ -87,8 +88,7 @@ $ dig nginx.docker @127.0.0.1 +noall +answer
 nginx.docker.		30	IN	A	172.23.0.3
 ```
 
-
-[1]: /dns-proxy-server/3.18/en/3-configuration/#register-container-names
-[2]: /3.18/en/3-configuration/#domain
+[1]: {{%relref "2-configuration/_index.md" %}}#register-container-names
+[2]: {{%relref "2-configuration/_index.md" %}}#domain
 [3]: #container-name
-
+[4]: {{%relref "2-features/accessing-container-by-name/_index.md" %}}
