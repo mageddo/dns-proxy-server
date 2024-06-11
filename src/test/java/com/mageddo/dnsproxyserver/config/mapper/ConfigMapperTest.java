@@ -26,10 +26,13 @@ class ConfigMapperTest {
   @Test
   void mustMapIsVersionCmd() {
     // arrange
-    final var config = ConfigTemplates.withVersionCmd();
+    final var configs = List.of(
+      ConfigTemplates.defaultWithoutId(),
+      ConfigTemplates.withVersionCmd()
+    );
 
     // act
-    final var currentConfig = ConfigMapper.mapFrom(List.of(config));
+    final var currentConfig = ConfigMapper.mapFrom(configs);
 
     // assert
     assertNotNull(currentConfig);
@@ -39,10 +42,13 @@ class ConfigMapperTest {
   @Test
   void mustMapIsHelpCmd() {
     // arrange
-    final var config = ConfigTemplates.withHelpCmd();
+    final var configs = List.of(
+      ConfigTemplates.defaultWithoutId(),
+      ConfigTemplates.withHelpCmd()
+    );
 
     // act
-    final var currentConfig = ConfigMapper.mapFrom(List.of(config));
+    final var currentConfig = ConfigMapper.mapFrom(configs);
 
     // assert
     assertNotNull(currentConfig);
