@@ -172,7 +172,7 @@ public class ConfigFlag implements Callable<Boolean> {
     description = "This message (default false)",
     usageHelp = true
   )
-  private Boolean help;
+  private boolean help;
 
   @Option(
     names = {"-docker-solver-host-machine-fallback", "--docker-solver-host-machine-fallback"},

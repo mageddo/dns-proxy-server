@@ -9,14 +9,9 @@ import com.mageddo.dnsserver.SimpleServer;
 import java.nio.file.Paths;
 
 public class ConfigTemplates {
+
   public static Config defaultWithoutId() {
     return defaultBuilder()
-      .build();
-  }
-
-  public static Config withVersionCmd() {
-    return defaultBuilder()
-      .versionCmd(true)
       .build();
   }
 
@@ -62,12 +57,6 @@ public class ConfigTemplates {
         .active(false)
         .build()
       )
-      .build();
-  }
-
-  public static Config withHelpCmd() {
-    return defaultBuilder()
-      .helpCmd(true)
       .build();
   }
 }

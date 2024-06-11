@@ -47,7 +47,7 @@ class ConfigFlagTest {
         readString("/flags-test/002.txt"),
         sw.toString().replaceAll("\r\n", "\n")
     );
-    assertTrue(config.getHelp());
+    assertTrue(config.isHelp());
   }
 
   @Test

@@ -5,7 +5,6 @@ import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigFlag;
 import com.mageddo.dnsproxyserver.utils.Booleans;
 import com.mageddo.utils.Files;
-import org.apache.commons.lang3.BooleanUtils;
 
 public class ConfigFlagMapper {
   public static Config toConfig(ConfigFlag config) {
@@ -30,8 +29,6 @@ public class ConfigFlagMapper {
         .active(Booleans.reverseWhenNotNull(config.getNoRemoteServers()))
         .build()
       )
-      .helpCmd(BooleanUtils.isTrue(config.getHelp()))
-      .versionCmd(config.isVersion())
       .build();
   }
 }

@@ -54,8 +54,6 @@ public class ConfigMapper {
         .circuitBreaker(firstNonNullRequiring(mapField(Config::getSolverRemoteCircuitBreaker, configs)))
         .build()
       )
-      .versionCmd(firstNonNullRequiring(mapField(Config::getVersionCmd, configs)))
-      .helpCmd(firstNonNullRequiring(mapField(Config::getHelpCmd, configs)))
       .build();
     ConfigValidator.validate(config);
     return config;
@@ -73,8 +71,6 @@ public class ConfigMapper {
         .circuitBreaker(defaultCircuitBreaker())
         .build()
       )
-      .helpCmd(false)
-      .versionCmd(false)
       .build();
   }
 
