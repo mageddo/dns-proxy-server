@@ -12,4 +12,12 @@ public class ConfigFlagTemplates {
   public static ConfigFlag defaultWithConfigPath(Path path) {
     return ConfigFlag.parse(new String[]{"--conf-path", path.toString()});
   }
+
+  public static ConfigFlag withHelpFlag(){
+    return ConfigFlag.parse(new String[]{"--help"});
+  }
+
+  public static ConfigFlag withVersionFlag() {
+    return ConfigFlag.parse(new String[]{"--version"});
+  }
 }
