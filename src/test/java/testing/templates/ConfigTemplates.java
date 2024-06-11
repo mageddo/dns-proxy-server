@@ -14,6 +14,12 @@ public class ConfigTemplates {
       .build();
   }
 
+  public static Config withVersionCmd() {
+    return defaultBuilder()
+      .versionCmd(true)
+      .build();
+  }
+
   private static Config.ConfigBuilder defaultBuilder() {
     return Config
       .builder()
@@ -56,6 +62,12 @@ public class ConfigTemplates {
         .active(false)
         .build()
       )
+      .build();
+  }
+
+  public static Config withHelpCmd() {
+    return defaultBuilder()
+      .helpCmd(true)
       .build();
   }
 }

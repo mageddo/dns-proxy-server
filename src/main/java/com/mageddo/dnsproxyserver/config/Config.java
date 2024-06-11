@@ -71,11 +71,19 @@ public class Config {
 
   private Boolean dockerSolverHostMachineFallbackActive;
 
-  private boolean helpCmd;
+  private Boolean helpCmd;
 
-  private boolean versionCmd;
+  private Boolean versionCmd;
 
   private SolverRemote solverRemote;
+
+  public boolean isHelpCmd() {
+    return Boolean.TRUE.equals(this.helpCmd);
+  }
+
+  public boolean isVersionCmd() {
+    return Boolean.TRUE.equals(this.versionCmd);
+  }
 
   @JsonIgnore
   public Boolean isSolverRemoteActive() {

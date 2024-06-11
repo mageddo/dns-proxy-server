@@ -5,7 +5,6 @@ import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOCmdArgs;
 import com.mageddo.dnsproxyserver.di.Context;
-import org.apache.commons.lang3.BooleanUtils;
 
 public class App {
 
@@ -43,7 +42,7 @@ public class App {
   }
 
   void checkExitCommands() {
-    if (BooleanUtils.isTrue(this.config.isHelpCmd()) || this.config.isVersionCmd()) {
+    if (this.config.isHelpCmd() || this.config.isVersionCmd()) {
       exitGracefully();
     }
   }
