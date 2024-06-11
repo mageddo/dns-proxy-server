@@ -11,7 +11,7 @@ import javax.inject.Singleton;
 @Slf4j
 @RequiredArgsConstructor
 @Singleton
-public class AppSettings {
+public class LogSettings {
 
   /**
    * Injetando na mão, pois precisa ser feito antes de iniciar o contexto.

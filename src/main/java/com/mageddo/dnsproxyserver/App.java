@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver;
 
-import com.mageddo.dnsproxyserver.application.AppSettings;
+import com.mageddo.dnsproxyserver.application.LogSettings;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOCmdArgs;
@@ -8,28 +8,47 @@ import com.mageddo.dnsproxyserver.di.Context;
 import org.apache.commons.lang3.BooleanUtils;
 
 public class App {
+
+  private Config config;
+
   public static void main(String[] args) {
+    new App().doMain(args);
+  }
+
+  void doMain(String[] args) {
 
     ConfigDAOCmdArgs.setArgs(args);
 
-    final var config = Configs.getInstance();
+    this.config = Configs.getInstance();
 
-    checkExitCommands(config);
+    this.checkExitCommands();
 
-    new AppSettings().setupLogs(config);
+    this.setupLogs();
 
+    this.startContext();
+
+    // todo install as service
+  }
+
+  void setupLogs() {
+    new LogSettings().setupLogs(this.config);
+  }
+
+  void startContext() {
     final var context = Context.create();
 
     // start webserver
     // start dns server
     context.start();
-
-    // todo install as service
   }
 
-  static void checkExitCommands(Config config) {
-    if (BooleanUtils.isTrue(config.isHelpCmd()) || config.isVersionCmd()) {
-      System.exit(0);
+  void checkExitCommands() {
+    if (BooleanUtils.isTrue(this.config.isHelpCmd()) || this.config.isVersionCmd()) {
+      exitGracefully();
     }
+  }
+
+  void exitGracefully() {
+    System.exit(0);
   }
 }
