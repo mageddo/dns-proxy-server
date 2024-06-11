@@ -4,7 +4,6 @@
   "dockerSolverHostMachineFallbackActive" : true,
   "domain" : "docker",
   "dpsNetworkAutoConnect" : false,
-  "helpCmd" : false,
   "hostMachineHostname" : "host.docker",
   "logFile" : "console",
   "logLevel" : "INFO",
@@ -27,6 +26,5 @@
       "testDelay" : 20.0
     }
   },
-  "versionCmd" : false,
   "webServerPort" : 5380
 }
