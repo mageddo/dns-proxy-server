@@ -1,3 +1,6 @@
+## 3.19.3
+* #471: Fixing Help/Version Command Not Working Properly
+
 ## 3.19.2
 * Config module domain refactoring, see #470
 
