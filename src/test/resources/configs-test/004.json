@@ -4,7 +4,7 @@
   "dockerSolverHostMachineFallbackActive" : null,
   "domain" : "acme",
   "dpsNetworkAutoConnect" : true,
-  "helpCmd" : false,
+  "helpCmd" : null,
   "hostMachineHostname" : "batata.com",
   "logFile" : "/var/log/dns-proxy-server.log",
   "logLevel" : "DEBUG",
@@ -23,6 +23,6 @@
       "testDelay" : 60.0
     }
   },
-  "versionCmd" : false,
+  "versionCmd" : null,
   "webServerPort" : 9393
 }
