@@ -2,22 +2,15 @@ package com.mageddo.net;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.mageddo.commons.regex.Regexes;
 import com.mageddo.dnsproxyserver.json.converter.IPConverter;
 import com.mageddo.utils.Bytes;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.regex.Pattern;
 
 @Value
 @Builder
 public class IpAddr {
-
-  public static final Pattern IPV4_REGEX = Pattern.compile("^([\\.\\d]+)((?::(\\d+)|))$");
-  public static final Pattern IPV6_REGEX = Pattern.compile("^\\[([:\\w]+)\\]((?::(\\d+)|))$");
 
   @NonNull
   @JsonDeserialize(using = IPConverter.Deserializer.class)
@@ -48,18 +41,7 @@ public class IpAddr {
    * @return parsed object.
    */
   public static IpAddr of(String addr) {
-    if (StringUtils.isBlank(addr)) {
-      return null;
-    }
-
-    if (Regexes.matches(addr, IPV4_REGEX)) {
-      final var groups = Regexes.groups(addr, IPV4_REGEX);
-      return IpAddr.of(IP.of(groups.get(1)), parsePort(groups.get(3)));
-    } else if (Regexes.matches(addr, IPV6_REGEX)) {
-      final var groups = Regexes.groups(addr, IPV6_REGEX);
-      return IpAddr.of(IP.of(groups.get(1)), parsePort(groups.get(3)));
-    }
-    return IpAddr.of(IP.of(addr));
+    return IpUtils.toIpAddr(addr);
   }
 
   public static IpAddr of(IP ip) {
@@ -88,13 +70,6 @@ public class IpAddr {
 
   public boolean hasPort() {
     return this.port != null && this.port > 0;
-  }
-
-  private static Integer parsePort(final String s) {
-    if (StringUtils.isBlank(s)) {
-      return null;
-    }
-    return Integer.parseInt(s);
   }
 
 }

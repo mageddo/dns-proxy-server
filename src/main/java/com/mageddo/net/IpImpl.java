@@ -88,7 +88,10 @@ class IpImpl implements IP {
 
   private static InetAddress build(String ip) {
     try {
-      return InetAddress.getByName(ip);
+      if (IpUtils.isIpv4(ip) || IpUtils.isIpv6(ip)) {
+        return InetAddress.getByName(ip);
+      }
+      throw new IllegalArgumentException("Not a valid IP: " + ip);
     } catch (UnknownHostException e) {
       throw invalidAddressEx(e);
     }
