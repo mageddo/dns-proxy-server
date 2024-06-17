@@ -1,3 +1,6 @@
+## 3.19.5
+* #474: Fixing errors log occurs when fallback to host machine IP.
+
 ## 3.19.4
 * #476: Fixing invalid IP parsing usecase
 
