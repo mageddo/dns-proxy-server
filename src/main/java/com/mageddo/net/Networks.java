@@ -46,7 +46,7 @@ public class Networks {
       .stream()
       .sorted(Comparator.comparingInt(NetworkInterface::getIndex))
       .flatMap(NetworkInterface::inetAddresses)
-      .map(it -> IP.of(it.getHostAddress()))
+      .map(it -> IP.of(it.getAddress()))
       .toList()
       ;
   }
