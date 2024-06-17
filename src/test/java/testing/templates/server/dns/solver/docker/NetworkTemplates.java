@@ -45,6 +45,16 @@ public class NetworkTemplates {
       ;
   }
 
+  public static Network withHostDriverWithoutIps() {
+    return builder()
+      .name("host")
+      .driver(Drivers.HOST)
+      .gateways(Collections.emptyList())
+      .ipv6Active(false)
+      .build()
+      ;
+  }
+
   static Network.NetworkBuilder builder() {
     return Network.builder()
       .gateways(Collections.emptyList())

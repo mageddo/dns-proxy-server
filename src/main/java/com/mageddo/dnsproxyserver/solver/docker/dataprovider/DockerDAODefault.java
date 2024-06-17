@@ -36,9 +36,8 @@ public class DockerDAODefault implements DockerDAO {
   }
 
   Network findBestNetwork(IP.Version version) {
-    final var network = this.findNetworks()
+    final var network = this.findNetworksWithIp(version)
       .stream()
-      .filter(it -> java.util.Objects.equals(it.isIpv6Active(), version.isIpv6()))
       .min(NetworkComparator::compare)
       .orElse(null);
     log.debug("status=bestNetwork, network={}", network);
@@ -50,6 +49,13 @@ public class DockerDAODefault implements DockerDAO {
       .exec()
       .stream()
       .map(NetworkMapper::of)
+      .toList();
+  }
+
+  List<Network> findNetworksWithIp(IP.Version version) {
+    return this.findNetworks()
+      .stream()
+      .filter(it -> it.hasAnyGatewayWith(version))
       .toList();
   }
 }

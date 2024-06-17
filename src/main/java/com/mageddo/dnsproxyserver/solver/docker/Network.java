@@ -38,6 +38,13 @@ public class Network {
     return !this.gateways.isEmpty();
   }
 
+  public boolean hasAnyGatewayWith(IP.Version version) {
+    return this.gateways
+      .stream()
+      .anyMatch(it -> Objects.equals(it.version(), version))
+      ;
+  }
+
   public enum Name {
 
     DPS,

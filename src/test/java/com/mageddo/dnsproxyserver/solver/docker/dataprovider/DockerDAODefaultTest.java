@@ -1,6 +1,5 @@
 package com.mageddo.dnsproxyserver.solver.docker.dataprovider;
 
-import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAODefault;
 import com.mageddo.net.IP;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -63,5 +62,29 @@ class DockerDAODefaultTest {
     assertEquals(IP.of("2001:db8:1::1"), ip);
 
   }
+
+  @Test
+  void mustIgnoreNetworksWithoutIP() {
+
+    // arrange
+    final var version = IP.Version.IPV4;
+    final var networks = List.of(
+      NetworkTemplates.withHostDriverWithoutIps(),
+      NetworkTemplates.withBridgeIpv4AndIpv6Network()
+    );
+
+    doReturn(networks)
+      .when(this.dockerDAO)
+      .findNetworks();
+
+    // act
+    final var ip = this.dockerDAO.findHostMachineIp(version);
+
+    // assert
+    assertNotNull(ip);
+    assertEquals(IP.of("172.21.0.1"), ip);
+
+  }
+
 
 }
