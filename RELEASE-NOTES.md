@@ -1,3 +1,6 @@
+## 3.19.4
+* #476: Fixing invalid IP parsing usecase
+
 ## 3.19.3
 * #471: Fixing Help/Version Command Not Working Properly
 

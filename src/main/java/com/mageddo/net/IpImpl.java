@@ -1,5 +1,6 @@
 package com.mageddo.net;
 
+import com.google.common.net.InetAddresses;
 import com.mageddo.dnsproxyserver.utils.Ips;
 import com.mageddo.utils.Bytes;
 import lombok.EqualsAndHashCode;
@@ -88,13 +89,13 @@ class IpImpl implements IP {
 
   private static InetAddress build(String ip) {
     try {
-      return InetAddress.getByName(ip);
-    } catch (UnknownHostException e) {
+      return InetAddresses.forString(ip);
+    } catch (Exception e) {
       throw invalidAddressEx(e);
     }
   }
 
-  static RuntimeException invalidAddressEx(UnknownHostException e) {
+  static RuntimeException invalidAddressEx(Throwable e) {
     return new RuntimeException(
       String.format("Array of bytes is not a valid IP representation: %s", e.getMessage()),
       e
