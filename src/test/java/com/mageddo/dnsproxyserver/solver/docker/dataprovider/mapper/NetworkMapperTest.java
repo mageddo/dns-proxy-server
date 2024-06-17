@@ -1,17 +1,18 @@
 package com.mageddo.dnsproxyserver.solver.docker.dataprovider.mapper;
 
 import com.mageddo.dnsproxyserver.docker.domain.Drivers;
-import com.mageddo.dnsproxyserver.solver.docker.dataprovider.mapper.NetworkMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import testing.templates.docker.NetworkTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static testing.templates.docker.NetworkTemplates.buildBridgeIpv4AndIpv6Network;
 import static testing.templates.docker.NetworkTemplates.buildBridgeIpv4OnlyNetwork;
+import static testing.templates.docker.NetworkTemplates.buildHostNetworkWithNoIpam;
 
 @ExtendWith(MockitoExtension.class)
 class NetworkMapperTest {
@@ -58,6 +59,21 @@ class NetworkMapperTest {
     // assert
     assertNotNull(network);
     assertEquals("[172.21.0.1]", network.getGateways().toString());
+  }
+
+  @Test
+  void mustLeadWhenNoIpamConfigIsAvailable(){
+
+    // arrange
+    final var dockerNetwork = buildHostNetworkWithNoIpam();
+
+    // act
+    final var network = NetworkMapper.of(dockerNetwork);
+
+    // assert
+    assertNotNull(network);
+    assertFalse(network.hasAnyGateway());
+    assertEquals("[]", network.getGateways().toString());
   }
 
 }

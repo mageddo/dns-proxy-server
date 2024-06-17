@@ -34,6 +34,10 @@ public class Network {
       .orElse(null);
   }
 
+  public boolean hasAnyGateway() {
+    return !this.gateways.isEmpty();
+  }
+
   public enum Name {
 
     DPS,

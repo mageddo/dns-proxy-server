@@ -40,4 +40,8 @@ public class NetworkTemplates {
     return JsonUtils.readValue(readString("/templates/docker/network/002.json"), Network.class);
   }
 
+  public static Network buildHostNetworkWithNoIpam() {
+    return JsonUtils.readValue(readString("/templates/docker/network/003.json"), Network.class);
+  }
+
 }

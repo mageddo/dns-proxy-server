@@ -36,15 +36,18 @@ public class NetworkMapper {
     if (network == null) {
       return null;
     }
-    return network
-      .getIpam()
-      .getConfig()
-      .stream()
-      .map(com.github.dockerjava.api.model.Network.Ipam.Config::getGateway)
-      .map(IP::of)
-      .filter(it -> it.version() == version)
-      .findFirst()
-      .orElse(null)
-      ;
+    final var ipam = network.getIpam();
+    if (ipam != null && ipam.getConfig() != null) {
+      return ipam
+        .getConfig()
+        .stream()
+        .map(com.github.dockerjava.api.model.Network.Ipam.Config::getGateway)
+        .map(IP::of)
+        .filter(it -> it.version() == version)
+        .findFirst()
+        .orElse(null)
+        ;
+    }
+    return null;
   }
 }
