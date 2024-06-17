@@ -2,13 +2,16 @@ package com.mageddo.dnsproxyserver.solver.docker.dataprovider.mapper;
 
 import com.mageddo.dnsproxyserver.solver.docker.Network;
 import com.mageddo.net.IP;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 import java.util.stream.Stream;
 
+@Slf4j
 public class NetworkMapper {
 
   public static Network of(com.github.dockerjava.api.model.Network n) {
+    log.debug("status=mapping, networkName={}", n.getName());
     return Network.builder()
       .name(n.getName())
       .driver(n.getDriver())
