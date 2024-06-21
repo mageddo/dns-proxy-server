@@ -41,7 +41,6 @@ public class DockerConfig {
       .build();
 
     return new DockerClientConnectionChecked(DockerClientImpl.getInstance(config, httpClient));
-//    return DockerClientImpl.getInstance(config, httpClient);
   }
 
 
