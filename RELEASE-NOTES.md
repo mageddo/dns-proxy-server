@@ -1,3 +1,6 @@
+## 3.19.6
+* #465: DnsConfigurators: checking docker connection
+
 ## 3.19.5
 * #474: Fixing errors log occurs when fallback to host machine IP.
 
