@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.solver.docker.application;
 
 import com.mageddo.dnsproxyserver.config.application.Configs;
+import com.mageddo.dnsproxyserver.docker.application.DockerConnectionCheck;
 import com.mageddo.dnsproxyserver.solver.docker.Container;
 import com.mageddo.dnsproxyserver.solver.docker.ContainerCompact;
 import com.mageddo.dnsproxyserver.solver.docker.Network;
@@ -29,6 +30,7 @@ public class DpsContainerService {
   private final DpsContainerDAO dpsContainerDAO;
   private final NetworkDAO networkDAO;
   private final ContainerSolvingService containerSolvingService;
+  private final DockerConnectionCheck dockerConnectionCheck;
 
   public IP findDpsContainerIP() {
 
@@ -88,12 +90,24 @@ public class DpsContainerService {
   }
 
   public IP findDpsIP() {
-    if (this.dpsContainerDAO.isDpsRunningInsideContainer()) { // fixme checar se está connectado no docker
+    if (this.isDpsRunningInsideContainer() && this.isDockerConnected()) {
       return Optional
         .ofNullable(this.findDpsContainerIP())
         .orElseGet(this.dockerDAO::findHostMachineIp);
     }
+    return this.findCurrentMachineIp();
+  }
+
+  boolean isDockerConnected() {
+    return this.dockerConnectionCheck.isConnected();
+  }
+
+  IP findCurrentMachineIp() {
     return Networks.findCurrentMachineIP();
+  }
+
+  boolean isDpsRunningInsideContainer() {
+    return this.dpsContainerDAO.isDpsRunningInsideContainer();
   }
 
   public boolean connectRunningContainersToDpsNetwork(){
