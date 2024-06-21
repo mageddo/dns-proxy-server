@@ -88,7 +88,7 @@ public class DpsContainerService {
   }
 
   public IP findDpsIP() {
-    if (this.dpsContainerDAO.isDpsRunningInsideContainer()) {
+    if (this.dpsContainerDAO.isDpsRunningInsideContainer()) { // fixme checar se está connectado no docker
       return Optional
         .ofNullable(this.findDpsContainerIP())
         .orElseGet(this.dockerDAO::findHostMachineIp);

@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator;
 
-import com.mageddo.net.IpAddr;
 import com.mageddo.dnsproxyserver.utils.Dns;
+import com.mageddo.net.IpAddr;
 import com.mageddo.net.Network;
 import lombok.extern.slf4j.Slf4j;
 

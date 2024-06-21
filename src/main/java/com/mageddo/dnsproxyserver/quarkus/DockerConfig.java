@@ -7,6 +7,7 @@ import com.github.dockerjava.core.RemoteApiVersion;
 import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.dnsproxyserver.config.application.Configs;
+import com.mageddo.dnsproxyserver.docker.dataprovider.DockerClientConnectionChecked;
 
 import javax.enterprise.inject.Produces;
 import java.net.URI;
@@ -39,7 +40,8 @@ public class DockerConfig {
       .responseTimeout(Duration.ofSeconds(3))
       .build();
 
-    return DockerClientImpl.getInstance(config, httpClient);
+    return new DockerClientConnectionChecked(DockerClientImpl.getInstance(config, httpClient));
+//    return DockerClientImpl.getInstance(config, httpClient);
   }
 
 
