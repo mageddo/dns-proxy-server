@@ -1,3 +1,6 @@
+## 3.19.7
+* #427, #481: Hotfix for ipv6 address represented with subnet mask
+
 ## 3.19.6
 * #465: DnsConfigurators: checking docker connection
 
