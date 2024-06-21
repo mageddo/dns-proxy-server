@@ -76,4 +76,23 @@ class NetworkMapperTest {
     assertEquals("[]", network.getGateways().toString());
   }
 
+
+  /**
+   * see https://github.com/mageddo/dns-proxy-server/issues/427
+   */
+  @Test
+  void mustExtractIpWhenASubnetIsSetAtIpv6TheGatewayIp(){
+
+    // arrange
+    final var dockerNetwork = NetworkTemplates.buildBridgeWithSubnetIPAtGatewayProp();
+
+    // act
+    final var network = NetworkMapper.of(dockerNetwork);
+
+    // assert
+    assertNotNull(network);
+    assertTrue(network.hasAnyGateway());
+    assertEquals("[172.19.0.1, fddb:21e4:36d4:2:0:0:0:1]", network.getGateways().toString());
+  }
+
 }

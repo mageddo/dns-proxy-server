@@ -44,4 +44,7 @@ public class NetworkTemplates {
     return JsonUtils.readValue(readString("/templates/docker/network/003.json"), Network.class);
   }
 
+  public static Network buildBridgeWithSubnetIPAtGatewayProp() {
+    return JsonUtils.readValue(readString("/templates/docker/network/004.json"), Network.class);
+  }
 }

@@ -1,0 +1,40 @@
+{
+  "Name": "redis",
+  "Id": "c9334be3920e50d406752892eda45caa1d64f73f6cecca736750147fbbc89ae6",
+  "Created": "2024-06-19T18:21:46.209161659Z",
+  "Scope": "local",
+  "Driver": "bridge",
+  "EnableIPv6": true,
+  "IPAM": {
+    "Driver": "default",
+    "Options": null,
+    "Config": [
+      {
+        "Subnet": "172.19.0.0/16",
+        "Gateway": "172.19.0.1"
+      },
+      {
+        "Subnet": "fddb:21e4:36d4:2::/64",
+        "Gateway": "fddb:21e4:36d4:2::1/64"
+      }
+    ]
+  },
+  "Internal": false,
+  "Attachable": false,
+  "Ingress": false,
+  "ConfigFrom": {
+    "Network": ""
+  },
+  "ConfigOnly": false,
+  "Containers": {
+    "745e201849ac8ee33999821c801c47e5258775fce33b0c4e66c1a054e530cbaf": {
+      "Name": "redis",
+      "EndpointID": "27d555e7ee34e4cfdd61681b37018bbe0afe8ff33d309a7ae069e743b7751bbe",
+      "MacAddress": "02:42:ac:13:00:02",
+      "IPv4Address": "172.19.0.2/16",
+      "IPv6Address": "fddb:21e4:36d4:2::2/64"
+    }
+  },
+  "Options": {},
+  "Labels": {}
+}
