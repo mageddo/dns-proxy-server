@@ -78,7 +78,7 @@ class NetworkMapperTest {
 
 
   /**
-   * see https://github.com/mageddo/dns-proxy-server/issues/427
+   * see https://github.com/mageddo/dns-proxy-server/issues/481
    */
   @Test
   void mustExtractIpWhenASubnetIsSetAtIpv6TheGatewayIp(){
