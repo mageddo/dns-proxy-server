@@ -1,3 +1,6 @@
+## 3.20.0
+* #435: GraalVM Upgrade to 21 LTS
+
 ## 3.19.7
 * #427, #481: Hotfix for ipv6 address represented with subnet mask
 
