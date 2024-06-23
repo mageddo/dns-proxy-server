@@ -17,6 +17,5 @@ jobs:
           java-version: '21'
         # ['version', 'gds-token', 'java-version', 'components', 'github-token', 'set-java-home', 'cache', 'check-for-updates', 'native-image-musl', 'native-image-job-reports', 'native-image-pr-reports']
       - name: Build and Tests
-#        run: ./gradlew build test compTest -i
-        run:  docker-compose build --progress=plain build-linux-amd64
+        run: ./gradlew build test compTest -i
 
