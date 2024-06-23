@@ -37,7 +37,7 @@ RUN ls -lha &&\
   native-image --static --libc=musl -jar dns-proxy-server.jar dns-proxy-server
 
 RUN ls -lhS &&\
-    mkdir -p ./artifacts/linux-amd64-static &&\
-    mv ./dns-proxy-server ./artifacts/linux-amd64-static/
+  mkdir -p ./artifacts/linux-amd64-static &&\
+  mv ./dns-proxy-server ./artifacts/linux-amd64-static/
 
 ENTRYPOINT cat
