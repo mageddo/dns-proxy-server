@@ -1,3 +1,6 @@
+## 3.21.0
+* #285: Linux AMD64 static binary
+
 ## 3.20.0
 * #435: GraalVM Upgrade to 21 LTS
 
