@@ -36,7 +36,7 @@ class AppCompTest {
 
 
   @Test
-  void mustExitWhenVerrsionCmd() {
+  void mustExitWhenVersionCmd() {
     // arrange
     final var args = new String[]{"--version"};
     this.app = spy(new App(args));
@@ -49,6 +49,19 @@ class AppCompTest {
     // assert
     assertEquals(expectedException.getMessage(), exception.getMessage());
     verify(this.app, never()).setupLogs();
+  }
+
+  @Test
+  void mustCreateTmpDirIfNotExists() {
+    // arrange
+    final var args = new String[]{};
+    this.app = spy(new App(args));
+
+    // act
+    this.app.start();
+
+    // assert
+    verify(this.app).createTmpDirIfNotExists();
   }
 
   RuntimeException mockExitMethod() {
