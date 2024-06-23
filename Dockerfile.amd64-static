@@ -1,5 +1,5 @@
 FROM scratch
-COPY ./build/artifacts/linux-amd64/dns-proxy-server /app/dns-proxy-server
+COPY ./build/artifacts/linux-amd64-static/dns-proxy-server /app/dns-proxy-server
 WORKDIR /app
 LABEL dps.container=true
 ENV DPS_CONTAINER=1
