@@ -1,6 +1,5 @@
 ## 3.21.1
 * #435: Upgrading docker run images due glibc
-* #285: Fixing tmp dir not exists
 * #285: Linux AMD64 static binary
 
 ## 3.20.0
