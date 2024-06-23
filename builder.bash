@@ -112,9 +112,16 @@ case $1 in
   ;;
 
   docker-push-arm )
-    echo "> Push docker images to docker hub"
+    echo "> Push docker arm image to docker hub"
     echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&\
     docker-compose push image-linux-aarch64
+    echo "Push done"
+  ;;
+
+  docker-push-amd64-static )
+    echo "> Push docker amd64 static image to docker hub"
+    echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&\
+    docker-compose push image-linux-amd64-static
     echo "Push done"
   ;;
 
@@ -143,7 +150,7 @@ case $1 in
 
   ./builder.bash build-backend amd64-static
   ./builder.bash compress-artifacts
-  ./builder.bash docker-push-arm
+  ./builder.bash docker-push-amd64-static
 
   echo "> Amd64 Static deploy done"
   ;;
