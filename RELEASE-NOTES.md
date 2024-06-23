@@ -1,3 +1,6 @@
+## 3.21.1
+* #435: Upgrading docker run images due glibc
+
 ## 3.21.0
 * #285: Linux AMD64 static binary
 
