@@ -6,10 +6,6 @@ import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOCmdArgs;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigFlag;
 import com.mageddo.dnsproxyserver.di.Context;
-import lombok.SneakyThrows;
-
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class App {
 
@@ -32,21 +28,9 @@ public class App {
 
     this.setupLogs();
 
-    this.setup();
-
     this.startContext();
 
     // todo install as service
-  }
-
-  void setup() {
-    this.createTmpDirIfNotExists();
-  }
-
-  @SneakyThrows
-  void createTmpDirIfNotExists() {
-    final var tmpDir = Paths.get(System.getProperty("java.io.tmpdir"));
-    Files.createDirectories(tmpDir);
   }
 
   Config findConfig(String[] args) {

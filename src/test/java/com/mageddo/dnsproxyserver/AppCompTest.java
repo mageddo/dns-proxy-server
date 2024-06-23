@@ -51,19 +51,6 @@ class AppCompTest {
     verify(this.app, never()).setupLogs();
   }
 
-  @Test
-  void mustCreateTmpDirIfNotExists() {
-    // arrange
-    final var args = new String[]{};
-    this.app = spy(new App(args));
-
-    // act
-    this.app.start();
-
-    // assert
-    verify(this.app).createTmpDirIfNotExists();
-  }
-
   RuntimeException mockExitMethod() {
     final var expectedException = new RuntimeException("must exit");
     doThrow(expectedException)
