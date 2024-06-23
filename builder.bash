@@ -136,6 +136,18 @@ case $1 in
   echo "> deploy done"
   ;;
 
+  deploy-amd64-static )
+
+  echo "> Amd64 static deploy started , current branch=$CURRENT_BRANCH"
+  ls -lhS build/*
+
+  ./builder.bash build-backend amd64-static
+  ./builder.bash compress-artifacts
+  ./builder.bash docker-push-arm
+
+  echo "> Amd64 Static deploy done"
+  ;;
+
   deploy-arm )
 
   echo "> Arm deploy started , current branch=$CURRENT_BRANCH"

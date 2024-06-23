@@ -122,6 +122,13 @@ graalvmNative {
       verbose = true
       fallback = false
       buildArgs.add('-J-Xmx5G')
+
+      if ("1" == project.findProperty("static")) {
+        println("> static binary active")
+        buildArgs.add('--static')
+        buildArgs.add('--libc=musl')
+      }
+
     }
   }
 }

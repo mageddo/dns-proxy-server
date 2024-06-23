@@ -66,6 +66,44 @@ jobs:
           files: |
             ./build/compressed-artifacts/*
 
+  linux_amd64_static_release:
+    runs-on: ubuntu-latest
+    needs: primary_release
+    env:
+      APP_VERSION: ${{ needs.primary_release.outputs.APP_VERSION }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Check app version
+        run: echo "$APP_VERSION"
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: native-image-source
+          path: ./build/artifacts/native-image-source/
+
+      - name: Linux Amd64 static Release
+        run: |
+          echo "app version=$APP_VERSION" &&\
+          tree -h ./build/ &&\
+          docker-compose -f docker-compose-deploy.yml run deploy bash -c '
+            /bin/builder.bash deploy-amd64-static &&\
+            echo "> Copying files to the host" &&\
+            cp -rv /app/build/compressed-artifacts /host/build/ &&\
+            echo "Linux amd64 static is done!"
+          ' &&\
+          tree -h ./build/
+      # Release details will be provided by primary-release
+      - name: Github release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.APP_VERSION }}
+          append_body: true
+          body: ''
+          files: |
+            ./build/compressed-artifacts/*
+
   linux_arm_release:
     runs-on: ubuntu-latest
     needs: primary_release

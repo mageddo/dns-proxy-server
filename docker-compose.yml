@@ -14,6 +14,12 @@ services:
       context: .
       dockerfile: Dockerfile.builder.linux-amd64
 
+  build-linux-amd64-static:
+    image: defreitas/dns-proxy-server-build:${VERSION:-snapshot}-amd64-static
+    build:
+      context: .
+      dockerfile: Dockerfile.builder.linux-amd64-static
+
   build-linux-aarch64:
     image: defreitas/dns-proxy-server-build:${VERSION:-snapshot}-aarch64
     build:
