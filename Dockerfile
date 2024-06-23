@@ -1,4 +1,4 @@
-FROM debian:10-slim
+FROM debian:11-slim
 COPY ./build/artifacts/linux-amd64/dns-proxy-server /app/dns-proxy-server
 WORKDIR /app
 LABEL dps.container=true

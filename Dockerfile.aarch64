@@ -1,4 +1,4 @@
-FROM arm64v8/debian:10-slim
+FROM arm64v8/debian:12-slim
 COPY ./build/artifacts/linux-aarch64/dns-proxy-server /app/dns-proxy-server
 WORKDIR /app
 LABEL dps.container=true
