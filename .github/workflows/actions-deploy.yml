@@ -1,9 +1,10 @@
 name: CD
 
 on:
-  push:
-    branches:
-      - master
+  pull_request:
+#  push:
+#    branches:
+#      - master
 
 permissions:
   contents: write
@@ -105,7 +106,7 @@ jobs:
             ./build/compressed-artifacts/*
 
   linux_arm_release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: primary_release
     env:
       APP_VERSION: ${{ needs.primary_release.outputs.APP_VERSION }}
@@ -121,7 +122,11 @@ jobs:
           name: native-image-source
           path: ./build/artifacts/native-image-source/
 
-      - name: Configure Qemu
+      - name: Latest Qemu binaries (8.2x)
+        run: | 
+          apt-get update && apt-get install -y qemu-user-static
+
+      - name: Configure Qemu With Docker
         run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 
       - name: Linux Arm Release
