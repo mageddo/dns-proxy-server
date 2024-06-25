@@ -1,5 +1,5 @@
 ## 3.21.2
-* #428, #494: Fixing amd64 static docker image
+* #428, #494: Fixing amd64 static docker image.
 
 ## 3.21.1
 * #435: Upgrading docker run images due glibc
