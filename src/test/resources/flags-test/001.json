@@ -18,5 +18,6 @@
   "dpsNetwork" : false,
   "dpsNetworkAutoConnect" : false,
   "help" : false,
-  "resolvConfOverrideNameServers" : true
+  "resolvConfOverrideNameServers" : true,
+  "createTmpDir" : false
 }
