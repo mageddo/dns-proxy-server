@@ -1,3 +1,6 @@
+## 3.21.3
+* #496: Fixing aarch binary not building 
+
 ## 3.21.2
 * #285, #494: Fixing amd64 static docker image.
 * #435: Make DPS dynamic linked binary compatible with libgc 2.15 again

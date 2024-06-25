@@ -3,8 +3,8 @@ FROM arm64v8/debian:10-slim
 COPY ./src/main/docker/builder-aarch64/sources.list /etc/apt/sources.list
 
 RUN apt-get update -y &&\
-  apt-get install --force-yes -y zlib1g-dev &&\
-  apt-get install --force-yes -y build-essential libz-dev curl
+  apt-get install --force-yes -y zlib1g=1:1.2.11.dfsg-1+deb10u1 &&\
+  apt-get install --force-yes -y build-essential libz-dev zlib1g-dev curl
 
 ENV GRAALVM_URL='https://github.com/graalvm/graalvm-ce-builds/releases/download/jdk-21.0.2/graalvm-community-jdk-21.0.2_linux-aarch64_bin.tar.gz'
 RUN mkdir /graalvm &&\
