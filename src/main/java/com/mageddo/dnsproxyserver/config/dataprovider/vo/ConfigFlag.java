@@ -184,6 +184,13 @@ public class ConfigFlag implements Callable<Boolean> {
   )
   private Boolean dockerSolverHostMachineFallbackActive;
 
+  @Option(
+    hidden = true,
+    names = {"-create-tmp-dir", "--create-tmp-dir"}, defaultValue = "false",
+    description = "Create the dir set as tmp in the jvm if it doesn't exists yet and exit the program."
+  )
+  private boolean createTmpDir;
+
   @JsonIgnore
   private String[] args;
 

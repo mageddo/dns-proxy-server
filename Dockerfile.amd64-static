@@ -4,4 +4,4 @@ WORKDIR /app
 LABEL dps.container=true
 ENV DPS_CONTAINER=1
 VOLUME ["/var/run/docker.sock", "/var/run/docker.sock"]
-ENTRYPOINT ["/app/dns-proxy-server", "-Djava.io.tmpdir=/app"]
+ENTRYPOINT ["/app/dns-proxy-server"]
