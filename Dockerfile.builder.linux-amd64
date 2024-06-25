@@ -1,4 +1,4 @@
-FROM debian:10-slim
+FROM debian:9-slim
 
 COPY ./src/main/docker/builder/sources.list /etc/apt/sources.list
 
