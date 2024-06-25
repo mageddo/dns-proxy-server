@@ -34,7 +34,7 @@ WORKDIR /app/build
 COPY ./build/artifacts/native-image-source/ /app/build
 
 RUN ls -lha &&\
-  native-image --static --libc=musl -jar dns-proxy-server.jar dns-proxy-server
+  native-image --static --libc=musl -Djava.io.tmpdir=/app -jar dns-proxy-server.jar dns-proxy-server
 
 RUN ls -lhS &&\
   mkdir -p ./artifacts/linux-amd64-static &&\
