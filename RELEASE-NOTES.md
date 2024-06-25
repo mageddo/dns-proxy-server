@@ -1,5 +1,6 @@
 ## 3.21.2
-* #428, #494: Fixing amd64 static docker image.
+* #285, #494: Fixing amd64 static docker image.
+* #435: Make DPS dynamic linked binary compatible with libgc 2.15 again
 
 ## 3.21.1
 * #435: Upgrading docker run images due glibc
