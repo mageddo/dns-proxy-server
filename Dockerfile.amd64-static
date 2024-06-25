@@ -4,5 +4,5 @@ WORKDIR /app
 LABEL dps.container=true
 ENV DPS_CONTAINER=1
 VOLUME ["/var/run/docker.sock", "/var/run/docker.sock"]
-RUN /app/dns-proxy-server --create-tmp-dir
 ENTRYPOINT ["/app/dns-proxy-server"]
+CMD ["--create-tmp-dir"]

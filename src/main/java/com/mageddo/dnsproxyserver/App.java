@@ -66,7 +66,7 @@ public class App {
   }
 
   void checkExitCommands() {
-    if (flags.isHelp() || flags.isVersion() || flags.isCreateTmpDir()) {
+    if (flags.isHelp() || flags.isVersion()) {
       exitGracefully();
     }
   }

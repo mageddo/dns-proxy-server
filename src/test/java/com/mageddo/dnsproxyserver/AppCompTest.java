@@ -57,14 +57,12 @@ class AppCompTest {
     final var args = new String[]{"--create-tmp-dir"};
     this.app = spy(new App(args));
 
-    final var expectedException = this.mockExitMethod();
-
     // act
-    final var exception = assertThrows(RuntimeException.class, () -> this.app.start());
+    this.app.start();
 
     // assert
     verify(this.app).createTmpDirIfNotExists();
-    assertEquals(expectedException.getMessage(), exception.getMessage());
+    verify(this.app, never()).exitGracefully();
 
   }
 
