@@ -1,6 +1,6 @@
 FROM debian:9-slim
 
-COPY ./src/main/docker/builder/sources.list /etc/apt/sources.list
+COPY ./src/main/docker/builder-amd64/sources.list /etc/apt/sources.list
 
 RUN apt-get update -y &&\
   apt-get install --force-yes -y zlib1g-dev=1:1.2.8.dfsg-5 zlib1g=1:1.2.8.dfsg-5 &&\

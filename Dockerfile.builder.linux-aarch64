@@ -1,9 +1,9 @@
-FROM arm64v8/debian:9-slim
+FROM arm64v8/debian:10-slim
 
-COPY ./src/main/docker/builder/sources.list /etc/apt/sources.list
+COPY ./src/main/docker/builder-aarch64/sources.list /etc/apt/sources.list
 
 RUN apt-get update -y &&\
-  apt-get install --force-yes -y zlib1g-dev=1:1.2.8.dfsg-5 zlib1g=1:1.2.8.dfsg-5 &&\
+  apt-get install --force-yes -y zlib1g-dev &&\
   apt-get install --force-yes -y build-essential libz-dev curl
 
 ENV GRAALVM_URL='https://github.com/graalvm/graalvm-ce-builds/releases/download/jdk-21.0.2/graalvm-community-jdk-21.0.2_linux-aarch64_bin.tar.gz'
@@ -16,7 +16,7 @@ ENV PATH="${PATH}:$JAVA_HOME/bin"
 RUN uname -a && whoami && $JAVA_HOME/bin/java -version
 
 WORKDIR /app/build
-COPY ./build/artifacts/native-image-source/ /app/build
+#COPY ./build/artifacts/native-image-source/ /app/build
 
 ENV JAVA_TOOL_OPTIONS='-Djdk.lang.Process.launchMechanism=fork'
 RUN uname -m && ls -lha &&\
