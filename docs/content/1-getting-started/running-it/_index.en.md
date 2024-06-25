@@ -16,7 +16,7 @@ checkout the instructions for [Linux][6], [Mac][7] and [Windows][5]
 ### General Instructions
 The process to running DPS is basically the same for all platforms:
 
-Download the [latest release][2] for your platform, if no binary available use the jar (requires JRE 19+)
+Download the [latest release][2] for your platform, if no binary available use the jar (requires JRE 21+)
 
 Start DPS (you need to run as administrator/sudo so DPS can set itself as the default DNS)
 ```bash
