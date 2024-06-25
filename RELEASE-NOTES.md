@@ -1,5 +1,5 @@
 ## 3.22.0 
-* #473: Qemu upgrading to 8.2.x
+* #473: Qemu upgrading
 
 ## 3.21.3
 * #496: Fixing aarch binary not building 
