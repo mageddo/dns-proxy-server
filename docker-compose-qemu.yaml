@@ -1,0 +1,6 @@
+version: '3'
+services:
+  qemu_8:
+    image: defreitas/qemu-user-static:latest
+    build:
+      context: src/main/docker/qemu
