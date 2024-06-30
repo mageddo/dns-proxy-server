@@ -1,4 +1,4 @@
-FROM arm64v8/debian:11-slim
+FROM arm64v8/debian:12
 
 RUN apt-get update -y &&\
   apt-get install --force-yes -y build-essential curl &&\
