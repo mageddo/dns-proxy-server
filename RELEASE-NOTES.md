@@ -1,3 +1,6 @@
+## 3.22.1 
+* #502: Fixed Jar release which was broken when upgraded to java 21 at `3.22.0`
+
 ## 3.22.0 
 * #473: Qemu upgrade
 
