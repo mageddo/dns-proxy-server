@@ -1,3 +1,6 @@
+## 3.22.2
+* Fixing graal-sdk dep binary impacts arm, windows, amd static generation
+
 ## 3.22.1 
 * #502: Fixed Jar release which was broken when upgraded to java 21 at `3.22.0`
 
