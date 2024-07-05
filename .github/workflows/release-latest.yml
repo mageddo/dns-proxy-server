@@ -1,0 +1,23 @@
+name: Release Latest
+on:
+#  pull_request:
+#  schedule:
+#    - cron: "30 7 * * *"
+
+# https://github.com/yakubique/github-releases
+jobs:
+  release-latest:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Find Latest Image
+        run: |
+          git tag --format='%(creatordate:short)|%(refname:strip=2)' --sort=-creatordate
+#      - uses: actions/download-artifact@v3
+#        with:
+#          name: native-image-source
+#          path: ./build/artifacts/native-image-source/
