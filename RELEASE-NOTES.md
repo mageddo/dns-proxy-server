@@ -1,3 +1,6 @@
+## 3.23.0
+* Build Aarch64 image with page size of 64k to Increase Compatibility #505
+
 ## 3.22.3
 * Fixing graal-sdk dep binary impacts arm, windows, amd static generation
 * Fixed Jar release which was broken when at `3.22.0` depending on the JRE vendor

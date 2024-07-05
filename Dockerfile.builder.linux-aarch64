@@ -18,7 +18,7 @@ COPY ./build/artifacts/native-image-source/ /app/build
 
 ENV JAVA_TOOL_OPTIONS='-Djdk.lang.Process.launchMechanism=fork'
 RUN uname -m && ls -lha &&\
-  native-image -Djdk.lang.Process.launchMechanism=fork -J-Djdk.lang.Process.launchMechanism=fork \
+  native-image -H:PageSize=65536 -Djdk.lang.Process.launchMechanism=fork -J-Djdk.lang.Process.launchMechanism=fork \
   -jar dns-proxy-server.jar dns-proxy-server
 
 RUN ls -lhS &&\
