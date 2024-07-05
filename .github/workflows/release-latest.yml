@@ -26,6 +26,7 @@ jobs:
           repository: mageddo/dns-proxy-server
           sort: desc
           pre: false
+          details: true
       - run: |
           echo "${{ steps.find_releases.outputs.releases }}"
 
