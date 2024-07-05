@@ -12,11 +12,16 @@ jobs:
       issues: write
       pull-requests: write
     steps:
+
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Find Latest Image
         run: |
           git tag --format='%(creatordate:short)|%(refname:strip=2)' --sort=-creatordate
+
+      - name: Install Deps
+        run: apt-get update && apt-get install -y jq
+
       - name: Find Releases
         id: find_releases
         uses: yakubique/github-releases@v1.2
@@ -27,6 +32,7 @@ jobs:
           sort: desc
           pre: false
           details: true
+
       - name: Define the latest Release
         run: |
           echo "${{ steps.find_releases.outputs.releases }}" | jq -r '.[].tag_name'  | head -n1 > found-version.txt &&\
