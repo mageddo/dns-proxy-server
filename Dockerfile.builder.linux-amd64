@@ -18,7 +18,7 @@ RUN uname -a && whoami && $JAVA_HOME/bin/java -version
 COPY ./ /app
 WORKDIR /app
 
-RUN ./gradlew clean build compTest shadowJar nativeCompile -i &&\
+RUN ./gradlew clean build compTest shadowJar nativeImageJar nativeCompile -i &&\
   ls -lha ./build &&\
   echo "min required GLIBC version:" &&\
   objdump -T /app/build/native/nativeCompile/dns-proxy-server | grep GLIBC | sed 's/.*GLIBC_\([.0-9]*\).*/\1/g' | sort -Vu | tail -n1 &&\
