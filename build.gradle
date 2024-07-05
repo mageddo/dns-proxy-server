@@ -116,7 +116,7 @@ tasks.register('nativeImageJar', ShadowJar) {
   configurations = [project.configurations.runtimeClasspath]
   mergeServiceFiles()
 
-  archiveBaseName = "native-image-jar"
+  archiveBaseName = "native-image"
 
   dependencies {
     exclude(dependency('org.graalvm.sdk:'))

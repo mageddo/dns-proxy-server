@@ -24,7 +24,7 @@ RUN ./gradlew clean build compTest shadowJar nativeCompile -i &&\
   objdump -T /app/build/native/nativeCompile/dns-proxy-server | grep GLIBC | sed 's/.*GLIBC_\([.0-9]*\).*/\1/g' | sort -Vu | tail -n1 &&\
   mkdir -p ./build/artifacts/linux-amd64 && mv ./build/native/nativeCompile/dns-proxy-server ./build/artifacts/linux-amd64/ &&\
   mkdir -p ./build/artifacts/jre && mv ./build/libs/dns-proxy-server-*-all.jar ./build/artifacts/jre/dns-proxy-server.jar &&\
-  mkdir -p ./build/artifacts/native-image-source && cp ./build/artifacts/jre/dns-proxy-server.jar ./build/artifacts/native-image-source/ &&\
+  mkdir -p ./build/artifacts/native-image-source && cp ./build/libs/native-image-*.jar ./build/artifacts/native-image-source/dns-proxy-server.jar &&\
   ls -lhS ./build/artifacts/*
 
 ENTRYPOINT cat
