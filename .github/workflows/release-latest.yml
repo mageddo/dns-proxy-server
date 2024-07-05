@@ -17,14 +17,17 @@ jobs:
       - name: Find Latest Image
         run: |
           git tag --format='%(creatordate:short)|%(refname:strip=2)' --sort=-creatordate
-      - name: List Releases
+      - name: Find Releases
+        id: find_releases
         uses: yakubique/github-releases@v1.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           repository: mageddo/dns-proxy-server
+          sort: desc
+          pre: false
       - run: |
-          echo "${{ steps.get_releases.outputs.releases }}"
+          echo "${{ steps.find_releases.outputs.releases }}"
 
 #      - uses: actions/download-artifact@v3
 #        with:
