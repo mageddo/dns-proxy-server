@@ -1,3 +1,6 @@
+## 3.24.0
+* Downgrade necessary libc version to run aarch binary to 2.28 #507
+
 ## 3.23.0
 * Build Aarch64 image with page size of 64k to Increase Compatibility #505
 
