@@ -1,6 +1,6 @@
 name: Release Latest
 on:
-#  pull_request:
+  pull_request:
 #  schedule:
 #    - cron: "30 7 * * *"
 
@@ -17,6 +17,15 @@ jobs:
       - name: Find Latest Image
         run: |
           git tag --format='%(creatordate:short)|%(refname:strip=2)' --sort=-creatordate
+      - name: List Releases
+        uses: yakubique/github-releases@v1.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          repository: mageddo/dns-proxy-server
+      - run: |
+          echo "${{ steps.get_releases.outputs.releases }}"
+
 #      - uses: actions/download-artifact@v3
 #        with:
 #          name: native-image-source
