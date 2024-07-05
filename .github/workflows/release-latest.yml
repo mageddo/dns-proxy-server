@@ -35,7 +35,7 @@ jobs:
 
       - name: Define the latest Release
         run: |
-          echo "${{ steps.find_releases.outputs.releases }}" | jq -r '.[].tag_name'  | head -n1 > found-version.txt &&\
+          echo '${{ steps.find_releases.outputs.releases }}' | jq -r '.[].tag_name'  | head -n1 > found-version.txt &&\
           cat found-version.txt | grep -oP '\d+\.\d+.\d+' > latest-version.txt &&\
           cat found-version.txt && cat latest-version.txt
 
