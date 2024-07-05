@@ -1,8 +1,13 @@
 name: Release Latest
+
 on:
   pull_request:
 #  schedule:
 #    - cron: "30 7 * * *"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 # https://github.com/yakubique/github-releases
 jobs:
