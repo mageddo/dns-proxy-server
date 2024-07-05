@@ -1,8 +1,6 @@
-## 3.22.2
+## 3.22.3
 * Fixing graal-sdk dep binary impacts arm, windows, amd static generation
-
-## 3.22.1 
-* #502: Fixed Jar release which was broken when upgraded to java 21 at `3.22.0`
+* Fixed Jar release which was broken when upgraded to java 21 at `3.22.0`
 
 ## 3.22.0 
 * #473: Qemu upgrade
