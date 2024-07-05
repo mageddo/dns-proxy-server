@@ -20,7 +20,7 @@ jobs:
           git tag --format='%(creatordate:short)|%(refname:strip=2)' --sort=-creatordate
 
       - name: Install Deps
-        run: apt-get update && apt-get install -y jq
+        run: sudo apt-get update && sudo apt-get install -y jq
 
       - name: Find Releases
         id: find_releases
