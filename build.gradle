@@ -109,7 +109,6 @@ jar {
   }
 }
 
-
 tasks.register('nativeImageJar', ShadowJar) {
 
   from sourceSets.main.output
@@ -117,6 +116,11 @@ tasks.register('nativeImageJar', ShadowJar) {
   mergeServiceFiles()
 
   archiveBaseName = "native-image"
+
+  manifest {
+    attributes("Main-Class": mainClassName)
+  }
+
 
   dependencies {
     exclude(dependency('org.graalvm.sdk:'))
