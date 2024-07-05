@@ -2,8 +2,7 @@ FROM arm64v8/debian:9
 
 COPY ./src/main/docker/builder-aarch64/sources.list /etc/apt/sources.list
 
-
-RUN apt-get -o Acquire::Check-Valid-Until=false -o Acquire::Check-Date=false update -y  &&\
+RUN apt-get -o Acquire::Check-Valid-Until=false update -y  &&\
   apt-get install --force-yes -y curl build-essential &&\
   apt-get install --force-yes -y libz-dev zlib1g-dev zlib1g
 
@@ -17,7 +16,7 @@ ENV PATH="${PATH}:$JAVA_HOME/bin"
 RUN uname -a && whoami && $JAVA_HOME/bin/java -version
 
 WORKDIR /app/build
-#COPY ./build/artifacts/native-image-source/ /app/build
+COPY ./build/artifacts/native-image-source/ /app/build
 
 ENV JAVA_TOOL_OPTIONS='-Djdk.lang.Process.launchMechanism=fork'
 RUN uname -m && ls -lha &&\
