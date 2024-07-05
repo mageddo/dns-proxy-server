@@ -1,10 +1,10 @@
-FROM arm64v8/debian:9
+FROM gcc:10-buster@sha256:d74acd6b586c6d40628b7fe0b2072e298c6dc5cf1c8c64dde51803f8b3d1b165
 
-COPY ./src/main/docker/builder-aarch64/sources.list /etc/apt/sources.list
+#COPY ./src/main/docker/builder-aarch64/sources.list /etc/apt/sources.list
 
-RUN apt-get -o Acquire::Check-Valid-Until=false update -y  &&\
-  apt-get install --force-yes -y curl build-essential &&\
-  apt-get install --force-yes -y libz-dev zlib1g-dev zlib1g
+#RUN apt-get -o Acquire::Check-Valid-Until=false update -y  &&\
+#  apt-get install --force-yes -y curl build-essential &&\
+#  apt-get install --force-yes -y libz-dev zlib1g-dev zlib1g
 
 ENV GRAALVM_URL='https://github.com/graalvm/graalvm-ce-builds/releases/download/jdk-21.0.2/graalvm-community-jdk-21.0.2_linux-aarch64_bin.tar.gz'
 RUN mkdir /graalvm &&\
