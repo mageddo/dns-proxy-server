@@ -121,10 +121,14 @@ tasks.register('nativeImageJar', ShadowJar) {
     attributes("Main-Class": mainClassName)
   }
 
-
   dependencies {
     exclude(dependency('org.graalvm.sdk:'))
   }
+
+  exclude("/META-INF/*.SF")
+  exclude("/META-INF/*.DSA")
+  exclude("/META-INF/*.RSA")
+
 }
 
 shadowJar {
