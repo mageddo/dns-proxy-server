@@ -48,7 +48,7 @@ jobs:
         run: |
           FOUND_VERSION=$(cat found-version.txt) &&\
           LATEST_VERSION=$(cat latest-version.txt) &&\
-          git tag ${LATEST_VERSION} ${FOUND_VERSION} && git push origin --tags
+          git tag ${LATEST_VERSION} refs/tags/${FOUND_VERSION} && git push origin --tags
 
 
 #      APP_VERSION: ${{ needs.primary_release.outputs.APP_VERSION }}
