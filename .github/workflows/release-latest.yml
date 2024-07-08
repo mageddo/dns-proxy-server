@@ -69,7 +69,7 @@ jobs:
 
       - name: Checks
         run: |
-          echo ${{steps.release_download.outputs.tag_name}} ${{steps.<step-id>.outputs.release_name}} &&\
+          echo ${{steps.release_download.outputs.tag_name}} ${{steps.release_download.outputs.release_name}} &&\
           echo toJSON(${{steps.release_download.outputs}})
       
 
