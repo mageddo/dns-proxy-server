@@ -9,7 +9,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-# https://github.com/yakubique/github-releases
 jobs:
   release-latest:
     runs-on: ubuntu-latest
@@ -27,23 +26,6 @@ jobs:
 
       - name: Install Deps
         run: sudo apt-get install rename -y
-
-#      - name: Find Releases
-#        id: find_releases
-#        uses: yakubique/github-releases@v1.2
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        with:
-#          repository: mageddo/dns-proxy-server
-#          sort: desc
-#          pre: false
-#          details: true
-
-#      - name: Define the latest Release
-#        run: |
-#          echo '${{ steps.find_releases.outputs.releases }}' | jq -r '.[].tag_name'  | head -n1 > found-version.txt &&\
-#          cat found-version.txt | grep -oP '\d+\.\d+.\d+' > latest-version.txt &&\
-#          cat found-version.txt && cat latest-version.txt
 
       - name: Download Artifacts
         id: release_download
@@ -63,23 +45,6 @@ jobs:
       - name: Check Artifacts
         run: tree artifacts
 
-#      - name: Checks
-#        run: |
-#          echo ${{steps.release_download.outputs.tag_name}} ${{steps.version_finder.outputs.latest_version}} &&\
-#          echo ${{toJSON(steps.release_download.outputs)}}
-
-#      - name: Check already released
-#        run: |
-#          git rev-parse "${{steps.version_finder.outputs.latest_version}}^{}" >/dev/null 2>&1 &&\
-#          echo "> Already released" && exit 3 || echo "Not released yet"
-
-#      - name: Checkout current tag code
-#        uses: actions/checkout@v3
-#        with:
-#          ref: ${{ steps.release_download.outputs.tag_name }}
-##          fetch-depth: 0
-##          fetch-tags: true
-      
       - name: Find Versions
         id: version_finder
         run: |
@@ -98,20 +63,6 @@ jobs:
           git tag ${{ steps.version_finder.outputs.latest_version }} refs/tags/${{ steps.version_finder.outputs.current_version }} &&\
           git push origin ${{ steps.version_finder.outputs.latest_version }} --tags
 
-#      - name: Create Latest Tag
-#        uses: rickstaa/action-create-tag@v1
-#        with:
-#          tag: ${{ steps.version_finder.outputs.latest_version }}
-#          commit_sha: ${{ steps.version_finder.outputs.current_version }}
-#          tag_exists_error: true
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
-
-#      - name: Create Latest Tag
-#        uses: tvdias/github-tagger@v0.0.1
-#        with:
-#          repo-token: ${{ secrets.GITHUB_TOKEN }}
-#          tag: ${{ steps.version_finder.outputs.latest_version }}
-
       - name: Checkout Tag To Generate Release Notes
         run: git checkout ${{ steps.version_finder.outputs.current_version }}
 
@@ -124,13 +75,6 @@ jobs:
       - name: Check Release Notes
         run: cat ./VERSION-RELEASE-NOTES.md
 
-#      - name: Release Notes
-#        run: |
-#          cat RELEASE-NOTES.md |\
-#          sed -n '/## ${{steps.version_finder.outputs.latest_version}}/,/##/p' |\
-#          head -n-1 > VERSION-RELEASE-NOTES.md
-
-
       - name: Github Release Latest
         uses: softprops/action-gh-release@v2
         with:
@@ -141,41 +85,3 @@ jobs:
           body_path: VERSION-RELEASE-NOTES.md
           files: |
             ./artifacts/*
-
-      #      - name: Find Versions
-#        id: version_finder
-#        run: |
-#          export CURRENT_VERSION=$(ls artifacts/ | grep -oP 'dns-proxy-server-\K(\d+.\d+\.\d+[-]*[\w]+)' | head -n1  &&\
-#          echo "CURRENT_VERSION=${CURRENT_VERSION}" >> $GITHUB_OUTPUT &&\
-#          export LATEST_VERSION=$(ls artifacts/ | head -n1 | grep -oP '\d+.\d+.\d+') &&\
-#          echo "LATEST_VERSION=${LATEST_VERSION}" >> $GITHUB_OUTPUT
-
-#      - name: Check latest version
-#        run: echo ${{ steps.version_finder.outputs.LATEST_VERSION }}
-
-
-
-#      - name: Create latest git tag
-#        run: |
-#          FOUND_VERSION=$(cat found-version.txt) &&\
-#          LATEST_VERSION=$(cat latest-version.txt) &&\
-#          git tag ${LATEST_VERSION} refs/tags/${FOUND_VERSION} && git push origin --tags
-
-#      - name: Github release latest
-#        uses: softprops/action-gh-release@v1
-#        with:
-#          tag_name: ${{ env.APP_VERSION }}
-#          append_body: true
-#          body: ''
-#          files: |
-#            ./build/compressed-artifacts/*
-
-
-#      APP_VERSION: ${{ needs.primary_release.outputs.APP_VERSION }}
-
-#      - uses: actions/download-artifact@v3
-#        with:
-#          name: native-image-source
-#          path: ./build/artifacts/native-image-source/
-
-
