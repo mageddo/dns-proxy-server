@@ -30,19 +30,8 @@ $ VERSION=3.18.0 && ./gradlew release -Prelease.releaseVersion=${VERSION} -Prele
 ## Release Latest - Phase 3
 
 * Define a pre-release version which will be promoted to the latest by [following the rules][1].
-* Edit the github release setting the pre-release version as the latest, remove the `-snapshot` suffix from the title 
-and from the attachments names.
-* Locally tag the latest docker image as the pre-release version
-```bash
-$ docker tag defreitas/dns-proxy-server:${PRE_RELEASE_VERSION} mageddo/dns-proxy-server:latest
-```
-* Check the docker image version by 
-```bash
-$ docker run defreitas/dns-proxy-server:latest --version
-```
-* Push the pre-release version to the docker hub
-```bash
-$ docker push defreitas/dns-proxy-server:latest
-```
+* Edit the github release setting latest flag
+* Run [the release latest][2] workflow, if you don't run the workflow it will auto run on the next day at 07:30 UTC 
 
 [1]: {{%relref "1-getting-started/versioning.en.md" %}}
+[2]: https://github.com/mageddo/dns-proxy-server/actions/workflows/release-latest.yml
