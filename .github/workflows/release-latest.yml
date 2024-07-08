@@ -21,9 +21,9 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          fetch-tags: true
+#        with:
+#          fetch-depth: 0
+#          fetch-tags: true
 
       - name: Install Deps
         run: sudo apt-get install rename -y
@@ -67,10 +67,10 @@ jobs:
 #          echo ${{steps.release_download.outputs.tag_name}} ${{steps.release_download.outputs.release_name}} &&\
 #          echo ${{toJSON(steps.release_download.outputs)}}
 
-      - name: Check already released
-        run: |
-          git rev-parse "${{steps.release_download.outputs.release_name}}^{}" >/dev/null 2>&1 &&\
-          echo "> Already released" && exit 3 || echo "Not released yet"
+#      - name: Check already released
+#        run: |
+#          git rev-parse "${{steps.release_download.outputs.release_name}}^{}" >/dev/null 2>&1 &&\
+#          echo "> Already released" && exit 3 || echo "Not released yet"
 
       - name: Checkout current tag code
         uses: actions/checkout@v3
@@ -78,10 +78,16 @@ jobs:
           ref: ${{ steps.release_download.outputs.tag_name }}
 
       - name: Create Latest Tag
-        uses: tvdias/github-tagger@v0.0.1
+        uses: rickstaa/action-create-tag@v1
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.release_download.outputs.release_name }}
+          tag_exists_error: true
+
+#      - name: Create Latest Tag
+#        uses: tvdias/github-tagger@v0.0.1
+#        with:
+#          repo-token: ${{ secrets.GITHUB_TOKEN }}
+#          tag: ${{ steps.release_download.outputs.release_name }}
 
       - name: Generate Release Notes
         uses: kemayo/actions-recent-changelog@v1
