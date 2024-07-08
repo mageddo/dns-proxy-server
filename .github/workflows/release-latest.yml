@@ -81,7 +81,7 @@ jobs:
       - name: Find Versions
         id: version_finder
         run: |
-          export latest_version=$(echo ${{steps.version_finder.outputs.latest_version}} | grep -oP '\d+.\d+\.\d+') &&\
+          export latest_version=$(echo ${{steps.release_download.outputs.release_name}} | grep -oP '\d+.\d+\.\d+') &&\
           echo "latest_version=${latest_version}" >> $GITHUB_OUTPUT &&\
           export current_version=$(echo ${{ steps.release_download.outputs.tag_name }}) &&\
           echo "current_version=${current_version}" >> $GITHUB_OUTPUT
