@@ -202,4 +202,19 @@ case $1 in
     git push origin gh-pages
   ;;
 
+  release-latest-docker-images )
+
+    FROM_VERSION=$2
+    TO_VERSION=$3
+
+    docker pull defreitas/dns-proxy-server:${FROM_VERSION}
+
+    docker tag defreitas/dns-proxy-server:${FROM_VERSION} defreitas/dns-proxy-server:${TO_VERSION}
+
+    echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+    docker push defreitas/dns-proxy-server:${TO_VERSION}
+
+  ;;
+
 esac
