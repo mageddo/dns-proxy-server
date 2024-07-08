@@ -97,6 +97,7 @@ jobs:
           tag: ${{ steps.version_finder.outputs.latest_version }}
           commit_sha: ${{ steps.version_finder.outputs.current_version }}
           tag_exists_error: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
 #      - name: Create Latest Tag
 #        uses: tvdias/github-tagger@v0.0.1
