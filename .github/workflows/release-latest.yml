@@ -81,29 +81,6 @@ jobs:
           ./builder.bash release-latest-docker-images ${CURRENT_VERSION}-amd64-static ${LATEST_VERSION}-amd64-static ||\
           echo 'Não tinha a imagem'
 
-      #
-#      - name: Docker Images - Download Necessary
-#        run: |
-#          export CURRENT_VERSION=${{ steps.version_finder.outputs.current_version }} &&\
-#          docker pull defreitas/dns-proxy-server:${CURRENT_VERSION} &&\
-#          docker pull defreitas/dns-proxy-server:${CURRENT_VERSION}-aarch64 &&\
-#          docker pull defreitas/dns-proxy-server:${CURRENT_VERSION}-amd64-static
-#
-#      - name: Docker Images - Create Latest Tags
-#        run: |
-#          export CURRENT_VERSION=${{ steps.version_finder.outputs.current_version }} &&\
-#          export LATEST_VERSION=${{ steps.version_finder.outputs.latest_version }} &&\
-#          docker tag defreitas/dns-proxy-server:${CURRENT_VERSION} defreitas/dns-proxy-server:latest &&\
-#          docker tag defreitas/dns-proxy-server:${CURRENT_VERSION}-aarch64 defreitas/dns-proxy-server:${LATEST_VERSION}-aarch64 &&\
-#          docker tag defreitas/dns-proxy-server:${CURRENT_VERSION}-amd64-static defreitas/dns-proxy-server:${LATEST_VERSION}-amd64-static &&\
-#
-#      - name: Docker Images - Push to Docker Registry
-#        run: |
-#          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&\
-#          docker push defreitas/dns-proxy-server:latest &&\
-#          docker push defreitas/dns-proxy-server:${LATEST_VERSION}-aarch64 &&\
-#          docker push defreitas/dns-proxy-server:${LATEST_VERSION}-amd64-static
-
       - name: Checkout Tag To Generate Release Notes
         run: git checkout ${{ steps.version_finder.outputs.current_version }}
 
