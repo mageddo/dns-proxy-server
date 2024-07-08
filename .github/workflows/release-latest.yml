@@ -70,7 +70,7 @@ jobs:
       - name: Checks
         run: |
           echo ${{steps.release_download.outputs.tag_name}} ${{steps.release_download.outputs.release_name}} &&\
-          echo toJSON(${{steps.release_download.outputs}})
+          echo ${{toJSON(steps.release_download.outputs)}}
       
 
       #      - name: Find Versions
