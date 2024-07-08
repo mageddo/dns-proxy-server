@@ -51,6 +51,7 @@ jobs:
 #          git rev-parse "${LATEST_VERSION}^{}" >/dev/null 2>&1 && echo "> Already released" && exit 3 || echo "Not released yet"
 
       - name: Download Artifacts
+        id: release_download
         uses: robinraju/release-downloader@v1
         with:
           latest: true
@@ -60,21 +61,37 @@ jobs:
           out-file-path: 'artifacts'
           token: '${{ secrets.GITHUB_TOKEN }}'
 
-      - name: Check artifacts
-        run: tree artifacts
-
       - name: Rename Artifacts
         run: rename 's/-snapshot//g' artifacts/*
 
-      - name: Find and Define Latest Version
-        id: version_finder
+      - name: Check Artifacts
+        run: tree artifacts
+
+      - name: Checks
         run: |
-          export LATEST_VERSION=$(ls artifacts/ | head -n1 | grep -oP '\d+.\d+.\d+') &&\
-          echo "LATEST_VERSION=${LATEST_VERSION}" >> $GITHUB_OUTPUT
+          echo ${{steps.release_download.outputs.tag_name}} ${{steps.<step-id>.outputs.release_name}} &&\
+          echo toJSON(${{steps.release_download.outputs}})
+      
 
-      - name: Check latest version
-        run: echo ${{ steps.version_finder.outputs.LATEST_VERSION }}
+      #      - name: Find Versions
+#        id: version_finder
+#        run: |
+#          export CURRENT_VERSION=$(ls artifacts/ | grep -oP 'dns-proxy-server-\K(\d+.\d+\.\d+[-]*[\w]+)' | head -n1  &&\
+#          echo "CURRENT_VERSION=${CURRENT_VERSION}" >> $GITHUB_OUTPUT &&\
+#          export LATEST_VERSION=$(ls artifacts/ | head -n1 | grep -oP '\d+.\d+.\d+') &&\
+#          echo "LATEST_VERSION=${LATEST_VERSION}" >> $GITHUB_OUTPUT
 
+#      - name: Check latest version
+#        run: echo ${{ steps.version_finder.outputs.LATEST_VERSION }}
+
+      - name: Github release latest
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.APP_VERSION }}
+          append_body: true
+          body: ''
+          files: |
+            ./build/compressed-artifacts/*
 
 #      - name: Create latest git tag
 #        run: |
