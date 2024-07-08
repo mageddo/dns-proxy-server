@@ -86,11 +86,16 @@ jobs:
           export current_version=$(echo ${{ steps.release_download.outputs.tag_name }}) &&\
           echo "current_version=${current_version}" >> $GITHUB_OUTPUT
 
+      - name: Version checker
+        run: |
+          echo ${{ steps.version_finder.outputs.latest_version }} &&\
+          echo ${{ steps.version_finder.outputs.current_version }}
+
       - name: Create Latest Tag
         uses: rickstaa/action-create-tag@v1
         with:
-          commit_sha: ${{ steps.version_finder.outputs.current_version }}
           tag: ${{ steps.version_finder.outputs.latest_version }}
+          commit_sha: ${{ steps.version_finder.outputs.current_version }}
           tag_exists_error: true
 
 #      - name: Create Latest Tag
