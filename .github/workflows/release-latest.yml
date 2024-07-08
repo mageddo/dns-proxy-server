@@ -25,8 +25,8 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
-#      - name: Install Deps
-#        run: git tag
+      - name: Install Deps
+        run: sudo apt-get install rename -y
 
 #      - name: Find Releases
 #        id: find_releases
@@ -62,6 +62,15 @@ jobs:
 
       - name: Check artifacts
         run: tree artifacts
+
+      - name: Rename Artifacts
+        run: rename 's/-snapshot//g' artifacts/*
+
+      - name: Find and Define Latest Version
+        run: export LATEST_VERSION=$(ls artifacts/ | head -n1 | grep -oP '\d+.\d+.\d+')
+
+      - name: Check latest version
+        run: echo $LATEST_VERSION
 
 
 #      - name: Create latest git tag
