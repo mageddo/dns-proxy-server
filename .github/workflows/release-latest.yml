@@ -1,9 +1,8 @@
 name: Release Latest
 
 on:
-  pull_request:
-#  schedule:
-#    - cron: "30 7 * * *"
+  schedule:
+    - cron: "30 7 * * *" # 7:30 UTC every day
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}

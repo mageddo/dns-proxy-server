@@ -1,7 +1,7 @@
 name: Close inactive waiting-feedback issues
 on:
   schedule:
-    - cron: "30 7 * * *"
+    - cron: "30 7 * * *" # 7:30 UTC every day
 
 jobs:
   close-issues:
