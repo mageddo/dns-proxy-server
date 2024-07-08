@@ -103,7 +103,7 @@ jobs:
         with:
           name: ${{steps.version_finder.outputs.latest_version}}
           tag_name: ${{steps.version_finder.outputs.latest_version}}
-          make_latest: false
+          make_latest: true
           append_body: false
           body_path: VERSION-RELEASE-NOTES.md
           files: |
