@@ -67,11 +67,23 @@ jobs:
       - name: Check Artifacts
         run: tree artifacts
 
-      - name: Checks
-        run: |
-          echo ${{steps.release_download.outputs.tag_name}} ${{steps.release_download.outputs.release_name}} &&\
-          echo ${{toJSON(steps.release_download.outputs)}}
-      
+#      - name: Checks
+#        run: |
+#          echo ${{steps.release_download.outputs.tag_name}} ${{steps.release_download.outputs.release_name}} &&\
+#          echo ${{toJSON(steps.release_download.outputs)}}
+
+      - name: Checkout version
+        run: git checkout ${{steps.release_download.outputs.tag_name}}
+
+
+      - name: Github release latest
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.APP_VERSION }}
+          append_body: true
+          body: ''
+          files: |
+            ./build/compressed-artifacts/*
 
       #      - name: Find Versions
 #        id: version_finder
@@ -84,14 +96,7 @@ jobs:
 #      - name: Check latest version
 #        run: echo ${{ steps.version_finder.outputs.LATEST_VERSION }}
 
-      - name: Github release latest
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ env.APP_VERSION }}
-          append_body: true
-          body: ''
-          files: |
-            ./build/compressed-artifacts/*
+
 
 #      - name: Create latest git tag
 #        run: |
