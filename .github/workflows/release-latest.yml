@@ -63,12 +63,12 @@ jobs:
 
 #      - name: Checks
 #        run: |
-#          echo ${{steps.release_download.outputs.tag_name}} ${{steps.release_download.outputs.release_name}} &&\
+#          echo ${{steps.release_download.outputs.tag_name}} ${{steps.version_finder.outputs.latest_version}} &&\
 #          echo ${{toJSON(steps.release_download.outputs)}}
 
 #      - name: Check already released
 #        run: |
-#          git rev-parse "${{steps.release_download.outputs.release_name}}^{}" >/dev/null 2>&1 &&\
+#          git rev-parse "${{steps.version_finder.outputs.latest_version}}^{}" >/dev/null 2>&1 &&\
 #          echo "> Already released" && exit 3 || echo "Not released yet"
 
 #      - name: Checkout current tag code
@@ -77,19 +77,27 @@ jobs:
 #          ref: ${{ steps.release_download.outputs.tag_name }}
 ##          fetch-depth: 0
 ##          fetch-tags: true
+      
+      - name: Find Versions
+        id: version_finder
+        run: |
+          export latest_version=$(echo ${{steps.version_finder.outputs.latest_version}} | grep -oP '\d+.\d+\.\d+') &&\
+          echo "latest_version=${latest_version}" >> $GITHUB_OUTPUT &&\
+          export current_version=$(echo ${{ steps.release_download.outputs.tag_name }}) &&\
+          echo "current_version=${current_version}" >> $GITHUB_OUTPUT
 
       - name: Create Latest Tag
         uses: rickstaa/action-create-tag@v1
         with:
-          commit_sha: ${{ steps.release_download.outputs.tag_name }}
-          tag: ${{ steps.release_download.outputs.release_name }}
+          commit_sha: ${{ steps.version_finder.outputs.current_version }}
+          tag: ${{ steps.version_finder.outputs.latest_version }}
           tag_exists_error: true
 
 #      - name: Create Latest Tag
 #        uses: tvdias/github-tagger@v0.0.1
 #        with:
 #          repo-token: ${{ secrets.GITHUB_TOKEN }}
-#          tag: ${{ steps.release_download.outputs.release_name }}
+#          tag: ${{ steps.version_finder.outputs.latest_version }}
 
       - name: Generate Release Notes
         uses: kemayo/actions-recent-changelog@v1
@@ -103,14 +111,14 @@ jobs:
 #      - name: Release Notes
 #        run: |
 #          cat RELEASE-NOTES.md |\
-#          sed -n '/## ${{steps.release_download.outputs.release_name}}/,/##/p' |\
+#          sed -n '/## ${{steps.version_finder.outputs.latest_version}}/,/##/p' |\
 #          head -n-1 > VERSION-RELEASE-NOTES.md
 
       - name: Github Release Latest
         uses: softprops/action-gh-release@v1
         with:
-          name: ${{steps.release_download.outputs.release_name}}
-          tag_name: ${{steps.release_download.outputs.release_name}}
+          name: ${{steps.version_finder.outputs.latest_version}}
+          tag_name: ${{steps.version_finder.outputs.latest_version}}
           make_latest: false
           append_body: false
           body_path: VERSION-RELEASE-NOTES.md
