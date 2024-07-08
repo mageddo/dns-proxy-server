@@ -67,10 +67,12 @@ jobs:
         run: rename 's/-snapshot//g' artifacts/*
 
       - name: Find and Define Latest Version
-        run: export LATEST_VERSION=$(ls artifacts/ | head -n1 | grep -oP '\d+.\d+.\d+')
+        run: |
+          export LATEST_VERSION=$(ls artifacts/ | head -n1 | grep -oP '\d+.\d+.\d+') &&\
+          echo "LATEST_VERSION=${LATEST_VERSION}" >> $GITHUB_OUTPUT
 
       - name: Check latest version
-        run: echo $LATEST_VERSION
+        run: echo ${{ steps.random-color-generator.outputs.SELECTED_COLOR }}
 
 
 #      - name: Create latest git tag
