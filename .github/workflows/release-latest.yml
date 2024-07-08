@@ -45,10 +45,10 @@ jobs:
 #          cat found-version.txt | grep -oP '\d+\.\d+.\d+' > latest-version.txt &&\
 #          cat found-version.txt && cat latest-version.txt
 
-      - name: Check already released
-        run: |
-          LATEST_VERSION=$(cat latest-version.txt) &&\
-          git rev-parse "${LATEST_VERSION}^{}" >/dev/null 2>&1 && echo "> Already released" && exit 3 || echo "Not released yet"
+#      - name: Check already released
+#        run: |
+#          LATEST_VERSION=$(cat latest-version.txt) &&\
+#          git rev-parse "${LATEST_VERSION}^{}" >/dev/null 2>&1 && echo "> Already released" && exit 3 || echo "Not released yet"
 
       - name: Download Artifacts
         uses: robinraju/release-downloader@v1
