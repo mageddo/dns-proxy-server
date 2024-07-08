@@ -51,8 +51,9 @@ jobs:
         with:
           latest: true
           preRelease: false
-          tarBall: true
-          zipBall: true
+          fileName: '*'
+          tarBall: false
+          zipBall: false
           out-file-path: 'artifacts'
           token: '${{ secrets.GITHUB_TOKEN }}'
 
