@@ -16,6 +16,7 @@ jobs:
     permissions:
       issues: write
       pull-requests: write
+
     steps:
 
       - name: Checkout code
@@ -24,36 +25,60 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
-      - name: Install Deps
-        run: git tag
+#      - name: Install Deps
+#        run: git tag
 
-      - name: Find Releases
-        id: find_releases
-        uses: yakubique/github-releases@v1.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          repository: mageddo/dns-proxy-server
-          sort: desc
-          pre: false
-          details: true
+#      - name: Find Releases
+#        id: find_releases
+#        uses: yakubique/github-releases@v1.2
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          repository: mageddo/dns-proxy-server
+#          sort: desc
+#          pre: false
+#          details: true
 
-      - name: Define the latest Release
-        run: |
-          echo '${{ steps.find_releases.outputs.releases }}' | jq -r '.[].tag_name'  | head -n1 > found-version.txt &&\
-          cat found-version.txt | grep -oP '\d+\.\d+.\d+' > latest-version.txt &&\
-          cat found-version.txt && cat latest-version.txt
+#      - name: Define the latest Release
+#        run: |
+#          echo '${{ steps.find_releases.outputs.releases }}' | jq -r '.[].tag_name'  | head -n1 > found-version.txt &&\
+#          cat found-version.txt | grep -oP '\d+\.\d+.\d+' > latest-version.txt &&\
+#          cat found-version.txt && cat latest-version.txt
 
       - name: Check already released
         run: |
           LATEST_VERSION=$(cat latest-version.txt) &&\
           git rev-parse "${LATEST_VERSION}^{}" >/dev/null 2>&1 && echo "> Already released" && exit 3 || echo "Not released yet"
 
-      - name: Create latest git tag
-        run: |
-          FOUND_VERSION=$(cat found-version.txt) &&\
-          LATEST_VERSION=$(cat latest-version.txt) &&\
-          git tag ${LATEST_VERSION} refs/tags/${FOUND_VERSION} && git push origin --tags
+      - name: Download Artifacts
+        uses: robinraju/release-downloader@v1
+        with:
+          latest: true
+          preRelease: false
+          tarBall: true
+          zipBall: true
+          out-file-path: 'artifacts'
+          token: '${{ secrets.GITHUB_TOKEN }}'
+          github-api-url: ''
+
+      - name: Check artifacts
+        run: tree artifacts
+
+
+#      - name: Create latest git tag
+#        run: |
+#          FOUND_VERSION=$(cat found-version.txt) &&\
+#          LATEST_VERSION=$(cat latest-version.txt) &&\
+#          git tag ${LATEST_VERSION} refs/tags/${FOUND_VERSION} && git push origin --tags
+
+#      - name: Github release latest
+#        uses: softprops/action-gh-release@v1
+#        with:
+#          tag_name: ${{ env.APP_VERSION }}
+#          append_body: true
+#          body: ''
+#          files: |
+#            ./build/compressed-artifacts/*
 
 
 #      APP_VERSION: ${{ needs.primary_release.outputs.APP_VERSION }}
