@@ -111,6 +111,9 @@ jobs:
 #          repo-token: ${{ secrets.GITHUB_TOKEN }}
 #          tag: ${{ steps.version_finder.outputs.latest_version }}
 
+      - name: Checkout Tag To Generate Release Notes
+        run: git checkout ${{ steps.version_finder.outputs.current_version }}
+
       - name: Generate Release Notes
         uses: kemayo/actions-recent-changelog@v1
         with:
