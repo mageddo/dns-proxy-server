@@ -9,6 +9,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
 jobs:
   release-latest:
     runs-on: ubuntu-latest
@@ -67,7 +71,6 @@ jobs:
         run: |
           CURRENT_VERSION=${{ steps.version_finder.outputs.current_version }} &&\
           LATEST_VERSION=${{ steps.version_finder.outputs.latest_version }} &&\
-          export DOCKER_USERNAME=${DOCKER_USERNAME} && export DOCKER_PASSWORD=${DOCKER_PASSWORD} &&\
           ./builder.bash release-latest-docker-images ${CURRENT_VERSION} latest
           ./builder.bash release-latest-docker-images ${CURRENT_VERSION}-aarch64 ${LATEST_VERSION}-aarch64 
 
@@ -75,7 +78,6 @@ jobs:
         run: |
           CURRENT_VERSION=${{ steps.version_finder.outputs.current_version }} &&\
           LATEST_VERSION=${{ steps.version_finder.outputs.latest_version }} &&\
-          export DOCKER_USERNAME=${DOCKER_USERNAME} && export DOCKER_PASSWORD=${DOCKER_PASSWORD} &&\
           ./builder.bash release-latest-docker-images ${CURRENT_VERSION}-amd64-static ${LATEST_VERSION}-amd64-static ||\
           echo 'Não tinha a imagem'
 
