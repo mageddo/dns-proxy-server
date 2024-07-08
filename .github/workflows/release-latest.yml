@@ -65,15 +65,17 @@ jobs:
 
       - name: Docker Images - Release Latest
         run: |
-          export CURRENT_VERSION=${{ steps.version_finder.outputs.current_version }} &&\
-          export LATEST_VERSION=${{ steps.version_finder.outputs.latest_version }} &&\
+          CURRENT_VERSION=${{ steps.version_finder.outputs.current_version }} &&\
+          LATEST_VERSION=${{ steps.version_finder.outputs.latest_version }} &&\
+          export DOCKER_USERNAME=${DOCKER_USERNAME} && export DOCKER_PASSWORD=${DOCKER_PASSWORD} &&\
           ./builder.bash release-latest-docker-images ${CURRENT_VERSION} latest
           ./builder.bash release-latest-docker-images ${CURRENT_VERSION}-aarch64 ${LATEST_VERSION}-aarch64 
 
       - name: Docker Images - Additional - Amd64 Static
         run: |
-          export CURRENT_VERSION=${{ steps.version_finder.outputs.current_version }} &&\
-          export LATEST_VERSION=${{ steps.version_finder.outputs.latest_version }} &&\
+          CURRENT_VERSION=${{ steps.version_finder.outputs.current_version }} &&\
+          LATEST_VERSION=${{ steps.version_finder.outputs.latest_version }} &&\
+          export DOCKER_USERNAME=${DOCKER_USERNAME} && export DOCKER_PASSWORD=${DOCKER_PASSWORD} &&\
           ./builder.bash release-latest-docker-images ${CURRENT_VERSION}-amd64-static ${LATEST_VERSION}-amd64-static ||\
           echo 'Não tinha a imagem'
 

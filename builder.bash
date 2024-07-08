@@ -215,6 +215,8 @@ case $1 in
 
     docker push defreitas/dns-proxy-server:${TO_VERSION}
 
+    echo "> Success to image from=${FROM_VERSION} to=${TO_VERSION}"
+
   ;;
 
 esac
