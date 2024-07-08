@@ -20,9 +20,9 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v3
-#        with:
-#          fetch-depth: 0
-#          fetch-tags: true
+        with:
+          fetch-depth: 0
+          fetch-tags: true
 
       - name: Install Deps
         run: sudo apt-get install rename -y
@@ -71,16 +71,17 @@ jobs:
 #          git rev-parse "${{steps.release_download.outputs.release_name}}^{}" >/dev/null 2>&1 &&\
 #          echo "> Already released" && exit 3 || echo "Not released yet"
 
-      - name: Checkout current tag code
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ steps.release_download.outputs.tag_name }}
-          fetch-depth: 0
-#          fetch-tags: true
+#      - name: Checkout current tag code
+#        uses: actions/checkout@v3
+#        with:
+#          ref: ${{ steps.release_download.outputs.tag_name }}
+##          fetch-depth: 0
+##          fetch-tags: true
 
       - name: Create Latest Tag
         uses: rickstaa/action-create-tag@v1
         with:
+          commit_sha: ${{ steps.release_download.outputs.tag_name }}
           tag: ${{ steps.release_download.outputs.release_name }}
           tag_exists_error: true
 
@@ -110,10 +111,11 @@ jobs:
         with:
           name: ${{steps.release_download.outputs.release_name}}
           tag_name: ${{steps.release_download.outputs.release_name}}
-          make_latest: true
+          make_latest: false
           append_body: false
           body_path: VERSION-RELEASE-NOTES.md
-          files: ./artifacts/*
+          files: |
+            ./artifacts/*
 
       #      - name: Find Versions
 #        id: version_finder
