@@ -45,11 +45,6 @@ jobs:
 #          cat found-version.txt | grep -oP '\d+\.\d+.\d+' > latest-version.txt &&\
 #          cat found-version.txt && cat latest-version.txt
 
-#      - name: Check already released
-#        run: |
-#          LATEST_VERSION=$(cat latest-version.txt) &&\
-#          git rev-parse "${LATEST_VERSION}^{}" >/dev/null 2>&1 && echo "> Already released" && exit 3 || echo "Not released yet"
-
       - name: Download Artifacts
         id: release_download
         uses: robinraju/release-downloader@v1
@@ -72,18 +67,45 @@ jobs:
 #          echo ${{steps.release_download.outputs.tag_name}} ${{steps.release_download.outputs.release_name}} &&\
 #          echo ${{toJSON(steps.release_download.outputs)}}
 
-      - name: Checkout version
-        run: git checkout ${{steps.release_download.outputs.tag_name}}
+      - name: Check already released
+        run: |
+          git rev-parse "${{steps.release_download.outputs.release_name}}^{}" >/dev/null 2>&1 &&\
+          echo "> Already released" && exit 3 || echo "Not released yet"
 
+      - name: Checkout current tag code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.release_download.outputs.tag_name }}
+
+      - name: Create Latest Tag
+        uses: tvdias/github-tagger@v0.0.1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.release_download.outputs.release_name }}
+
+      - name: Generate Release Notes
+        uses: kemayo/actions-recent-changelog@v1
+        with:
+          input: RELEASE-NOTES.md
+          output: VERSION-RELEASE-NOTES.md
+
+      - name: Check Release Notes
+        run: cat ./VERSION-RELEASE-NOTES.md
+
+#      - name: Release Notes
+#        run: |
+#          cat RELEASE-NOTES.md |\
+#          sed -n '/## ${{steps.release_download.outputs.release_name}}/,/##/p' |\
+#          head -n-1 > VERSION-RELEASE-NOTES.md
 
       - name: Github release latest
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ env.APP_VERSION }}
-          append_body: true
-          body: ''
-          files: |
-            ./build/compressed-artifacts/*
+          name: ${{steps.release_download.outputs.release_name}}
+          make_latest: true
+          append_body: false
+          body_path: VERSION-RELEASE-NOTES.md
+          files: ./artifacts/*
 
       #      - name: Find Versions
 #        id: version_finder
