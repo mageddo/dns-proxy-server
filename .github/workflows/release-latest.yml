@@ -19,7 +19,7 @@ jobs:
     steps:
 
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           fetch-tags: true
@@ -92,12 +92,17 @@ jobs:
           echo ${{ steps.version_finder.outputs.current_version }}
 
       - name: Create Latest Tag
-        uses: rickstaa/action-create-tag@v1
-        with:
-          tag: ${{ steps.version_finder.outputs.latest_version }}
-          commit_sha: ${{ steps.version_finder.outputs.current_version }}
-          tag_exists_error: true
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git tag ${{ steps.version_finder.outputs.latest_version }} refs/tags/${{ steps.version_finder.outputs.current_version }} &&\
+          git push origin ${{ steps.version_finder.outputs.latest_version }} --tags
+
+#      - name: Create Latest Tag
+#        uses: rickstaa/action-create-tag@v1
+#        with:
+#          tag: ${{ steps.version_finder.outputs.latest_version }}
+#          commit_sha: ${{ steps.version_finder.outputs.current_version }}
+#          tag_exists_error: true
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
 
 #      - name: Create Latest Tag
 #        uses: tvdias/github-tagger@v0.0.1
