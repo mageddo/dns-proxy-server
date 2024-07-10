@@ -24,6 +24,32 @@ repositories {
 sourceCompatibility = JavaVersion.VERSION_21
 targetCompatibility = JavaVersion.VERSION_21
 
+sourceSets {
+  stressTest {
+    java {
+      srcDir 'src/stress-test/java'
+    }
+    resources {
+      srcDir 'src/stress-test/resources'
+    }
+    compileClasspath += sourceSets.test.runtimeClasspath
+    runtimeClasspath += sourceSets.test.runtimeClasspath
+  }
+}
+
+task stressTest(type: Test) {
+
+  testClassesDirs = sourceSets.stressTest.output.classesDirs
+  classpath += sourceSets.stressTest.runtimeClasspath
+
+  useJUnitPlatform()
+  include "**/*Test.class"
+  failFast = true
+  testLogging {
+    events "passed", "skipped", "failed"
+  }
+}
+
 dependencies {
 
   compileOnly('org.projectlombok:lombok:1.18.+')
