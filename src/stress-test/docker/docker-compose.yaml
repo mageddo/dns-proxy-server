@@ -1,0 +1,6 @@
+services:
+  app-instace:
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - 9256:9256
