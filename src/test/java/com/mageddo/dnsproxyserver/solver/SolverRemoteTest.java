@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.solver;
 
 import com.mageddo.dnsproxyserver.solver.remote.application.CircuitBreakerNonResilientService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,6 +15,8 @@ import testing.templates.MessageTemplates;
 import java.net.SocketTimeoutException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -40,6 +43,13 @@ class SolverRemoteTest {
   @InjectMocks
   SolverRemote solverRemote;
 
+  @BeforeEach
+  void beforeEach (){
+    doReturn(Executors.newVirtualThreadPerTaskExecutor())
+      .when(this.resolvers)
+      .getExecutor();
+  }
+
   @Test
   void mustCacheSolvedQueryFor5Minutes() throws Exception {
     // arrange
@@ -53,7 +63,7 @@ class SolverRemoteTest {
 
     doReturn(CompletableFuture.completedFuture(answer))
       .when(this.resolver)
-      .sendAsync(any());
+      .sendAsync(any(), any(Executor.class));
 
 
     doReturn(List.of(this.resolver))
@@ -81,7 +91,7 @@ class SolverRemoteTest {
 
     doReturn(CompletableFuture.completedFuture(answer))
       .when(this.resolver)
-      .sendAsync(any());
+      .sendAsync(any(), any(Executor.class));
 
 
     doReturn(List.of(this.resolver))
@@ -107,7 +117,7 @@ class SolverRemoteTest {
 
     doReturn(CompletableFuture.failedFuture(new SocketTimeoutException("Deu ruim")))
       .when(this.resolver)
-      .sendAsync(any());
+      .sendAsync(any(), any(Executor.class));
 
     doReturn(List.of(this.resolver))
       .when(this.resolvers)
@@ -137,7 +147,7 @@ class SolverRemoteTest {
 
     doReturn(CompletableFuture.completedFuture(res))
       .when(this.resolver)
-      .sendAsync(any());
+      .sendAsync(any(), any(Executor.class));
 
     doReturn(List.of(this.resolver))
       .when(this.resolvers)
