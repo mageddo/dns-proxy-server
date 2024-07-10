@@ -16,6 +16,7 @@ import java.time.Duration;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -35,7 +36,7 @@ public class TCPServer implements AutoCloseable {
 
   @Inject
   public TCPServer() {
-    this.serverThreadPool = ThreadPool.newFixed(50);
+    this.serverThreadPool = Executors.newVirtualThreadPerTaskExecutor();
     this.clients = new LinkedHashSet<>();
   }
 
