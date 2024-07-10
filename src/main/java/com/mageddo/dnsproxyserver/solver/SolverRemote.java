@@ -87,7 +87,7 @@ public class SolverRemote implements Solver, AutoCloseable {
   }
 
   Result queryResultWhilePingingResolver(Request req) {
-    final var resFuture = req.sendQueryAsyncToResolver();
+    final var resFuture = req.sendQueryAsyncToResolver(this.delegate.getExecutor());
     this.netWatchdog.watch(req.getResolverAddr(), resFuture, PING_TIMEOUT_IN_MS);
     return this.transformToResult(resFuture, req);
   }

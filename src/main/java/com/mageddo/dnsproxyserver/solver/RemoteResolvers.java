@@ -3,14 +3,19 @@ package com.mageddo.dnsproxyserver.solver;
 import com.mageddo.net.IpAddr;
 
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Function;
 
-public class RemoteResolvers {
+public class RemoteResolvers implements AutoCloseable {
 
   private final List<Resolver> resolvers;
+  private final ExecutorService executor;
 
-  private RemoteResolvers(List<Resolver> resolvers) {
+  private RemoteResolvers(List<Resolver> resolvers, ExecutorService executor) {
     this.resolvers = resolvers;
+    this.executor = executor;
   }
 
   public static RemoteResolvers of(List<IpAddr> servers, final Function<IpAddr, Resolver> resolverProvider) {
@@ -18,10 +23,19 @@ public class RemoteResolvers {
       .stream()
       .map(resolverProvider)
       .toList();
-    return new RemoteResolvers(resolvers);
+    return new RemoteResolvers(resolvers, Executors.newVirtualThreadPerTaskExecutor());
   }
 
   public List<Resolver> resolvers() {
     return this.resolvers;
+  }
+
+  @Override
+  public void close() throws Exception {
+    this.executor.close();
+  }
+
+  public Executor getExecutor() {
+    return this.executor;
   }
 }
