@@ -1,13 +1,18 @@
 package com.mageddo.dnsproxyserver;
 
 import com.mageddo.commons.exec.CommandLines;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.StopWatch;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 
+@Slf4j
 public class DpsStressTest {
 
   @Test
@@ -16,15 +21,23 @@ public class DpsStressTest {
     final var executor = Executors.newVirtualThreadPerTaskExecutor();
 
     try (executor) {
-
-      final var tasks = this.buildBatchRequestTasks();
-      executor.invokeAll(tasks);
+      this.doNRequestsFor(executor, 1_000, Duration.ofSeconds(20));
     }
 
   }
 
-  private List<Callable<Object>> buildBatchRequestTasks() {
-    return IntStream.range(1, 1_000)
+  void doNRequestsFor(ExecutorService executor, int requests, Duration duration) throws InterruptedException {
+    final var stopWatch = StopWatch.createStarted();
+    while (stopWatch.getTime() < duration.toMillis()) {
+      stopWatch.split();
+      final var tasks = this.buildBatchRequestTasks(requests);
+      executor.invokeAll(tasks);
+      log.info("status=done, requests={}, stepDur={}, totalDur={}", requests, stopWatch.getSplitTime(), stopWatch.getTime());
+    }
+  }
+
+  private List<Callable<Object>> buildBatchRequestTasks(int requests) {
+    return IntStream.range(1, requests)
       .boxed()
       .map(it -> this.requestRandomQueryToDps())
       .toList();
