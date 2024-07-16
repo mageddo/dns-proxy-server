@@ -15,4 +15,10 @@ public class ConfigJsonTemplates {
     final var path = "/configs-test/007.json";
     return JsonConfigs.loadConfig(TestUtils.readString(path));
   }
+
+  public static ConfigJson noRemoteServerFlagsSet() {
+    final var path = "/configs-test/008.json";
+    return JsonConfigs.loadConfig(TestUtils.readString(path));
+  }
+
 }

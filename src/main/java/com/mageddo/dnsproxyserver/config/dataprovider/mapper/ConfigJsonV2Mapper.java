@@ -36,13 +36,19 @@ public class ConfigJsonV2Mapper {
   }
 
   static SolverRemote toSolverRemote(ConfigJson json) {
-    if (isPossibleToBuildComplete(json)) {
+    if(nothingIsSet(json)){
+      return null;
+    } else if (isPossibleToBuildComplete(json)) {
       return buildCompleteSolverRemote(json, json.getSolverRemoteCircuitBreaker());
     }
     return buildSimpleSolverRemote(json);
   }
 
-  private static boolean isPossibleToBuildComplete(ConfigJson json) {
+  static boolean nothingIsSet(ConfigJson json) {
+    return ObjectUtils.allNull(json.getNoRemoteServers(), json.getSolverRemote(), json.getSolverRemoteCircuitBreaker());
+  }
+
+  static boolean isPossibleToBuildComplete(ConfigJson json) {
     return ObjectUtils.allNotNull(json.getSolverRemote(), json.getSolverRemoteCircuitBreaker());
   }
 

@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class ConfigJsonV2MapperTest {
 
@@ -36,6 +37,18 @@ class ConfigJsonV2MapperTest {
 
     // assert
     assertFalse(config.isSolverRemoteActive());
+  }
+
+  @Test
+  void mustReturnNullWhenNothingIsSet(){
+    // arrange
+    final var configJson = ConfigJsonTemplates.noRemoteServerFlagsSet();
+
+    // act
+    final var config = toConfig(configJson);
+
+    // assert
+    assertNull(config.getSolverRemote());
   }
 
   static Config toConfig(ConfigJson configJson) {
