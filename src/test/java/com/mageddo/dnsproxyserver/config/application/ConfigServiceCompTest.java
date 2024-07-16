@@ -81,7 +81,7 @@ class ConfigServiceCompTest {
   @Test
   void mustDisableRemoteServersRespectingConfig(@TempDir Path tmpDir){
     // arrange
-    writeCustomConfigFile(tmpDir, "/configs-test/006.json");
+    writeAndSetCustomConfigFile(tmpDir, "/configs-test/006.json");
 
     // act
     final var config = Configs.getContext()
@@ -106,9 +106,10 @@ class ConfigServiceCompTest {
     assertEquals(readAndSortJson(expectedFilePath), readAndSortJson(jsonConfigFile));
   }
 
-  static void writeCustomConfigFile(Path tmpDir, String sourceConfigFile) {
+  static void writeAndSetCustomConfigFile(Path tmpDir, String sourceConfigFile) {
     final var configPathToUse = tmpDir.resolve("tmpfile.json");
     writeCurrentConfigFile(sourceConfigFile, configPathToUse);
+    ConfigDAOCmdArgs.setArgs(new String[]{"--conf-path", configPathToUse.toString()});
   }
 
   @SneakyThrows
