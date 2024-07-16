@@ -49,4 +49,6 @@ public interface ConfigJson {
 
   ConfigJsonV2.SolverRemote getSolverRemote();
 
+  ConfigJsonV2.CircuitBreaker getSolverRemoteCircuitBreaker();
+
 }

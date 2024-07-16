@@ -88,6 +88,15 @@ public class ConfigJsonV2 implements ConfigJson {
     return this.dockerSolverHostMachineFallbackActive;
   }
 
+  @JsonIgnore
+  @Override
+  public CircuitBreaker getSolverRemoteCircuitBreaker() {
+    if (this.solverRemote != null) {
+      return this.solverRemote.circuitBreaker;
+    }
+    return null;
+  }
+
   @Data
   @Accessors(chain = true)
   public static class Env {

@@ -2,7 +2,6 @@ package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJson;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import testing.templates.ConfigJsonTemplates;
 
@@ -28,7 +27,6 @@ class ConfigJsonV2MapperTest {
   }
 
   @Test
-  @Disabled("by the bug reported at #513")
   void mustMapSolverRemoteAsInactiveEvenWhenCircuitBreakerIsNOTSet(){
     // arrange
     final var configJson = ConfigJsonTemplates.withoutCircuitBreakerDefinedWithNoRemoteServers();
