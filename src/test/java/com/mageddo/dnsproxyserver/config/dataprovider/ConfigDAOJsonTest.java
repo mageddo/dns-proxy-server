@@ -60,7 +60,6 @@ class ConfigDAOJsonTest {
     );
   }
 
-
   @Test
   void mustDisableRemoteServersRespectingConfig(@TempDir Path tmpDir) {
     // arrange
