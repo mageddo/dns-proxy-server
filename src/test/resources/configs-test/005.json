@@ -1,0 +1,28 @@
+{
+  "version" : 2,
+  "activeEnv" : "MARROI",
+  "remoteDnsServers" : [ ],
+  "envs" : [ {
+    "name" : "MARROI",
+    "hostnames" : null
+  } ],
+  "webServerPort" : 9393,
+  "dnsServerPort" : 5391,
+  "defaultDns" : false,
+  "logLevel" : "DEBUG",
+  "logFile" : "true",
+  "registerContainerNames" : true,
+  "hostMachineHostname" : "batata.com",
+  "domain" : "acme",
+  "dpsNetwork" : true,
+  "dpsNetworkAutoConnect" : true,
+  "noRemoteServers": true,
+  "solverRemote" : {
+    "circuitBreaker" : {
+      "failureThreshold" : 3,
+      "failureThresholdCapacity" : 10,
+      "successThreshold" : 5,
+      "testDelay" : "PT1M"
+    }
+  }
+}
