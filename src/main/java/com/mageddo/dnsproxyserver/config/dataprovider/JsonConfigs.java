@@ -38,10 +38,16 @@ public class JsonConfigs {
       createDefault(configPath);
     }
 
+    return loadConfig(Files.readString(configPath));
+
+  }
+
+  @SneakyThrows
+  public static ConfigJson loadConfig(String jsonContent) {
     final var objectMapper = JsonUtils.instance();
-    final var tree = objectMapper.readTree(configPath.toFile());
+    final var tree = objectMapper.readTree(jsonContent);
     if (tree.isEmpty()) {
-      log.info("status=emptyConfigFile, action=usingDefault, file={}", configPath);
+      log.info("status=emptyConfigFile, action=usingDefault");
       return new ConfigJsonV2();
     }
     final var version = findVersion(tree);
@@ -52,7 +58,6 @@ public class JsonConfigs {
         "unsupported config file version=%d, supported=%s", version, supportedVersions
       ));
     };
-
   }
 
   @SneakyThrows
