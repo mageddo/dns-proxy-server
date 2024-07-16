@@ -1,3 +1,6 @@
+## 3.24.1
+* Fixing `noRemoteServers` wasn't being respected at the JSON file #513
+
 ## 3.24.0
 * Downgraded necessary libc version to run aarch binary to 2.28 #507
 
