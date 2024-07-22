@@ -2,6 +2,8 @@ services:
   dps-stress-test-instance:
     build:
       dockerfile: Dockerfile
+    environment:
+      - MG_LOG_LEVEL=TRACE
     ports:
       - 9256:9256
       - 5753:53/udp

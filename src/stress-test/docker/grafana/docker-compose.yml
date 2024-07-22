@@ -13,6 +13,8 @@ services:
       - "3000:3000"
     environment:
       - GF_SERVER_DOMAIN=grafana.docker
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
 #    volumes:
 #      - /data/databases/stg/grafana:/var/lib/grafana
 #      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
