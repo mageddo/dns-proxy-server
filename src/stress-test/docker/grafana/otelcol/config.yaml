@@ -1,0 +1,59 @@
+# https://github.com/open-telemetry/opentelemetry-collector/blob/main/receiver/otlpreceiver/README.md
+receivers:
+  otlp:
+    protocols:
+      grpc: #:4317
+      http: #:4318
+
+processors:
+  # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/cumulativetodeltaprocessor
+  cumulativetodelta:
+
+  # https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor/batchprocessor
+  batch:
+
+exporters:
+
+  logging:
+    verbosity: Detailed
+
+  prometheus:
+    endpoint: ":9595"
+    namespace: "otel"
+    send_timestamps: true
+    metric_expiration: 180m
+    enable_open_metrics: true
+    add_metric_suffixes: false
+    resource_to_telemetry_conversion:
+      enabled: true
+
+  # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/zipkinexporter
+  # zipkin:
+  #   endpoint: "http://jaeger.docker:9411/api/v2/spans"
+  #   format: proto
+  #   default_service_name: unknown-service
+
+  # https://github.com/open-telemetry/opentelemetry-collector/tree/main/exporter/otlpexporter
+  otlp:
+    endpoint: "http://jaeger.docker:4317"
+    tls:
+      insecure: true
+
+service:
+  
+  pipelines:
+    traces:
+      receivers: [ otlp ]
+      processors: [ batch ]
+      exporters: [ logging, otlp ]
+    
+    metrics:
+      receivers: [ otlp ]
+      processors: [ batch ]
+      exporters: [ logging, prometheus ]
+  
+  telemetry:
+    logs:
+      level: "debug"
+    metrics:
+      address: ":9696"

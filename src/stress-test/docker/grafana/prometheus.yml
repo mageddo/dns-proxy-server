@@ -1,0 +1,5 @@
+scrape_configs:
+  - job_name: 'dps-instance-collector'
+    scrape_interval: 3s # for demo purpose
+    static_configs:
+      - targets: ['dps-stress-test-instance.docker:9256']
