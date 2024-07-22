@@ -12,6 +12,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 @Slf4j
 public class DpsStressTest {
 
@@ -19,7 +22,6 @@ public class DpsStressTest {
   void test() throws Exception {
 
     final var executor = Executors.newVirtualThreadPerTaskExecutor();
-
     try (executor) {
       this.doNRequestsFor(executor, 1_000, Duration.ofSeconds(20));
     }
@@ -46,7 +48,9 @@ public class DpsStressTest {
 
   private Callable<Object> requestRandomQueryToDps() {
     return () -> {
-      CommandLines.exec("dig google.com", "@127.0.0.1", "-p5753");
+      final var result = CommandLines.exec("dig google.com", "@127.0.0.1", "-p5753");
+      result.checkExecution();
+      assertThat(result.getOutAsString(), containsString("status: NOERROR"));
       return null;
     };
   }
