@@ -7,7 +7,7 @@ pre: "<b>4. </b>"
 Start DPS Instance to be tested
 
 ```bash
-docker-compose -f src/stress-test/docker/dps-stress-test-instance/docker-compose.yml up  --build
+docker-compose -f src/stress-test/docker/dps-stress-test-instance/docker-compose.yml up --build
 ```
 
 Start Grafana Stack to Collect Performance Metrics

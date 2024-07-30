@@ -15,7 +15,10 @@ services:
       - GF_SERVER_DOMAIN=grafana.docker
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
-#    volumes:
+    volumes:
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources:ro
+
+
 #      - /data/databases/stg/grafana:/var/lib/grafana
 #      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
 #

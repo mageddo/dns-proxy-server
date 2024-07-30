@@ -48,7 +48,7 @@ public class DpsStressTest {
 
   private Callable<Object> requestRandomQueryToDps() {
     return () -> {
-      final var result = CommandLines.exec("dig google.com", "@127.0.0.1", "-p5753");
+      final var result = CommandLines.exec("dig %s %s %s", "host.docker", "@127.0.0.1", "-p5753");
       result.checkExecution();
       assertThat(result.getOutAsString(), containsString("status: NOERROR"));
       return null;

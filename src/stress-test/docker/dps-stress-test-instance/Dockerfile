@@ -7,10 +7,14 @@ RUN mkdir /process-exporter && mkdir -p /var/log/supervisord &&\
     curl -sL ${PROCESS_EXPORTER_URL} > /tmp/process-exporter.tgz &&\
     tar --strip 1 -zxvf /tmp/process-exporter.tgz -C /process-exporter
 
-ARG APP_URL=https://github.com/mageddo/dns-proxy-server/releases/download/3.24.0-snapshot/dns-proxy-server-linux-amd64-3.24.0-snapshot.tgz
-RUN mkdir /app &&\
-    curl -sL ${APP_URL} > /tmp/app.tgz &&\
-    tar --strip 1 -zxvf /tmp/app.tgz -C /app
+# from website
+#ARG APP_URL=https://github.com/mageddo/dns-proxy-server/releases/download/3.24.0-snapshot/dns-proxy-server-linux-amd64-3.24.0-snapshot.tgz
+# RUN mkdir /app &&\
+#    curl -sL ${APP_URL} > /tmp/app.tgz &&\
+#    tar --strip 1 -zxvf /tmp/app.tgz -C /app
+
+# from local build
+
 
 WORKDIR /process-exporter
 
