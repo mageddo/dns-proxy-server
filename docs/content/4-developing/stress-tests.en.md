@@ -1,6 +1,5 @@
 ---
 title: Stress Tests
-weight: 4
 pre: "<b>4. </b>"
 ---
 

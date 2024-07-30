@@ -1,7 +1,7 @@
 ---
 title: Release Process
 weight: 7
-pre: "<b>7. </b>"
+pre: "<b>3. </b>"
 ---
 
 ## Feature Request - Phase 1

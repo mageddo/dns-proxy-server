@@ -1,7 +1,7 @@
 ---
 title: Compiling from source
 weight: 4
-pre: "<b>4. </b>"
+pre: "<b>1. </b>"
 ---
 
 ## Requirements
