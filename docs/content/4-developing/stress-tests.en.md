@@ -7,6 +7,8 @@ pre: "<b>4. </b>"
 Start DPS Instance to be tested
 
 ```bash
+./gradlew clean build compTest shadowJar nativeImageJar nativeCompile -i
+cp build/native/nativeCompile/dns-proxy-server ./src/stress-test/docker/dps-stress-test-instance/files/
 docker-compose -f src/stress-test/docker/dps-stress-test-instance/docker-compose.yml up --build
 ```
 
