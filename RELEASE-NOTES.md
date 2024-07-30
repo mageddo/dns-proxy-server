@@ -1,3 +1,6 @@
+## 3.25.0
+* Optimize resource utilization by using Java Virtual Threads #436.
+
 ## 3.24.0
 * Downgraded necessary libc version to run aarch binary to 2.28 #507
 
