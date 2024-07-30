@@ -1,8 +1,1 @@
-## Running
-
-```bash
-$ docker-compose build --no-cache && docker-compose up --force-recreate
-```
-
-## Reference
-* https://prometheus.io/docs/prometheus/latest/installation/
+../../../../docs/content/4-developing/stress-tests.en.md
