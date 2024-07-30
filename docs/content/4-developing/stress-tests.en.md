@@ -24,5 +24,6 @@ Run the Stress Test Suite
 ./gradlew build stressTest
 ```
 
+Access http://localhost:3000 to see the metrics
 
 [1]: {{%relref "1-getting-started/requirements/_index.en.md" %}}
