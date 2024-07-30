@@ -7,6 +7,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
@@ -21,7 +22,7 @@ class AppCompTest {
   void mustExitWhenHelpCmd() {
     // arrange
     final var args = new String[]{"--help"};
-    this.app = spy(new App(args));
+    this.setupStub(args);
 
     final var expectedException = this.mockExitMethod();
 
@@ -34,12 +35,11 @@ class AppCompTest {
     verify(this.app, never()).findConfig(any());
   }
 
-
   @Test
   void mustExitWhenVersionCmd() {
     // arrange
     final var args = new String[]{"--version"};
-    this.app = spy(new App(args));
+    this.setupStub(args);
 
     final var expectedException = this.mockExitMethod();
 
@@ -55,7 +55,8 @@ class AppCompTest {
   void mustCreateTmpDirIfNotExists() {
     // arrange
     final var args = new String[]{"--create-tmp-dir"};
-    this.app = spy(new App(args));
+    this.setupStub(args);
+    doNothing().when(this.app).startContext();
 
     // act
     this.app.start();
@@ -63,6 +64,7 @@ class AppCompTest {
     // assert
     verify(this.app).createTmpDirIfNotExists();
     verify(this.app, never()).exitGracefully();
+    verify(this.app).startContext();
 
   }
 
@@ -74,6 +76,10 @@ class AppCompTest {
       .exitGracefully()
     ;
     return expectedException;
+  }
+
+  private void setupStub(String[] args) {
+    this.app = spy(new App(args));
   }
 
 }

@@ -71,3 +71,5 @@ issues
 /files
 tmp/
 Poc.java
+
+src/stress-test/docker/dps-stress-test-instance/files
