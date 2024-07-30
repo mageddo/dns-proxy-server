@@ -1,6 +1,12 @@
 ## 3.25.0
 * Optimize resource utilization by using Java Virtual Threads #436.
 
+## 3.24.2
+* Mitigate arm release failure due inexistence of required debian package #517
+
+## 3.24.1
+* Fixing `noRemoteServers` wasn't being respected at the JSON file since `3.19.2` #513
+
 ## 3.24.0
 * Downgraded necessary libc version to run aarch binary to 2.28 #507
 

@@ -2,9 +2,11 @@ package com.mageddo.dnsproxyserver.config.application;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.LogLevel;
-import com.mageddo.dnsproxyserver.config.di.Context;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOCmdArgs;
+import com.mageddo.dnsproxyserver.config.di.Context;
 import dagger.sheath.junit.DaggerTest;
+import lombok.SneakyThrows;
+import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -14,6 +16,7 @@ import java.nio.file.Path;
 
 import static com.mageddo.utils.TestUtils.readAndSortJson;
 import static com.mageddo.utils.TestUtils.readAndSortJsonExcluding;
+import static com.mageddo.utils.TestUtils.readAsStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -55,21 +58,10 @@ class ConfigServiceCompTest {
       ;
 
     // assert
-    assertParsedConfig(config);
-    assertWrittenFile(jsonConfigFile);
+    assertParsedConfig(config, "/configs-test/001.json");
+    assertWrittenFile("/configs-test/002.json", jsonConfigFile);
   }
 
-  static void assertParsedConfig(Config config) {
-    assertEquals(
-      readAndSortJsonExcluding("/configs-test/001.json", excludingFields),
-      readAndSortJsonExcluding(config, excludingFields)
-    );
-  }
-
-  static void assertWrittenFile(Path jsonConfigFile) {
-    assertTrue(Files.exists(jsonConfigFile));
-    assertEquals(readAndSortJson("/configs-test/002.json"), readAndSortJson(jsonConfigFile));
-  }
 
   @Test
   void mustParseLowerCaseLogLevel(){
@@ -84,5 +76,46 @@ class ConfigServiceCompTest {
 
     // assert
     assertEquals(LogLevel.WARNING, config.getLogLevel());
+  }
+
+  @Test
+  void mustDisableRemoteServersRespectingConfig(@TempDir Path tmpDir){
+    // arrange
+    writeAndSetCustomConfigFile(tmpDir, "/configs-test/006.json");
+
+    // act
+    final var config = Configs.getContext()
+      .configService()
+      .findCurrentConfig()
+      ;
+
+    // assert
+    assertFalse(config.isSolverRemoteActive());
+
+  }
+
+  static void assertParsedConfig(Config config, String expectedFilePath) {
+    assertEquals(
+      readAndSortJsonExcluding(expectedFilePath, excludingFields),
+      readAndSortJsonExcluding(config, excludingFields)
+    );
+  }
+
+  static void assertWrittenFile(String expectedFilePath, Path jsonConfigFile) {
+    assertTrue(Files.exists(jsonConfigFile));
+    assertEquals(readAndSortJson(expectedFilePath), readAndSortJson(jsonConfigFile));
+  }
+
+  static void writeAndSetCustomConfigFile(Path tmpDir, String sourceConfigFile) {
+    final var configPathToUse = tmpDir.resolve("tmpfile.json");
+    writeCurrentConfigFile(sourceConfigFile, configPathToUse);
+    ConfigDAOCmdArgs.setArgs(new String[]{"--conf-path", configPathToUse.toString()});
+  }
+
+  @SneakyThrows
+  static void writeCurrentConfigFile(String sourceResource, Path target) {
+    try (var out = Files.newOutputStream(target)) {
+      IOUtils.copy(readAsStream(sourceResource), out);
+    }
   }
 }

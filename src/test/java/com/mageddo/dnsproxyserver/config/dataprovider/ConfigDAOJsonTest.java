@@ -16,7 +16,7 @@ import static com.mageddo.utils.TestUtils.readAndSortJsonExcluding;
 import static com.mageddo.utils.TestUtils.readAsStream;
 import static com.mageddo.utils.TestUtils.sortJsonExcluding;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @ExtendWith(MockitoExtension.class)
 class ConfigDAOJsonTest {
@@ -46,10 +46,9 @@ class ConfigDAOJsonTest {
   @Test
   void mustReadAndRespectStoredConfigFile(@TempDir Path tmpDir) {
     // arrange
-    final var sorceConfigFile = "/configs-test/003.json";
+    final var sourceConfigFile = "/configs-test/003.json";
     final var configPathToUse = tmpDir.resolve("tmpfile.json");
-    writeCurrentConfigFile(sorceConfigFile, configPathToUse);
-    assertTrue(Files.exists(configPathToUse));
+    writeCurrentConfigFile(sourceConfigFile, configPathToUse);
 
     // act
     final var config = this.configDAOJson.find(configPathToUse);
@@ -59,6 +58,20 @@ class ConfigDAOJsonTest {
       readAndSortJsonExcluding("/configs-test/004.json", excludingFields),
       sortJsonExcluding(config, excludingFields)
     );
+  }
+
+  @Test
+  void mustDisableRemoteServersRespectingConfig(@TempDir Path tmpDir) {
+    // arrange
+    final var sourceConfigFile = "/configs-test/005.json";
+    final var configPathToUse = tmpDir.resolve("tmpfile.json");
+    writeCurrentConfigFile(sourceConfigFile, configPathToUse);
+
+    // act
+    final var config = this.configDAOJson.find(configPathToUse);
+
+    // assert
+    assertFalse(config.isSolverRemoteActive());
   }
 
   @SneakyThrows
