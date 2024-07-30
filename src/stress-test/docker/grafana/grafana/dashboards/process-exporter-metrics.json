@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 3,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -406,13 +406,13 @@
     "list": []
   },
   "time": {
-    "from": "2024-07-30T18:59:30.000Z",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Process Metrics",
-  "uid": "d3bb202e-917d-472c-9b90-0df4756b1357",
-  "version": 3,
+  "uid": "a6578fa9-ff10-4669-83d6-1f36d3c7873f",
+  "version": 1,
   "weekStart": ""
 }
