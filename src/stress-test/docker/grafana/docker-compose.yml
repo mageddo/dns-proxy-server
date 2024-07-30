@@ -18,13 +18,3 @@ services:
     volumes:
       - ./grafana/provisioning:/etc/grafana/provisioning:ro
       - ./grafana/dashboards:/var/lib/grafana/dashboards
-
-#      - /data/databases/stg/grafana:/var/lib/grafana
-#      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
-#
-#  otel-collector:
-#    image: otel/opentelemetry-collector-contrib:0.86.0
-#    command: ["--config=/etc/otelcol/config.yaml", "${OTELCOL_ARGS}"]
-#    hostname: otel-prometheus-collector.docker
-#    volumes:
-#      - ./otelcol/config.yaml:/etc/otelcol/config.yaml
