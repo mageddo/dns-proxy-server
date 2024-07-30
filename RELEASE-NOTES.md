@@ -1,5 +1,5 @@
 ## 3.25.1
-* Ensure thread will have names at the logs, behavior changed since `3.25.0` #436.
+* Ensure thread will have name at the logs, behavior changed since `3.25.0` #436.
 
 ## 3.25.0
 * Optimize resource utilization by using Java Virtual Threads #436.
