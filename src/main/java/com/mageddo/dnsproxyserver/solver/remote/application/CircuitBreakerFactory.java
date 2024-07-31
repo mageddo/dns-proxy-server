@@ -7,6 +7,7 @@ import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.dataprovider.SolverConsistencyGuaranteeDAO;
 import com.mageddo.dnsproxyserver.solver.remote.mapper.CircuitBreakerStateMapper;
 import dev.failsafe.CircuitBreaker;
+import dev.failsafe.Failsafe;
 import dev.failsafe.event.CircuitBreakerStateChangedEvent;
 import dev.failsafe.event.EventListener;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import javax.inject.Singleton;
 import java.net.InetSocketAddress;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 @Slf4j
 @Singleton
@@ -29,7 +31,14 @@ public class CircuitBreakerFactory {
   private final CircuitBreakerCheckerService circuitBreakerCheckerService;
   private final SolverConsistencyGuaranteeDAO solverConsistencyGuaranteeDAO;
 
-  public CircuitBreaker<Result> createCircuitBreakerFor(InetSocketAddress address) {
+  public Result check(InetSocketAddress remoteAddress, Supplier<Result> sup) {
+    final var circuitBreaker = this.createOrGetCircuitBreaker(remoteAddress);
+    return Failsafe
+      .with(circuitBreaker)
+      .get((ctx) -> sup.get());
+  }
+
+  CircuitBreaker<Result> createOrGetCircuitBreaker(InetSocketAddress address) {
     final var config = this.findCircuitBreakerConfig();
     return this.circuitBreakerMap.computeIfAbsent(address, addr -> buildCircuitBreaker(addr, config));
   }
@@ -90,4 +99,5 @@ public class CircuitBreakerFactory {
   public void reset(){
     this.circuitBreakerMap.clear();
   }
+
 }

@@ -43,6 +43,11 @@ public class CircuitBreakerCheckerService {
       });
   }
 
+  /**
+   * // todo Ping isn't being effective.
+   * @see https://github.com/mageddo/dns-proxy-server/issues/526#issuecomment-2261421618
+   * @return
+   */
   boolean ping(InetSocketAddress server) {
     return Networks.ping(server, SolverRemote.PING_TIMEOUT_IN_MS);
   }

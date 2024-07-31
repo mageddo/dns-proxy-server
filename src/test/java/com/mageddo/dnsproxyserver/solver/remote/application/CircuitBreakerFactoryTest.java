@@ -29,7 +29,7 @@ class CircuitBreakerFactoryTest {
     doReturn(true).when(this.factory).circuitBreakerSafeCheck(any());
 
     final var addr = InetSocketAddressTemplates._8_8_8_8();
-    this.factory.createCircuitBreakerFor(addr);
+    this.factory.createOrGetCircuitBreaker(addr);
 
     // act
     final var result = this.factory.checkCreatedCircuits();
@@ -50,7 +50,7 @@ class CircuitBreakerFactoryTest {
     doReturn(false).when(this.factory).circuitBreakerSafeCheck(any());
 
     final var addr = InetSocketAddressTemplates._8_8_8_8();
-    this.factory.createCircuitBreakerFor(addr);
+    this.factory.createOrGetCircuitBreaker(addr);
 
     // act
     final var result = this.factory.checkCreatedCircuits();
