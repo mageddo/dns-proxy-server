@@ -70,6 +70,8 @@ dependencies {
   implementation('info.picocli:picocli:4.7.1')
   implementation('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1')
 
+  implementation('com.github.ben-manes.caffeine:caffeine:3.1.8')
+
   testAnnotationProcessor("com.google.dagger:dagger-compiler:2.45")
 
   testCompileOnly('org.projectlombok:lombok:1.18.+')

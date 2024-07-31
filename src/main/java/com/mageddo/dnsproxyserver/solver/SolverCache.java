@@ -23,9 +23,9 @@ import static com.mageddo.dns.utils.Messages.findQuestionType;
 @RequiredArgsConstructor
 public class SolverCache {
 
+  private final Name name;
   private final LruTTLCache cache = new LruTTLCache(2048, Duration.ofSeconds(5), false);
 
-  private final Name name;
 
   public Message handle(Message query, Function<Message, Response> delegate) {
     return Objects.mapOrNull(this.handleRes(query, delegate), Response::getMessage);
@@ -82,4 +82,11 @@ public class SolverCache {
     return this.name;
   }
 
+  public int refreshAndGetSize() {
+    this.cache.asMap()
+      .keySet()
+      .forEach(this.cache::containsKey)
+    ;
+    return this.cache.getSize();
+  }
 }

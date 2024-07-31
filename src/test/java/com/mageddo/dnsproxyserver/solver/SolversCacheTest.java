@@ -1,14 +1,15 @@
 package com.mageddo.dnsproxyserver.solver;
 
+import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.solver.CacheName.Name;
-import com.mageddo.dnsproxyserver.solver.Response;
-import com.mageddo.dnsproxyserver.solver.SolverCache;
-import testing.templates.MessageTemplates;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.xbill.DNS.Flags;
+import testing.templates.MessageTemplates;
+
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -19,6 +20,29 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class SolversCacheTest {
 
   SolverCache cache = new SolverCache(Name.GLOBAL);
+
+  @Test
+  void mustCacheForTheSpecifiedTime(){
+
+    // arrange
+    final var req = MessageTemplates.acmeAQuery();
+
+    // act
+    final var res = this.cache.handleRes(req, message -> {
+      return Response.of(Messages.aAnswer(message, "0.0.0.0"), Duration.ofMillis(50));
+    });
+
+    // assert
+    assertNotNull(res);
+    assertEquals(1, this.refreshAndGetSize());
+
+    Threads.sleep(res.getDpsTtl().plusMillis(10));
+    assertEquals(0, this.refreshAndGetSize());
+  }
+
+  private int refreshAndGetSize() {
+    return this.cache.refreshAndGetSize();
+  }
 
   @Test
   void mustCacheAndGetValidResponse(){
