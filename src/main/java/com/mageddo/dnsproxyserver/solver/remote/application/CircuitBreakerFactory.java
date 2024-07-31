@@ -17,6 +17,7 @@ import org.apache.commons.lang3.time.StopWatch;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.net.InetSocketAddress;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
@@ -98,6 +99,19 @@ public class CircuitBreakerFactory {
 
   public void reset(){
     this.circuitBreakerMap.clear();
+  }
+
+  public List<Pair<String, String>> stats(){
+    return this.circuitBreakerMap.keySet()
+      .stream()
+      .map(this::toStats)
+      .toList();
+  }
+
+  private Pair<String, String> toStats(InetSocketAddress remoteAddr) {
+    final var circuitBreaker = this.circuitBreakerMap.get(remoteAddr);
+    final var state = circuitBreaker.getState().name();
+    return Pair.of(remoteAddr.toString(), state);
   }
 
 }

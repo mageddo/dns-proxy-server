@@ -1,3 +1,8 @@
+## 3.25.4
+* Disable CircuitBreaker check by using ping, keep using the queries to check the server status #526
+* Disable Cache Flush when Circuit Breaker change state to Half Open #526
+* Log Remote Servers circuit states #526
+
 ## 3.25.3
 * Resources utilization optimization by disabling connection check at every query #524
 
