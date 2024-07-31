@@ -19,11 +19,13 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,7 +49,8 @@ class SolverRemoteTest {
 
   @BeforeEach
   void beforeEach (){
-    doReturn(Executors.newThreadExecutor())
+    lenient()
+      .doReturn(Executors.newThreadExecutor())
       .when(this.resolvers)
       .getExecutor();
   }
@@ -164,13 +167,14 @@ class SolverRemoteTest {
     assertEquals(Response.DEFAULT_SUCCESS_TTL, result.getDpsTtl());
   }
 
-
   @Test
   void mustPingRemoteServerWhileQueryingWhenFeatureIsActive(){
 
     // arrange
     final var query = MessageTemplates.acmeAQuery();
     final var answer = MessageTemplates.buildAAnswer(query);
+
+    doReturn(true).when(this.solverRemote).isPingWhileGettingQueryResponseActive();
 
     doReturn(InetSocketAddressTemplates._8_8_8_8())
       .when(this.resolver)
@@ -194,5 +198,17 @@ class SolverRemoteTest {
     verify(this.solverRemote).pingWhileGettingQueryResponse(any(), any());
 
   }
+
+  @Test
+  void pingRemoteServerWhileQueryingDisabledByDefault(){
+
+    // act
+    final var active = this.solverRemote.isPingWhileGettingQueryResponseActive();
+
+    // assert
+    assertFalse(active);
+
+  }
+
 
 }
