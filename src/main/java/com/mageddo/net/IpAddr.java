@@ -44,6 +44,11 @@ public class IpAddr {
     return IpUtils.toIpAddr(addr);
   }
 
+
+  public static IpAddr of(String ip, int port) {
+    return IpAddr.of(IP.of(ip), port);
+  }
+
   public static IpAddr of(IP ip) {
     return of(ip, null);
   }

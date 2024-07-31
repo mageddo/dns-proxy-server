@@ -13,4 +13,9 @@ public class SocketUtils {
       return server.getLocalPort();
     }
   }
+
+  @SneakyThrows
+  public static ServerSocket createServerOnRandomPort(){
+    return new ServerSocket(0);
+  }
 }

@@ -1,5 +1,8 @@
 package com.mageddo.dnsproxyserver.solver.remote.application;
 
+import com.mageddo.dnsproxyserver.solver.remote.Result;
+import com.mageddo.net.SocketUtils;
+import dev.failsafe.CircuitBreaker;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -7,6 +10,8 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import testing.templates.InetSocketAddressTemplates;
 import testing.templates.solver.remote.FailSafeCircuitBreakerTemplates;
+
+import java.net.InetSocketAddress;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -61,6 +66,24 @@ class CircuitBreakerCheckerServiceTest {
 
     // assert
     assertFalse(ok);
+  }
+
+  @Test
+  void mustPingSpecifiedPort() throws Exception {
+
+    // arrange
+    final var server = SocketUtils.createServerOnRandomPort();
+    final var address = (InetSocketAddress) server.getLocalSocketAddress();
+    final var circuitBreaker = CircuitBreaker.<Result>builder().build();
+
+    try (server) {
+      // act
+      final var success = this.service.safeCheck(address, circuitBreaker);
+
+      // assert
+      assertTrue(success);
+    }
+
   }
 
 }
