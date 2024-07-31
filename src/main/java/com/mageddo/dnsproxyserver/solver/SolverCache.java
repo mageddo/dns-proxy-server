@@ -119,7 +119,6 @@ public class SolverCache {
     }
   }
 
-
   private static Expiry<String, CacheValue> buildExpiryPolicy() {
     return new Expiry<>() {
       @Override
