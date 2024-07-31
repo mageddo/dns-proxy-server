@@ -27,7 +27,6 @@ class SolversCacheTest {
 
   SolverCache cache = new SolverCache(Name.GLOBAL);
 
-
   @Test
   void mustLeadWithConcurrency() {
 
@@ -38,33 +37,6 @@ class SolversCacheTest {
     // act
     concurrentRequests(1_000, req, r);
 
-  }
-
-  @SneakyThrows
-  private void concurrentRequests(int quantity, Message req, Random r) {
-    final var runnables = new ArrayList<Callable<Object>>();
-    for (int i = 0; i < quantity; i++) {
-      runnables.add(() -> this.handleRequest(req, r));
-      if (i % 10 == 0) {
-        runnables.add(() -> {
-          this.cache.clear();
-          return null;
-        });
-      }
-    }
-
-    try (final var executor = Executors.newVirtualThreadPerTaskExecutor()) {
-      executor.invokeAll(runnables);
-    }
-  }
-
-  private Object handleRequest(Message req, Random r) {
-    this.cache.handleRes(req, message -> {
-      final var res = Response.internalSuccess(Messages.aAnswer(message, "0.0.0.0"));
-      Threads.sleep(r.nextInt(10));
-      return res;
-    });
-    return null;
   }
 
   @Test
@@ -119,4 +91,30 @@ class SolversCacheTest {
     assertEquals(0, this.cache.getSize());
   }
 
+  @SneakyThrows
+  private void concurrentRequests(int quantity, Message req, Random r) {
+    final var runnables = new ArrayList<Callable<Object>>();
+    for (int i = 0; i < quantity; i++) {
+      runnables.add(() -> this.handleRequest(req, r));
+      if (i % 10 == 0) {
+        runnables.add(() -> {
+          this.cache.clear();
+          return null;
+        });
+      }
+    }
+
+    try (final var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+      executor.invokeAll(runnables);
+    }
+  }
+
+  private Object handleRequest(Message req, Random r) {
+    this.cache.handleRes(req, message -> {
+      final var res = Response.internalSuccess(Messages.aAnswer(message, "0.0.0.0"));
+      Threads.sleep(r.nextInt(10));
+      return res;
+    });
+    return null;
+  }
 }
