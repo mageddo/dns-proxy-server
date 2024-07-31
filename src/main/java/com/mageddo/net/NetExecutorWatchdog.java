@@ -3,13 +3,13 @@ package com.mageddo.net;
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dnsproxyserver.utils.InetAddresses;
+import com.mageddo.utils.Executors;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 @Slf4j
@@ -17,7 +17,7 @@ public class NetExecutorWatchdog implements AutoCloseable {
 
   public static final int FPS_120 = 1000 / 120;
 
-  private final ExecutorService threadPool = Executors.newVirtualThreadPerTaskExecutor();
+  private final ExecutorService threadPool = Executors.newThreadExecutor();
 
   /**
    * Will ping the #pingAddr while waiting the future to be done, which occurs first will return,

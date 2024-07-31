@@ -2,6 +2,7 @@ package com.mageddo.dnsserver;
 
 import com.mageddo.commons.io.IoUtils;
 import com.mageddo.dns.utils.Messages;
+import com.mageddo.utils.Executors;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.Message;
 
@@ -9,7 +10,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketAddress;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @Slf4j
 public class UDPServer {
@@ -24,7 +24,7 @@ public class UDPServer {
   public UDPServer(SocketAddress address, RequestHandler requestHandler) {
     this.address = address;
     this.requestHandler = requestHandler;
-    this.pool = Executors.newVirtualThreadPerTaskExecutor();
+    this.pool = Executors.newThreadExecutor();
   }
 
   public void start() {

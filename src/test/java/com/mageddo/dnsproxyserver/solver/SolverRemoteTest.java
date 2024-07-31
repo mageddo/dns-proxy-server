@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.solver;
 
 import com.mageddo.dnsproxyserver.solver.remote.application.CircuitBreakerNonResilientService;
+import com.mageddo.utils.Executors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +17,6 @@ import java.net.SocketTimeoutException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -45,7 +45,7 @@ class SolverRemoteTest {
 
   @BeforeEach
   void beforeEach (){
-    doReturn(Executors.newVirtualThreadPerTaskExecutor())
+    doReturn(Executors.newThreadExecutor())
       .when(this.resolvers)
       .getExecutor();
   }

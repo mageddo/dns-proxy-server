@@ -3,6 +3,7 @@ package com.mageddo.dnsserver;
 import com.mageddo.commons.concurrent.ThreadPool;
 import com.mageddo.commons.io.IoUtils;
 import com.mageddo.dnsproxyserver.utils.Ips;
+import com.mageddo.utils.Executors;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 
@@ -16,7 +17,6 @@ import java.time.Duration;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -36,7 +36,7 @@ public class TCPServer implements AutoCloseable {
 
   @Inject
   public TCPServer() {
-    this.serverThreadPool = Executors.newVirtualThreadPerTaskExecutor();
+    this.serverThreadPool = Executors.newThreadExecutor();
     this.clients = new LinkedHashSet<>();
   }
 

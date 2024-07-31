@@ -1,11 +1,11 @@
 package com.mageddo.dnsproxyserver.solver;
 
 import com.mageddo.net.IpAddr;
+import com.mageddo.utils.Executors;
 
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.function.Function;
 
 public class RemoteResolvers implements AutoCloseable {
@@ -23,7 +23,7 @@ public class RemoteResolvers implements AutoCloseable {
       .stream()
       .map(resolverProvider)
       .toList();
-    return new RemoteResolvers(resolvers, Executors.newVirtualThreadPerTaskExecutor());
+    return new RemoteResolvers(resolvers, Executors.newThreadExecutor());
   }
 
   public List<Resolver> resolvers() {
