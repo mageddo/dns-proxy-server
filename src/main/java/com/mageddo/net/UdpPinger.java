@@ -14,26 +14,26 @@ public class UdpPinger {
 
   public static boolean ping(InetSocketAddress address, Duration timeout) {
     try {
-      sayHello(address, timeout);
+      pingWithResponse(address, timeout);
       return true;
     } catch (UncheckedIOException e) {
       return false;
     }
   }
 
-  public static byte[] sayHello(InetSocketAddress address, Duration timeout) {
+  public static byte[] pingWithResponse(InetSocketAddress address, Duration timeout) {
 
     final var pingDatagram = buildPingDatagram(address);
 
-    try (var socket = new DatagramSocket(address.getPort())) {
+    try (var socket = new DatagramSocket()) {
 
       socket.setSoTimeout((int) timeout.toMillis());
       socket.send(pingDatagram);
 
       final var response = new DatagramPacket(new byte[1024], 1024);
       socket.receive(response);
-      return response.getData();
 
+      return response.getData();
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }

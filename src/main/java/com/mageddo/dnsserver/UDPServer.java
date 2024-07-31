@@ -12,7 +12,7 @@ import java.net.SocketAddress;
 import java.util.concurrent.ExecutorService;
 
 @Slf4j
-public class UDPServer {
+public class UDPServer implements AutoCloseable {
 
   public static final short BUFFER_SIZE = 512;
 
@@ -38,7 +38,7 @@ public class UDPServer {
       while (!server.isClosed()) {
 
         final var datagram = new DatagramPacket(new byte[BUFFER_SIZE], 0, BUFFER_SIZE);
-        server.receive(datagram);
+        this.server.receive(datagram);
 
         this.pool.submit(() -> this.handle(server, datagram));
 
@@ -73,5 +73,10 @@ public class UDPServer {
   public void stop() {
     IoUtils.silentClose(this.server);
     this.pool.shutdown();
+  }
+
+  @Override
+  public void close() throws Exception {
+    this.stop();
   }
 }

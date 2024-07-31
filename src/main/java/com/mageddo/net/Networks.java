@@ -9,9 +9,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
-import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.time.Duration;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -115,12 +115,7 @@ public class Networks {
   }
 
   public static boolean ping(InetSocketAddress address, int timeout) {
-    try (var socket = new Socket()) {
-      socket.connect(address, timeout);
-      return true;
-    } catch (Exception e) {
-      return false;
-    }
+    return UdpPinger.ping(address, Duration.ofMillis(timeout));
   }
 
   public static boolean ping(InetAddress address, int port, int timeout) {
