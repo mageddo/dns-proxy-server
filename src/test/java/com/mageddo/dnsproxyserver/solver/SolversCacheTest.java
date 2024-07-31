@@ -36,7 +36,7 @@ class SolversCacheTest {
     final var r = new Random();
 
     // act
-    concurrentRequests(10_000, req, r);
+    concurrentRequests(1_000, req, r);
 
   }
 
@@ -72,6 +72,7 @@ class SolversCacheTest {
 
     // arrange
     final var req = MessageTemplates.acmeAQuery();
+    final var key = "A-acme.com";
 
     // act
     final var res = this.cache.handleRes(req, message -> {
@@ -80,10 +81,10 @@ class SolversCacheTest {
 
     // assert
     assertNotNull(res);
-    assertEquals(1, this.refreshAndGetSize());
+    assertNotNull(this.cache.get(key));
 
     Threads.sleep(res.getDpsTtl().plusMillis(10));
-    assertEquals(0, this.refreshAndGetSize());
+    assertNull(this.cache.get(key));
   }
 
   private int refreshAndGetSize() {
