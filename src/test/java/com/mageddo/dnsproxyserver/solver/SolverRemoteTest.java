@@ -19,10 +19,12 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class SolverRemoteTest {
@@ -160,6 +162,37 @@ class SolverRemoteTest {
     // assert
     assertTrue(Responses.hasFlag(result, Flags.RA));
     assertEquals(Response.DEFAULT_SUCCESS_TTL, result.getDpsTtl());
+  }
+
+
+  @Test
+  void mustPingRemoteServerWhileQueryingWhenFeatureIsActive(){
+
+    // arrange
+    final var query = MessageTemplates.acmeAQuery();
+    final var answer = MessageTemplates.buildAAnswer(query);
+
+    doReturn(InetSocketAddressTemplates._8_8_8_8())
+      .when(this.resolver)
+      .getAddress()
+    ;
+
+    doReturn(CompletableFuture.completedFuture(answer))
+      .when(this.resolver)
+      .sendAsync(any(), any(Executor.class));
+
+    doReturn(List.of(this.resolver))
+      .when(this.resolvers)
+      .resolvers()
+    ;
+
+    // act
+    final var res = this.solverRemote.handle(query);
+
+    // assert
+    assertNotNull(res);
+    verify(this.solverRemote).pingWhileGettingQueryResponse(any(), any());
+
   }
 
 }
