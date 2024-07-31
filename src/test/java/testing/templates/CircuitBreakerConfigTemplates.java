@@ -10,7 +10,7 @@ public class CircuitBreakerConfigTemplates {
     return ConfigMapper.defaultCircuitBreaker();
   }
 
-  public static CircuitBreaker oneTry() {
+  public static CircuitBreaker oneTryFailSuccess() {
     return CircuitBreaker
       .builder()
       .successThreshold(1)
