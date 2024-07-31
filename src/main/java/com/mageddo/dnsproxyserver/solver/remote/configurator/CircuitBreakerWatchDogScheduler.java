@@ -28,7 +28,7 @@ public class CircuitBreakerWatchDogScheduler implements StartupEvent {
     this.circuitBreakerFactory
       .stats()
       .forEach(stats -> {
-        log.debug("remoteAddr={}, state={}", stats.getLeft(), stats.getRight());
+        log.debug("stats={}", stats);
       });
   }
 }

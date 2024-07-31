@@ -11,6 +11,7 @@ import dev.failsafe.Failsafe;
 import dev.failsafe.event.CircuitBreakerStateChangedEvent;
 import dev.failsafe.event.EventListener;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.StopWatch;
 
@@ -54,19 +55,31 @@ public class CircuitBreakerFactory {
       .withDelay(config.getTestDelay())
       .onClose(build("CLOSED", address))
       .onOpen(build("OPEN", address))
-      .onHalfOpen(build("HALF_OPEN", address))
+//      .onHalfOpen(build("HALF_OPEN", address))
       .build();
   }
 
   EventListener<CircuitBreakerStateChangedEvent> build(String actualStateName, InetSocketAddress address) {
     return event -> {
       final var previousStateName = CircuitBreakerStateMapper.toStateNameFrom(event);
-      this.solverConsistencyGuaranteeDAO.flushCachesFromCircuitBreakerStateChange();
+      if (isHalfOpenToOpen(previousStateName, actualStateName)) {
+        log.trace("status=ignoredTransition, from={}, to={}", previousStateName, actualStateName);
+        return;
+      }
+      this.flushCache();
       log.debug(
         "status=clearedCache, address={}, previousStateName={}, actualStateName={}",
         address, previousStateName, actualStateName
       );
     };
+  }
+
+  private static boolean isHalfOpenToOpen(String previousStateName, String actualStateName) {
+    return "HALF_OPEN".equals(previousStateName) && "OPEN".equals(actualStateName);
+  }
+
+  void flushCache() {
+    this.solverConsistencyGuaranteeDAO.flushCachesFromCircuitBreakerStateChange();
   }
 
   com.mageddo.dnsproxyserver.config.CircuitBreaker findCircuitBreakerConfig() {
@@ -97,21 +110,33 @@ public class CircuitBreakerFactory {
     return this.circuitBreakerCheckerService.safeCheck(entry.getKey(), entry.getValue());
   }
 
-  public void reset(){
+  public void reset() {
     this.circuitBreakerMap.clear();
   }
 
-  public List<Pair<String, String>> stats(){
+  public List<Stats> stats() {
     return this.circuitBreakerMap.keySet()
       .stream()
       .map(this::toStats)
       .toList();
   }
 
-  private Pair<String, String> toStats(InetSocketAddress remoteAddr) {
+  private Stats toStats(InetSocketAddress remoteAddr) {
     final var circuitBreaker = this.circuitBreakerMap.get(remoteAddr);
     final var state = circuitBreaker.getState().name();
-    return Pair.of(remoteAddr.toString(), state);
+    return Stats.of(remoteAddr.toString(), state);
+  }
+
+
+  @Value
+  public static class Stats {
+
+    private String remoteServerAddress;
+    private String state;
+
+    public static Stats of(String remoteServerAddress, String state) {
+      return new Stats(remoteServerAddress, state);
+    }
   }
 
 }
