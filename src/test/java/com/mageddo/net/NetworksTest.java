@@ -1,7 +1,5 @@
 package com.mageddo.net;
 
-import testing.templates.IpTemplates;
-import testing.templates.NetworkInterfaceTemplates;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import testing.templates.IpTemplates;
+import testing.templates.NetworkInterfaceTemplates;
+
+import java.net.InetSocketAddress;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -25,17 +27,17 @@ class NetworksTest {
   Network network;
 
   @BeforeAll
-  static void beforeAll(){
+  static void beforeAll() {
     realNetwork = Networks.network;
   }
 
   @AfterAll
-  static void afterAll(){
+  static void afterAll() {
     Networks.network = realNetwork;
   }
 
   @BeforeEach
-  void before(){
+  void before() {
     Networks.network = this.network;
   }
 
@@ -75,6 +77,23 @@ class NetworksTest {
     assertNotNull(ip);
     assertFalse(ip.isLoopback());
     assertEquals(IpTemplates.LOCAL_192, ip.toText());
+  }
+
+  @Test
+  void mustPingSpecifiedPort() throws Exception {
+
+    // arrange
+    final var server = SocketUtils.createServerOnRandomPort();
+    final var address = (InetSocketAddress) server.getLocalSocketAddress();
+
+    try (server) {
+      // act
+      final var success = Networks.ping(address, 1000);
+
+      // assert
+      assertTrue(success);
+    }
+
   }
 
 }

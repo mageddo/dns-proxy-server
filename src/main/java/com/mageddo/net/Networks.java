@@ -105,7 +105,7 @@ public class Networks {
     };
   }
 
-  public static boolean ping(String ip, int port, int timeout){
+  public static boolean ping(String ip, int port, int timeout) {
     try {
       final InetAddress addr = InetAddress.getByAddress(Ips.toBytes(ip));
       return ping(addr, port, timeout);
