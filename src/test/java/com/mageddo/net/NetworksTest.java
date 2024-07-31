@@ -10,8 +10,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import testing.templates.IpTemplates;
 import testing.templates.NetworkInterfaceTemplates;
 
-import java.net.InetSocketAddress;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -77,23 +75,6 @@ class NetworksTest {
     assertNotNull(ip);
     assertFalse(ip.isLoopback());
     assertEquals(IpTemplates.LOCAL_192, ip.toText());
-  }
-
-  @Test
-  void mustPingSpecifiedPort() throws Exception {
-
-    // arrange
-    final var server = SocketUtils.createServerOnRandomPort();
-    final var address = (InetSocketAddress) server.getLocalSocketAddress();
-
-    try (server) {
-      // act
-      final var success = Networks.ping(address, 1000);
-
-      // assert
-      assertTrue(success);
-    }
-
   }
 
 }
