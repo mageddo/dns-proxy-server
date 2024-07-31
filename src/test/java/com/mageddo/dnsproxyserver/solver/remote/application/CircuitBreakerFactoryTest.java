@@ -85,8 +85,8 @@ class CircuitBreakerFactoryTest {
       .findCircuitBreakerConfig()
     ;
 
-    checkFailAndSleep(addr, supError);
-    checkFailAndSleep(addr, supError);
+    this.checkFailAndSleep(addr, supError);
+    this.checkFailAndSleep(addr, supError);
 
     this.factory.check(addr, supSuccess);
     assertEquals(
