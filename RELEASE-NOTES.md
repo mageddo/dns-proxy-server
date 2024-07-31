@@ -1,3 +1,6 @@
+## 3.25.2
+* Migrating cache to caffeine #522
+ 
 ## 3.25.1
 * Ensure thread will have name at the logs, behavior changed since `3.25.0` #436.
 
