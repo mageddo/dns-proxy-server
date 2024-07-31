@@ -1,3 +1,6 @@
+## 3.25.3
+* Resources utilization optimization by disabling connection check at every query #524
+
 ## 3.25.2
 * Migrating cache to caffeine #522
  
