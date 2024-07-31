@@ -1,5 +1,5 @@
 ## 3.25.4
-* CircuitBreaker Ping use UDP instead of TCP #526
+* Changed CircuitBreaker Ping use UDP instead of TCP #526
 
 ## 3.25.3
 * Resources utilization optimization by disabling connection check at every query #524
