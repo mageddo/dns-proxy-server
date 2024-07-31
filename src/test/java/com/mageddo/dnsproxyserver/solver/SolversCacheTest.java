@@ -87,10 +87,6 @@ class SolversCacheTest {
     assertNull(this.cache.get(key));
   }
 
-  private int refreshAndGetSize() {
-    return this.cache.refreshAndGetSize();
-  }
-
   @Test
   void mustCacheAndGetValidResponse() {
 

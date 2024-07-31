@@ -92,11 +92,6 @@ public class SolverCache {
     return this.name;
   }
 
-  public int refreshAndGetSize() {
-    this.cache.cleanUp();
-    return this.getSize();
-  }
-
   public CacheValue get(String key) {
     return this.cache.getIfPresent(key);
   }
