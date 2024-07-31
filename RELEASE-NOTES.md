@@ -1,5 +1,6 @@
 ## 3.25.4
 * Changed CircuitBreaker Ping use UDP instead of TCP #526
+* When Circuit Breaker transitioning to Half Open it should not clear the cache as it is only being checked to migrate to a new status
 
 ## 3.25.3
 * Resources utilization optimization by disabling connection check at every query #524

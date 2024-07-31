@@ -44,7 +44,6 @@ public class CircuitBreakerFactory {
       .withDelay(config.getTestDelay())
       .onClose(build("CLOSED", address))
       .onOpen(build("OPEN", address))
-      .onHalfOpen(build("HALF_OPEN", address))
       .build();
   }
 
