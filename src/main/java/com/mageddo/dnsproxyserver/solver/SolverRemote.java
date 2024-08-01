@@ -2,10 +2,9 @@ package com.mageddo.dnsproxyserver.solver;
 
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.dns.utils.Messages;
+import com.mageddo.dnsproxyserver.solver.remote.CircuitBreakerService;
 import com.mageddo.dnsproxyserver.solver.remote.Request;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
-import com.mageddo.dnsproxyserver.solver.remote.CircuitBreakerService;
-import com.mageddo.dnsproxyserver.solver.remote.application.CircuitBreakerFactory;
 import com.mageddo.net.NetExecutorWatchdog;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +36,6 @@ public class SolverRemote implements Solver, AutoCloseable {
   private final RemoteResolvers delegate;
   private final NetExecutorWatchdog netWatchdog = new NetExecutorWatchdog();
   private final CircuitBreakerService circuitBreakerService;
-  private final CircuitBreakerFactory circuitBreakerFactory;
 
   @Override
   public Response handle(Message query) {
