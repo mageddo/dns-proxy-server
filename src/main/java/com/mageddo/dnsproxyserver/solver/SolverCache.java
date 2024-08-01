@@ -42,22 +42,39 @@ public class SolverCache {
 
   public Response handleRes(Message query, Function<Message, Response> delegate) {
     final var key = buildKey(query);
-    final var cacheValue = this.cache.get(key, (k) -> {
-      log.trace("status=lookup, key={}, req={}", key, Messages.simplePrint(query));
-      final var _res = delegate.apply(query);
-      if (_res == null) {
-        log.debug("status=noAnswer, action=cantCache, k={}", k);
-        return null;
-      }
-      final var ttl = _res.getDpsTtl();
-      log.debug("status=hotload, k={}, ttl={}, simpleMsg={}", k, ttl, Messages.simplePrint(query));
-      return CacheValue.of(_res, ttl);
-    });
-    if (cacheValue == null) {
+    final var cachedValue = this.cache.getIfPresent(key);
+
+    if (cachedValue != null) {
+      return mapResponse(query, cachedValue);
+    }
+
+    final var calculatedValue = calculateValueWithoutLocks(key, query, delegate);
+    this.cacheValue(key, calculatedValue);
+    return mapResponse(query, calculatedValue);
+  }
+
+  void cacheValue(String key, CacheValue calculatedValue) {
+    this.cache.get(key, k -> calculatedValue);
+  }
+
+  Response mapResponse(Message query, CacheValue cachedValue) {
+    if (cachedValue == null) {
       return null;
     }
-    final var response = cacheValue.getResponse();
+    final var response = cachedValue.getResponse();
     return response.withMessage(Messages.mergeId(query, response.getMessage()));
+  }
+
+  CacheValue calculateValueWithoutLocks(String key, Message query, Function<Message, Response> delegate) {
+    log.trace("status=lookup, key={}, req={}", key, Messages.simplePrint(query));
+    final var _res = delegate.apply(query);
+    if (_res == null) {
+      log.debug("status=noAnswer, action=cantCache, key={}", key);
+      return null;
+    }
+    final var ttl = _res.getDpsTtl();
+    log.debug("status=hotload, k={}, ttl={}, simpleMsg={}", key, ttl, Messages.simplePrint(query));
+    return CacheValue.of(_res, ttl);
   }
 
   static String buildKey(Message reqMsg) {
