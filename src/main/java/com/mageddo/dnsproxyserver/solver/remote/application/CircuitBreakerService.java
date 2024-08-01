@@ -1,6 +1,7 @@
-package com.mageddo.dnsproxyserver.solver.remote;
+package com.mageddo.dnsproxyserver.solver.remote.application;
 
-import com.mageddo.dnsproxyserver.solver.remote.application.CircuitStatus;
+import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
+import com.mageddo.dnsproxyserver.solver.remote.Result;
 
 import java.net.InetSocketAddress;
 import java.util.function.Supplier;

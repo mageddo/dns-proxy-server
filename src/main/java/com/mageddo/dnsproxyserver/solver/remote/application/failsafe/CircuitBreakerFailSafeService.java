@@ -1,8 +1,9 @@
-package com.mageddo.dnsproxyserver.solver.remote.application;
+package com.mageddo.dnsproxyserver.solver.remote.application.failsafe;
 
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
-import com.mageddo.dnsproxyserver.solver.remote.CircuitBreakerService;
+import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
+import com.mageddo.dnsproxyserver.solver.remote.application.CircuitBreakerService;
 import dev.failsafe.CircuitBreakerOpenException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

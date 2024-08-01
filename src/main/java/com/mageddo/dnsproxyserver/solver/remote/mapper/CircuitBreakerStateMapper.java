@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.solver.remote.mapper;
 
 import com.mageddo.dnsproxyserver.solver.remote.Result;
-import com.mageddo.dnsproxyserver.solver.remote.application.CircuitStatus;
+import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import dev.failsafe.CircuitBreaker;
 import dev.failsafe.event.CircuitBreakerStateChangedEvent;
 

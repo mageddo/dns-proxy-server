@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.solver;
 
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.dns.utils.Messages;
-import com.mageddo.dnsproxyserver.solver.remote.CircuitBreakerService;
+import com.mageddo.dnsproxyserver.solver.remote.application.CircuitBreakerService;
 import com.mageddo.dnsproxyserver.solver.remote.Request;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.net.NetExecutorWatchdog;

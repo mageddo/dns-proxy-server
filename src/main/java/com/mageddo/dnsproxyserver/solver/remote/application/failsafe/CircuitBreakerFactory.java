@@ -1,8 +1,9 @@
-package com.mageddo.dnsproxyserver.solver.remote.application;
+package com.mageddo.dnsproxyserver.solver.remote.application.failsafe;
 
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.commons.lang.tuple.Pair;
 import com.mageddo.dnsproxyserver.config.application.ConfigService;
+import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.dataprovider.SolverConsistencyGuaranteeDAO;
 import com.mageddo.dnsproxyserver.solver.remote.mapper.CircuitBreakerStateMapper;
@@ -30,7 +31,7 @@ public class CircuitBreakerFactory {
 
   private final Map<InetSocketAddress, CircuitBreaker<Result>> circuitBreakerMap = new ConcurrentHashMap<>();
   private final ConfigService configService;
-  private final FailSafeCircuitBreakerPingCheckerService circuitBreakerCheckerService;
+  private final CircuitBreakerPingCheckerService circuitBreakerCheckerService;
   private final SolverConsistencyGuaranteeDAO solverConsistencyGuaranteeDAO;
 
   public Result check(InetSocketAddress remoteAddress, Supplier<Result> sup) {

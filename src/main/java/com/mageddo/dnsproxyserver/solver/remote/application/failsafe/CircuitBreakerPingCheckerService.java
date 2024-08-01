@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.solver.remote.application;
+package com.mageddo.dnsproxyserver.solver.remote.application.failsafe;
 
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.dnsproxyserver.solver.SolverRemote;
@@ -18,7 +18,7 @@ import java.net.InetSocketAddress;
 @Slf4j
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
-public class FailSafeCircuitBreakerPingCheckerService {
+public class CircuitBreakerPingCheckerService {
 
   public boolean safeCheck(InetSocketAddress server, CircuitBreaker<Result> circuitBreaker) {
     try {

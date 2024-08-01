@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.solver.remote.configurator;
 
 import com.mageddo.commons.concurrent.ThreadPool;
 import com.mageddo.dnsproxyserver.di.StartupEvent;
-import com.mageddo.dnsproxyserver.solver.remote.application.CircuitBreakerFactory;
+import com.mageddo.dnsproxyserver.solver.remote.application.failsafe.CircuitBreakerFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

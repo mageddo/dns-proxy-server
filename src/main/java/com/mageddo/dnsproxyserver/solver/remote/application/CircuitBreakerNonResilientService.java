@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.solver.remote.application;
 
-import com.mageddo.dnsproxyserver.solver.remote.CircuitBreakerService;
+import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 
 import java.net.InetSocketAddress;
