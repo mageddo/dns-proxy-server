@@ -55,4 +55,10 @@ class CircuitStatusRefreshTest {
     assertTrue(circuitBreaker.isClosed());
 
   }
+
+  @Test
+  void mustIgnoreNulls(){
+    final var refreshed = CircuitStatusRefresh.refresh(null);
+    assertFalse(refreshed);
+  }
 }
