@@ -66,10 +66,12 @@ public class CircuitBreakerFactory {
         log.trace("status=ignoredTransition, from={}, to={}", previousStateName, actualStateName);
         return;
       }
+      log.trace(
+        "status=beforeFlushCaches, address={}, previous={}, actual={}", address, previousStateName, actualStateName
+      );
       this.flushCache();
       log.debug(
-        "status=clearedCache, address={}, previousStateName={}, actualStateName={}",
-        address, previousStateName, actualStateName
+        "status=clearedCache, address={}, previous={}, actual={}", address, previousStateName, actualStateName
       );
     };
   }

@@ -74,7 +74,9 @@ public class SolverCacheFactory {
 
   public void clearCaches() {
     for (final var cache : this.getCaches()) {
+      log.trace("status=clearing, cache={}", cache.name());
       cache.clear();
+      log.trace("status=cleared, cache={}", cache.name());
     }
   }
 }
