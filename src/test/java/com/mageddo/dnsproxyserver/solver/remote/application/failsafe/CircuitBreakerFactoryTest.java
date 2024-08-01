@@ -1,9 +1,8 @@
-package com.mageddo.dnsproxyserver.solver.remote.application;
+package com.mageddo.dnsproxyserver.solver.remote.application.failsafe;
 
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
-import com.mageddo.dnsproxyserver.solver.remote.application.failsafe.CircuitBreakerFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

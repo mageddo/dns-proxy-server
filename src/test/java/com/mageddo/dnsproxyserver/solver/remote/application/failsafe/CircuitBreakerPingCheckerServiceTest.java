@@ -1,7 +1,6 @@
-package com.mageddo.dnsproxyserver.solver.remote.application;
+package com.mageddo.dnsproxyserver.solver.remote.application.failsafe;
 
 import com.mageddo.dnsproxyserver.solver.remote.Result;
-import com.mageddo.dnsproxyserver.solver.remote.application.failsafe.CircuitBreakerPingCheckerService;
 import com.mageddo.net.SocketUtils;
 import dev.failsafe.CircuitBreaker;
 import org.junit.jupiter.api.Test;

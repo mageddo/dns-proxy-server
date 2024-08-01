@@ -1,9 +1,8 @@
-package com.mageddo.dnsproxyserver.solver.remote.application;
+package com.mageddo.dnsproxyserver.solver.remote.application.failsafe;
 
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.dnsproxyserver.solver.remote.Request;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
-import com.mageddo.dnsproxyserver.solver.remote.application.failsafe.CircuitBreakerFailSafeService;
 import com.mageddo.dnsproxyserver.solver.remote.dataprovider.SolverConsistencyGuaranteeDAO;
 import dagger.sheath.InjectMock;
 import dagger.sheath.junit.DaggerTest;
