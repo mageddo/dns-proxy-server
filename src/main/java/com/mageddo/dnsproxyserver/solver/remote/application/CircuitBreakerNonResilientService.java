@@ -13,7 +13,7 @@ public class CircuitBreakerNonResilientService implements CircuitBreakerService 
   }
 
   @Override
-  public CircuitStatus getCircuitStatus(InetSocketAddress resolverAddress) {
+  public CircuitStatus findCircuitStatus(InetSocketAddress resolverAddress) {
     return null;
   }
 }

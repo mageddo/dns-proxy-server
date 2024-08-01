@@ -34,6 +34,6 @@ public class ResolverStatsFactory {
   }
 
   public ResolverStats find(Resolver resolver) {
-    return ResolverMapper.toResolverStats(resolver, this.circuitBreakerService.getCircuitStatus(resolver.getAddress()));
+    return ResolverMapper.toResolverStats(resolver, this.circuitBreakerService.findCircuitStatus(resolver.getAddress()));
   }
 }

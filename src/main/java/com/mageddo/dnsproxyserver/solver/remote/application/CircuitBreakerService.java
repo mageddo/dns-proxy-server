@@ -10,5 +10,5 @@ public interface CircuitBreakerService {
 
   Result safeHandle(final InetSocketAddress resolverAddress, Supplier<Result> sup);
 
-  CircuitStatus getCircuitStatus(InetSocketAddress resolverAddress);
+  CircuitStatus findCircuitStatus(InetSocketAddress resolverAddress);
 }
