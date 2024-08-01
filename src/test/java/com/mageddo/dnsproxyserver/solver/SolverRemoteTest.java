@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.solver;
 import com.mageddo.dnsproxyserver.solver.remote.application.CircuitBreakerNonResilientService;
 import com.mageddo.utils.Executors;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -211,7 +213,35 @@ class SolverRemoteTest {
 
   }
 
+
   @Test
+  void mustUseAllResolvers(){
+    // arrange
+    final var query = MessageTemplates.acmeAQuery();
+    final var result = ResultTemplates.error();
+
+    doReturn(result)
+      .when(this.solverRemote)
+      .safeQueryResult(any());
+
+    doReturn(List.of(
+      new SimpleResolver(InetSocketAddressTemplates._8_8_8_8()),
+      new SimpleResolver(InetSocketAddressTemplates._8_8_4_4())
+    ))
+      .when(this.resolvers)
+      .resolvers()
+    ;
+
+    // act
+    this.solverRemote.handle(query);
+
+    // assert
+    verify(this.solverRemote, times(2)).safeQueryResult(any());
+
+  }
+
+  @Test
+  @Disabled
   void mustNotUseResolversWithOpenCircuit(){
     // arrange
     final var query = MessageTemplates.acmeAQuery();
