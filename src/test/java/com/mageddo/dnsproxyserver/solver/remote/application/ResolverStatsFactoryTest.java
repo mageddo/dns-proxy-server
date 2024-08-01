@@ -59,6 +59,6 @@ class ResolverStatsFactoryTest {
       .toString();
 
     // assert
-    assertEquals("[/8.8.4.4:53, /1.1.1.1:53]", resolvers);
+    assertEquals("[/8.8.8.8:53, /8.8.4.4:53, /1.1.1.1:53]", resolvers);
   }
 }
