@@ -13,8 +13,8 @@ public class SimpleResolver extends org.xbill.DNS.SimpleResolver implements Reso
     super(hostname);
   }
 
-  public SimpleResolver(InetSocketAddress host) {
-    super(host);
+  public SimpleResolver(InetSocketAddress addr) {
+    super(addr);
   }
 
   public SimpleResolver(InetAddress host) {

@@ -14,4 +14,8 @@ public class ResponseTemplates {
   public static Response acmeAResponse(){
     return to(MessageTemplates.acmeAResponse());
   }
+
+  public static Response acmeNxDomain() {
+    return to(MessageTemplates.acmeNxDomain());
+  }
 }

@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.xbill.DNS.Flags;
 import testing.templates.InetSocketAddressTemplates;
 import testing.templates.MessageTemplates;
+import testing.templates.solver.remote.ResultTemplates;
 
 import java.net.SocketTimeoutException;
 import java.util.List;
@@ -210,5 +211,30 @@ class SolverRemoteTest {
 
   }
 
+  @Test
+  void mustNotUseResolversWithOpenCircuit(){
+    // arrange
+    final var query = MessageTemplates.acmeAQuery();
+    final var result = ResultTemplates.error();
+
+    doReturn(result)
+      .when(this.solverRemote)
+      .safeQueryResult(any());
+
+    doReturn(List.of(
+      new SimpleResolver(InetSocketAddressTemplates._8_8_8_8()),
+      new SimpleResolver(InetSocketAddressTemplates._8_8_4_4())
+    ))
+      .when(this.resolvers)
+      .resolvers()
+    ;
+
+    // act
+    this.solverRemote.handle(query);
+
+    // assert
+    verify(this.solverRemote).safeQueryResult(any());
+
+  }
 
 }

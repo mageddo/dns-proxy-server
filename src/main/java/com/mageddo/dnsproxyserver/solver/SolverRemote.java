@@ -16,6 +16,7 @@ import org.xbill.DNS.Message;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -39,7 +40,6 @@ public class SolverRemote implements Solver, AutoCloseable {
   @Override
   public Response handle(Message query) {
     final var stopWatch = StopWatch.createStarted();
-
     final var result = this.queryResultFromAvailableResolvers(query, stopWatch);
     log.debug(
       "status=finally, time={}, success={}, error={}",
@@ -55,12 +55,14 @@ public class SolverRemote implements Solver, AutoCloseable {
   Result queryResultFromAvailableResolvers(Message query, StopWatch stopWatch) {
     final var lastErrorMsg = new AtomicReference<Message>();
     // fixme #526 better to exclude open circuits.
-    for (int i = 0; i < this.delegate.resolvers().size(); i++) {
+    final var resolvers = this.findResolversWithNonOpenCircuit();
+    for (int i = 0; i < resolvers.size(); i++) {
 
-      final var resolver = this.delegate.resolvers().get(i);
+      final var resolver = resolvers.get(i);
       final var request = this.buildRequest(query, i, stopWatch, resolver);
 
       final var result = this.safeQueryResult(request);
+
       if (result.hasSuccessMessage()) {
         return result;
       } else if (result.hasErrorMessage()) {
@@ -69,6 +71,10 @@ public class SolverRemote implements Solver, AutoCloseable {
 
     }
     return Result.fromErrorMessage(lastErrorMsg.get());
+  }
+
+  List<Resolver> findResolversWithNonOpenCircuit() {
+    return this.delegate.resolvers();
   }
 
   Request buildRequest(Message query, int resolverIndex, StopWatch stopWatch, Resolver resolver) {
