@@ -10,8 +10,6 @@ import org.apache.commons.lang3.time.StopWatch;
 import org.xbill.DNS.Message;
 
 import java.net.InetSocketAddress;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 
 @Value
 @Builder
@@ -39,10 +37,6 @@ public class Request {
 
   public void splitStopWatch() {
     this.stopWatch.split();
-  }
-
-  public CompletableFuture<Message> sendQueryAsyncToResolver(Executor executor) {
-    return this.resolver.sendAsync(this.query, executor).toCompletableFuture();
   }
 
   public long getElapsedTimeInMs() {

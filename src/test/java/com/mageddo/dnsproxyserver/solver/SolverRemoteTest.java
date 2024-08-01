@@ -1,24 +1,17 @@
 package com.mageddo.dnsproxyserver.solver;
 
-import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.application.CircuitBreakerNonResilientService;
-import com.mageddo.utils.Executors;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.xbill.DNS.Flags;
-import testing.templates.InetSocketAddressTemplates;
 import testing.templates.MessageTemplates;
-import testing.templates.solver.remote.ResultTemplates;
+import testing.templates.solver.remote.ResolverTemplates;
 
 import java.net.SocketTimeoutException;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -27,21 +20,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class SolverRemoteTest {
-
-  @Mock
-  Resolver resolver;
-
-  @Mock
-  Resolver resolver2;
-
-  @Mock
-  RemoteResolvers resolvers;
 
   @Spy
   CircuitBreakerNonResilientService circuitBreakerService;
@@ -50,34 +32,20 @@ class SolverRemoteTest {
   @InjectMocks
   SolverRemote solverRemote;
 
-  @BeforeEach
-  void beforeEach (){
-    lenient()
-      .doReturn(Executors.newThreadExecutor())
-      .when(this.resolvers)
-      .getExecutor();
-  }
-
   @Test
-  void mustCacheSolvedQueryFor5Minutes() throws Exception {
+  void mustCacheSolvedQueryFor5Minutes() {
     // arrange
     final var query = MessageTemplates.acmeAQuery();
     final var answer = MessageTemplates.buildAAnswer(query);
 
-    doReturn(InetSocketAddressTemplates._8_8_8_8())
-      .when(this.resolver)
-      .getAddress()
+    doReturn(ResolverTemplates.googleDnsAsList())
+      .when(this.solverRemote)
+      .findResolversToUse()
     ;
 
     doReturn(CompletableFuture.completedFuture(answer))
-      .when(this.resolver)
-      .sendAsync(any(), any(Executor.class));
-
-
-    doReturn(List.of(this.resolver))
-      .when(this.resolvers)
-      .resolvers()
-    ;
+      .when(this.solverRemote)
+      .sendQueryAsyncToResolver(any());
 
     // act
     final var res = this.solverRemote.handle(query);
@@ -87,25 +55,19 @@ class SolverRemoteTest {
   }
 
   @Test
-  void mustCacheNxDomainQueryFor1Hour() throws Exception {
+  void mustCacheNxDomainQueryFor1Hour() {
     // arrange
     final var query = MessageTemplates.acmeAQuery();
     final var answer = MessageTemplates.buildNXAnswer(query);
 
-    doReturn(InetSocketAddressTemplates._8_8_8_8())
-      .when(this.resolver)
-      .getAddress()
+    doReturn(ResolverTemplates.googleDnsAsList())
+        .when(this.solverRemote)
+        .findResolversToUse()
     ;
 
     doReturn(CompletableFuture.completedFuture(answer))
-      .when(this.resolver)
-      .sendAsync(any(), any(Executor.class));
-
-
-    doReturn(List.of(this.resolver))
-      .when(this.resolvers)
-      .resolvers()
-    ;
+        .when(this.solverRemote)
+        .sendQueryAsyncToResolver(any());
 
     // act
     final var res = this.solverRemote.handle(query);
@@ -118,19 +80,14 @@ class SolverRemoteTest {
   void mustReturnNullWhenGetTimeout() {
 
     // arrange
-    doReturn(InetSocketAddressTemplates._8_8_8_8())
-      .when(this.resolver)
-      .getAddress()
+    doReturn(ResolverTemplates.googleDnsAsList())
+        .when(this.solverRemote)
+        .findResolversToUse()
     ;
 
     doReturn(CompletableFuture.failedFuture(new SocketTimeoutException("Deu ruim")))
-      .when(this.resolver)
-      .sendAsync(any(), any(Executor.class));
-
-    doReturn(List.of(this.resolver))
-      .when(this.resolvers)
-      .resolvers()
-    ;
+        .when(this.solverRemote)
+        .sendQueryAsyncToResolver(any());
 
     final var query = MessageTemplates.acmeAQuery();
 
@@ -142,25 +99,20 @@ class SolverRemoteTest {
   }
 
   @Test
-  void mustReturnRaEvenWhenRemoteServerDoesntReturnsRA() throws Exception {
+  void mustReturnRaEvenWhenRemoteServerDoesntReturnsRA() {
     // arrange
     final var query = MessageTemplates.acmeAQuery();
     final var res = MessageTemplates.buildAAnswer(query);
     res.getHeader().unsetFlag(Flags.RA);
 
-    doReturn(InetSocketAddressTemplates._8_8_8_8())
-      .when(this.resolver)
-      .getAddress()
+    doReturn(ResolverTemplates.googleDnsAsList())
+        .when(this.solverRemote)
+        .findResolversToUse()
     ;
 
     doReturn(CompletableFuture.completedFuture(res))
-      .when(this.resolver)
-      .sendAsync(any(), any(Executor.class));
-
-    doReturn(List.of(this.resolver))
-      .when(this.resolvers)
-      .resolvers()
-    ;
+        .when(this.solverRemote)
+        .sendQueryAsyncToResolver(any());
 
     // act
     final var result = this.solverRemote.handle(query);
@@ -179,19 +131,14 @@ class SolverRemoteTest {
 
     doReturn(true).when(this.solverRemote).isPingWhileGettingQueryResponseActive();
 
-    doReturn(InetSocketAddressTemplates._8_8_8_8())
-      .when(this.resolver)
-      .getAddress()
+    doReturn(ResolverTemplates.googleDnsAsList())
+        .when(this.solverRemote)
+        .findResolversToUse()
     ;
 
     doReturn(CompletableFuture.completedFuture(answer))
-      .when(this.resolver)
-      .sendAsync(any(), any(Executor.class));
-
-    doReturn(List.of(this.resolver))
-      .when(this.resolvers)
-      .resolvers()
-    ;
+        .when(this.solverRemote)
+        .sendQueryAsyncToResolver(any());
 
     // act
     final var res = this.solverRemote.handle(query);
@@ -213,91 +160,5 @@ class SolverRemoteTest {
 
   }
 
-  @Test
-  void mustNotUseResolversWithOpenCircuit(){
-    // arrange
-
-    final var server1 = new SimpleResolver(InetSocketAddressTemplates._8_8_8_8());
-    final var server2 = new SimpleResolver(InetSocketAddressTemplates._8_8_4_4());
-    final var server3 = new SimpleResolver(InetSocketAddressTemplates._1_1_1_1());
-
-    final var query = MessageTemplates.acmeAQuery();
-    final var result = ResultTemplates.error();
-
-    doReturn(CircuitStatus.OPEN)
-      .when(this.circuitBreakerService)
-      .getCircuitStatus(server1.getAddress());
-
-    doReturn(CircuitStatus.CLOSED)
-      .when(this.circuitBreakerService)
-      .getCircuitStatus(server2.getAddress());
-
-    doReturn(result)
-      .when(this.solverRemote)
-      .safeQueryResult(any());
-
-    doReturn(List.of(server1, server2, server3))
-      .when(this.resolvers)
-      .resolvers()
-    ;
-
-    // act
-    this.solverRemote.handle(query);
-
-    final var resolversToUse = findResolversToUse()
-      ;
-    // assert
-    verify(this.solverRemote, times(2)).safeQueryResult(any());
-    assertEquals("[OPEN, CLOSED, null]", String.valueOf(this.solverRemote.getResolversStats()));
-    assertEquals("[/8.8.4.4:53, /1.1.1.1:53]", resolversToUse);
-  }
-
-
-  @Test
-  void mustFindOnlyNotOpenedCircuits(){
-    // arrange
-
-    final var server1 = new SimpleResolver(InetSocketAddressTemplates._8_8_8_8());
-    final var server2 = new SimpleResolver(InetSocketAddressTemplates._8_8_4_4());
-    final var server3 = new SimpleResolver(InetSocketAddressTemplates._1_1_1_1());
-
-    final var query = MessageTemplates.acmeAQuery();
-    final var result = ResultTemplates.error();
-
-    doReturn(CircuitStatus.OPEN)
-      .when(this.circuitBreakerService)
-      .getCircuitStatus(server1.getAddress());
-
-    doReturn(CircuitStatus.CLOSED)
-      .when(this.circuitBreakerService)
-      .getCircuitStatus(server2.getAddress());
-
-    doReturn(result)
-      .when(this.solverRemote)
-      .safeQueryResult(any());
-
-    doReturn(List.of(server1, server2, server3))
-      .when(this.resolvers)
-      .resolvers()
-    ;
-
-    // act
-    this.solverRemote.handle(query);
-
-    final var resolversToUse = findResolversToUse()
-      ;
-    // assert
-    verify(this.solverRemote, times(2)).safeQueryResult(any());
-    assertEquals("[OPEN, CLOSED, null]", String.valueOf(this.solverRemote.getResolversStats()));
-    assertEquals("[/8.8.4.4:53, /1.1.1.1:53]", resolversToUse);
-  }
-
-  private String findResolversToUse() {
-    return this.solverRemote.findResolversWithNonOpenCircuit()
-      .stream()
-      .map(Resolver::getAddress)
-      .toList()
-      .toString();
-  }
 
 }

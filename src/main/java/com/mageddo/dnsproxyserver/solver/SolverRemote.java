@@ -2,12 +2,12 @@ package com.mageddo.dnsproxyserver.solver;
 
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.dns.utils.Messages;
-import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Request;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.application.CircuitBreakerService;
 import com.mageddo.dnsproxyserver.solver.remote.application.ResolverStatsFactory;
 import com.mageddo.net.NetExecutorWatchdog;
+import com.mageddo.utils.Executors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ClassUtils;
@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
@@ -35,10 +36,10 @@ public class SolverRemote implements Solver, AutoCloseable {
   static final String QUERY_TIMED_OUT_MSG = "Query timed out";
   public static final int PING_TIMEOUT_IN_MS = 1_500;
 
-  private final RemoteResolvers delegate;
-  private final NetExecutorWatchdog netWatchdog = new NetExecutorWatchdog();
   private final CircuitBreakerService circuitBreakerService;
   private final ResolverStatsFactory resolverStatsFactory;
+  private final NetExecutorWatchdog netWatchdog = new NetExecutorWatchdog();
+  private final ExecutorService executor = Executors.newThreadExecutor();
 
   @Override
   public Response handle(Message query) {
@@ -57,7 +58,7 @@ public class SolverRemote implements Solver, AutoCloseable {
 
   Result queryResultFromAvailableResolvers(Message query, StopWatch stopWatch) {
     final var lastErrorMsg = new AtomicReference<Message>();
-    final var resolvers = this.findResolversWithNonOpenCircuit();
+    final var resolvers = this.findResolversToUse();
     for (int i = 0; i < resolvers.size(); i++) {
 
       final var resolver = resolvers.get(i);
@@ -75,7 +76,7 @@ public class SolverRemote implements Solver, AutoCloseable {
     return Result.fromErrorMessage(lastErrorMsg.get());
   }
 
-  List<Resolver> findResolversWithNonOpenCircuit() {
+  List<Resolver> findResolversToUse() {
     return this.resolverStatsFactory.findResolversWithNonOpenCircuit();
   }
 
@@ -95,11 +96,15 @@ public class SolverRemote implements Solver, AutoCloseable {
   }
 
   Result queryResult(Request req) {
-    final var resFuture = req.sendQueryAsyncToResolver(this.delegate.getExecutor());
+    final var resFuture = this.sendQueryAsyncToResolver(req);
     if (this.isPingWhileGettingQueryResponseActive()) {
       this.pingWhileGettingQueryResponse(req, resFuture);
     }
     return this.transformToResult(resFuture, req);
+  }
+
+  CompletableFuture<Message> sendQueryAsyncToResolver(Request req) {
+    return req.getResolver().sendAsync(req.getQuery(), this.executor).toCompletableFuture();
   }
 
   void pingWhileGettingQueryResponse(Request req, CompletableFuture<Message> resFuture) {
@@ -160,15 +165,6 @@ public class SolverRemote implements Solver, AutoCloseable {
     } else {
       throw new RuntimeException(e.getMessage(), e);
     }
-  }
-
-  List<CircuitStatus> getResolversStats() {
-    return this.delegate.resolvers()
-      .stream()
-      .map(Resolver::getAddress)
-      .map(this.circuitBreakerService::getCircuitStatus)
-      .toList()
-      ;
   }
 
   @Override
