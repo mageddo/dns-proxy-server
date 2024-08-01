@@ -56,6 +56,7 @@ public class CircuitBreakerFactory {
       .withDelay(config.getTestDelay())
       .onClose(build(CircuitStatus.CLOSED, address))
       .onOpen(build(CircuitStatus.OPEN, address))
+      .onHalfOpen(it -> log.trace("status=halfOpen, server={}", address))
       .build();
   }
 
@@ -123,8 +124,9 @@ public class CircuitBreakerFactory {
       .toList();
   }
 
-  public CircuitStatus getStatus(InetSocketAddress remoteAddress) {
-    return CircuitBreakerStateMapper.fromFailSafeCircuitBreaker(this.circuitBreakerMap.get(remoteAddress));
+  public CircuitStatus refreshAndGetStatus(InetSocketAddress remoteAddress) {
+    final var circuit = this.circuitBreakerMap.get(remoteAddress);
+    return CircuitBreakerStateMapper.fromFailSafeCircuitBreaker(circuit);
   }
 
   private Stats toStats(InetSocketAddress remoteAddr) {

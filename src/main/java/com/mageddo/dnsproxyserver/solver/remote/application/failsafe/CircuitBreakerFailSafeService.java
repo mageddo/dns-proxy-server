@@ -49,6 +49,6 @@ public class CircuitBreakerFailSafeService implements CircuitBreakerService {
 
   @Override
   public CircuitStatus getCircuitStatus(InetSocketAddress resolverAddress) {
-    return this.circuitBreakerFactory.getStatus(resolverAddress);
+    return this.circuitBreakerFactory.refreshAndGetStatus(resolverAddress);
   }
 }
