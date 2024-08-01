@@ -91,4 +91,8 @@ public class SolverCacheFactory {
     }
     log.debug("status=finished, caches={}", this.getCaches().size());
   }
+
+  public int getProcessedInBackground(){
+    return this.queueProcessor.getProcessedCount();
+  }
 }

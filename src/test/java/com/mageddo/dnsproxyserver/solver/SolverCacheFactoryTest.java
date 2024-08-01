@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
@@ -18,6 +19,7 @@ class SolverCacheFactoryTest {
   @Test
   void mustClearCacheInBackground(){
     // arrange
+    assertEquals(0, this.factory.getProcessedInBackground());
 
     // act
     this.factory.scheduleCacheClear();
@@ -25,6 +27,7 @@ class SolverCacheFactoryTest {
 
     // assert
     verify(this.factory).clearCaches();
+    assertEquals(1, this.factory.getProcessedInBackground());
 
   }
 }
