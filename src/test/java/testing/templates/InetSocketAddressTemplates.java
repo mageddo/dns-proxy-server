@@ -12,4 +12,8 @@ public class InetSocketAddressTemplates {
   public static InetSocketAddress _8_8_4_4() {
     return new InetSocketAddress(Ips.toAddress("8.8.4.4"), 53);
   }
+
+  public static InetSocketAddress _1_1_1_1() {
+    return new InetSocketAddress(Ips.toAddress("1.1.1.1"), 53);
+  }
 }

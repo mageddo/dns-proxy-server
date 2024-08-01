@@ -2,9 +2,11 @@ package com.mageddo.dnsproxyserver.solver;
 
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.dns.utils.Messages;
-import com.mageddo.dnsproxyserver.solver.remote.application.CircuitBreakerService;
+import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Request;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
+import com.mageddo.dnsproxyserver.solver.remote.application.CircuitBreakerService;
+import com.mageddo.dnsproxyserver.solver.remote.application.ResolverStatsFactory;
 import com.mageddo.net.NetExecutorWatchdog;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +38,7 @@ public class SolverRemote implements Solver, AutoCloseable {
   private final RemoteResolvers delegate;
   private final NetExecutorWatchdog netWatchdog = new NetExecutorWatchdog();
   private final CircuitBreakerService circuitBreakerService;
+  private final ResolverStatsFactory resolverStatsFactory;
 
   @Override
   public Response handle(Message query) {
@@ -54,7 +57,6 @@ public class SolverRemote implements Solver, AutoCloseable {
 
   Result queryResultFromAvailableResolvers(Message query, StopWatch stopWatch) {
     final var lastErrorMsg = new AtomicReference<Message>();
-    // fixme #526 better to exclude open circuits.
     final var resolvers = this.findResolversWithNonOpenCircuit();
     for (int i = 0; i < resolvers.size(); i++) {
 
@@ -74,7 +76,7 @@ public class SolverRemote implements Solver, AutoCloseable {
   }
 
   List<Resolver> findResolversWithNonOpenCircuit() {
-    return this.delegate.resolvers();
+    return this.resolverStatsFactory.findResolversWithNonOpenCircuit();
   }
 
   Request buildRequest(Message query, int resolverIndex, StopWatch stopWatch, Resolver resolver) {
@@ -158,6 +160,15 @@ public class SolverRemote implements Solver, AutoCloseable {
     } else {
       throw new RuntimeException(e.getMessage(), e);
     }
+  }
+
+  List<CircuitStatus> getResolversStats() {
+    return this.delegate.resolvers()
+      .stream()
+      .map(Resolver::getAddress)
+      .map(this.circuitBreakerService::getCircuitStatus)
+      .toList()
+      ;
   }
 
   @Override

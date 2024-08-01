@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.solver;
 
+import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.application.CircuitBreakerNonResilientService;
 import com.mageddo.utils.Executors;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -214,17 +216,27 @@ class SolverRemoteTest {
   @Test
   void mustNotUseResolversWithOpenCircuit(){
     // arrange
+
+    final var server1 = new SimpleResolver(InetSocketAddressTemplates._8_8_8_8());
+    final var server2 = new SimpleResolver(InetSocketAddressTemplates._8_8_4_4());
+    final var server3 = new SimpleResolver(InetSocketAddressTemplates._1_1_1_1());
+
     final var query = MessageTemplates.acmeAQuery();
     final var result = ResultTemplates.error();
+
+    doReturn(CircuitStatus.OPEN)
+      .when(this.circuitBreakerService)
+      .getCircuitStatus(server1.getAddress());
+
+    doReturn(CircuitStatus.CLOSED)
+      .when(this.circuitBreakerService)
+      .getCircuitStatus(server2.getAddress());
 
     doReturn(result)
       .when(this.solverRemote)
       .safeQueryResult(any());
 
-    doReturn(List.of(
-      new SimpleResolver(InetSocketAddressTemplates._8_8_8_8()),
-      new SimpleResolver(InetSocketAddressTemplates._8_8_4_4())
-    ))
+    doReturn(List.of(server1, server2, server3))
       .when(this.resolvers)
       .resolvers()
     ;
@@ -232,9 +244,60 @@ class SolverRemoteTest {
     // act
     this.solverRemote.handle(query);
 
+    final var resolversToUse = findResolversToUse()
+      ;
     // assert
-    verify(this.solverRemote).safeQueryResult(any());
+    verify(this.solverRemote, times(2)).safeQueryResult(any());
+    assertEquals("[OPEN, CLOSED, null]", String.valueOf(this.solverRemote.getResolversStats()));
+    assertEquals("[/8.8.4.4:53, /1.1.1.1:53]", resolversToUse);
+  }
 
+
+  @Test
+  void mustFindOnlyNotOpenedCircuits(){
+    // arrange
+
+    final var server1 = new SimpleResolver(InetSocketAddressTemplates._8_8_8_8());
+    final var server2 = new SimpleResolver(InetSocketAddressTemplates._8_8_4_4());
+    final var server3 = new SimpleResolver(InetSocketAddressTemplates._1_1_1_1());
+
+    final var query = MessageTemplates.acmeAQuery();
+    final var result = ResultTemplates.error();
+
+    doReturn(CircuitStatus.OPEN)
+      .when(this.circuitBreakerService)
+      .getCircuitStatus(server1.getAddress());
+
+    doReturn(CircuitStatus.CLOSED)
+      .when(this.circuitBreakerService)
+      .getCircuitStatus(server2.getAddress());
+
+    doReturn(result)
+      .when(this.solverRemote)
+      .safeQueryResult(any());
+
+    doReturn(List.of(server1, server2, server3))
+      .when(this.resolvers)
+      .resolvers()
+    ;
+
+    // act
+    this.solverRemote.handle(query);
+
+    final var resolversToUse = findResolversToUse()
+      ;
+    // assert
+    verify(this.solverRemote, times(2)).safeQueryResult(any());
+    assertEquals("[OPEN, CLOSED, null]", String.valueOf(this.solverRemote.getResolversStats()));
+    assertEquals("[/8.8.4.4:53, /1.1.1.1:53]", resolversToUse);
+  }
+
+  private String findResolversToUse() {
+    return this.solverRemote.findResolversWithNonOpenCircuit()
+      .stream()
+      .map(Resolver::getAddress)
+      .toList()
+      .toString();
   }
 
 }
