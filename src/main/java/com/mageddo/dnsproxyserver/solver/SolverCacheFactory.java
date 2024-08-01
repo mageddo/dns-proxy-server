@@ -76,7 +76,7 @@ public class SolverCacheFactory {
   }
 
   /**
-   * This method should be called from one single thread, or it will cause deadlock.
+   * This method should be called from one single thread, or it can cause deadlock, see #522
    */
   public void scheduleCacheClear() {
     this.queueProcessor.schedule(this::clearCaches);
