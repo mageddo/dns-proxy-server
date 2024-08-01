@@ -27,6 +27,7 @@ public class ResolverStatsFactory {
   public List<Resolver> findResolversWithNonOpenCircuit() {
     return this.find()
       .stream()
+      .filter(ResolverStats::isValidToUse)
       .map(ResolverStats::getResolver)
       .toList()
       ;
