@@ -104,7 +104,7 @@ public class SolverRemote implements Solver, AutoCloseable {
   }
 
   CompletableFuture<Message> sendQueryAsyncToResolver(Request req) {
-    return req.getResolver().sendAsync(req.getQuery(), this.executor).toCompletableFuture();
+    return req.sendQueryAsyncToResolver(this.executor);
   }
 
   void pingWhileGettingQueryResponse(Request req, CompletableFuture<Message> resFuture) {
