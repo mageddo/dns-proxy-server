@@ -16,7 +16,6 @@ import testing.templates.ResponseTemplates;
 import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -125,25 +124,16 @@ class SolversCacheTest {
     assertTrue(pool.isTerminated());
     assertTrue(pool.isShutdown());
     closePoolWhenItWontGetStuckByDeadlock(pool);
-
-
   }
 
-  private static void closePoolWhenItWontGetStuckByDeadlock(ExecutorService pool) {
+  static void closePoolWhenItWontGetStuckByDeadlock(ExecutorService pool) {
     pool.close();
   }
 
-  private void runNTimes(final Consumer<Integer> task, final int times) {
+  void runNTimes(final Consumer<Integer> task, final int times) {
     IntStream.range(0, times)
       .boxed()
       .forEach(task);
-  }
-
-  private List<Callable<Message>> buildNTasksOf(final int numberOfTasks, final Function<Integer, Callable<Message>> fn) {
-    return IntStream.of(numberOfTasks)
-      .boxed()
-      .map(fn)
-      .toList();
   }
 
   @SneakyThrows
@@ -172,6 +162,5 @@ class SolversCacheTest {
     });
     return null;
   }
-
 
 }
