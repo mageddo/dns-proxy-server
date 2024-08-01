@@ -76,7 +76,7 @@ public class SolverCacheFactory {
    * This method should be called from one single thread, or it will cause deadlock.
    */
   public void clearCaches() {
-    // fixme possible solutions for the deadlock:
+    // fixme #526 possible solutions for the deadlock:
     //       1 - only one thread can clear the cache at a time
     //       2 - move the locks to one centralized thread responsible for the cache management
     for (final var cache : this.getCaches()) {

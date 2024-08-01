@@ -54,7 +54,7 @@ public class SolverRemote implements Solver, AutoCloseable {
 
   Result queryResultFromAvailableResolvers(Message query, StopWatch stopWatch) {
     final var lastErrorMsg = new AtomicReference<Message>();
-    // fixme need to filter out open circuits.
+    // fixme #526 better to exclude open circuits.
     for (int i = 0; i < this.delegate.resolvers().size(); i++) {
 
       final var resolver = this.delegate.resolvers().get(i);
