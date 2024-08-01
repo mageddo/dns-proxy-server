@@ -16,6 +16,6 @@ public class SolverConsistencyGuaranteeDAOImpl implements SolverConsistencyGuara
 
   @Override
   public void flushCachesFromCircuitBreakerStateChange() {
-    this.solverCacheFactory.clearCaches();
+    this.solverCacheFactory.scheduleCacheClear();
   }
 }
