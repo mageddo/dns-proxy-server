@@ -1,5 +1,5 @@
 ## 3.25.7
-* SolverRemote: Exclude remote servers with open circuits. #526
+* Refactoring SolverRemote module to implement circuit optimization #526
 
 ## 3.25.6
 * Refactoring SolverRemote module to implement circuit optimization #526
