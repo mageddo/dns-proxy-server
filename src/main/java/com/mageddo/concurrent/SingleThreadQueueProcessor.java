@@ -2,16 +2,20 @@ package com.mageddo.concurrent;
 
 import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.commons.lang.exception.UnchekedInterruptedException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
+@Slf4j
 public class SingleThreadQueueProcessor implements AutoCloseable {
 
   private final BlockingQueue<Runnable> queue;
   private final ExecutorService executor;
+  private final AtomicInteger processedCounter = new AtomicInteger(0);
 
   public SingleThreadQueueProcessor() {
     this(new LinkedBlockingQueue<>());
@@ -37,7 +41,10 @@ public class SingleThreadQueueProcessor implements AutoCloseable {
 
   private void consumeQueue() {
     while (true) {
-      take().run();
+      final var r = take();
+      r.run();
+      this.processedCounter.getAndIncrement();
+      log.trace("status=processed, count={}, task={}", this.getProcessedCount(), r);
     }
   }
 
@@ -58,5 +65,9 @@ public class SingleThreadQueueProcessor implements AutoCloseable {
   @Override
   public void close() throws Exception {
     this.executor.close();
+  }
+
+  public int getProcessedCount() {
+    return this.processedCounter.get();
   }
 }

@@ -80,16 +80,15 @@ public class SolverCacheFactory {
    */
   public void scheduleCacheClear() {
     this.queueProcessor.schedule(this::clearCaches);
+    log.debug("status=scheduled");
   }
 
-  public void clearCaches() {
-    // fixme #526 possible solutions for the deadlock:
-    //       1 - only one thread can clear the cache at a time
-    //       2 - move the locks to one centralized thread responsible for the cache management
+  void clearCaches() {
     for (final var cache : this.getCaches()) {
       log.trace("status=clearing, cache={}", cache.name());
       cache.clear();
       log.trace("status=cleared, cache={}", cache.name());
     }
+    log.debug("status=finished, caches={}", this.getCaches().size());
   }
 }
