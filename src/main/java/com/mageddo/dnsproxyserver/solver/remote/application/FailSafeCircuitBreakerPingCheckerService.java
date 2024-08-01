@@ -18,7 +18,7 @@ import java.net.InetSocketAddress;
 @Slf4j
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
-public class CircuitBreakerCheckerService {
+public class FailSafeCircuitBreakerPingCheckerService {
 
   public boolean safeCheck(InetSocketAddress server, CircuitBreaker<Result> circuitBreaker) {
     try {

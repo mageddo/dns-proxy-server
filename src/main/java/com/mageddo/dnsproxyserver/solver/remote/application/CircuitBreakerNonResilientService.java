@@ -11,4 +11,9 @@ public class CircuitBreakerNonResilientService implements CircuitBreakerService 
   public Result safeHandle(final InetSocketAddress resolverAddress, Supplier<Result> sup) {
     return sup.get();
   }
+
+  @Override
+  public CircuitStatus getCircuitStatus(InetSocketAddress resolverAddress) {
+    return null;
+  }
 }

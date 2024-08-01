@@ -30,7 +30,7 @@ public class CircuitBreakerFactory {
 
   private final Map<InetSocketAddress, CircuitBreaker<Result>> circuitBreakerMap = new ConcurrentHashMap<>();
   private final ConfigService configService;
-  private final CircuitBreakerCheckerService circuitBreakerCheckerService;
+  private final FailSafeCircuitBreakerPingCheckerService circuitBreakerCheckerService;
   private final SolverConsistencyGuaranteeDAO solverConsistencyGuaranteeDAO;
 
   public Result check(InetSocketAddress remoteAddress, Supplier<Result> sup) {
@@ -53,12 +53,12 @@ public class CircuitBreakerFactory {
       .withFailureThreshold(config.getFailureThreshold(), config.getFailureThresholdCapacity())
       .withSuccessThreshold(config.getSuccessThreshold())
       .withDelay(config.getTestDelay())
-      .onClose(build("CLOSED", address))
-      .onOpen(build("OPEN", address))
+      .onClose(build(CircuitStatus.CLOSED, address))
+      .onOpen(build(CircuitStatus.OPEN, address))
       .build();
   }
 
-  EventListener<CircuitBreakerStateChangedEvent> build(String actualStateName, InetSocketAddress address) {
+  EventListener<CircuitBreakerStateChangedEvent> build(CircuitStatus actualStateName, InetSocketAddress address) {
     return event -> {
       final var previousStateName = CircuitBreakerStateMapper.toStateNameFrom(event);
       if (isHalfOpenToOpen(previousStateName, actualStateName)) {
@@ -75,8 +75,8 @@ public class CircuitBreakerFactory {
     };
   }
 
-  private static boolean isHalfOpenToOpen(String previousStateName, String actualStateName) {
-    return "HALF_OPEN".equals(previousStateName) && "OPEN".equals(actualStateName);
+  private static boolean isHalfOpenToOpen(CircuitStatus previousStateName, CircuitStatus actualStateName) {
+    return CircuitStatus.HALF_OPEN.equals(previousStateName) && CircuitStatus.OPEN.equals(actualStateName);
   }
 
   void flushCache() {
@@ -120,6 +120,10 @@ public class CircuitBreakerFactory {
       .stream()
       .map(this::toStats)
       .toList();
+  }
+
+  public CircuitStatus getStatus(InetSocketAddress remoteAddress) {
+    return CircuitBreakerStateMapper.fromFailSafeCircuitBreaker(this.circuitBreakerMap.get(remoteAddress));
   }
 
   private Stats toStats(InetSocketAddress remoteAddr) {
