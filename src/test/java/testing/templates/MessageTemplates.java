@@ -32,4 +32,8 @@ public class MessageTemplates {
   public static Message acmeSoaQuery() {
     return Messages.soaQuestion(HostnameTemplates.ACME_HOSTNAME);
   }
+
+  public static Message randomHostnameAQuery() {
+    return Messages.aQuestion(System.nanoTime() + ".com");
+  }
 }

@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.solver;
 
+import com.mageddo.commons.concurrent.ThreadPool;
 import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.solver.CacheName.Name;
@@ -10,12 +11,20 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.xbill.DNS.Flags;
 import org.xbill.DNS.Message;
 import testing.templates.MessageTemplates;
+import testing.templates.ResponseTemplates;
 
+import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -91,6 +100,52 @@ class SolversCacheTest {
     assertEquals(0, this.cache.getSize());
   }
 
+  @Test
+  void mustEvictLocksAndDeadLocks() throws Exception {
+    // arrange
+    final var r = new SecureRandom();
+    final Function<Message, Response> fn = message -> {
+      Threads.sleep(r.nextInt(50) + 10);
+      this.cache.clear();
+      return ResponseTemplates.acmeAResponse();
+    };
+
+    final var pool = ThreadPool.newFixed(3);
+
+    // act
+    this.runNTimes(
+      it -> pool.submit(() -> this.cache.handle(MessageTemplates.randomHostnameAQuery(), fn)),
+      30
+    );
+
+    pool.shutdown();
+    pool.awaitTermination(5, TimeUnit.SECONDS);
+
+    // assert
+    assertTrue(pool.isTerminated());
+    assertTrue(pool.isShutdown());
+    closePoolWhenItWontGetStuckByDeadlock(pool);
+
+
+  }
+
+  private static void closePoolWhenItWontGetStuckByDeadlock(ExecutorService pool) {
+    pool.close();
+  }
+
+  private void runNTimes(final Consumer<Integer> task, final int times) {
+    IntStream.range(0, times)
+      .boxed()
+      .forEach(task);
+  }
+
+  private List<Callable<Message>> buildNTasksOf(final int numberOfTasks, final Function<Integer, Callable<Message>> fn) {
+    return IntStream.of(numberOfTasks)
+      .boxed()
+      .map(fn)
+      .toList();
+  }
+
   @SneakyThrows
   private void concurrentRequests(int quantity, Message req, Random r) {
     final var runnables = new ArrayList<Callable<Object>>();
@@ -117,4 +172,6 @@ class SolversCacheTest {
     });
     return null;
   }
+
+
 }
