@@ -73,6 +73,9 @@ public class SolverCacheFactory {
   }
 
   public void clearCaches() {
+    // fixme possible solutions for the deadlock:
+    //       1 - only one thread can clear the cache at a time
+    //       2 - move the locks to one centralized thread responsible for the cache management
     for (final var cache : this.getCaches()) {
       log.trace("status=clearing, cache={}", cache.name());
       cache.clear();
