@@ -72,6 +72,9 @@ public class SolverCacheFactory {
       ;
   }
 
+  /**
+   * This method should be called from one single thread, or it will cause deadlock.
+   */
   public void clearCaches() {
     // fixme possible solutions for the deadlock:
     //       1 - only one thread can clear the cache at a time
