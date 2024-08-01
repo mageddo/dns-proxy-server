@@ -1,3 +1,6 @@
+## 3.25.5
+* Change the caching strategy to minimize the locks and prevent deadlocks #522
+
 ## 3.25.4
 * Disable CircuitBreaker check by using ping, keep using the queries to check the server status #526
 * Disable Cache Flush when Circuit Breaker change state to Half Open #526
