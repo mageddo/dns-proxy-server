@@ -58,7 +58,7 @@ public class SingleThreadQueueProcessor implements AutoCloseable {
 
   Thread buildThread(Runnable r) {
     final var thread = Threads.createDaemonThread(r);
-    thread.setName("SingleThreadQueueProcessor");
+    thread.setName("queueProcessor");
     return thread;
   }
 
