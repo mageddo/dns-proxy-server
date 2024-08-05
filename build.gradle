@@ -183,7 +183,6 @@ shadowJar {
 }
 
 graalvmNative {
-  testSupport = false
   binaries {
     main {
       javaLauncher = javaToolchains.launcherFor {
