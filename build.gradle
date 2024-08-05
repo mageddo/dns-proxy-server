@@ -107,7 +107,7 @@ def compTest = tasks.register("compTest", Test) {
 
 def intTest = tasks.register("intTest", Test) {
   useJUnitPlatform()
-  include "**/*intTest.class"
+  include "**/*IntTest.class"
   failFast = true
   testLogging {
     events "passed", "skipped", "failed"
