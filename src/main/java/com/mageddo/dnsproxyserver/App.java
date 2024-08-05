@@ -32,6 +32,8 @@ public class App {
   void start() {
     try {
       this.mustStart();
+    } catch (SystemExitException e) {
+      throw e;
     } catch (Throwable e) {
       log.error(
         "status=fatalError, action=exit, msg={}, class={}",
@@ -106,5 +108,11 @@ public class App {
 
   int getDnsServerPort() {
     return getConfig().getDnsServerPort();
+  }
+
+  static class SystemExitException extends RuntimeException {
+    public SystemExitException(String reason) {
+      super(reason);
+    }
   }
 }

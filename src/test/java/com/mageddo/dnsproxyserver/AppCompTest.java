@@ -92,7 +92,7 @@ class AppCompTest {
   }
 
   RuntimeException mockExitMethod() {
-    final var expectedException = new RuntimeException("must exit");
+    final var expectedException = new App.SystemExitException("testing");
     doThrow(expectedException)
       .when(this.app)
       .exitGracefully()
