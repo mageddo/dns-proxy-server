@@ -43,7 +43,6 @@ public class AppIntTest {
   static Message queryStartedServer(Integer port, String host) {
     final var dnsServerAddress = Ips.getAnyLocalAddress(port);
     final var dnsClient = new SimpleResolver(dnsServerAddress);
-    final var res = dnsClient.send(Messages.aQuestion(host));
-    return res;
+    return dnsClient.send(Messages.aQuestion(host));
   }
 }
