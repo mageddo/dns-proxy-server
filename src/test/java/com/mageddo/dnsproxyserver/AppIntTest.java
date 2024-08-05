@@ -8,9 +8,11 @@ import com.mageddo.utils.Executors;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.xbill.DNS.Message;
 import testing.templates.ConfigFlagArgsTemplates;
 
+import java.nio.file.Path;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,10 +21,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AppIntTest {
 
   @Test
-  void appMustStartAndQuerySampleWithSuccess() {
+  void appMustStartAndQuerySampleWithSuccess(@TempDir Path tempDir) {
 
     final var hostToQuery = "dps-sample.dev";
-    final var args = ConfigFlagArgsTemplates.withRandomPortsAndNotAsDefaultDns();
+    final var args = ConfigFlagArgsTemplates.withRandomPortsAndNotAsDefaultDns(tempDir);
     final var app = new App(args);
 
     try (final var executor = Executors.newThreadExecutor()) {
