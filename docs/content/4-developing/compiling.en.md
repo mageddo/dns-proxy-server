@@ -30,13 +30,4 @@ $ ./gradlew clean build compTest shadowJar nativeCompile
 $ ./build/native/nativeCompile/dns-proxy-server
 ```
 
-### Native Image Test
-
-Tests ending with `IntTest.java` can be run within the native image binary to check if 
-the native-image compilation produces a working binary version.
-
-```
-$ ./gradlew clean nativeIntTest
-```
-
 [1]: {{%relref "1-getting-started/requirements/_index.en.md" %}}
