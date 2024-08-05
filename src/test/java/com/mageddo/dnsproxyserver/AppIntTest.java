@@ -12,7 +12,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -24,17 +23,17 @@ public class AppIntTest {
 
     final var webServerPort = SocketUtils.findRandomFreePort();
     final var dnsServerPort = SocketUtils.findRandomFreePort();
-    final var configPath = tmpPath.resolve("config.json");
+//    final var configPath = tmpPath.resolve("config.json");
 //    final var logPath = tmpPath.resolve("logs.txt");
-    final var logPath = Paths.get("/tmp/logs.txt");
+//    final var logPath = Paths.get("/tmp/logs.txt");
     final var hostToQuery = "dps-sample.dev";
 
     final var config = new String[]{
       "--default-dns=false",
       "--web-server-port=" + webServerPort,
       "--server-port=" + dnsServerPort,
-      "--conf-path=" + configPath,
-      "--log-file=" + logPath,
+//      "--conf-path=" + configPath,
+//      "--log-file=" + logPath,
       "--log-level=TRACE",
     };
     final var app = new App(config);

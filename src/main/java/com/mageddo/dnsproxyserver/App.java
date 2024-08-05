@@ -7,10 +7,14 @@ import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOCmdArgs;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigFlag;
 import com.mageddo.dnsproxyserver.di.Context;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ClassUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+@Slf4j
 public class App {
 
   private final String[] args;
@@ -26,7 +30,18 @@ public class App {
   }
 
   void start() {
+    try {
+      this.mustStart();
+    } catch (Throwable e) {
+      log.error(
+        "status=fatalError, action=exit, msg={}, class={}",
+        ExceptionUtils.getMessage(e), ClassUtils.getSimpleName(e), e
+      );
+      System.exit(128);
+    }
+  }
 
+  void mustStart() {
     this.flags = ConfigFlag.parse(this.args);
 
     this.checkHiddenCommands();

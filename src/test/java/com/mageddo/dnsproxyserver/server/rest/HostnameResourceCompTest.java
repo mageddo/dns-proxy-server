@@ -1,3 +1,5 @@
+// fixme talvez va precisar substituir pq o restassured usa groovy e tá conflitando com o native image
+//       ver o karate test framework
 //package com.mageddo.dnsproxyserver.server.rest;
 //
 //import com.mageddo.dnsproxyserver.config.application.Configs;
