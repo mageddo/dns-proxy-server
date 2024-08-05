@@ -99,4 +99,12 @@ public class App {
     final var tmpDir = Paths.get(System.getProperty("java.io.tmpdir"));
     Files.createDirectories(tmpDir);
   }
+
+  Config getConfig() {
+    return config;
+  }
+
+  int getDnsServerPort() {
+    return getConfig().getDnsServerPort();
+  }
 }
