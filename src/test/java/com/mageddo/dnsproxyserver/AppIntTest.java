@@ -6,6 +6,7 @@ import com.mageddo.dnsproxyserver.solver.SimpleResolver;
 import com.mageddo.dnsproxyserver.utils.Ips;
 import com.mageddo.net.SocketUtils;
 import com.mageddo.utils.Executors;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -16,6 +17,7 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Slf4j
 public class AppIntTest {
   @Test
   void appMustStart(@TempDir Path tmpPath) throws IOException {
@@ -33,6 +35,7 @@ public class AppIntTest {
       "--server-port=" + dnsServerPort,
       "--conf-path=" + configPath,
       "--log-file=" + logPath,
+      "--log-level=TRACE",
     };
     final var app = new App(config);
 

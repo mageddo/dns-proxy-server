@@ -84,7 +84,8 @@ dependencies {
 
   testImplementation("org.junit.jupiter:junit-jupiter:5.10.+")
   testImplementation('org.mockito:mockito-junit-jupiter:5.12.+')
-  testImplementation('io.rest-assured:rest-assured:5.5.0')
+  testImplementation ('org.hamcrest:hamcrest:3.0')
+//  testImplementation('io.rest-assured:rest-assured:5.5.0')
 
 }
 
@@ -138,7 +139,6 @@ task stressTest(type: Test) {
     showStandardStreams = true
   }
 }
-
 
 compileJava {
   options.encoding = 'UTF-8'
@@ -206,9 +206,7 @@ graalvmNative {
       buildArgs.add('-J-Xmx5G')
 
     }
-    all {
-      buildArgs.addAll("--verbose", "-00")
-    }
+
   }
   registerTestBinary("intTest") {
     usingSourceSet(sourceSets.test)
