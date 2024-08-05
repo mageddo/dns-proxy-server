@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AppIntTest {
 
   @Test
-  void appMustStart() {
+  void appMustStartAndQuerySampleWithSuccess() {
 
     final var hostToQuery = "dps-sample.dev";
     final var args = ConfigFlagArgsTemplates.withRandomPortsAndNotAsDefaultDns();
