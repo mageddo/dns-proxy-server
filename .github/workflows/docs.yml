@@ -16,6 +16,9 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
 
+      - name: Install Deps
+        run: sudo apt-get install docker-compose -y
+
       - name: Checkout code
         uses: actions/checkout@v3
         with:
