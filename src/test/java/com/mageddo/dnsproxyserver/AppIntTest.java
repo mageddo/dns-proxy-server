@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.xbill.DNS.Message;
 import testing.templates.ConfigFlagArgsTemplates;
 
-import java.io.IOException;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Slf4j
 public class AppIntTest {
   @Test
-  void appMustStart() throws IOException {
+  void appMustStart() {
 
     final var hostToQuery = "dps-sample.dev";
     final var args = ConfigFlagArgsTemplates.withRandomPortsAndNotAsDefaultDns();
