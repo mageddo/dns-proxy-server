@@ -183,6 +183,9 @@ graalvmNative {
       buildArgs.add('-J-Xmx5G')
 
     }
+    test {
+      buildArgs.add("--report-unsupported-elements-at-runtime")
+    }
   }
 }
 
