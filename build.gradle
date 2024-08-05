@@ -69,7 +69,7 @@ dependencies {
   implementation('com.github.docker-java:docker-java-core:3.3.4')
   implementation('com.github.docker-java:docker-java-transport-httpclient5:3.3.4')
 
-  implementation('info.picocli:picocli:4.7.1')
+  implementation('info.picocli:picocli:4.7.6')
   implementation('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1')
 
   implementation('com.github.ben-manes.caffeine:caffeine:3.1.8')
@@ -205,6 +205,9 @@ graalvmNative {
       fallback = false
       buildArgs.add('-J-Xmx5G')
 
+    }
+    all {
+      buildArgs.addAll("--verbose", "-00")
     }
   }
   registerTestBinary("intTest") {
