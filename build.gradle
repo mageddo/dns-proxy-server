@@ -35,9 +35,23 @@ sourceSets {
     compileClasspath += sourceSets.test.runtimeClasspath
     runtimeClasspath += sourceSets.test.runtimeClasspath
   }
+
+  intTest {
+    java {
+      srcDir 'src/int-test/java'
+    }
+    resources {
+      srcDir 'src/int-test/resources'
+    }
+    compileClasspath += sourceSets.test.runtimeClasspath
+    runtimeClasspath += sourceSets.test.runtimeClasspath
+  }
+//  integTest
 }
 
-
+//configurations {
+//  integTestImplementation.extendsFrom(testImplementation)
+//}
 
 dependencies {
 
@@ -116,6 +130,38 @@ task stressTest(type: Test) {
   }
 }
 
+def intTest = tasks.register("intTest", Test) {
+
+  testClassesDirs = sourceSets.intTest.output.classesDirs
+  classpath += sourceSets.intTest.runtimeClasspath
+
+  useJUnitPlatform()
+  include "**/*IntTest.class"
+  failFast = true
+  testLogging {
+    events "passed", "skipped", "failed"
+  }
+}
+
+//nativeTest {
+//  include "**/*IntTest.class"
+//  exclude "**/*Test.class"
+//}
+
+//tasks.named('nativeTest') {
+//  include "**/*IntTest.class"
+//  filter {
+//    includeTestsMatching '*IntTest*'
+//  }
+//}
+
+//tasks.named("nativeTestCompile") {
+//  include "**/*IntTest.class"
+//  classspath = shadowJar
+//}
+
+//nativeTestCompileClasspathJar
+
 compileJava {
   options.encoding = 'UTF-8'
   options.compilerArgs << '-parameters'
@@ -185,9 +231,19 @@ graalvmNative {
     }
     test {
       buildArgs.add("--report-unsupported-elements-at-runtime")
+      resources.autodetect()
+      buildArgs.addAll('--verbose', '-O0')
     }
   }
+  registerTestBinary("intTest") {
+    usingSourceSet(sourceSets.intTest)
+    forTestTask(intTest)
+  }
 }
+
+//tasks.named("nativeCompile") {
+//  classpathJar = myFatJar
+//}
 
 release {
   project.ext.set("release.useAutomaticVersion", true)
