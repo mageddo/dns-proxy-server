@@ -8,10 +8,8 @@ import com.mageddo.net.SocketUtils;
 import com.mageddo.utils.Executors;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,21 +17,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Slf4j
 public class AppIntTest {
   @Test
-  void appMustStart(@TempDir Path tmpPath) throws IOException {
+  void appMustStart() throws IOException {
 
     final var webServerPort = SocketUtils.findRandomFreePort();
     final var dnsServerPort = SocketUtils.findRandomFreePort();
-//    final var configPath = tmpPath.resolve("config.json");
-//    final var logPath = tmpPath.resolve("logs.txt");
-//    final var logPath = Paths.get("/tmp/logs.txt");
     final var hostToQuery = "dps-sample.dev";
 
     final var config = new String[]{
       "--default-dns=false",
       "--web-server-port=" + webServerPort,
       "--server-port=" + dnsServerPort,
-//      "--conf-path=" + configPath,
-//      "--log-file=" + logPath,
       "--log-level=TRACE",
     };
     final var app = new App(config);
