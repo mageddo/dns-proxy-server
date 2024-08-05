@@ -225,7 +225,7 @@ release {
 
 }
 
-static def dontCreateTagsAsTheCdWill(){
+def dontCreateTagsAsTheCdWill(){
   preTagCommit.enabled = false
   createReleaseTag.enabled = false
 }
