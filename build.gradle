@@ -36,16 +36,6 @@ sourceSets {
     runtimeClasspath += sourceSets.test.runtimeClasspath
   }
 
-  intTest {
-    java {
-      srcDir 'src/int-test/java'
-    }
-    resources {
-      srcDir 'src/int-test/resources'
-    }
-    compileClasspath += sourceSets.test.runtimeClasspath
-    runtimeClasspath += sourceSets.test.runtimeClasspath
-  }
 }
 
 dependencies {
@@ -55,6 +45,9 @@ dependencies {
 
   compileOnly('com.mageddo.nativeimage:reflection-config-generator:2.4.4')
   annotationProcessor('com.mageddo.nativeimage:reflection-config-generator:2.4.4')
+
+  testCompileOnly('com.mageddo.nativeimage:reflection-config-generator:2.4.4')
+  testAnnotationProcessor('com.mageddo.nativeimage:reflection-config-generator:2.4.4')
 
   annotationProcessor("com.google.dagger:dagger-compiler:2.45")
   implementation("com.google.dagger:dagger:2.45")
@@ -103,7 +96,7 @@ test {
   }
 }
 
-task compTest(type: Test) {
+def compTest = tasks.register("compTest", Test) {
   useJUnitPlatform()
   include "**/*CompTest.class"
   failFast = true
@@ -183,7 +176,6 @@ tasks.register('nativeImageJar', ShadowJar) {
   exclude("/META-INF/*.SF")
   exclude("/META-INF/*.DSA")
   exclude("/META-INF/*.RSA")
-
 }
 
 shadowJar {
@@ -191,6 +183,7 @@ shadowJar {
 }
 
 graalvmNative {
+  testSupport = false
   binaries {
     main {
       javaLauncher = javaToolchains.launcherFor {
@@ -207,8 +200,8 @@ graalvmNative {
     }
   }
   registerTestBinary("intTest") {
-    usingSourceSet(sourceSets.intTest)
-    forTestTask(intTest)
+    usingSourceSet(sourceSets.test)
+    forTestTask(compTest)
   }
 }
 
