@@ -4,18 +4,9 @@ import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOCmdArgs;
 import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.net.SocketUtils;
-import nativeimage.Reflection;
 
 import java.util.function.Supplier;
 
-@Reflection(
-  scanClass = ContextSupplier.class,
-  declaredConstructors = true,
-  constructors = true,
-  declaredMethods = true,
-  publicConstructors = true,
-  publicMethods = true
-)
 public class ContextSupplier implements Supplier<Context> {
   @Override
   public Context get() {

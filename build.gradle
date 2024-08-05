@@ -98,7 +98,16 @@ test {
 
 def compTest = tasks.register("compTest", Test) {
   useJUnitPlatform()
-  include "**/*CompTest.class"
+  include "**/*CompTest.class", "**/*IntTest.class"
+  failFast = true
+  testLogging {
+    events "passed", "skipped", "failed"
+  }
+}
+
+def intTest = tasks.register("intTest", Test) {
+  useJUnitPlatform()
+  include "**/*intTest.class"
   failFast = true
   testLogging {
     events "passed", "skipped", "failed"
@@ -118,18 +127,6 @@ task stressTest(type: Test) {
   }
 }
 
-def intTest = tasks.register("intTest", Test) {
-
-  testClassesDirs = sourceSets.intTest.output.classesDirs
-  classpath += sourceSets.intTest.runtimeClasspath
-
-  useJUnitPlatform()
-  include "**/*IntTest.class"
-  failFast = true
-  testLogging {
-    events "passed", "skipped", "failed"
-  }
-}
 
 compileJava {
   options.encoding = 'UTF-8'
@@ -200,7 +197,7 @@ graalvmNative {
   }
   registerTestBinary("intTest") {
     usingSourceSet(sourceSets.test)
-    forTestTask(compTest)
+    forTestTask(intTest)
   }
 }
 

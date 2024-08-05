@@ -6,17 +6,8 @@ import dagger.sheath.EventHandler;
 import io.restassured.RestAssured;
 import io.restassured.config.HttpClientConfig;
 import lombok.extern.slf4j.Slf4j;
-import nativeimage.Reflection;
 
 @Slf4j
-@Reflection(
-  scanClass = Events.class,
-  declaredConstructors = true,
-  constructors = true,
-  declaredMethods = true,
-  publicConstructors = true,
-  publicMethods = true
-)
 public class Events implements EventHandler<Context> {
   @Override
   public void afterSetup(Context component) {
