@@ -37,7 +37,7 @@ public class App {
         "status=fatalError, action=exit, msg={}, class={}",
         ExceptionUtils.getMessage(e), ClassUtils.getSimpleName(e), e
       );
-      System.exit(128);
+      this.exitWithError(128);
     }
   }
 
@@ -88,6 +88,10 @@ public class App {
 
   void exitGracefully() {
     System.exit(0);
+  }
+
+  void exitWithError(int errorCode) {
+    System.exit(errorCode);
   }
 
   @SneakyThrows
