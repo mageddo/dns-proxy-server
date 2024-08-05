@@ -17,13 +17,16 @@ env:
 
 jobs:
   primary_release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     outputs:
       APP_VERSION: ${{ steps.set_app_version.outputs.APP_VERSION }}
     steps:
       - name: Explain
         run: |
           echo "Releases the Jar and Linux AMD64 version"
+
+      - name: Install Deps
+        run: sudo apt-get install docker-compose -y
 
       - name: Checkout code
         uses: actions/checkout@v3
@@ -67,7 +70,7 @@ jobs:
             ./build/compressed-artifacts/*
 
   linux_amd64_static_release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: primary_release
     env:
       APP_VERSION: ${{ needs.primary_release.outputs.APP_VERSION }}
@@ -77,6 +80,9 @@ jobs:
 
       - name: Check app version
         run: echo "$APP_VERSION"
+
+      - name: Install Deps
+        run: sudo apt-get install rename -y
 
       - uses: actions/download-artifact@v3
         with:
@@ -105,7 +111,7 @@ jobs:
             ./build/compressed-artifacts/*
 
   linux_arm_release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: primary_release
     env:
       APP_VERSION: ${{ needs.primary_release.outputs.APP_VERSION }}
@@ -115,6 +121,9 @@ jobs:
 
       - name: Check app version
         run: echo "$APP_VERSION"
+
+      - name: Install Deps
+        run: sudo apt-get install rename -y
 
       - uses: actions/download-artifact@v3
         with:
