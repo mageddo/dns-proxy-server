@@ -94,6 +94,9 @@ test {
   testLogging {
     events "passed", "skipped", "failed"
   }
+  testLogging {
+    showStandardStreams = true
+  }
 }
 
 def compTest = tasks.register("compTest", Test) {
@@ -103,6 +106,9 @@ def compTest = tasks.register("compTest", Test) {
   testLogging {
     events "passed", "skipped", "failed"
   }
+  testLogging {
+    showStandardStreams = true
+  }
 }
 
 def intTest = tasks.register("intTest", Test) {
@@ -111,6 +117,9 @@ def intTest = tasks.register("intTest", Test) {
   failFast = true
   testLogging {
     events "passed", "skipped", "failed"
+  }
+  testLogging {
+    showStandardStreams = true
   }
 }
 
@@ -124,6 +133,9 @@ task stressTest(type: Test) {
   failFast = true
   testLogging {
     events "passed", "skipped", "failed"
+  }
+  testLogging {
+    showStandardStreams = true
   }
 }
 
