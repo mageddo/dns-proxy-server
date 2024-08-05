@@ -1,5 +1,5 @@
 ## 3.25.9
-* Create `IntTests` suite, they are comp tests which can be run within native image #480
+* Create `IntTests` suite, they are comp tests which can be run within native image, see the docs #480
 
 ## 3.25.8
 * SolverRemote: Exclude remote servers with open circuits. #526
