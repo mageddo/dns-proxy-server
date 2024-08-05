@@ -82,7 +82,7 @@ jobs:
         run: echo "$APP_VERSION"
 
       - name: Install Deps
-        run: sudo apt-get install rename -y
+        run: sudo apt-get install rename docker-compose -y
 
       - uses: actions/download-artifact@v3
         with:
@@ -123,7 +123,7 @@ jobs:
         run: echo "$APP_VERSION"
 
       - name: Install Deps
-        run: sudo apt-get install rename -y
+        run: sudo apt-get install rename docker-compose -y
 
       - uses: actions/download-artifact@v3
         with:
