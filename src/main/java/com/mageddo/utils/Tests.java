@@ -10,9 +10,10 @@ public class Tests {
 
   private static final String JUNIT_FRAMEWORK_PACKAGE = "org.junit.";
   private static final AtomicInteger hotCallsStat = new AtomicInteger();
+  private static final Class<Tests> CACHE_KEY = Tests.class;
 
   public static boolean inTest() {
-    return Singletons.createOrGet(Tests.class, Tests::inTestHotLoad);
+    return Singletons.createOrGet(CACHE_KEY, Tests::inTestHotLoad);
   }
 
   static boolean inTestHotLoad() {
@@ -46,7 +47,8 @@ public class Tests {
     return hotCallsStat.get();
   }
 
-  static void resetStats(){
+  static void resetCache(){
     hotCallsStat.set(0);
+    Singletons.clear(CACHE_KEY);
   }
 }

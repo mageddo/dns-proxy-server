@@ -10,7 +10,7 @@ class TestsTest {
 
   @BeforeEach
   void beforeEach(){
-    Tests.resetStats();
+    Tests.resetCache();
   }
 
   @Test
