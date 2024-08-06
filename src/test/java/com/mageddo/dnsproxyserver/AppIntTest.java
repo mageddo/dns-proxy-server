@@ -24,7 +24,7 @@ public class AppIntTest {
   void appMustStartAndQuerySampleWithSuccess(@TempDir Path tempDir) {
 
     final var hostToQuery = "dps-sample.dev";
-    final var args = ConfigFlagArgsTemplates.withRandomPortsAndNotAsDefaultDns(tempDir);
+    final var args = ConfigFlagArgsTemplates.withRandomPortsAndNotAsDefaultDns();
     final var app = new App(args);
 
     try (final var executor = Executors.newThreadExecutor()) {

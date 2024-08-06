@@ -1,5 +1,6 @@
 package com.mageddo.utils;
 
+import java.util.Set;
 import java.util.function.Predicate;
 
 public class Tests {
@@ -7,8 +8,14 @@ public class Tests {
   private static final String JUNIT_FRAMEWORK_PACKAGE = "org.junit.";
 
   public static boolean inTest() {
-    return hashJunitInStackTrace(Thread.currentThread());
+    return findAllThreads()
+      .stream()
+      .anyMatch(Tests::hashJunitInStackTrace);
   }
+
+  static Set<Thread> findAllThreads(){
+    return Thread.getAllStackTraces().keySet();
+  };
 
   private static boolean hashJunitInStackTrace(final Thread thread) {
     return hashClassInStackTrace(
