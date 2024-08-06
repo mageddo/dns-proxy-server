@@ -1,5 +1,7 @@
 package com.mageddo.utils;
 
+import com.mageddo.commons.lang.Singletons;
+
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -8,6 +10,10 @@ public class Tests {
   private static final String JUNIT_FRAMEWORK_PACKAGE = "org.junit.";
 
   public static boolean inTest() {
+    return Singletons.createOrGet(Tests.class, Tests::inTestHotLoad);
+  }
+
+  private static boolean inTestHotLoad() {
     return findAllThreads()
       .stream()
       .anyMatch(Tests::hashJunitInStackTrace);
