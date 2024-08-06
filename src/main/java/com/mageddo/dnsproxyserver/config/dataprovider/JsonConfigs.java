@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -77,7 +76,7 @@ public class JsonConfigs {
       .add(
         new Env()
           .setName(Config.Env.DEFAULT_ENV)
-          .setHostnames(Collections.singletonList(Entry.sample()))
+          .add(Entry.sample())
       );
     return config;
   }
