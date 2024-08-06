@@ -1,10 +1,12 @@
 package com.mageddo.dnsproxyserver;
 
+import ch.qos.logback.classic.Level;
 import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.server.Starter;
 import com.mageddo.dnsproxyserver.solver.SimpleResolver;
 import com.mageddo.dnsproxyserver.utils.Ips;
+import com.mageddo.logback.LogbackUtils;
 import com.mageddo.utils.Executors;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,7 @@ public class AppIntTest {
   @BeforeEach
   void beforeEach() {
     Starter.setMustStartFlagActive(true);
+    LogbackUtils.changeLogLevel("com.mageddo", Level.TRACE);
   }
 
   @AfterAll

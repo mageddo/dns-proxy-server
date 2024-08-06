@@ -31,6 +31,7 @@ public class App {
 
   void start() {
     try {
+      log.trace("status=starting");
       this.mustStart();
     } catch (SystemExitException e) {
       throw e;

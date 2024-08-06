@@ -36,7 +36,7 @@ class ConfigDAOJsonTest {
     ConfigDAOCmdArgs.setArgs(flags.getArgs());
 
     // act
-    final var configPath = ConfigDAOJson.buildConfigPath(workDir, flags.getConfigPath());
+    final var configPath = ConfigPathBuilder.buildConfigPath(workDir, flags.getConfigPath());
 
     // assert
     assertEquals("config.json", configPath.getFileName().toString());
