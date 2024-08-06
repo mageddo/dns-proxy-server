@@ -3,23 +3,26 @@ package com.mageddo.utils;
 import com.mageddo.commons.lang.Singletons;
 
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
 public class Tests {
 
   private static final String JUNIT_FRAMEWORK_PACKAGE = "org.junit.";
+  private static final AtomicInteger hotCallsStat = new AtomicInteger();
 
   public static boolean inTest() {
     return Singletons.createOrGet(Tests.class, Tests::inTestHotLoad);
   }
 
-  private static boolean inTestHotLoad() {
+  static boolean inTestHotLoad() {
+    hotCallsStat.incrementAndGet();
     return findAllThreads()
       .stream()
       .anyMatch(Tests::hashJunitInStackTrace);
   }
 
-  static Set<Thread> findAllThreads(){
+  private static Set<Thread> findAllThreads(){
     return Thread.getAllStackTraces().keySet();
   };
 
@@ -37,5 +40,13 @@ public class Tests {
       }
     }
     return false;
+  }
+
+  static int getHotCallsStat() {
+    return hotCallsStat.get();
+  }
+
+  static void resetStats(){
+    hotCallsStat.set(0);
   }
 }
