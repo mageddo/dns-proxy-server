@@ -38,7 +38,9 @@ public class ConfigDAOJson implements ConfigDAO {
 
   public static Path buildConfigPath(Path workDir, String configPath) {
     if (runningInTestsAndNoCustomConfigPath()) {
-      return Files.createTempFileDeleteOnExit("dns-proxy-server-junit", ".json");
+      final var file = Files.createTempFileDeleteOnExit("dns-proxy-server-junit", ".json");
+      log.trace("status=runningInTests, usingEmptyFile={}", file);
+      return file;
     }
     if (workDir != null) {
       return workDir
