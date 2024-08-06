@@ -7,6 +7,7 @@ import com.mageddo.dnsproxyserver.di.StartupEvents;
 import com.mageddo.logback.LogbackUtils;
 import dagger.sheath.junit.DaggerTest;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -21,11 +22,15 @@ class EventListenerCompTest {
   @Inject
   Set<StartupEvent> events;
 
+  @BeforeAll
+  static void beforeAll(){
+    LogbackUtils.changeLogLevel("com.mageddo", Level.TRACE);
+  }
+
   @Test
   void mustConfigureNetworkEventListener(){
 
     // arrange
-    LogbackUtils.changeLogLevel("com.mageddo", Level.TRACE);
     log.debug("events={}", events);
 
     // act

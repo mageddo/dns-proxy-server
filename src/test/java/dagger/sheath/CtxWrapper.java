@@ -20,19 +20,57 @@ public class CtxWrapper {
   }
 
   public Object get(Class<?> clazz) {
-    try {
-
-      // binding by available providers
-      final var provider = this.findProviderFor(clazz);
-      if (provider != null) {
-        log.debug("status=beanSolved, from=Provider, beanClass={}", clazz);
-        return provider.getValue();
+    {
+      final var found = findUsingProvider(clazz);
+      if (found != null) {
+        log.debug("status=foundUsingProvider");
+        return found;
       }
-    } catch (Throwable e) {
-      log.warn("status=failedToFindByProvider, msg={}", e.getMessage());
     }
 
-    // find by binding methods
+    {
+      final var found = findUsingBindingMethods(clazz);
+      if (found != null) {
+        log.debug("status=foundUsingBindingMethods");
+        return found;
+      }
+    }
+
+    {
+      final var found = findUsingCtx(clazz);
+      if(found != null){
+        log.debug("status=foundByUsingCtx");
+        return found;
+      }
+    }
+    log.debug("status=notFound, class={}", clazz);
+    return null;
+
+    // todo procurar a classe que o obj grah impl estende ou a interface que ele implementa
+    //  Pegar a anotação @Component e pegar os modulos
+    //  andar pelos metodos de cada modulo procurando pelo método que retorna o tipo da interface desejada
+    //  e que tenha @Binds , provides nao serve como ele pode receber um tipo pra internamente montar o
+    //  tipo retornado mas daih nao da obter a instancia
+
+  }
+
+  private Object findUsingCtx(Class<?> clazz) {
+    try {
+      final var method = MethodUtils
+        .getAllMethods(this.getCtxClass())
+        .stream()
+        .filter(it -> it.getReturnType().isAssignableFrom(clazz) && it.getParameterTypes().length == 0)
+        .findFirst();
+      if (method.isPresent()) {
+        return MethodUtils.invoke(method.get(), this.ctx, true);
+      }
+    } catch (Throwable e) {
+      log.warn("status=failedToFindByMethodOnCtx, msg={}", e.getMessage());
+    }
+    return null;
+  }
+
+  private Object findUsingBindingMethods(Class<?> clazz) {
     try {
       final var bindingMethod = BindingMethod.findBindingMethod(this);
       if (bindingMethod == null) {
@@ -44,29 +82,21 @@ public class CtxWrapper {
     } catch (Throwable e) {
       log.warn("status=failedToFindByBinding, msg={}", e.getMessage());
     }
-
-    // find by ctx obj methods
-    try {
-      final var method = MethodUtils
-          .getAllMethods(this.getCtxClass())
-          .stream()
-          .filter(it -> it.getReturnType().isAssignableFrom(clazz) && it.getParameterTypes().length == 0)
-          .findFirst();
-      if (method.isPresent()) {
-        return MethodUtils.invoke(method.get(), this.ctx, true);
-      }
-    } catch (Throwable e) {
-      log.warn("status=failedToFindByMethodOnCtx, msg={}", e.getMessage());
-    }
-
     return null;
+  }
 
-    // todo procurar a classe que o obj grah impl estende ou a interface que ele implementa
-    //  Pegar a anotação @Component e pegar os modulos
-    //  andar pelos metodos de cada modulo procurando pelo método que retorna o tipo da interface desejada
-    //  e que tenha @Binds , provides nao serve como ele pode receber um tipo pra internamente montar o
-    //  tipo retornado mas daih nao da obter a instancia
-
+  private Object findUsingProvider(Class<?> clazz) {
+    try {
+      final var provider = this.findProviderFor(clazz);
+      if (provider != null) {
+        log.debug("status=beanSolved, from=Provider, beanClass={}", clazz);
+        return provider.getValue();
+      }
+      return null;
+    } catch (Throwable e) {
+      log.warn("status=failedToFindByProvider, msg={}", e.getMessage());
+      return null;
+    }
   }
 
   public Object getCtx() {
