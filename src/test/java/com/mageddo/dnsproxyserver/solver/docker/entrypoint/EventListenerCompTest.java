@@ -24,6 +24,7 @@ class EventListenerCompTest {
 
   @BeforeAll
   static void beforeAll(){
+    LogbackUtils.changeLogLevel("dagger.sheath", Level.TRACE);
     LogbackUtils.changeLogLevel("com.mageddo", Level.TRACE);
   }
 

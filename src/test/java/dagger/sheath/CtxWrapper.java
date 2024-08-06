@@ -1,6 +1,7 @@
 package dagger.sheath;
 
 import dagger.sheath.binding.BindingMethod;
+import dagger.sheath.reflection.Signature;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -155,5 +156,9 @@ public class CtxWrapper {
 
   public Class<?> getCtxClass() {
     return this.ctx.getClass();
+  }
+
+  public Object get(Signature signature) {
+    return get(signature.getClazz());
   }
 }

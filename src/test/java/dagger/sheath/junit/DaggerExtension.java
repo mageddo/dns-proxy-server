@@ -6,6 +6,7 @@ import dagger.sheath.InjectMock;
 import dagger.sheath.InjectSpy;
 import dagger.sheath.NopSupplier;
 import dagger.sheath.ProviderWrapper;
+import dagger.sheath.reflection.Signature;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -184,7 +185,7 @@ public class DaggerExtension implements Extension, BeforeAllCallback, AfterAllCa
     for (Object testInstance : testInstances) {
       final var fields = FieldUtils.getFieldsListWithAnnotation(testInstance.getClass(), Inject.class);
       for (Field field : fields) {
-        final var foundInstance = ctx.get(field.getType());
+        final var foundInstance = ctx.get(Signature.of(field));
         writeTo(testInstance, field, foundInstance);
       }
     }
