@@ -11,14 +11,10 @@ public class Configs {
   private static final Context context = Context.create();
 
   public static Config getInstance() {
-    final Config v = Singletons.get(Config.class);
-    if (v != null) {
-      return v;
-    } else {
-      return Singletons.createOrGet(Config.class, () -> {
-        return context.configService().findCurrentConfig();
-      });
-    }
+    return Singletons.createOrGet(Config.class, () -> {
+      log.trace("status=cacheHotLoading");
+      return context.configService().findCurrentConfig();
+    });
   }
 
   public static void clear() {

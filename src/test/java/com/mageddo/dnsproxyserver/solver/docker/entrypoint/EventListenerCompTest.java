@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.solver.docker.entrypoint;
 
 import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.dnsproxyserver.di.StartupEvent;
+import com.mageddo.dnsproxyserver.di.StartupEvents;
 import dagger.sheath.junit.DaggerTest;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +23,7 @@ class EventListenerCompTest {
     // arrange
 
     // act
-    final var found = StartupEvent.exists(this.events, EventListener.class);
+    final var found = StartupEvents.exists(this.events, EventListener.class);
 
     // assert
     assertTrue(found);

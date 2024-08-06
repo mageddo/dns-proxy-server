@@ -64,6 +64,7 @@ public class App {
     if (this.flags.isCreateTmpDir()) {
       this.createTmpDirIfNotExists();
     }
+    log.trace("status=checked");
   }
 
   Config findConfig(String[] args) {
@@ -72,7 +73,9 @@ public class App {
   }
 
   void setupLogs() {
+    log.trace("status=configuring");
     new LogSettings().setupLogs(this.config);
+    log.trace("status=configured");
   }
 
   void startContext() {
@@ -87,6 +90,7 @@ public class App {
     if (flags.isHelp() || flags.isVersion()) {
       exitGracefully();
     }
+    log.trace("status=checked");
   }
 
   void exitGracefully() {
