@@ -1,5 +1,7 @@
 package com.mageddo.utils;
 
+import java.util.function.Predicate;
+
 public class Tests {
 
   private static final String JUNIT_FRAMEWORK_PACKAGE = "org.junit.";
@@ -9,8 +11,15 @@ public class Tests {
   }
 
   private static boolean hashJunitInStackTrace(final Thread thread) {
-    for (StackTraceElement element : thread.getStackTrace()) {
-      if (element.getClassName().startsWith(JUNIT_FRAMEWORK_PACKAGE)) {
+    return hashClassInStackTrace(
+      thread,
+      (element) -> element.getClassName().startsWith(JUNIT_FRAMEWORK_PACKAGE)
+    );
+  }
+
+  private static boolean hashClassInStackTrace(Thread thread, final Predicate<StackTraceElement> p) {
+    for (final var element : thread.getStackTrace()) {
+      if (p.test(element)) {
         return true;
       }
     }
