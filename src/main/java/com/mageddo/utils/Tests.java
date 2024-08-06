@@ -1,9 +1,16 @@
 package com.mageddo.utils;
 
 public class Tests {
+
+  private static final String JUNIT_FRAMEWORK_PACKAGE = "org.junit.";
+
   public static boolean inTest() {
-    for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
-      if (element.getClassName().startsWith("org.junit.")) {
+    return hashJunitInStackTrace(Thread.currentThread());
+  }
+
+  private static boolean hashJunitInStackTrace(final Thread thread) {
+    for (StackTraceElement element : thread.getStackTrace()) {
+      if (element.getClassName().startsWith(JUNIT_FRAMEWORK_PACKAGE)) {
         return true;
       }
     }
