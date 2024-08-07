@@ -6,7 +6,9 @@ import dagger.sheath.InjectMock;
 import dagger.sheath.InjectSpy;
 import dagger.sheath.NopSupplier;
 import dagger.sheath.ProviderWrapper;
+import dagger.sheath.reflection.Signature;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.junit.jupiter.api.extension.AfterAllCallback;
@@ -64,6 +66,7 @@ public class DaggerExtension implements Extension, BeforeAllCallback, AfterAllCa
 
   @Override
   public void beforeEach(ExtensionContext context) throws Exception {
+    log.debug("status=beforeEach");
     injectMocksAndSpies(context);
     injectFields(context);
     resetMocks(context);
@@ -143,11 +146,11 @@ public class DaggerExtension implements Extension, BeforeAllCallback, AfterAllCa
       try {
         log.debug("status=injectMockSpyInField, field={} {}", field.getType().getSimpleName(), field.getName());
         ctxWrapper.initializeWithOrThrows(field.getType(), initializer);
-        final var mock = ctxWrapper.get(field.getType());
+        final var mock = ctxWrapper.get(Signature.of(field));
         if (!validator.test(mock)) {
           throw new IllegalStateException(String.format("Mock/Stub didn't work for type: %s", field.getType()));
         }
-        FieldUtils.writeField(field, instance, mock, true);
+        writeTo(instance, field, mock);
       } catch (IllegalAccessException e) {
         throw new IllegalStateException(e);
       }
@@ -179,12 +182,21 @@ public class DaggerExtension implements Extension, BeforeAllCallback, AfterAllCa
   static void injectFields(ExtensionContext context) throws IllegalAccessException {
     final var ctx = findCtxWrapper(context);
     final var testInstances = context.getRequiredTestInstances().getAllInstances();
-    for (Object instance : testInstances) {
-      final var fields = FieldUtils.getFieldsListWithAnnotation(instance.getClass(), Inject.class);
+    for (Object testInstance : testInstances) {
+      final var fields = FieldUtils.getFieldsListWithAnnotation(testInstance.getClass(), Inject.class);
       for (Field field : fields) {
-        FieldUtils.writeField(field, instance, ctx.get(field.getType()), true);
+        final var foundInstance = ctx.get(Signature.of(field));
+        writeTo(testInstance, field, foundInstance);
       }
     }
+  }
+
+  private static void writeTo(Object testInstance, Field field, Object foundInstance) throws IllegalAccessException {
+    FieldUtils.writeField(field, testInstance, foundInstance, true);
+    log.debug(
+      "status=written, testClass={}, field={}, value={}, classToFind={}, generic={}",
+      field.getName(), ClassUtils.getSimpleName(testInstance), foundInstance, field.getType(), field.getGenericType()
+    );
   }
 
   static CtxWrapper findCtxWrapper(ExtensionContext context) {
