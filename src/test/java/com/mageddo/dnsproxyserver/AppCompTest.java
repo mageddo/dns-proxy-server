@@ -7,6 +7,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
@@ -68,9 +69,30 @@ class AppCompTest {
 
   }
 
+  @Test
+  void mustHandleFatalErrors() {
+    // arrange
+    final var args = new String[]{"--create-tmp-dir"};
+    this.setupStub(args);
+
+    doThrow(new IllegalAccessError("mocked fatal error"))
+      .when(this.app)
+      .checkHiddenCommands()
+    ;
+    doNothing()
+      .when(this.app)
+      .exitWithError(anyInt())
+    ;
+
+    // act
+    this.app.start();
+
+    verify(this.app).exitWithError(anyInt());
+
+  }
 
   RuntimeException mockExitMethod() {
-    final var expectedException = new RuntimeException("must exit");
+    final var expectedException = new App.SystemExitException("testing");
     doThrow(expectedException)
       .when(this.app)
       .exitGracefully()
