@@ -2,8 +2,10 @@ package dagger.sheath.templates;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import dagger.sheath.reflection.Signature;
+import org.apache.commons.lang3.reflect.MethodUtils;
 import org.graalvm.collections.Pair;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 public class SignatureTemplates {
@@ -33,5 +35,9 @@ public class SignatureTemplates {
 
   public static Signature pairOfStringAndInteger() {
     return Signature.of(new TypeReference<Pair<String, Integer>>() {}.getType());
+  }
+
+  public static Method ofMethodIteratorList() {
+    return MethodUtils.getMatchingMethod(List.class, "iterator");
   }
 }

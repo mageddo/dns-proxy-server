@@ -103,6 +103,15 @@ class SignatureTest {
 
   }
 
+  @Test
+  void mustParseMethodReturnTypeWithTypeArguments(){
+    final var method = SignatureTemplates.ofMethodIteratorList();
+
+    final var sig = Signature.ofMethodReturnType(method);
+
+    assertEquals("Signature(clazz=interface java.util.Iterator, typeArguments=[E])", sig.toString());
+  }
+
   private static Signature fieldToSignature(final Class<Car> clazz, final String fieldName) {
     return Signature.of(FieldUtils.getField(clazz, fieldName, true));
   }
