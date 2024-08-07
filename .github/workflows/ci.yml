@@ -22,4 +22,3 @@ jobs:
 
       - name: Native Image Integration Tests
         run: NO_GROOVY=1 ./gradlew build -x check nativeIntTest -i
-
