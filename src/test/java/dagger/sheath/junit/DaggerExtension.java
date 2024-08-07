@@ -146,7 +146,7 @@ public class DaggerExtension implements Extension, BeforeAllCallback, AfterAllCa
       try {
         log.debug("status=injectMockSpyInField, field={} {}", field.getType().getSimpleName(), field.getName());
         ctxWrapper.initializeWithOrThrows(field.getType(), initializer);
-        final var mock = ctxWrapper.get(field.getType());
+        final var mock = ctxWrapper.get(Signature.of(field));
         if (!validator.test(mock)) {
           throw new IllegalStateException(String.format("Mock/Stub didn't work for type: %s", field.getType()));
         }

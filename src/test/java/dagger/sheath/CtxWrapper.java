@@ -21,8 +21,12 @@ public class CtxWrapper {
   }
 
   public Object get(Class<?> clazz) {
+    return Signature.of(clazz);
+  }
+
+  public Object get(Signature signature) {
     {
-      final var found = findUsingProvider(clazz);
+      final var found = findUsingProvider(signature.getClazz());
       if (found != null) {
         log.debug("status=foundUsingProvider");
         return found;
@@ -30,7 +34,7 @@ public class CtxWrapper {
     }
 
     {
-      final var found = findUsingBindingMethods(clazz);
+      final var found = findUsingBindingMethods(signature.getClazz());
       if (found != null) {
         log.debug("status=foundUsingBindingMethods");
         return found;
@@ -38,13 +42,13 @@ public class CtxWrapper {
     }
 
     {
-      final var found = findUsingCtx(clazz);
+      final var found = findUsingCtx(signature);
       if(found != null){
         log.debug("status=foundByUsingCtx");
         return found;
       }
     }
-    log.debug("status=notFound, class={}", clazz);
+    log.debug("status=notFound, class={}", signature);
     return null;
 
     // todo procurar a classe que o obj grah impl estende ou a interface que ele implementa
@@ -55,12 +59,12 @@ public class CtxWrapper {
 
   }
 
-  private Object findUsingCtx(Class<?> clazz) {
+  private Object findUsingCtx(Signature signature) {
     try {
       final var method = MethodUtils
         .getAllMethods(this.getCtxClass())
         .stream()
-        .filter(it -> it.getReturnType().isAssignableFrom(clazz) && it.getParameterTypes().length == 0)
+        .filter(it -> it.getReturnType().isAssignableFrom(signature.getClazz()) && it.getParameterTypes().length == 0)
         .findFirst();
       if (method.isPresent()) {
         return MethodUtils.invoke(method.get(), this.ctx, true);
@@ -158,7 +162,4 @@ public class CtxWrapper {
     return this.ctx.getClass();
   }
 
-  public Object get(Signature signature) {
-    return get(signature.getClazz());
-  }
 }
