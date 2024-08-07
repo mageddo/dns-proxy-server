@@ -30,9 +30,17 @@ public class Starter {
       this.startupEvents.forEach(StartupEvent::onStart);
     }
     if (shouldStartDnsServer()) {
-      this.dnsServerStarter.start();
+      this.startDnsServer();
     }
+    this.startWebServer();
+  }
+
+  void startWebServer() {
     this.webServer.start(Configs.getInstance().getWebServerPort());
+  }
+
+  void startDnsServer() {
+    this.dnsServerStarter.start();
   }
 
   private static boolean shouldStartDnsServer() {
