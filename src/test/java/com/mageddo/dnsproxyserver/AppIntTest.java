@@ -1,24 +1,20 @@
 package com.mageddo.dnsproxyserver;
 
-import ch.qos.logback.classic.Level;
 import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.server.Starter;
 import com.mageddo.dnsproxyserver.solver.SimpleResolver;
 import com.mageddo.dnsproxyserver.utils.Ips;
-import com.mageddo.logback.LogbackUtils;
 import com.mageddo.utils.Executors;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 import org.xbill.DNS.Message;
 import testing.templates.ConfigFlagArgsTemplates;
 
-import java.nio.file.Path;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -30,7 +26,6 @@ public class AppIntTest {
   void beforeEach() {
     Starter.setMustStartFlagActive(true);
     Configs.clear();
-    LogbackUtils.changeLogLevel("com.mageddo", Level.TRACE);
   }
 
   @AfterAll
@@ -39,7 +34,7 @@ public class AppIntTest {
   }
 
   @Test
-  void appMustStartAndQuerySampleWithSuccess(@TempDir Path tempDir) {
+  void appMustStartAndQuerySampleWithSuccess() {
 
     final var hostToQuery = "dps-sample.dev";
     final var args = ConfigFlagArgsTemplates.withRandomPortsAndNotAsDefaultDns();
