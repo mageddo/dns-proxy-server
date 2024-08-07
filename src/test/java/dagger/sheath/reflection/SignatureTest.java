@@ -15,10 +15,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class SignatureTest {
 
   @Test
+  void mustConvertFieldToSignature(){
+    final var sig = fieldToSignature(Car.class, "passengers");
+    assertEquals("Signature(clazz=interface java.util.List, typeArguments=[class java.lang.String])", sig.toString());
+  }
+
+  @Test
   void mustGetCorrectTypeFromField(){
     final var signature = fieldToSignature(Car.class, "passengers");
     assertEquals(List.class, signature.getClazz());
-    assertEquals("java.util.List<java.lang.String>", signature.getFirstTypeArgumentName());
+    assertEquals("java.lang.String", signature.getFirstTypeArgumentName());
 
   }
 

@@ -78,8 +78,9 @@ public class CtxWrapper {
 
   private static boolean isAssignable(Method m, Signature sig) {
     final var mSig = Signature.ofMethodReturnType(m);
-    log.trace("status=comparing, mSig={}, sig={}", mSig, sig);
-    return mSig.isSameOrInheritFrom(sig) && m.getParameterTypes().length == 0;
+    final var assignable = mSig.isSameOrInheritFrom(sig) && m.getParameterTypes().length == 0;
+    log.trace("status=comparing, assignable={}, mSig={}, sig={}", assignable, mSig, sig);
+    return assignable;
   }
 
   private Object findUsingBindingMethods(Class<?> clazz) {

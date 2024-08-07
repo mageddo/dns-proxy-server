@@ -62,7 +62,7 @@ public class Signature {
     return Signature
       .builder()
       .clazz(f.getType())
-      .typeArguments(new Type[]{f.getGenericType()})
+      .typeArguments(findTypeArguments(f.getGenericType()))
       .build();
   }
 
