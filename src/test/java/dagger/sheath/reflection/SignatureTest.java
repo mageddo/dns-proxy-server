@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -15,9 +16,7 @@ class SignatureTest {
 
   @Test
   void mustGetCorrectTypeFromField(){
-    final var field = FieldUtils.getField(Car.class, "passengers", true);
-    final var signature = Signature.of(field);
-
+    final var signature = fieldToSignature(Car.class, "passengers");
     assertEquals(List.class, signature.getClazz());
     assertEquals("java.util.List<java.lang.String>", signature.getFirstTypeArgumentName());
 
@@ -48,6 +47,57 @@ class SignatureTest {
 
     final var ancestor = SignatureTemplates.listOfNumber();
     final var impl = SignatureTemplates.listOfInteger();
+
+    assertTrue(ancestor.isSameOrInheritFrom(impl));
+
+  }
+
+
+  @Test
+  void differentNumberOfTypeArgumentsMustNotMatch(){
+
+    final var ancestor = SignatureTemplates.pairOfString();
+    final var impl = SignatureTemplates.listOfString();
+
+    assertFalse(ancestor.areTypeArgumentsSameOrInheritFrom(impl));
+
+  }
+
+  @Test
+  void fieldsWithIncompatibleTypesArgumentsMustNotMatch(){
+
+    final var ancestor = SignatureTemplates.listOfNumber();
+    final var impl = SignatureTemplates.listOfString();
+
+    assertFalse(ancestor.isSameOrInheritFrom(impl));
+
+  }
+
+  @Test
+  void fieldsWithMoreThanOneTypeArgumentAndIncompatibleTypesArgumentsMustNotMatch(){
+
+    final var ancestor = SignatureTemplates.pairOfString();
+    final var impl = SignatureTemplates.pairOfStringAndInteger();
+
+    assertFalse(ancestor.isSameOrInheritFrom(impl));
+
+  }
+
+  @Test
+  void whenImplHasNotTypeArgumentsTheyCantMatch(){
+
+    final var ancestor = SignatureTemplates.pairOfString();
+    final var impl = SignatureTemplates.pair();
+
+    assertFalse(ancestor.isSameOrInheritFrom(impl));
+
+  }
+
+  @Test
+  void ancestorsWithoutTypeArgumentsSpecificationMustMatch(){
+
+    final var ancestor = SignatureTemplates.list();
+    final var impl = SignatureTemplates.listOfString();
 
     assertTrue(ancestor.isSameOrInheritFrom(impl));
 
