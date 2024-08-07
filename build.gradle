@@ -112,16 +112,6 @@ def compTest = tasks.register("compTest", Test) {
   }
 }
 
-def noGroovy = (project.findProperty("noGroovy") ?: System.getenv("NO_GROOVY")) == "1"
-if (noGroovy) {
-  println("> excluding groovy from classpath")
-  configurations {
-    all {
-      exclude module: 'groovy'
-    }
-  }
-}
-
 def intTest = tasks.register("intTest", Test) {
   useJUnitPlatform()
   include "**/*IntTest.class"

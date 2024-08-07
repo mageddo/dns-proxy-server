@@ -33,7 +33,7 @@ Generated possible necessary metadata
 
 Generate the binary
 ```bash
-$ NO_GROOVY=1 ./gradlew -x check clean build nativeIntTest nativeImageJar nativeCompile
+$ ./gradlew -x check clean build nativeIntTest nativeImageJar nativeCompile
 $ ./build/native/nativeCompile/dns-proxy-server
 ```
 
