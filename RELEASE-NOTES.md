@@ -1,3 +1,6 @@
+## 3.25.9
+* Handling and logging fatal errors #480
+
 ## 3.25.8
 * SolverRemote: Exclude remote servers with open circuits. #526
 
