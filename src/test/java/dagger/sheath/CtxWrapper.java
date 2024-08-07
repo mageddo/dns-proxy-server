@@ -8,6 +8,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 
 import javax.inject.Provider;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -43,7 +44,7 @@ public class CtxWrapper {
 
     {
       final var found = findUsingCtx(signature);
-      if(found != null){
+      if (found != null) {
         log.debug("status=foundByUsingCtx");
         return found;
       }
@@ -64,7 +65,7 @@ public class CtxWrapper {
       final var method = MethodUtils
         .getAllMethods(this.getCtxClass())
         .stream()
-        .filter(it -> it.getReturnType().isAssignableFrom(signature.getClazz()) && it.getParameterTypes().length == 0)
+        .filter(it -> isAssignable(it, signature))
         .findFirst();
       if (method.isPresent()) {
         return MethodUtils.invoke(method.get(), this.ctx, true);
@@ -73,6 +74,11 @@ public class CtxWrapper {
       log.warn("status=failedToFindByMethodOnCtx, msg={}", e.getMessage());
     }
     return null;
+  }
+
+  private static boolean isAssignable(Method m, Signature sig) {
+    final var mSig = Signature.of(m.getReturnType());
+    return mSig.isSameOrInheritFrom(sig) && m.getParameterTypes().length == 0;
   }
 
   private Object findUsingBindingMethods(Class<?> clazz) {
