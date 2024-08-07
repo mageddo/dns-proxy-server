@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
 import java.util.Set;
 
 import static com.mageddo.dnsproxyserver.quarkus.Quarkus.isTest;
@@ -19,21 +18,36 @@ import static com.mageddo.dnsproxyserver.quarkus.Quarkus.isTest;
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class Starter {
 
+  public static final String DNS_SERVER_MUST_START_FLAG = "mg.server.server.must-start";
   private final ServerStarter dnsServerStarter;
   private final WebServer webServer;
   private final Set<StartupEvent> startupEvents;
 
   public void start() {
-    if(isTest()){
-      log.warn("status=onTest, disabled=[dnsServer, startupEvents]");
+    if (isTest()) {
+      log.warn("status=onTest, disabled=[startupEvents]");
     } else {
       this.startupEvents.forEach(StartupEvent::onStart);
+    }
+    if (shouldStartDnsServer()) {
       this.dnsServerStarter.start();
     }
     this.webServer.start(Configs.getInstance().getWebServerPort());
   }
 
-  public void stop(){
+  private static boolean shouldStartDnsServer() {
+    return !isTest() || isMustStartFlagActive();
+  }
+
+  private static boolean isMustStartFlagActive() {
+    return Boolean.getBoolean(DNS_SERVER_MUST_START_FLAG);
+  }
+
+  public static void setMustStartFlagActive(boolean b) {
+    System.setProperty(DNS_SERVER_MUST_START_FLAG, String.valueOf(b));
+  }
+
+  public void stop() {
     this.dnsServerStarter.stop();
     this.webServer.stop();
   }
