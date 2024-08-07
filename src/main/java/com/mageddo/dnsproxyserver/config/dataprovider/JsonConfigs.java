@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,7 +34,7 @@ public class JsonConfigs {
   public static ConfigJson loadConfig(Path configPath) {
 
     if (!Files.exists(configPath)) {
-      createDefault(configPath);
+      createDefaultConfigOnPath(configPath);
     }
 
     return loadConfig(Files.readString(configPath));
@@ -48,7 +47,7 @@ public class JsonConfigs {
     final var tree = objectMapper.readTree(jsonContent);
     if (tree.isEmpty()) {
       log.info("status=emptyConfigFile, action=usingDefault");
-      return new ConfigJsonV2();
+      return JsonConfigs.buildDefaultJsonConfig();
     }
     final var version = findVersion(tree);
     return switch (version) {
@@ -61,23 +60,25 @@ public class JsonConfigs {
   }
 
   @SneakyThrows
-  static void createDefault(Path configPath) {
-    final var config = new ConfigJsonV2();
-
+  static void createDefaultConfigOnPath(Path configPath) {
     Files.createDirectories(configPath.getParent()); // ensure directories are created
+    final var config = buildDefaultJsonConfig();
+    JsonUtils
+      .prettyInstance()
+      .writeValue(configPath.toFile(), config);
+    log.info("status=createdDefaultConfigFile, path={}", configPath);
+  }
 
+  public static ConfigJsonV2 buildDefaultJsonConfig() {
+    final var config = new ConfigJsonV2();
     config
       .get_envs()
       .add(
         new Env()
           .setName(Config.Env.DEFAULT_ENV)
-          .setHostnames(Collections.singletonList(Entry.sample()))
+          .add(Entry.sample())
       );
-
-    JsonUtils
-      .prettyInstance()
-      .writeValue(configPath.toFile(), config);
-    log.info("status=createdDefaultConfigFile, path={}", configPath);
+    return config;
   }
 
   @SneakyThrows
