@@ -11,11 +11,15 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
+
       - name: Set up JDK
         uses: graalvm/setup-graalvm@v1
         with:
           java-version: '21'
-        # ['version', 'gds-token', 'java-version', 'components', 'github-token', 'set-java-home', 'cache', 'check-for-updates', 'native-image-musl', 'native-image-job-reports', 'native-image-pr-reports']
+
       - name: Build and Tests
-        run: ./gradlew build test compTest -i
+        run: ./gradlew build test compTest  -i
+
+      - name: Native Image Integration Tests
+        run: NO_GROOVY=1 ./gradlew build -x check nativeIntTest -i
 
