@@ -1,6 +1,7 @@
 ## 3.25.10
 * Create `IntTests` suite, they are comp tests which can be run within native image, see the docs #480
 * Upgrading necessary deps
+* Fixing Caffeine dep broken dps binary image
 
 ## 3.25.9
 * Handling and logging fatal errors #480
