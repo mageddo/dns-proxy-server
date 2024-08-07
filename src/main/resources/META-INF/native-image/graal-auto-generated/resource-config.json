@@ -1,0 +1,233 @@
+{
+  "resources":{
+  "includes":[{
+    "pattern":"\\Q.\\E"
+  }, {
+    "pattern":"\\QMETA-INF/dgminfo\\E"
+  }, {
+    "pattern":"\\QMETA-INF/groovy/org.codehaus.groovy.runtime.ExtensionModule\\E"
+  }, {
+    "pattern":"\\QMETA-INF/groovy/org.codehaus.groovy.source.Extensions\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/ch.qos.logback.classic.spi.Configurator\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/com.mageddo.common.jackson.Providers\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/com.sun.net.httpserver.spi.HttpServerProvider\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/java.lang.System$LoggerFinder\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/java.net.spi.InetAddressResolverProvider\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/java.net.spi.URLStreamHandlerProvider\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/java.nio.channels.spi.SelectorProvider\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/java.nio.file.spi.FileSystemProvider\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/java.time.zone.ZoneRulesProvider\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/javax.xml.parsers.SAXParserFactory\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/org.apache.commons.logging.LogFactory\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/org.apache.groovy.json.FastStringServiceFactory\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/org.codehaus.groovy.runtime.ExtensionModule\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/org.codehaus.groovy.transform.ASTTransformation\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/org.junit.platform.engine.TestEngine\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/org.junit.platform.launcher.LauncherDiscoveryListener\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/org.junit.platform.launcher.LauncherSessionListener\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/org.junit.platform.launcher.PostDiscoveryFilter\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/org.junit.platform.launcher.TestExecutionListener\\E"
+  }, {
+    "pattern":"\\QMETA-INF/services/org.slf4j.spi.SLF4JServiceProvider\\E"
+  }, {
+    "pattern":"\\QScript1$restAssuredJsonRootObject$GLOBAL.class\\E"
+  }, {
+    "pattern":"\\QScript1$restAssuredJsonRootObject$REMOTE$A-acme$com.class\\E"
+  }, {
+    "pattern":"\\QScript1$restAssuredJsonRootObject$REMOTE.class\\E"
+  }, {
+    "pattern":"\\QScript1$restAssuredJsonRootObject.class\\E"
+  }, {
+    "pattern":"\\QScript1BeanInfo.groovy\\E"
+  }, {
+    "pattern":"\\QScript1Customizer.groovy\\E"
+  }, {
+    "pattern":"\\Qapplication.properties\\E"
+  }, {
+    "pattern":"\\Qcommons-logging.properties\\E"
+  }, {
+    "pattern":"\\Qconfigs-test/001.json\\E"
+  }, {
+    "pattern":"\\Qconfigs-test/002.json\\E"
+  }, {
+    "pattern":"\\Qconfigs-test/006.json\\E"
+  }, {
+    "pattern":"\\Qdocker-java.properties\\E"
+  }, {
+    "pattern":"\\Qgroovy/lang/GroovyObject$restAssuredJsonRootObject$GLOBAL.class\\E"
+  }, {
+    "pattern":"\\Qgroovy/lang/GroovyObject$restAssuredJsonRootObject$REMOTE$A-acme$com.class\\E"
+  }, {
+    "pattern":"\\Qgroovy/lang/GroovyObject$restAssuredJsonRootObject$REMOTE.class\\E"
+  }, {
+    "pattern":"\\Qgroovy/lang/GroovyObject$restAssuredJsonRootObject.class\\E"
+  }, {
+    "pattern":"\\Qgroovy/lang/GroovyObjectSupport$restAssuredJsonRootObject$GLOBAL.class\\E"
+  }, {
+    "pattern":"\\Qgroovy/lang/GroovyObjectSupport$restAssuredJsonRootObject$REMOTE$A-acme$com.class\\E"
+  }, {
+    "pattern":"\\Qgroovy/lang/GroovyObjectSupport$restAssuredJsonRootObject$REMOTE.class\\E"
+  }, {
+    "pattern":"\\Qgroovy/lang/GroovyObjectSupport$restAssuredJsonRootObject.class\\E"
+  }, {
+    "pattern":"\\Qgroovy/lang/Script$restAssuredJsonRootObject$GLOBAL.class\\E"
+  }, {
+    "pattern":"\\Qgroovy/lang/Script$restAssuredJsonRootObject$REMOTE$A-acme$com.class\\E"
+  }, {
+    "pattern":"\\Qgroovy/lang/Script$restAssuredJsonRootObject$REMOTE.class\\E"
+  }, {
+    "pattern":"\\Qgroovy/lang/Script$restAssuredJsonRootObject.class\\E"
+  }, {
+    "pattern":"\\Qgroovy/lang/restAssuredJsonRootObject$GLOBAL.class\\E"
+  }, {
+    "pattern":"\\Qgroovy/lang/restAssuredJsonRootObject$REMOTE$A-acme$com.class\\E"
+  }, {
+    "pattern":"\\Qgroovy/lang/restAssuredJsonRootObject$REMOTE.class\\E"
+  }, {
+    "pattern":"\\Qgroovy/util/restAssuredJsonRootObject$GLOBAL.class\\E"
+  }, {
+    "pattern":"\\Qgroovy/util/restAssuredJsonRootObject$REMOTE$A-acme$com.class\\E"
+  }, {
+    "pattern":"\\Qgroovy/util/restAssuredJsonRootObject$REMOTE.class\\E"
+  }, {
+    "pattern":"\\Qjava/io/restAssuredJsonRootObject$GLOBAL.class\\E"
+  }, {
+    "pattern":"\\Qjava/io/restAssuredJsonRootObject$REMOTE$A-acme$com.class\\E"
+  }, {
+    "pattern":"\\Qjava/io/restAssuredJsonRootObject$REMOTE.class\\E"
+  }, {
+    "pattern":"\\Qjava/lang/restAssuredJsonRootObject$GLOBAL.class\\E"
+  }, {
+    "pattern":"\\Qjava/lang/restAssuredJsonRootObject$REMOTE$A-acme$com.class\\E"
+  }, {
+    "pattern":"\\Qjava/lang/restAssuredJsonRootObject$REMOTE.class\\E"
+  }, {
+    "pattern":"\\Qjava/net/restAssuredJsonRootObject$GLOBAL.class\\E"
+  }, {
+    "pattern":"\\Qjava/net/restAssuredJsonRootObject$REMOTE$A-acme$com.class\\E"
+  }, {
+    "pattern":"\\Qjava/net/restAssuredJsonRootObject$REMOTE.class\\E"
+  }, {
+    "pattern":"\\Qjava/util/restAssuredJsonRootObject$GLOBAL.class\\E"
+  }, {
+    "pattern":"\\Qjava/util/restAssuredJsonRootObject$REMOTE$A-acme$com.class\\E"
+  }, {
+    "pattern":"\\Qjava/util/restAssuredJsonRootObject$REMOTE.class\\E"
+  }, {
+    "pattern":"\\Qjunit-platform.properties\\E"
+  }, {
+    "pattern":"\\Qlogback-test.scmo\\E"
+  }, {
+    "pattern":"\\Qlogback-test.xml\\E"
+  }, {
+    "pattern":"\\Qlogback.scmo\\E"
+  }, {
+    "pattern":"\\Qmockito-extensions/org.mockito.plugins.AnnotationEngine\\E"
+  }, {
+    "pattern":"\\Qmockito-extensions/org.mockito.plugins.DoNotMockEnforcerWithType\\E"
+  }, {
+    "pattern":"\\Qmockito-extensions/org.mockito.plugins.DoNotMockEnforcer\\E"
+  }, {
+    "pattern":"\\Qmockito-extensions/org.mockito.plugins.InstantiatorProvider2\\E"
+  }, {
+    "pattern":"\\Qmockito-extensions/org.mockito.plugins.MemberAccessor\\E"
+  }, {
+    "pattern":"\\Qmockito-extensions/org.mockito.plugins.MockMaker\\E"
+  }, {
+    "pattern":"\\Qmockito-extensions/org.mockito.plugins.MockResolver\\E"
+  }, {
+    "pattern":"\\Qmockito-extensions/org.mockito.plugins.MockitoLogger\\E"
+  }, {
+    "pattern":"\\Qmockito-extensions/org.mockito.plugins.PluginSwitch\\E"
+  }, {
+    "pattern":"\\Qmockito-extensions/org.mockito.plugins.StackTraceCleanerProvider\\E"
+  }, {
+    "pattern":"\\Qmozilla/public-suffix-list.txt\\E"
+  }, {
+    "pattern":"\\Qorg/apache/hc/client5/version.properties\\E"
+  }, {
+    "pattern":"\\Qorg/apache/http/client/version.properties\\E"
+  }, {
+    "pattern":"\\Qorg/mockito/internal/creation/bytebuddy/MockMethodAdvice$ForEquals.class\\E"
+  }, {
+    "pattern":"\\Qorg/mockito/internal/creation/bytebuddy/MockMethodAdvice$ForHashCode.class\\E"
+  }, {
+    "pattern":"\\Qorg/mockito/internal/creation/bytebuddy/MockMethodAdvice$ForStatic.class\\E"
+  }, {
+    "pattern":"\\Qorg/mockito/internal/creation/bytebuddy/MockMethodAdvice.class\\E"
+  }, {
+    "pattern":"\\Qorg/mockito/internal/creation/bytebuddy/inject/MockMethodDispatcher.raw\\E"
+  }, {
+    "pattern":"\\Qorg/slf4j/impl/StaticLoggerBinder.class\\E"
+  }, {
+    "pattern":"\\QrestAssuredJsonRootObject$GLOBAL.class\\E"
+  }, {
+    "pattern":"\\QrestAssuredJsonRootObject$REMOTE$A-acme$com.class\\E"
+  }, {
+    "pattern":"\\QrestAssuredJsonRootObject$REMOTE.class\\E"
+  }, {
+    "pattern":"\\QrestAssuredJsonRootObject/GLOBAL.class\\E"
+  }, {
+    "pattern":"\\QrestAssuredJsonRootObject/GLOBAL.groovy\\E"
+  }, {
+    "pattern":"\\QrestAssuredJsonRootObject/REMOTE$A-acme$com.class\\E"
+  }, {
+    "pattern":"\\QrestAssuredJsonRootObject/REMOTE.class\\E"
+  }, {
+    "pattern":"\\QrestAssuredJsonRootObject/REMOTE.groovy\\E"
+  }, {
+    "pattern":"\\QrestAssuredJsonRootObject/REMOTE/A-acme$com.class\\E"
+  }, {
+    "pattern":"\\QrestAssuredJsonRootObject/REMOTE/A-acme/com.class\\E"
+  }, {
+    "pattern":"\\QrestAssuredJsonRootObject/REMOTE/A-acme/com.groovy\\E"
+  }, {
+    "pattern":"java.base:\\Qjava/io/restAssuredJsonRootObject$GLOBAL.class\\E"
+  }, {
+    "pattern":"java.base:\\Qjava/io/restAssuredJsonRootObject$REMOTE$A-acme$com.class\\E"
+  }, {
+    "pattern":"java.base:\\Qjava/io/restAssuredJsonRootObject$REMOTE.class\\E"
+  }, {
+    "pattern":"java.base:\\Qjava/lang/restAssuredJsonRootObject$GLOBAL.class\\E"
+  }, {
+    "pattern":"java.base:\\Qjava/lang/restAssuredJsonRootObject$REMOTE$A-acme$com.class\\E"
+  }, {
+    "pattern":"java.base:\\Qjava/lang/restAssuredJsonRootObject$REMOTE.class\\E"
+  }, {
+    "pattern":"java.base:\\Qjava/net/restAssuredJsonRootObject$GLOBAL.class\\E"
+  }, {
+    "pattern":"java.base:\\Qjava/net/restAssuredJsonRootObject$REMOTE$A-acme$com.class\\E"
+  }, {
+    "pattern":"java.base:\\Qjava/net/restAssuredJsonRootObject$REMOTE.class\\E"
+  }, {
+    "pattern":"java.base:\\Qjava/util/restAssuredJsonRootObject$GLOBAL.class\\E"
+  }, {
+    "pattern":"java.base:\\Qjava/util/restAssuredJsonRootObject$REMOTE$A-acme$com.class\\E"
+  }, {
+    "pattern":"java.base:\\Qjava/util/restAssuredJsonRootObject$REMOTE.class\\E"
+  }, {
+    "pattern":"java.base:\\Qsun/net/www/content-types.properties\\E"
+  }, {
+    "pattern":"java.base:\\Qsun/text/resources/LineBreakIteratorData\\E"
+  }]},
+  "bundles":[]
+}

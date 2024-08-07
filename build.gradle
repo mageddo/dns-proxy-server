@@ -200,8 +200,20 @@ tasks.register('nativeImageJar', ShadowJar) {
 shadowJar {
   mergeServiceFiles()
 }
+/*
+./gradlew -Pagent compTest
+./gradlew metadataCopy --task compTest --dir src/main/resources/META-INF/native-image/graal-auto-generated
+*/
 
 graalvmNative {
+  agent {
+    defaultMode = "standard"
+    metadataCopy {
+      inputTaskNames.add("compTest") // Tasks previously executed with the agent attached.
+      outputDirectories.add("src/main/resources/META-INF/native-image/graal-auto-generated/")
+      mergeWithExisting = true
+    }
+  }
   binaries {
     main {
       javaLauncher = javaToolchains.launcherFor {
