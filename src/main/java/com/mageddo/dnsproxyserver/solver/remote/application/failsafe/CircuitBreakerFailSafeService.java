@@ -4,7 +4,7 @@ import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.application.CircuitBreakerService;
-import dev.failsafe.CircuitBreakerOpenException;
+import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.CircuitIsOpenException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ClassUtils;
@@ -27,7 +27,7 @@ public class CircuitBreakerFailSafeService implements CircuitBreakerService {
   public Result safeHandle(InetSocketAddress resolverAddress, Supplier<Result> sup) {
     try {
       return this.handle(resolverAddress, sup);
-    } catch (CircuitCheckException | CircuitBreakerOpenException e) {
+    } catch (CircuitCheckException | CircuitIsOpenException e) {
       final var clazz = ClassUtils.getSimpleName(e);
       log.debug("status=circuitEvent, server={}, type={}", resolverAddress, clazz);
       this.status = String.format("%s for %s", clazz, resolverAddress);

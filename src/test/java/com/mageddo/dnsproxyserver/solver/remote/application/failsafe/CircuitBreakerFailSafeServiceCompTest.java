@@ -47,7 +47,7 @@ class CircuitBreakerFailSafeServiceCompTest {
     // assert
     final var result = this.service.safeHandle(req.getResolverAddress(), failureSup);
     assertTrue(result.isEmpty());
-    assertEquals("CircuitBreakerOpenException for /8.8.8.8:53", this.service.getStatus());
+    assertEquals("CircuitIsOpenException for /8.8.8.8:53", this.service.getStatus());
 
   }
 
