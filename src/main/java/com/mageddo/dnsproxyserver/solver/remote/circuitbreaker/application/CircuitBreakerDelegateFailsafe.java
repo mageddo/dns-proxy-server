@@ -1,20 +1,19 @@
-package com.mageddo.dnsproxyserver.solver.remote.application.failsafe;
+package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application;
 
 import com.mageddo.circuitbreaker.failsafe.CircuitStatusRefresh;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
-import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegate;
 import com.mageddo.dnsproxyserver.solver.remote.mapper.CircuitBreakerStateMapper;
 import dev.failsafe.CircuitBreaker;
 import dev.failsafe.Failsafe;
 
 import java.util.function.Supplier;
 
-public class FailsafeCircuitBreakerDelegate implements CircuitBreakerDelegate {
+public class CircuitBreakerDelegateFailsafe implements CircuitBreakerDelegate {
 
   private final CircuitBreaker<Result> circuitBreaker;
 
-  public FailsafeCircuitBreakerDelegate(CircuitBreaker<Result> circuitBreaker) {
+  public CircuitBreakerDelegateFailsafe(CircuitBreaker<Result> circuitBreaker) {
     this.circuitBreaker = circuitBreaker;
   }
 

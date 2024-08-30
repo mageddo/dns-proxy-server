@@ -8,6 +8,7 @@ import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.application.FailsafeCircuitBreakerFactory;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegate;
+import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegateFailsafe;
 import com.mageddo.dnsproxyserver.solver.remote.mapper.CircuitBreakerStateMapper;
 import dev.failsafe.CircuitBreaker;
 import dev.failsafe.Failsafe;
@@ -35,7 +36,7 @@ public class CircuitBreakerFactory {
   private final FailsafeCircuitBreakerFactory failsafeCircuitBreakerFactory;
 
   public CircuitBreakerDelegate findCircuitBreaker(InetSocketAddress resolverAddress) {
-    return new FailsafeCircuitBreakerDelegate(this.createOrGetCircuitBreaker(resolverAddress));
+    return new CircuitBreakerDelegateFailsafe(this.createOrGetCircuitBreaker(resolverAddress));
   }
 
   public Result check(InetSocketAddress remoteAddress, Supplier<Result> sup) {
@@ -47,11 +48,13 @@ public class CircuitBreakerFactory {
 
   CircuitBreaker<Result> createOrGetCircuitBreaker(InetSocketAddress address) {
     final var config = this.findCircuitBreakerConfig();
+
     return this.circuitBreakerMap.computeIfAbsent(
       address,
       addr -> this.failsafeCircuitBreakerFactory.build(addr, config)
     );
   }
+
 
   StaticThresholdCircuitBreakerStrategy findCircuitBreakerConfig() {
     // fixme #533 this could not work every time, check it
