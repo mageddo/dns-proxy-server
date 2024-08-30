@@ -88,7 +88,8 @@ public class CircuitBreakerFactory {
   }
 
   StaticThresholdCircuitBreakerStrategy findCircuitBreakerConfig() {
-    return this.configService.findCurrentConfig()
+    // fixme #533 this could not work every time, check it
+    return (StaticThresholdCircuitBreakerStrategy) this.configService.findCurrentConfig()
       .getSolverRemote()
       .getCircuitBreaker();
   }

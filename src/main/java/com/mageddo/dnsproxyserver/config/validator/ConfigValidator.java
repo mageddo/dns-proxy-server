@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.config.validator;
 
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategy;
 import org.apache.commons.lang3.Validate;
 
 public class ConfigValidator {
@@ -23,6 +24,7 @@ public class ConfigValidator {
     Validate.notNull(config.getSolverRemote(), "Solver Remote");
     Validate.notNull(config.isSolverRemoteActive(), "Solver remote active");
 
-    CircuitBreakerValidator.validate(config.getSolverRemoteCircuitBreaker());
+    // fixme #533 this could not work every time after new types be created, check it
+    CircuitBreakerValidator.validate((StaticThresholdCircuitBreakerStrategy) config.getSolverRemoteCircuitBreaker());
   }
 }
