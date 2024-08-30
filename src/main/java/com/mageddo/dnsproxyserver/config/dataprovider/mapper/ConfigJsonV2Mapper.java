@@ -63,6 +63,8 @@ public class ConfigJsonV2Mapper {
     return SolverRemote
       .builder()
       .active(Booleans.reverseWhenNotNull(json.getNoRemoteServers()))
+      // fixme #533 need to create a dynamic json parser for different strategies,
+      //      then a dynamic mapper to the solver remote
       .circuitBreaker(StaticThresholdCircuitBreakerStrategy
         .builder()
         .failureThreshold(circuitBreaker.getFailureThreshold())
