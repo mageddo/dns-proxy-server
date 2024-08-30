@@ -1,6 +1,5 @@
 package com.mageddo.dnsproxyserver.solver.remote.application.failsafe;
 
-import com.mageddo.circuitbreaker.failsafe.CircuitStatusRefresh;
 import com.mageddo.commons.lang.tuple.Pair;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategy;
 import com.mageddo.dnsproxyserver.config.application.ConfigService;
@@ -9,9 +8,6 @@ import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.application.FailsafeCircuitBreakerFactory;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegate;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegateFailsafe;
-import com.mageddo.dnsproxyserver.solver.remote.mapper.CircuitBreakerStateMapper;
-import dev.failsafe.CircuitBreaker;
-import dev.failsafe.Failsafe;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -30,31 +26,23 @@ import java.util.function.Supplier;
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class CircuitBreakerFactory {
 
-  private final Map<InetSocketAddress, CircuitBreaker<Result>> circuitBreakerMap = new ConcurrentHashMap<>();
+  private final Map<InetSocketAddress, CircuitBreakerDelegate> circuitBreakerMap = new ConcurrentHashMap<>();
   private final ConfigService configService;
   private final CircuitBreakerPingCheckerService circuitBreakerCheckerService;
   private final FailsafeCircuitBreakerFactory failsafeCircuitBreakerFactory;
 
-  public CircuitBreakerDelegate findCircuitBreaker(InetSocketAddress resolverAddress) {
-    return new CircuitBreakerDelegateFailsafe(this.createOrGetCircuitBreaker(resolverAddress));
-  }
-
   public Result check(InetSocketAddress remoteAddress, Supplier<Result> sup) {
-    final var circuitBreaker = this.createOrGetCircuitBreaker(remoteAddress);
-    return Failsafe
-      .with(circuitBreaker)
-      .get((ctx) -> sup.get());
+    final var circuitBreaker = this.findCircuitBreaker(remoteAddress);
+    return circuitBreaker.execute(sup);
   }
 
-  CircuitBreaker<Result> createOrGetCircuitBreaker(InetSocketAddress address) {
+  public CircuitBreakerDelegate findCircuitBreaker(InetSocketAddress address) {
     final var config = this.findCircuitBreakerConfig();
-
     return this.circuitBreakerMap.computeIfAbsent(
       address,
-      addr -> this.failsafeCircuitBreakerFactory.build(addr, config)
+      addr -> new CircuitBreakerDelegateFailsafe(this.failsafeCircuitBreakerFactory.build(addr, config))
     );
   }
-
 
   StaticThresholdCircuitBreakerStrategy findCircuitBreakerConfig() {
     // fixme #533 this could not work every time, check it
@@ -81,7 +69,7 @@ public class CircuitBreakerFactory {
     return Pair.of(successes, errors);
   }
 
-  boolean circuitBreakerSafeCheck(Map.Entry<InetSocketAddress, CircuitBreaker<Result>> entry) {
+  boolean circuitBreakerSafeCheck(Map.Entry<InetSocketAddress, CircuitBreakerDelegate> entry) {
     return this.circuitBreakerCheckerService.safeCheck(entry.getKey(), entry.getValue());
   }
 
@@ -97,14 +85,13 @@ public class CircuitBreakerFactory {
   }
 
   public CircuitStatus findStatus(InetSocketAddress remoteAddress) {
-    final var circuit = this.circuitBreakerMap.get(remoteAddress);
-    CircuitStatusRefresh.refresh(circuit);
-    return CircuitBreakerStateMapper.fromFailSafeCircuitBreaker(circuit);
+    return this.circuitBreakerMap.get(remoteAddress)
+      .findStatus();
   }
 
   private Stats toStats(InetSocketAddress remoteAddr) {
     final var circuitBreaker = this.circuitBreakerMap.get(remoteAddr);
-    final var state = circuitBreaker.getState().name();
+    final var state = circuitBreaker.findStatus().name();
     return Stats.of(remoteAddr.toString(), state);
   }
 

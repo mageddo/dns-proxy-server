@@ -3,8 +3,10 @@ package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application;
 import com.mageddo.circuitbreaker.failsafe.CircuitStatusRefresh;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
+import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.CircuitIsOpenException;
 import com.mageddo.dnsproxyserver.solver.remote.mapper.CircuitBreakerStateMapper;
 import dev.failsafe.CircuitBreaker;
+import dev.failsafe.CircuitBreakerOpenException;
 import dev.failsafe.Failsafe;
 
 import java.util.function.Supplier;
@@ -19,9 +21,13 @@ public class CircuitBreakerDelegateFailsafe implements CircuitBreakerDelegate {
 
   @Override
   public Result execute(Supplier<Result> sup) {
-    return Failsafe
-      .with(this.circuitBreaker)
-      .get((ctx) -> sup.get());
+    try {
+      return Failsafe
+        .with(this.circuitBreaker)
+        .get((ctx) -> sup.get());
+    } catch (CircuitBreakerOpenException e){
+      throw new CircuitIsOpenException(e);
+    }
   }
 
   @Override

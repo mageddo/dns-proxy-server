@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.solver.remote.application.failsafe;
 
 import com.mageddo.dnsproxyserver.solver.remote.Result;
+import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegateFailsafe;
 import com.mageddo.net.SocketUtils;
 import dev.failsafe.CircuitBreaker;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ class CircuitBreakerPingCheckerServiceTest {
     doReturn(true).when(this.service).ping(any());
 
     // act
-    final var ok = this.service.safeCheck(addr, circuitBreaker);
+    final var ok = this.service.safeCheck(addr, new CircuitBreakerDelegateFailsafe(circuitBreaker));
 
     // assert
     assertTrue(ok);
@@ -44,7 +45,7 @@ class CircuitBreakerPingCheckerServiceTest {
   void mustReturnFalseWhenPingReturnsFalse() {
     // arrange
     final var addr = InetSocketAddressTemplates._8_8_8_8();
-    final var circuitBreaker = FailSafeCircuitBreakerTemplates.buildDefault();
+    final var circuitBreaker = new CircuitBreakerDelegateFailsafe(FailSafeCircuitBreakerTemplates.buildDefault()) ;
     doReturn(false).when(this.service).ping(any());
 
     // act
@@ -58,7 +59,7 @@ class CircuitBreakerPingCheckerServiceTest {
   void mustReturnFalseWhenThereIsAFatalException() {
     // arrange
     final var addr = InetSocketAddressTemplates._8_8_8_8();
-    final var circuitBreaker = FailSafeCircuitBreakerTemplates.buildDefault();
+    final var circuitBreaker = new CircuitBreakerDelegateFailsafe(FailSafeCircuitBreakerTemplates.buildDefault());
     doThrow(new RuntimeException("unknown error")).when(this.service).ping(any());
 
     // act
@@ -74,7 +75,7 @@ class CircuitBreakerPingCheckerServiceTest {
     // arrange
     final var server = SocketUtils.createServerOnRandomPort();
     final var address = (InetSocketAddress) server.getLocalSocketAddress();
-    final var circuitBreaker = CircuitBreaker.<Result>builder().build();
+    final var circuitBreaker = new CircuitBreakerDelegateFailsafe(CircuitBreaker.<Result>builder().build());
 
     try (server) {
       // act
