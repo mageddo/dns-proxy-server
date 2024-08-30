@@ -1,3 +1,6 @@
+## 3.25.11
+* Agnostic interface to support multiple circuit breaker strategies config #533
+
 ## 3.25.10
 * Create `IntTests` suite, they are comp tests which can be run within native image, see the docs #480
 * Upgrading necessary deps
