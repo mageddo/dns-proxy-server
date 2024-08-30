@@ -51,7 +51,7 @@ public class ConfigMapper {
       .solverRemote(SolverRemote
         .builder()
         .active(firstNonNullRequiring(mapField(Config::isSolverRemoteActive, configs)))
-        .circuitBreaker(firstNonNullRequiring(mapField(Config::getSolverRemoteCircuitBreaker, configs)))
+        .circuitBreaker(firstNonNullRequiring(mapField(Config::getSolverRemoteCircuitBreakerStrategy, configs)))
         .build()
       )
       .build();

@@ -25,6 +25,6 @@ public class ConfigValidator {
     Validate.notNull(config.isSolverRemoteActive(), "Solver remote active");
 
     // fixme #533 this could not work every time after new types be created, check it
-    CircuitBreakerValidator.validate((StaticThresholdCircuitBreakerStrategy) config.getSolverRemoteCircuitBreaker());
+    CircuitBreakerValidator.validate((StaticThresholdCircuitBreakerStrategy) config.getSolverRemoteCircuitBreakerStrategy());
   }
 }
