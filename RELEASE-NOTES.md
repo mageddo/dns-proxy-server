@@ -1,3 +1,6 @@
+## 3.25.12
+* Creating an abstraction of circuit breaker implementation #533
+
 ## 3.25.11
 * Agnostic interface to support multiple circuit breaker strategies config #533
 
