@@ -4,7 +4,7 @@ import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.application.CircuitBreakerService;
-import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.CircuitIsOpenException;
+import com.mageddo.commons.circuitbreaker.CircuitIsOpenException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ClassUtils;

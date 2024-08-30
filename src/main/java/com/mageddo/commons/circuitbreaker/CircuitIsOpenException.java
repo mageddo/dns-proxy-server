@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker;
+package com.mageddo.commons.circuitbreaker;
 
 public class CircuitIsOpenException extends RuntimeException {
   public CircuitIsOpenException(Throwable e) {

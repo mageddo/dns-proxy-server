@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application;
 
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
-import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.CircuitIsOpenException;
+import com.mageddo.commons.circuitbreaker.CircuitIsOpenException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import testing.templates.solver.remote.FailSafeCircuitBreakerTemplates;
