@@ -1,17 +1,17 @@
 package testing.templates;
 
-import com.mageddo.dnsproxyserver.config.CircuitBreaker;
+import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategy;
 import com.mageddo.dnsproxyserver.config.mapper.ConfigMapper;
 
 import java.time.Duration;
 
 public class CircuitBreakerConfigTemplates {
-  public static CircuitBreaker buildDefault(){
+  public static StaticThresholdCircuitBreakerStrategy buildDefault(){
     return ConfigMapper.defaultCircuitBreaker();
   }
 
-  public static CircuitBreaker oneTryFailSuccess() {
-    return CircuitBreaker
+  public static StaticThresholdCircuitBreakerStrategy oneTryFailSuccess() {
+    return StaticThresholdCircuitBreakerStrategy
       .builder()
       .successThreshold(1)
       .failureThreshold(1)

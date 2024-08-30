@@ -1,12 +1,12 @@
 package com.mageddo.dnsproxyserver.config.validator;
 
-import com.mageddo.dnsproxyserver.config.CircuitBreaker;
+import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategy;
 import org.apache.commons.lang3.Validate;
 
 import static com.mageddo.dnsproxyserver.utils.Numbers.positiveOrNull;
 
 public class CircuitBreakerValidator {
-  public static void validate(CircuitBreaker circuit) {
+  public static void validate(StaticThresholdCircuitBreakerStrategy circuit) {
     Validate.notNull(positiveOrNull(circuit.getFailureThreshold()), genMsg("failure theshold must be a positive number"));
     Validate.notNull(positiveOrNull(circuit.getSuccessThreshold()), genMsg("success theshold must be positive number"));
     Validate.notNull(positiveOrNull(circuit.getFailureThresholdCapacity()), genMsg("success theshold capacity must be positive number"));

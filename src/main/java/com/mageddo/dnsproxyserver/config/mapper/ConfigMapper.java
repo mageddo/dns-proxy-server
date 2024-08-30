@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.config.mapper;
 
-import com.mageddo.dnsproxyserver.config.CircuitBreaker;
+import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategy;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigPropDAO;
@@ -74,8 +74,8 @@ public class ConfigMapper {
       .build();
   }
 
-  public static CircuitBreaker defaultCircuitBreaker() {
-    return CircuitBreaker
+  public static StaticThresholdCircuitBreakerStrategy defaultCircuitBreaker() {
+    return StaticThresholdCircuitBreakerStrategy
       .builder()
       .failureThreshold(3)
       .failureThresholdCapacity(10)

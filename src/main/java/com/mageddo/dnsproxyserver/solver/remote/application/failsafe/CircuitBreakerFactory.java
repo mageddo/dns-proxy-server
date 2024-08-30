@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.solver.remote.application.failsafe;
 import com.mageddo.circuitbreaker.failsafe.CircuitStatusRefresh;
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.commons.lang.tuple.Pair;
+import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategy;
 import com.mageddo.dnsproxyserver.config.application.ConfigService;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
@@ -48,7 +49,7 @@ public class CircuitBreakerFactory {
   }
 
   CircuitBreaker<Result> buildCircuitBreaker(
-    InetSocketAddress address, com.mageddo.dnsproxyserver.config.CircuitBreaker config
+    InetSocketAddress address, StaticThresholdCircuitBreakerStrategy config
   ) {
     return CircuitBreaker.<Result>builder()
       .handle(CircuitCheckException.class)
@@ -86,7 +87,7 @@ public class CircuitBreakerFactory {
     this.solverConsistencyGuaranteeDAO.flushCachesFromCircuitBreakerStateChange();
   }
 
-  com.mageddo.dnsproxyserver.config.CircuitBreaker findCircuitBreakerConfig() {
+  StaticThresholdCircuitBreakerStrategy findCircuitBreakerConfig() {
     return this.configService.findCurrentConfig()
       .getSolverRemote()
       .getCircuitBreaker();

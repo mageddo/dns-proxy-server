@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
 
-import com.mageddo.dnsproxyserver.config.CircuitBreaker;
+import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategy;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJson;
@@ -63,7 +63,7 @@ public class ConfigJsonV2Mapper {
     return SolverRemote
       .builder()
       .active(Booleans.reverseWhenNotNull(json.getNoRemoteServers()))
-      .circuitBreaker(CircuitBreaker
+      .circuitBreaker(StaticThresholdCircuitBreakerStrategy
         .builder()
         .failureThreshold(circuitBreaker.getFailureThreshold())
         .failureThresholdCapacity(circuitBreaker.getFailureThresholdCapacity())
