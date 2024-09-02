@@ -38,19 +38,19 @@ public class CircuitBreakerFactory {
   }
 
   public CircuitBreakerDelegate findCircuitBreaker(InetSocketAddress address) {
-    final var strategy = this.findStrategy(address);
+    final var strategy = this.findCircuitBreakerHotLoad(address);
     return this.circuitBreakerMap.computeIfAbsent(address, addr -> strategy);
   }
 
-  CircuitBreakerDelegate findStrategy(InetSocketAddress address) {
+  CircuitBreakerDelegate findCircuitBreakerHotLoad(InetSocketAddress address) {
     final var config = this.findCircuitBreakerConfig();
     return switch (config.name()) {
-      case STATIC_THRESHOLD -> this.buildFailSafeStrategy(address, config);
+      case STATIC_THRESHOLD -> this.buildStaticThresholdFailSafeCircuitBreaker(address, config);
       default -> throw new UnsupportedOperationException();
     };
   }
 
-  private CircuitBreakerDelegateStaticThresholdFailsafe buildFailSafeStrategy(
+  private CircuitBreakerDelegateStaticThresholdFailsafe buildStaticThresholdFailSafeCircuitBreaker(
     InetSocketAddress address, CircuitBreakerStrategy config
   ) {
     return new CircuitBreakerDelegateStaticThresholdFailsafe(this.failsafeCircuitBreakerFactory.build(
