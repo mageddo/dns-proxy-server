@@ -99,14 +99,21 @@ public class CircuitBreakerFactory {
   }
 
   public CircuitStatus findStatus(InetSocketAddress remoteAddress) {
-    return this.circuitBreakerMap.get(remoteAddress)
-      .findStatus();
+    final var circuitBreaker = this.findCircuitBreakerFromCache(remoteAddress);
+    if (circuitBreaker == null) {
+      return null;
+    }
+    return circuitBreaker.findStatus();
   }
 
   private Stats toStats(InetSocketAddress remoteAddr) {
-    final var circuitBreaker = this.circuitBreakerMap.get(remoteAddr);
+    final var circuitBreaker = this.findCircuitBreakerFromCache(remoteAddr);
     final var state = circuitBreaker.findStatus().name();
     return Stats.of(remoteAddr.toString(), state);
+  }
+
+  private CircuitBreakerDelegate findCircuitBreakerFromCache(InetSocketAddress remoteAddress) {
+    return this.circuitBreakerMap.get(remoteAddress);
   }
 
   @Value
