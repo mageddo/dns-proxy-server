@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
 
-import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategy;
+import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJson;
@@ -65,7 +65,7 @@ public class ConfigJsonV2Mapper {
       .active(Booleans.reverseWhenNotNull(json.getNoRemoteServers()))
       // fixme #533 need to create a dynamic json parser for different strategies,
       //      then a dynamic mapper to the solver remote
-      .circuitBreaker(StaticThresholdCircuitBreakerStrategy
+      .circuitBreaker(StaticThresholdCircuitBreakerStrategyConfig
         .builder()
         .failureThreshold(circuitBreaker.getFailureThreshold())
         .failureThresholdCapacity(circuitBreaker.getFailureThresholdCapacity())

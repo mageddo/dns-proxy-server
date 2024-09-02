@@ -3,7 +3,7 @@ package com.mageddo.dnsproxyserver.config;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegateNonResilient;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegateStaticThresholdFailsafe;
 
-public interface CircuitBreakerStrategy {
+public interface CircuitBreakerStrategyConfig {
 
   Name name();
 

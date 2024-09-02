@@ -9,5 +9,5 @@ public class SolverRemote {
 
   private Boolean active;
 
-  private CircuitBreakerStrategy circuitBreaker;
+  private CircuitBreakerStrategyConfig circuitBreaker;
 }

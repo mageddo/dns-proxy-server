@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.config.application;
 
-import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategy;
+import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAO;
@@ -55,7 +55,7 @@ public class ConfigService {
       .toList();
   }
 
-  public CircuitBreakerStrategy findCurrentConfigCircuitBreaker() {
+  public CircuitBreakerStrategyConfig findCurrentConfigCircuitBreaker() {
     return this.findCurrentConfigRemote()
       .getCircuitBreaker();
   }

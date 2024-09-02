@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.solver.remote.application.failsafe;
 
 import com.mageddo.dnsproxyserver.solver.remote.application.FailsafeCircuitBreakerFactory;
+import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegateNonResilient;
 import dev.failsafe.CircuitBreaker;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -110,6 +111,23 @@ class CircuitBreakerFactoryTest {
     // assert
     assertEquals(0, result.getKey());
     assertEquals(1, result.getValue());
+  }
+
+  @Test
+  void mustBuildNonResilientCircuitBreaker(){
+
+    // arrange
+    final var addr = InetSocketAddressTemplates._8_8_8_8();
+    doReturn(CircuitBreakerConfigTemplates.buildNonResilientConfig())
+      .when(this.factory)
+      .findCircuitBreakerConfig();
+
+    // act
+    final var circuitBreaker = this.factory.findCircuitBreaker(addr);
+
+    // assert
+    assertEquals(CircuitBreakerDelegateNonResilient.class, circuitBreaker.getClass());
+
   }
 
 }

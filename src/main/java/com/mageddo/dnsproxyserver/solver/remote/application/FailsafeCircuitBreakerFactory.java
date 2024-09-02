@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.solver.remote.application;
 
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
-import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategy;
+import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.mapper.CircuitBreakerStateMapper;
@@ -23,7 +23,7 @@ public class FailsafeCircuitBreakerFactory {
   private final OnCacheMustBeFlushedEvent onCacheMustBeFlushedEvent;
 
   public CircuitBreaker<Result> build(
-    InetSocketAddress address, StaticThresholdCircuitBreakerStrategy config
+    InetSocketAddress address, StaticThresholdCircuitBreakerStrategyConfig config
   ) {
     return CircuitBreaker.<Result>builder()
       .handle(CircuitCheckException.class)

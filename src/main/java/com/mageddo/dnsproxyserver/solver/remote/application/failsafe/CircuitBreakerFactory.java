@@ -1,13 +1,14 @@
 package com.mageddo.dnsproxyserver.solver.remote.application.failsafe;
 
 import com.mageddo.commons.lang.tuple.Pair;
-import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategy;
-import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategy;
+import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
+import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.application.ConfigService;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.application.FailsafeCircuitBreakerFactory;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegate;
+import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegateNonResilient;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegateStaticThresholdFailsafe;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -46,20 +47,21 @@ public class CircuitBreakerFactory {
     final var config = this.findCircuitBreakerConfig();
     return switch (config.name()) {
       case STATIC_THRESHOLD -> this.buildStaticThresholdFailSafeCircuitBreaker(address, config);
+      case NON_RESILIENT -> new CircuitBreakerDelegateNonResilient();
       default -> throw new UnsupportedOperationException();
     };
   }
 
   private CircuitBreakerDelegateStaticThresholdFailsafe buildStaticThresholdFailSafeCircuitBreaker(
-    InetSocketAddress address, CircuitBreakerStrategy config
+    InetSocketAddress address, CircuitBreakerStrategyConfig config
   ) {
     return new CircuitBreakerDelegateStaticThresholdFailsafe(this.failsafeCircuitBreakerFactory.build(
       address,
-      (StaticThresholdCircuitBreakerStrategy) config
+      (StaticThresholdCircuitBreakerStrategyConfig) config
     ));
   }
 
-  CircuitBreakerStrategy findCircuitBreakerConfig() {
+  CircuitBreakerStrategyConfig findCircuitBreakerConfig() {
     return this.configService.findCurrentConfigCircuitBreaker();
   }
 

@@ -90,7 +90,7 @@ public class Config {
   }
 
   @JsonIgnore
-  public CircuitBreakerStrategy getSolverRemoteCircuitBreakerStrategy() {
+  public CircuitBreakerStrategyConfig getSolverRemoteCircuitBreakerStrategy() {
     if (this.solverRemote == null) {
       return null;
     }
