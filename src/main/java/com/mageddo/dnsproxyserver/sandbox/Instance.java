@@ -8,6 +8,14 @@ import lombok.Value;
 @Value
 @Builder
 public class Instance {
+
   @NonNull
   CommandLines.Result result;
+
+  public static Instance of(CommandLines.Result result) {
+    return Instance.builder()
+      .result(result)
+      .build()
+      ;
+  }
 }
