@@ -65,6 +65,7 @@ public class AppIntTest {
 
     try (final var executor = Executors.newThreadExecutor()) {
 
+      // fixme must configure the remote server created as a remote for this one
       final var clientApp = buildClientAppAndWait(executor);
       buildServerAppAndWait(executor, hostToQuery);
 
