@@ -29,12 +29,32 @@ public class AppIntTest {
   }
 
   @AfterAll
-  static void afterAll(){
+  static void afterAll() {
     Starter.setMustStartFlagActive(false);
   }
 
   @Test
-  void appMustStartAndQuerySampleWithSuccess() {
+  void appMustStartAndQuerySampleWithSuccessFromLocalDbSolver() {
+
+    final var hostToQuery = "dps-sample.dev";
+    final var args = ConfigFlagArgsTemplates.withRandomPortsAndNotAsDefaultDns();
+    final var app = new App(args);
+
+    try (final var executor = Executors.newThreadExecutor()) {
+
+      executor.submit(app::start);
+
+      Threads.sleep(Duration.ofSeconds(2));
+
+      final var port = app.getDnsServerPort();
+      final var res = queryStartedServer(port, hostToQuery);
+      assertTrue(Messages.isSuccess(res));
+
+    }
+  }
+
+  @Test
+  void mustQueryRemoteSolverPassingThroughAllModulesAndGetSuccess() {
 
     final var hostToQuery = "dps-sample.dev";
     final var args = ConfigFlagArgsTemplates.withRandomPortsAndNotAsDefaultDns();
