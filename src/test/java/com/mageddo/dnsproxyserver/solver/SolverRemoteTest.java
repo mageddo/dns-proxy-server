@@ -1,6 +1,5 @@
 package com.mageddo.dnsproxyserver.solver;
 
-import com.mageddo.dnsproxyserver.solver.remote.application.CircuitBreakerNonResilientService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,8 +24,8 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class SolverRemoteTest {
 
-  @Spy
-  CircuitBreakerNonResilientService circuitBreakerService;
+//  @Spy
+//  CircuitBreakerNonResilientService circuitBreakerService;
 
   @Spy
   @InjectMocks
