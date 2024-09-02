@@ -73,6 +73,9 @@ public class Config {
 
   private SolverRemote solverRemote;
 
+  @NonNull
+  private Source source;
+
   @JsonIgnore
   public Boolean isSolverRemoteActive() {
     if (this.solverRemote == null) {
@@ -95,6 +98,11 @@ public class Config {
       return null;
     }
     return this.solverRemote.getCircuitBreaker();
+  }
+
+  public enum Source {
+    JSON, FLAG, DEFAULT, MERGED, ENV
+
   }
 
   @Value

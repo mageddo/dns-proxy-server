@@ -92,7 +92,7 @@ dependencies {
 
 test {
   useJUnitPlatform()
-  exclude "**/*CompTest.class"
+  exclude "**/*CompTest.class", "**/*IntTest.class"
   testLogging {
     events "passed", "skipped", "failed"
   }

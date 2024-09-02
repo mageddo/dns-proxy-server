@@ -46,6 +46,7 @@ public class ConfigDAOEnv implements ConfigDAO {
         .builder()
         .active(Booleans.reverseWhenNotNull(config.getNoRemoteServers()))
         .build())
+      .source(Config.Source.ENV)
       .build();
   }
 

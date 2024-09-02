@@ -51,7 +51,7 @@ public class App {
 
     this.checkExitCommands();
 
-    this.config = this.findConfig(args);
+    this.config = this.findConfig(this.args);
 
     this.setupLogs();
 

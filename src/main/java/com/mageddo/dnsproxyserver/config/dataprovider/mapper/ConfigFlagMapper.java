@@ -29,6 +29,7 @@ public class ConfigFlagMapper {
         .active(Booleans.reverseWhenNotNull(config.getNoRemoteServers()))
         .build()
       )
+      .source(Config.Source.FLAG)
       .build();
   }
 }
