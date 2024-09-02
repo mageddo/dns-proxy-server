@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.solver.remote.application.failsafe;
 
 import com.mageddo.commons.lang.tuple.Pair;
+import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategy;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategy;
 import com.mageddo.dnsproxyserver.config.application.ConfigService;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
@@ -37,18 +38,29 @@ public class CircuitBreakerFactory {
   }
 
   public CircuitBreakerDelegate findCircuitBreaker(InetSocketAddress address) {
-    final var config = this.findCircuitBreakerConfig();
-    return this.circuitBreakerMap.computeIfAbsent(
-      address,
-      addr -> new CircuitBreakerDelegateFailsafe(this.failsafeCircuitBreakerFactory.build(addr, config))
-    );
+    final var strategy = this.findStrategy(address);
+    return this.circuitBreakerMap.computeIfAbsent(address, addr -> strategy);
   }
 
-  StaticThresholdCircuitBreakerStrategy findCircuitBreakerConfig() {
-    // fixme #533 this could not work every time, check it
-    return (StaticThresholdCircuitBreakerStrategy) this.configService.findCurrentConfig()
-      .getSolverRemote()
-      .getCircuitBreaker();
+  CircuitBreakerDelegate findStrategy(InetSocketAddress address) {
+    final var config = this.findCircuitBreakerConfig();
+    return switch (config.name()) {
+      case STATIC_THRESHOLD -> this.buildFailSafeStrategy(address, config);
+      default -> throw new UnsupportedOperationException();
+    };
+  }
+
+  private CircuitBreakerDelegateFailsafe buildFailSafeStrategy(
+    InetSocketAddress address, CircuitBreakerStrategy config
+  ) {
+    return new CircuitBreakerDelegateFailsafe(this.failsafeCircuitBreakerFactory.build(
+      address,
+      (StaticThresholdCircuitBreakerStrategy) config
+    ));
+  }
+
+  CircuitBreakerStrategy findCircuitBreakerConfig() {
+    return this.configService.findCurrentConfigCircuitBreaker();
   }
 
   public Pair<Integer, Integer> checkCreatedCircuits() {

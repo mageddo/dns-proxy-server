@@ -1,6 +1,8 @@
 package com.mageddo.dnsproxyserver.config.application;
 
+import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategy;
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAO;
 import com.mageddo.dnsproxyserver.config.mapper.ConfigMapper;
 import org.apache.commons.lang3.ClassUtils;
@@ -29,6 +31,12 @@ public class ConfigService {
     return ConfigMapper.mapFrom(this.findConfigs());
   }
 
+  public SolverRemote findCurrentConfigRemote(){
+    return this.findCurrentConfig()
+      .getSolverRemote()
+      ;
+  }
+
   List<Config> findConfigs() {
     return this.findConfigDaos()
       .map(ConfigDAO::find)
@@ -45,5 +53,10 @@ public class ConfigService {
     return this.findConfigDaos()
       .map(ClassUtils::getSimpleName)
       .toList();
+  }
+
+  public CircuitBreakerStrategy findCurrentConfigCircuitBreaker() {
+    return this.findCurrentConfigRemote()
+      .getCircuitBreaker();
   }
 }

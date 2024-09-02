@@ -31,7 +31,7 @@ public class StaticThresholdCircuitBreakerStrategy implements CircuitBreakerStra
   }
 
   @Override
-  public Name type() {
+  public Name name() {
     return Name.STATIC_THRESHOLD;
   }
 }
