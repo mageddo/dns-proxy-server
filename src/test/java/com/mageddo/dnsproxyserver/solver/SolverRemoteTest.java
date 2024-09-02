@@ -11,6 +11,7 @@ import testing.templates.solver.remote.ResolverTemplates;
 
 import java.net.SocketTimeoutException;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -18,14 +19,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class SolverRemoteTest {
-
-//  @Spy
-//  CircuitBreakerNonResilientService circuitBreakerService;
 
   @Spy
   @InjectMocks
@@ -45,6 +44,8 @@ class SolverRemoteTest {
     doReturn(CompletableFuture.completedFuture(answer))
       .when(this.solverRemote)
       .sendQueryAsyncToResolver(any());
+
+    this.excludeCircuitBreakerStrategyAndCallQueryMethodDirectly();
 
     // act
     final var res = this.solverRemote.handle(query);
@@ -68,6 +69,8 @@ class SolverRemoteTest {
         .when(this.solverRemote)
         .sendQueryAsyncToResolver(any());
 
+    this.excludeCircuitBreakerStrategyAndCallQueryMethodDirectly();
+
     // act
     final var res = this.solverRemote.handle(query);
 
@@ -87,6 +90,8 @@ class SolverRemoteTest {
     doReturn(CompletableFuture.failedFuture(new SocketTimeoutException("Deu ruim")))
         .when(this.solverRemote)
         .sendQueryAsyncToResolver(any());
+
+    this.excludeCircuitBreakerStrategyAndCallQueryMethodDirectly();
 
     final var query = MessageTemplates.acmeAQuery();
 
@@ -112,6 +117,8 @@ class SolverRemoteTest {
     doReturn(CompletableFuture.completedFuture(res))
         .when(this.solverRemote)
         .sendQueryAsyncToResolver(any());
+
+    this.excludeCircuitBreakerStrategyAndCallQueryMethodDirectly();
 
     // act
     final var result = this.solverRemote.handle(query);
@@ -139,6 +146,8 @@ class SolverRemoteTest {
         .when(this.solverRemote)
         .sendQueryAsyncToResolver(any());
 
+    this.excludeCircuitBreakerStrategyAndCallQueryMethodDirectly();
+
     // act
     final var res = this.solverRemote.handle(query);
 
@@ -159,5 +168,10 @@ class SolverRemoteTest {
 
   }
 
-
+  void excludeCircuitBreakerStrategyAndCallQueryMethodDirectly() {
+    doAnswer(iom -> Supplier.class.cast(iom.getArgument(1)).get())
+      .when(this.solverRemote)
+      .queryUsingCircuitBreaker(any(), any())
+    ;
+  }
 }

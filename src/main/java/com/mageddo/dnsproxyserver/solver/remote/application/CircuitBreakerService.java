@@ -43,10 +43,6 @@ public class CircuitBreakerService {
     return this.status;
   }
 
-  public void resetCircuitBreakerFactory() {
-    this.circuitBreakerFactory.reset();
-  }
-
   public CircuitStatus findCircuitStatus(InetSocketAddress resolverAddress) {
     return this.circuitBreakerFactory.findStatus(resolverAddress);
   }

@@ -24,6 +24,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static com.mageddo.dns.utils.Messages.simplePrint;
@@ -92,7 +93,11 @@ public class SolverRemote implements Solver, AutoCloseable {
 
   Result safeQueryResult(Request req) {
     req.splitStopWatch();
-    return this.circuitBreakerService.safeHandle(req.getResolverAddress(), () -> this.queryResult(req));
+    return this.queryUsingCircuitBreaker(req, () -> this.queryResult(req));
+  }
+
+  Result queryUsingCircuitBreaker(Request req, Supplier<Result> sup) {
+    return this.circuitBreakerService.safeHandle(req.getResolverAddress(), sup);
   }
 
   Result queryResult(Request req) {

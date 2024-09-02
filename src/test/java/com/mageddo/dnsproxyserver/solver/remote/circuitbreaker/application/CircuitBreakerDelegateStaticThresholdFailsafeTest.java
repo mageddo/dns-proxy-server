@@ -13,12 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CircuitBreakerDelegateStaticThresholdFailsafeTest {
 
-//  @BeforeEach
-//  void beforeEach() {
-//    this.service.resetCircuitBreakerFactory();
-//  }
-
-
   @Test
   void mustThrowAbstractOpenCircuitException() {
     // arrange
