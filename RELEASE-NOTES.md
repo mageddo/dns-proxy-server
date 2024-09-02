@@ -1,3 +1,6 @@
+## 3.25.13
+* Unifying circuit breaker abstractions #553
+
 ## 3.25.12
 * Creating an abstraction of circuit breaker implementation #533
 
