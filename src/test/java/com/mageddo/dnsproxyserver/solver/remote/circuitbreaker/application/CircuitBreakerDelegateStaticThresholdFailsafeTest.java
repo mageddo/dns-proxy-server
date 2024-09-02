@@ -51,16 +51,6 @@ class CircuitBreakerDelegateStaticThresholdFailsafeTest {
     assertThrows(CircuitIsOpenException.class, () -> circuitBreaker.execute(failureSup));
 
   }
-//
-//  @Test
-//  void mustFlushCachesWhenCircuitBreakerStateChanges() {
-//    // arrange // act
-//    this.mustOpenCircuitAfterThresholdFailures();
-//
-//    // assert
-//    verify(this.consistencyGuaranteeDAO).flushCachesFromCircuitBreakerStateChange();
-//  }
-
 
   static CircuitBreakerDelegateStaticThresholdFailsafe buildCircuitBreaker() {
     return new CircuitBreakerDelegateStaticThresholdFailsafe(FailSafeCircuitBreakerTemplates.fastCircuit());
