@@ -8,7 +8,7 @@ import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.application.FailsafeCircuitBreakerFactory;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegate;
-import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegateFailsafe;
+import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegateStaticThresholdFailsafe;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -50,10 +50,10 @@ public class CircuitBreakerFactory {
     };
   }
 
-  private CircuitBreakerDelegateFailsafe buildFailSafeStrategy(
+  private CircuitBreakerDelegateStaticThresholdFailsafe buildFailSafeStrategy(
     InetSocketAddress address, CircuitBreakerStrategy config
   ) {
-    return new CircuitBreakerDelegateFailsafe(this.failsafeCircuitBreakerFactory.build(
+    return new CircuitBreakerDelegateStaticThresholdFailsafe(this.failsafeCircuitBreakerFactory.build(
       address,
       (StaticThresholdCircuitBreakerStrategy) config
     ));

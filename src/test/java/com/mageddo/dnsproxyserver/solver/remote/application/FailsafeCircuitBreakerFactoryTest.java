@@ -4,7 +4,7 @@ import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegate;
-import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegateFailsafe;
+import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegateStaticThresholdFailsafe;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -42,7 +42,7 @@ class FailsafeCircuitBreakerFactoryTest {
     final var supError = ResultSupplierTemplates.alwaysFail();
     final var supSuccess = ResultSupplierTemplates.alwaysSuccess();
 
-    final var circuitBreaker = new CircuitBreakerDelegateFailsafe(this.factory.build(addr, config));
+    final var circuitBreaker = new CircuitBreakerDelegateStaticThresholdFailsafe(this.factory.build(addr, config));
     assertEquals("CLOSED", circuitBreaker.findStatus().toString());
 
     // act

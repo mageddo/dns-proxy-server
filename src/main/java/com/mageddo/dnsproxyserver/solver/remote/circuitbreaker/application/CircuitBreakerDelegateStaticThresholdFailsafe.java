@@ -11,11 +11,11 @@ import dev.failsafe.Failsafe;
 
 import java.util.function.Supplier;
 
-public class CircuitBreakerDelegateFailsafe implements CircuitBreakerDelegate {
+public class CircuitBreakerDelegateStaticThresholdFailsafe implements CircuitBreakerDelegate {
 
   private final CircuitBreaker<Result> circuitBreaker;
 
-  public CircuitBreakerDelegateFailsafe(CircuitBreaker<Result> circuitBreaker) {
+  public CircuitBreakerDelegateStaticThresholdFailsafe(CircuitBreaker<Result> circuitBreaker) {
     this.circuitBreaker = circuitBreaker;
   }
 

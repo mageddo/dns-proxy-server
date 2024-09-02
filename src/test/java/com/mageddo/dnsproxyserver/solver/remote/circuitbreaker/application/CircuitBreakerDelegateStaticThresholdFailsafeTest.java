@@ -8,12 +8,12 @@ import testing.templates.solver.remote.FailSafeCircuitBreakerTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class CircuitBreakerDelegateFailsafeTest {
+class CircuitBreakerDelegateStaticThresholdFailsafeTest {
 
   @Test
   void mustThrowAbstractOpenCircuitException() {
     // arrange
-    final var circuitBreaker = new CircuitBreakerDelegateFailsafe(FailSafeCircuitBreakerTemplates.fastCircuit());
+    final var circuitBreaker = new CircuitBreakerDelegateStaticThresholdFailsafe(FailSafeCircuitBreakerTemplates.fastCircuit());
 
     // act
     final Executable stm = () -> {
