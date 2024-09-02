@@ -1,10 +1,7 @@
 package com.mageddo.dnsproxyserver.sandbox;
 
 public class Sandbox {
-  public Instance runFromGradleTests(String[] args){
-
-    return Instance
-      .builder()
-      .build();
+  public static Instance runFromGradleTests(String[] args) {
+    return new BinaryFromGradleTestsSandbox().run(args);
   }
 }

@@ -23,7 +23,7 @@ public class DpsBinaryExecutableFinder {
 
   Path findBuiltNativeExecutablePath() {
     final var buildPath = this.findBuilPath();
-    final var path = buildPath.resolve("build/native/generateIntTestResourcesConfigFile/nativeIntTestCompile");
+    final var path = buildPath.resolve("native/nativeIntTestCompile/dns-proxy-server-tests");
     Validate.isTrue(Files.exists(path), "Native executable not found at: " + path);
     return path;
   }

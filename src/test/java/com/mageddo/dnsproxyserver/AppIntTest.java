@@ -3,15 +3,14 @@ package com.mageddo.dnsproxyserver;
 import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.config.application.Configs;
+import com.mageddo.dnsproxyserver.sandbox.Sandbox;
 import com.mageddo.dnsproxyserver.server.Starter;
 import com.mageddo.dnsproxyserver.solver.SimpleResolver;
 import com.mageddo.dnsproxyserver.utils.Ips;
 import com.mageddo.utils.Executors;
-import com.mageddo.utils.Runtime;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -62,17 +61,12 @@ public class AppIntTest {
   @Test
   void mustQueryRemoteSolverPassingThroughAllModulesAndGetSuccess() {
 
-
-    System.out.println(Runtime.getRunningDir());
-
-    Assertions.fail();
-
     final var hostToQuery = "dps-int-test.dev";
 
     try (final var executor = Executors.newThreadExecutor()) {
 
       final var clientApp = buildClientAppAndWait(executor);
-      final var serverApp = buildServerAppAndWait(executor, hostToQuery);
+      buildServerAppAndWait(executor, hostToQuery);
 
       final var port = clientApp.getDnsServerPort();
       final var res = queryStartedServer(port, hostToQuery);
@@ -87,10 +81,9 @@ public class AppIntTest {
     return buildAppAndWait(executor, ConfigFlagArgsTemplates.withRandomPortsAndNotAsDefaultDns());
   }
 
-  private static App buildServerAppAndWait(ExecutorService executor, String hostToQuery) {
-    return buildAppAndWait(
-      executor, ConfigFlagArgsTemplates.withRandomPortsAndNotAsDefaultDnsAndCustomLocalDBEntry(hostToQuery)
-    );
+  private static void buildServerAppAndWait(ExecutorService executor, String hostToQuery) {
+    final var args = ConfigFlagArgsTemplates.withRandomPortsAndNotAsDefaultDnsAndCustomLocalDBEntry(hostToQuery);
+    final var instance = Sandbox.runFromGradleTests(args);
   }
 
   private static App buildAppAndWait(ExecutorService executor, final String[] params) {
