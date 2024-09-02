@@ -34,7 +34,7 @@
 
 ## 3.25.2
 * Migrating cache to caffeine #522
- 
+
 ## 3.25.1
 * Ensure thread will have name at the logs, behavior changed since `3.25.0` #436.
 
@@ -57,11 +57,11 @@
 * Fixing graal-sdk dep binary impacts arm, windows, amd static generation
 * Fixed Jar release which was broken when at `3.22.0` depending on the JRE vendor
 
-## 3.22.0 
+## 3.22.0
 * #473: Qemu upgrade
 
 ## 3.21.3
-* #496: Fixing aarch binary not building 
+* #496: Fixing aarch binary not building
 
 ## 3.21.2
 * #285, #494: Fixing amd64 static docker image.
@@ -118,15 +118,15 @@
 * Parameters for Remote Solver Circuit Breaker, see #440.
 
 ## 3.17.3
-* DPS Config module refactoring due #440, see #447 
+* DPS Config module refactoring due #440, see #447
 
 ## 3.17.2
 * Fixing regression, leading with no ipv6 response, see #446
 
 ## 3.17.1
-* Docker Solver module refactoring, see #444 
+* Docker Solver module refactoring, see #444
 
-## 3.17.0 
+## 3.17.0
 * Feature toggle to turn off Docker Solver Host Machine IP fallback, see #442
 
 ## 3.16.3
@@ -143,11 +143,11 @@
 
 ## 3.15
 * Support for AAAA records on Docker container, LocalDB and System solving.
-* AAAA GUI records support 
+* AAAA GUI records support
 * DPS Network IPV6 Support
 * Formalize Recursion Available on query responses as DPS supports this feature already, see #392
-* Defined a new process of releasing the stable versions, see "Getting Started -> Release Version Control" 
-for more details
+* Defined a new process of releasing the stable versions, see "Getting Started -> Release Version Control"
+  for more details
 * Fixed arm64 images stopped being pushed at `3.9`
 * Cache improvement for a concurrent approach synchronized by key
 * Increasing tcp and udp server parallelism from 20 to 50 threads each, threads are created lazily
@@ -180,7 +180,7 @@ for more details
 * Gui interface to clear the cache
 * Created but not documented APIs to get cache size its and values
 * Increased remote solver timeout to 10 seconds to make sure won't get easlily get timeout due to server slowness
-* Ordering interfaces by index when choosing an IP as the machine IP, put loopback at the end of the list. 
+* Ordering interfaces by index when choosing an IP as the machine IP, put loopback at the end of the list.
 * Holding TCP open connections up to 2min respecting RFC-1035 section "4.2.2. TCP usage"
   * Fixed too many occurrences of "java.net.SocketException: Socket closed"
 * Limited TCP/UDP Server thread pool up to 20 threads due to control memory usage
@@ -252,15 +252,15 @@ They will separate by comma , DPS will look for each value, try to use it and st
 * When finding network by name must find with the exact name
 
 ## 3.2.3-beta
-* Fixed docker container wasn't solving from env when the names weren't separated by ` , ` 
- (spaces before and after the comma were needed)
+* Fixed docker container wasn't solving from env when the names weren't separated by ` , `
+  (spaces before and after the comma were needed)
 
 ## 3.2.2-beta
-* Fixed DPS container was connecting to DPS network with wrong IP 
+* Fixed DPS container was connecting to DPS network with wrong IP
 
 ## 3.2.1-beta
 * Respecting OS to configure as default DNS
-* Other minor fixes 
+* Other minor fixes
 
 ## 3.2.0-beta
 * Better error treating and log formatting
@@ -275,7 +275,7 @@ They will separate by comma , DPS will look for each value, try to use it and st
 
 ## 3.1.5-beta
 * Fixing UDP binding server to any interface on the machine wasn't working for some clients
- 
+
 ## 3.1.4-beta
 * Binding UDP server to any interface on the machine
 * Fallback to 127.0.0.1 interface when the real one is missing
@@ -310,7 +310,7 @@ DPS 3 -  Minor fixes
 
 ## 3.0.1-beta
 * DPS has your code totally refactored by maintaining the previous features, it's a structuring for new features
- See details at [DNS Proxy Server 3 #267](https://github.com/mageddo/dns-proxy-server/issues/267)
+  See details at [DNS Proxy Server 3 #267](https://github.com/mageddo/dns-proxy-server/issues/267)
 
 ## 2.19.0
 * Support for absolute paths on config files (#188)
@@ -342,9 +342,9 @@ DPS 3 -  Minor fixes
 * Change log level before try to log something
 
 ## 2.18.0
-* Feature: Multiple environments, now you can setup a group of hostnames and save it to a environment, then you can 
-create a new environment and switch between them, very useful when working on different contexts switching from QA to PROD,
-for example, [see the docs](http://mageddo.github.io/dns-proxy-server/2.18/en/2-features/multiple-environments/)
+* Feature: Multiple environments, now you can setup a group of hostnames and save it to a environment, then you can
+  create a new environment and switch between them, very useful when working on different contexts switching from QA to PROD,
+  for example, [see the docs](http://mageddo.github.io/dns-proxy-server/2.18/en/2-features/multiple-environments/)
 
 ## 2.17.4
 * Clearing cache for resolvers when the config file is saved
@@ -368,7 +368,7 @@ for example, [see the docs](http://mageddo.github.io/dns-proxy-server/2.18/en/2-
 ## 2.15.0
 * Decreasing chance of acl issues by giving priority to answer ip of bridge networks over overlay ones
 * Now DPS can have your own network this way it can access and be accessed
-by all docker containers, **not** enabled by default [see the docs](http://mageddo.github.io/dns-proxy-server/2.15/en/2-features/dps-network-resolution/) 
+  by all docker containers, **not** enabled by default [see the docs](http://mageddo.github.io/dns-proxy-server/2.15/en/2-features/dps-network-resolution/)
 
 ## 2.14.6
 * Fixing ping slowness
@@ -377,13 +377,13 @@ by all docker containers, **not** enabled by default [see the docs](http://maged
 * Fixing docker hub push
 
 ## 2.14.4
-* Fixing log level wasn't being respected 
+* Fixing log level wasn't being respected
 
 ## 2.14.2
 * Ability to specify remote server port
 * Introducing storage api v2
-* Refactoring the docs to use Hugo templates 
- 
+* Refactoring the docs to use Hugo templates
+
 ## 2.14.1
 * Fixing nil pointer when remote server get timeout (#126)
 * Simplify bug report
@@ -396,7 +396,7 @@ by all docker containers, **not** enabled by default [see the docs](http://maged
 ## 2.13.2
 * Fixing broken answer when hostname is not found
 * Fixing ping slowness
- 
+
 ## 2.13.1
 * Make sure value column will not break the table (#116)
 
@@ -451,7 +451,7 @@ by all docker containers, **not** enabled by default [see the docs](http://maged
 * Fixing wildcard resolution were not solving main domain to docker container, just the subdomains
 
 ## 2.5.1
-* Fixing ping slowness, takes more than 10 seconds to respond 
+* Fixing ping slowness, takes more than 10 seconds to respond
 
 ## 2.5.0
 * Migrate to static logging tool
@@ -465,7 +465,7 @@ by all docker containers, **not** enabled by default [see the docs](http://maged
 
 ## 2.3.3
 * Domains wildcard support
-If you register a hostname with `.` at start, then all subdomains will solve to that container/local storage entry
+  If you register a hostname with `.` at start, then all subdomains will solve to that container/local storage entry
 
 ## 2.2.3
 * Some times container hostname don't get registered at machine startup
@@ -491,8 +491,8 @@ If you register a hostname with `.` at start, then all subdomains will solve to 
 * Automating build with Travis
 
 ## 2.1.1
-* Fix - `Error response from daemon: No such container...` message. see #29  
-* Fix - hostname don't get removed when the container has killed. see #26  
+* Fix - `Error response from daemon: No such container...` message. see #29
+* Fix - hostname don't get removed when the container has killed. see #26
 
 ## 2.1.0
 * Turn publish port optional when running as service using docker mode
@@ -500,7 +500,7 @@ If you register a hostname with `.` at start, then all subdomains will solve to 
 ## 2.0.21
 * BugFix - Service stopped of work in normal mode
 
-## 2.0.20 
+## 2.0.20
 * Support for --version option that shows the current version
 * Docker Compose is not required anymore to run DNS Proxy Server as a docker service
 
