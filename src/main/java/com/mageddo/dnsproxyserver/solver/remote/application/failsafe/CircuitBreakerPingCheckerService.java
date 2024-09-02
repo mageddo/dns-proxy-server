@@ -22,7 +22,7 @@ public class CircuitBreakerPingCheckerService {
     try {
       this.check(server, circuitBreaker);
       return true;
-    } catch (CircuitCheckException | CircuitBreakerOpenException e) { // fixme 533 excecao nao pode ser especifica
+    } catch (CircuitCheckException | CircuitBreakerOpenException e) { // fixme #533 excecao nao pode ser especifica
       log.debug("status=serverNotHealth, server={}, msg={}, class={}", server, e.getMessage(), ClassUtils.getSimpleName(e));
     } catch (Exception e) {
       log.error("status=failedToCheckCircuit, server={}", server, e);
