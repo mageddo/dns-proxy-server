@@ -1,14 +1,18 @@
 package com.mageddo.commons.exec;
 
 public class ExecutionValidationFailedException extends RuntimeException {
-  private final CommandLines.Result result;
+  private final Result result;
 
-  public ExecutionValidationFailedException(CommandLines.Result result) {
+  public ExecutionValidationFailedException(Result result) {
     super(String.format("error, code=%d, error=%s", result.getExitCode(), result.getOutAsString()));
     this.result = result;
   }
 
-  public CommandLines.Result result() {
+  public Result result() {
     return this.result;
+  }
+
+  public int getExitCode() {
+    return this.result.getExitCode();
   }
 }

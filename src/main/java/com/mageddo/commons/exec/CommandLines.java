@@ -1,25 +1,21 @@
 package com.mageddo.commons.exec;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DaemonExecutor;
 import org.apache.commons.exec.ExecuteException;
+import org.apache.commons.exec.ExecuteResultHandler;
 import org.apache.commons.exec.ExecuteWatchdog;
-import org.apache.commons.exec.Executor;
-import org.apache.commons.exec.PumpStreamHandler;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.time.Duration;
 
+@Slf4j
 public class CommandLines {
 
   public static Result exec(String commandLine, Object... args) {
     return exec(CommandLine.parse(String.format(commandLine, args)),
-        ExecuteWatchdog.INFINITE_TIMEOUT
+      ExecuteWatchdog.INFINITE_TIMEOUT
     );
   }
 
@@ -32,56 +28,62 @@ public class CommandLines {
   }
 
   public static Result exec(CommandLine commandLine, long timeout) {
-    final var out = new ByteArrayOutputStream();
-    final var executor = new DaemonExecutor();
-    final var streamHandler = new PumpStreamHandler(out);
-    executor.setStreamHandler(streamHandler);
-    int exitCode;
+    return exec(
+      Request.builder()
+        .commandLine(commandLine)
+        .timeout(Duration.ofMillis(timeout))
+        .build()
+    );
+  }
+
+  private static void registerProcessWatch(ProcessAccessibleDaemonExecutor executor) {
+    ProcessesWatchDog.instance()
+      .watch(executor::getProcess)
+    ;
+  }
+
+  public static Result exec(CommandLine commandLine, ExecuteResultHandler handler) {
+    return exec(Request
+      .builder()
+      .commandLine(commandLine)
+      .handler(handler)
+      .build()
+    );
+  }
+
+  public static Result exec(Request request) {
+    final var executor = createExecutor();
+    executor.setStreamHandler(request.getStreamHandler());
+    Integer exitCode = null;
     try {
-      executor.setWatchdog(new ExecuteWatchdog(timeout));
-      exitCode = executor.execute(commandLine);
+      executor.setWatchdog(new ExecuteWatchdog(request.getTimeoutInMillis()));
+      if (request.getHandler() != null) {
+        executor.execute(request.getCommandLine(), request.getEnv(), request.getHandler());
+        registerProcessWatch(executor);
+      } else {
+        exitCode = executor.execute(request.getCommandLine(), request.getEnv());
+      }
     } catch (ExecuteException e) {
-      exitCode = e.getExitValue();
+      if (request.getHandler() != null) {
+        request.getHandler().onProcessFailed(e);
+      } else {
+        exitCode = e.getExitValue();
+      }
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
     return Result
-        .builder()
-        .executor(executor)
-        .out(out)
-        .exitCode(exitCode)
-        .build();
+      .builder()
+      .executor(executor)
+      .processSupplier(executor::getProcess)
+      .out(request.getBestOut())
+      .exitCode(exitCode)
+      .request(request)
+      .build();
   }
 
-  @Getter
-  @Builder
-  @ToString(of = {"exitCode"})
-  public static class Result {
-
-    @NonNull
-    private Executor executor;
-
-    @NonNull
-    private ByteArrayOutputStream out;
-
-    private int exitCode;
-
-    public String getOutAsString() {
-      return this.out.toString();
-    }
-
-    public Result checkExecution() {
-      if (this.executor.isFailure(this.getExitCode())) {
-        throw new ExecutionValidationFailedException(this);
-      }
-      return this;
-    }
-
-    public String toString(boolean printOut) {
-      return String.format(
-          "code=%d, out=%s",
-          this.exitCode, printOut ? this.getOutAsString() : null
-      );
-    }
+  private static ProcessAccessibleDaemonExecutor createExecutor() {
+    return new ProcessAccessibleDaemonExecutor();
   }
+
 }
