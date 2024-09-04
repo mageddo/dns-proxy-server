@@ -14,4 +14,14 @@ public class ConfigFlagArgsTemplates {
       "--log-level=TRACE",
     };
   }
+
+  public static String[] withConfigFilePath() {
+    return new String[]{
+      "--conf-path=flag-relative-path/flag-config.json"
+    };
+  }
+
+  public static String[] empty() {
+    return new String[]{};
+  }
 }

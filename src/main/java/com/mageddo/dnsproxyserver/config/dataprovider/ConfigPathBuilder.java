@@ -9,7 +9,7 @@ import java.nio.file.Path;
 @Slf4j
 public class ConfigPathBuilder {
   private static Path build0(Path workDir, Path configPath) {
-    if (ConfigDAOJson.runningInTestsAndNoCustomConfigPath()) {
+    if (ConfigDAOJson.runningInTestsAndNoCustomConfigPath(configPath)) {
       final var file = Files.createTempFileDeleteOnExit("dns-proxy-server-junit", ".json");
       log.trace("status=runningInTests, usingEmptyFile={}", file);
       return file;

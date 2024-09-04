@@ -20,6 +20,9 @@ import java.util.concurrent.Callable;
 @NoArgsConstructor
 public class ConfigFlag implements Callable<Boolean> {
 
+  public static final String DEFAULT_CONFIG_FILE_PATH = "conf/config.json";
+  public static final Path DEFAULT_CONFIG_FILE_AS_PATH = Paths.get(DEFAULT_CONFIG_FILE_PATH);
+
   @Option(
     names = {"-version", "--version"}, description = "Shows the current version (default false)"
   )
@@ -49,7 +52,7 @@ public class ConfigFlag implements Callable<Boolean> {
   @Option(
     names = {"-conf-path", "--conf-path"},
     description = "The config file path (default conf/config.json)",
-    defaultValue = "conf/config.json"
+    defaultValue = DEFAULT_CONFIG_FILE_PATH
   )
   private String configFilePath;
 
