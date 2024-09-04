@@ -41,7 +41,7 @@ public class ConfigFlagArgsTemplates {
         "envs": [
           {
             "name": "",
-            "hostnames":
+            "hostnames": [
               {
                 "type": "A",
                 "hostname": "%s",

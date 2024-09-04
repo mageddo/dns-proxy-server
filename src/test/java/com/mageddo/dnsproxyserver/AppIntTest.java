@@ -12,7 +12,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.xbill.DNS.Message;
 import testing.templates.ConfigFlagArgsTemplates;
@@ -57,7 +56,6 @@ public class AppIntTest {
     }
   }
 
-  @Disabled
   @Test
   void mustQueryRemoteSolverPassingThroughAllModulesAndGetSuccess() {
 

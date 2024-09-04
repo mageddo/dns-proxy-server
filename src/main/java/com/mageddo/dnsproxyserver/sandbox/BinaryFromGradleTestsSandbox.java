@@ -1,13 +1,13 @@
 package com.mageddo.dnsproxyserver.sandbox;
 
-import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.commons.exec.CommandLines;
+import com.mageddo.wait.Wait;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.exec.ExecuteResultHandler;
 
-import java.time.Duration;
-
+@Slf4j
 public class BinaryFromGradleTestsSandbox {
   public Instance run(String[] args) {
     final var javaCommandPath = findJavaCommand();
@@ -41,8 +41,13 @@ public class BinaryFromGradleTestsSandbox {
   }
 
   private void waitForStartup(Instance instance) {
-    Threads.sleep(Duration.ofSeconds(2));
-    System.out.println(instance.getResult().getOutAsString());
+    instance.getResult().watchOutputInDaemonThread();
+    new Wait()
+      .ignoreException(IllegalArgumentException.class)
+      .until(() -> {
+        instance.sendHealthCheckSignal();
+        return null;
+      });
   }
 
 
