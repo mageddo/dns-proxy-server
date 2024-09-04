@@ -47,7 +47,9 @@ public class ConfigEnv {
 
   private static final String MG_DOCKER_SOLVER_HOST_MACHINE_FALLBACK_ACTIVE = "MG_DOCKER_SOLVER_HOST_MACHINE_FALLBACK_ACTIVE";
 
-  private Path currentPath;
+  private static final String MG_CONFIG_FILE_PATH = "MG_CONFIG_FILE_PATH";
+
+  private Path workingDir;
   private String resolvConfPath;
   private String logFile;
   private String logLevel;
@@ -61,11 +63,12 @@ public class ConfigEnv {
   private Boolean noRemoteServers;
   private Integer noEntriesResponseCode;
   private Boolean dockerSolverHostMachineFallbackActive;
+  private Path configFilePath;
 
   public static ConfigEnv fromEnv() {
     return ConfigEnv
       .builder()
-      .currentPath(Envs.getPathOrNull(MG_WORK_DIR))
+      .workingDir(Envs.getPathOrNull(MG_WORK_DIR))
       .resolvConfPath(Envs.getStringOrDefault(MG_RESOLVCONF, DEFAULT_RESOLV_CONF_PATH))
       .logFile(findLogFilePath())
       .logLevel(Envs.getStringOrNull(MG_LOG_LEVEL))
@@ -79,6 +82,7 @@ public class ConfigEnv {
       .noRemoteServers(Envs.getBooleanOrNull(MG_NO_REMOTE_SERVERS))
       .noEntriesResponseCode(Envs.getIntegerOrNull(MG_NO_ENTRIES_RESPONSE_CODE))
       .dockerSolverHostMachineFallbackActive(Envs.getBooleanOrNull(MG_DOCKER_SOLVER_HOST_MACHINE_FALLBACK_ACTIVE))
+      .configFilePath(Envs.getPathOrNull(MG_CONFIG_FILE_PATH))
       .build();
   }
 

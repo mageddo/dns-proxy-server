@@ -4,12 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigPropDAO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import picocli.CommandLine;
 import picocli.CommandLine.Option;
 
 import java.io.PrintWriter;
 import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.Callable;
 
 
@@ -48,7 +51,7 @@ public class ConfigFlag implements Callable<Boolean> {
     description = "The config file path (default conf/config.json)",
     defaultValue = "conf/config.json"
   )
-  private String configPath;
+  private String configFilePath;
 
   @Option(
     names = {"-service", "--service"},
@@ -236,4 +239,10 @@ public class ConfigFlag implements Callable<Boolean> {
     return false;
   }
 
+  public Path getConfigFileAsPath() {
+    if (StringUtils.isNotBlank(this.configFilePath)) {
+      return Paths.get(this.configFilePath);
+    }
+    return null;
+  }
 }

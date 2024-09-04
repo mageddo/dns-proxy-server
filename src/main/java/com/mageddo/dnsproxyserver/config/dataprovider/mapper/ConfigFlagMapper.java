@@ -9,7 +9,7 @@ import com.mageddo.utils.Files;
 public class ConfigFlagMapper {
   public static Config toConfig(ConfigFlag config) {
     return Config.builder()
-      .configPath(Files.pathOf(config.getConfigPath()))
+      .configPath(Files.pathOf(config.getConfigFilePath()))
       .registerContainerNames(config.getRegisterContainerNames())
       .domain(config.getDomain())
       .logFile(config.getLogToFile())

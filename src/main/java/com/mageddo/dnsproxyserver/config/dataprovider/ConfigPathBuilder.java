@@ -5,11 +5,10 @@ import com.mageddo.utils.Runtime;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Slf4j
 public class ConfigPathBuilder {
-  private static Path build0(Path workDir, String configPath) {
+  private static Path build0(Path workDir, Path configPath) {
     if (ConfigDAOJson.runningInTestsAndNoCustomConfigPath()) {
       final var file = Files.createTempFileDeleteOnExit("dns-proxy-server-junit", ".json");
       log.trace("status=runningInTests, usingEmptyFile={}", file);
@@ -21,9 +20,7 @@ public class ConfigPathBuilder {
         .toAbsolutePath()
         ;
     }
-    final var confRelativeToCurrDir = Paths
-      .get(configPath)
-      .toAbsolutePath();
+    final var confRelativeToCurrDir = configPath.toAbsolutePath();
     if (Files.exists(confRelativeToCurrDir)) {
       return confRelativeToCurrDir;
     }
@@ -32,8 +29,8 @@ public class ConfigPathBuilder {
       .toAbsolutePath();
   }
 
-  public static Path build(Path workDir, String relativeConfigFilePath) {
-    final var path = build0(workDir, relativeConfigFilePath);
+  public static Path build(Path workDir, Path configFilePath) {
+    final var path = build0(workDir, configFilePath);
     log.debug("status=configPathBuilt, path={}", path);
     return path;
   }
