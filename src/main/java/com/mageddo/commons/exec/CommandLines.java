@@ -72,29 +72,18 @@ public class CommandLines {
   }
 
   private static void registerProcessWatch(ProcessAccessibleDaemonExecutor executor) {
-    ProcessesWatchDog.instance().watch(executor::getProcess);
+    ProcessesWatchDog.instance()
+      .watch(executor::getProcess)
+    ;
   }
 
   public static Result exec(CommandLine commandLine, ExecuteResultHandler handler) {
-    final var bout = new ByteArrayOutputStream();
-    final var stream = new PipedStream(bout);
-    final var executor = createExecutor();
-    executor.setStreamHandler(new PumpStreamHandler(stream));
-    try {
-      executor.setWatchdog(new ExecuteWatchdog(ExecuteWatchdog.INFINITE_TIMEOUT));
-      executor.execute(commandLine, handler);
-      registerProcessWatch(executor);
-    } catch (ExecuteException e) {
-      handler.onProcessFailed(e);
-    } catch (IOException e) {
-      throw new UncheckedIOException(e);
-    }
-    return Result
+    return exec(Request
       .builder()
-      .executor(executor)
-      .processSupplier(executor::getProcess)
-      .out(bout)
-      .build();
+      .commandLine(commandLine)
+      .handler(handler)
+      .build()
+    );
   }
 
   public static Result exec(Request request) {
