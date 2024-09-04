@@ -5,7 +5,7 @@
   "dockerHost" : null,
   "dockerSolverHostMachineFallbackActive" : true,
   "defaultDns" : true,
-  "configPath" : "conf/config.json",
+  "configFilePath" : "conf/config.json",
   "service" : null,
   "publishServicePort" : true,
   "logToFile" : "console",
