@@ -239,6 +239,7 @@ public class ConfigFlag implements Callable<Boolean> {
     return false;
   }
 
+  @JsonIgnore
   public Path getConfigFileAsPath() {
     if (StringUtils.isNotBlank(this.configFilePath)) {
       return Paths.get(this.configFilePath);
