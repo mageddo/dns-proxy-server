@@ -4,8 +4,34 @@ import org.apache.commons.exec.CommandLine;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CommandLinesTest {
+
+
+  @Test
+  void mustValidateWhenExitsWithErrorCode(){
+
+    final var result = CommandLines.exec(
+      new CommandLine("sh")
+      .addArgument("-c")
+      .addArgument("exit 3", false)
+    );
+
+    final var ex = assertThrows(ExecutionValidationFailedException.class, result::checkExecution);
+
+    assertEquals(3, ex.getExitCode());
+
+  }
+
+  @Test
+  void mustExecuteCommand(){
+
+    final var result = CommandLines.exec("echo %s", "hey");
+
+    assertEquals(0, result.getExitCode());
+    assertEquals("hey\n", result.getOutAsString());
+  }
 
   @Test
   void mustExecuteAndPrintOutputConcurrently() {

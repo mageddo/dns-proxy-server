@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.time.Duration;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -47,28 +48,12 @@ public class CommandLines {
   }
 
   public static Result exec(CommandLine commandLine, long timeout) {
-
-    final var bout = new ByteArrayOutputStream();
-    final var stream = new PipedStream(bout);
-    final var executor = createExecutor();
-    executor.setStreamHandler(new PumpStreamHandler(stream));
-    int exitCode;
-    try {
-      executor.setWatchdog(new ExecuteWatchdog(timeout));
-      exitCode = executor.execute(commandLine);
-      registerProcessWatch(executor);
-    } catch (ExecuteException e) {
-      exitCode = e.getExitValue();
-    } catch (IOException e) {
-      throw new UncheckedIOException(e);
-    }
-    return Result
-      .builder()
-      .executor(executor)
-      .out(bout)
-      .exitCode(exitCode)
-      .processSupplier(executor::getProcess)
-      .build();
+    return exec(
+      Request.builder()
+        .commandLine(commandLine)
+        .timeout(Duration.ofMillis(timeout))
+        .build()
+    );
   }
 
   private static void registerProcessWatch(ProcessAccessibleDaemonExecutor executor) {
@@ -91,7 +76,7 @@ public class CommandLines {
     executor.setStreamHandler(request.getStreamHandler());
     Integer exitCode = null;
     try {
-      executor.setWatchdog(new ExecuteWatchdog(ExecuteWatchdog.INFINITE_TIMEOUT));
+      executor.setWatchdog(new ExecuteWatchdog(request.getTimeoutInMillis()));
       if (request.getHandler() != null) {
         executor.execute(request.getCommandLine(), request.getEnv(), request.getHandler());
         registerProcessWatch(executor);
@@ -136,7 +121,11 @@ public class CommandLines {
   @Builder(toBuilder = true, builderClassName = "RequestBuilder", buildMethodName = "build0")
   public static class Request {
 
+    @NonNull
     private final CommandLine commandLine;
+
+    private final Duration timeout;
+
     private final ExecuteResultHandler handler;
     private Map<String, String> env;
 
@@ -163,6 +152,13 @@ public class CommandLines {
 
     public OutputStream getBestOut() {
       return this.streams.getBestOriginalOutput();
+    }
+
+    public long getTimeoutInMillis() {
+      if (this.timeout == null) {
+        return ExecuteWatchdog.INFINITE_TIMEOUT;
+      }
+      return this.timeout.toMillis();
     }
 
     public static class RequestBuilder {
@@ -201,7 +197,7 @@ public class CommandLines {
       }
 
       public OutputStream getBestOriginalOutput() {
-        return this.getBestOut();
+        return this.getBestOut().getOriginalOut();
       }
 
       public static class StreamsBuilder {

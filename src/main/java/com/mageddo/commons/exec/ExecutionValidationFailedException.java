@@ -11,4 +11,8 @@ public class ExecutionValidationFailedException extends RuntimeException {
   public CommandLines.Result result() {
     return this.result;
   }
+
+  public int getExitCode() {
+    return this.result.getExitCode();
+  }
 }
