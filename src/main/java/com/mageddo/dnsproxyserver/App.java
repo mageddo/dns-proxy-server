@@ -20,6 +20,7 @@ public class App {
   private final String[] args;
   private Config config;
   private ConfigFlag flags;
+  private Context context;
 
   public App(String[] args) {
     this.args = args;
@@ -55,6 +56,8 @@ public class App {
 
     this.setupLogs();
 
+    log.trace("pid={}", ProcessHandle.current().pid());
+
     this.startContext();
 
     // todo install as service
@@ -79,11 +82,15 @@ public class App {
   }
 
   void startContext() {
-    final var context = Context.create();
+    createContext();
 
     // start webserver
     // start dns server
-    context.start();
+    this.context.start();
+  }
+
+  private void createContext() {
+    this.context = Context.create();
   }
 
   void checkExitCommands() {
@@ -113,6 +120,10 @@ public class App {
 
   int getDnsServerPort() {
     return getConfig().getDnsServerPort();
+  }
+
+  Context getContext() {
+    return context;
   }
 
   static class SystemExitException extends RuntimeException {

@@ -1,9 +1,11 @@
 package com.mageddo.dnsproxyserver.di;
 
 import com.mageddo.di.CDIImpl;
+import com.mageddo.di.Eager;
 import com.mageddo.dnsproxyserver.config.di.module.ModuleConfigDAO;
 import com.mageddo.dnsproxyserver.di.module.ModuleDao;
 import com.mageddo.dnsproxyserver.di.module.ModuleDockerClient;
+import com.mageddo.dnsproxyserver.di.module.ModuleEager;
 import com.mageddo.dnsproxyserver.di.module.ModuleHttpMapper;
 import com.mageddo.dnsproxyserver.di.module.ModuleMain;
 import com.mageddo.dnsproxyserver.di.module.ModuleMap;
@@ -38,19 +40,25 @@ import java.util.Set;
   ModuleStartup.class,
   ModuleMap.class,
   ModuleConfigDAO.class,
-  SolverRemoteModule.class
+  SolverRemoteModule.class,
+  ModuleEager.class
 })
 public interface Context {
 
   static Context create() {
     final var context = DaggerContext.create();
     CDI.setCDIProvider(() -> new CDIImpl(context));
+    context.eagerBeans()
+      .forEach(Eager::run)
+    ;
     return context;
   }
 
   Starter starter();
 
   Set<StartupEvent> events();
+
+  Set<Eager> eagerBeans();
 
   default void start() {
     this.starter().start();

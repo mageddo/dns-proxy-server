@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -171,6 +170,14 @@ public final class JsonUtils {
     try (final BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
       return br.readLine();
     } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
+  }
+
+  public static String prettyWriteValueAsString(Object v) {
+    try {
+      return prettyInstance().writeValueAsString(v);
+    } catch (JsonProcessingException e) {
       throw new UncheckedIOException(e);
     }
   }
