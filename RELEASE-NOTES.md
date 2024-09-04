@@ -1,3 +1,6 @@
+## 3.26.0
+* Option to set config file path from the ENV, see the docs.
+
 ## 3.25.14
 * Fixing SolverRemote NPE #533
 
