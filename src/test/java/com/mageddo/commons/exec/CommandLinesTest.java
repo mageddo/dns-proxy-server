@@ -17,7 +17,7 @@ class CommandLinesTest {
       new NopResultHandler()
     );
 
-    result.watchOutputInDaemonThread();
+    result.printOutToLogsInBackground();
 
     result.waitProcessToFinish();
 

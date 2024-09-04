@@ -1,5 +1,6 @@
 package com.mageddo.commons.exec;
 
+import com.mageddo.io.LogPrinter;
 import com.mageddo.wait.Wait;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,21 +8,23 @@ import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.ToString;
 import lombok.Value;
+import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DaemonExecutor;
 import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.exec.ExecuteResultHandler;
+import org.apache.commons.exec.ExecuteStreamHandler;
 import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.lang3.Validate;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -45,10 +48,10 @@ public class CommandLines {
 
   public static Result exec(CommandLine commandLine, long timeout) {
 
-    final var stream = new PipedStream();
+    final var bout = new ByteArrayOutputStream();
+    final var stream = new PipedStream(bout);
     final var executor = createExecutor();
-    final var streamHandler = new PumpStreamHandler(stream.getOut());
-    executor.setStreamHandler(streamHandler);
+    executor.setStreamHandler(new PumpStreamHandler(stream));
     int exitCode;
     try {
       executor.setWatchdog(new ExecuteWatchdog(timeout));
@@ -62,8 +65,7 @@ public class CommandLines {
     return Result
       .builder()
       .executor(executor)
-      .stream(stream)
-      .out(stream.getBout())
+      .out(bout)
       .exitCode(exitCode)
       .processSupplier(executor::getProcess)
       .build();
@@ -74,10 +76,10 @@ public class CommandLines {
   }
 
   public static Result exec(CommandLine commandLine, ExecuteResultHandler handler) {
-    final var stream = new PipedStream();
+    final var bout = new ByteArrayOutputStream();
+    final var stream = new PipedStream(bout);
     final var executor = createExecutor();
-    final var streamHandler = new PumpStreamHandler(stream.getOut());
-    executor.setStreamHandler(streamHandler);
+    executor.setStreamHandler(new PumpStreamHandler(stream));
     try {
       executor.setWatchdog(new ExecuteWatchdog(ExecuteWatchdog.INFINITE_TIMEOUT));
       executor.execute(commandLine, handler);
@@ -91,26 +93,24 @@ public class CommandLines {
       .builder()
       .executor(executor)
       .processSupplier(executor::getProcess)
-      .out(stream.getBout())
-      .stream(stream)
+      .out(bout)
       .build();
   }
 
   public static Result exec(Request request) {
-    final var stream = new PipedStream();
     final var executor = createExecutor();
     executor.setStreamHandler(request.getStreamHandler());
     Integer exitCode = null;
     try {
       executor.setWatchdog(new ExecuteWatchdog(ExecuteWatchdog.INFINITE_TIMEOUT));
       if (request.getHandler() != null) {
-        executor.execute(request.getCommandLine(), request.getHandler());
+        executor.execute(request.getCommandLine(), request.getEnv(), request.getHandler());
         registerProcessWatch(executor);
       } else {
-        exitCode = executor.execute(request.getCommandLine());
+        exitCode = executor.execute(request.getCommandLine(), request.getEnv());
       }
     } catch (ExecuteException e) {
-      if(request.getHandler() != null){
+      if (request.getHandler() != null) {
         request.getHandler().onProcessFailed(e);
       } else {
         exitCode = e.getExitValue();
@@ -122,9 +122,9 @@ public class CommandLines {
       .builder()
       .executor(executor)
       .processSupplier(executor::getProcess)
-      .out(stream.getBout())
-      .stream(stream)
+      .out(request.getBestOut())
       .exitCode(exitCode)
+      .request(request)
       .build();
   }
 
@@ -143,13 +143,92 @@ public class CommandLines {
     }
   }
 
-
   @Value
-  @Builder
+  @Builder(toBuilder = true, builderClassName = "RequestBuilder", buildMethodName = "build0")
   public static class Request {
-    CommandLine commandLine;
-    ExecuteResultHandler handler;
-    PumpStreamHandler streamHandler;
+
+    private final CommandLine commandLine;
+    private final ExecuteResultHandler handler;
+    private Map<String, String> env;
+
+    @NonFinal
+    private boolean watchingOutput;
+
+    @Builder.Default
+    private final Streams streams = Streams.builder()
+      .outAndErr(new ByteArrayOutputStream())
+      .build();
+
+    public ExecuteStreamHandler getStreamHandler() {
+      return this.streams.toStreamHandler();
+    }
+
+    private Request printOutToLogsInBackground() {
+      if (this.watchingOutput) {
+        throw new IllegalStateException("Already watching output");
+      }
+      this.watchingOutput = true;
+      LogPrinter.printInBackground(this.streams.outAndErr.getPipedIn());
+      return this;
+    }
+
+    public OutputStream getBestOut() {
+      return this.streams.getBestOriginalOutput();
+    }
+
+    public static class RequestBuilder {
+
+      private boolean printLogsInBackground = false;
+
+      public Request build() {
+        final var request = this.build0();
+        if (this.printLogsInBackground) {
+          request.printOutToLogsInBackground();
+        }
+        return request;
+      }
+
+      public RequestBuilder printLogsInBackground() {
+        this.printLogsInBackground = true;
+        return this;
+      }
+    }
+
+
+    @Value
+    @Builder(toBuilder = true, builderClassName = "StreamsBuilder")
+    public static class Streams {
+
+      private final PipedStream outAndErr;
+      private final OutputStream out;
+      private final OutputStream err;
+      private final InputStream input;
+
+      public PipedStream getBestOut() {
+        if (this.outAndErr != null) {
+          return this.outAndErr;
+        }
+        throw new UnsupportedOperationException();
+      }
+
+      public OutputStream getBestOriginalOutput() {
+        return this.getBestOut();
+      }
+
+      public static class StreamsBuilder {
+        public StreamsBuilder outAndErr(OutputStream outAndErr) {
+          this.outAndErr = new PipedStream(outAndErr);
+          return this;
+        }
+      }
+
+      public ExecuteStreamHandler toStreamHandler() {
+        if (this.outAndErr != null) {
+          return new PumpStreamHandler(this.outAndErr);
+        }
+        return new PumpStreamHandler(this.out, this.err, this.input);
+      }
+    }
   }
 
   @Getter
@@ -158,41 +237,26 @@ public class CommandLines {
   public static class Result {
 
     @NonNull
+    private Request request;
+
+    @NonNull
     private Executor executor;
 
     @NonNull
-    private PipedStream stream;
-
-    @NonNull
-    private ByteArrayOutputStream out;
+    private OutputStream out;
 
     @NonNull
     private Supplier<Process> processSupplier;
 
     private Integer exitCode;
 
-    public void watchOutputInDaemonThread() {
-      final var task = (Runnable) () -> {
-        final var bf = new BufferedReader(new InputStreamReader(this.stream.getPipedInputStream()));
-        while (true) {
-          try {
-            final var line = bf.readLine();
-            if (line == null) {
-              log.debug("status=outputEnded");
-              break;
-            }
-            log.debug(">>> {}", line);
-          } catch (IOException e) {
-
-          }
-        }
-      };
-      Thread
-        .ofVirtual()
-        .start(task);
+    public Result printOutToLogsInBackground() {
+      this.request.printOutToLogsInBackground();
+      return this;
     }
 
     public String getOutAsString() {
+      Validate.isTrue(this.out instanceof ByteArrayOutputStream, "Only ByteArrayOutputStream is supported");
       return this.out.toString();
     }
 

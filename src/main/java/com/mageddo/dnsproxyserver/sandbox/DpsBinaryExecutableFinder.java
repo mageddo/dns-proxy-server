@@ -13,7 +13,7 @@ import java.nio.file.Path;
 @Slf4j
 public class DpsBinaryExecutableFinder {
 
-  public static CommandLine buildCommandLine(Path configFile) {
+  public static CommandLine buildCommandLine() {
     return new DpsBinaryExecutableFinder().buildCommandLineForBestExecutable();
   }
 

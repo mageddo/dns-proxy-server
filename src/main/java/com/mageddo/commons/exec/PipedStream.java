@@ -1,42 +1,42 @@
 package com.mageddo.commons.exec;
 
-import java.io.ByteArrayOutputStream;
+import lombok.Getter;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.UncheckedIOException;
 
-public class PipedStream {
+public class PipedStream extends OutputStream {
 
-  private final PipedInputStream pipedInputStream;
-  private final ByteArrayOutputStream bout;
-  private final DelegateOutputStream out;
+  @Getter
+  private final PipedInputStream pipedIn;
 
-  public PipedStream() {
+  private final DelegateOutputStream delegateOut;
+  private final OutputStream originalOut;
+
+  public PipedStream(final OutputStream out) {
     try {
-      this.pipedInputStream = new PipedInputStream();
-      final var pout = new PipedOutputStream(this.pipedInputStream);
-      this.bout = new ByteArrayOutputStream();
-      this.out = new DelegateOutputStream(this.bout, pout);
+      this.pipedIn = new PipedInputStream();
+      this.originalOut = out;
+      final var pout = new PipedOutputStream(this.pipedIn);
+      this.delegateOut = new DelegateOutputStream(out, pout);
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
   }
 
-  public OutputStream getOut() {
-    return this.out;
-  }
-
-  public ByteArrayOutputStream getBout() {
-    return bout;
-  }
-
-  public PipedInputStream getPipedInputStream() {
-    return this.pipedInputStream;
+  @Override
+  public void write(int b) throws IOException {
+    this.delegateOut.write(b);
   }
 
   public void close() throws IOException {
-    this.out.close();
+    this.delegateOut.close();
+  }
+
+  OutputStream getOriginalOut() {
+    return originalOut;
   }
 }

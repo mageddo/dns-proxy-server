@@ -47,6 +47,6 @@ public class Instance {
   }
 
   public void watchOutputInDaemonThread() {
-    getResult().watchOutputInDaemonThread();
+    getResult().printOutToLogsInBackground();
   }
 }
