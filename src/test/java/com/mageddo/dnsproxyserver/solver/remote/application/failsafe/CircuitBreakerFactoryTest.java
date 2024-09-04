@@ -14,6 +14,7 @@ import testing.templates.InetSocketAddressTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -128,6 +129,16 @@ class CircuitBreakerFactoryTest {
     // assert
     assertEquals(CircuitBreakerDelegateNonResilient.class, circuitBreaker.getClass());
 
+  }
+
+  @Test
+  void mustReturnNullWhenNoStatusIsFound(){
+
+    final var addr = InetSocketAddressTemplates._8_8_8_8();
+
+    final var status = this.factory.findStatus(addr);
+
+    assertNull(status);
   }
 
 }
