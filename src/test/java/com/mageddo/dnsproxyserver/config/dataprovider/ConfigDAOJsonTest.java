@@ -26,7 +26,7 @@ class ConfigDAOJsonTest {
     "dockerHost"
   };
 
-  final ConfigDAOJson configDAOJson = new ConfigDAOJson(null, null);
+  final ConfigDAOJson configDAOJson = new ConfigDAOJson(null);
 
   @Test
   void mustBuildConfPathRelativeToWorkDir(@TempDir Path tmpDir){
@@ -36,7 +36,7 @@ class ConfigDAOJsonTest {
     ConfigDAOCmdArgs.setArgs(flags.getArgs());
 
     // act
-    final var configPath = ConfigPathBuilder.build(workDir, flags.getConfigFilePath());
+    final var configPath = ConfigPathBuilder.build(workDir, flags.getConfigFileAsPath());
 
     // assert
     assertEquals("config.json", configPath.getFileName().toString());
