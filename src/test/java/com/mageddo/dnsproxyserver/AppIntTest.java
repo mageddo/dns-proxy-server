@@ -4,6 +4,8 @@ import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.commons.exec.ProcessesWatchDog;
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.config.application.Configs;
+import com.mageddo.dnsproxyserver.config.dataprovider.JsonConfigs;
+import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJson;
 import com.mageddo.dnsproxyserver.sandbox.Instance;
 import com.mageddo.dnsproxyserver.sandbox.Sandbox;
 import com.mageddo.dnsproxyserver.server.Starter;
@@ -19,7 +21,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.xbill.DNS.Message;
 import testing.templates.ConfigFlagArgsTemplates;
+import testing.templates.ConfigJsonFileTemplates;
 
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
@@ -88,10 +92,10 @@ public class AppIntTest {
   }
 
   private static Result buildAndStartServerApp(String hostToQuery) {
-    final var config = ConfigFlagArgsTemplates.withRandomPortsAndNotAsDefaultDnsAndCustomLocalDBEntry(hostToQuery);
-    final var instance = Sandbox.runFromGradleTests(config.args());
+    final var configFile = ConfigJsonFileTemplates.withRandomPortsAndNotAsDefaultDnsAndCustomLocalDBEntry(hostToQuery);
+    final var instance = Sandbox.runFromGradleTests(configFile);
     instance.watchOutputInDaemonThread();
-    return Result.of(config, instance);
+    return Result.of(configFile, instance);
   }
 
   private static App buildAppAndWait(ExecutorService executor, final String[] params) {
@@ -112,19 +116,16 @@ public class AppIntTest {
   @Value
   static class Result {
 
-    private final ConfigFlagArgsTemplates.Config config;
+    private final ConfigJson config;
     private final Instance instance;
 
-    public static Result of(ConfigFlagArgsTemplates.Config config, Instance instance) {
-      return new Result(config, instance);
+    public static Result of(Path configFile, Instance instance) {
+      return new Result(JsonConfigs.loadConfig(configFile), instance);
     }
 
     public Integer getDnsServerPort() {
       return this.config.getDnsServerPort();
     }
 
-    public void watchInstanceOutputInDaemonThread() {
-      this.getInstance().watchOutputInDaemonThread();
-    }
   }
 }
