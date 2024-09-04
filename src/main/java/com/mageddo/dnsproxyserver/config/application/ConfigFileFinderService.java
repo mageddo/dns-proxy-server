@@ -2,7 +2,6 @@ package com.mageddo.dnsproxyserver.config.application;
 
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOCmdArgs;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOEnv;
-import com.mageddo.dnsproxyserver.config.dataprovider.ConfigPathBuilder;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigEnv;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigFlag;
 import com.mageddo.dnsproxyserver.utils.ObjectUtils;
@@ -28,7 +27,7 @@ public class ConfigFileFinderService {
     final var configFilePath = this.findConfigFilePath(envConfig, argsConfig);
 
     final var workDir = envConfig.getWorkingDir();
-    return ConfigPathBuilder.build(workDir, configFilePath);
+    return ConfigPathMapper.build(workDir, configFilePath);
   }
 
   private Path findConfigFilePath(ConfigEnv envConfig, ConfigFlag argsConfig) {
