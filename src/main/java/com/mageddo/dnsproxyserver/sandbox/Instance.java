@@ -23,10 +23,6 @@ public class Instance {
       ;
   }
 
-  public void sendHealthCheckStreamCommand() {
-    this.sendHealthCheckStreamCommandValidatingResult();
-    this.validateIsHealth();
-  }
 
   public void sendHealthCheckSignal() {
     this.sendHealthCheckSignalValidatingResult();
@@ -46,15 +42,11 @@ public class Instance {
     Kill.sendSignal(10, processId);
   }
 
-  private void sendHealthCheckStreamCommandValidatingResult() {
-    this.result.getExecutor().getStreamHandler().setProcessErrorStream();
-    final var processId = this.getProcessId();
-    Validate.isTrue(processId != null, "Process not started yet");
-    log.trace("is alive: {}, exitcode={}", this.result.getProcess().isAlive(), this.result.getProcessExitCodeWhenAvailable());
-    Kill.sendSignal(10, processId);
-  }
-
   private Long getProcessId() {
     return this.result.getProcessId();
+  }
+
+  public void watchOutputInDaemonThread() {
+    getResult().watchOutputInDaemonThread();
   }
 }

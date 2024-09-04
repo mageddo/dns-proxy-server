@@ -53,6 +53,7 @@ public class CommandLines {
     try {
       executor.setWatchdog(new ExecuteWatchdog(timeout));
       exitCode = executor.execute(commandLine);
+      registerProcessWatch(executor);
     } catch (ExecuteException e) {
       exitCode = e.getExitValue();
     } catch (IOException e) {
@@ -68,6 +69,10 @@ public class CommandLines {
       .build();
   }
 
+  private static void registerProcessWatch(ProcessAccessibleDaemonExecutor executor) {
+    ProcessesWatchDog.instance().watch(executor::getProcess);
+  }
+
   public static Result exec(CommandLine commandLine, ExecuteResultHandler handler) {
     final var stream = new PipedStream();
     final var executor = createExecutor();
@@ -76,6 +81,7 @@ public class CommandLines {
     try {
       executor.setWatchdog(new ExecuteWatchdog(ExecuteWatchdog.INFINITE_TIMEOUT));
       executor.execute(commandLine, handler);
+      registerProcessWatch(executor);
     } catch (ExecuteException e) {
       handler.onProcessFailed(e);
     } catch (IOException e) {
@@ -99,6 +105,7 @@ public class CommandLines {
       executor.setWatchdog(new ExecuteWatchdog(ExecuteWatchdog.INFINITE_TIMEOUT));
       if (request.getHandler() != null) {
         executor.execute(request.getCommandLine(), request.getHandler());
+        registerProcessWatch(executor);
       } else {
         exitCode = executor.execute(request.getCommandLine());
       }
