@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DaemonExecutor;
 import org.apache.commons.exec.ExecuteException;
+import org.apache.commons.exec.ExecuteResultHandler;
 import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
@@ -51,6 +52,22 @@ public class CommandLines {
         .out(out)
         .exitCode(exitCode)
         .build();
+  }
+
+  public static DaemonExecutor exec(CommandLine commandLine, ExecuteResultHandler handler) {
+    final var out = new ByteArrayOutputStream();
+    final var executor = new DaemonExecutor();
+    final var streamHandler = new PumpStreamHandler(out);
+    executor.setStreamHandler(streamHandler);
+    try {
+      executor.setWatchdog(new ExecuteWatchdog(ExecuteWatchdog.INFINITE_TIMEOUT));
+      executor.execute(commandLine, handler);
+    } catch (ExecuteException e) {
+      handler.onProcessFailed(e);
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
+    return executor;
   }
 
   @Getter

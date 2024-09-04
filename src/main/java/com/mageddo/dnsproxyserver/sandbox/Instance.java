@@ -1,20 +1,20 @@
 package com.mageddo.dnsproxyserver.sandbox;
 
-import com.mageddo.commons.exec.CommandLines;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
+import org.apache.commons.exec.DaemonExecutor;
 
 @Value
 @Builder
 public class Instance {
 
   @NonNull
-  CommandLines.Result result;
+  DaemonExecutor executor;
 
-  public static Instance of(CommandLines.Result result) {
+  public static Instance of(DaemonExecutor executor) {
     return Instance.builder()
-      .result(result)
+      .executor(executor)
       .build()
       ;
   }
