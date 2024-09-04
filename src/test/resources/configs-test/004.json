@@ -13,6 +13,7 @@
   "remoteDnsServers" : [ ],
   "resolvConfOverrideNameServers" : null,
   "serverProtocol" : null,
+  "source" : "JSON",
   "solverRemote" : {
     "active" : null,
     "circuitBreaker" : {
