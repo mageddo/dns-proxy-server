@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.sandbox;
 import com.mageddo.utils.Runtime;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.exec.CommandLine;
 import org.apache.commons.lang3.Validate;
 import org.graalvm.nativeimage.ImageInfo;
 
@@ -12,7 +13,30 @@ import java.nio.file.Path;
 @Slf4j
 public class DpsBinaryExecutableFinder {
 
-  public static Path find() {
+  public static CommandLine buildCommandLine() {
+    return new DpsBinaryExecutableFinder().buildCommandLineForBestExecutable();
+  }
+
+  private CommandLine buildCommandLineForBestExecutable() {
+    final var executablePath = this.findBestExecutablePath();
+    if (ImageInfo.inImageRuntimeCode()) {
+      return new CommandLine(executablePath.toString());
+    }
+    final var javaCommandPath = this.findJavaCommand();
+    return new CommandLine(javaCommandPath)
+      .addArgument("-jar")
+      .addArgument(executablePath.toFile().toString());
+  }
+
+  private String findJavaCommand() {
+    return ProcessHandle.current()
+      .info()
+      .command()
+      .orElseThrow(() -> new IllegalStateException("Couldn't find current java process command"))
+      ;
+  }
+
+  public static Path findPath() {
     return new DpsBinaryExecutableFinder().findBestExecutablePath();
   }
 

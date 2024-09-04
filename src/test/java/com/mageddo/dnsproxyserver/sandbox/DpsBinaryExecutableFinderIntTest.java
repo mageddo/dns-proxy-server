@@ -13,7 +13,7 @@ class DpsBinaryExecutableFinderIntTest {
   void mustFindDpsNativeExecutablePath(){
     assumeTrue(ImageInfo.inImageRuntimeCode());
 
-    final var found = DpsBinaryExecutableFinder.find();
+    final var found = DpsBinaryExecutableFinder.findPath();
 
     assertTrue(found.toString().endsWith("-tests"));
   }
@@ -22,7 +22,7 @@ class DpsBinaryExecutableFinderIntTest {
   void mustFindDpsJarPath(){
     assumeFalse(ImageInfo.inImageRuntimeCode());
 
-    final var found = DpsBinaryExecutableFinder.find();
+    final var found = DpsBinaryExecutableFinder.findPath();
 
     assertTrue(found.toString().endsWith(".jar"));
   }
