@@ -30,7 +30,7 @@ public class HealthCheckSignalEntrypoint {
 
   void registerHandler() {
     Signal.handle(new Signal(USER_DEFINED_SIGNAL), sig -> {
-      System.out.printf("dps.healthCheck.isHealth=%b%n", this.healthCheck.isHealth());
+      System.out.printf("dps.healthCheck.health=%b%n", this.healthCheck.isHealth());
     });
   }
 }
