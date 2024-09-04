@@ -20,4 +20,12 @@ public class ConfigFlagTemplates {
   public static ConfigFlag withVersionFlag() {
     return ConfigFlag.parse(new String[]{"--version"});
   }
+
+  public static ConfigFlag withConfigFilePath() {
+    return ConfigFlag.parse(ConfigFlagArgsTemplates.withConfigFilePath());
+  }
+
+  public static ConfigFlag empty() {
+    return ConfigFlag.parse(ConfigFlagArgsTemplates.empty());
+  }
 }

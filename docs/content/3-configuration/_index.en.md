@@ -13,7 +13,7 @@ Default: `8.8.8.8`.
 ### Web Server Port
 Web GUI port, Default: `5380`.
 
-### DNS Server Port 
+### DNS Server Port
 Default: `53`.
 
 ### Log Level
@@ -40,7 +40,7 @@ If should register container name / service name as a hostname. Default: false.
 ### Domain
 The container names domain used on the registered container, services. Default: `docker`.
 
-Ex: 
+Ex:
 ```bash
 docker run --rm --name nginx nginx
 ```
@@ -61,8 +61,8 @@ Default: false.
 If DPS must be set as the default DNS automatically, commonly requires DPS be run as sudo/administrator permissions,
 this options also won't work in some cases when running inside a docker container, [see the feature details][1].
 
-### Host Machine Hostname 
-Hostname to solve machine IP, domain can be changed by Domain option. Default: `host.docker`. 
+### Host Machine Hostname
+Hostname to solve machine IP, domain can be changed by Domain option. Default: `host.docker`.
 
 | Env                        | JSON                  | Terminal   |
 |----------------------------|-----------------------|------------|
@@ -79,7 +79,7 @@ Docker host address. Default value is SO dependent.
 | `MG_DOCKER_HOST` | `dockerHost` | See --help |
 
 ### Resolvconf Override Name Servers
-If must comment all existing nameservers at `resolv.conf` file (Linux, MacOS) or just put DPS at the first place. 
+If must comment all existing nameservers at `resolv.conf` file (Linux, MacOS) or just put DPS at the first place.
 Default: true.
 
 | Env                                  | JSON                            | Terminal   |
@@ -87,7 +87,7 @@ Default: true.
 | `MG_RESOLVCONF_OVERRIDE_NAMESERVERS` | `resolvConfOverrideNameServers` | See --help |
 
 ### Resolvconf
-Linux/Mac resolvconf or systemd-resolved path to set DPS as default DNS. 
+Linux/Mac resolvconf or systemd-resolved path to set DPS as default DNS.
 Default: `/host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf`.
 
 | Env           | JSON | Terminal   |
@@ -128,6 +128,28 @@ Default: true
 | Env                                           | JSON                                    | Terminal  |
 |-----------------------------------------------|-----------------------------------------|-----------|
 | MG_DOCKER_SOLVER_HOST_MACHINE_FALLBACK_ACTIVE | `dockerSolverHostMachineFallbackActive` | See -help |
+
+## Config File Path
+
+The location of the external config file (as the JSON file) can be changed by setting two variables:
+
+### Config File Path
+
+Relative or absolute path to the config file. Default: `conf/config.json`
+
+| Env                 | JSON | Terminal  |
+|---------------------|------|-----------|
+| MG_CONFIG_FILE_PATH | N/A  | See -help |
+
+### Working Dir (Optional)
+
+Is the path which will be used when **ConfigFilePath** is set as a relative path.
+Default: `DPS executing path, aka Working Directory`.
+
+| Env         | JSON | Terminal |
+|-------------|------|----------|
+| MG_WORK_DIR | N/A  | N/A      |
+
 
 ## Example JSON configuration
 

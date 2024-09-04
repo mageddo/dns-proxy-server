@@ -99,6 +99,16 @@ public class ConfigFlagArgsTemplates {
     return Files.writeString(config, content);
   }
 
+  public static String[] withConfigFilePath() {
+    return new String[]{
+      "--conf-path=flag-relative-path/flag-config.json"
+    };
+  }
+
+  public static String[] empty() {
+    return new String[]{};
+  }
+
   @Value
   @Builder
   @Accessors(fluent = true)

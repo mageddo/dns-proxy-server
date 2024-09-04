@@ -1,10 +1,10 @@
 Usage: <main class> [-default-dns] [-docker-solver-host-machine-fallback] [-dps-network] [-dps-network-auto-connect]
                     [-help] [-no-remote-servers] [-register-container-names] [-resolvconf-override-name-servers]
-                    [-service-publish-web-port] [-version] [-conf-path=<configPath>] [-docker-host=<dockerHost>]
+                    [-service-publish-web-port] [-version] [-conf-path=<configFilePath>] [-docker-host=<dockerHost>]
                     [-domain=<domain>] [-host-machine-hostname=<hostMachineHostname>] [-log-file=<logToFile>]
                     [-log-level=<logLevel>] [-no-entries-response-code=<noEntriesResponseCode>]
                     [-server-port=<dnsServerPort>] [-service=<service>] [-web-server-port=<webServerPort>]
-      -conf-path, --conf-path=<configPath>
+      -conf-path, --conf-path=<configFilePath>
                             The config file path (default conf/config.json)
       -default-dns, --default-dns
                             This DNS server will be the default server for this machine (default true)

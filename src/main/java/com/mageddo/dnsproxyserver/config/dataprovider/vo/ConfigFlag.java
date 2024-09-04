@@ -4,18 +4,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigPropDAO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import picocli.CommandLine;
 import picocli.CommandLine.Option;
 
 import java.io.PrintWriter;
 import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.Callable;
 
 
 @Getter
 @NoArgsConstructor
 public class ConfigFlag implements Callable<Boolean> {
+
+  public static final String DEFAULT_CONFIG_FILE_PATH = "conf/config.json";
+  public static final Path DEFAULT_CONFIG_FILE_AS_PATH = Paths.get(DEFAULT_CONFIG_FILE_PATH);
 
   @Option(
     names = {"-version", "--version"}, description = "Shows the current version (default false)"
@@ -46,9 +52,9 @@ public class ConfigFlag implements Callable<Boolean> {
   @Option(
     names = {"-conf-path", "--conf-path"},
     description = "The config file path (default conf/config.json)",
-    defaultValue = "conf/config.json"
+    defaultValue = DEFAULT_CONFIG_FILE_PATH
   )
-  private String configPath;
+  private String configFilePath;
 
   @Option(
     names = {"-service", "--service"},
@@ -236,4 +242,11 @@ public class ConfigFlag implements Callable<Boolean> {
     return false;
   }
 
+  @JsonIgnore
+  public Path getConfigFileAsPath() {
+    if (StringUtils.isNotBlank(this.configFilePath)) {
+      return Paths.get(this.configFilePath);
+    }
+    return null;
+  }
 }
