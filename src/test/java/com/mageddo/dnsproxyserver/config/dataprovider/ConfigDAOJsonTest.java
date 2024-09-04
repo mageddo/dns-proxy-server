@@ -23,7 +23,7 @@ class ConfigDAOJsonTest {
 
   static final String[] excludingFields = new String[]{
     "version", "configPath", "resolvConfPaths",
-    "dockerHost"
+    "dockerHost", "source"
   };
 
   final ConfigDAOJson configDAOJson = new ConfigDAOJson(null, null);
