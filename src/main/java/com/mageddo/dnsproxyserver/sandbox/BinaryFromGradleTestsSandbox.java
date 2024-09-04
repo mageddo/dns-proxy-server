@@ -13,13 +13,4 @@ public class BinaryFromGradleTestsSandbox {
     return Instance.of(result);
   }
 
-  private static String findJavaCommand() {
-    return ProcessHandle.current()
-        .info()
-        .command()
-        .orElseThrow(() -> new IllegalStateException("Couldn't find current java process command"))
-        ;
-  }
-
-
 }
