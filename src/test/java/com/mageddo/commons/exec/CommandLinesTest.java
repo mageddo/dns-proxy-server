@@ -11,7 +11,7 @@ class CommandLinesTest {
   void mustExecuteAndPrintOutputConcurrently() {
 
     final var result = CommandLines.exec(
-      new CommandLine("bash")
+      new CommandLine("sh")
         .addArgument("-c")
         .addArgument("echo hi && sleep 0.2 && echo hi2", false),
       new NopResultHandler()

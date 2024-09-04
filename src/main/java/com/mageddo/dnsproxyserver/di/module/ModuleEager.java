@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.di.module;
 
 import com.mageddo.di.Eager;
 import com.mageddo.dnsproxyserver.healthcheck.entrypoint.HealthCheckSignalEntrypoint;
+import com.mageddo.dnsproxyserver.in.entrypoint.InputStreamEntrypoint;
 import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.ElementsIntoSet;
@@ -15,10 +16,10 @@ public class ModuleEager {
   @Singleton
   @ElementsIntoSet
   Set<Eager> beans(
-      HealthCheckSignalEntrypoint b1
+      HealthCheckSignalEntrypoint b1, InputStreamEntrypoint b2
   ) {
     return Set.of(
-      b1
+      b1, b2
     );
   }
 }

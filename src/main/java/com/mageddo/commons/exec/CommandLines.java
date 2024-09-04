@@ -1,12 +1,12 @@
 package com.mageddo.commons.exec;
 
-import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.wait.Wait;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.ToString;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DaemonExecutor;
@@ -90,6 +90,37 @@ public class CommandLines {
       .build();
   }
 
+  public static Result exec(Request request) {
+    final var stream = new PipedStream();
+    final var executor = createExecutor();
+    executor.setStreamHandler(request.getStreamHandler());
+    Integer exitCode = null;
+    try {
+      executor.setWatchdog(new ExecuteWatchdog(ExecuteWatchdog.INFINITE_TIMEOUT));
+      if (request.getHandler() != null) {
+        executor.execute(request.getCommandLine(), request.getHandler());
+      } else {
+        exitCode = executor.execute(request.getCommandLine());
+      }
+    } catch (ExecuteException e) {
+      if(request.getHandler() != null){
+        request.getHandler().onProcessFailed(e);
+      } else {
+        exitCode = e.getExitValue();
+      }
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
+    return Result
+      .builder()
+      .executor(executor)
+      .processSupplier(executor::getProcess)
+      .out(stream.getBout())
+      .stream(stream)
+      .exitCode(exitCode)
+      .build();
+  }
+
   private static ProcessAccessibleDaemonExecutor createExecutor() {
     return new ProcessAccessibleDaemonExecutor();
   }
@@ -103,6 +134,15 @@ public class CommandLines {
     protected Process launch(CommandLine command, Map<String, String> env, File dir) throws IOException {
       return this.process = super.launch(command, env, dir);
     }
+  }
+
+
+  @Value
+  @Builder
+  public static class Request {
+    CommandLine commandLine;
+    ExecuteResultHandler handler;
+    PumpStreamHandler streamHandler;
   }
 
   @Getter
@@ -125,7 +165,7 @@ public class CommandLines {
     private Integer exitCode;
 
     public void watchOutputInDaemonThread() {
-      final var thread = Threads.createDaemonThread(() -> {
+      final var task = (Runnable) () -> {
         final var bf = new BufferedReader(new InputStreamReader(this.stream.getPipedInputStream()));
         while (true) {
           try {
@@ -139,8 +179,10 @@ public class CommandLines {
 
           }
         }
-      });
-      thread.start();
+      };
+      Thread
+        .ofVirtual()
+        .start(task);
     }
 
     public String getOutAsString() {
@@ -186,6 +228,14 @@ public class CommandLines {
 
     private boolean isProcessFinished() {
       return getProcess() != null && !getProcess().isAlive();
+    }
+
+    public Integer getProcessExitCodeWhenAvailable() {
+      try {
+        return getProcess().exitValue();
+      } catch (IllegalThreadStateException e) {
+        return null;
+      }
     }
   }
 }

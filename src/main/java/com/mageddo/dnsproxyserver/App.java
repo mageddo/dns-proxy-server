@@ -82,7 +82,7 @@ public class App {
   }
 
   void startContext() {
-    createContext();
+    this.createContext();
 
     // start webserver
     // start dns server
