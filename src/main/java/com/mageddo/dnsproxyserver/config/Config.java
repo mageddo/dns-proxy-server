@@ -101,7 +101,17 @@ public class Config {
   }
 
   public enum Source {
-    JSON, FLAG, DEFAULT, MERGED, ENV
+    JSON,
+    FLAG,
+    DEFAULT,
+    MERGED,
+    ENV,
+
+    /**
+     * Used for testing only;
+     */
+    @Deprecated
+    TESTS_TEMPLATE,
 
   }
 

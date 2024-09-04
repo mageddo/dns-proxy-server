@@ -3,7 +3,7 @@ package dagger.sheath.templates;
 import com.fasterxml.jackson.core.type.TypeReference;
 import dagger.sheath.reflection.Signature;
 import org.apache.commons.lang3.reflect.MethodUtils;
-import org.graalvm.collections.Pair;
+import org.graalvm.collections.Pair; // fixme #533 wrong pair, use apache commons lang3
 
 import java.lang.reflect.Method;
 import java.util.List;

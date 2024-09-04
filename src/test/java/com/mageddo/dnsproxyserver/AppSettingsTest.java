@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AppSettingsTest {
   @Test
-  void mustLogLevelInSl4jConvetion(){
+  void mustLogLevelInSl4jConversion(){
     // arrange
     final var config = ConfigTemplates.defaultWithoutId();
 

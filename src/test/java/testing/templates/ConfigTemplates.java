@@ -40,6 +40,7 @@ public class ConfigTemplates {
       )
       .noEntriesResponseCode(3)
       .dockerSolverHostMachineFallbackActive(true)
+      .source(Config.Source.TESTS_TEMPLATE)
       ;
   }
 
