@@ -94,7 +94,6 @@ public class AppIntTest {
   private static Result buildAndStartServerApp(String hostToQuery) {
     final var configFile = ConfigJsonFileTemplates.withRandomPortsAndNotAsDefaultDnsAndCustomLocalDBEntry(hostToQuery);
     final var instance = Sandbox.runFromGradleTests(configFile);
-    instance.watchOutputInDaemonThread();
     return Result.of(configFile, instance);
   }
 
