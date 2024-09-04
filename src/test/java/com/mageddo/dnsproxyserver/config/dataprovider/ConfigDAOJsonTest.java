@@ -32,14 +32,14 @@ class ConfigDAOJsonTest {
   void mustBuildConfPathRelativeToWorkDir(@TempDir Path tmpDir){
     // arrange
     final var workDir = tmpDir.resolve("custom-work-dir");
-    final var flags = ConfigFlagTemplates.defaultWithConfigPath(Paths.get("conf/config.json"));
+    final var flags = ConfigFlagTemplates.defaultWithConfigPath(Paths.get("conf/config-custom.json"));
     ConfigDAOCmdArgs.setArgs(flags.getArgs());
 
     // act
     final var configPath = ConfigPathBuilder.build(workDir, flags.getConfigFileAsPath());
 
     // assert
-    assertEquals("config.json", configPath.getFileName().toString());
+    assertEquals("config-custom.json", configPath.getFileName().toString());
     assertEquals(workDir.getFileName().toString(), configPath.getParent().getParent().getFileName().toString());
   }
 
