@@ -54,7 +54,7 @@ public class CommandLines {
         .build();
   }
 
-  public static DaemonExecutor exec(CommandLine commandLine, ExecuteResultHandler handler) {
+  public static Result exec(CommandLine commandLine, ExecuteResultHandler handler) {
     final var out = new ByteArrayOutputStream();
     final var executor = new DaemonExecutor();
     final var streamHandler = new PumpStreamHandler(out);
@@ -67,7 +67,11 @@ public class CommandLines {
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
-    return executor;
+    return Result
+      .builder()
+      .executor(executor)
+      .out(out)
+      .build();
   }
 
   @Getter
@@ -81,7 +85,7 @@ public class CommandLines {
     @NonNull
     private ByteArrayOutputStream out;
 
-    private int exitCode;
+    private Integer exitCode;
 
     public String getOutAsString() {
       return this.out.toString();

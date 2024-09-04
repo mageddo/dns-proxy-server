@@ -18,7 +18,7 @@ public class BinaryFromGradleTestsSandbox {
       .addArgument(executablePath.toFile().toString())
       .addArguments(args);
 
-    final var executor = CommandLines.exec(commandLine, new ExecuteResultHandler() {
+    final var result = CommandLines.exec(commandLine, new ExecuteResultHandler() {
       public void onProcessComplete(int exitValue) {
 
       }
@@ -27,10 +27,8 @@ public class BinaryFromGradleTestsSandbox {
 
       }
     });
-    final var instance = Instance.of(executor);
-    executor.getWatchdog().;
-
-    waitForStartup(instance);
+    final var instance = Instance.of(result);
+    this.waitForStartup(instance);
     return instance;
   }
 
@@ -44,7 +42,7 @@ public class BinaryFromGradleTestsSandbox {
 
   private void waitForStartup(Instance instance) {
     Threads.sleep(Duration.ofSeconds(2));
-    System.out.println(instance.getExecutor().getOutAsString());
+    System.out.println(instance.getResult().getOutAsString());
   }
 
 
