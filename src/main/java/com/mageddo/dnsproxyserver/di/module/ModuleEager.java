@@ -18,7 +18,7 @@ public class ModuleEager {
       HealthCheckSignalEntrypoint b1
   ) {
     return Set.of(
-
+      b1
     );
   }
 }
