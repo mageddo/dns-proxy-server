@@ -1,3 +1,6 @@
+## 3.25.14
+* Fixing SolverRemote NPE #533
+
 ## 3.25.13
 * Unifying circuit breaker abstractions #553
 
