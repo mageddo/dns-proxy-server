@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.sandbox;
 
-import com.mageddo.commons.exec.CommandLines;
+import com.mageddo.commons.exec.Result;
 import com.mageddo.os.linux.kill.Kill;
 import lombok.Builder;
 import lombok.NonNull;
@@ -14,9 +14,9 @@ import org.apache.commons.lang3.Validate;
 public class Instance {
 
   @NonNull
-  CommandLines.Result result;
+  Result result;
 
-  public static Instance of(CommandLines.Result result) {
+  public static Instance of(Result result) {
     return Instance.builder()
       .result(result)
       .build()
