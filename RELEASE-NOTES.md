@@ -1,3 +1,6 @@
+## 3.29.0
+* Module to beans which need to initialize on app startup, different of StartupEvent, Eager are not coupled to DPS logic.
+
 ## 3.28.0
 * Specify from which source the config is coming to facilitate troubleshooting. #533
 
