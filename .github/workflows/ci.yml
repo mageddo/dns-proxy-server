@@ -17,8 +17,11 @@ jobs:
         with:
           java-version: '21'
 
-      - name: Build and Tests
-        run: ./gradlew build test compTest  -i
+      - name: Build and Unit Tests
+        run: ./gradlew build test -i
+
+      - name: Comp Tests
+        run: ./gradlew -x check compTest -i
 
       - name: Native Image Integration Tests
         run: ./gradlew build -x check nativeIntTest -i

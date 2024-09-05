@@ -301,4 +301,8 @@ public class Messages {
   public static boolean isSuccess(Message res) {
     return res.getRcode() == Rcode.NOERROR;
   }
+
+  public static String findAnswerRawIP(Message res) {
+    return findFirstAnswerRecord(res).rdataToString();
+  }
 }
