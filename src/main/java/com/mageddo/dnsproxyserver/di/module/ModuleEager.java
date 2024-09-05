@@ -16,7 +16,7 @@ public class ModuleEager {
   @Singleton
   @ElementsIntoSet
   Set<Eager> beans(
-      HealthCheckSignalEntrypoint b1, InputStreamEntrypoint b2
+    HealthCheckSignalEntrypoint b1, InputStreamEntrypoint b2
   ) {
     return Set.of(
       b1, b2

@@ -1,6 +1,10 @@
+## 3.30.0
+* Module to beans which need to initialize on app startup, different of StartupEvent,
+ Eager are not coupled to DPS logic.
+
 ## 3.29.0
-* Implementing an IntTest which can validate the happy path of all DPS solvers, 
- being able to detect bugs like the fixed at 3.25.14 (6db82f50d54bd3f3aed15d7120c1963c0386abf4).
+* Implementing an IntTest which can validate the happy path of all DPS solvers,
+  being able to detect bugs like the fixed at 3.25.14 (6db82f50d54bd3f3aed15d7120c1963c0386abf4).
 
 ## 3.28.0
 * Specify from which source the config is coming to facilitate troubleshooting. #533
