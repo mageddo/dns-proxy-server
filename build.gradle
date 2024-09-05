@@ -206,6 +206,7 @@ graalvmNative {
       mergeWithExisting = true
     }
   }
+
   binaries {
     main {
       javaLauncher = javaToolchains.launcherFor {
@@ -218,10 +219,21 @@ graalvmNative {
       verbose = true
       fallback = false
       buildArgs.add('-J-Xmx5G')
+      buildArgs.add("-O3")
 
     }
 
+    configureEach {
+      if(it.name == "intTest"){
+      println "> configuring for: ${it.getName()}"
+        buildArgs.add("-Ob")
+      }
+    }
+
+    test {} // nao funciona como está sendo usado o inttest
+
   }
+
   registerTestBinary("intTest") {
     usingSourceSet(sourceSets.test)
     forTestTask(intTest)
