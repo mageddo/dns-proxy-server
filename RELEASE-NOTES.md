@@ -1,3 +1,6 @@
+## 3.27.0
+* Commandline module upgrade to be able to execute new usecases when creating new native int tests. #533
+
 ## 3.26.0
 * Option to set config file path from the ENV, see the docs.
 
