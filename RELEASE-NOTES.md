@@ -1,3 +1,6 @@
+## 3.28.0
+* Specify from which source the config is coming to facilitate troubleshooting. #533
+
 ## 3.27.0
 * Commandline module upgrade to be able to execute new usecases when creating new native int tests. #533
 
