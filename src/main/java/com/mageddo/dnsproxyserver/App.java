@@ -82,15 +82,9 @@ public class App {
   }
 
   void startContext() {
-    this.createContext();
-
-    // start webserver
-    // start dns server
-    this.context.start();
-  }
-
-  private void createContext() {
-    this.context = Context.create();
+    Context.create()
+      .start()
+    ;
   }
 
   void checkExitCommands() {
@@ -120,10 +114,6 @@ public class App {
 
   int getDnsServerPort() {
     return getConfig().getDnsServerPort();
-  }
-
-  Context getContext() {
-    return context;
   }
 
   static class SystemExitException extends RuntimeException {
