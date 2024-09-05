@@ -32,6 +32,7 @@ public class ConfigJsonV2Mapper {
       .dockerSolverHostMachineFallbackActive(json.getDockerSolverHostMachineFallbackActive())
       .configPath(configFileAbsolutePath)
       .solverRemote(toSolverRemote(json))
+      .source(Config.Source.JSON)
       .build();
   }
 

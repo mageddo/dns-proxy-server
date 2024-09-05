@@ -41,13 +41,13 @@ public class ConfigEnv {
 
   public static final String MG_RESOLVCONF_OVERRIDE_NAMESERVERS = "MG_RESOLVCONF_OVERRIDE_NAMESERVERS";
 
-  private static final String MG_NO_REMOTE_SERVERS = "MG_NO_REMOTE_SERVERS";
+  public static final String MG_NO_REMOTE_SERVERS = "MG_NO_REMOTE_SERVERS";
 
-  private static final String MG_NO_ENTRIES_RESPONSE_CODE = "MG_NO_ENTRIES_RESPONSE_CODE";
+  public static final String MG_NO_ENTRIES_RESPONSE_CODE = "MG_NO_ENTRIES_RESPONSE_CODE";
 
-  private static final String MG_DOCKER_SOLVER_HOST_MACHINE_FALLBACK_ACTIVE = "MG_DOCKER_SOLVER_HOST_MACHINE_FALLBACK_ACTIVE";
+  public static final String MG_DOCKER_SOLVER_HOST_MACHINE_FALLBACK_ACTIVE = "MG_DOCKER_SOLVER_HOST_MACHINE_FALLBACK_ACTIVE";
 
-  private static final String MG_CONFIG_FILE_PATH = "MG_CONFIG_FILE_PATH";
+  public static final String MG_CONFIG_FILE_PATH = "MG_CONFIG_FILE_PATH";
 
   private Path workingDir;
   private String resolvConfPath;

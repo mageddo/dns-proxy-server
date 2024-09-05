@@ -5,6 +5,7 @@ import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAO;
 import com.mageddo.dnsproxyserver.config.mapper.ConfigMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ClassUtils;
 
 import javax.enterprise.inject.Instance;
@@ -14,6 +15,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
+@Slf4j
 @Singleton
 public class ConfigService {
 
@@ -28,7 +30,9 @@ public class ConfigService {
   }
 
   public Config findCurrentConfig() {
-    return ConfigMapper.mapFrom(this.findConfigs());
+    final var configs = this.findConfigs();
+    log.trace("baseConfigs={}", configs);
+    return ConfigMapper.mapFrom(configs);
   }
 
   public SolverRemote findCurrentConfigRemote(){
