@@ -17,7 +17,9 @@ public interface ModuleStartup {
   @Provides
   @Singleton
   @ElementsIntoSet
-  static Set<StartupEvent> startupBeans(DnsConfigurators b1, EventListener b2, CircuitBreakerWatchDogScheduler b3){
+  static Set<StartupEvent> startupBeans(
+    DnsConfigurators b1, EventListener b2, CircuitBreakerWatchDogScheduler b3
+  ){
     return Set.of(b1, b2, b3);
   }
 
