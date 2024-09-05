@@ -87,12 +87,13 @@ dependencies {
   testImplementation('org.mockito:mockito-junit-jupiter:5.12.+')
   testImplementation('org.hamcrest:hamcrest:3.0')
   testImplementation('io.rest-assured:rest-assured:5.5.0')
+  testImplementation('org.reflections:reflections:0.10.2')
 
 }
 
 test {
   useJUnitPlatform()
-  exclude "**/*CompTest.class"
+  exclude "**/*CompTest.class", "**/*IntTest.class"
   testLogging {
     events "passed", "skipped", "failed"
   }
@@ -114,12 +115,16 @@ def compTest = tasks.register("compTest", Test) {
 }
 
 def intTest = tasks.register("intTest", Test) {
+
+  dependsOn shadowJar
   useJUnitPlatform()
   include "**/*IntTest.class"
   failFast = true
+
   testLogging {
     events "passed", "skipped", "failed"
   }
+
   testLogging {
     showStandardStreams = true
   }
@@ -201,6 +206,7 @@ graalvmNative {
       mergeWithExisting = true
     }
   }
+
   binaries {
     main {
       javaLauncher = javaToolchains.launcherFor {
@@ -213,10 +219,19 @@ graalvmNative {
       verbose = true
       fallback = false
       buildArgs.add('-J-Xmx5G')
+      buildArgs.add("-O3")
 
     }
 
+    configureEach {
+      if(it.name == "intTest"){
+      println "> configuring for: ${it.getName()}"
+        buildArgs.add("-O3")
+      }
+    }
+
   }
+
   registerTestBinary("intTest") {
     usingSourceSet(sourceSets.test)
     forTestTask(intTest)
