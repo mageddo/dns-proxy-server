@@ -104,7 +104,7 @@ test {
 
 def compTest = tasks.register("compTest", Test) {
   useJUnitPlatform()
-  include "**/*CompTest.class", "**/*IntTest.class"
+  include "**/*CompTest.class"
   failFast = true
   testLogging {
     events "passed", "skipped", "failed"
@@ -112,6 +112,10 @@ def compTest = tasks.register("compTest", Test) {
   testLogging {
     showStandardStreams = true
   }
+}
+
+tasks.register("allTests", Test) {
+  dependsOn test, compTest, nativeIntTest
 }
 
 def intTest = tasks.register("intTest", Test) {
