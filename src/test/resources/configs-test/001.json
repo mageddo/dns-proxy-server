@@ -17,6 +17,7 @@
   } ],
   "resolvConfOverrideNameServers" : true,
   "serverProtocol" : "UDP_TCP",
+  "source" : "MERGED",
   "solverRemote" : {
     "active" : true,
     "circuitBreaker" : {
