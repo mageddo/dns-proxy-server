@@ -114,6 +114,10 @@ def compTest = tasks.register("compTest", Test) {
   }
 }
 
+tasks.register("allTests", Test) {
+  dependsOn test, compTest, nativeIntTest
+}
+
 def intTest = tasks.register("intTest", Test) {
 
   dependsOn shadowJar
