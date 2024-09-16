@@ -1,7 +1,8 @@
-package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application;
+package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.canaryratethreshold;
 
 import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
+import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.HealthChecker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

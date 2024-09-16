@@ -1,8 +1,7 @@
-package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application;
+package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.canaryratethreshold;
 
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.commons.circuitbreaker.CircuitIsOpenException;
-import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;

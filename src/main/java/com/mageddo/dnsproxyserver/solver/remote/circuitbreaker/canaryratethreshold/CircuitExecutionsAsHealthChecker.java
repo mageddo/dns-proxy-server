@@ -1,8 +1,10 @@
-package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application;
+package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.canaryratethreshold;
 
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
+import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegate;
+import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.HealthChecker;
 
 import java.util.function.Supplier;
 
@@ -18,6 +20,9 @@ public class CircuitExecutionsAsHealthChecker implements HealthChecker, CircuitB
   @Override
   public boolean isHealthy() {
     try {
+      if (this.lastCall == null) {
+        return true;
+      }
       this.lastCall.get();
       return true;
     } catch (CircuitCheckException e) {

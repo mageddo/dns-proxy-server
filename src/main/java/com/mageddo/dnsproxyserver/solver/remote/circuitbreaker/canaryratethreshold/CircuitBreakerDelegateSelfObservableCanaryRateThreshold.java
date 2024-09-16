@@ -1,9 +1,11 @@
-package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application;
+package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.canaryratethreshold;
 
 import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.concurrent.ThreadsV2;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
+import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegate;
+import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.HealthChecker;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.Duration;
