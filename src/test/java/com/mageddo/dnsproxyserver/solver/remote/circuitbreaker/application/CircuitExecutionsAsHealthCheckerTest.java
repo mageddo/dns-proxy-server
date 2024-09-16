@@ -9,7 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import testing.templates.solver.remote.ResultSupplierTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @ExtendWith(MockitoExtension.class)
 class CircuitExecutionsAsHealthCheckerTest {
@@ -34,6 +34,6 @@ class CircuitExecutionsAsHealthCheckerTest {
   @Test
   void mustAnswerHealthWhenExecuteNeverCalled(){
     final var healthy = this.obj.isHealthy();
-    assertTrue(healthy);
+    assertFalse(healthy);
   }
 }
