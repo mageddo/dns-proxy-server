@@ -7,12 +7,10 @@ import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import testing.templates.circuitbreaker.Resilience4jCircuitBreakerTemplates;
 import testing.templates.solver.remote.ResultTemplates;
 
-import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
@@ -30,7 +28,7 @@ class CircuitBreakerDelegateCanaryRateThresholdTest {
 
   @BeforeEach
   void beforeEach() {
-    this.delegate = new CircuitBreakerDelegateCanaryRateThreshold(this.circuitBreaker, Duration.ofMillis(1000 / 30));
+    this.delegate = new CircuitBreakerDelegateCanaryRateThreshold(this.circuitBreaker);
   }
 
   @Test
@@ -85,31 +83,5 @@ class CircuitBreakerDelegateCanaryRateThresholdTest {
 
   }
 
-  @Test
-  void mustHalfOpenCircuitAfterConfiguredTimeAndSatisfyHealthCheck() {
 
-    // arrange
-    this.circuitBreaker.transitionToOpenState();
-
-    // act
-    Threads.sleep(300);
-
-    // assert
-    assertEquals(CircuitStatus.HALF_OPEN, this.delegate.findStatus());
-  }
-
-  @Disabled // FIXME #533 make test pass, jogar logica do background para o CircuitBreakerDelegateSelfObservableCanaryRateThreshold
-  //                que sera um delegate para o CircuitBreakerDelegateCanaryRateThreshold
-  @Test
-  void mustNotHalfOpenCircuitAfterHealthCheckRunAndGetNoSuccess() {
-
-    // arrange
-    this.circuitBreaker.transitionToOpenState();
-
-    // act
-    Threads.sleep(300);
-
-    // assert
-      assertEquals(CircuitStatus.OPEN, this.delegate.findStatus());
-  }
 }
