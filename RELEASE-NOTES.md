@@ -1,3 +1,6 @@
+## 3.30.1
+* Implemented but not exposed Canary Rate Threshold Circuit Breaker Strategy. #533
+
 ## 3.30.0
 * Module to beans which need to initialize on app startup, different of StartupEvent,
  Eager are not coupled to DPS logic.
