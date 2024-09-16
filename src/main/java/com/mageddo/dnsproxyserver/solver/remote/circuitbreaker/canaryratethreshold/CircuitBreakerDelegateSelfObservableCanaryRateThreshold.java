@@ -14,19 +14,19 @@ import java.util.function.Supplier;
 @Slf4j
 public class CircuitBreakerDelegateSelfObservableCanaryRateThreshold implements CircuitBreakerDelegate, AutoCloseable {
 
-  private final CircuitBreakerDelegateCanaryRateThreshold delegate;
+  private final CircuitBreakerDelegate delegate;
   private final Duration sleepDuration;
   private final HealthChecker healthChecker;
   private boolean open = true;
 
   public CircuitBreakerDelegateSelfObservableCanaryRateThreshold(
-    CircuitBreakerDelegateCanaryRateThreshold delegate, HealthChecker healthChecker
+    CircuitBreakerDelegate delegate, HealthChecker healthChecker
   ) {
     this(delegate, Duration.ofSeconds(1), healthChecker);
   }
 
   public CircuitBreakerDelegateSelfObservableCanaryRateThreshold(
-    CircuitBreakerDelegateCanaryRateThreshold delegate, Duration sleepDuration, HealthChecker healthChecker
+    CircuitBreakerDelegate delegate, Duration sleepDuration, HealthChecker healthChecker
   ) {
     this.delegate = delegate;
     this.sleepDuration = sleepDuration;
@@ -44,26 +44,36 @@ public class CircuitBreakerDelegateSelfObservableCanaryRateThreshold implements 
     return this.delegate.findStatus();
   }
 
+  @Override
+  public void transitionToHalfOpenState() {
+    this.delegate.transitionToHalfOpenState();
+  }
+
   private void startOpenCircuitHealthCheckWorker() {
     Thread
       .ofVirtual()
       .start(() -> {
-        while (ThreadsV2.isNotInterrupted() && this.open) {
+        while (this.shouldRun()) {
           Threads.sleep(this.sleepDuration);
           this.healthCheckWhenInOpenState();
         }
       });
   }
 
+  private boolean shouldRun() {
+    return ThreadsV2.isNotInterrupted() && this.open;
+  }
+
   private void healthCheckWhenInOpenState() {
     final var status = this.findStatus();
+    log.trace("status=checking, status={}", status);
     if (!CircuitStatus.isOpen(status)) {
       log.trace("status=notOpenStatus, status={}", status);
       return;
     }
     final var success = this.isHealthy();
     if (success) {
-      this.delegate.transitionToHalfOpenState();
+      this.transitionToHalfOpenState();
       log.debug("status=halfOpenStatus, circuitBreaker={}", this);
     }
   }

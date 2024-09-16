@@ -10,4 +10,6 @@ public interface CircuitBreakerDelegate {
   Result execute(Supplier<Result> sup);
 
   CircuitStatus findStatus();
+
+  void transitionToHalfOpenState();
 }

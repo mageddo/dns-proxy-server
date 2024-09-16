@@ -34,7 +34,8 @@ public class CircuitBreakerDelegateCanaryRateThreshold implements CircuitBreaker
     return Resilience4jStatusMapper.toCircuitStatus(this.circuitBreaker.getState());
   }
 
-  void transitionToHalfOpenState() {
+  @Override
+  public void transitionToHalfOpenState() {
     this.circuitBreaker.transitionToHalfOpenState();
   }
 }

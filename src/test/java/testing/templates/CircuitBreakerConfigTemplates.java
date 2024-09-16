@@ -1,5 +1,6 @@
 package testing.templates;
 
+import com.mageddo.dnsproxyserver.config.CanaryRateThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.NonResilientCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
@@ -9,7 +10,7 @@ import java.time.Duration;
 
 public class CircuitBreakerConfigTemplates {
 
-  public static StaticThresholdCircuitBreakerStrategyConfig buildDefault(){
+  public static StaticThresholdCircuitBreakerStrategyConfig buildDefault() {
     return ConfigMapper.defaultCircuitBreaker();
   }
 
@@ -25,5 +26,13 @@ public class CircuitBreakerConfigTemplates {
 
   public static CircuitBreakerStrategyConfig buildNonResilientConfig() {
     return new NonResilientCircuitBreakerStrategyConfig();
+  }
+
+  public static CanaryRateThresholdCircuitBreakerStrategyConfig fastCanaryRateThreshold() {
+    return CanaryRateThresholdCircuitBreakerStrategyConfig.builder()
+      .permittedNumberOfCallsInHalfOpenState(10)
+      .minimumNumberOfCalls(1)
+      .failureRateThreshold(1)
+      .build();
   }
 }

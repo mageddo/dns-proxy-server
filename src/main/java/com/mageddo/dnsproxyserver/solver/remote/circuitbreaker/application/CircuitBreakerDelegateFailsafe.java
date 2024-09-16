@@ -35,4 +35,9 @@ public class CircuitBreakerDelegateFailsafe implements CircuitBreakerDelegate {
     CircuitStatusRefresh.refresh(this.circuitBreaker);
     return CircuitBreakerStateMapper.fromFailSafeCircuitBreaker(this.circuitBreaker);
   }
+
+  @Override
+  public void transitionToHalfOpenState() {
+    this.circuitBreaker.halfOpen();
+  }
 }

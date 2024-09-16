@@ -16,4 +16,9 @@ public class CircuitBreakerDelegateNonResilient implements CircuitBreakerDelegat
   public CircuitStatus findStatus() {
     return null;
   }
+
+  @Override
+  public void transitionToHalfOpenState() {
+
+  }
 }

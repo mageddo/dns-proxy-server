@@ -32,6 +32,7 @@ public class CircuitBreakerFactory {
   private final ConfigService configService;
   private final CircuitBreakerPingCheckerService circuitBreakerCheckerService;
   private final FailsafeCircuitBreakerFactory failsafeCircuitBreakerFactory;
+  private final com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.canaryratethreshold.CircuitBreakerFactory canaryThresholdFactory;
 
   public Result check(InetSocketAddress remoteAddress, Supplier<Result> sup) {
     final var circuitBreaker = this.findCircuitBreaker(remoteAddress);
