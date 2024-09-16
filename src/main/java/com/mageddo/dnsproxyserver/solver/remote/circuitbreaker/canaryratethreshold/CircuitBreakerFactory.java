@@ -13,12 +13,12 @@ import javax.inject.Singleton;
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class CircuitBreakerFactory {
 
-  public CircuitBreakerDelegateSelfObservableCanaryRateThreshold build(CanaryRateThresholdCircuitBreakerStrategyConfig config){
+  public CircuitBreakerDelegateSelfObservable build(CanaryRateThresholdCircuitBreakerStrategyConfig config){
     final var circuitBreakerDelegate = new CircuitBreakerDelegateCanaryRateThreshold(
       this.createResilienceCircuitBreakerFrom(config)
     );
     final var healthChecker = new CircuitExecutionsAsHealthChecker(circuitBreakerDelegate);
-    return new CircuitBreakerDelegateSelfObservableCanaryRateThreshold(
+    return new CircuitBreakerDelegateSelfObservable(
       healthChecker, healthChecker
     );
   }

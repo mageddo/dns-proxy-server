@@ -17,9 +17,9 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class CircuitBreakerDelegateSelfObservableCanaryRateThresholdTest {
+class CircuitBreakerDelegateSelfObservableTest {
 
-  CircuitBreakerDelegateSelfObservableCanaryRateThreshold strategy;
+  CircuitBreakerDelegateSelfObservable strategy;
 
   @Mock
   CircuitBreakerDelegateCanaryRateThreshold delegate;
@@ -29,7 +29,7 @@ class CircuitBreakerDelegateSelfObservableCanaryRateThresholdTest {
 
   @BeforeEach
   void beforeEach() {
-    this.strategy = new CircuitBreakerDelegateSelfObservableCanaryRateThreshold(
+    this.strategy = new CircuitBreakerDelegateSelfObservable(
       this.delegate,
       Duration.ofMillis(1000 / 30),
       this.healthChecker

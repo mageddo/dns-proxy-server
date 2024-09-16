@@ -12,20 +12,20 @@ import java.time.Duration;
 import java.util.function.Supplier;
 
 @Slf4j
-public class CircuitBreakerDelegateSelfObservableCanaryRateThreshold implements CircuitBreakerDelegate, AutoCloseable {
+public class CircuitBreakerDelegateSelfObservable implements CircuitBreakerDelegate, AutoCloseable {
 
   private final CircuitBreakerDelegate delegate;
   private final Duration sleepDuration;
   private final HealthChecker healthChecker;
   private boolean open = true;
 
-  public CircuitBreakerDelegateSelfObservableCanaryRateThreshold(
+  public CircuitBreakerDelegateSelfObservable(
     CircuitBreakerDelegate delegate, HealthChecker healthChecker
   ) {
     this(delegate, Duration.ofSeconds(1), healthChecker);
   }
 
-  public CircuitBreakerDelegateSelfObservableCanaryRateThreshold(
+  public CircuitBreakerDelegateSelfObservable(
     CircuitBreakerDelegate delegate, Duration sleepDuration, HealthChecker healthChecker
   ) {
     this.delegate = delegate;
