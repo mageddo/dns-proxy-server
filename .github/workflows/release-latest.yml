@@ -82,6 +82,12 @@ jobs:
           ./builder.bash release-latest-docker-images ${CURRENT_VERSION}-amd64-static ${LATEST_VERSION}-amd64-static ||\
           echo 'Não tinha a imagem'
 
+      - name: Multi Arch
+        run: |
+          CURRENT_VERSION=${{ steps.version_finder.outputs.current_version }} &&\
+          LATEST_VERSION=${{ steps.version_finder.outputs.latest_version }} &&\
+          ./builder.bash release-latest-docker-images ${CURRENT_VERSION}-aarch64 ${LATEST_VERSION}
+
       - name: Checkout Tag To Generate Release Notes
         run: git checkout ${{ steps.version_finder.outputs.current_version }}
 
