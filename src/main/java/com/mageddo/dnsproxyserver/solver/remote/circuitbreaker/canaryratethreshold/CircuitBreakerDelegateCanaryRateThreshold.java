@@ -9,6 +9,7 @@ import com.mageddo.json.JsonUtils;
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.function.Supplier;
 
@@ -16,9 +17,11 @@ import java.util.function.Supplier;
 public class CircuitBreakerDelegateCanaryRateThreshold implements CircuitBreakerDelegate {
 
   private final CircuitBreaker circuitBreaker;
+  private final String name;
 
-  public CircuitBreakerDelegateCanaryRateThreshold(CircuitBreaker circuitBreaker) {
+  public CircuitBreakerDelegateCanaryRateThreshold(CircuitBreaker circuitBreaker, String name) {
     this.circuitBreaker = circuitBreaker;
+    this.name = name;
   }
 
   @Override
@@ -34,7 +37,7 @@ public class CircuitBreakerDelegateCanaryRateThreshold implements CircuitBreaker
   public CircuitStatus findStatus() {
     final var status = Resilience4jStatusMapper.toCircuitStatus(this.circuitBreaker.getState());
     if (log.isTraceEnabled()) {
-      log.trace("status={}, metrics={}", status, JsonUtils.prettyWriteValueAsString(this.circuitBreaker.getMetrics()));
+      log.trace("circuit={}, status={}, metrics={}", this, status, JsonUtils.prettyWriteValueAsString(this.circuitBreaker.getMetrics()));
     }
     return status;
   }
@@ -42,5 +45,10 @@ public class CircuitBreakerDelegateCanaryRateThreshold implements CircuitBreaker
   @Override
   public void transitionToHalfOpenState() {
     this.circuitBreaker.transitionToHalfOpenState();
+  }
+
+  @Override
+  public String toString() {
+    return StringUtils.firstNonBlank(this.name, this.getClass().getSimpleName());
   }
 }

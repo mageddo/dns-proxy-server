@@ -46,7 +46,7 @@ public class CircuitBreakerFactory {
   }
 
   public CircuitBreakerDelegate findCircuitBreaker(InetSocketAddress address) {
-    return this.circuitBreakerMap.computeIfAbsent(address, addr -> this.findCircuitBreakerHotLoad(address));
+    return this.circuitBreakerMap.computeIfAbsent(address, this::findCircuitBreakerHotLoad);
   }
 
   CircuitBreakerDelegate findCircuitBreakerHotLoad(InetSocketAddress address) {
@@ -54,13 +54,13 @@ public class CircuitBreakerFactory {
     return switch (config.name()) {
       case STATIC_THRESHOLD -> this.buildStaticThresholdFailSafeCircuitBreaker(address, config);
       case NON_RESILIENT -> new CircuitBreakerDelegateNonResilient();
-      case CANARY_RATE_THRESHOLD -> this.buildCanaryRateThreshold(config);
+      case CANARY_RATE_THRESHOLD -> this.buildCanaryRateThreshold(config, address);
       default -> throw new UnsupportedOperationException();
     };
   }
 
-  CircuitBreakerDelegate buildCanaryRateThreshold(CircuitBreakerStrategyConfig config) {
-    return this.canaryThresholdFactory.build(config);
+  CircuitBreakerDelegate buildCanaryRateThreshold(CircuitBreakerStrategyConfig config, InetSocketAddress address) {
+    return this.canaryThresholdFactory.build(config, String.valueOf(address));
   }
 
   private CircuitBreakerDelegateStaticThresholdFailsafe buildStaticThresholdFailSafeCircuitBreaker(

@@ -52,4 +52,9 @@ public class CircuitExecutionsAsHealthChecker implements HealthChecker, CircuitB
   public void transitionToHalfOpenState() {
     this.delegate.transitionToHalfOpenState();
   }
+
+  @Override
+  public String toString() {
+    return this.delegate.toString();
+  }
 }

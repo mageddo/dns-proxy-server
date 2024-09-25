@@ -156,7 +156,7 @@ class CircuitBreakerFactoryTest {
 
     doReturn(CircuitBreakerDelegateTemplates.buildCanaryRateThreshold())
       .when(this.factory)
-      .buildCanaryRateThreshold(any());
+      .buildCanaryRateThreshold(any(), address);
 
     // act
     final var circuitBreaker = this.factory.findCircuitBreaker(addr);
