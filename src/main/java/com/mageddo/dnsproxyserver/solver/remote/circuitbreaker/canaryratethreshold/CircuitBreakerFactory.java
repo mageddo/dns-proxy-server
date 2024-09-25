@@ -17,6 +17,10 @@ import javax.inject.Singleton;
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class CircuitBreakerFactory {
 
+  public CircuitBreakerDelegateSelfObservable build(CanaryRateThresholdCircuitBreakerStrategyConfig config) {
+    return build(config, "Unnamed");
+  }
+
   public CircuitBreakerDelegateSelfObservable build(CanaryRateThresholdCircuitBreakerStrategyConfig config, String name) {
     final var circuitBreakerDelegate = new CircuitBreakerDelegateCanaryRateThreshold(
       this.createResilienceCircuitBreakerFrom(config), name
