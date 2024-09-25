@@ -26,11 +26,17 @@ import java.util.function.Supplier;
 @Slf4j
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
+/**
+ * fixme #533 Move failsafe.CircuitBreakerFactory  to another package, this is not specific for failsafe
+ */
 public class CircuitBreakerFactory {
 
   private final Map<InetSocketAddress, CircuitBreakerDelegate> circuitBreakerMap = new ConcurrentHashMap<>();
   private final ConfigService configService;
+
+  // fixme #533 Delete CircuitBreakerPingCheckerService from CircuitBreakerFactory and related stuff
   private final CircuitBreakerPingCheckerService circuitBreakerCheckerService;
+
   private final FailsafeCircuitBreakerFactory failsafeCircuitBreakerFactory;
   private final com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.canaryratethreshold.CircuitBreakerFactory canaryThresholdFactory;
 

@@ -27,10 +27,6 @@ public class CircuitBreakerFactory {
     );
   }
 
-  private CircuitBreaker createResilienceCircuitBreakerFrom(CanaryRateThresholdCircuitBreakerStrategyConfig config) {
-    return Resilience4jMapper.from(config);
-  }
-
   public CircuitBreakerDelegate build(CircuitBreakerStrategyConfig config) {
     Validate.isTrue(
       config.name() == CircuitBreakerStrategyConfig.Name.CANARY_RATE_THRESHOLD,
@@ -38,4 +34,9 @@ public class CircuitBreakerFactory {
     );
     return this.build((CanaryRateThresholdCircuitBreakerStrategyConfig) config);
   }
+
+  private CircuitBreaker createResilienceCircuitBreakerFrom(CanaryRateThresholdCircuitBreakerStrategyConfig config) {
+    return Resilience4jMapper.from(config);
+  }
+
 }
