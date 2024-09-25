@@ -1,11 +1,13 @@
 package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
 
+import com.mageddo.dnsproxyserver.config.CanaryRateThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJson;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2;
+import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2.CanaryRateThresholdCircuitBreaker;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2.StaticThresholdCircuitBreaker;
 import com.mageddo.dnsproxyserver.utils.Booleans;
 import org.apache.commons.lang3.ObjectUtils;
@@ -73,8 +75,19 @@ public class ConfigJsonV2Mapper {
   private static CircuitBreakerStrategyConfig mapCircuitBreaker(ConfigJsonV2.CircuitBreaker circuitBreaker) {
     return switch (circuitBreaker.strategy()){
       case STATIC_THRESHOLD -> mapFromStaticCircuitBreaker((StaticThresholdCircuitBreaker) circuitBreaker);
+      case CANARY_RATE_THRESHOLD -> mapFromCanaryRateThresholdCircuitBreaker((CanaryRateThresholdCircuitBreaker) circuitBreaker);
       default -> throw new UnsupportedOperationException("Unrecognized circuit breaker: " + circuitBreaker.strategy());
     };
+  }
+
+  private static CircuitBreakerStrategyConfig mapFromCanaryRateThresholdCircuitBreaker(
+    CanaryRateThresholdCircuitBreaker circuitBreaker
+  ) {
+    return CanaryRateThresholdCircuitBreakerStrategyConfig.builder()
+      .failureRateThreshold(circuitBreaker.getFailureRateThreshold())
+      .minimumNumberOfCalls(circuitBreaker.getMinimumNumberOfCalls())
+      .permittedNumberOfCallsInHalfOpenState(circuitBreaker.getPermittedNumberOfCallsInHalfOpenState())
+      .build();
   }
 
   private static CircuitBreakerStrategyConfig mapFromStaticCircuitBreaker(StaticThresholdCircuitBreaker circuitBreaker) {
