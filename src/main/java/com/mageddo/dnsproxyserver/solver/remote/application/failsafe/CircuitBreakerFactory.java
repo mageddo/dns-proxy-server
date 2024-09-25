@@ -46,8 +46,7 @@ public class CircuitBreakerFactory {
   }
 
   public CircuitBreakerDelegate findCircuitBreaker(InetSocketAddress address) {
-    final var strategy = this.findCircuitBreakerHotLoad(address);
-    return this.circuitBreakerMap.computeIfAbsent(address, addr -> strategy);
+    return this.circuitBreakerMap.computeIfAbsent(address, addr -> this.findCircuitBreakerHotLoad(address));
   }
 
   CircuitBreakerDelegate findCircuitBreakerHotLoad(InetSocketAddress address) {

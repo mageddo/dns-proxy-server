@@ -20,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class CircuitBreakerFactoryTest {
@@ -73,6 +75,7 @@ class CircuitBreakerFactoryTest {
     // assert
     assertEquals(a, b);
     assertEquals(a.hashCode(), b.hashCode());
+    verify(this.factory, times(1)).findCircuitBreakerHotLoad(any());
   }
 
   @Test
