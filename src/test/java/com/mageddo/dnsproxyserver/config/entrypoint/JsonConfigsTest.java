@@ -2,6 +2,8 @@ package com.mageddo.dnsproxyserver.config.entrypoint;
 
 import com.mageddo.dnsproxyserver.config.dataprovider.JsonConfigs;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2;
+import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2.CanaryRateThresholdCircuitBreaker;
+import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2.StaticThresholdCircuitBreaker;
 import org.apache.commons.lang3.ClassUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -89,7 +91,7 @@ class JsonConfigsTest {
     final var config = JsonConfigs.loadConfig(json);
 
     assertNotNull(config);
-    assertStaticThresholdCircuitBreakerConfig(config.getSolverRemoteCircuitBreaker());
+    assertStaticThresholdCircuitBreakerConfig((StaticThresholdCircuitBreaker) config.getSolverRemoteCircuitBreaker());
   }
 
   @Test
@@ -101,7 +103,7 @@ class JsonConfigsTest {
         "solverRemote" : {
           "circuitBreaker" : {
             "strategy": "CANARY_RATE_THRESHOLD",
-            "failureRateThreshold" : 21,
+            "failureRateThreshold" : 21.9,
             "minimumNumberOfCalls" : 50,
             "permittedNumberOfCallsInHalfOpenState" : 10
           }
@@ -112,15 +114,14 @@ class JsonConfigsTest {
     final var config = JsonConfigs.loadConfig(json);
     assertNotNull(config);
 
-    final var circuitBreaker = config.getSolverRemoteCircuitBreaker();
-    assertEquals(3, circuitBreaker.getFailureThreshold());
-    assertEquals(5, circuitBreaker.getFailureThresholdCapacity());
-    assertEquals(10, circuitBreaker.getSuccessThreshold());
-    assertEquals(Duration.ofSeconds(20), circuitBreaker.getTestDelay());
+    final var circuitBreaker = (CanaryRateThresholdCircuitBreaker) config.getSolverRemoteCircuitBreaker();
+    assertEquals(21.9f, circuitBreaker.getFailureRateThreshold(), 1);
+    assertEquals(50, circuitBreaker.getMinimumNumberOfCalls());
+    assertEquals(10, circuitBreaker.getPermittedNumberOfCallsInHalfOpenState());
+
   }
 
-  void assertStaticThresholdCircuitBreakerConfig(ConfigJsonV2.CircuitBreaker circuitBreaker) {
-    assertEquals(ConfigJsonV2.CircuitBreaker.class, circuitBreaker.getClass());
+  void assertStaticThresholdCircuitBreakerConfig(StaticThresholdCircuitBreaker circuitBreaker) {
     assertEquals(3, circuitBreaker.getFailureThreshold());
     assertEquals(5, circuitBreaker.getFailureThresholdCapacity());
     assertEquals(10, circuitBreaker.getSuccessThreshold());

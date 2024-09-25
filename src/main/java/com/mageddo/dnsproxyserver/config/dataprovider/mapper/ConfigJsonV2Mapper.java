@@ -1,10 +1,12 @@
 package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
 
-import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
+import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
+import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJson;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2;
+import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2.StaticThresholdCircuitBreaker;
 import com.mageddo.dnsproxyserver.utils.Booleans;
 import org.apache.commons.lang3.ObjectUtils;
 
@@ -64,16 +66,24 @@ public class ConfigJsonV2Mapper {
     return SolverRemote
       .builder()
       .active(Booleans.reverseWhenNotNull(json.getNoRemoteServers()))
-      // fixme #533 need to create a dynamic json parser for different strategies,
-      //      then a dynamic mapper to the solver remote
-      .circuitBreaker(StaticThresholdCircuitBreakerStrategyConfig
-        .builder()
-        .failureThreshold(circuitBreaker.getFailureThreshold())
-        .failureThresholdCapacity(circuitBreaker.getFailureThresholdCapacity())
-        .successThreshold(circuitBreaker.getSuccessThreshold())
-        .testDelay(circuitBreaker.getTestDelay())
-        .build()
-      )
+      .circuitBreaker(mapCircuitBreaker(circuitBreaker))
+      .build();
+  }
+
+  private static CircuitBreakerStrategyConfig mapCircuitBreaker(ConfigJsonV2.CircuitBreaker circuitBreaker) {
+    return switch (circuitBreaker.strategy()){
+      case STATIC_THRESHOLD -> mapFromStaticCircuitBreaker((StaticThresholdCircuitBreaker) circuitBreaker);
+      default -> throw new UnsupportedOperationException("Unrecognized circuit breaker: " + circuitBreaker.strategy());
+    };
+  }
+
+  private static CircuitBreakerStrategyConfig mapFromStaticCircuitBreaker(StaticThresholdCircuitBreaker circuitBreaker) {
+    return StaticThresholdCircuitBreakerStrategyConfig
+      .builder()
+      .failureThreshold(circuitBreaker.getFailureThreshold())
+      .failureThresholdCapacity(circuitBreaker.getFailureThresholdCapacity())
+      .successThreshold(circuitBreaker.getSuccessThreshold())
+      .testDelay(circuitBreaker.getTestDelay())
       .build();
   }
 }
