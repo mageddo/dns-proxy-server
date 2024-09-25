@@ -49,8 +49,13 @@ public class CircuitBreakerFactory {
     return switch (config.name()) {
       case STATIC_THRESHOLD -> this.buildStaticThresholdFailSafeCircuitBreaker(address, config);
       case NON_RESILIENT -> new CircuitBreakerDelegateNonResilient();
+      case CANARY_RATE_THRESHOLD -> this.buildCanaryRateThreshold(config);
       default -> throw new UnsupportedOperationException();
     };
+  }
+
+  CircuitBreakerDelegate buildCanaryRateThreshold(CircuitBreakerStrategyConfig config) {
+    return this.canaryThresholdFactory.build(config);
   }
 
   private CircuitBreakerDelegateStaticThresholdFailsafe buildStaticThresholdFailSafeCircuitBreaker(

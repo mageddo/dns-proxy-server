@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.solver.remote.application.failsafe;
 
 import com.mageddo.dnsproxyserver.solver.remote.application.FailsafeCircuitBreakerFactory;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegateNonResilient;
+import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.canaryratethreshold.CircuitBreakerDelegateSelfObservable;
 import dev.failsafe.CircuitBreaker;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +12,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import testing.templates.CircuitBreakerConfigTemplates;
 import testing.templates.InetSocketAddressTemplates;
+import testing.templates.solver.remote.CircuitBreakerDelegateTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -22,8 +24,8 @@ import static org.mockito.Mockito.mock;
 @ExtendWith(MockitoExtension.class)
 class CircuitBreakerFactoryTest {
 
-  @InjectMocks
   @Spy
+  @InjectMocks
   CircuitBreakerFactory factory;
 
   @Mock
@@ -139,6 +141,25 @@ class CircuitBreakerFactoryTest {
     final var status = this.factory.findStatus(addr);
 
     assertNull(status);
+  }
+
+  @Test
+  void mustBuildCanaryRateThresholdCircuitBreaker(){
+    // arrange
+    final var addr = InetSocketAddressTemplates._8_8_8_8();
+    doReturn(CircuitBreakerConfigTemplates.fastCanaryRateThreshold())
+      .when(this.factory)
+      .findCircuitBreakerConfig();
+
+    doReturn(CircuitBreakerDelegateTemplates.buildCanaryRateThreshold())
+      .when(this.factory)
+      .buildCanaryRateThreshold(any());
+
+    // act
+    final var circuitBreaker = this.factory.findCircuitBreaker(addr);
+
+    // assert
+    assertEquals(CircuitBreakerDelegateSelfObservable.class, circuitBreaker.getClass());
   }
 
 }

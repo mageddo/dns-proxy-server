@@ -35,4 +35,5 @@ public class CircuitBreakerConfigTemplates {
       .failureRateThreshold(1)
       .build();
   }
+
 }
