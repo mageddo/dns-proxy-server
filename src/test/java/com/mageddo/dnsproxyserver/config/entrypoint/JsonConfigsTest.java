@@ -8,6 +8,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 
 import static com.mageddo.dnsproxyserver.config.dataprovider.JsonConfigs.findVersion;
 import static com.mageddo.utils.TestUtils.readAndSortJson;
@@ -68,4 +69,61 @@ class JsonConfigsTest {
     assertTrue(Files.exists(tempConfig));
   }
 
+  @Test
+  void mustParseDefaultCircuitBreakerStrategyAsStaticThreshold(){
+
+    final var json = """
+      {
+        "version": 2,
+        "solverRemote" : {
+          "circuitBreaker" : {
+            "failureThreshold": 3,
+            "failureThresholdCapacity": 5,
+            "successThreshold": 10,
+            "testDelay": "PT20S"
+          }
+        }
+      }
+      """;
+
+    final var config = JsonConfigs.loadConfig(json);
+
+    assertNotNull(config);
+    assertStaticThresholdCircuitBreakerConfig(config.getSolverRemoteCircuitBreaker());
+  }
+
+  @Test
+  void mustParseCanaryRateThresholdCircuitBreakerStrategy(){
+
+    final var json = """
+      {
+        "version": 2,
+        "solverRemote" : {
+          "circuitBreaker" : {
+            "strategy": "CANARY_RATE_THRESHOLD",
+            "failureRateThreshold" : 21,
+            "minimumNumberOfCalls" : 50,
+            "permittedNumberOfCallsInHalfOpenState" : 10
+          }
+        }
+      }
+      """;
+
+    final var config = JsonConfigs.loadConfig(json);
+    assertNotNull(config);
+
+    final var circuitBreaker = config.getSolverRemoteCircuitBreaker();
+    assertEquals(3, circuitBreaker.getFailureThreshold());
+    assertEquals(5, circuitBreaker.getFailureThresholdCapacity());
+    assertEquals(10, circuitBreaker.getSuccessThreshold());
+    assertEquals(Duration.ofSeconds(20), circuitBreaker.getTestDelay());
+  }
+
+  void assertStaticThresholdCircuitBreakerConfig(ConfigJsonV2.CircuitBreaker circuitBreaker) {
+    assertEquals(ConfigJsonV2.CircuitBreaker.class, circuitBreaker.getClass());
+    assertEquals(3, circuitBreaker.getFailureThreshold());
+    assertEquals(5, circuitBreaker.getFailureThresholdCapacity());
+    assertEquals(10, circuitBreaker.getSuccessThreshold());
+    assertEquals(Duration.ofSeconds(20), circuitBreaker.getTestDelay());
+  }
 }
