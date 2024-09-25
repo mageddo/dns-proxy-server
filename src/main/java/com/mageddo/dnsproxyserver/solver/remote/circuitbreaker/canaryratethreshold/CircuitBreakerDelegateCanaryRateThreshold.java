@@ -5,6 +5,7 @@ import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegate;
 import com.mageddo.dnsproxyserver.solver.remote.mapper.Resilience4jStatusMapper;
+import com.mageddo.json.JsonUtils;
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,11 @@ public class CircuitBreakerDelegateCanaryRateThreshold implements CircuitBreaker
 
   @Override
   public CircuitStatus findStatus() {
-    return Resilience4jStatusMapper.toCircuitStatus(this.circuitBreaker.getState());
+    final var status = Resilience4jStatusMapper.toCircuitStatus(this.circuitBreaker.getState());
+    if (log.isTraceEnabled()) {
+      log.trace("status={}, metrics={}", status, JsonUtils.prettyWriteValueAsString(this.circuitBreaker.getMetrics()));
+    }
+    return status;
   }
 
   @Override
