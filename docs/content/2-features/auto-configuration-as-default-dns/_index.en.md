@@ -29,8 +29,8 @@ so you will need to that manually, see [specific running it][5]
 instructions for your platform for more details.
 
 [1]: https://github.com/mageddo/dns-proxy-server/issues/326
-[2]: en/1-getting-started/running-it/linux/
-[3]: http://localhost:1313/en/1-getting-started/running-it/mac/#configuring-dps-as-default-dns-manually
+[2]: {{%relref "1-getting-started/running-it/linux" %}}
+[3]: {{%relref "1-getting-started/running-it/mac#configuring-dps-as-default-dns-manually" %}}
 [4]: https://github.com/mageddo/dns-proxy-server/issues/326
 [5]: {{%relref "1-getting-started/running-it/_index.md#specific-instructions" %}}
 
