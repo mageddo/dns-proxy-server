@@ -5,20 +5,25 @@ import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.dnsconfigurator.DnsConfigurator;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.ResolvFile.Type;
 import com.mageddo.dnsproxyserver.systemd.ResolvedService;
+import com.mageddo.io.path.predicate.PathExistsPredicate;
+import com.mageddo.io.path.predicate.PathIsFilePredicate;
+import com.mageddo.io.path.predicate.PathIsWritablePredicate;
 import com.mageddo.net.IpAddr;
 import com.mageddo.utils.Tests;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ClassUtils;
 
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Predicate;
 
 import static com.mageddo.dnsproxyserver.utils.Splits.splitToPaths;
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
@@ -32,6 +37,11 @@ public class DnsConfiguratorLinux implements DnsConfigurator {
   private final AtomicBoolean resolvedConfigured = new AtomicBoolean();
 
   private volatile AtomicReference<ResolvFile> confFile;
+  private final List<Predicate<Path>> pathPredicates = List.of(
+    new PathExistsPredicate(),
+    new PathIsFilePredicate(),
+    new PathIsWritablePredicate()
+  );
 
   @Override
   public void configure(IpAddr addr) {
@@ -46,8 +56,7 @@ public class DnsConfiguratorLinux implements DnsConfigurator {
     if (confFile.isResolvconf()) {
       final var overrideNameServers = Configs
         .getInstance()
-        .getResolvConfOverrideNameServers()
-        ;
+        .getResolvConfOverrideNameServers();
       ResolvconfConfigurator.process(confFile.getPath(), addr, overrideNameServers);
     } else if (confFile.isResolved()) {
       this.configureResolved(addr, confFile);
@@ -81,22 +90,27 @@ public class DnsConfiguratorLinux implements DnsConfigurator {
   }
 
   ResolvFile findBestConfFile() {
-    return buildConfPaths()
+    return this.buildConfPaths()
       .stream()
       .filter(it -> {
-          final var valid = Files.exists(it)
-            && !Files.isDirectory(it)
-            && Files.isWritable(it);
-          if (!valid) {
-            log.info("status=noValidConfFile, file={}", it);
-          }
-          return valid;
+          final var unmetPredicate = this.findUnmetPredicate(it);
+          unmetPredicate.ifPresent(pathPredicate -> {
+            log.info("status=noValidConfFile, file={}, condition={}", it, ClassUtils.getSimpleName(pathPredicate));
+          });
+          return unmetPredicate.isEmpty();
         }
       )
       .map(this::toResolvFile)
       .findFirst()
       .orElse(null)
       ;
+  }
+
+  private Optional<Predicate<Path>> findUnmetPredicate(Path it) {
+    return this.pathPredicates
+      .stream()
+      .filter(p -> !p.test(it))
+      .findFirst();
   }
 
   List<Path> buildConfPaths() {
@@ -144,7 +158,7 @@ public class DnsConfiguratorLinux implements DnsConfigurator {
     } catch (Throwable e) {
       log.warn(
         "status=can't restart resolved service, please run: "
-          + "'service systemd-resolved restart' to apply DPS as default DNS.\n{}",
+        + "'service systemd-resolved restart' to apply DPS as default DNS.\n{}",
         e.getMessage()
       );
     }
