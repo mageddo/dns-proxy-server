@@ -1,3 +1,7 @@
+## 3.30.2
+* Detect which condition didn't match and log the cause when configuring DPS as default DNS #580
+* Fixed backend develop docker-compose.yml
+
 ## 3.30.1
 * Implemented but not exposed Canary Rate Threshold Circuit Breaker Strategy. #533
 
