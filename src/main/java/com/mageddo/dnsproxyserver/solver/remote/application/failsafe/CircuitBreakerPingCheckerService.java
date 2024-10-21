@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.solver.remote.application.failsafe;
 
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
-import com.mageddo.dnsproxyserver.solver.SolverRemote;
+import com.mageddo.dnsproxyserver.solver.remote.application.RemoteResultSupplier;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegate;
 import com.mageddo.net.Networks;
 import dev.failsafe.CircuitBreakerOpenException;
@@ -46,6 +46,6 @@ public class CircuitBreakerPingCheckerService {
    * @see https://github.com/mageddo/dns-proxy-server/issues/526#issuecomment-2261421618
    */
   boolean ping(InetSocketAddress server) {
-    return Networks.ping(server, SolverRemote.PING_TIMEOUT_IN_MS);
+    return Networks.ping(server, RemoteResultSupplier.PING_TIMEOUT_IN_MS);
   }
 }
