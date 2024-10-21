@@ -19,29 +19,6 @@ class SolverRemoteTest {
   SolverRemote solverRemote;
 
 
-  @Test
-//  void mustCacheNxDomainQueryFor1Hour() {
-//    // arrange
-//    final var query = MessageTemplates.acmeAQuery();
-//    final var answer = MessageTemplates.buildNXAnswer(query);
-//
-//    doReturn(ResolverTemplates.googleDnsAsList())
-//        .when(this.solverRemote)
-//        .findResolversToUse()
-//    ;
-//
-//    doReturn(CompletableFuture.completedFuture(answer))
-//        .when(this.solverRemote)
-//        .sendQueryAsyncToResolver(any());
-//
-//    this.excludeCircuitBreakerStrategyAndCallQueryMethodDirectly();
-//
-//    // act
-//    final var res = this.solverRemote.handle(query);
-//
-//    // assert
-//    assertEquals(Response.DEFAULT_NXDOMAIN_TTL, res.getDpsTtl());
-//  }
 //
 //  @Test
 //  void mustReturnNullWhenGetTimeout() {
