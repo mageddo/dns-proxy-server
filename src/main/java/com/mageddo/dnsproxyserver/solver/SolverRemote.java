@@ -3,8 +3,9 @@ package com.mageddo.dnsproxyserver.solver;
 import com.mageddo.dnsproxyserver.solver.remote.Request;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.application.CircuitBreakerService;
-import com.mageddo.dnsproxyserver.solver.remote.application.ResolverStatsFactory;
 import com.mageddo.dnsproxyserver.solver.remote.application.RemoteResultSupplier;
+import com.mageddo.dnsproxyserver.solver.remote.application.ResolverStatsFactory;
+import com.mageddo.dnsproxyserver.solver.remote.application.ResultSupplier;
 import com.mageddo.net.NetExecutorWatchdog;
 import com.mageddo.utils.Executors;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -82,11 +82,11 @@ public class SolverRemote implements Solver, AutoCloseable {
 
   Result safeQueryResult(Request req) {
     req.splitStopWatch();
-    return this.queryUsingCircuitBreaker(req, new RemoteResultSupplier(req, this.executor, this.netWatchdog));
+    return this.queryUsingCircuitBreaker(new RemoteResultSupplier(req, this.executor, this.netWatchdog));
   }
 
-  Result queryUsingCircuitBreaker(Request req, Supplier<Result> sup) {
-    return this.circuitBreakerService.safeHandle(req.getResolverAddress(), sup);
+  Result queryUsingCircuitBreaker(ResultSupplier sup) {
+    return this.circuitBreakerService.safeHandle(sup);
   }
 
   @Override

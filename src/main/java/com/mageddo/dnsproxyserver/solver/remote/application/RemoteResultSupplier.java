@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.solver.remote.application;
 import com.mageddo.dnsproxyserver.solver.remote.Request;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.application.mapper.ResultMapper;
+import com.mageddo.net.IpAddr;
 import com.mageddo.net.NetExecutorWatchdog;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.Message;
@@ -53,5 +54,10 @@ public class RemoteResultSupplier implements ResultSupplier {
   @Override
   public String toString() {
     return String.format("server=%s", this.req.getResolverAddr());
+  }
+
+  @Override
+  public IpAddr getRemoteAddress() {
+    return this.req.getResolverAddr();
   }
 }

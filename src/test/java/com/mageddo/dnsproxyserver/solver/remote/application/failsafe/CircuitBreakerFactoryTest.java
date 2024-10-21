@@ -42,8 +42,8 @@ class CircuitBreakerFactoryTest {
       .build(any(), any());
 
     // act
-    final var a = this.factory.findCircuitBreaker(InetSocketAddressTemplates._8_8_8_8());
-    final var b = this.factory.findCircuitBreaker(InetSocketAddressTemplates._1_1_1_1());
+    final var a = this.factory.findCircuitBreaker(InetSocketAddressTemplates._8_8_8_8_addr());
+    final var b = this.factory.findCircuitBreaker(InetSocketAddressTemplates._1_1_1_1_addr());
 
     // assert
     assertNotEquals(a, b);
@@ -53,7 +53,7 @@ class CircuitBreakerFactoryTest {
   @Test
   void mustReuseCircuitBreakerInstanceWhenSameKeyIsUsed(){
     // arrange
-    final var addr = InetSocketAddressTemplates._8_8_8_8();
+    final var addr = InetSocketAddressTemplates._8_8_8_8_addr();
 
     doReturn(CircuitBreakerConfigTemplates.buildDefault())
       .when(this.factory)
@@ -82,7 +82,7 @@ class CircuitBreakerFactoryTest {
     ;
     doReturn(true).when(this.factory).circuitBreakerSafeCheck(any());
 
-    final var addr = InetSocketAddressTemplates._8_8_8_8();
+    final var addr = InetSocketAddressTemplates._8_8_8_8_addr();
     this.factory.findCircuitBreaker(addr);
 
     // act
@@ -103,7 +103,7 @@ class CircuitBreakerFactoryTest {
     ;
     doReturn(false).when(this.factory).circuitBreakerSafeCheck(any());
 
-    final var addr = InetSocketAddressTemplates._8_8_8_8();
+    final var addr = InetSocketAddressTemplates._8_8_8_8_addr();
     this.factory.findCircuitBreaker(addr);
 
     // act
@@ -118,7 +118,7 @@ class CircuitBreakerFactoryTest {
   void mustBuildNonResilientCircuitBreaker(){
 
     // arrange
-    final var addr = InetSocketAddressTemplates._8_8_8_8();
+    final var addr = InetSocketAddressTemplates._8_8_8_8_addr();
     doReturn(CircuitBreakerConfigTemplates.buildNonResilientConfig())
       .when(this.factory)
       .findCircuitBreakerConfig();
