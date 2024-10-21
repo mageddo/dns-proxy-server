@@ -8,12 +8,14 @@ import testing.templates.MessageTemplates;
 
 public class RequestTemplates {
   public static Request buildDefault() {
+    final var stopWatch = StopWatch.createStarted();
+    stopWatch.split();
     return Request
       .builder()
       .query(MessageTemplates.acmeAQuery())
       .resolver(ResolverMapper.from(InetSocketAddressTemplates._8_8_8_8()))
       .resolverIndex(0)
-      .stopWatch(StopWatch.createStarted())
+      .stopWatch(stopWatch)
       .build();
   }
 }

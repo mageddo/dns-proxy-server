@@ -1,6 +1,5 @@
 package com.mageddo.dnsproxyserver.solver;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
@@ -19,30 +18,7 @@ class SolverRemoteTest {
   SolverRemote solverRemote;
 
 
-//
-//  @Test
-//  void mustReturnNullWhenGetTimeout() {
-//
-//    // arrange
-//    doReturn(ResolverTemplates.googleDnsAsList())
-//        .when(this.solverRemote)
-//        .findResolversToUse()
-//    ;
-//
-//    doReturn(CompletableFuture.failedFuture(new SocketTimeoutException("Deu ruim")))
-//        .when(this.solverRemote)
-//        .sendQueryAsyncToResolver(any());
-//
-//    this.excludeCircuitBreakerStrategyAndCallQueryMethodDirectly();
-//
-//    final var query = MessageTemplates.acmeAQuery();
-//
-//    // act
-//    final var res = this.solverRemote.handle(query);
-//
-//    // assert
-//    assertNull(res);
-//  }
+
 //
 //  @Test
 //  void mustReturnRaEvenWhenRemoteServerDoesntReturnsRA() {
