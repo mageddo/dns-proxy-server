@@ -7,5 +7,7 @@
 
 ## [x] Quando a app iniciar, ela deveria tentar validar os servidores remotos para fechar os circuitos que começam abertos
 
+## [ ] testar que o circuit tem que nascer desligado
+
 ## [ ] Testes manuais gerais e abrir PR
 
