@@ -1,11 +1,12 @@
 version: '3'
 services:
   backend:
-    image: openjdk:19-jdk
+    image: openjdk:21-jdk
     environment:
+      MG_RESOLVCONF: /host/run/stub-resolv.conf
       MG_DPS_NETWORK: true
       MG_DPS_NETWORK_AUTO_CONNECT: true
-      MG_NO_REMOTE_SERVERS: true
+      MG_NO_REMOTE_SERVERS: false
       MG_LOG_LEVEL: DEBUG
 #      MG_LOG_LEVEL: DEBUG
 #      MG_DPS_NETWORK: true
@@ -18,7 +19,7 @@ services:
     volumes:
       - ./build/libs:/app
       - /var/run/docker.sock:/var/run/docker.sock
-#      - /etc/resolv.conf:/etc/resolv.conf
+#      - /run/systemd/resolve/:/host/run/
     #      - /etc/systemd/:/host/etc/systemd/
     working_dir: /app
     command: java -jar dns-proxy-server-3.16.1-snapshot-all.jar

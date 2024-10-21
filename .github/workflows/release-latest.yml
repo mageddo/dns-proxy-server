@@ -71,8 +71,9 @@ jobs:
         run: |
           CURRENT_VERSION=${{ steps.version_finder.outputs.current_version }} &&\
           LATEST_VERSION=${{ steps.version_finder.outputs.latest_version }} &&\
-          ./builder.bash release-latest-docker-images ${CURRENT_VERSION} latest
-          ./builder.bash release-latest-docker-images ${CURRENT_VERSION}-aarch64 ${LATEST_VERSION}-aarch64 
+          ./builder.bash release-latest-docker-images ${CURRENT_VERSION} latest &&\
+          ./builder.bash release-latest-docker-images ${CURRENT_VERSION} ${LATEST_VERSION} &&\
+          ./builder.bash release-latest-docker-images ${CURRENT_VERSION}-aarch64 ${LATEST_VERSION}-aarch64
 
       - name: Docker Images - Additional - Amd64 Static
         run: |
