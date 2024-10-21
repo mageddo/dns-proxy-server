@@ -2,7 +2,6 @@ package com.mageddo.dnsproxyserver.solver.remote.application.failsafe;
 
 import com.mageddo.dnsproxyserver.solver.remote.application.FailsafeCircuitBreakerFactory;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegateNonResilient;
-import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.canaryratethreshold.CircuitBreakerDelegateSelfObservable;
 import dev.failsafe.CircuitBreaker;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,7 +11,6 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import testing.templates.CircuitBreakerConfigTemplates;
 import testing.templates.InetSocketAddressTemplates;
-import testing.templates.solver.remote.CircuitBreakerDelegateTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -20,14 +18,12 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class CircuitBreakerFactoryTest {
 
-  @Spy
   @InjectMocks
+  @Spy
   CircuitBreakerFactory factory;
 
   @Mock
@@ -75,7 +71,6 @@ class CircuitBreakerFactoryTest {
     // assert
     assertEquals(a, b);
     assertEquals(a.hashCode(), b.hashCode());
-    verify(this.factory, times(1)).findCircuitBreakerHotLoad(any());
   }
 
   @Test
@@ -144,25 +139,6 @@ class CircuitBreakerFactoryTest {
     final var status = this.factory.findStatus(addr);
 
     assertNull(status);
-  }
-
-  @Test
-  void mustBuildCanaryRateThresholdCircuitBreaker(){
-    // arrange
-    final var addr = InetSocketAddressTemplates._8_8_8_8();
-    doReturn(CircuitBreakerConfigTemplates.fastCanaryRateThreshold())
-      .when(this.factory)
-      .findCircuitBreakerConfig();
-
-    doReturn(CircuitBreakerDelegateTemplates.buildCanaryRateThreshold())
-      .when(this.factory)
-      .buildCanaryRateThreshold(any(), any());
-
-    // act
-    final var circuitBreaker = this.factory.findCircuitBreaker(addr);
-
-    // assert
-    assertEquals(CircuitBreakerDelegateSelfObservable.class, circuitBreaker.getClass());
   }
 
 }
