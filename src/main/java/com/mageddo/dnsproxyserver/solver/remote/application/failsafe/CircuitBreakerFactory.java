@@ -7,6 +7,7 @@ import com.mageddo.dnsproxyserver.config.application.ConfigService;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.application.FailsafeCircuitBreakerFactory;
+import com.mageddo.dnsproxyserver.solver.remote.application.ResultSupplier;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegate;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegateNonResilient;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegateStaticThresholdFailsafe;
@@ -43,8 +44,8 @@ public class CircuitBreakerFactory {
   private final FailsafeCircuitBreakerFactory failsafeCircuitBreakerFactory;
   private final com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.canaryratethreshold.CircuitBreakerFactory canaryThresholdFactory;
 
-  public Result check(InetSocketAddress remoteAddress, Supplier<Result> sup) {
-    final var circuitBreaker = this.findCircuitBreaker(remoteAddress);
+  public Result check(ResultSupplier sup) {
+    final var circuitBreaker = this.findCircuitBreaker(sup.getRemoteAddress());
     return circuitBreaker.execute(sup);
   }
 

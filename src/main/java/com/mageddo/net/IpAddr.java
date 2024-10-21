@@ -5,11 +5,13 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.mageddo.dnsproxyserver.json.converter.IPConverter;
 import com.mageddo.utils.Bytes;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.Value;
 
 @Value
 @Builder
+@EqualsAndHashCode
 public class IpAddr {
 
   @NonNull

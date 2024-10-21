@@ -1,3 +1,6 @@
+## 3.30.3
+* Solver Remote Refactoring. #589
+
 ## 3.30.2
 * Detect which condition didn't match and log the cause when configuring DPS as default DNS #580
 * Fixed backend develop docker-compose.yml

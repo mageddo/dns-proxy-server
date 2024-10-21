@@ -24,19 +24,19 @@ public class CircuitBreakerService {
 
   private String status;
 
-  public Result safeHandle(InetSocketAddress resolverAddress, Supplier<Result> sup) {
+  public Result safeHandle(ResultSupplier sup) {
     try {
-      return this.handle(resolverAddress, sup);
+      return this.handle(sup);
     } catch (CircuitCheckException | CircuitIsOpenException e) {
       final var clazz = ClassUtils.getSimpleName(e);
-      log.debug("status=circuitEvent, server={}, type={}", resolverAddress, clazz);
-      this.status = String.format("%s for %s", clazz, resolverAddress);
+      log.debug("status=circuitEvent, server={}, type={}", sup.getRemoteAddress(), clazz);
+      this.status = String.format("%s for %s", clazz, sup.getRemoteAddress());
       return Result.empty();
     }
   }
 
-  private Result handle(InetSocketAddress resolverAddress, Supplier<Result> sup) {
-    return this.circuitBreakerFactory.check(resolverAddress, sup);
+  private Result handle(ResultSupplier sup) {
+    return this.circuitBreakerFactory.check(sup);
   }
 
   public String getStatus() {
