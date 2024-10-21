@@ -1,6 +1,7 @@
 package testing.templates;
 
 import com.mageddo.dns.utils.Messages;
+import org.xbill.DNS.Flags;
 import org.xbill.DNS.Message;
 
 public class MessageTemplates {
@@ -35,5 +36,11 @@ public class MessageTemplates {
 
   public static Message randomHostnameAQuery() {
     return Messages.aQuestion(System.nanoTime() + ".com");
+  }
+
+  public static Message buildAAnswerWithoutRA(Message query) {
+    final var answer = buildAAnswer(query);
+    answer.getHeader().unsetFlag(Flags.RA);
+    return answer;
   }
 }
