@@ -1,7 +1,9 @@
 package com.mageddo.dnsproxyserver.solver.remote.application.mapper;
 
 import com.mageddo.dnsproxyserver.solver.Response;
+import com.mageddo.dnsproxyserver.solver.Responses;
 import org.junit.jupiter.api.Test;
+import org.xbill.DNS.Flags;
 import org.xbill.DNS.Message;
 import testing.templates.MessageTemplates;
 import testing.templates.solver.remote.RequestTemplates;
@@ -52,7 +54,6 @@ class ResultMapperTest {
 
   }
 
-
   @Test
   void mustReturnNullWhenGetTimeout() {
 
@@ -61,10 +62,27 @@ class ResultMapperTest {
     final var randomReq = RequestTemplates.buildDefault();
 
     // act
-    final var res = ResultMapper.transformToResult(failedFuture, randomReq);
+    final var res = ResultMapper.from(failedFuture, randomReq);
 
     // assert
     assertNotNull(res);
     assertTrue(res.isEmpty());
   }
+
+  @Test
+  void mustReturnRaEvenWhenRemoteServerDoesntReturnsRA() {
+    // arrange
+    final var query = MessageTemplates.acmeAQuery();
+    final var res = MessageTemplates.buildAAnswerWithoutRA(query);
+    final var future = CompletableFuture.completedFuture(res);
+
+    // act
+    final var result = ResultMapper.from(future, RequestTemplates.buildDefault())
+      .getSuccessResponse();
+
+    // assert
+    assertTrue(Responses.hasFlag(result, Flags.RA));
+    assertEquals(Response.DEFAULT_SUCCESS_TTL, result.getDpsTtl());
+  }
+
 }

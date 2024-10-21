@@ -25,7 +25,7 @@ public class ResultMapper {
     return transformToResult(resFuture, request);
   }
 
-  static Result transformToResult(CompletableFuture<Message> resFuture, Request request) {
+  private static Result transformToResult(CompletableFuture<Message> resFuture, Request request) {
     final var res = findFutureRes(resFuture, request);
     if (res == null) {
       return Result.empty();
@@ -48,7 +48,7 @@ public class ResultMapper {
     }
   }
 
-  static Message findFutureRes(CompletableFuture<Message> resFuture, Request request) {
+  private static Message findFutureRes(CompletableFuture<Message> resFuture, Request request) {
     try {
       return Messages.setFlag(resFuture.get(), Flags.RA);
     } catch (InterruptedException | ExecutionException e) {
@@ -57,7 +57,7 @@ public class ResultMapper {
     }
   }
 
-  static void checkCircuitError(Exception e, Request request) {
+  private static void checkCircuitError(Exception e, Request request) {
     if (e.getCause() instanceof IOException) {
       final var time = request.getElapsedTimeInMs();
       if (e.getMessage().contains(QUERY_TIMED_OUT_MSG)) {
@@ -77,7 +77,7 @@ public class ResultMapper {
     }
   }
 
-  static String buildErrorMsg(Exception e, Request request) {
+  private static String buildErrorMsg(Exception e, Request request) {
     return String.format("server=%s, msg=%s", request.getResolverAddr(), e.getMessage());
   }
 

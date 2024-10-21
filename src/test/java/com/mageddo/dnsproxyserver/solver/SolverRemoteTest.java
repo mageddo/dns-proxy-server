@@ -17,35 +17,6 @@ class SolverRemoteTest {
   @InjectMocks
   SolverRemote solverRemote;
 
-
-
-//
-//  @Test
-//  void mustReturnRaEvenWhenRemoteServerDoesntReturnsRA() {
-//    // arrange
-//    final var query = MessageTemplates.acmeAQuery();
-//    final var res = MessageTemplates.buildAAnswer(query);
-//    res.getHeader().unsetFlag(Flags.RA);
-//
-//    doReturn(ResolverTemplates.googleDnsAsList())
-//        .when(this.solverRemote)
-//        .findResolversToUse()
-//    ;
-//
-//    doReturn(CompletableFuture.completedFuture(res))
-//        .when(this.solverRemote)
-//        .sendQueryAsyncToResolver(any());
-//
-//    this.excludeCircuitBreakerStrategyAndCallQueryMethodDirectly();
-//
-//    // act
-//    final var result = this.solverRemote.handle(query);
-//
-//    // assert
-//    assertTrue(Responses.hasFlag(result, Flags.RA));
-//    assertEquals(Response.DEFAULT_SUCCESS_TTL, result.getDpsTtl());
-//  }
-//
 //  @Test
 //  void mustPingRemoteServerWhileQueryingWhenFeatureIsActive(){
 //
