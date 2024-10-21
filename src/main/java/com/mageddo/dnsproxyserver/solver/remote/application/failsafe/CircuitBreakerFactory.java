@@ -10,6 +10,7 @@ import com.mageddo.dnsproxyserver.solver.remote.application.FailsafeCircuitBreak
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegate;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegateNonResilient;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegateStaticThresholdFailsafe;
+import com.mageddo.net.IpAddrs;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -60,7 +61,7 @@ public class CircuitBreakerFactory {
   }
 
   CircuitBreakerDelegate buildCanaryRateThreshold(CircuitBreakerStrategyConfig config, InetSocketAddress address) {
-    return this.canaryThresholdFactory.build(config, String.valueOf(address));
+    return this.canaryThresholdFactory.build(config, IpAddrs.from(address));
   }
 
   private CircuitBreakerDelegateStaticThresholdFailsafe buildStaticThresholdFailSafeCircuitBreaker(

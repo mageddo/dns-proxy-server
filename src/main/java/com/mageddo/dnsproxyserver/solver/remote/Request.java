@@ -1,11 +1,13 @@
 package com.mageddo.dnsproxyserver.solver.remote;
 
+import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.solver.Resolver;
 import com.mageddo.net.IpAddr;
 import com.mageddo.net.IpAddrs;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.StopWatch;
 import org.xbill.DNS.Message;
 
@@ -13,6 +15,7 @@ import java.net.InetSocketAddress;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
+@Slf4j
 @Value
 @Builder
 public class Request {
@@ -42,6 +45,7 @@ public class Request {
   }
 
   public CompletableFuture<Message> sendQueryAsyncToResolver(Executor executor) {
+    log.trace("status=querying, server={}, req={}", this.resolver.getAddress(), Messages.simplePrint(this.query));
     return this.resolver.sendAsync(this.query, executor).toCompletableFuture();
   }
 
