@@ -78,7 +78,10 @@ public class ResultMapper {
   }
 
   private static String buildErrorMsg(Exception e, Request request) {
-    return String.format("server=%s, msg=%s", request.getResolverAddr(), e.getMessage());
+    return String.format(
+      "( req=%s, server=%s, msg=%s )",
+      simplePrint(request.getQuery()), request.getResolverAddress(), e.getMessage()
+    );
   }
 
 }
