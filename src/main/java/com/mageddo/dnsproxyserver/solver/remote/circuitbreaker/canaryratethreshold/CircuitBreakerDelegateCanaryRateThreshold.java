@@ -37,9 +37,16 @@ public class CircuitBreakerDelegateCanaryRateThreshold implements CircuitBreaker
   public CircuitStatus findStatus() {
     final var status = Resilience4jStatusMapper.toCircuitStatus(this.circuitBreaker.getState());
     if (log.isTraceEnabled()) {
-      log.trace("circuit={}, status={}, metrics={}", this, status, JsonUtils.prettyWriteValueAsString(this.circuitBreaker.getMetrics()));
+      log.trace("circuit={}, status={}, metrics={}", this, status, formatMetrics());
     }
     return status;
+  }
+
+  private String formatMetrics() {
+    if (Boolean.getBoolean("mg.solverRemote.circuitBreaker.canaryRateThreshold.detailedMetrics")) {
+      return JsonUtils.prettyWriteValueAsString(this.circuitBreaker.getMetrics());
+    }
+    return "";
   }
 
   @Override
