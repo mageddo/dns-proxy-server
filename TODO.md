@@ -11,3 +11,6 @@
 
 ## [ ] Testes manuais gerais e abrir PR
 
+## [ ] quebrar me mais dois prs
+* o que expoe a config no json
+* o que mudou comportamentos do modulo de circuit breaker do CanaryRateThresholdCircuitBreaker
