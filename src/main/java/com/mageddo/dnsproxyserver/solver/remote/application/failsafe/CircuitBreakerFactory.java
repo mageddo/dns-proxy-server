@@ -10,6 +10,8 @@ import com.mageddo.dnsproxyserver.solver.remote.application.FailsafeCircuitBreak
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegate;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegateNonResilient;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegateStaticThresholdFailsafe;
+import com.mageddo.dnsproxyserver.solver.remote.mapper.ResolverMapper;
+import com.mageddo.net.IpAddr;
 import com.mageddo.net.IpAddrs;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -44,6 +46,10 @@ public class CircuitBreakerFactory {
   public Result check(InetSocketAddress remoteAddress, Supplier<Result> sup) {
     final var circuitBreaker = this.findCircuitBreaker(remoteAddress);
     return circuitBreaker.execute(sup);
+  }
+
+  public CircuitBreakerDelegate findCircuitBreaker(IpAddr address) {
+    return this.findCircuitBreaker(ResolverMapper.toInetSocketAddress(address));
   }
 
   public CircuitBreakerDelegate findCircuitBreaker(InetSocketAddress address) {
