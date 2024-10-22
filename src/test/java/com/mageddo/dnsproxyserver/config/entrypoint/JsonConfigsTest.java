@@ -2,12 +2,15 @@ package com.mageddo.dnsproxyserver.config.entrypoint;
 
 import com.mageddo.dnsproxyserver.config.dataprovider.JsonConfigs;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2;
+import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2.CanaryRateThresholdCircuitBreaker;
+import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2.StaticThresholdCircuitBreaker;
 import org.apache.commons.lang3.ClassUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 
 import static com.mageddo.dnsproxyserver.config.dataprovider.JsonConfigs.findVersion;
 import static com.mageddo.utils.TestUtils.readAndSortJson;
@@ -68,4 +71,60 @@ class JsonConfigsTest {
     assertTrue(Files.exists(tempConfig));
   }
 
+  @Test
+  void mustParseDefaultCircuitBreakerStrategyAsStaticThreshold(){
+
+    final var json = """
+      {
+        "version": 2,
+        "solverRemote" : {
+          "circuitBreaker" : {
+            "failureThreshold": 3,
+            "failureThresholdCapacity": 5,
+            "successThreshold": 10,
+            "testDelay": "PT20S"
+          }
+        }
+      }
+      """;
+
+    final var config = JsonConfigs.loadConfig(json);
+
+    assertNotNull(config);
+    assertStaticThresholdCircuitBreakerConfig((StaticThresholdCircuitBreaker) config.getSolverRemoteCircuitBreaker());
+  }
+
+  @Test
+  void mustParseCanaryRateThresholdCircuitBreakerStrategy(){
+
+    final var json = """
+      {
+        "version": 2,
+        "solverRemote" : {
+          "circuitBreaker" : {
+            "strategy": "CANARY_RATE_THRESHOLD",
+            "failureRateThreshold" : 21.9,
+            "minimumNumberOfCalls" : 50,
+            "permittedNumberOfCallsInHalfOpenState" : 10
+          }
+        }
+      }
+      """;
+
+    final var config = JsonConfigs.loadConfig(json);
+    assertNotNull(config);
+
+    final var circuitBreaker = (CanaryRateThresholdCircuitBreaker) config.getSolverRemoteCircuitBreaker();
+    assertEquals(21.9f, circuitBreaker.getFailureRateThreshold(), 1);
+    assertEquals(50, circuitBreaker.getMinimumNumberOfCalls());
+    assertEquals(10, circuitBreaker.getPermittedNumberOfCallsInHalfOpenState());
+
+  }
+
+  void assertStaticThresholdCircuitBreakerConfig(StaticThresholdCircuitBreaker circuitBreaker) {
+    assertEquals(3, circuitBreaker.getFailureThreshold());
+    assertEquals(5, circuitBreaker.getFailureThresholdCapacity());
+    assertEquals(10, circuitBreaker.getSuccessThreshold());
+    assertEquals(Duration.ofSeconds(20), circuitBreaker.getTestDelay());
+  }
 }

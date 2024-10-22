@@ -27,7 +27,7 @@ class CircuitBreakerDelegateCanaryRateThresholdTest {
 
   @BeforeEach
   void beforeEach() {
-    this.delegate = new CircuitBreakerDelegateCanaryRateThreshold(this.circuitBreaker);
+    this.delegate = new CircuitBreakerDelegateCanaryRateThreshold(this.circuitBreaker, "Test");
   }
 
   @Test

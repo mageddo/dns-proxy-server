@@ -5,9 +5,11 @@ import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegate;
 import com.mageddo.dnsproxyserver.solver.remote.mapper.Resilience4jStatusMapper;
+import com.mageddo.json.JsonUtils;
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.function.Supplier;
 
@@ -15,9 +17,11 @@ import java.util.function.Supplier;
 public class CircuitBreakerDelegateCanaryRateThreshold implements CircuitBreakerDelegate {
 
   private final CircuitBreaker circuitBreaker;
+  private final String name;
 
-  public CircuitBreakerDelegateCanaryRateThreshold(CircuitBreaker circuitBreaker) {
+  public CircuitBreakerDelegateCanaryRateThreshold(CircuitBreaker circuitBreaker, String name) {
     this.circuitBreaker = circuitBreaker;
+    this.name = name;
   }
 
   @Override
@@ -31,11 +35,27 @@ public class CircuitBreakerDelegateCanaryRateThreshold implements CircuitBreaker
 
   @Override
   public CircuitStatus findStatus() {
-    return Resilience4jStatusMapper.toCircuitStatus(this.circuitBreaker.getState());
+    final var status = Resilience4jStatusMapper.toCircuitStatus(this.circuitBreaker.getState());
+    if (log.isTraceEnabled()) {
+      log.trace("circuit={}, status={}, metrics={}", this, status, formatMetrics());
+    }
+    return status;
+  }
+
+  private String formatMetrics() {
+    if (Boolean.getBoolean("mg.solverRemote.circuitBreaker.canaryRateThreshold.detailedMetrics")) {
+      return JsonUtils.prettyWriteValueAsString(this.circuitBreaker.getMetrics());
+    }
+    return "";
   }
 
   @Override
   public void transitionToHalfOpenState() {
     this.circuitBreaker.transitionToHalfOpenState();
+  }
+
+  @Override
+  public String toString() {
+    return StringUtils.firstNonBlank(this.name, this.getClass().getSimpleName());
   }
 }

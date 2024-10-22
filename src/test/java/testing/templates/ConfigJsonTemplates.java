@@ -21,4 +21,9 @@ public class ConfigJsonTemplates {
     return JsonConfigs.loadConfig(TestUtils.readString(path));
   }
 
+  public static ConfigJson canaryRateThresholdCircuitBreaker() {
+    final var path = "/configs-test/009.json";
+    return JsonConfigs.loadConfig(TestUtils.readString(path));
+  }
+
 }

@@ -66,15 +66,16 @@ public class CircuitBreakerDelegateSelfObservable implements CircuitBreakerDeleg
 
   private void healthCheckWhenInOpenState() {
     final var status = this.findStatus();
-    log.trace("status=checking, status={}", status);
-    if (!CircuitStatus.isOpen(status)) {
-      log.trace("status=notOpenStatus, status={}", status);
+    final var notInOpenStatus = !CircuitStatus.isOpen(status);
+    log.trace("status=checking, statusBefore={}, notInOpenStatus={}, circuit={}", status, notInOpenStatus, this);
+    if (notInOpenStatus) {
       return;
     }
-    final var success = this.isHealthy();
-    if (success) {
+    final var healthy = this.isHealthy();
+    log.trace("healthy={}, circuit={}", healthy, this);
+    if (healthy) {
       this.transitionToHalfOpenState();
-      log.debug("status=halfOpenStatus, circuitBreaker={}", this);
+      log.debug("status=halfOpenStatus, circuit={}", this);
     }
   }
 
@@ -87,4 +88,8 @@ public class CircuitBreakerDelegateSelfObservable implements CircuitBreakerDeleg
     this.open = false;
   }
 
+  @Override
+  public String toString() {
+    return this.delegate.toString();
+  }
 }

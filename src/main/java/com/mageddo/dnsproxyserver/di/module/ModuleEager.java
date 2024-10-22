@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.di.module;
 
 import com.mageddo.di.Eager;
+import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.entrypoint.CircuitBreakerHeater;
 import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.ElementsIntoSet;
@@ -13,7 +14,9 @@ public class ModuleEager {
   @Provides
   @Singleton
   @ElementsIntoSet
-  Set<Eager> beans() {
-    return Set.of();
+  Set<Eager> beans(CircuitBreakerHeater a) {
+    return Set.of(
+      a
+    );
   }
 }

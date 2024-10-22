@@ -31,7 +31,7 @@ class CircuitBreakerFactoryCompTest {
     final var sup = ResultSupplierTemplates.withCallsCounterNullRes();
     final var config = CircuitBreakerConfigTemplates.fastCanaryRateThreshold();
 
-    final var circuitBreaker = this.factory.build(config);
+    final var circuitBreaker = this.factory.buildWithoutHealthCheck(config);
     final var result = circuitBreaker.execute(sup);
 
     assertEquals(1, sup.getCalls());
@@ -45,7 +45,7 @@ class CircuitBreakerFactoryCompTest {
     final var sup = ResultSupplierTemplates.withCallsCounterNullRes();
     final var config = CircuitBreakerConfigTemplates.fastCanaryRateThreshold();
 
-    final var circuitBreaker = this.factory.build(config);
+    final var circuitBreaker = this.factory.buildWithoutHealthCheck(config);
     assertEquals(CircuitStatus.CLOSED, circuitBreaker.findStatus());
 
     assertThrows(CircuitCheckException.class, () -> circuitBreaker.execute(ResultSupplierTemplates.alwaysFail()));

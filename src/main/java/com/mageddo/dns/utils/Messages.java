@@ -38,24 +38,24 @@ public class Messages {
     return simplePrint(res.getMessage());
   }
 
-  public static String simplePrint(Message message) {
-    if (message == null) {
+  public static String simplePrint(Message reqOrRes) {
+    if (reqOrRes == null) {
       return null;
     }
     try {
-      final var answer = findFirstAnswerRecord(message);
-      final var rcode = message.getRcode();
+      final var answer = findFirstAnswerRecord(reqOrRes);
+      final var rcode = reqOrRes.getRcode();
       if (answer != null) {
         return String.format("rc=%d, res=%s", rcode, simplePrint(answer));
       }
-      final var question = message.getQuestion();
+      final var question = reqOrRes.getQuestion();
       final var type = Objects.useItOrDefault(
         Objects.toString(Entry.Type.of(question.getType())),
         () -> String.valueOf(question.getType())
       );
       final var hostname = question.getName().toString(true);
       final var sb = new StringBuilder();
-      if (Messages.hasFlag(message, Flags.QR)) {
+      if (Messages.hasFlag(reqOrRes, Flags.QR)) {
         sb.append("rc=")
           .append(rcode)
           .append(", ")
@@ -64,8 +64,8 @@ public class Messages {
       sb.append(String.format("query=%s:%s", type, hostname));
       return sb.toString();
     } catch (Throwable e) {
-      log.warn("status=failedToSimplePrint, msg={}", message, e);
-      return String.valueOf(message);
+      log.warn("status=failedToSimplePrint, msg={}", reqOrRes, e);
+      return String.valueOf(reqOrRes);
     }
   }
 

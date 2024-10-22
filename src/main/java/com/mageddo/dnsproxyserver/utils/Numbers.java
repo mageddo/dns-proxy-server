@@ -10,8 +10,8 @@ public class Numbers {
     return v;
   }
 
-  public static Integer positiveOrNull(Integer v) {
-    if (v == null || v <= 0) {
+  public static <T extends Number> T positiveOrNull(T v) {
+    if (v == null || v.intValue() < 0) {
       return null;
     }
     return v;
