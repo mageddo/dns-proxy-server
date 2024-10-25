@@ -45,8 +45,8 @@ public class CircuitBreakerDelegateSelfObservable implements CircuitBreakerDeleg
   }
 
   @Override
-  public void transitionToHalfOpenState() {
-    this.delegate.transitionToHalfOpenState();
+  public StateTransitor stateTransitor() {
+    return this.delegate.stateTransitor();
   }
 
   private void startOpenCircuitHealthCheckWorker() {
@@ -91,5 +91,15 @@ public class CircuitBreakerDelegateSelfObservable implements CircuitBreakerDeleg
   @Override
   public String toString() {
     return this.delegate.toString();
+  }
+
+  @Override
+  public void transitionToHalfOpenState() {
+    this.delegate.stateTransitor().halfOpen();
+  }
+
+  @Override
+  public void transitionToClosedState() {
+    this.delegate.stateTransitor().closed();
   }
 }

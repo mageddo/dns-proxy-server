@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.canaryratethresh
 
 import com.mageddo.commons.circuitbreaker.CircuitIsOpenException;
 import com.mageddo.commons.concurrent.Threads;
+import com.mageddo.dnsproxyserver.config.CanaryRateThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import dagger.sheath.junit.DaggerTest;
 import org.junit.jupiter.api.Test;
@@ -29,11 +30,18 @@ class CircuitBreakerFactoryCompTest {
     final var sup = ResultSupplierTemplates.withCallsCounterNullRes();
     final var config = CircuitBreakerConfigTemplates.fastCanaryRateThreshold();
 
-    final var circuitBreaker = this.factory.buildWithoutHealthCheck(config);
+    final var circuitBreaker = buildTransitToClosedState(config);
     final var result = circuitBreaker.execute(sup);
 
     assertEquals(1, sup.getCalls());
     assertNull(result);
+
+  }
+
+  private CircuitBreakerDelegateSelfObservable buildTransitToClosedState(CanaryRateThresholdCircuitBreakerStrategyConfig config) {
+    final var circuitBreaker = this.factory.buildWithoutHealthCheck(config);
+    circuitBreaker.transitionToClosedState();
+    return circuitBreaker;
 
   }
 
@@ -53,7 +61,6 @@ class CircuitBreakerFactoryCompTest {
 
     assertNull(circuitBreaker.execute(sup));
     assertEquals(1, sup.getCalls());
-
 
   }
 
