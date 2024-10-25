@@ -43,7 +43,9 @@ public class CircuitBreakerFactory {
   }
 
   private CircuitBreaker createResilienceCircuitBreakerFrom(CanaryRateThresholdCircuitBreakerStrategyConfig config) {
-    return Resilience4jMapper.from(config);
+    final var circuitBreaker = Resilience4jMapper.from(config);
+    circuitBreaker.transitionToOpenState();
+    return circuitBreaker;
   }
 
 }

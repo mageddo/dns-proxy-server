@@ -23,7 +23,6 @@ public class Resilience4jMapper {
 
         .build()
     );
-    circuitBreaker.transitionToOpenState();
     return circuitBreaker;
   }
 }
