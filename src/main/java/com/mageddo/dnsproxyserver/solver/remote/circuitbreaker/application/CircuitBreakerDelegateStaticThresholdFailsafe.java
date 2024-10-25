@@ -1,9 +1,11 @@
 package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application;
 
 import com.mageddo.circuitbreaker.failsafe.CircuitStatusRefresh;
+import com.mageddo.commons.circuitbreaker.CircuitIsOpenException;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
-import com.mageddo.commons.circuitbreaker.CircuitIsOpenException;
+import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.statetransitor.FailSafeStateTransitor;
+import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.statetransitor.StateTransitor;
 import com.mageddo.dnsproxyserver.solver.remote.mapper.CircuitBreakerStateMapper;
 import dev.failsafe.CircuitBreaker;
 import dev.failsafe.CircuitBreakerOpenException;
@@ -25,7 +27,7 @@ public class CircuitBreakerDelegateStaticThresholdFailsafe implements CircuitBre
       return Failsafe
         .with(this.circuitBreaker)
         .get((ctx) -> sup.get());
-    } catch (CircuitBreakerOpenException e){
+    } catch (CircuitBreakerOpenException e) {
       throw new CircuitIsOpenException(e);
     }
   }
@@ -37,7 +39,8 @@ public class CircuitBreakerDelegateStaticThresholdFailsafe implements CircuitBre
   }
 
   @Override
-  public void transitionToHalfOpenState() {
-    this.circuitBreaker.halfOpen();
+  public StateTransitor stateTransitor() {
+    return new FailSafeStateTransitor(circuitBreaker);
   }
+
 }

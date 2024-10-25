@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application;
 
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
-import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.canaryratethreshold.StateTransitor;
+import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.statetransitor.StateTransitor;
 
 import java.util.function.Supplier;
 
@@ -14,7 +14,11 @@ public interface CircuitBreakerDelegate {
 
   StateTransitor stateTransitor();
 
-  void transitionToHalfOpenState();
+  default void transitionToHalfOpenState(){
+    this.stateTransitor().halfOpen();
+  }
 
-  void transitionToClosedState();
+  default void transitionToClosedState(){
+    this.stateTransitor().closed();
+  }
 }

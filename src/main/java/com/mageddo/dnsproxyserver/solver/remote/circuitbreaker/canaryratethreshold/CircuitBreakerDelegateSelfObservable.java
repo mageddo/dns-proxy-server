@@ -6,6 +6,7 @@ import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegate;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.HealthChecker;
+import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.statetransitor.StateTransitor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.Duration;
@@ -93,13 +94,4 @@ public class CircuitBreakerDelegateSelfObservable implements CircuitBreakerDeleg
     return this.delegate.toString();
   }
 
-  @Override
-  public void transitionToHalfOpenState() {
-    this.delegate.stateTransitor().halfOpen();
-  }
-
-  @Override
-  public void transitionToClosedState() {
-    this.delegate.stateTransitor().closed();
-  }
 }
