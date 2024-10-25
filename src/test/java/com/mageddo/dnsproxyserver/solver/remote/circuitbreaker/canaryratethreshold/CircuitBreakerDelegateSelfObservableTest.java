@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.canaryratethresh
 import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.HealthChecker;
+import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.statetransitor.StateTransitor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +15,8 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,11 +32,11 @@ class CircuitBreakerDelegateSelfObservableTest {
 
   @BeforeEach
   void beforeEach() {
-    this.strategy = new CircuitBreakerDelegateSelfObservable(
+    this.strategy = spy(new CircuitBreakerDelegateSelfObservable(
       this.delegate,
       Duration.ofMillis(1000 / 30),
       this.healthChecker
-    );
+    ));
   }
 
   @Test
@@ -60,11 +63,16 @@ class CircuitBreakerDelegateSelfObservableTest {
       .isHealthy()
     ;
 
+    final var stateTransitor = mock(StateTransitor.class);
+    doReturn(stateTransitor)
+      .when(this.delegate)
+      .stateTransitor();
+
     // act
     Threads.sleep(300);
 
     // assert
-    verify(this.delegate, atLeastOnce()).transitionToHalfOpenState();
+    verify(stateTransitor, atLeastOnce()).halfOpen();
 
   }
 
