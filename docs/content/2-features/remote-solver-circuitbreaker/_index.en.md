@@ -103,5 +103,9 @@ start because the first server on the remote servers list is offline.
 * **permittedNumberOfCallsInHalfOpenState**: Configures the number of permitted calls when the CircuitBreaker is half
   open.
 
-[1]: https://docs.oracle.com/javase/8/docs/api/java/time/Duration.html#toString--
+## Refs
 
+* [A more resilient circuit breaker strategy #533][2]
+
+[1]: https://docs.oracle.com/javase/8/docs/api/java/time/Duration.html#toString--
+[2]: https://github.com/mageddo/dns-proxy-server/issues/533
