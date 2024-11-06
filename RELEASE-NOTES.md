@@ -1,3 +1,6 @@
+## 3.31.1
+* Adjusting Canary Rate Threshold Circuit Breaker to mark all circuits as open at the start. #533
+
 ## 3.31.0
 * Canary Rate Threshold Circuit Breaker. #533
 
