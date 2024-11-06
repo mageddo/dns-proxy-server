@@ -1,3 +1,12 @@
+## 3.31.0
+* Canary Rate Threshold Circuit Breaker. #533
+
+## 3.30.5
+* Bugfix: Treating npe at networks mapping when network hasn't a gateway ip #580.
+
+## 3.30.4
+* Adjusting binary generation to compatibility. #586
+
 ## 3.30.3
 * Solver Remote Refactoring. #589
 

@@ -46,6 +46,7 @@ public class NetworkMapper {
         .getConfig()
         .stream()
         .map(com.github.dockerjava.api.model.Network.Ipam.Config::getGateway)
+        .filter(Objects::nonNull)
         .map(NetworkMapper::extractIpIfNeedledWhenGatewayIsSubnet)
         .map(IP::of)
         .filter(it -> it.version() == version)

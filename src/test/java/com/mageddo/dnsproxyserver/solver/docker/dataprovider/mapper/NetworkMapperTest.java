@@ -95,4 +95,18 @@ class NetworkMapperTest {
     assertEquals("[172.19.0.1, fddb:21e4:36d4:2:0:0:0:1]", network.getGateways().toString());
   }
 
+  @Test
+  void mustMapFromCustomNetworkWithoutGateway(){
+
+    // arrange
+    final var dockerNetwork = NetworkTemplates.buildCustomIpv4NetworkWithoutGateway();
+
+    // act
+    final var network = NetworkMapper.of(dockerNetwork);
+
+    // assert
+    assertNotNull(network);
+    assertFalse(network.hasAnyGateway());
+  }
+
 }

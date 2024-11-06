@@ -47,4 +47,8 @@ public class NetworkTemplates {
   public static Network buildBridgeWithSubnetIPAtGatewayProp() {
     return JsonUtils.readValue(readString("/templates/docker/network/004.json"), Network.class);
   }
+
+  public static Network buildCustomIpv4NetworkWithoutGateway() {
+    return JsonUtils.readValue(readString("/templates/docker/network/005.json"), Network.class);
+  }
 }

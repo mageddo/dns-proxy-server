@@ -1,0 +1,39 @@
+{
+  "Name": "tmp_my_network",
+  "Id": "4832d0e4bb48513ee3fde20aaecfaf6b8ac83476d4365f82fae4001517b20cce",
+  "Created": "2024-10-31T14:47:27.608173734-03:00",
+  "Scope": "local",
+  "Driver": "bridge",
+  "EnableIPv6": false,
+  "IPAM": {
+    "Driver": "default",
+    "Options": null,
+    "Config": [
+      {
+        "Subnet": "171.18.0.0/16"
+      }
+    ]
+  },
+  "Internal": false,
+  "Attachable": false,
+  "Ingress": false,
+  "ConfigFrom": {
+    "Network": ""
+  },
+  "ConfigOnly": false,
+  "Containers": {
+    "2343a2ab9f8f1898674f349e21316593f31fce539b2b804d7e97cc16d3bf8a3b": {
+      "Name": "tmp-dns-proxy-1",
+      "EndpointID": "a809c879ba3dc31d0c387f47eb4f817745534bcf4cf7385a9916832452db4bae",
+      "MacAddress": "02:42:ab:12:00:0a",
+      "IPv4Address": "171.18.0.10/16",
+      "IPv6Address": ""
+    }
+  },
+  "Options": {},
+  "Labels": {
+    "com.docker.compose.network": "my_network",
+    "com.docker.compose.project": "tmp",
+    "com.docker.compose.version": "2.26.1"
+  }
+}
