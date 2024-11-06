@@ -1,3 +1,6 @@
+## 3.31.0
+* Canary Rate Threshold Circuit Breaker. #533
+
 ## 3.30.5
 * Bugfix: Treating npe at networks mapping when network hasn't a gateway ip #580.
 
