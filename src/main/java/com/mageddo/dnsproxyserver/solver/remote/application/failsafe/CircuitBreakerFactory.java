@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.solver.remote.application.failsafe;
 
 import com.mageddo.commons.lang.tuple.Pair;
+import com.mageddo.dnsproxyserver.config.CanaryRateThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.application.ConfigService;
@@ -28,11 +29,17 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
+/**
+ * fixme #533 Move failsafe.CircuitBreakerFactory  to another package, this is not specific for failsafe
+ */
 public class CircuitBreakerFactory {
 
   private final Map<InetSocketAddress, CircuitBreakerDelegate> circuitBreakerMap = new ConcurrentHashMap<>();
   private final ConfigService configService;
+
+  // fixme #533 Delete CircuitBreakerPingCheckerService from CircuitBreakerFactory and related stuff
   private final CircuitBreakerPingCheckerService circuitBreakerCheckerService;
+
   private final FailsafeCircuitBreakerFactory failsafeCircuitBreakerFactory;
   private final com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.canaryratethreshold.CircuitBreakerFactory canaryThresholdFactory;
 
@@ -41,28 +48,34 @@ public class CircuitBreakerFactory {
     return circuitBreaker.execute(sup);
   }
 
-  public CircuitBreakerDelegate findCircuitBreaker(IpAddr serverAddress) {
-    final var strategy = this.findCircuitBreakerHotLoad(serverAddress);
-    return this.circuitBreakerMap.computeIfAbsent(
-      ResolverMapper.toInetSocketAddress(serverAddress),
-      addr -> strategy
-    );
+  public CircuitBreakerDelegate findCircuitBreaker(IpAddr address) {
+    return this.findCircuitBreaker(ResolverMapper.toInetSocketAddress(address));
   }
 
-  CircuitBreakerDelegate findCircuitBreakerHotLoad(IpAddr address) {
+  public CircuitBreakerDelegate findCircuitBreaker(InetSocketAddress address) {
+    return this.circuitBreakerMap.computeIfAbsent(address, this::findCircuitBreakerHotLoad);
+  }
+
+  CircuitBreakerDelegate findCircuitBreakerHotLoad(InetSocketAddress address) {
     final var config = this.findCircuitBreakerConfig();
     return switch (config.name()) {
       case STATIC_THRESHOLD -> this.buildStaticThresholdFailSafeCircuitBreaker(address, config);
       case NON_RESILIENT -> new CircuitBreakerDelegateNonResilient();
+      case CANARY_RATE_THRESHOLD -> this.buildCanaryRateThreshold(config, address);
       default -> throw new UnsupportedOperationException();
     };
   }
 
+  CircuitBreakerDelegate buildCanaryRateThreshold(CircuitBreakerStrategyConfig config, InetSocketAddress address) {
+//    return this.canaryThresholdFactory.build(config, IpAddrs.from(address));
+    return this.canaryThresholdFactory.build((CanaryRateThresholdCircuitBreakerStrategyConfig) config);
+  }
+
   private CircuitBreakerDelegateStaticThresholdFailsafe buildStaticThresholdFailSafeCircuitBreaker(
-    IpAddr address, CircuitBreakerStrategyConfig config
+    InetSocketAddress address, CircuitBreakerStrategyConfig config
   ) {
     return new CircuitBreakerDelegateStaticThresholdFailsafe(this.failsafeCircuitBreakerFactory.build(
-      ResolverMapper.toInetSocketAddress(address),
+      address,
       (StaticThresholdCircuitBreakerStrategyConfig) config
     ));
   }
