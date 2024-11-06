@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig.Name.CANARY_RATE_THRESHOLD;
 import static com.mageddo.utils.TestUtils.readAndSortJson;
 import static com.mageddo.utils.TestUtils.readAndSortJsonExcluding;
 import static com.mageddo.utils.TestUtils.readAsStream;
@@ -92,6 +93,21 @@ class ConfigServiceCompTest {
     // assert
     assertFalse(config.isSolverRemoteActive());
 
+  }
+
+  @Test
+  void mustParseCanaryRateThreshold(@TempDir Path tmpDir){
+    // arrange
+    writeAndSetCustomConfigFile(tmpDir, "/configs-test/009.json");
+
+    // act
+    final var config = Configs.getContext()
+      .configService()
+      .findCurrentConfig()
+      ;
+
+    // assert
+    assertEquals(CANARY_RATE_THRESHOLD, config.getSolverRemoteCircuitBreakerStrategy().name());
   }
 
   static void assertParsedConfig(Config config, String expectedFilePath) {
