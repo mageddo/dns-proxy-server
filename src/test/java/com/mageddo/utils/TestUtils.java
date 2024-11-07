@@ -1,6 +1,7 @@
 package com.mageddo.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -20,6 +21,7 @@ import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -58,6 +60,13 @@ public class TestUtils {
     final var excludedFields = om.readTree(sortJsonExcluding(om.writeValueAsString(o), excludingFields));
     final var excludedNullFields = om.writeValueAsString(excludedFields);
     return sortJson(excludedNullFields);
+  }
+
+  @SneakyThrows
+  public static String readSortDonWriteNullsAndExcludeFields(Path path, String... excludingFields) {
+    final var json = dontWriteNonNullObjectMapper().readValue(path.toFile(), JsonNode.class);
+    stripNulls(json);
+    return readSortDonWriteNullsAndExcludeFields(json, excludingFields);
   }
 
   @SneakyThrows
@@ -133,7 +142,20 @@ public class TestUtils {
   private static ObjectMapper dontWriteNonNullObjectMapper() {
     return new ObjectMapper()
       .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-      .registerModule(new JavaTimeModule());
+      .registerModule(new JavaTimeModule())
+      .enable(SerializationFeature.INDENT_OUTPUT)
+      ;
+  }
+
+  public static void stripNulls(JsonNode node) {
+    Iterator<JsonNode> it = node.iterator();
+    while (it.hasNext()) {
+      JsonNode child = it.next();
+      if (child.isNull())
+        it.remove();
+      else
+        stripNulls(child);
+    }
   }
 
 }

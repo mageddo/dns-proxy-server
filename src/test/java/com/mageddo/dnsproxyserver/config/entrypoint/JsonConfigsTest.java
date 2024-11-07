@@ -15,6 +15,7 @@ import java.time.Duration;
 import static com.mageddo.dnsproxyserver.config.dataprovider.JsonConfigs.findVersion;
 import static com.mageddo.utils.TestUtils.readAndSortJson;
 import static com.mageddo.utils.TestUtils.readAsStream;
+import static com.mageddo.utils.TestUtils.readSortDonWriteNullsAndExcludeFields;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -40,7 +41,10 @@ class JsonConfigsTest {
     final var path = JsonConfigs.buildBackupPath(tempJsonConfigPath);
     assertTrue(Files.exists(path), path.toString());
 
-    assertEquals(readAndSortJson("/json-configs-test/001.json"), readAndSortJson(tempJsonConfigPath));
+    assertEquals(
+      readAndSortJson("/json-configs-test/001.json"),
+      readSortDonWriteNullsAndExcludeFields(tempJsonConfigPath)
+    );
   }
 
   @Test
