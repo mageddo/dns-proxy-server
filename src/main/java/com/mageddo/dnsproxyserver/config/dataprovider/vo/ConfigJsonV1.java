@@ -114,6 +114,11 @@ public class ConfigJsonV1 implements ConfigJson {
   }
 
   @Override
+  public ConfigJsonV2.SolverStub getSolverStub() {
+    return null;
+  }
+
+  @Override
   public ConfigJsonV2.CircuitBreaker getSolverRemoteCircuitBreaker() {
     return null;
   }

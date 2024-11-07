@@ -72,6 +72,8 @@ public class ConfigJsonV2 implements ConfigJson {
 
   private SolverRemote solverRemote;
 
+  private SolverStub solverStub;
+
   @JsonIgnore
   public List<IpAddr> getRemoteDnsServers() {
     return this.remoteDnsServers
@@ -89,6 +91,11 @@ public class ConfigJsonV2 implements ConfigJson {
   @Override
   public Boolean getDockerSolverHostMachineFallbackActive() {
     return this.dockerSolverHostMachineFallbackActive;
+  }
+
+  @Override
+  public SolverStub getSolverStub() {
+    return this.solverStub;
   }
 
   @JsonIgnore
@@ -167,6 +174,13 @@ public class ConfigJsonV2 implements ConfigJson {
   public static class SolverRemote {
 
     private CircuitBreaker circuitBreaker;
+
+  }
+
+  @Data
+  public static class SolverStub {
+
+    private String domainName;
 
   }
 
