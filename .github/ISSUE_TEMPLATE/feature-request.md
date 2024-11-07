@@ -27,6 +27,10 @@ Example
 Example
 > * Not to implement a full and complex DNS server
 
+## Non-Goals
+
+> What people would think it is supposed to do, but it is not? (Optional)
+
 ## Description
 
 > Explain the feature details and how it would work, usecases, examples, snippets of code,
