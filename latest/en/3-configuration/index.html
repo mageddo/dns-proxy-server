@@ -12,20 +12,20 @@
     <title>Configuration :: DNS Proxy Server</title>
 
     
-    <link href="/dns-proxy-server/latest/css/nucleus.css?1731008608" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/fontawesome-all.min.css?1731008608" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/hybrid.css?1731008608" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/featherlight.min.css?1731008608" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/perfect-scrollbar.min.css?1731008608" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/auto-complete.css?1731008608" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/atom-one-dark-reasonable.css?1731008608" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/theme.css?1731008608" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/hugo-theme.css?1731008608" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/nucleus.css?1731016627" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/fontawesome-all.min.css?1731016627" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/hybrid.css?1731016627" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/featherlight.min.css?1731016627" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/perfect-scrollbar.min.css?1731016627" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/auto-complete.css?1731016627" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/atom-one-dark-reasonable.css?1731016627" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/theme.css?1731016627" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/hugo-theme.css?1731016627" rel="stylesheet">
     
-      <link href="/dns-proxy-server/latest/css/theme-mine.css?1731008608" rel="stylesheet">
+      <link href="/dns-proxy-server/latest/css/theme-mine.css?1731016627" rel="stylesheet">
     
 
-    <script src="/dns-proxy-server/latest/js/jquery-3.3.1.min.js?1731008608"></script>
+    <script src="/dns-proxy-server/latest/js/jquery-3.3.1.min.js?1731016627"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -53,14 +53,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/dns-proxy-server/latest/js/lunr.min.js?1731008608"></script>
-<script type="text/javascript" src="/dns-proxy-server/latest/js/auto-complete.js?1731008608"></script>
+<script type="text/javascript" src="/dns-proxy-server/latest/js/lunr.min.js?1731016627"></script>
+<script type="text/javascript" src="/dns-proxy-server/latest/js/auto-complete.js?1731016627"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/mageddo.github.io\/dns-proxy-server\/latest\/en";
     
 </script>
-<script type="text/javascript" src="/dns-proxy-server/latest/js/search.js?1731008608"></script>
+<script type="text/javascript" src="/dns-proxy-server/latest/js/search.js?1731016627"></script>
 
     
   </div>
@@ -1123,6 +1123,10 @@
 <li><a href="#no-entries-response-code">No Entries Response Code</a></li>
 <li><a href="#local-entries-solving-localdb">Local Entries Solving (LocalDB)</a></li>
 <li><a href="#docker-solver-host-machine-ip-fallback">Docker Solver Host Machine IP Fallback</a></li>
+<li><a href="#stub-solver">Stub Solver</a>
+<ul>
+<li><a href="#stub-solver-domain-name">Stub Solver - Domain Name</a></li>
+</ul></li>
 </ul></li>
 <li><a href="#config-file-path">Config File Path</a>
 <ul>
@@ -1469,6 +1473,30 @@ Default: true</p>
 <tr>
 <td>MG_DOCKER_SOLVER_HOST_MACHINE_FALLBACK_ACTIVE</td>
 <td><code>dockerSolverHostMachineFallbackActive</code></td>
+<td>See -help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="stub-solver">Stub Solver</h3>
+
+<h4 id="stub-solver-domain-name">Stub Solver - Domain Name</h4>
+
+<p>The domain name used for stub solver resolved hostnames. Default: <code>stub</code>.</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>MG_STUB_SOLVER_DOMAIN_NAME</td>
+<td><code>solverStub.domainName</code></td>
 <td>See -help</td>
 </tr>
 </tbody>
@@ -2208,20 +2236,20 @@ value will be considered false.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/dns-proxy-server/latest/js/clipboard.min.js?1731008608"></script>
-    <script src="/dns-proxy-server/latest/js/perfect-scrollbar.min.js?1731008608"></script>
-    <script src="/dns-proxy-server/latest/js/perfect-scrollbar.jquery.min.js?1731008608"></script>
-    <script src="/dns-proxy-server/latest/js/jquery.sticky.js?1731008608"></script>
-    <script src="/dns-proxy-server/latest/js/featherlight.min.js?1731008608"></script>
-    <script src="/dns-proxy-server/latest/js/html5shiv-printshiv.min.js?1731008608"></script>
-    <script src="/dns-proxy-server/latest/js/highlight.pack.js?1731008608"></script>
+    <script src="/dns-proxy-server/latest/js/clipboard.min.js?1731016627"></script>
+    <script src="/dns-proxy-server/latest/js/perfect-scrollbar.min.js?1731016627"></script>
+    <script src="/dns-proxy-server/latest/js/perfect-scrollbar.jquery.min.js?1731016627"></script>
+    <script src="/dns-proxy-server/latest/js/jquery.sticky.js?1731016627"></script>
+    <script src="/dns-proxy-server/latest/js/featherlight.min.js?1731016627"></script>
+    <script src="/dns-proxy-server/latest/js/html5shiv-printshiv.min.js?1731016627"></script>
+    <script src="/dns-proxy-server/latest/js/highlight.pack.js?1731016627"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/dns-proxy-server/latest/js/modernizr.custom-3.6.0.js?1731008608"></script>
-    <script src="/dns-proxy-server/latest/js/learn.js?1731008608"></script>
-    <script src="/dns-proxy-server/latest/js/hugo-learn.js?1731008608"></script>
+    <script src="/dns-proxy-server/latest/js/modernizr.custom-3.6.0.js?1731016627"></script>
+    <script src="/dns-proxy-server/latest/js/learn.js?1731016627"></script>
+    <script src="/dns-proxy-server/latest/js/hugo-learn.js?1731016627"></script>
 
-    <link href="/dns-proxy-server/latest/mermaid/mermaid.css?1731008608" type="text/css" rel="stylesheet" />
-    <script src="/dns-proxy-server/latest/mermaid/mermaid.js?1731008608"></script>
+    <link href="/dns-proxy-server/latest/mermaid/mermaid.css?1731016627" type="text/css" rel="stylesheet" />
+    <script src="/dns-proxy-server/latest/mermaid/mermaid.js?1731016627"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
