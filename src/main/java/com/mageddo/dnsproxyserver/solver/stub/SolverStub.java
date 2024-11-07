@@ -6,7 +6,7 @@ import org.xbill.DNS.Message;
 
 /**
  * Extract the address from the hostname then answer.
- * Inspired at nip.io, see #545.
+ * Inspired at nip.io and sslip.io, see #545.
  */
 public class SolverStub implements Solver {
   @Override
