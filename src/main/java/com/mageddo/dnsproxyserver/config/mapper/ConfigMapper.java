@@ -55,7 +55,11 @@ public class ConfigMapper {
         .circuitBreaker(firstNonNullRequiring(mapField(Config::getSolverRemoteCircuitBreakerStrategy, configs)))
         .build()
       )
-      .solverStub(firstNonNullRequiring(mapField(Config::getSolverStub, configs)))
+      .solverStub(SolverStub
+        .builder()
+        .domainName(firstNonNullRequiring(mapField(Config::getSolverStubDomainName, configs)))
+        .build()
+      )
       .source(Config.Source.MERGED)
       .build();
     ConfigValidator.validate(config);

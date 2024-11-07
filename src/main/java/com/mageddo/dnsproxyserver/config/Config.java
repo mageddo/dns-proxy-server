@@ -102,6 +102,14 @@ public class Config {
     return this.solverRemote.getCircuitBreaker();
   }
 
+  @JsonIgnore
+  public String getSolverStubDomainName() {
+    if (this.solverStub == null) {
+      return null;
+    }
+    return this.solverStub.getDomainName();
+  }
+
   public enum Source {
     JSON,
     FLAG,

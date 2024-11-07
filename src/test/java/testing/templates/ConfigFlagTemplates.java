@@ -28,4 +28,8 @@ public class ConfigFlagTemplates {
   public static ConfigFlag empty() {
     return ConfigFlag.parse(ConfigFlagArgsTemplates.empty());
   }
+
+  public static ConfigFlag withStubSolverDomainName() {
+    return null;
+  }
 }
