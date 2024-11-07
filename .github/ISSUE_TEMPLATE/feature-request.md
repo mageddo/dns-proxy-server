@@ -24,12 +24,12 @@ Example
 
 > A simple, static DNS server
 
-Example
-> * Not to implement a full and complex DNS server
-
 ## Non-Goals
 
 > What people would think it is supposed to do, but it is not? (Optional)
+
+Example
+> * Not to implement a full and complex DNS server
 
 ## Description
 
