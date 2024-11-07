@@ -71,6 +71,9 @@ public class Config {
 
   private Boolean dockerSolverHostMachineFallbackActive;
 
+  @NonNull
+  private SolverStub solverStub;
+
   private SolverRemote solverRemote;
 
   @NonNull
