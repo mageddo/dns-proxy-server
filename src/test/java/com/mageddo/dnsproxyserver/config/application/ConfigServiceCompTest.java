@@ -18,6 +18,7 @@ import static com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig.Nam
 import static com.mageddo.utils.TestUtils.readAndSortJson;
 import static com.mageddo.utils.TestUtils.readAndSortJsonExcluding;
 import static com.mageddo.utils.TestUtils.readAsStream;
+import static com.mageddo.utils.TestUtils.readSortDonWriteNullsAndExcludeFields;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -119,7 +120,7 @@ class ConfigServiceCompTest {
 
   static void assertWrittenFile(String expectedFilePath, Path jsonConfigFile) {
     assertTrue(Files.exists(jsonConfigFile));
-    assertEquals(readAndSortJson(expectedFilePath), readAndSortJson(jsonConfigFile));
+    assertEquals(readAndSortJson(expectedFilePath), readSortDonWriteNullsAndExcludeFields(jsonConfigFile));
   }
 
   static void writeAndSetCustomConfigFile(Path tmpDir, String sourceConfigFile) {

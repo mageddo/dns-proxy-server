@@ -158,4 +158,13 @@ public class TestUtils {
     }
   }
 
+  @SneakyThrows
+  public static String readAsStringAndExcludeNullFields(Path path) {
+    final var in = Files.newInputStream(path);
+    try(in){
+      final var tree = JsonUtils.readTree(in);
+      stripNulls(tree);
+      return tree.toPrettyString();
+    }
+  }
 }
