@@ -9,7 +9,7 @@ public class Ipv6Parser implements Parser {
     if (isIpv6(addressExpression)) {
       return IP.of(addressExpression.replaceAll("-", ":"));
     }
-    throw new CantParseException("Not ipv6 address: " + addressExpression);
+    throw new ParseException("Not ipv6 address: " + addressExpression);
   }
 
   private static boolean isIpv6(String addressExpression) {
