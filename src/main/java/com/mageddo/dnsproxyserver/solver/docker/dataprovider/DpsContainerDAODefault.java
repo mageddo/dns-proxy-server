@@ -55,7 +55,7 @@ public class DpsContainerDAODefault implements DpsContainerDAO {
     return containers
       .stream()
       .findFirst()
-      .map(it -> this.containerFacade.inspect(it.getId()))
+      .flatMap(it -> this.containerFacade.inspect(it.getId()))
       .map(ContainerMapper::of)
       .orElse(null);
   }

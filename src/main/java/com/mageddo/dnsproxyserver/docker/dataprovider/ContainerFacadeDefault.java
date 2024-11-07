@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.docker.dataprovider;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.InspectContainerResponse;
+import com.github.dockerjava.api.exception.NotFoundException;
 import com.github.dockerjava.api.model.Container;
 import com.mageddo.dnsproxyserver.docker.application.Containers;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Default
@@ -44,7 +46,15 @@ public class ContainerFacadeDefault implements ContainerFacade {
   }
 
   @Override
-  public InspectContainerResponse inspect(String id) {
-    return this.dockerClient.inspectContainerCmd(id).exec();
+  public Optional<InspectContainerResponse> inspect(String id) {
+    try {
+      return Optional.of(this.dockerClient.inspectContainerCmd(id).exec());
+    } catch (NotFoundException e) {
+      log.warn("status=container-not-found, action=inspect-container, containerId={}", id);
+    } catch (Exception e) {
+      log.warn("status=unexpected-exception, action=inspect-container, containerId={}, msg={}", id, e.getMessage(), e);
+    }
+
+    return Optional.empty();
   }
 }

@@ -28,7 +28,7 @@ public class ContainerDAODefault implements ContainerDAO {
   public List<Container> findActiveContainersMatching(HostnameQuery query) {
     return this.containerFacade.findActiveContainers()
       .stream()
-      .map(it -> this.containerFacade.inspect(it.getId()))
+      .flatMap(it -> this.containerFacade.inspect(it.getId()).stream())
       .filter(ContainerHostnameMatcher.buildPredicate(query))
       .map(ContainerMapper::of)
       .toList();
