@@ -1,3 +1,6 @@
+## 3.32.0
+* Implementing Stub Solver but not exposing. #545
+
 ## 3.31.1
 * Adjusting Canary Rate Threshold Circuit Breaker to mark all circuits as open at the start. #533
 
