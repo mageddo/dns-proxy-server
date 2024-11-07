@@ -4,7 +4,7 @@ import com.mageddo.net.IpAddr;
 
 public class HostnameIpExtractor {
   public static IpAddr extract(String hostname, String domain) {
-    removeDomainFrom(hostname, domain);
+    hostname = removeDomainFrom(hostname, domain);
     return IpAddr.of("192.168.0.1");
   }
 
@@ -15,4 +15,9 @@ public class HostnameIpExtractor {
     }
     return hostname.substring(0, idx - 1);
   }
+
+//  static String findValidSeparators(String str){
+//    final var groups = Regexes.groups(str, "([-_\\.]+)");
+//    groups.size()
+//  }
 }
