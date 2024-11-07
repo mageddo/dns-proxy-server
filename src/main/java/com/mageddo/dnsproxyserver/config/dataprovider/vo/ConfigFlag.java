@@ -191,6 +191,15 @@ public class ConfigFlag implements Callable<Boolean> {
   private Boolean dockerSolverHostMachineFallbackActive;
 
   @Option(
+    names = {"-stub-solver-domain-name", "--stub-solver-domain-name"},
+    description = """
+      The domain name used for stub solver resolved hostnames.
+      """,
+    defaultValue = "stub"
+  )
+  private String stubSolverDomainName;
+
+  @Option(
     hidden = true,
     names = {"-create-tmp-dir", "--create-tmp-dir"}, defaultValue = "false",
     description = "Create the dir set as tmp in the jvm if it doesn't exists yet."

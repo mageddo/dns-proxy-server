@@ -18,6 +18,7 @@
   "dpsNetwork" : false,
   "dpsNetworkAutoConnect" : false,
   "help" : false,
+  "stubSolverDomainName" : "stub",
   "resolvConfOverrideNameServers" : true,
   "createTmpDir" : false
 }

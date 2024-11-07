@@ -3,7 +3,8 @@ Usage: <main class> [-default-dns] [-docker-solver-host-machine-fallback] [-dps-
                     [-service-publish-web-port] [-version] [-conf-path=<configFilePath>] [-docker-host=<dockerHost>]
                     [-domain=<domain>] [-host-machine-hostname=<hostMachineHostname>] [-log-file=<logToFile>]
                     [-log-level=<logLevel>] [-no-entries-response-code=<noEntriesResponseCode>]
-                    [-server-port=<dnsServerPort>] [-service=<service>] [-web-server-port=<webServerPort>]
+                    [-server-port=<dnsServerPort>] [-service=<service>]
+                    [-stub-solver-domain-name=<stubSolverDomainName>] [-web-server-port=<webServerPort>]
       -conf-path, --conf-path=<configFilePath>
                             The config file path (default conf/config.json)
       -default-dns, --default-dns
@@ -62,6 +63,9 @@ Usage: <main class> [-default-dns] [-docker-solver-host-machine-fallback] [-dps-
 
       -service-publish-web-port, --service-publish-web-port
                             Publish web port when running as service in docker mode (default true)
+      -stub-solver-domain-name, --stub-solver-domain-name=<stubSolverDomainName>
+                            The domain name used for stub solver resolved hostnames.
+
       -version, --version   Shows the current version (default false)
       -web-server-port, --web-server-port=<webServerPort>
                             The web server port (default 5380)
