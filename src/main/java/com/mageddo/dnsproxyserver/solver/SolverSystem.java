@@ -1,12 +1,10 @@
 package com.mageddo.dnsproxyserver.solver;
 
-import com.mageddo.commons.lang.Objects;
-import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
-import com.mageddo.dnsproxyserver.config.application.Configs;
-import com.mageddo.dnsproxyserver.config.ConfigEntryTypes;
 import com.mageddo.dns.utils.Messages;
+import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
+import com.mageddo.dnsproxyserver.config.ConfigEntryTypes;
+import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.usecase.HostMachineService;
-import com.mageddo.net.IP;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.xbill.DNS.Message;
@@ -36,10 +34,7 @@ public class SolverSystem implements Solver {
     if (hostname.isEqualTo(config.getHostMachineHostname())) { // fixme fazer case com hostname + search domain
       final var ip = this.machineService.findHostMachineIP(questionType.toVersion());
       log.debug("status=solvingHostMachineName, host={}, ip={}", hostname, ip);
-      return Response.of(
-        Messages.answer(query, Objects.mapOrNull(ip, IP::toText), questionType.toVersion()),
-        Messages.DEFAULT_TTL_DURATION
-      );
+      return ResponseMapper.toDefaultSuccessAnswer(query, ip);
     }
     return null;
   }
