@@ -27,5 +27,8 @@
       "testDelay" : 20.0
     }
   },
+  "solverStub" : {
+    "domainName" : "stub"
+  },
   "webServerPort" : 5380
 }
