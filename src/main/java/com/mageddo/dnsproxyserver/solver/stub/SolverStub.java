@@ -25,7 +25,7 @@ import static com.mageddo.dns.utils.Messages.findQuestionTypeCode;
 @AllArgsConstructor(onConstructor = @__({@Inject}))
 public class SolverStub implements Solver {
 
-  public static final String DOMAIN_NAME = "docker";
+  public static final String DOMAIN_NAME = "stub";
 
   @Override
   public Response handle(Message query) {
@@ -45,6 +45,10 @@ public class SolverStub implements Solver {
     if (foundIp == null) {
       log.debug("status=notSolved, hostname={}", hostname);
       return null;
+    }
+    if (!foundIp.isVersionEqualsTo(questionType.toVersion())) {
+      log.debug("status=incompatibleIpAndQueryType, hostname={}, questionType={}", hostname, questionType);
+      return Response.nxDomain(query);
     }
     log.debug("status=solved, host={}, ip={}", hostname, foundIp);
     return ResponseMapper.toDefaultSuccessAnswer(query, foundIp, questionType.toVersion());

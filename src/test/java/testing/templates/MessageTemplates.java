@@ -44,11 +44,15 @@ public class MessageTemplates {
     return answer;
   }
 
-  public static Message hostDockerAQuery() {
-    return Messages.aQuestion(HostnameTemplates.HOST_DOCKER);
+  public static Message stubAQueryWithoutIp() {
+    return Messages.aQuestion("dps.stub");
   }
 
-  public static Message dpsStubDockerAQuery() {
-    return Messages.aQuestion("dps-192.168.3.1.docker");
+  public static Message dpsStubAQuery() {
+    return Messages.aQuestion("dps-192.168.3.1.stub");
+  }
+
+  public static Message stubAQueryWithIpv6AnswerIp() {
+    return Messages.aQuestion("dps.a--1.stub");
   }
 }

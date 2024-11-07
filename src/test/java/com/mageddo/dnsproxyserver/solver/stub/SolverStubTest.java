@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.xbill.DNS.Rcode;
 import testing.templates.MessageTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,7 +38,7 @@ class SolverStubTest {
 
   @Test
   void mustFindRightIpAddress(){
-    final var query = MessageTemplates.dpsStubDockerAQuery();
+    final var query = MessageTemplates.dpsStubAQuery();
 
     final var response = this.solver.handle(query);
 
@@ -47,10 +48,20 @@ class SolverStubTest {
 
   @Test
   void willIgnoreHostnameWithRightDomainButNotEmbeddedIp(){
-    final var query = MessageTemplates.hostDockerAQuery();
+    final var query = MessageTemplates.stubAQueryWithoutIp();
 
     final var response = this.solver.handle(query);
 
     assertNull(response);
+  }
+
+  @Test
+  void mustAnswerNxWhenQueryTypeIsNotEqualsToIpVersion(){
+    final var query = MessageTemplates.stubAQueryWithIpv6AnswerIp();
+
+    final var response = this.solver.handle(query);
+
+    assertNotNull(response);
+    assertEquals(Rcode.NXDOMAIN, response.getRCode());
   }
 }

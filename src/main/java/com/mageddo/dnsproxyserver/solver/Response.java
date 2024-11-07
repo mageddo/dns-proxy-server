@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
 import org.xbill.DNS.Message;
+import org.xbill.DNS.Rcode;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -50,6 +51,9 @@ public class Response {
   }
 
   public static Response nxDomain(Message message) {
+    if (!Messages.isNxDomain(message)) {
+      Messages.withResponseCode(message, Rcode.NXDOMAIN);
+    }
     return of(message, DEFAULT_NXDOMAIN_TTL);
   }
 
@@ -73,5 +77,9 @@ public class Response {
     return this.toBuilder()
       .dpsTtl(ttl)
       .build();
+  }
+
+  public int getRCode() {
+    return this.message.getRcode();
   }
 }

@@ -37,6 +37,10 @@ public interface IP {
 
   boolean notEqualTo(String ip);
 
+  default boolean isVersionEqualsTo(Version version){
+    return this.version().equals(version);
+  }
+
   enum Version {
 
     IPV4,

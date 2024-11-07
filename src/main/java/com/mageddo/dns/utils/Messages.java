@@ -269,7 +269,11 @@ public class Messages {
     return res;
   }
 
-  static Message withDefaultResponseHeaders(Message res) {
+  public static int getRCode(Message m){
+    return m.getRcode();
+  }
+
+  public static Message withDefaultResponseHeaders(Message res) {
     final var header = res.getHeader();
     header.setFlag(Flags.QR);
     header.setFlag(Flags.RA);
@@ -304,5 +308,9 @@ public class Messages {
 
   public static String findAnswerRawIP(Message res) {
     return findFirstAnswerRecord(res).rdataToString();
+  }
+
+  public static boolean isNxDomain(Message m) {
+    return m.getRcode() == Rcode.NXDOMAIN;
   }
 }
