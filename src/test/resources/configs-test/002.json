@@ -5,7 +5,7 @@
       "hostname" : "dps-sample.dev",
       "id" : 1,
       "ip" : "192.168.0.254",
-g      "ttl" : 30,
+      "ttl" : 30,
       "type" : "A"
     } ],
     "name" : ""
