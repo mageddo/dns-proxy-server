@@ -1,0 +1,2193 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.55.4" />
+    <meta name="description" content="Documentation for DPS">
+<meta name="author" content="Elvis Souza">
+
+    <link rel="icon" href="/dns-proxy-server/3.32/images/favicon.png" type="image/png">
+
+    <title>Configuration :: DNS Proxy Server</title>
+
+    
+    <link href="/dns-proxy-server/3.32/css/nucleus.css?1731002353" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/fontawesome-all.min.css?1731002353" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/hybrid.css?1731002353" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/featherlight.min.css?1731002353" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/perfect-scrollbar.min.css?1731002353" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/auto-complete.css?1731002353" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/atom-one-dark-reasonable.css?1731002353" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/theme.css?1731002353" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/hugo-theme.css?1731002353" rel="stylesheet">
+    
+      <link href="/dns-proxy-server/3.32/css/theme-mine.css?1731002353" rel="stylesheet">
+    
+
+    <script src="/dns-proxy-server/3.32/js/jquery-3.3.1.min.js?1731002353"></script>
+
+    <style type="text/css">
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    <link href="/dns-proxy-server/3.32/css/style.css" rel="stylesheet" type="text/css" />
+
+  </head>
+  <body class="" data-url="/dns-proxy-server/3.32/en/3-configuration/">
+    <nav id="sidebar" class="showVisitedLinks">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a id="logo" href="http://mageddo.github.io/dns-proxy-server/3.32" style="font-size: 40pt;font-weight: 600;color: #E2E2EF;" >DPS</a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/dns-proxy-server/3.32/js/lunr.min.js?1731002353"></script>
+<script type="text/javascript" src="/dns-proxy-server/3.32/js/auto-complete.js?1731002353"></script>
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/mageddo.github.io\/dns-proxy-server\/3.32\/en";
+    
+</script>
+<script type="text/javascript" src="/dns-proxy-server/3.32/js/search.js?1731002353"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/1-getting-started/" title="Getting Started" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/1-getting-started/">
+          <b>1. </b>Getting Started
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/1-getting-started/running-it/" title="Running it" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/1-getting-started/running-it/">
+          Running it
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/1-getting-started/running-it/linux/" title="Linux running instructions" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/1-getting-started/running-it/linux/">
+          Linux running instructions
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/1-getting-started/running-it/mac/" title="MacOSX running instructions" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/1-getting-started/running-it/mac/">
+          MacOSX running instructions
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/1-getting-started/running-it/windows/" title="Windows running instructions" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/1-getting-started/running-it/windows/">
+          Windows running instructions
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/1-getting-started/requirements/" title="Requirements" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/1-getting-started/requirements/">
+          Requirements
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dns-proxy-server/3.32/en/1-getting-started/versioning/" title="Release Version Control" class="dd-item ">
+        <a href="/dns-proxy-server/3.32/en/1-getting-started/versioning/">
+        Release Version Control
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/2-features/" title="Features" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/2-features/">
+          <b>2. </b>Features
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/2-features/auto-configuration-as-default-dns/" title="Auto configure host default DNS" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/2-features/auto-configuration-as-default-dns/">
+          Auto configure host default DNS
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/2-features/gui/" title="GUI Dashboard" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/2-features/gui/">
+          GUI Dashboard
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/2-features/installing-as-service/" title="Installing DPS as service" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/2-features/installing-as-service/">
+          Installing DPS as service
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/2-features/solving-hostnames-wildcard/" title="Wildcards hostnames Solving" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/2-features/solving-hostnames-wildcard/">
+          Wildcards hostnames Solving
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/2-features/docker-solving/" title="Solving Docker Containers from Hostname" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/2-features/docker-solving/">
+          Solving Docker Containers from Hostname
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/2-features/logs/" title="Configuring logs" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/2-features/logs/">
+          Configuring logs
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/2-features/solving-host-machine-ip/" title="Solve host machine IP from anywhere" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/2-features/solving-host-machine-ip/">
+          Solve host machine IP from anywhere
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/2-features/accessing-container-by-name/" title="Access container by its container name / service name" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/2-features/accessing-container-by-name/">
+          Access container by its container name / service name
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/2-features/specify-from-which-network-solve-container/" title="Specify from which network solve container IP" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/2-features/specify-from-which-network-solve-container/">
+          Specify from which network solve container IP
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/2-features/dps-network-resolution/" title="DPS Docker Network" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/2-features/dps-network-resolution/">
+          DPS Docker Network
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/2-features/multiple-environments/" title="Multiple Environments" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/2-features/multiple-environments/">
+          Multiple Environments
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/2-features/docker-different-networks-solving/" title="Different Docker Networks Solving" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/2-features/docker-different-networks-solving/">
+          Different Docker Networks Solving
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/2-features/local-entries/" title="Local Entries Solving (LocalDB)" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/2-features/local-entries/">
+          Local Entries Solving (LocalDB)
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/2-features/remote-solver-circuitbreaker/" title="Remote Solver Circuit Breaker" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/2-features/remote-solver-circuitbreaker/">
+          Remote Solver Circuit Breaker
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/3-configuration/" title="Configuration" class="dd-item 
+        parent
+        active
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/3-configuration/">
+          <b>3. </b>Configuration
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/5-tutorials/" title="Tutorials" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/5-tutorials/">
+          <b>4. </b>Tutorials
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dns-proxy-server/3.32/en/5-tutorials/docker-reverse-proxy/" title="Configuring a Service Discovery solution on Docker using DNS Proxy Server and NGINX" class="dd-item ">
+        <a href="/dns-proxy-server/3.32/en/5-tutorials/docker-reverse-proxy/">
+        Create a Service Discovery solution
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/4-developing/" title="Developing" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/4-developing/">
+          <b>5. </b>Developing
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dns-proxy-server/3.32/en/4-developing/compiling/" title="Compiling from source" class="dd-item ">
+        <a href="/dns-proxy-server/3.32/en/4-developing/compiling/">
+        <b>1. </b>Compiling from source
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dns-proxy-server/3.32/en/4-developing/generating-docs/" title="Generating the docs" class="dd-item ">
+        <a href="/dns-proxy-server/3.32/en/4-developing/generating-docs/">
+        <b>2. </b>Generating the docs
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dns-proxy-server/3.32/en/4-developing/releasing/" title="Release Process" class="dd-item ">
+        <a href="/dns-proxy-server/3.32/en/4-developing/releasing/">
+        <b>3. </b>Release Process
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dns-proxy-server/3.32/en/4-developing/stress-tests/" title="Stress Tests" class="dd-item ">
+        <a href="/dns-proxy-server/3.32/en/4-developing/stress-tests/">
+        <b>4. </b>Stress Tests
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/api/" title="API" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/api/">
+          <b>6. </b>API
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dns-proxy-server/3.32/en/api/v1/networks/" title="V1 Network API" class="dd-item ">
+        <a href="/dns-proxy-server/3.32/en/api/v1/networks/">
+        V1 Network API
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/versions/" title="Versions" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/versions/">
+          <b>7. </b>Versions
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3>More</h3>
+        <ul>
+          
+              <li> 
+                  <a class="padding" href="https://github.com/mageddo/dns-proxy-server"><i class='fab fa-fw fa-github'></i> Github repo</a>
+              </li>
+          
+              <li> 
+                  <a class="padding" href="http://mageddo.github.io/dns-proxy-server/3.32/en/showcase"><i class='fas fa-fw fa-camera'></i> Showcases</a>
+              </li>
+          
+              <li> 
+                  <a class="padding" href="http://mageddo.github.io/dns-proxy-server/3.32/en/credits"><i class='fas fa-fw fa-bullhorn'></i> Credits</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+        <li>
+          <a class="padding">
+            <i class="fas fa-language fa-fw"></i>
+          <div class="select-style">
+            <select id="select-language" onchange="location = this.value;">
+          
+          
+          
+              
+              
+                  
+                    
+                    
+                      <option id="en" value="http://mageddo.github.io/dns-proxy-server/3.32/en/3-configuration/" selected>English</option>
+                    
+                  
+              
+                  
+              
+          
+        </select>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+          <g>
+            <g id="arrow-drop-down">
+              <polygon points="0,63.75 127.5,191.25 255,63.75 		" />
+            </g>
+          </g>
+        </svg>
+        </div>
+        </a>
+        </li>
+      
+      
+      
+        <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      <a class="github-button" href="https://github.com/mageddo/dns-proxy-server/releases" data-icon="octicon-cloud-download" aria-label="Download DPS on GitHub">Download</a>
+
+
+<a class="github-button" href="https://github.com/mageddo/dns-proxy-server" data-icon="octicon-star" data-show-count="true" aria-label="Star DPS on GitHub">Star</a>
+
+
+<a class="github-button" href="https://github.com/mageddo/dns-proxy-server/fork" data-icon="octicon-repo-forked" data-show-count="true" aria-label="Fork DPS on GitHub">Fork</a>
+
+<p>Built with <a href="https://github.com/mageddo/dns-proxy-server/"><i class="fas fa-heart"></i></a></p>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/mageddo/dns-proxy-server/edit/master/docs/content/3-configuration/_index.en.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            <a href='/dns-proxy-server/3.32/en/'>Getting Started</a> > Configuration
+          
+         
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+  <div class="wrapper">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#configs">Configs</a>
+<ul>
+<li><a href="#remote-dns-servers">Remote DNS Servers</a></li>
+<li><a href="#web-server-port">Web Server Port</a></li>
+<li><a href="#dns-server-port">DNS Server Port</a></li>
+<li><a href="#log-level">Log Level</a></li>
+<li><a href="#log-file">Log File</a></li>
+<li><a href="#register-container-names">Register Container Names</a></li>
+<li><a href="#domain">Domain</a></li>
+<li><a href="#dps-network">DPS Network</a></li>
+<li><a href="#dps-network-auto-connect">DPS Network Auto Connect</a></li>
+<li><a href="#default-dns">Default DNS</a></li>
+<li><a href="#host-machine-hostname">Host Machine Hostname</a></li>
+<li><a href="#server-protocol">Server Protocol</a></li>
+<li><a href="#docker-host">Docker Host</a></li>
+<li><a href="#resolvconf-override-name-servers">Resolvconf Override Name Servers</a></li>
+<li><a href="#resolvconf">Resolvconf</a></li>
+<li><a href="#no-remote-servers">No Remote Servers</a></li>
+<li><a href="#active-env">Active Env</a></li>
+<li><a href="#no-entries-response-code">No Entries Response Code</a></li>
+<li><a href="#local-entries-solving-localdb">Local Entries Solving (LocalDB)</a></li>
+<li><a href="#docker-solver-host-machine-ip-fallback">Docker Solver Host Machine IP Fallback</a></li>
+</ul></li>
+<li><a href="#config-file-path">Config File Path</a>
+<ul>
+<li><a href="#config-file-path-1">Config File Path</a></li>
+<li><a href="#working-dir-optional">Working Dir (Optional)</a></li>
+</ul></li>
+<li><a href="#example-json-configuration">Example JSON configuration</a></li>
+<li><a href="#environment-variable-configuration">Environment variable configuration</a></li>
+<li><a href="#terminal-configuration">Terminal configuration</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              Configuration
+            </h1>
+          
+
+        
+
+
+
+
+	
+
+<h2 id="configs">Configs</h2>
+
+<h3 id="remote-dns-servers">Remote DNS Servers</h3>
+
+<p>Remote DNS servers to be asked when can not solve from docker or local storage.
+Default: <code>8.8.8.8</code>.</p>
+
+<h3 id="web-server-port">Web Server Port</h3>
+
+<p>Web GUI port, Default: <code>5380</code>.</p>
+
+<h3 id="dns-server-port">DNS Server Port</h3>
+
+<p>Default: <code>53</code>.</p>
+
+<h3 id="log-level">Log Level</h3>
+
+<p>Default: <code>INFO</code>.</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>MG_LOG_LEVEL</code></td>
+<td><code>logLevel</code></td>
+<td>See &ndash;help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="log-file">Log File</h3>
+
+<p>Where the log will be written. Default: console.</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>MG_LOG_FILE</code></td>
+<td><code>logFile</code></td>
+<td>See &ndash;help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="register-container-names">Register Container Names</h3>
+
+<p>If should register container name / service name as a hostname. Default: false.</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>MG_REGISTER_CONTAINER_NAMES</code></td>
+<td><code>registerContainerNames</code></td>
+<td>See &ndash;help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="domain">Domain</h3>
+
+<p>The container names domain used on the registered container, services. Default: <code>docker</code>.</p>
+
+<p>Ex:</p>
+
+<pre><code class="language-bash">docker run --rm --name nginx nginx
+</code></pre>
+
+<p>Will register a container with the name <code>nginx.docker</code></p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>MG_DOMAIN</code></td>
+<td><code>domain</code></td>
+<td>See &ndash;help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="dps-network">DPS Network</h3>
+
+<p>If should create a bridge network for dps container. Default: false.</p>
+
+<h3 id="dps-network-auto-connect">DPS Network Auto Connect</h3>
+
+<p>If should connect all containers to dps container so they can surely talk with each other. requires DPS Network Option.
+Default: false.</p>
+
+<h3 id="default-dns">Default DNS</h3>
+
+<p>If DPS must be set as the default DNS automatically, commonly requires DPS be run as sudo/administrator permissions,
+this options also won&rsquo;t work in some cases when running inside a docker container, <a href="/dns-proxy-server/3.32/en/2-features/auto-configuration-as-default-dns/">see the feature details</a>.</p>
+
+<h3 id="host-machine-hostname">Host Machine Hostname</h3>
+
+<p>Hostname to solve machine IP, domain can be changed by Domain option. Default: <code>host.docker</code>.</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>MG_HOST_MACHINE_HOSTNAME</code></td>
+<td><code>hostMachineHostname</code></td>
+<td>See &ndash;help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="server-protocol">Server Protocol</h3>
+
+<p>Protocol to start the dns server. Default: <code>UDP_TCP</code>.</p>
+
+<h3 id="docker-host">Docker Host</h3>
+
+<p>Docker host address. Default value is SO dependent.</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>MG_DOCKER_HOST</code></td>
+<td><code>dockerHost</code></td>
+<td>See &ndash;help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="resolvconf-override-name-servers">Resolvconf Override Name Servers</h3>
+
+<p>If must comment all existing nameservers at <code>resolv.conf</code> file (Linux, MacOS) or just put DPS at the first place.
+Default: true.</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>MG_RESOLVCONF_OVERRIDE_NAMESERVERS</code></td>
+<td><code>resolvConfOverrideNameServers</code></td>
+<td>See &ndash;help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="resolvconf">Resolvconf</h3>
+
+<p>Linux/Mac resolvconf or systemd-resolved path to set DPS as default DNS.
+Default: <code>/host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf</code>.</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>MG_RESOLVCONF</td>
+<td></td>
+<td>See &ndash;help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="no-remote-servers">No Remote Servers</h3>
+
+<p>If remote servers like 8.8.8.8 must be disabled and only local solvers like docker containers or local db must be used.
+Default: false.</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>MG_NO_REMOTE_SERVERS</code></td>
+<td><code>noRemoteServers</code></td>
+<td>See &ndash;help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="active-env">Active Env</h3>
+
+<p>Active Env used to query local db entries. Default `` (Empty String).</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td></td>
+<td><code>activeEnv</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="no-entries-response-code">No Entries Response Code</h3>
+
+<p>Response code to use when no entries are returned by the configured solvers. Default: 3</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>MG_NO_ENTRIES_RESPONSE_CODE</td>
+<td><code>noEntriesResponseCode</code></td>
+<td>See -help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="local-entries-solving-localdb">Local Entries Solving (LocalDB)</h3>
+
+<p>See <a href="/dns-proxy-server/3.32/en/2-features/local-entries/">Local Entries Solving</a> docs.</p>
+
+<h3 id="docker-solver-host-machine-ip-fallback">Docker Solver Host Machine IP Fallback</h3>
+
+<p>Whether should answer host machine IP when a matching container is found but it hasn&rsquo;t
+an IP to be answered, see Github Issue <a href="https://github.com/mageddo/dns-proxy-server/issues/442">#442</a>.
+Default: true</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>MG_DOCKER_SOLVER_HOST_MACHINE_FALLBACK_ACTIVE</td>
+<td><code>dockerSolverHostMachineFallbackActive</code></td>
+<td>See -help</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="config-file-path">Config File Path</h2>
+
+<p>The location of the external config file (as the JSON file) can be changed by setting two variables:</p>
+
+<h3 id="config-file-path-1">Config File Path</h3>
+
+<p>Relative or absolute path to the config file. Default: <code>conf/config.json</code></p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>MG_CONFIG_FILE_PATH</td>
+<td>N/A</td>
+<td>See -help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="working-dir-optional">Working Dir (Optional)</h3>
+
+<p>Is the path which will be used when <strong>ConfigFilePath</strong> is set as a relative path.
+Default: <code>DPS executing path, aka Working Directory</code>.</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>MG_WORK_DIR</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="example-json-configuration">Example JSON configuration</h2>
+
+<p><strong>Version 2</strong></p>
+
+<pre><code class="language-json">{
+  &quot;version&quot;: 2,
+  &quot;remoteDnsServers&quot;: [ &quot;8.8.8.8&quot;, &quot;4.4.4.4:54&quot; ],
+  &quot;envs&quot;: [
+    {
+      &quot;name&quot;: &quot;&quot;, // empty string is the default enviroment
+      &quot;hostnames&quot;: [ // all local hostnames entries
+        {
+          &quot;id&quot;: 1, // (optional) used to control it will be automatically generated if not passed
+          &quot;type&quot;: &quot;A&quot;,
+          &quot;hostname&quot;: &quot;github.com&quot;,
+          &quot;ip&quot;: &quot;192.168.0.1&quot;,
+          &quot;ttl&quot;: 255 // how many seconds cache this entry
+        }
+      ]
+    }
+  ],
+  &quot;activeEnv&quot;: &quot;&quot;, 
+  &quot;webServerPort&quot;: 5380, 
+  &quot;dnsServerPort&quot;: 53, 
+  &quot;logLevel&quot;: &quot;INFO&quot;,
+  &quot;logFile&quot;: &quot;console&quot;,
+  &quot;registerContainerNames&quot;: false, 
+  &quot;domain&quot;: &quot;docker&quot;, 
+  &quot;dpsNetwork&quot;: false,
+  &quot;dpsNetworkAutoConnect&quot;: false, 
+  &quot;defaultDns&quot;: true,
+  &quot;hostMachineHostname&quot; : &quot;host.docker&quot;, 
+  &quot;serverProtocol&quot;: &quot;UDP_TCP&quot;, 
+  &quot;dockerHost&quot;: null,
+  &quot;resolvConfOverrideNameServers&quot;: true,
+  &quot;noRemoteServers&quot;: false,
+  &quot;noEntriesResponseCode&quot;: 3,
+  &quot;dockerSolverHostMachineFallbackActive&quot;: true,
+  &quot;solverRemote&quot; : {
+    &quot;circuitBreaker&quot; : { 
+      &quot;failureThreshold&quot; : 3, // how many attempts before open the circuit?
+      &quot;failureThresholdCapacity&quot; : 10, // how many attempts store to the stack?
+      &quot;successThreshold&quot; : 5, // how many attempts before close the circuit?
+      &quot;testDelay&quot; : &quot;PT20S&quot; // how many time to wait before test the circuit again?, see https://docs.oracle.com/javase/8/docs/api/java/time/Duration.html#toString-- for format explanation
+    }
+  }
+}
+</code></pre>
+
+<h2 id="environment-variable-configuration">Environment variable configuration</h2>
+
+<p>Boolean values</p>
+
+<blockquote>
+<p>You can use <code>1</code> or <code>true</code> (case insensitive) to specify which the flag is activated, any other
+value will be considered false.</p>
+</blockquote>
+
+<h2 id="terminal-configuration">Terminal configuration</h2>
+
+<p>Run one of the commands below to get the commandline instructions help:</p>
+
+<pre><code class="language-bash">$ ./dns-proxy-server --help
+</code></pre>
+
+<pre><code class="language-bash">$ docker run defreitas/dns-proxy-server --help
+</code></pre>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/dns-proxy-server/3.32/en/2-features/remote-solver-circuitbreaker/" title="Remote Solver Circuit Breaker"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/dns-proxy-server/3.32/en/5-tutorials/" title="Tutorials" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/dns-proxy-server/3.32/js/clipboard.min.js?1731002353"></script>
+    <script src="/dns-proxy-server/3.32/js/perfect-scrollbar.min.js?1731002353"></script>
+    <script src="/dns-proxy-server/3.32/js/perfect-scrollbar.jquery.min.js?1731002353"></script>
+    <script src="/dns-proxy-server/3.32/js/jquery.sticky.js?1731002353"></script>
+    <script src="/dns-proxy-server/3.32/js/featherlight.min.js?1731002353"></script>
+    <script src="/dns-proxy-server/3.32/js/html5shiv-printshiv.min.js?1731002353"></script>
+    <script src="/dns-proxy-server/3.32/js/highlight.pack.js?1731002353"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/dns-proxy-server/3.32/js/modernizr.custom-3.6.0.js?1731002353"></script>
+    <script src="/dns-proxy-server/3.32/js/learn.js?1731002353"></script>
+    <script src="/dns-proxy-server/3.32/js/hugo-learn.js?1731002353"></script>
+
+    <link href="/dns-proxy-server/3.32/mermaid/mermaid.css?1731002353" type="text/css" rel="stylesheet" />
+    <script src="/dns-proxy-server/3.32/mermaid/mermaid.js?1731002353"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-105947713-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  </body>
+</html>
