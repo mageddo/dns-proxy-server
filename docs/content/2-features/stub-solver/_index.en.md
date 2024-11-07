@@ -38,11 +38,11 @@ ${name}[.-]${ip_address}.stub
 
 ### Customize the domain name
 
-<tbd>
+&#x3C;tbd&#x3E;
 
 ## Refs
 
 * [Stub Solver #545][1]
 
  
-* [1]: https://github.com/mageddo/dns-proxy-server/issues/545
+[1]: https://github.com/mageddo/dns-proxy-server/issues/545
