@@ -4,7 +4,7 @@ import com.mageddo.net.IP;
 
 import java.util.List;
 
-public class AddressExpressionMapper {
+public class AddressExpressions {
 
   public static IP toIp(String addressExpression) {
     RuntimeException lastException = null;

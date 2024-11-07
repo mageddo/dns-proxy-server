@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.solver.stub;
 
-import com.mageddo.dnsproxyserver.solver.stub.addressexpression.AddressExpressionMapper;
+import com.mageddo.dnsproxyserver.solver.stub.addressexpression.AddressExpressions;
 import com.mageddo.dnsproxyserver.solver.stub.addressexpression.ParseException;
 import com.mageddo.net.IP;
 import org.apache.commons.lang3.Validate;
@@ -12,7 +12,7 @@ public class HostnameIpExtractor {
     RuntimeException lastException = null;
     for (int i = 0; i < hostname.length(); i++) {
       try {
-        return AddressExpressionMapper.toIp(hostname.substring(i));
+        return AddressExpressions.toIp(hostname.substring(i));
       } catch (ParseException e) {
         lastException = e;
       }
