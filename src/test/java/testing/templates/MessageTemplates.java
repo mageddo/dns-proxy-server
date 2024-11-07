@@ -44,6 +44,10 @@ public class MessageTemplates {
     return answer;
   }
 
+  public static Message hostDockerAQuery() {
+    return Messages.aQuestion(HostnameTemplates.HOST_DOCKER);
+  }
+
   public static Message dpsStubDockerAQuery() {
     return Messages.aQuestion("dps-192.168.3.1.docker");
   }

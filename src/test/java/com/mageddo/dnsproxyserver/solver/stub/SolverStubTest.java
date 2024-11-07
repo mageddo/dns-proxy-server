@@ -44,4 +44,13 @@ class SolverStubTest {
     assertNotNull(response);
     assertEquals("192.168.3.1", Messages.findAnswerRawIP(response.getMessage()));
   }
+
+  @Test
+  void willIgnoreHostnameWithRightDomainButNotEmbeddedIp(){
+    final var query = MessageTemplates.hostDockerAQuery();
+
+    final var response = this.solver.handle(query);
+
+    assertNull(response);
+  }
 }
