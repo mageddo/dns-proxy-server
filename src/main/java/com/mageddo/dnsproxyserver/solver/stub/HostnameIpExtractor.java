@@ -1,11 +1,23 @@
 package com.mageddo.dnsproxyserver.solver.stub;
 
-import com.mageddo.net.IpAddr;
+import com.mageddo.dnsproxyserver.solver.stub.addressexpression.AddressExpressionMapper;
+import com.mageddo.dnsproxyserver.solver.stub.addressexpression.ParseException;
+import com.mageddo.net.IP;
+import org.apache.commons.lang3.Validate;
 
 public class HostnameIpExtractor {
-  public static IpAddr extract(String hostname, String domain) {
+  public static IP extract(String hostname, String domain) {
     hostname = removeDomainFrom(hostname, domain);
-    return IpAddr.of("192.168.0.1");
+    Validate.notBlank(hostname, "Hostname is empty");
+    RuntimeException lastException = null;
+    for (int i = 0; i < hostname.length(); i++) {
+      try {
+        return AddressExpressionMapper.toIp(hostname.substring(i));
+      } catch (ParseException e) {
+        lastException = e;
+      }
+    }
+    throw lastException;
   }
 
   static String removeDomainFrom(String hostname, String domain) {

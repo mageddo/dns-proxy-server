@@ -6,7 +6,7 @@ import java.util.List;
 
 public class AddressExpressionMapper {
 
-  public static IP toAddr(String addressExpression) {
+  public static IP toIp(String addressExpression) {
     RuntimeException lastException = null;
     for (final var parser : buildParsers()) {
       try {

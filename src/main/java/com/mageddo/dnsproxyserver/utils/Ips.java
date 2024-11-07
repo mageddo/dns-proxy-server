@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.utils;
 
+import com.mageddo.commons.regex.Regexes;
 import com.mageddo.net.IP;
 import com.mageddo.utils.Bytes;
 import org.apache.commons.lang3.StringUtils;
@@ -10,8 +11,13 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.UnknownHostException;
+import java.util.regex.Pattern;
 
 public class Ips {
+
+  private static final Pattern IPV4_REGEX = Pattern.compile(
+    "^((25[0-5]|(2[0-4]|1\\d|[1-9]|)\\d)\\.?\\b){4}$"
+  );
 
   private Ips() {
   }
@@ -73,7 +79,7 @@ public class Ips {
   }
 
   public static boolean isIpv4(String v) {
-    return !isIpv6(v);
+    return Regexes.matches(v, IPV4_REGEX);
   }
 
   public static Short[] toShortArray(String ip) {
