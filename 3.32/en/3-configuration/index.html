@@ -12,20 +12,20 @@
     <title>Configuration :: DNS Proxy Server</title>
 
     
-    <link href="/dns-proxy-server/3.32/css/nucleus.css?1731002353" rel="stylesheet">
-    <link href="/dns-proxy-server/3.32/css/fontawesome-all.min.css?1731002353" rel="stylesheet">
-    <link href="/dns-proxy-server/3.32/css/hybrid.css?1731002353" rel="stylesheet">
-    <link href="/dns-proxy-server/3.32/css/featherlight.min.css?1731002353" rel="stylesheet">
-    <link href="/dns-proxy-server/3.32/css/perfect-scrollbar.min.css?1731002353" rel="stylesheet">
-    <link href="/dns-proxy-server/3.32/css/auto-complete.css?1731002353" rel="stylesheet">
-    <link href="/dns-proxy-server/3.32/css/atom-one-dark-reasonable.css?1731002353" rel="stylesheet">
-    <link href="/dns-proxy-server/3.32/css/theme.css?1731002353" rel="stylesheet">
-    <link href="/dns-proxy-server/3.32/css/hugo-theme.css?1731002353" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/nucleus.css?1731008607" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/fontawesome-all.min.css?1731008607" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/hybrid.css?1731008607" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/featherlight.min.css?1731008607" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/perfect-scrollbar.min.css?1731008607" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/auto-complete.css?1731008607" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/atom-one-dark-reasonable.css?1731008607" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/theme.css?1731008607" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/hugo-theme.css?1731008607" rel="stylesheet">
     
-      <link href="/dns-proxy-server/3.32/css/theme-mine.css?1731002353" rel="stylesheet">
+      <link href="/dns-proxy-server/3.32/css/theme-mine.css?1731008607" rel="stylesheet">
     
 
-    <script src="/dns-proxy-server/3.32/js/jquery-3.3.1.min.js?1731002353"></script>
+    <script src="/dns-proxy-server/3.32/js/jquery-3.3.1.min.js?1731008607"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -53,14 +53,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/dns-proxy-server/3.32/js/lunr.min.js?1731002353"></script>
-<script type="text/javascript" src="/dns-proxy-server/3.32/js/auto-complete.js?1731002353"></script>
+<script type="text/javascript" src="/dns-proxy-server/3.32/js/lunr.min.js?1731008607"></script>
+<script type="text/javascript" src="/dns-proxy-server/3.32/js/auto-complete.js?1731008607"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/mageddo.github.io\/dns-proxy-server\/3.32\/en";
     
 </script>
-<script type="text/javascript" src="/dns-proxy-server/3.32/js/search.js?1731002353"></script>
+<script type="text/javascript" src="/dns-proxy-server/3.32/js/search.js?1731008607"></script>
 
     
   </div>
@@ -647,6 +647,32 @@
         ">
       <a href="/dns-proxy-server/3.32/en/2-features/remote-solver-circuitbreaker/">
           Remote Solver Circuit Breaker
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dns-proxy-server/3.32/en/2-features/stub-solver/" title="Stub Solver" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dns-proxy-server/3.32/en/2-features/stub-solver/">
+          Stub Solver
           
             <i class="fas fa-check read-icon"></i>
           
@@ -1537,14 +1563,18 @@ Default: <code>DPS executing path, aka Working Directory</code>.</p>
   &quot;dockerSolverHostMachineFallbackActive&quot;: true,
   &quot;solverRemote&quot; : {
     &quot;circuitBreaker&quot; : { 
-      &quot;failureThreshold&quot; : 3, // how many attempts before open the circuit?
-      &quot;failureThresholdCapacity&quot; : 10, // how many attempts store to the stack?
-      &quot;successThreshold&quot; : 5, // how many attempts before close the circuit?
-      &quot;testDelay&quot; : &quot;PT20S&quot; // how many time to wait before test the circuit again?, see https://docs.oracle.com/javase/8/docs/api/java/time/Duration.html#toString-- for format explanation
+      &quot;failureThreshold&quot; : 3, 
+      &quot;failureThresholdCapacity&quot; : 10,
+      &quot;successThreshold&quot; : 5, 
+      &quot;testDelay&quot; : &quot;PT20S&quot;
     }
   }
 }
 </code></pre>
+
+<ul>
+<li><a href="/dns-proxy-server/3.32/en/2-features/remote-solver-circuitbreaker/">Solver remote circuit breaker configuration</a></li>
+</ul>
 
 <h2 id="environment-variable-configuration">Environment variable configuration</h2>
 
@@ -1957,6 +1987,22 @@ value will be considered false.</p>
             
         
                     
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
             
         
                     
@@ -2149,7 +2195,7 @@ value will be considered false.</p>
 	 
 	 
 		
-			<a class="nav nav-prev" href="/dns-proxy-server/3.32/en/2-features/remote-solver-circuitbreaker/" title="Remote Solver Circuit Breaker"> <i class="fa fa-chevron-left"></i></a>
+			<a class="nav nav-prev" href="/dns-proxy-server/3.32/en/2-features/stub-solver/" title="Stub Solver"> <i class="fa fa-chevron-left"></i></a>
 		
 		
 			<a class="nav nav-next" href="/dns-proxy-server/3.32/en/5-tutorials/" title="Tutorials" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
@@ -2162,20 +2208,20 @@ value will be considered false.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/dns-proxy-server/3.32/js/clipboard.min.js?1731002353"></script>
-    <script src="/dns-proxy-server/3.32/js/perfect-scrollbar.min.js?1731002353"></script>
-    <script src="/dns-proxy-server/3.32/js/perfect-scrollbar.jquery.min.js?1731002353"></script>
-    <script src="/dns-proxy-server/3.32/js/jquery.sticky.js?1731002353"></script>
-    <script src="/dns-proxy-server/3.32/js/featherlight.min.js?1731002353"></script>
-    <script src="/dns-proxy-server/3.32/js/html5shiv-printshiv.min.js?1731002353"></script>
-    <script src="/dns-proxy-server/3.32/js/highlight.pack.js?1731002353"></script>
+    <script src="/dns-proxy-server/3.32/js/clipboard.min.js?1731008607"></script>
+    <script src="/dns-proxy-server/3.32/js/perfect-scrollbar.min.js?1731008607"></script>
+    <script src="/dns-proxy-server/3.32/js/perfect-scrollbar.jquery.min.js?1731008607"></script>
+    <script src="/dns-proxy-server/3.32/js/jquery.sticky.js?1731008607"></script>
+    <script src="/dns-proxy-server/3.32/js/featherlight.min.js?1731008607"></script>
+    <script src="/dns-proxy-server/3.32/js/html5shiv-printshiv.min.js?1731008607"></script>
+    <script src="/dns-proxy-server/3.32/js/highlight.pack.js?1731008607"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/dns-proxy-server/3.32/js/modernizr.custom-3.6.0.js?1731002353"></script>
-    <script src="/dns-proxy-server/3.32/js/learn.js?1731002353"></script>
-    <script src="/dns-proxy-server/3.32/js/hugo-learn.js?1731002353"></script>
+    <script src="/dns-proxy-server/3.32/js/modernizr.custom-3.6.0.js?1731008607"></script>
+    <script src="/dns-proxy-server/3.32/js/learn.js?1731008607"></script>
+    <script src="/dns-proxy-server/3.32/js/hugo-learn.js?1731008607"></script>
 
-    <link href="/dns-proxy-server/3.32/mermaid/mermaid.css?1731002353" type="text/css" rel="stylesheet" />
-    <script src="/dns-proxy-server/3.32/mermaid/mermaid.js?1731002353"></script>
+    <link href="/dns-proxy-server/3.32/mermaid/mermaid.css?1731008607" type="text/css" rel="stylesheet" />
+    <script src="/dns-proxy-server/3.32/mermaid/mermaid.js?1731008607"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

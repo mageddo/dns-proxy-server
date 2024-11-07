@@ -172,6 +172,10 @@
   </url>
   
   <url>
+    <loc>http://mageddo.github.io/dns-proxy-server/latest/en/2-features/stub-solver/</loc>
+  </url>
+  
+  <url>
     <loc>http://mageddo.github.io/dns-proxy-server/latest/en/tags/</loc>
     <priority>0</priority>
     <xhtml:link

@@ -9,7 +9,7 @@
 
     <link rel="icon" href="/dns-proxy-server/latest/images/favicon.png" type="image/png">
 
-    <title>MacOSX running instructions :: DNS Proxy Server</title>
+    <title>Stub Solver :: DNS Proxy Server</title>
 
     
     <link href="/dns-proxy-server/latest/css/nucleus.css?1731008608" rel="stylesheet">
@@ -36,7 +36,7 @@
     <link href="/dns-proxy-server/latest/css/style.css" rel="stylesheet" type="text/css" />
 
   </head>
-  <body class="" data-url="/dns-proxy-server/latest/en/1-getting-started/running-it/mac/">
+  <body class="" data-url="/dns-proxy-server/latest/en/2-features/stub-solver/">
     <nav id="sidebar" class="showVisitedLinks">
 
 
@@ -77,7 +77,7 @@
   
     
     <li data-nav-id="/dns-proxy-server/latest/en/1-getting-started/" title="Getting Started" class="dd-item 
-        parent
+        
         
         
         ">
@@ -106,7 +106,7 @@
   
     
     <li data-nav-id="/dns-proxy-server/latest/en/1-getting-started/running-it/" title="Running it" class="dd-item 
-        parent
+        
         
         
         ">
@@ -161,8 +161,8 @@
   
     
     <li data-nav-id="/dns-proxy-server/latest/en/1-getting-started/running-it/mac/" title="MacOSX running instructions" class="dd-item 
-        parent
-        active
+        
+        
         
         ">
       <a href="/dns-proxy-server/latest/en/1-getting-started/running-it/mac/">
@@ -274,7 +274,7 @@
   
     
     <li data-nav-id="/dns-proxy-server/latest/en/2-features/" title="Features" class="dd-item 
-        
+        parent
         
         
         ">
@@ -667,8 +667,8 @@
   
     
     <li data-nav-id="/dns-proxy-server/latest/en/2-features/stub-solver/" title="Stub Solver" class="dd-item 
-        
-        
+        parent
+        active
         
         ">
       <a href="/dns-proxy-server/latest/en/2-features/stub-solver/">
@@ -1000,7 +1000,7 @@
                   
                     
                     
-                      <option id="en" value="http://mageddo.github.io/dns-proxy-server/latest/en/1-getting-started/running-it/mac/" selected>English</option>
+                      <option id="en" value="http://mageddo.github.io/dns-proxy-server/latest/en/2-features/stub-solver/" selected>English</option>
                     
                   
               
@@ -1059,7 +1059,7 @@
                   
                   
                   <div id="top-github-link">
-                    <a class="github-link" title='Edit this page' href="https://github.com/mageddo/dns-proxy-server/edit/master/docs/content/1-getting-started/running-it/mac/_index.en.md" target="blank">
+                    <a class="github-link" title='Edit this page' href="https://github.com/mageddo/dns-proxy-server/edit/master/docs/content/2-features/stub-solver/_index.en.md" target="blank">
                       <i class="fas fa-code-branch"></i>
                       <span id="top-github-link-text">Edit this page</span>
                     </a>
@@ -1090,13 +1090,7 @@
             
           
           
-            
-            
-          
-          
-            <a href='/dns-proxy-server/latest/en/'>Getting Started</a> > <a href='/dns-proxy-server/latest/en/1-getting-started/'>Getting Started</a> > <a href='/dns-proxy-server/latest/en/1-getting-started/running-it/'>Running it</a> > MacOSX running instructions
-          
-         
+            <a href='/dns-proxy-server/latest/en/'>Getting Started</a> > <a href='/dns-proxy-server/latest/en/2-features/'>Features</a> > Stub Solver
           
          
           
@@ -1113,10 +1107,12 @@
 <ul>
 <li>
 <ul>
-<li><a href="#running-on-mac">Running on MAC</a></li>
-<li><a href="#running-as-docker-as-service">Running as Docker as service</a></li>
-<li><a href="#standalone-run">Standalone run</a></li>
-<li><a href="#configuring-dps-as-default-dns-manually">Configuring DPS as default DNS manually</a></li>
+<li><a href="#examples">Examples:</a>
+<ul>
+<li><a href="#format-reference">Format Reference</a></li>
+<li><a href="#customize-the-domain-name">Customize the domain name</a></li>
+</ul></li>
+<li><a href="#refs">Refs</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -1135,7 +1131,7 @@
           
             <h1>
               
-              MacOSX running instructions
+              Stub Solver
             </h1>
           
 
@@ -1146,75 +1142,57 @@
 
 	
 
-<h2 id="running-on-mac">Running on MAC</h2>
+<p>You can use stub solver to transform IPs into hostnames without need to create a
+configuration file as in Local DB Solver. Stub Solver was inspired in <code>nip.io</code> and <code>sslip.io</code>.</p>
 
-<p>DPS actually is fully supported on MAC knowing <a href="https://docs.docker.com/desktop/networking/#there-is-no-docker0-bridge-on-the-host">docker limitation features</a>
-which can be bypassed with a <a href="/dns-proxy-server/latest/en/5-tutorials/docker-reverse-proxy/">reverse-proxy</a>.</p>
+<h2 id="examples">Examples:</h2>
 
-<h2 id="running-as-docker-as-service">Running as Docker as service</h2>
+<p><strong>Without a name:</strong></p>
 
-<p>Running DPS as docker service</p>
+<ul>
+<li><code>10.0.0.1.stub</code> =&gt; <code>10.0.0.1</code></li>
+<li><code>192-168-1-250.stub</code> =&gt; <code>192.168.1.250</code></li>
+<li><code>0a000803.stub</code> =&gt; <code>10.0.8.3</code></li>
+</ul>
 
-<pre><code class="language-bash">$ docker run -d -p 5380:5380 -p 53:53/udp -p 53:53/tcp --restart=unless-stopped \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  defreitas/dns-proxy-server
+<p><strong>With a name:</strong></p>
+
+<ul>
+<li><code>app.10.8.0.1.stub</code> =&gt; <code>10.8.0.1</code></li>
+<li><code>app-116-203-255-68.stub</code> =&gt; <code>116.203.255.68</code></li>
+<li><code>app-c0a801fc.stub</code> =&gt; <code>192.168.1.252</code></li>
+<li><code>customer1.app.10.0.0.1.stub</code> =&gt; <code>10.0.0.1</code></li>
+<li><code>customer2-app-127-0-0-1.stub</code> =&gt; <code>127.0.0.1</code></li>
+<li><code>customer3-app-7f000101.stub</code> =&gt; <code>127.0.1.1</code></li>
+<li><code>app.2a01-4f8-c17-b8f--2.stub</code> =&gt; <code>2a01:4f8:c17:b8f::2</code></li>
+</ul>
+
+<h3 id="format-reference">Format Reference</h3>
+
+<pre><code>${name}[.-]${ip_address}.stub
 </code></pre>
 
 <ul>
-<li>Go to <a href="#configuring-dps-as-default-dns-manually">configuring DPS as default DNS</a> to complete DPS configuration.</li>
-<li><a href="/dns-proxy-server/latest/en/2-features/#main-features-use-cases">Check this</a> for usage samples.</li>
+<li><code>${name}</code> (optional): you can set a name to make it easier to recognize the IP</li>
+<li><code>${ip_address}</code>: The ip address which the DNS will answer it can be in 4 formats
+
+<ul>
+<li>dot notation: magic.127.0.0.1.stub</li>
+<li>dash notation: magic-127-0-0-1.stub</li>
+<li>hexadecimal notation: magic-7f000001.stub</li>
+<li>Ipv6 notation: magic.2a01-4f8-c17-b8f&ndash;2.stub</li>
+</ul></li>
 </ul>
 
-<h2 id="standalone-run">Standalone run</h2>
+<h3 id="customize-the-domain-name">Customize the domain name</h3>
 
-<p>Download the <a href="https://github.com/mageddo/dns-proxy-server/releases">latest release</a> (I recomend the jar one), extract and run:</p>
+<p>&#x3C;tbd&#x3E;</p>
 
-<pre><code class="language-bash">$ sudo java -jar ./dns-proxy-server
-</code></pre>
+<h2 id="refs">Refs</h2>
 
-<p><a href="/dns-proxy-server/latest/en/2-features/#main-features-use-cases">Check this</a> for usage samples.</p>
-
-<p>When running on standalone mode (not on docker container) DPS will be able to auto configure itself as OSX default DNS,
-after 5 seconds you see something like <code>usingDnsConfigurator=DnsConfiguratorOSx</code> at the logs.</p>
-
-<h2 id="configuring-dps-as-default-dns-manually">Configuring DPS as default DNS manually</h2>
-
-<p>When not running in standalone mode you will need to configure DPS as default DPS manually,
-check the instructions below:</p>
-
-<p>To list available networks:</p>
-
-<pre><code class="language-bash">$ networksetup -listallnetworkservices
-An asterisk (*) denotes that a network service is disabled.
-USB 10/100/1000 LAN
-Wi-Fi
-Thunderbolt Bridge
-</code></pre>
-
-<p>In my case the right Network is <code>Wi-Fi</code>, before change anything let&rsquo;s check if it has some manual
-configured DNS server:</p>
-
-<pre><code class="language-bash">$ networksetup -getdnsservers Wi-Fi
-There aren't any DNS Servers set on Wi-Fi. 
-</code></pre>
-
-<p>If it returns some server IP then is a good idea to backup it then you can restore the configurations later.</p>
-
-<p>Let&rsquo;s set DPS as the default DNS Server, best option here is to get your network IP address, <code>Wi-Fi</code> in my case which
-has <code>192.168.0.14</code> set, <code>127.0.0.1</code> will partially works because this way containers won&rsquo;t be able
-to solve each other, just the host solve the containers.</p>
-
-<p><strong>Obs</strong>: Be aware you need to run DPS in port <strong>53</strong> as MAC doesn&rsquo;t accept custom port especification.</p>
-
-<pre><code class="language-bash">$ networksetup -setdnsservers Wi-Fi 192.168.0.14
-</code></pre>
-
-<p>If you need to remove the configured DNS server then it will use your network provider DNS</p>
-
-<pre><code class="language-bash">$ networksetup -setdnsservers Wi-Fi Empty
-</code></pre>
-
-<p>See <a href="https://github.com/mageddo/dns-proxy-server/issues/44#issuecomment-1454379761">this thread</a> with more use cases.</p>
+<ul>
+<li><a href="https://github.com/mageddo/dns-proxy-server/issues/545">Stub Solver #545</a></li>
+</ul>
 
 
 
@@ -1255,22 +1233,8 @@ to solve each other, just the host solve the containers.</p>
             
                 
                     
-                    
-                
-                
-
-                    
-                    
                         
-                    
-                    
-
-                    
                         
-            
-            
-                
-                    
                     
                 
                 
@@ -1287,25 +1251,20 @@ to solve each other, just the host solve the containers.</p>
             
                 
                     
-                        
-                        
-                    
                 
                 
 
                     
                     
+                        
+                    
                     
 
-                    
-            
-        
                     
                         
             
             
                 
-                    
                     
                 
                 
@@ -1323,8 +1282,21 @@ to solve each other, just the host solve the containers.</p>
             
                 
                     
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
                         
-                        
+            
+            
+                
                     
                 
                 
@@ -1380,6 +1352,7 @@ to solve each other, just the host solve the containers.</p>
             
                 
                     
+                    
                 
                 
 
@@ -1395,21 +1368,8 @@ to solve each other, just the host solve the containers.</p>
             
                 
                     
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
                         
-            
-            
-                
+                        
                     
                 
                 
@@ -1630,6 +1590,23 @@ to solve each other, just the host solve the containers.</p>
             
         
                     
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
             
         
                     
@@ -1637,6 +1614,9 @@ to solve each other, just the host solve the containers.</p>
             
             
                 
+                    
+                        
+                        
                     
                 
                 
@@ -1818,10 +1798,10 @@ to solve each other, just the host solve the containers.</p>
 	 
 	 
 		
-			<a class="nav nav-prev" href="/dns-proxy-server/latest/en/1-getting-started/running-it/linux/" title="Linux running instructions"> <i class="fa fa-chevron-left"></i></a>
+			<a class="nav nav-prev" href="/dns-proxy-server/latest/en/2-features/remote-solver-circuitbreaker/" title="Remote Solver Circuit Breaker"> <i class="fa fa-chevron-left"></i></a>
 		
 		
-			<a class="nav nav-next" href="/dns-proxy-server/latest/en/1-getting-started/running-it/windows/" title="Windows running instructions" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+			<a class="nav nav-next" href="/dns-proxy-server/latest/en/3-configuration/" title="Configuration" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
 		
 	
     </div>
