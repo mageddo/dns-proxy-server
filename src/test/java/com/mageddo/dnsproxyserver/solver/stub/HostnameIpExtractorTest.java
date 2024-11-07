@@ -51,6 +51,15 @@ class HostnameIpExtractorTest {
   }
 
   @Test
+  void mustExtractIpv4FromTheEnd() {
+    final var hostname = "116-116-203-255-68.nip.io";
+
+    final var addr = HostnameIpExtractor.extract(hostname, NIP_IO);
+
+    assertEquals(IP.of("116.203.255.68"), addr);
+  }
+
+  @Test
   void mustExtractIpWhenAllUsingShortIpv6EvenWhenNameIsAValidHexadecimal() {
     final var hostname = "bb.a--1.sslip.io";
 
