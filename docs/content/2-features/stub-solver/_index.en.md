@@ -3,7 +3,7 @@ title: Stub Solver
 ---
 
 You can use stub solver to transform IPs into hostnames without need to create a 
-configuration file as in Local DB Solver. Stub Solver was inspired at `nip.io` and `sslip.io`.
+configuration file as in Local DB Solver. Stub Solver was inspired in `nip.io` and `sslip.io`.
 
 ## Examples:
 
