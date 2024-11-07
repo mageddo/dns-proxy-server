@@ -1,33 +1,20 @@
 {
   "activeEnv" : "",
-  "defaultDns" : null,
   "dnsServerPort" : 8980,
-  "dockerHost" : null,
-  "dockerSolverHostMachineFallbackActive" : null,
-  "domain" : null,
-  "dpsNetwork" : null,
-  "dpsNetworkAutoConnect" : null,
   "envs" : [ {
     "hostnames" : [ {
       "hostname" : "github.com",
       "id" : 1,
       "ip" : "192.168.0.1",
-      "target" : null,
       "ttl" : 255,
       "type" : "A"
     } ],
     "name" : ""
   } ],
-  "hostMachineHostname" : null,
   "logFile" : "console",
   "logLevel" : "DEBUG",
-  "noEntriesResponseCode": null,
-  "noRemoteServers": null,
   "registerContainerNames" : false,
   "remoteDnsServers" : [ "8.8.8.8", "4.4.4.4" ],
   "version" : 2,
-  "resolvConfOverrideNameServers" : null,
-  "serverProtocol" : null,
-  "webServerPort" : 0,
-  "solverRemote": null
+  "webServerPort" : 0
 }

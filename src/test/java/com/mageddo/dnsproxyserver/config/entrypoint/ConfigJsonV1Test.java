@@ -9,7 +9,7 @@ import java.nio.file.Path;
 
 import static com.mageddo.utils.TestUtils.readAndSortJson;
 import static com.mageddo.utils.TestUtils.readAsStream;
-import static com.mageddo.utils.TestUtils.sortJson;
+import static com.mageddo.utils.TestUtils.readSortDonWriteNullsAndExcludeFields;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ConfigJsonV1Test {
@@ -24,7 +24,10 @@ class ConfigJsonV1Test {
     final var config = JsonConfigs.loadConfig(configV1);
 
     // assert
-    assertEquals(readAndSortJson("/config-json-v1-test/002.json"), sortJson(config));
+    assertEquals(
+      readAndSortJson("/config-json-v1-test/002.json"),
+      readSortDonWriteNullsAndExcludeFields(config)
+    );
   }
 
 }

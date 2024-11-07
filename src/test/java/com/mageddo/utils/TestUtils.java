@@ -63,7 +63,7 @@ public class TestUtils {
   @SneakyThrows
   public static String readSortDonWriteNullsAndExcludeFields(String path, String... excludingFields) {
     final var om = dontWriteNonNullObjectMapper();
-    return om.writeValueAsString(om.readTree(sortJsonExcluding(readString(path), excludingFields)));
+    return sortJson(om.readTree(sortJsonExcluding(readString(path), excludingFields)));
   }
 
   @SneakyThrows
