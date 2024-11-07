@@ -47,6 +47,6 @@ public class SolverStub implements Solver {
       return null;
     }
     log.debug("status=solved, host={}, ip={}", hostname, foundIp);
-    return ResponseMapper.toDefaultSuccessAnswer(query, foundIp);
+    return ResponseMapper.toDefaultSuccessAnswer(query, foundIp, questionType.toVersion());
   }
 }

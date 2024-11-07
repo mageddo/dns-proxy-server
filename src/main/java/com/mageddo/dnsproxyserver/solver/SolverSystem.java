@@ -34,7 +34,7 @@ public class SolverSystem implements Solver {
     if (hostname.isEqualTo(config.getHostMachineHostname())) { // fixme fazer case com hostname + search domain
       final var ip = this.machineService.findHostMachineIP(questionType.toVersion());
       log.debug("status=solvingHostMachineName, host={}, ip={}", hostname, ip);
-      return ResponseMapper.toDefaultSuccessAnswer(query, ip);
+      return ResponseMapper.toDefaultSuccessAnswer(query, ip, questionType.toVersion());
     }
     return null;
   }

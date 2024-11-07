@@ -6,9 +6,9 @@ import com.mageddo.net.IP;
 import org.xbill.DNS.Message;
 
 public class ResponseMapper {
-  public static Response toDefaultSuccessAnswer(Message query, IP ip) {
+  public static Response toDefaultSuccessAnswer(Message query, IP ip, IP.Version version) {
     return Response.of(
-      Messages.answer(query, Objects.mapOrNull(ip, IP::toText), ip.version()),
+      Messages.answer(query, Objects.mapOrNull(ip, IP::toText), version),
       Messages.DEFAULT_TTL_DURATION
     );
   }
