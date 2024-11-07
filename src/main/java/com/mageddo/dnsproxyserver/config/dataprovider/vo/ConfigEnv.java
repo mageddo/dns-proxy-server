@@ -12,7 +12,7 @@ import java.nio.file.Path;
 @Value
 @Builder
 public class ConfigEnv {
-//  MG_STUB_SOLVER_DOMAIN_NAME
+
   public static final String MG_WORK_DIR = "MG_WORK_DIR";
 
   public static final String MG_RESOLVCONF = "MG_RESOLVCONF";
@@ -49,6 +49,8 @@ public class ConfigEnv {
 
   public static final String MG_CONFIG_FILE_PATH = "MG_CONFIG_FILE_PATH";
 
+  public static final String MG_STUB_SOLVER_DOMAIN_NAME = "MG_STUB_SOLVER_DOMAIN_NAME";
+
   private Path workingDir;
   private String resolvConfPath;
   private String logFile;
@@ -64,6 +66,7 @@ public class ConfigEnv {
   private Integer noEntriesResponseCode;
   private Boolean dockerSolverHostMachineFallbackActive;
   private Path configFilePath;
+  private String solverStubDomainName;
 
   public static ConfigEnv fromEnv() {
     return ConfigEnv
@@ -83,6 +86,7 @@ public class ConfigEnv {
       .noEntriesResponseCode(Envs.getIntegerOrNull(MG_NO_ENTRIES_RESPONSE_CODE))
       .dockerSolverHostMachineFallbackActive(Envs.getBooleanOrNull(MG_DOCKER_SOLVER_HOST_MACHINE_FALLBACK_ACTIVE))
       .configFilePath(Envs.getPathOrNull(MG_CONFIG_FILE_PATH))
+      .solverStubDomainName(Envs.getStringOrNull(MG_STUB_SOLVER_DOMAIN_NAME))
       .build();
   }
 

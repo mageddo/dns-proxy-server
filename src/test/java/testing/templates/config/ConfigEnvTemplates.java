@@ -17,4 +17,11 @@ public class ConfigEnvTemplates {
       .builder()
       .build();
   }
+
+  public static ConfigEnv withStubSolverDomainName() {
+    return ConfigEnv
+      .builder()
+      .solverStubDomainName("acme")
+      .build();
+  }
 }
