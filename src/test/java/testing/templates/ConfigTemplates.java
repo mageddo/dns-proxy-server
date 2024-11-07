@@ -3,6 +3,7 @@ package testing.templates;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.LogLevel;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
+import com.mageddo.dnsproxyserver.config.SolverStub;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigEnv;
 import com.mageddo.dnsserver.SimpleServer;
 
@@ -56,6 +57,15 @@ public class ConfigTemplates {
       .solverRemote(SolverRemote
         .builder()
         .active(false)
+        .build()
+      )
+      .build();
+  }
+
+  public static Config acmeSolverStub() {
+    return defaultBuilder()
+      .solverStub(SolverStub.builder()
+        .domainName("acme")
         .build()
       )
       .build();

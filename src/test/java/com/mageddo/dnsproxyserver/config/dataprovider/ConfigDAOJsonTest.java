@@ -15,6 +15,7 @@ import static com.mageddo.utils.TestUtils.readAsStream;
 import static com.mageddo.utils.TestUtils.readSortDonWriteNullsAndExcludeFields;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
 class ConfigDAOJsonTest {
@@ -55,6 +56,22 @@ class ConfigDAOJsonTest {
 
     // assert
     assertFalse(config.isSolverRemoteActive());
+  }
+
+  @Test
+  void mustConfigureStubSolverDomain(@TempDir Path tmpDir){
+    // arrange
+    final var sourceConfigFile = "/configs-test/010.json";
+    final var configPathToUse = tmpDir.resolve("tmpfile.json");
+    writeCurrentConfigFile(sourceConfigFile, configPathToUse);
+
+    // act
+    final var config = this.configDAOJson.find(configPathToUse);
+
+    // assert
+    final var solverStub = config.getSolverStub();
+    assertNotNull(solverStub);
+    assertEquals("acme", solverStub.getDomainName());
   }
 
   @SneakyThrows

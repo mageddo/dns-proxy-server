@@ -4,6 +4,7 @@ import com.mageddo.dnsproxyserver.config.CanaryRateThresholdCircuitBreakerStrate
 import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
+import com.mageddo.dnsproxyserver.config.SolverStub;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJson;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2;
@@ -38,7 +39,15 @@ public class ConfigJsonV2Mapper {
       .dockerSolverHostMachineFallbackActive(json.getDockerSolverHostMachineFallbackActive())
       .configPath(configFileAbsolutePath)
       .solverRemote(toSolverRemote(json))
+      .solverStub(toSolverStub(json.getSolverStub()))
       .source(Config.Source.JSON)
+      .build();
+  }
+
+  private static SolverStub toSolverStub(ConfigJsonV2.SolverStub solverStub) {
+    return SolverStub
+      .builder()
+      .domainName(solverStub.getDomainName())
       .build();
   }
 
