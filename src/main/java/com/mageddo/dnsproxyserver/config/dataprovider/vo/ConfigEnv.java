@@ -12,7 +12,7 @@ import java.nio.file.Path;
 @Value
 @Builder
 public class ConfigEnv {
-
+//  MG_STUB_SOLVER_DOMAIN_NAME
   public static final String MG_WORK_DIR = "MG_WORK_DIR";
 
   public static final String MG_RESOLVCONF = "MG_RESOLVCONF";

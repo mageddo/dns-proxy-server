@@ -38,7 +38,7 @@ ${name}[.-]${ip_address}.stub
 
 ### Customize the domain name
 
-&#x3C;tbd&#x3E;
+See the [config reference][2].
 
 ## Refs
 
@@ -46,3 +46,4 @@ ${name}[.-]${ip_address}.stub
 
  
 [1]: https://github.com/mageddo/dns-proxy-server/issues/545
+[2]: {{%relref "3-configuration/_index.en.md" %}}

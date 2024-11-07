@@ -129,6 +129,16 @@ Default: true
 |-----------------------------------------------|-----------------------------------------|-----------|
 | MG_DOCKER_SOLVER_HOST_MACHINE_FALLBACK_ACTIVE | `dockerSolverHostMachineFallbackActive` | See -help |
 
+### Stub Solver
+
+#### Stub Solver - Domain Name
+
+The domain name used for stub solver resolved hostnames. Default: `stub`.
+
+| Env                        | JSON                    | Terminal  |
+|----------------------------|-------------------------|-----------|
+| MG_STUB_SOLVER_DOMAIN_NAME | `solverStub.domainName` | See -help |
+
 ## Config File Path
 
 The location of the external config file (as the JSON file) can be changed by setting two variables:
