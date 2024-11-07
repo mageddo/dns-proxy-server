@@ -43,4 +43,8 @@ public class MessageTemplates {
     answer.getHeader().unsetFlag(Flags.RA);
     return answer;
   }
+
+  public static Message dpsStubDockerAQuery() {
+    return Messages.aQuestion("dps-192.168.3.1.docker");
+  }
 }

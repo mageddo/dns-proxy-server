@@ -25,7 +25,7 @@ import static com.mageddo.dns.utils.Messages.findQuestionTypeCode;
 @AllArgsConstructor(onConstructor = @__({@Inject}))
 public class SolverStub implements Solver {
 
-  public static final String DOMAIN_NAME = ".docker";
+  public static final String DOMAIN_NAME = "docker";
 
   @Override
   public Response handle(Message query) {
@@ -38,6 +38,7 @@ public class SolverStub implements Solver {
     final var hostname = Messages.findQuestionHostname(query);
     if (!hostname.endsWith(DOMAIN_NAME)) {
       log.debug("status=hostnameDoesntMatchRequiredDomain, hostname={}", hostname);
+      return null;
     }
 
     final var foundIp = HostnameIpExtractor.safeExtract(hostname, DOMAIN_NAME);
