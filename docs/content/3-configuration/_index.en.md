@@ -192,14 +192,16 @@ __Version 2__
   "dockerSolverHostMachineFallbackActive": true,
   "solverRemote" : {
     "circuitBreaker" : { 
-      "failureThreshold" : 3, // how many attempts before open the circuit?
-      "failureThresholdCapacity" : 10, // how many attempts store to the stack?
-      "successThreshold" : 5, // how many attempts before close the circuit?
-      "testDelay" : "PT20S" // how many time to wait before test the circuit again?, see https://docs.oracle.com/javase/8/docs/api/java/time/Duration.html#toString-- for format explanation
+      "failureThreshold" : 3, 
+      "failureThresholdCapacity" : 10,
+      "successThreshold" : 5, 
+      "testDelay" : "PT20S"
     }
   }
 }
 ```
+
+* [Solver remote circuit breaker configuration][3] 
 
 ## Environment variable configuration
 
@@ -221,3 +223,4 @@ $ docker run defreitas/dns-proxy-server --help
 
 [1]: {{%relref "2-features/auto-configuration-as-default-dns/_index.md" %}}
 [2]: {{%relref "2-features/local-entries/_index.md" %}}
+[3]: {{%relref "2-features/remote-solver-circuitbreaker/_index.en.md" %}}
