@@ -47,7 +47,43 @@ class HostnameIpExtractorTest {
 
     final var addr = HostnameIpExtractor.extract(hostname, SSLIP_IO);
 
-    assertEquals(IP.of("10.0.0.1"), addr);
+    assertEquals(IP.of("a:0:0:0:0:0:0:1"), addr);
+  }
+
+  @Test
+  void mustExtractIpWhenAllUsingShortIpv6EvenWhenNameIsAValidHexadecimal() {
+    final var hostname = "bb.a--1.sslip.io";
+
+    final var addr = HostnameIpExtractor.extract(hostname, SSLIP_IO);
+
+    assertEquals(IP.of("a:0:0:0:0:0:0:1"), addr);
+  }
+
+  @Test
+  void mustExtractIpv4IpFromLabeledHexadecimal() {
+    final var hostname = "acme.c0a801fc.sslip.io";
+
+    final var addr = HostnameIpExtractor.extract(hostname, SSLIP_IO);
+
+    assertEquals(IP.of("192.168.1.252"), addr);
+  }
+
+  @Test
+  void mustExtractIpv4IpFromHexadecimal() {
+    final var hostname = "c0a801fc.sslip.io";
+
+    final var addr = HostnameIpExtractor.extract(hostname, SSLIP_IO);
+
+    assertEquals(IP.of("192.168.1.252"), addr);
+  }
+
+  @Test
+  void mustExtractIpv6IpFromLabeledHexadecimal() {
+    final var hostname = "acme.20010DB8000000000000000000000001.sslip.io";
+
+    final var addr = HostnameIpExtractor.extract(hostname, SSLIP_IO);
+
+    assertEquals(IP.of("2001:db8::1"), addr);
   }
 
   @Test
