@@ -1,3 +1,6 @@
+## 3.32.2
+* Exposing Stub Solver domain config, see the docs. #545
+
 ## 3.32.1
 * Configuring Stub Solver. #545
 
