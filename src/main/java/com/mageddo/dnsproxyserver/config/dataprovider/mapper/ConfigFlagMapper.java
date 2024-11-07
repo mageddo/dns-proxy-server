@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
+import com.mageddo.dnsproxyserver.config.SolverStub;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigFlag;
 import com.mageddo.dnsproxyserver.utils.Booleans;
 import com.mageddo.utils.Files;
@@ -27,6 +28,11 @@ public class ConfigFlagMapper {
       .solverRemote(SolverRemote
         .builder()
         .active(Booleans.reverseWhenNotNull(config.getNoRemoteServers()))
+        .build()
+      )
+      .solverStub(SolverStub
+        .builder()
+        .domainName(config.getStubSolverDomainName())
         .build()
       )
       .source(Config.Source.FLAG)

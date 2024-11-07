@@ -30,6 +30,6 @@ public class ConfigFlagTemplates {
   }
 
   public static ConfigFlag withStubSolverDomainName() {
-    return null;
+    return build();
   }
 }
