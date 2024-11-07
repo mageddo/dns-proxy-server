@@ -1,3 +1,6 @@
+## 3.32.1
+* Configuring Stub Solver. #545
+
 ## 3.32.0
 * Implementing Stub Solver but not exposing. #545
 

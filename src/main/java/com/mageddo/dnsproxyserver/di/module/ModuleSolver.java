@@ -9,6 +9,7 @@ import com.mageddo.dnsproxyserver.solver.SolverCachedRemote;
 import com.mageddo.dnsproxyserver.solver.SolverDocker;
 import com.mageddo.dnsproxyserver.solver.SolverLocalDB;
 import com.mageddo.dnsproxyserver.solver.SolverSystem;
+import com.mageddo.dnsproxyserver.solver.stub.SolverStub;
 import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.ElementsIntoSet;
@@ -24,9 +25,9 @@ public interface ModuleSolver {
   @Singleton
   @ElementsIntoSet
   static Set<Solver> solvers(
-    SolverSystem o1, SolverDocker o2, SolverLocalDB o3, SolverCachedRemote o4
+    SolverSystem o1, SolverDocker o2, SolverLocalDB o3, SolverCachedRemote o4, SolverStub o5
   ) {
-    return Set.of(o1, o2, o3, o4);
+    return Set.of(o1, o2, o3, o4, o5);
   }
 
   @Provides

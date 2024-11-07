@@ -17,6 +17,7 @@ public class SolverProvider {
 
   static final String[] solversOrder = {
     "SolverSystem",
+    "SolverStub",
     "SolverDocker",
     SolverLocalDB.NAME,
     SolverCachedRemote.NAME
