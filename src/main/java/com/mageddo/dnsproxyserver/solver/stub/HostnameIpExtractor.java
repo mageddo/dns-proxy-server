@@ -6,9 +6,12 @@ import com.mageddo.net.IP;
 import org.apache.commons.lang3.Validate;
 
 public class HostnameIpExtractor {
+
   public static IP extract(String hostname, String domain) {
+
     hostname = removeDomainFrom(hostname, domain);
     Validate.notBlank(hostname, "Hostname is empty");
+
     RuntimeException lastException = null;
     for (int i = 0; i < hostname.length(); i++) {
       try {
@@ -17,6 +20,7 @@ public class HostnameIpExtractor {
         lastException = e;
       }
     }
+
     throw lastException;
   }
 
@@ -28,8 +32,4 @@ public class HostnameIpExtractor {
     return hostname.substring(0, idx - 1);
   }
 
-//  static String findValidSeparators(String str){
-//    final var groups = Regexes.groups(str, "([-_\\.]+)");
-//    groups.size()
-//  }
 }
