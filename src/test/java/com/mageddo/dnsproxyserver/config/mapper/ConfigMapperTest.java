@@ -23,7 +23,6 @@ class ConfigMapperTest {
     assertNotNull(currentConfig);
   }
 
-
   @Test
   void mustMapSolverStub() {
     // arrange
