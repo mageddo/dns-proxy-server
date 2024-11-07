@@ -1,10 +1,12 @@
 package com.mageddo.utils;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.mageddo.json.JsonUtils;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
@@ -48,6 +50,20 @@ public class TestUtils {
 
   public static String readAndSortJsonExcluding(Object o, String... excludingFields) {
     return sortJsonExcluding(JsonUtils.writeValueAsString(o), excludingFields);
+  }
+
+  @SneakyThrows
+  public static String readSortDonWriteNullsAndExcludeFields(Object o, String... excludingFields) {
+    final var om = dontWriteNonNullObjectMapper();
+    final var excludedFields = om.readTree(sortJsonExcluding(om.writeValueAsString(o), excludingFields));
+    final var excludedNullFields = om.writeValueAsString(excludedFields);
+    return sortJson(excludedNullFields);
+  }
+
+  @SneakyThrows
+  public static String readSortDonWriteNullsAndExcludeFields(String path, String... excludingFields) {
+    final var om = dontWriteNonNullObjectMapper();
+    return om.writeValueAsString(om.readTree(sortJsonExcluding(readString(path), excludingFields)));
   }
 
   @SneakyThrows
@@ -113,4 +129,11 @@ public class TestUtils {
   public static String readString(Path path) {
     return Files.readString(path);
   }
+
+  private static ObjectMapper dontWriteNonNullObjectMapper() {
+    return new ObjectMapper()
+      .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+      .registerModule(new JavaTimeModule());
+  }
+
 }

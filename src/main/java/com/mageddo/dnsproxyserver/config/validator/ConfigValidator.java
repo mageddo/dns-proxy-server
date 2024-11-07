@@ -21,6 +21,7 @@ public class ConfigValidator {
     Validate.notNull(config.getServerProtocol(), "Server Protocol");
 
     Validate.notNull(config.getSolverRemote(), "Solver Remote");
+    Validate.notNull(config.getSolverStub(), "Solver Stub");
     Validate.notNull(config.isSolverRemoteActive(), "Solver remote active");
 
     CircuitBreakerValidator.validate(config.getSolverRemoteCircuitBreakerStrategy());

@@ -1,8 +1,9 @@
 package com.mageddo.dnsproxyserver.config.mapper;
 
-import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
+import com.mageddo.dnsproxyserver.config.SolverStub;
+import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigPropDAO;
 import com.mageddo.dnsproxyserver.config.validator.ConfigValidator;
 import com.mageddo.dnsproxyserver.utils.Numbers;
@@ -54,6 +55,7 @@ public class ConfigMapper {
         .circuitBreaker(firstNonNullRequiring(mapField(Config::getSolverRemoteCircuitBreakerStrategy, configs)))
         .build()
       )
+      .solverStub(firstNonNullRequiring(mapField(Config::getSolverStub, configs)))
       .source(Config.Source.MERGED)
       .build();
     ConfigValidator.validate(config);
@@ -70,6 +72,10 @@ public class ConfigMapper {
         .builder()
         .active(true)
         .circuitBreaker(defaultCircuitBreaker())
+        .build()
+      )
+      .solverStub(SolverStub.builder()
+        .domainName("stub")
         .build()
       )
       .source(Config.Source.DEFAULT)

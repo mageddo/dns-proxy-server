@@ -1,21 +1,16 @@
 {
   "defaultDns" : false,
   "dnsServerPort" : 5391,
-  "dockerSolverHostMachineFallbackActive" : null,
   "domain" : "acme",
   "dpsNetworkAutoConnect" : true,
   "hostMachineHostname" : "batata.com",
   "logFile" : "/var/log/dns-proxy-server.log",
   "logLevel" : "DEBUG",
   "mustConfigureDpsNetwork" : true,
-  "noEntriesResponseCode" : null,
   "registerContainerNames" : true,
   "remoteDnsServers" : [ ],
-  "resolvConfOverrideNameServers" : null,
-  "serverProtocol" : null,
   "source" : "JSON",
   "solverRemote" : {
-    "active" : null,
     "circuitBreaker" : {
       "failureThreshold" : 3,
       "failureThresholdCapacity" : 10,

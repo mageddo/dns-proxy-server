@@ -9,7 +9,6 @@ import com.mageddo.dnsproxyserver.solver.ResponseMapper;
 import com.mageddo.dnsproxyserver.solver.Solver;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.xbill.DNS.Message;
 
 import javax.inject.Inject;
@@ -56,10 +55,9 @@ public class SolverStub implements Solver {
     return ResponseMapper.toDefaultSuccessAnswer(query, foundIp, questionType.toVersion());
   }
 
-  private String findDomainName() {
-    final var domainName = Configs.getInstance()
+  String findDomainName() {
+    return Configs.getInstance()
       .getSolverStub()
       .getDomainName();
-    return StringUtils.defaultIfBlank(domainName, DOMAIN_NAME);
   }
 }

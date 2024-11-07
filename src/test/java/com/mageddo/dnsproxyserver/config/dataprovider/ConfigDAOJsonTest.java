@@ -12,7 +12,7 @@ import java.nio.file.Path;
 
 import static com.mageddo.utils.TestUtils.readAndSortJsonExcluding;
 import static com.mageddo.utils.TestUtils.readAsStream;
-import static com.mageddo.utils.TestUtils.sortJsonExcluding;
+import static com.mageddo.utils.TestUtils.readSortDonWriteNullsAndExcludeFields;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -39,7 +39,7 @@ class ConfigDAOJsonTest {
     // assert
     assertEquals(
       readAndSortJsonExcluding("/configs-test/004.json", excludingFields),
-      sortJsonExcluding(config, excludingFields)
+      readSortDonWriteNullsAndExcludeFields(config, excludingFields)
     );
   }
 
