@@ -44,4 +44,8 @@ public class Hostname {
   public static Hostname of(String hostname) {
     return new Hostname(hostname);
   }
+
+  public boolean endsWith(String name) {
+    return this.value.endsWith(StringUtils.lowerCase(name));
+  }
 }
