@@ -1,3 +1,7 @@
+## 3.32.3
+
+* Test release
+
 ## 3.32.2
 * Exposing Stub Solver domain config, see the docs. #545
 
