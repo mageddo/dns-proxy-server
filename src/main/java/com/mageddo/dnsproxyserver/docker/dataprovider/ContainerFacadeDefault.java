@@ -13,7 +13,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 @Slf4j
 @Default
@@ -46,15 +47,29 @@ public class ContainerFacadeDefault implements ContainerFacade {
   }
 
   @Override
-  public Optional<InspectContainerResponse> inspect(String id) {
+  public InspectContainerResponse inspect(String id) {
+    return this.dockerClient.inspectContainerCmd(id).exec();
+  }
+
+  @Override
+  public InspectContainerResponse safeInspect(String id) {
     try {
-      return Optional.of(this.dockerClient.inspectContainerCmd(id).exec());
+      return this.inspect(id);
     } catch (NotFoundException e) {
       log.warn("status=container-not-found, action=inspect-container, containerId={}", id);
     } catch (Exception e) {
       log.warn("status=unexpected-exception, action=inspect-container, containerId={}, msg={}", id, e.getMessage(), e);
     }
+    return null;
+  }
 
-    return Optional.empty();
+  @Override
+  public Stream<InspectContainerResponse> inspectFilteringValidContainers(List<Container> containers) {
+    return containers
+      .stream()
+      .map(com.github.dockerjava.api.model.Container::getId)
+      .map(this::safeInspect)
+      .filter(Objects::nonNull)
+      ;
   }
 }

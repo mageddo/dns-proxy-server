@@ -52,10 +52,8 @@ public class DpsContainerDAODefault implements DpsContainerDAO {
     } else {
       log.debug("dpsContainersFound={}", containers.size());
     }
-    return containers
-      .stream()
+    return this.containerFacade.inspectFilteringValidContainers(containers)
       .findFirst()
-      .flatMap(it -> this.containerFacade.inspect(it.getId()))
       .map(ContainerMapper::of)
       .orElse(null);
   }
