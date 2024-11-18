@@ -1,9 +1,7 @@
-package com.mageddo.dnsproxyserver.docker;
+package com.mageddo.dnsproxyserver.docker.dataprovider;
 
 import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.api.exception.NotFoundException;
 import com.github.dockerjava.api.model.Container;
-import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacadeDefault;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,16 +11,14 @@ import testing.templates.docker.DockerClientTemplates;
 import testing.templates.docker.InspectContainerResponseTemplates;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.spy;
 
 @ExtendWith(MockitoExtension.class)
-class ContainerFacadeDefaultTest {
+class ContainerFacadeDefaultCompTest {
 
   ContainerFacadeDefault dao;
 
@@ -114,55 +110,5 @@ class ContainerFacadeDefaultTest {
     assertEquals(expected, inspectResponse);
   }
 
-  @Test
-  void mustNotThrowErrorWhenInspectContainerGetNotFound(){
-    // arrange
-    final var containerId = "a39bba9a8bab2899";
 
-    doThrow(new NotFoundException("Container not found"))
-      .when(this.dao).inspect(containerId)
-    ;
-
-    // act
-    final var container = this.dao.safeInspect(containerId);
-
-    // assert
-    assertNull(container);
-  }
-
-  @Test
-  void mustNotThrowErrorWhenInspectContainerFails(){
-    // arrange
-    final var containerId = "a39bba9a8bab28aa";
-
-    doThrow(new NullPointerException("Unexpected failure"))
-      .when(this.dao).inspect(containerId)
-    ;
-
-    // act
-    final var container = this.dao.safeInspect(containerId);
-
-    // assert
-    assertNull(container);
-  }
-
-  @Test
-  void mustFilterNullContainerInspections(){
-    final var c1 = ContainerTemplates.buildRegularContainerCoffeeMakerCheckout();
-    final var c2 = ContainerTemplates.buildDpsContainer();
-    final var containers = List.of(c1, c2);
-
-    doReturn(InspectContainerResponseTemplates.withDpsLabel())
-      .when(this.dao).safeInspect(c1.getId())
-    ;
-
-    doReturn(null)
-      .when(this.dao).safeInspect(c2.getId())
-    ;
-
-    final var filtered = this.dao.inspectFilteringValidContainers(containers)
-      .toList();
-
-    assertEquals(1, filtered.size());
-  }
 }
