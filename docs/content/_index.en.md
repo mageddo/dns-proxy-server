@@ -28,10 +28,18 @@ Mac, Windows, Docker, etc.
 Basic running it on Linux or Mac
 
 ```bash
-sudo ./dns-proxy-server --server-port 5555
+sudo ./dns-proxy-server --server-port 5555 --register-container-names
 ```
 
-Solving docker containers:
+Solving docker container [from container name][11]
+```bash
+$ docker run --rm --name nginx-app nginx
+
+$ nslookup -po=5555 nginx-app.docker 127.0.0.1
+172.17.0.3
+```
+
+Solving docker container from hostname
 ```bash
 $ docker run --rm --hostname nginx.dev nginx
 

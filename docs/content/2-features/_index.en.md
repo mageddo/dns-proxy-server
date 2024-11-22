@@ -3,10 +3,25 @@ title: Features
 weight: 2
 pre: "<b>2. </b>"
 ---
-## Features
+
+## DNS Features List
+
+* [Authoritative][1]
+* [Recursive][2]
+* [Recursion ACL][3]
+* Secondary mode
+* [Caching][4]
+* [DNSSEC][5]
+* [TSIG][6]
+* [IPv6][7]
+* [Wildcard][8]
+* [Split horizon][9]
+* [DNS over HTTPS][10]
+* [DNS over QUIC][11]
+
+## Other Features Manual
 
 {{%children style="li"  %}}
-* IPV4/IPV6 Support 
 
 ## Main features use cases
 
@@ -54,7 +69,7 @@ Name:   dps-sample.dev
 Address: 192.168.0.254
 ```
 
-Access the gui by using http://localhost:5380 , see [this link][1].
+Access the gui by using http://localhost:5380 , see [this link][12].
 
 ## DNS resolution order
 **DPS** follow the below order to solve hostnames
@@ -63,4 +78,16 @@ Access the gui by using http://localhost:5380 , see [this link][1].
 * Then from local database file
 * Then from 3rd configured remote DNS servers
 
-[1]: {{%relref "2-features/gui/_index.md" %}}
+
+[1]: https://en.wikipedia.org/wiki/Name_server#Authoritative_name_server
+[2]: https://en.wikipedia.org/wiki/Name_server#Recursive_query
+[3]: https://en.wikipedia.org/wiki/Access_control_list
+[4]: https://en.wikipedia.org/wiki/Name_server#Caching_name_server
+[5]: https://en.wikipedia.org/wiki/Domain_Name_System_Security_Extensions
+[6]: https://en.wikipedia.org/wiki/TSIG
+[7]: https://en.wikipedia.org/wiki/IPv6
+[8]: https://en.wikipedia.org/wiki/Wildcard_DNS_record
+[9]: https://en.wikipedia.org/wiki/Split-horizon_DNS
+[10]: https://en.wikipedia.org/wiki/DNS_over_HTTPS
+[11]: https://en.wikipedia.org/wiki/DNS_over_QUIC
+[12]: {{%relref "2-features/gui/_index.md" %}}
