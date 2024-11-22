@@ -115,6 +115,21 @@
   </url>
   
   <url>
+    <loc>http://mageddo.github.io/dns-proxy-server/latest/en/</loc>
+    <priority>0</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="pt-br"
+                href="http://mageddo.github.io/dns-proxy-server/latest/pt-br/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://mageddo.github.io/dns-proxy-server/latest/en/"
+                />
+  </url>
+  
+  <url>
     <loc>http://mageddo.github.io/dns-proxy-server/latest/en/categories/</loc>
     <priority>0</priority>
     <xhtml:link
@@ -139,20 +154,6 @@
   
   <url>
     <loc>http://mageddo.github.io/dns-proxy-server/latest/en/2-features/docker-different-networks-solving/</loc>
-  </url>
-  
-  <url>
-    <loc>http://mageddo.github.io/dns-proxy-server/latest/en/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="pt-br"
-                href="http://mageddo.github.io/dns-proxy-server/latest/pt-br/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="http://mageddo.github.io/dns-proxy-server/latest/en/"
-                />
   </url>
   
   <url>

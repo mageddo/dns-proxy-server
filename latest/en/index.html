@@ -9,23 +9,23 @@
 
     <link rel="icon" href="/dns-proxy-server/latest/images/favicon.png" type="image/png">
 
-    <title>Getting Started :: DNS Proxy Server</title>
+    <title> :: DNS Proxy Server</title>
 
     
-    <link href="/dns-proxy-server/latest/css/nucleus.css?1731956928" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/fontawesome-all.min.css?1731956928" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/hybrid.css?1731956928" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/featherlight.min.css?1731956928" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/perfect-scrollbar.min.css?1731956928" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/auto-complete.css?1731956928" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/atom-one-dark-reasonable.css?1731956928" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/theme.css?1731956928" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/hugo-theme.css?1731956928" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/nucleus.css?1732301060" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/fontawesome-all.min.css?1732301060" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/hybrid.css?1732301060" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/featherlight.min.css?1732301060" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/perfect-scrollbar.min.css?1732301060" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/auto-complete.css?1732301060" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/atom-one-dark-reasonable.css?1732301060" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/theme.css?1732301060" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/hugo-theme.css?1732301060" rel="stylesheet">
     
-      <link href="/dns-proxy-server/latest/css/theme-mine.css?1731956928" rel="stylesheet">
+      <link href="/dns-proxy-server/latest/css/theme-mine.css?1732301060" rel="stylesheet">
     
 
-    <script src="/dns-proxy-server/latest/js/jquery-3.3.1.min.js?1731956928"></script>
+    <script src="/dns-proxy-server/latest/js/jquery-3.3.1.min.js?1732301060"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -53,14 +53,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/dns-proxy-server/latest/js/lunr.min.js?1731956928"></script>
-<script type="text/javascript" src="/dns-proxy-server/latest/js/auto-complete.js?1731956928"></script>
+<script type="text/javascript" src="/dns-proxy-server/latest/js/lunr.min.js?1732301060"></script>
+<script type="text/javascript" src="/dns-proxy-server/latest/js/auto-complete.js?1732301060"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/mageddo.github.io\/dns-proxy-server\/latest\/en";
     
 </script>
-<script type="text/javascript" src="/dns-proxy-server/latest/js/search.js?1731956928"></script>
+<script type="text/javascript" src="/dns-proxy-server/latest/js/search.js?1732301060"></script>
 
     
   </div>
@@ -1081,6 +1081,9 @@
  
 
 
+<p><a href="https://github.com/mageddo/dns-proxy-server/actions/workflows/ci.yml"><img src="https://github.com/mageddo/dns-proxy-server/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=PYFAZCXL442B6&amp;source=url"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="help me to keep DPS up to date" /></a></p>
+
 <h3 id="main-features">Main features</h3>
 
 <p>DPS is a lightweight end user (Developers, Server Administrators) DNS server tool
@@ -1089,14 +1092,104 @@ on the configured environment, so you can:</p>
 
 <ul>
 <li>Solve hostnames from local configuration database</li>
-<li>Solve hostnames from <a href="/dns-proxy-server/latest/en/2-features/docker-solving/">docker containers</a></li>
+<li>Solve hostnames from <a href="https://mageddo.github.io/dns-proxy-server/latest/en/2-features/docker-solving/">docker containers</a></li>
 <li>Solve hostnames from a list of configured remote DNS servers(as a proxy) if no answer of two above</li>
 <li>Solve hostnames using wildcards</li>
 <li>Graphic interface to Create/List/Update/Delete <strong>A/CNAME</strong> records</li>
 <li>Solve host machine IP using <code>host.docker</code> hostname</li>
 </ul>
 
-<p><img src="https://i.imgur.com/aR9dl0O.png?width=60pc" alt="" /></p>
+<p>Checkout the <a href="http://mageddo.github.io/dns-proxy-server/latest/en/2-features/">full list of features</a> with examples</p>
+
+<p><img src="https://i.imgur.com/aR9dl0O.png" alt="" /></p>
+
+<h3 id="basic-running-it">Basic running it</h3>
+
+<p>You can run DPS as native binary downloading the latest <a href="https://github.com/mageddo/dns-proxy-server/releases">binaries releases</a>
+or via docker looking at <a href="https://hub.docker.com/r/defreitas/dns-proxy-server">Dockerhub images</a>. See <a href="http://mageddo.github.io/dns-proxy-server/latest/en/1-getting-started/running-it/">complete running it</a> documentation for running on
+Mac, Windows, Docker, etc.</p>
+
+<p>Basic running it on Linux or Mac</p>
+
+<pre><code class="language-bash">sudo ./dns-proxy-server --server-port 5555 --register-container-names
+</code></pre>
+
+<p>Solving docker container <a href="https://mageddo.github.io/dns-proxy-server/latest/en/2-features/docker-solving/">from container name</a></p>
+
+<pre><code class="language-bash">$ docker run --rm --name nginx-app nginx
+
+$ nslookup -po=5555 nginx-app.docker 127.0.0.1
+172.17.0.3
+</code></pre>
+
+<p>Solving docker container from hostname</p>
+
+<pre><code class="language-bash">$ docker run --rm --hostname nginx.dev nginx
+
+$ nslookup -po=5555 nginx.dev 127.0.0.1
+172.17.0.3
+</code></pre>
+
+<p>Solving from pre-configured entries (conf/config.json):</p>
+
+<pre><code class="language-bash">$ nslookup -po=5555 dps-sample.dev 127.0.0.1
+192.168.0.254
+</code></pre>
+
+<p>Solving from Internet</p>
+
+<pre><code class="language-bash">$ nslookup -po=5555 google.com 127.0.0.1
+142.250.79.174
+</code></pre>
+
+<p>Solving stub hostnames like nip.io or sslip.io</p>
+
+<pre><code class="language-bash">$ nslookup -po=5555 machine-1.192.168.0.1.stub 127.0.0.1
+192.168.0.1
+</code></pre>
+
+<p>Solving host machine IP</p>
+
+<pre><code class="language-bash">$ nslookup -po=5555 host.docker 127.0.0.1
+172.22.230.67
+</code></pre>
+
+<p>Solving all subdomains to a specific docker container</p>
+
+<pre><code class="language-bash">$ docker run --rm --hostname .nginx.dev nginx
+
+$ nslookup -po=5555 site1.nginx.dev 127.0.0.1
+172.17.0.3
+</code></pre>
+
+<p>Check more <a href="http://mageddo.github.io/dns-proxy-server/latest/en/5-tutorials/">samples</a> to learn by practice.</p>
+
+<h3 id="documents">Documents</h3>
+
+<ul>
+<li><a href="http://mageddo.github.io/dns-proxy-server/">Full documentation</a></li>
+<li><a href="http://mageddo.github.io/dns-proxy-server/latest/en/1-getting-started/running-it/">Running it documentation</a></li>
+<li><a href="http://mageddo.github.io/dns-proxy-server/latest/en/5-tutorials/">Tutorials and Examples</a></li>
+<li><a href="http://mageddo.github.io/dns-proxy-server/latest/en/4-developing/">Coding at the DPS</a></li>
+<li><a href="https://www.ietf.org/rfc/rfc1035.txt">RFC-1035</a></li>
+</ul>
+
+<h3 id="versioning-and-releasing">Versioning and Releasing</h3>
+
+<p>Please be aware of <a href="http://mageddo.github.io/dns-proxy-server/latest/en/1-getting-started/versioning">how DPS controls the releases</a> so you can use the most recent features and updates or
+prefer to choose the more stable and old builds.</p>
+
+<h3 id="donation">Donation</h3>
+
+<p>Help me to keep DPS up to date</p>
+
+<p>Via PayPal</p>
+
+<p><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=PYFAZCXL442B6&amp;source=url"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="" /></a></p>
+
+<p>Or via QR code</p>
+
+<p><img src="https://i.imgur.com/LmN7g2j.png" alt="" /></p>
 	
   
         
@@ -1698,20 +1791,20 @@ on the configured environment, so you can:</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/dns-proxy-server/latest/js/clipboard.min.js?1731956928"></script>
-    <script src="/dns-proxy-server/latest/js/perfect-scrollbar.min.js?1731956928"></script>
-    <script src="/dns-proxy-server/latest/js/perfect-scrollbar.jquery.min.js?1731956928"></script>
-    <script src="/dns-proxy-server/latest/js/jquery.sticky.js?1731956928"></script>
-    <script src="/dns-proxy-server/latest/js/featherlight.min.js?1731956928"></script>
-    <script src="/dns-proxy-server/latest/js/html5shiv-printshiv.min.js?1731956928"></script>
-    <script src="/dns-proxy-server/latest/js/highlight.pack.js?1731956928"></script>
+    <script src="/dns-proxy-server/latest/js/clipboard.min.js?1732301060"></script>
+    <script src="/dns-proxy-server/latest/js/perfect-scrollbar.min.js?1732301060"></script>
+    <script src="/dns-proxy-server/latest/js/perfect-scrollbar.jquery.min.js?1732301060"></script>
+    <script src="/dns-proxy-server/latest/js/jquery.sticky.js?1732301060"></script>
+    <script src="/dns-proxy-server/latest/js/featherlight.min.js?1732301060"></script>
+    <script src="/dns-proxy-server/latest/js/html5shiv-printshiv.min.js?1732301060"></script>
+    <script src="/dns-proxy-server/latest/js/highlight.pack.js?1732301060"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/dns-proxy-server/latest/js/modernizr.custom-3.6.0.js?1731956928"></script>
-    <script src="/dns-proxy-server/latest/js/learn.js?1731956928"></script>
-    <script src="/dns-proxy-server/latest/js/hugo-learn.js?1731956928"></script>
+    <script src="/dns-proxy-server/latest/js/modernizr.custom-3.6.0.js?1732301060"></script>
+    <script src="/dns-proxy-server/latest/js/learn.js?1732301060"></script>
+    <script src="/dns-proxy-server/latest/js/hugo-learn.js?1732301060"></script>
 
-    <link href="/dns-proxy-server/latest/mermaid/mermaid.css?1731956928" type="text/css" rel="stylesheet" />
-    <script src="/dns-proxy-server/latest/mermaid/mermaid.js?1731956928"></script>
+    <link href="/dns-proxy-server/latest/mermaid/mermaid.css?1732301060" type="text/css" rel="stylesheet" />
+    <script src="/dns-proxy-server/latest/mermaid/mermaid.js?1732301060"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Getting Started on DNS Proxy Server</title>
+    <title>DNS Proxy Server</title>
     <link>http://mageddo.github.io/dns-proxy-server/latest/en/</link>
-    <description>Recent content in Getting Started on DNS Proxy Server</description>
+    <description>Recent content on DNS Proxy Server</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     
@@ -87,7 +87,7 @@ if you know about DPS you will figure out that&amp;rsquo;s a very basic DPS feat
       <description>Contributors Thanks to them  for making Open Source Software a better place !
 .ghContributors{ display:flex; flex-flow: wrap; align-content: flex-start }
 .ghContributors &amp;gt; div{ width: 50% ; display: inline-flex; margin-bottom: 5px; } .ghContributors &amp;gt; div label{ padding-left: 4px ; } .ghContributors &amp;gt; div span{ font-size: x-small; padding-left: 4px ; }
-  @mageddo 900 commits 
+  @mageddo 901 commits 
  @josielrocha 9 commits 
  @mrubli 3 commits 
  @addshore 3 commits</description>

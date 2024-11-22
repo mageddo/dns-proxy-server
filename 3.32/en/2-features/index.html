@@ -12,20 +12,20 @@
     <title>Features :: DNS Proxy Server</title>
 
     
-    <link href="/dns-proxy-server/3.32/css/nucleus.css?1731956927" rel="stylesheet">
-    <link href="/dns-proxy-server/3.32/css/fontawesome-all.min.css?1731956927" rel="stylesheet">
-    <link href="/dns-proxy-server/3.32/css/hybrid.css?1731956927" rel="stylesheet">
-    <link href="/dns-proxy-server/3.32/css/featherlight.min.css?1731956927" rel="stylesheet">
-    <link href="/dns-proxy-server/3.32/css/perfect-scrollbar.min.css?1731956927" rel="stylesheet">
-    <link href="/dns-proxy-server/3.32/css/auto-complete.css?1731956927" rel="stylesheet">
-    <link href="/dns-proxy-server/3.32/css/atom-one-dark-reasonable.css?1731956927" rel="stylesheet">
-    <link href="/dns-proxy-server/3.32/css/theme.css?1731956927" rel="stylesheet">
-    <link href="/dns-proxy-server/3.32/css/hugo-theme.css?1731956927" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/nucleus.css?1732301059" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/fontawesome-all.min.css?1732301059" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/hybrid.css?1732301059" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/featherlight.min.css?1732301059" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/perfect-scrollbar.min.css?1732301059" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/auto-complete.css?1732301059" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/atom-one-dark-reasonable.css?1732301059" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/theme.css?1732301059" rel="stylesheet">
+    <link href="/dns-proxy-server/3.32/css/hugo-theme.css?1732301059" rel="stylesheet">
     
-      <link href="/dns-proxy-server/3.32/css/theme-mine.css?1731956927" rel="stylesheet">
+      <link href="/dns-proxy-server/3.32/css/theme-mine.css?1732301059" rel="stylesheet">
     
 
-    <script src="/dns-proxy-server/3.32/js/jquery-3.3.1.min.js?1731956927"></script>
+    <script src="/dns-proxy-server/3.32/js/jquery-3.3.1.min.js?1732301059"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -53,14 +53,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/dns-proxy-server/3.32/js/lunr.min.js?1731956927"></script>
-<script type="text/javascript" src="/dns-proxy-server/3.32/js/auto-complete.js?1731956927"></script>
+<script type="text/javascript" src="/dns-proxy-server/3.32/js/lunr.min.js?1732301059"></script>
+<script type="text/javascript" src="/dns-proxy-server/3.32/js/auto-complete.js?1732301059"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/mageddo.github.io\/dns-proxy-server\/3.32\/en";
     
 </script>
-<script type="text/javascript" src="/dns-proxy-server/3.32/js/search.js?1731956927"></script>
+<script type="text/javascript" src="/dns-proxy-server/3.32/js/search.js?1732301059"></script>
 
     
   </div>
@@ -1086,7 +1086,7 @@
             
           
           
-            <a href='/dns-proxy-server/3.32/en/'>Getting Started</a> > Features
+            <a href='/dns-proxy-server/3.32/en/'></a> > Features
           
          
           
@@ -1101,7 +1101,8 @@
 <ul>
 <li>
 <ul>
-<li><a href="#features">Features</a></li>
+<li><a href="#dns-features-list">DNS Features List</a></li>
+<li><a href="#other-features-manual">Other Features Manual</a></li>
 <li><a href="#main-features-use-cases">Main features use cases</a></li>
 <li><a href="#dns-resolution-order">DNS resolution order</a></li>
 </ul></li>
@@ -1133,7 +1134,30 @@
 
 	
 
-<h2 id="features">Features</h2>
+<h2 id="dns-features-list">DNS Features List</h2>
+
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Name_server#Authoritative_name_server">🟡 Authoritative</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Name_server#Recursive_query">✅ Recursive</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Access_control_list">❌ Recursion ACL</a></li>
+<li>✅ Secondary mode</li>
+<li><a href="https://en.wikipedia.org/wiki/Name_server#Caching_name_server">✅ Caching</a></li>
+<li><a href="https://en.wikipedia.org/wiki/IPv6">✅ IPv6</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Wildcard_DNS_record">✅ Wildcard</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Split-horizon_DNS">❌ Split horizon</a></li>
+<li><a href="https://en.wikipedia.org/wiki/DNS_over_HTTPS">❌ DNS over HTTPS</a></li>
+<li><a href="https://en.wikipedia.org/wiki/DNS_over_QUIC">❌ DNS over QUIC</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Domain_Name_System_Security_Extensions">❓DNSSEC</a></li>
+<li><a href="https://en.wikipedia.org/wiki/TSIG">❓TSIG</a></li>
+</ul>
+
+<pre><code>❓ = Unknown
+❌ = Not implemented
+✅ = Implemented
+🟡 = Partially Implemented
+</code></pre>
+
+<h2 id="other-features-manual">Other Features Manual</h2>
 
 <ul class="children children-li">
     
@@ -1346,10 +1370,6 @@
     
 
     
-</ul>
-
-<ul>
-<li>IPV4/IPV6 Support</li>
 </ul>
 
 <h2 id="main-features-use-cases">Main features use cases</h2>
@@ -2023,20 +2043,20 @@ Address: 192.168.0.254
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/dns-proxy-server/3.32/js/clipboard.min.js?1731956927"></script>
-    <script src="/dns-proxy-server/3.32/js/perfect-scrollbar.min.js?1731956927"></script>
-    <script src="/dns-proxy-server/3.32/js/perfect-scrollbar.jquery.min.js?1731956927"></script>
-    <script src="/dns-proxy-server/3.32/js/jquery.sticky.js?1731956927"></script>
-    <script src="/dns-proxy-server/3.32/js/featherlight.min.js?1731956927"></script>
-    <script src="/dns-proxy-server/3.32/js/html5shiv-printshiv.min.js?1731956927"></script>
-    <script src="/dns-proxy-server/3.32/js/highlight.pack.js?1731956927"></script>
+    <script src="/dns-proxy-server/3.32/js/clipboard.min.js?1732301059"></script>
+    <script src="/dns-proxy-server/3.32/js/perfect-scrollbar.min.js?1732301059"></script>
+    <script src="/dns-proxy-server/3.32/js/perfect-scrollbar.jquery.min.js?1732301059"></script>
+    <script src="/dns-proxy-server/3.32/js/jquery.sticky.js?1732301059"></script>
+    <script src="/dns-proxy-server/3.32/js/featherlight.min.js?1732301059"></script>
+    <script src="/dns-proxy-server/3.32/js/html5shiv-printshiv.min.js?1732301059"></script>
+    <script src="/dns-proxy-server/3.32/js/highlight.pack.js?1732301059"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/dns-proxy-server/3.32/js/modernizr.custom-3.6.0.js?1731956927"></script>
-    <script src="/dns-proxy-server/3.32/js/learn.js?1731956927"></script>
-    <script src="/dns-proxy-server/3.32/js/hugo-learn.js?1731956927"></script>
+    <script src="/dns-proxy-server/3.32/js/modernizr.custom-3.6.0.js?1732301059"></script>
+    <script src="/dns-proxy-server/3.32/js/learn.js?1732301059"></script>
+    <script src="/dns-proxy-server/3.32/js/hugo-learn.js?1732301059"></script>
 
-    <link href="/dns-proxy-server/3.32/mermaid/mermaid.css?1731956927" type="text/css" rel="stylesheet" />
-    <script src="/dns-proxy-server/3.32/mermaid/mermaid.js?1731956927"></script>
+    <link href="/dns-proxy-server/3.32/mermaid/mermaid.css?1732301059" type="text/css" rel="stylesheet" />
+    <script src="/dns-proxy-server/3.32/mermaid/mermaid.js?1732301059"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
