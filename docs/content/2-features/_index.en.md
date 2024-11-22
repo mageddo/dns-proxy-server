@@ -6,18 +6,25 @@ pre: "<b>2. </b>"
 
 ## DNS Features List
 
-* [Authoritative][1]
-* [Recursive][2]
-* [Recursion ACL][3]
-* Secondary mode
-* [Caching][4]
-* [DNSSEC][5]
-* [TSIG][6]
-* [IPv6][7]
-* [Wildcard][8]
-* [Split horizon][9]
-* [DNS over HTTPS][10]
-* [DNS over QUIC][11]
+* [🟡 Authoritative][1]
+* [✅ Recursive][2]
+* [❌ Recursion ACL][3]
+* ✅ Secondary mode
+* [✅ Caching][4]
+* [✅ IPv6][7]
+* [✅ Wildcard][8]
+* [❌ Split horizon][9]
+* [❌ DNS over HTTPS][10]
+* [❌ DNS over QUIC][11]
+* [❓DNSSEC][5]
+* [❓TSIG][6]
+
+```
+❓ = Unknown
+❌ = Not implemented
+✅ = Implemented
+🟡 = Partially Implemented
+```
 
 ## Other Features Manual
 
