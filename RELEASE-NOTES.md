@@ -1,3 +1,6 @@
+## 3.32.4
+* Migrating aarch docker image as the previous one is not available. #612
+
 ## 3.32.3
 * Ignoring containers which fails to inspect, credits to @defung . #599
 
