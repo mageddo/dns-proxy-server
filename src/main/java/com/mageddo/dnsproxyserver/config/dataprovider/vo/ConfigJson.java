@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @deprecated see #594.
  */
-@Deprecated(forRemoval = true)
+@Deprecated
 public interface ConfigJson {
 
   String getActiveEnv();

@@ -41,7 +41,27 @@ public class Config {
 
   private Integer dnsServerPort;
 
-  private Boolean defaultDns;
+  private SimpleServer.Protocol serverProtocol;
+
+//  private Boolean defaultDns;
+  private DefaultDns defaultDns;
+  private String resolvConfPaths;
+  private Boolean resolvConfOverrideNameServers;
+
+  @Value
+  @Builder
+  public static class DefaultDns {
+
+    private Boolean active;
+    private ResolvConf resolvConf;
+
+    @Value
+    @Builder
+    public static class ResolvConf {
+      private String paths;
+      private Boolean overrideNameServers;
+    }
+  }
 
   private LogLevel logLevel;
 
@@ -59,13 +79,8 @@ public class Config {
 
   private Path configPath;
 
-  private String resolvConfPaths;
-
-  private SimpleServer.Protocol serverProtocol;
-
   private URI dockerHost;
 
-  private Boolean resolvConfOverrideNameServers;
 
   private Integer noEntriesResponseCode;
 
@@ -74,6 +89,10 @@ public class Config {
   private SolverStub solverStub;
 
   private SolverRemote solverRemote;
+
+
+  private String activeEnv;
+  private List<Env> envs;
 
   @NonNull
   private Source source;
@@ -127,6 +146,24 @@ public class Config {
     TESTS_TEMPLATE,
 
   }
+
+  @Value
+  public static class Server {
+
+    private Dns dns;
+    private Web web;
+
+    @Value
+    public static class Dns {
+      private Integer port;
+    }
+
+    @Value
+    public static class Web {
+      private Integer port;
+    }
+  }
+
 
   @Value
   public static class Env {

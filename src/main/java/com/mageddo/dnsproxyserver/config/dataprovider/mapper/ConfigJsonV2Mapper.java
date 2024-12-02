@@ -23,7 +23,16 @@ public class ConfigJsonV2Mapper {
     return Config.builder()
       .webServerPort(json.getWebServerPort())
       .dnsServerPort(json.getDnsServerPort())
-      .defaultDns(json.getDefaultDns())
+      .defaultDns(Config.DefaultDns
+        .builder()
+        .active(json.getDefaultDns())
+        .resolvConf(Config.DefaultDns.ResolvConf
+          .builder()
+          .overrideNameServers(json.getResolvConfOverrideNameServers())
+          .build()
+        )
+        .build()
+      )
       .logLevel(ConfigFieldsValuesMapper.mapLogLevelFrom(json.getLogLevel()))
       .logFile(ConfigFieldsValuesMapper.mapLogFileFrom(json.getLogFile()))
       .registerContainerNames(json.getRegisterContainerNames())

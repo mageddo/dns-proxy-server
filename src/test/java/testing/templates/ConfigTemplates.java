@@ -20,7 +20,11 @@ public class ConfigTemplates {
     return Config
       .builder()
       .logFile("/tmp/dps.log")
-      .defaultDns(true)
+      .defaultDns(Config.DefaultDns
+        .builder()
+        .active(true)
+        .build()
+      )
       .dpsNetworkAutoConnect(false)
       .hostMachineHostname("host.docker")
       .configPath(Paths.get("/tmp/config.json"))
