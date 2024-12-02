@@ -34,8 +34,9 @@ public class DnsConfigurators implements StartupEvent {
   @Override
   public void onStart() {
     final var config = this.findConfig();
-    log.debug("action=setAsDefaultDns, active={}", config.getDefaultDns());
-    if (!Boolean.TRUE.equals(config.getDefaultDns())) {
+    final var defaultDnsActive = config.isDefaultDnsActive();
+    log.debug("action=setAsDefaultDns, active={}", defaultDnsActive);
+    if (!defaultDnsActive) {
       return;
     }
 
