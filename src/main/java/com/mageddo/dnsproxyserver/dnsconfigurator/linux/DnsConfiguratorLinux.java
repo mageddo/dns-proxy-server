@@ -54,9 +54,7 @@ public class DnsConfiguratorLinux implements DnsConfigurator {
     final var confFile = this.getConfFile();
 
     if (confFile.isResolvconf()) {
-      final var overrideNameServers = Configs
-        .getInstance()
-        .getResolvConfOverrideNameServers();
+      final var overrideNameServers = this.isOverrideNameServersActive();
       ResolvconfConfigurator.process(confFile.getPath(), addr, overrideNameServers);
     } else if (confFile.isResolved()) {
       this.configureResolved(addr, confFile);
@@ -64,6 +62,12 @@ public class DnsConfiguratorLinux implements DnsConfigurator {
       throw newUnsupportedConfType(confFile);
     }
     log.debug("status=configured, path={}", this.getConfFile());
+  }
+
+  private boolean isOverrideNameServersActive() {
+    return Configs
+      .getInstance()
+      .isResolvConfOverrideNameServersActive();
   }
 
   @Override
@@ -122,7 +126,7 @@ public class DnsConfiguratorLinux implements DnsConfigurator {
 
   String getConfigResolvPaths() {
     return Configs.getInstance()
-      .getResolvConfPaths()
+      .getDefaultDnsResolvConfPaths()
       ;
   }
 

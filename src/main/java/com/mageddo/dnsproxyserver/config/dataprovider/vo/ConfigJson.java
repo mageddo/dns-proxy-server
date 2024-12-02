@@ -7,6 +7,10 @@ import com.mageddo.net.IpAddr;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * @deprecated see #594.
+ */
+@Deprecated
 public interface ConfigJson {
 
   String getActiveEnv();

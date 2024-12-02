@@ -23,7 +23,16 @@ public class ConfigJsonV2Mapper {
     return Config.builder()
       .webServerPort(json.getWebServerPort())
       .dnsServerPort(json.getDnsServerPort())
-      .defaultDns(json.getDefaultDns())
+      .defaultDns(Config.DefaultDns
+        .builder()
+        .active(json.getDefaultDns())
+        .resolvConf(Config.DefaultDns.ResolvConf
+          .builder()
+          .overrideNameServers(json.getResolvConfOverrideNameServers())
+          .build()
+        )
+        .build()
+      )
       .logLevel(ConfigFieldsValuesMapper.mapLogLevelFrom(json.getLogLevel()))
       .logFile(ConfigFieldsValuesMapper.mapLogFileFrom(json.getLogFile()))
       .registerContainerNames(json.getRegisterContainerNames())
@@ -34,12 +43,13 @@ public class ConfigJsonV2Mapper {
       .remoteDnsServers(json.getRemoteDnsServers())
       .serverProtocol(json.getServerProtocol())
       .dockerHost(json.getDockerHost())
-      .resolvConfOverrideNameServers(json.getResolvConfOverrideNameServers())
       .noEntriesResponseCode(json.getNoEntriesResponseCode())
       .dockerSolverHostMachineFallbackActive(json.getDockerSolverHostMachineFallbackActive())
       .configPath(configFileAbsolutePath)
       .solverRemote(toSolverRemote(json))
       .solverStub(toSolverStub(json.getSolverStub()))
+      .activeEnv(json.getActiveEnv())
+      .envs(json.getEnvs())
       .source(Config.Source.JSON)
       .build();
   }

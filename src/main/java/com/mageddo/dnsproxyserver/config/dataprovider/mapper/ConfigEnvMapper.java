@@ -18,9 +18,17 @@ public class ConfigEnvMapper {
       .dpsNetworkAutoConnect(config.getDpsNetworkAutoConnect())
       .noEntriesResponseCode(config.getNoEntriesResponseCode())
       .dockerSolverHostMachineFallbackActive(config.getDockerSolverHostMachineFallbackActive())
-      .resolvConfOverrideNameServers(config.getResolvConfOverrideNameServers())
       .mustConfigureDpsNetwork(config.getDpsNetwork())
-      .resolvConfPaths(config.getResolvConfPath())
+      .defaultDns(Config.DefaultDns
+        .builder()
+        .resolvConf(Config.DefaultDns.ResolvConf
+          .builder()
+          .overrideNameServers(config.getResolvConfOverrideNameServers())
+          .paths(config.getResolvConfPath())
+          .build()
+        )
+        .build()
+      )
       .solverRemote(SolverRemote
         .builder()
         .active(Booleans.reverseWhenNotNull(config.getNoRemoteServers()))

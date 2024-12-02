@@ -5,7 +5,6 @@ import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.config.dataprovider.predicate.EntryPredicate;
 import com.mageddo.dnsproxyserver.config.dataprovider.predicate.EnvPredicate;
 import com.mageddo.dnsproxyserver.config.dataprovider.predicate.JsonEnvPredicate;
-import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJson;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2;
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
 import lombok.NoArgsConstructor;
@@ -32,7 +31,7 @@ public class PersistentConfigDAOJson implements PersistentConfigDAO {
 
   @Override
   public Config.Env findActiveEnv() {
-    final var configJson = JsonConfigs.loadConfigJson();
+    final var configJson = JsonConfigs.loadConfigAsConfig();
     return findEnv(configJson.getActiveEnv(), configJson);
   }
 
@@ -41,7 +40,7 @@ public class PersistentConfigDAOJson implements PersistentConfigDAO {
     final var configPath = Configs
       .getInstance()
       .getConfigPath();
-    return findEnv(envKey, JsonConfigs.loadConfig(configPath));
+    return findEnv(envKey, JsonConfigs.loadConfigAsConfig(configPath));
   }
 
   @Override
@@ -175,8 +174,8 @@ public class PersistentConfigDAOJson implements PersistentConfigDAO {
     return def;
   }
 
-  static Config.Env findEnv(String envKey, final ConfigJson configJson) {
-    final var env = configJson
+  static Config.Env findEnv(String envKey, final Config config) {
+    final var env = config
       .getEnvs()
       .stream()
       .filter(EnvPredicate.byName(envKey))
