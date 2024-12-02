@@ -33,7 +33,6 @@ public class ConfigMapper {
       .version(ConfigPropDAO.getVersion())
       .webServerPort(Numbers.firstPositive(mapField(Config::getWebServerPort, configs)))
       .dnsServerPort(Numbers.firstPositive(mapField(Config::getDnsServerPort, configs)))
-      .defaultDns(firstNonNullRequiring(mapField(Config::getDefaultDns, configs)))
       .logLevel(firstNonNullRequiring(mapField(Config::getLogLevel, configs)))
       .logFile(firstNonNullRequiring(mapField(Config::getLogFile, configs)))
       .registerContainerNames(firstNonNullRequiring(mapField(Config::getRegisterContainerNames, configs)))
@@ -43,10 +42,18 @@ public class ConfigMapper {
       .dpsNetworkAutoConnect(firstNonNullRequiring(mapField(Config::getDpsNetworkAutoConnect, configs)))
       .remoteDnsServers(firstNonEmptyListRequiring(mapField(Config::getRemoteDnsServers, configs)))
       .configPath(firstNonNullRequiring(mapField(Config::getConfigPath, configs)))
-      .resolvConfPaths(firstNonNullRequiring(mapField(Config::getResolvConfPaths, configs)))
       .serverProtocol(firstNonNullRequiring(mapField(Config::getServerProtocol, configs)))
       .dockerHost(firstNonNullRequiring(mapField(Config::getDockerHost, configs)))
-      .resolvConfOverrideNameServers(firstNonNullRequiring(mapField(Config::getResolvConfOverrideNameServers, configs)))
+      .defaultDns(Config.DefaultDns
+        .builder()
+        .active(firstNonNullRequiring(mapField(Config::isDefaultDnsActive, configs)))
+        .resolvConf(Config.DefaultDns.ResolvConf
+          .builder()
+          .paths(firstNonNullRequiring(mapField(Config::getDefaultDnsResolvConfPaths, configs)))
+          .overrideNameServers(firstNonNullRequiring(mapField(Config::getDefaultDnsResolvConfOverrideNameServers, configs)))
+          .build())
+        .build()
+      )
       .noEntriesResponseCode(firstNonNullRequiring(mapField(Config::getNoEntriesResponseCode, configs)))
       .dockerSolverHostMachineFallbackActive(firstNonNullRequiring(mapField(Config::getDockerSolverHostMachineFallbackActive, configs)))
       .solverRemote(SolverRemote

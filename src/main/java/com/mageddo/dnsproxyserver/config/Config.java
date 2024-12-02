@@ -29,7 +29,7 @@ import static com.mageddo.commons.lang.Objects.mapOrNull;
  * @see com.mageddo.dnsproxyserver.config.application.ConfigService
  */
 @Value
-@Builder(toBuilder = true)
+@Builder(toBuilder = true, builderClassName = "ConfigBuilder")
 public class Config {
 
   private String version;
@@ -43,20 +43,42 @@ public class Config {
 
   private SimpleServer.Protocol serverProtocol;
 
-//  private Boolean defaultDns;
+  //  private Boolean defaultDns;
   private DefaultDns defaultDns;
-  private String resolvConfPaths;
-  private Boolean resolvConfOverrideNameServers;
+//  private String resolvConfPaths;
+  //  private Boolean resolvConfOverrideNameServers;
+
+  public boolean isResolvConfOverrideNameServersActive() {
+    return this.getDefaultDns()
+      .getResolvConf()
+      .getOverrideNameServers();
+  }
+
+  public String getResolvConfPaths() {
+    return this.defaultDns.getResolvConf().getPaths();
+  }
+
+  public Boolean isDefaultDnsActive() {
+    return this.defaultDns.active;
+  }
+
+  public String getDefaultDnsResolvConfPaths() {
+    return this.defaultDns.resolvConf.paths;
+  }
+
+  public Boolean getDefaultDnsResolvConfOverrideNameServers() {
+    return this.defaultDns.resolvConf.overrideNameServers;
+  }
 
   @Value
-  @Builder
+  @Builder(toBuilder = true)
   public static class DefaultDns {
 
     private Boolean active;
     private ResolvConf resolvConf;
 
     @Value
-    @Builder
+    @Builder(toBuilder = true)
     public static class ResolvConf {
       private String paths;
       private Boolean overrideNameServers;
@@ -286,5 +308,10 @@ public class Config {
         return ConfigEntryTypes.is(this, Config.Entry.Type.A, Config.Entry.Type.AAAA);
       }
     }
+  }
+
+  public static class ConfigBuilder {
+
+
   }
 }

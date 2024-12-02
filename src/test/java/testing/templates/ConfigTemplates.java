@@ -23,8 +23,15 @@ public class ConfigTemplates {
       .defaultDns(Config.DefaultDns
         .builder()
         .active(true)
+        .resolvConf(Config.DefaultDns.ResolvConf
+          .builder()
+          .paths(ConfigEnv.DEFAULT_RESOLV_CONF_PATH)
+          .overrideNameServers(true)
+          .build()
+        )
         .build()
       )
+      .serverProtocol(SimpleServer.Protocol.UDP_TCP)
       .dpsNetworkAutoConnect(false)
       .hostMachineHostname("host.docker")
       .configPath(Paths.get("/tmp/config.json"))
@@ -35,9 +42,6 @@ public class ConfigTemplates {
       .dnsServerPort(53)
       .domain("docker")
       .logLevel(LogLevel.WARNING)
-      .resolvConfPaths(ConfigEnv.DEFAULT_RESOLV_CONF_PATH)
-      .serverProtocol(SimpleServer.Protocol.UDP_TCP)
-      .resolvConfOverrideNameServers(true)
       .solverRemote(SolverRemote
         .builder()
         .active(true)

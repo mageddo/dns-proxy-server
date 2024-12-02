@@ -16,7 +16,9 @@ public class ConfigValidator {
     Validate.notNull(config.getMustConfigureDpsNetwork(), "must configure dps network");
     Validate.notNull(config.getDpsNetworkAutoConnect(), "DPS network auto connect");
     Validate.notNull(config.getResolvConfPaths(), "Resolvconf paths");
-    Validate.notNull(config.getResolvConfOverrideNameServers(), "Resolvconf override name servers");
+
+    validateDefaultDns(config);
+
     Validate.notNull(config.getDockerSolverHostMachineFallbackActive(), "Docker solver host machine fallback active");
     Validate.notNull(config.getServerProtocol(), "Server Protocol");
 
@@ -25,5 +27,17 @@ public class ConfigValidator {
     Validate.notNull(config.isSolverRemoteActive(), "Solver remote active");
 
     CircuitBreakerValidator.validate(config.getSolverRemoteCircuitBreakerStrategy());
+  }
+
+  private static void validateDefaultDns(Config config) {
+
+    final var defaultDns = config.getDefaultDns();
+    Validate.notNull(defaultDns, "Default DNS");
+    Validate.notNull(defaultDns.getActive(), "Default DNS: Active");
+
+    final var resolvConf = defaultDns.getResolvConf();
+    Validate.notNull(resolvConf, "Default DNS: ResolvConf");
+    Validate.notNull(resolvConf.getPaths(), "Default DNS: ResolvConf: Paths");
+    Validate.notNull(resolvConf.getOverrideNameServers(), "Default DNS: ResolvConf: override name servers");
   }
 }

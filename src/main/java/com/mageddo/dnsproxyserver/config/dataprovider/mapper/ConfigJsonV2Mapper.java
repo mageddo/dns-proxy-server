@@ -43,7 +43,6 @@ public class ConfigJsonV2Mapper {
       .remoteDnsServers(json.getRemoteDnsServers())
       .serverProtocol(json.getServerProtocol())
       .dockerHost(json.getDockerHost())
-      .resolvConfOverrideNameServers(json.getResolvConfOverrideNameServers())
       .noEntriesResponseCode(json.getNoEntriesResponseCode())
       .dockerSolverHostMachineFallbackActive(json.getDockerSolverHostMachineFallbackActive())
       .configPath(configFileAbsolutePath)
