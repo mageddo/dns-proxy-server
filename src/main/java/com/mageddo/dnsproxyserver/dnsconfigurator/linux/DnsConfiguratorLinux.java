@@ -126,7 +126,7 @@ public class DnsConfiguratorLinux implements DnsConfigurator {
 
   String getConfigResolvPaths() {
     return Configs.getInstance()
-      .getResolvConfPaths()
+      .getDefaultDnsResolvConfPaths()
       ;
   }
 

@@ -15,7 +15,7 @@ public class ConfigValidator {
     Validate.notNull(config.getDomain(), "domain");
     Validate.notNull(config.getMustConfigureDpsNetwork(), "must configure dps network");
     Validate.notNull(config.getDpsNetworkAutoConnect(), "DPS network auto connect");
-    Validate.notNull(config.getResolvConfPaths(), "Resolvconf paths");
+    Validate.notNull(config.getDefaultDnsResolvConfPaths(), "Resolvconf paths");
 
     validateDefaultDns(config);
 

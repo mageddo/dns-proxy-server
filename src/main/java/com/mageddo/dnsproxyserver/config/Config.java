@@ -43,21 +43,9 @@ public class Config {
 
   private SimpleServer.Protocol serverProtocol;
 
-  //  private Boolean defaultDns;
   private DefaultDns defaultDns;
-//  private String resolvConfPaths;
-  //  private Boolean resolvConfOverrideNameServers;
 
-  public boolean isResolvConfOverrideNameServersActive() {
-    return this.getDefaultDns()
-      .getResolvConf()
-      .getOverrideNameServers();
-  }
-
-  public String getResolvConfPaths() {
-    return this.defaultDns.getResolvConf().getPaths();
-  }
-
+  @JsonIgnore
   public Boolean isDefaultDnsActive() {
     if (this.defaultDns == null) {
       return null;
@@ -65,6 +53,7 @@ public class Config {
     return this.defaultDns.active;
   }
 
+  @JsonIgnore
   public String getDefaultDnsResolvConfPaths() {
     if (this.getDefaultDnsResolvConf() == null) {
       return null;
@@ -72,13 +61,15 @@ public class Config {
     return this.getDefaultDnsResolvConf().paths;
   }
 
-  public Boolean getDefaultDnsResolvConfOverrideNameServers() {
+  @JsonIgnore
+  public Boolean isResolvConfOverrideNameServersActive() {
     if (this.getDefaultDnsResolvConf() == null) {
       return null;
     }
     return this.getDefaultDnsResolvConf().overrideNameServers;
   }
 
+  @JsonIgnore
   private DefaultDns.ResolvConf getDefaultDnsResolvConf() {
     if (this.defaultDns == null) {
       return null;

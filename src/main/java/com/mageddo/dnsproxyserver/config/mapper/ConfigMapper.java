@@ -50,7 +50,7 @@ public class ConfigMapper {
         .resolvConf(Config.DefaultDns.ResolvConf
           .builder()
           .paths(firstNonNullRequiring(mapField(Config::getDefaultDnsResolvConfPaths, configs)))
-          .overrideNameServers(firstNonNullRequiring(mapField(Config::getDefaultDnsResolvConfOverrideNameServers, configs)))
+          .overrideNameServers(firstNonNullRequiring(mapField(Config::isResolvConfOverrideNameServersActive, configs)))
           .build())
         .build()
       )

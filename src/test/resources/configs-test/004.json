@@ -1,5 +1,8 @@
 {
-  "defaultDns" : false,
+  "defaultDns" : {
+    "active" : false,
+    "resolvConf" : { }
+  },
   "dnsServerPort" : 5391,
   "domain" : "acme",
   "dpsNetworkAutoConnect" : true,
