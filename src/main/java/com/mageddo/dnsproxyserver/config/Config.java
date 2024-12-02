@@ -59,15 +59,31 @@ public class Config {
   }
 
   public Boolean isDefaultDnsActive() {
+    if (this.defaultDns == null) {
+      return null;
+    }
     return this.defaultDns.active;
   }
 
   public String getDefaultDnsResolvConfPaths() {
-    return this.defaultDns.resolvConf.paths;
+    if (this.getDefaultDnsResolvConf() == null) {
+      return null;
+    }
+    return this.getDefaultDnsResolvConf().paths;
   }
 
   public Boolean getDefaultDnsResolvConfOverrideNameServers() {
-    return this.defaultDns.resolvConf.overrideNameServers;
+    if (this.getDefaultDnsResolvConf() == null) {
+      return null;
+    }
+    return this.getDefaultDnsResolvConf().overrideNameServers;
+  }
+
+  private DefaultDns.ResolvConf getDefaultDnsResolvConf() {
+    if (this.defaultDns == null) {
+      return null;
+    }
+    return this.defaultDns.resolvConf;
   }
 
   @Value
