@@ -1,4 +1,5 @@
 {
+  "activeEnv" : "MARROI",
   "defaultDns" : {
     "active" : false,
     "resolvConf" : { }
