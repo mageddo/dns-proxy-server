@@ -87,6 +87,9 @@ public class Config {
   }
 
   public void resetConfigFile() {
+    if (this.getConfigPath() == null) {
+      throw new IllegalStateException("config file is null");
+    }
     try {
       Files.deleteIfExists(this.getConfigPath());
     } catch (IOException e) {
