@@ -48,6 +48,7 @@ public class ConfigJsonV2Mapper {
       .configPath(configFileAbsolutePath)
       .solverRemote(toSolverRemote(json))
       .solverStub(toSolverStub(json.getSolverStub()))
+      .activeEnv(json.getActiveEnv())
       .envs(json.getEnvs())
       .source(Config.Source.JSON)
       .build();

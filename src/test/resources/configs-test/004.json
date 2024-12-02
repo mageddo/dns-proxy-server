@@ -6,6 +6,9 @@
   "dnsServerPort" : 5391,
   "domain" : "acme",
   "dpsNetworkAutoConnect" : true,
+  "envs" : [ {
+    "name" : "MARROI"
+  } ],
   "hostMachineHostname" : "batata.com",
   "logFile" : "/var/log/dns-proxy-server.log",
   "logLevel" : "DEBUG",
