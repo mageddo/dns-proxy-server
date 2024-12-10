@@ -111,6 +111,7 @@ public class Config {
   }
 
   @Nonnull
+  @JsonIgnore
   public List<IpAddr> getRemoteDnsServers() {
     if (this.solverRemote == null) {
       return Collections.emptyList();

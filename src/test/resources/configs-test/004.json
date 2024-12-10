@@ -15,15 +15,15 @@
   "logLevel" : "DEBUG",
   "mustConfigureDpsNetwork" : true,
   "registerContainerNames" : true,
-  "remoteDnsServers" : [ ],
-  "source" : "JSON",
   "solverRemote" : {
     "circuitBreaker" : {
       "failureThreshold" : 3,
       "failureThresholdCapacity" : 10,
       "successThreshold" : 5,
       "testDelay" : 60.0
-    }
+    },
+    "dnsServers" : [ ]
   },
+  "source" : "JSON",
   "webServerPort" : 9393
 }
