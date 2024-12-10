@@ -40,7 +40,6 @@ public class ConfigMapper {
       .domain(firstNonNullRequiring(mapField(Config::getDomain, configs)))
       .mustConfigureDpsNetwork(firstNonNullRequiring(mapField(Config::getMustConfigureDpsNetwork, configs)))
       .dpsNetworkAutoConnect(firstNonNullRequiring(mapField(Config::getDpsNetworkAutoConnect, configs)))
-      .remoteDnsServers(firstNonEmptyListRequiring(mapField(Config::getRemoteDnsServers, configs)))
       .configPath(firstNonNullRequiring(mapField(Config::getConfigPath, configs)))
       .serverProtocol(firstNonNullRequiring(mapField(Config::getServerProtocol, configs)))
       .dockerHost(firstNonNullRequiring(mapField(Config::getDockerHost, configs)))
@@ -60,6 +59,7 @@ public class ConfigMapper {
         .builder()
         .active(firstNonNullRequiring(mapField(Config::isSolverRemoteActive, configs)))
         .circuitBreaker(firstNonNullRequiring(mapField(Config::getSolverRemoteCircuitBreakerStrategy, configs)))
+        .dnsServers(firstNonEmptyListRequiring(mapField(Config::getRemoteDnsServers, configs)))
         .build()
       )
       .solverStub(SolverStub
@@ -78,11 +78,11 @@ public class ConfigMapper {
       .builder()
       .serverProtocol(SimpleServer.Protocol.UDP_TCP)
       .dockerHost(buildDefaultDockerHost())
-      .remoteDnsServers(Collections.singletonList(IpAddr.of("8.8.8.8:53")))
       .solverRemote(SolverRemote
         .builder()
         .active(true)
         .circuitBreaker(defaultCircuitBreaker())
+        .dnsServers(Collections.singletonList(IpAddr.of("8.8.8.8:53")))
         .build()
       )
       .solverStub(SolverStub.builder()

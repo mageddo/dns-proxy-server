@@ -34,9 +34,6 @@ public class Config {
 
   private String version;
 
-  @Builder.Default
-  private List<IpAddr> remoteDnsServers = new ArrayList<>();
-
   private Integer webServerPort;
 
   private Integer dnsServerPort;
@@ -110,6 +107,10 @@ public class Config {
       return null;
     }
     return this.defaultDns.resolvConf;
+  }
+
+  public List<IpAddr> getRemoteDnsServers() {
+    return this.solverRemote.getDnsServers();
   }
 
   @Value

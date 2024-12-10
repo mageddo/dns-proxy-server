@@ -40,7 +40,6 @@ public class ConfigJsonV2Mapper {
       .domain(json.getDomain())
       .mustConfigureDpsNetwork(json.getDpsNetwork())
       .dpsNetworkAutoConnect(json.getDpsNetworkAutoConnect())
-      .remoteDnsServers(json.getRemoteDnsServers())
       .serverProtocol(json.getServerProtocol())
       .dockerHost(json.getDockerHost())
       .noEntriesResponseCode(json.getNoEntriesResponseCode())
@@ -85,6 +84,7 @@ public class ConfigJsonV2Mapper {
     return SolverRemote
       .builder()
       .active(Booleans.reverseWhenNotNull(json.getNoRemoteServers()))
+      .dnsServers(json.getRemoteDnsServers())
       .build();
   }
 
@@ -93,6 +93,7 @@ public class ConfigJsonV2Mapper {
       .builder()
       .active(Booleans.reverseWhenNotNull(json.getNoRemoteServers()))
       .circuitBreaker(mapCircuitBreaker(circuitBreaker))
+      .dnsServers(json.getRemoteDnsServers())
       .build();
   }
 
