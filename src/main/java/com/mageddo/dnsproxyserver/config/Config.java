@@ -45,6 +45,41 @@ public class Config {
 
   private DefaultDns defaultDns;
 
+  private LogLevel logLevel;
+
+  private String logFile;
+
+  private Boolean registerContainerNames;
+
+  private String hostMachineHostname;
+
+  private String domain;
+
+  private Boolean mustConfigureDpsNetwork;
+
+  private Boolean dpsNetworkAutoConnect;
+
+  private Path configPath;
+
+  private URI dockerHost;
+
+
+  private Integer noEntriesResponseCode;
+
+  private Boolean dockerSolverHostMachineFallbackActive;
+
+  private SolverStub solverStub;
+
+  private SolverRemote solverRemote;
+
+
+  private String activeEnv;
+  private List<Env> envs;
+
+  @NonNull
+  private Source source;
+
+
   @JsonIgnore
   public Boolean isDefaultDnsActive() {
     if (this.defaultDns == null) {
@@ -91,40 +126,6 @@ public class Config {
       private Boolean overrideNameServers;
     }
   }
-
-  private LogLevel logLevel;
-
-  private String logFile;
-
-  private Boolean registerContainerNames;
-
-  private String hostMachineHostname;
-
-  private String domain;
-
-  private Boolean mustConfigureDpsNetwork;
-
-  private Boolean dpsNetworkAutoConnect;
-
-  private Path configPath;
-
-  private URI dockerHost;
-
-
-  private Integer noEntriesResponseCode;
-
-  private Boolean dockerSolverHostMachineFallbackActive;
-
-  private SolverStub solverStub;
-
-  private SolverRemote solverRemote;
-
-
-  private String activeEnv;
-  private List<Env> envs;
-
-  @NonNull
-  private Source source;
 
   @JsonIgnore
   public Boolean isSolverRemoteActive() {
