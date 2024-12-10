@@ -1,22 +1,29 @@
 {
-  "defaultDns" : false,
+  "activeEnv" : "MARROI",
+  "defaultDns" : {
+    "active" : false,
+    "resolvConf" : { }
+  },
   "dnsServerPort" : 5391,
   "domain" : "acme",
   "dpsNetworkAutoConnect" : true,
+  "envs" : [ {
+    "name" : "MARROI"
+  } ],
   "hostMachineHostname" : "batata.com",
   "logFile" : "/var/log/dns-proxy-server.log",
   "logLevel" : "DEBUG",
   "mustConfigureDpsNetwork" : true,
   "registerContainerNames" : true,
-  "remoteDnsServers" : [ ],
-  "source" : "JSON",
   "solverRemote" : {
     "circuitBreaker" : {
       "failureThreshold" : 3,
       "failureThresholdCapacity" : 10,
       "successThreshold" : 5,
       "testDelay" : 60.0
-    }
+    },
+    "dnsServers" : [ ]
   },
+  "source" : "JSON",
   "webServerPort" : 9393
 }

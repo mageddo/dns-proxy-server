@@ -10,9 +10,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.apache.commons.lang3.Validate;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -29,43 +29,26 @@ import static com.mageddo.commons.lang.Objects.mapOrNull;
  * @see com.mageddo.dnsproxyserver.config.application.ConfigService
  */
 @Value
-@Builder(toBuilder = true)
+@Builder(toBuilder = true, builderClassName = "ConfigBuilder")
 public class Config {
 
   private String version;
-
-  @Builder.Default
-  private List<IpAddr> remoteDnsServers = new ArrayList<>();
 
   private Integer webServerPort;
 
   private Integer dnsServerPort;
 
-  private Boolean defaultDns;
+  private SimpleServer.Protocol serverProtocol;
+
+  private DefaultDns defaultDns;
 
   private LogLevel logLevel;
 
   private String logFile;
 
-  private Boolean registerContainerNames;
-
   private String hostMachineHostname;
 
-  private String domain;
-
-  private Boolean mustConfigureDpsNetwork;
-
-  private Boolean dpsNetworkAutoConnect;
-
   private Path configPath;
-
-  private String resolvConfPaths;
-
-  private SimpleServer.Protocol serverProtocol;
-
-  private URI dockerHost;
-
-  private Boolean resolvConfOverrideNameServers;
 
   private Integer noEntriesResponseCode;
 
@@ -75,8 +58,70 @@ public class Config {
 
   private SolverRemote solverRemote;
 
+  private SolverDocker solverDocker;
+
+  private String activeEnv;
+  private List<Env> envs;
+
   @NonNull
   private Source source;
+
+
+  @JsonIgnore
+  public Boolean isDefaultDnsActive() {
+    if (this.defaultDns == null) {
+      return null;
+    }
+    return this.defaultDns.active;
+  }
+
+  @JsonIgnore
+  public String getDefaultDnsResolvConfPaths() {
+    if (this.getDefaultDnsResolvConf() == null) {
+      return null;
+    }
+    return this.getDefaultDnsResolvConf().paths;
+  }
+
+  @JsonIgnore
+  public Boolean isResolvConfOverrideNameServersActive() {
+    if (this.getDefaultDnsResolvConf() == null) {
+      return null;
+    }
+    return this.getDefaultDnsResolvConf().overrideNameServers;
+  }
+
+  @JsonIgnore
+  private DefaultDns.ResolvConf getDefaultDnsResolvConf() {
+    if (this.defaultDns == null) {
+      return null;
+    }
+    return this.defaultDns.resolvConf;
+  }
+
+  @Nonnull
+  @JsonIgnore
+  public List<IpAddr> getRemoteDnsServers() {
+    if (this.solverRemote == null) {
+      return Collections.emptyList();
+    }
+    return this.solverRemote.getDnsServers();
+  }
+
+  @Value
+  @Builder(toBuilder = true)
+  public static class DefaultDns {
+
+    private Boolean active;
+    private ResolvConf resolvConf;
+
+    @Value
+    @Builder(toBuilder = true)
+    public static class ResolvConf {
+      private String paths;
+      private Boolean overrideNameServers;
+    }
+  }
 
   @JsonIgnore
   public Boolean isSolverRemoteActive() {
@@ -87,6 +132,9 @@ public class Config {
   }
 
   public void resetConfigFile() {
+    if (this.getConfigPath() == null) {
+      throw new IllegalStateException("config file is null");
+    }
     try {
       Files.deleteIfExists(this.getConfigPath());
     } catch (IOException e) {
@@ -124,6 +172,24 @@ public class Config {
     TESTS_TEMPLATE,
 
   }
+
+  @Value
+  public static class Server {
+
+    private Dns dns;
+    private Web web;
+
+    @Value
+    public static class Dns {
+      private Integer port;
+    }
+
+    @Value
+    public static class Web {
+      private Integer port;
+    }
+  }
+
 
   @Value
   public static class Env {
@@ -246,5 +312,10 @@ public class Config {
         return ConfigEntryTypes.is(this, Config.Entry.Type.A, Config.Entry.Type.AAAA);
       }
     }
+  }
+
+  public static class ConfigBuilder {
+
+
   }
 }

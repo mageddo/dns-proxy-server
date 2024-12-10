@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.config.dataprovider;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.application.Configs;
+import com.mageddo.dnsproxyserver.config.dataprovider.mapper.ConfigJsonV2Mapper;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJson;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV1;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2;
@@ -24,6 +25,26 @@ public class JsonConfigs {
   public static final int VERSION_1 = 1;
   public static final int VERSION_2 = 2;
   public static List<Integer> supportedVersions = List.of(VERSION_1, VERSION_2);
+
+  public static Config loadConfigAsConfig() {
+    return ConfigJsonV2Mapper.toConfig(
+      loadConfigJson(),
+      Configs
+        .getInstance()
+        .getConfigPath()
+    );
+  }
+
+  public static ConfigJsonV2 loadConfigJson() {
+    final var configPath = Configs
+      .getInstance()
+      .getConfigPath();
+    return (ConfigJsonV2) loadConfig(configPath);
+  }
+
+  public static Config loadConfigAsConfig(Path configPath) {
+    return ConfigJsonV2Mapper.toConfig(loadConfig(configPath), configPath);
+  }
 
   /**
    * Parser v1 or v2 config json then return the interface.
@@ -110,12 +131,5 @@ public class JsonConfigs {
 
   public static Integer findVersion(JsonNode tree) {
     return tree.at("/version").asInt(VERSION_1);
-  }
-
-  public static ConfigJsonV2 loadConfigJson() {
-    final var configPath = Configs
-      .getInstance()
-      .getConfigPath();
-    return (ConfigJsonV2) loadConfig(configPath);
   }
 }

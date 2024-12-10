@@ -23,7 +23,16 @@ public class ConfigJsonV2Mapper {
     return Config.builder()
       .webServerPort(json.getWebServerPort())
       .dnsServerPort(json.getDnsServerPort())
-      .defaultDns(json.getDefaultDns())
+      .defaultDns(Config.DefaultDns
+        .builder()
+        .active(json.getDefaultDns())
+        .resolvConf(Config.DefaultDns.ResolvConf
+          .builder()
+          .overrideNameServers(json.getResolvConfOverrideNameServers())
+          .build()
+        )
+        .build()
+      )
       .logLevel(ConfigFieldsValuesMapper.mapLogLevelFrom(json.getLogLevel()))
       .logFile(ConfigFieldsValuesMapper.mapLogFileFrom(json.getLogFile()))
       .registerContainerNames(json.getRegisterContainerNames())
@@ -31,15 +40,15 @@ public class ConfigJsonV2Mapper {
       .domain(json.getDomain())
       .mustConfigureDpsNetwork(json.getDpsNetwork())
       .dpsNetworkAutoConnect(json.getDpsNetworkAutoConnect())
-      .remoteDnsServers(json.getRemoteDnsServers())
       .serverProtocol(json.getServerProtocol())
       .dockerHost(json.getDockerHost())
-      .resolvConfOverrideNameServers(json.getResolvConfOverrideNameServers())
       .noEntriesResponseCode(json.getNoEntriesResponseCode())
       .dockerSolverHostMachineFallbackActive(json.getDockerSolverHostMachineFallbackActive())
       .configPath(configFileAbsolutePath)
       .solverRemote(toSolverRemote(json))
       .solverStub(toSolverStub(json.getSolverStub()))
+      .activeEnv(json.getActiveEnv())
+      .envs(json.getEnvs())
       .source(Config.Source.JSON)
       .build();
   }
@@ -75,6 +84,7 @@ public class ConfigJsonV2Mapper {
     return SolverRemote
       .builder()
       .active(Booleans.reverseWhenNotNull(json.getNoRemoteServers()))
+      .dnsServers(json.getRemoteDnsServers())
       .build();
   }
 
@@ -83,6 +93,7 @@ public class ConfigJsonV2Mapper {
       .builder()
       .active(Booleans.reverseWhenNotNull(json.getNoRemoteServers()))
       .circuitBreaker(mapCircuitBreaker(circuitBreaker))
+      .dnsServers(json.getRemoteDnsServers())
       .build();
   }
 
