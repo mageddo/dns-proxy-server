@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.apache.commons.lang3.Validate;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URI;
@@ -109,7 +110,11 @@ public class Config {
     return this.defaultDns.resolvConf;
   }
 
+  @Nonnull
   public List<IpAddr> getRemoteDnsServers() {
+    if (this.solverRemote == null) {
+      return Collections.emptyList();
+    }
     return this.solverRemote.getDnsServers();
   }
 
