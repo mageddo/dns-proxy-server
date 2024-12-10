@@ -13,7 +13,6 @@ import org.apache.commons.lang3.Validate;
 import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -47,20 +46,9 @@ public class Config {
 
   private String logFile;
 
-  private Boolean registerContainerNames;
-
   private String hostMachineHostname;
 
-  private String domain;
-
-  private Boolean mustConfigureDpsNetwork;
-
-  private Boolean dpsNetworkAutoConnect;
-
   private Path configPath;
-
-  private URI dockerHost;
-
 
   private Integer noEntriesResponseCode;
 
@@ -70,6 +58,7 @@ public class Config {
 
   private SolverRemote solverRemote;
 
+  private SolverDocker solverDocker;
 
   private String activeEnv;
   private List<Env> envs;
