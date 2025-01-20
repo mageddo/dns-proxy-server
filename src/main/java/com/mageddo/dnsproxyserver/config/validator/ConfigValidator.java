@@ -12,8 +12,8 @@ public class ConfigValidator {
     Validate.notNull(config.getLogFile(), "log file");
     Validate.notNull(config.getRegisterContainerNames(), "register container names");
     Validate.notNull(config.getHostMachineHostname(), "host machine hostname");
-    Validate.notNull(config.getDomain(), "domain");
-    Validate.notNull(config.getMustConfigureDpsNetwork(), "must configure dps network");
+    Validate.notNull(config.getDockerDomain(), "domain");
+    Validate.notNull(config.getDockerSolverMustConfigureDpsNetwork(), "must configure dps network");
     Validate.notNull(config.getDpsNetworkAutoConnect(), "DPS network auto connect");
     Validate.notNull(config.getDefaultDnsResolvConfPaths(), "Resolvconf paths");
 

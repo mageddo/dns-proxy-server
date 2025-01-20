@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
 import com.mageddo.dnsproxyserver.config.CanaryRateThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.SolverDocker;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.SolverStub;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
@@ -35,13 +36,7 @@ public class ConfigJsonV2Mapper {
       )
       .logLevel(ConfigFieldsValuesMapper.mapLogLevelFrom(json.getLogLevel()))
       .logFile(ConfigFieldsValuesMapper.mapLogFileFrom(json.getLogFile()))
-      .registerContainerNames(json.getRegisterContainerNames())
-      .hostMachineHostname(json.getHostMachineHostname())
-      .domain(json.getDomain())
-      .mustConfigureDpsNetwork(json.getDpsNetwork())
-      .dpsNetworkAutoConnect(json.getDpsNetworkAutoConnect())
       .serverProtocol(json.getServerProtocol())
-      .dockerHost(json.getDockerHost())
       .noEntriesResponseCode(json.getNoEntriesResponseCode())
       .dockerSolverHostMachineFallbackActive(json.getDockerSolverHostMachineFallbackActive())
       .configPath(configFileAbsolutePath)
@@ -49,6 +44,19 @@ public class ConfigJsonV2Mapper {
       .solverStub(toSolverStub(json.getSolverStub()))
       .activeEnv(json.getActiveEnv())
       .envs(json.getEnvs())
+      .solverDocker(SolverDocker
+        .builder()
+        .dpsNetwork(SolverDocker.DpsNetwork
+          .builder()
+          .autoCreate(json.getDpsNetwork())
+          .autoConnect(json.getDpsNetworkAutoConnect())
+          .build()
+        )
+        .dockerDaemonUri(json.getDockerHost())
+        .registerContainerNames(json.getRegisterContainerNames())
+        .domain(json.getDomain())
+        .build()
+      )
       .source(Config.Source.JSON)
       .build();
   }

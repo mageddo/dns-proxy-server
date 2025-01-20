@@ -55,7 +55,7 @@ public class ContainerHostnameMatcher {
 
   public static boolean serviceOrContainerNameMatches(InspectContainerResponse c, HostnameQuery hostQuery, Config config) {
     return isRegisterContainerNames(config)
-           && Docker.buildHostnamesFromServiceOrContainerNames(c, config.getDomain())
+           && Docker.buildHostnamesFromServiceOrContainerNames(c, config.getDockerDomain())
       .stream()
       .anyMatch(hostQuery::matches)
       ;

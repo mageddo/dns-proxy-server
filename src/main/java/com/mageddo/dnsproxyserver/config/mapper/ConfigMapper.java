@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.config.mapper;
 
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.SolverDocker;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.SolverStub;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
@@ -35,14 +36,9 @@ public class ConfigMapper {
       .dnsServerPort(Numbers.firstPositive(mapField(Config::getDnsServerPort, configs)))
       .logLevel(firstNonNullRequiring(mapField(Config::getLogLevel, configs)))
       .logFile(firstNonNullRequiring(mapField(Config::getLogFile, configs)))
-      .registerContainerNames(firstNonNullRequiring(mapField(Config::getRegisterContainerNames, configs)))
       .hostMachineHostname(firstNonNullRequiring(mapField(Config::getHostMachineHostname, configs)))
-      .domain(firstNonNullRequiring(mapField(Config::getDomain, configs)))
-      .mustConfigureDpsNetwork(firstNonNullRequiring(mapField(Config::getMustConfigureDpsNetwork, configs)))
-      .dpsNetworkAutoConnect(firstNonNullRequiring(mapField(Config::getDpsNetworkAutoConnect, configs)))
       .configPath(firstNonNullRequiring(mapField(Config::getConfigPath, configs)))
       .serverProtocol(firstNonNullRequiring(mapField(Config::getServerProtocol, configs)))
-      .dockerHost(firstNonNullRequiring(mapField(Config::getDockerHost, configs)))
       .defaultDns(Config.DefaultDns
         .builder()
         .active(firstNonNullRequiring(mapField(Config::isDefaultDnsActive, configs)))
@@ -67,6 +63,14 @@ public class ConfigMapper {
         .domainName(firstNonNullRequiring(mapField(Config::getSolverStubDomainName, configs)))
         .build()
       )
+      .solverDocker(SolverDocker
+        .builder()
+        .dockerDaemonUri(firstNonNullRequiring(mapField(Config::getDockerDaemonUri, configs)))
+        .registerContainerNames(firstNonNullRequiring(mapField(Config::getRegisterContainerNames, configs)))
+        .domain(firstNonNullRequiring(mapField(Config::getDockerDomain, configs)))
+        .dpsNetwork(firstNonNullRequiring(mapField(Config::getDockerSolverDpsNetwork, configs)))
+        .build()
+      )
       .source(Config.Source.MERGED)
       .build();
     ConfigValidator.validate(config);
@@ -77,7 +81,6 @@ public class ConfigMapper {
     return Config
       .builder()
       .serverProtocol(SimpleServer.Protocol.UDP_TCP)
-      .dockerHost(buildDefaultDockerHost())
       .solverRemote(SolverRemote
         .builder()
         .active(true)
@@ -87,6 +90,11 @@ public class ConfigMapper {
       )
       .solverStub(SolverStub.builder()
         .domainName("stub")
+        .build()
+      )
+      .solverDocker(SolverDocker
+        .builder()
+        .dockerDaemonUri(buildDefaultDockerHost())
         .build()
       )
       .source(Config.Source.DEFAULT)

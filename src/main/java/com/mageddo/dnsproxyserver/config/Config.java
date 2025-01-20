@@ -13,6 +13,7 @@ import org.apache.commons.lang3.Validate;
 import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -106,6 +107,45 @@ public class Config {
       return Collections.emptyList();
     }
     return this.solverRemote.getDnsServers();
+  }
+
+  public Boolean getRegisterContainerNames() {
+    if (this.solverDocker == null) {
+      return null;
+    }
+    return this.solverDocker.getRegisterContainerNames();
+  }
+
+  public String getDockerDomain() {
+    if(this.solverDocker == null){
+      return null;
+    }
+    return this.solverDocker.getDomain();
+  }
+
+  public boolean getDockerSolverMustConfigureDpsNetwork() {
+    if(this.solverDocker == null){
+      return false;
+    }
+    return this.solverDocker.shouldAutoCreateDpsNetwork();
+  }
+
+  public boolean getDpsNetworkAutoConnect() {
+    if(this.solverDocker == null){
+      return false;
+    }
+    return this.solverDocker.shouldAutoConnect();
+  }
+
+  public URI getDockerDaemonUri() {
+    if(this.solverDocker == null){
+      return null;
+    }
+    return this.solverDocker.getDockerDaemonUri();
+  }
+
+  public SolverDocker.DpsNetwork getDockerSolverDpsNetwork() {
+    return this.solverDocker.getDpsNetwork();
   }
 
   @Value
