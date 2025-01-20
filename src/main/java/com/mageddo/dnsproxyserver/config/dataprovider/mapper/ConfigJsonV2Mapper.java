@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
 import com.mageddo.dnsproxyserver.config.CanaryRateThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.Server;
 import com.mageddo.dnsproxyserver.config.SolverDocker;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.SolverStub;
@@ -22,8 +23,14 @@ public class ConfigJsonV2Mapper {
 
   public static Config toConfig(ConfigJson json, Path configFileAbsolutePath) {
     return Config.builder()
-      .webServerPort(json.getWebServerPort())
-      .dnsServerPort(json.getDnsServerPort())
+      .server(Server
+        .builder()
+        .dnsServerNoEntriesResponseCode(json.getNoEntriesResponseCode())
+        .webServerPort(json.getWebServerPort())
+        .dnsServerPort(json.getDnsServerPort())
+        .serverProtocol(json.getServerProtocol())
+        .build()
+      )
       .defaultDns(Config.DefaultDns
         .builder()
         .active(json.getDefaultDns())
@@ -36,8 +43,6 @@ public class ConfigJsonV2Mapper {
       )
       .logLevel(ConfigFieldsValuesMapper.mapLogLevelFrom(json.getLogLevel()))
       .logFile(ConfigFieldsValuesMapper.mapLogFileFrom(json.getLogFile()))
-      .serverProtocol(json.getServerProtocol())
-      .noEntriesResponseCode(json.getNoEntriesResponseCode())
       .configPath(configFileAbsolutePath)
       .solverRemote(toSolverRemote(json))
       .solverStub(toSolverStub(json.getSolverStub()))

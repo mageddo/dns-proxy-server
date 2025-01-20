@@ -35,11 +35,7 @@ public class Config {
 
   private String version;
 
-  private Integer webServerPort;
-
-  private Integer dnsServerPort;
-
-  private SimpleServer.Protocol serverProtocol;
+  private Server server;
 
   private DefaultDns defaultDns;
 
@@ -47,10 +43,7 @@ public class Config {
 
   private String logFile;
 
-
   private Path configPath;
-
-  private Integer noEntriesResponseCode;
 
   private SolverStub solverStub;
 
@@ -168,6 +161,34 @@ public class Config {
     return this.solverSystem.getHostMachineHostname();
   }
 
+  public int getDnsServerPort() {
+    if (this.server == null) {
+      return 0;
+    }
+    return this.server.getDnsServerPort();
+  }
+
+  public int getNoEntriesResponseCode() {
+    if (this.server == null) {
+      return 0;
+    }
+    return this.server.getDnsServerNoEntriesResponseCode();
+  }
+
+  public int getWebServerPort() {
+    if (this.server == null) {
+      return 0;
+    }
+    return this.server.getWebServerPort();
+  }
+
+  public SimpleServer.Protocol getServerProtocol() {
+    if (this.server == null) {
+      return null;
+    }
+    return this.server.getServerProtocol();
+  }
+
   @Value
   @Builder(toBuilder = true)
   public static class DefaultDns {
@@ -232,24 +253,6 @@ public class Config {
     TESTS_TEMPLATE,
 
   }
-
-  @Value
-  public static class Server {
-
-    private Dns dns;
-    private Web web;
-
-    @Value
-    public static class Dns {
-      private Integer port;
-    }
-
-    @Value
-    public static class Web {
-      private Integer port;
-    }
-  }
-
 
   @Value
   public static class Env {

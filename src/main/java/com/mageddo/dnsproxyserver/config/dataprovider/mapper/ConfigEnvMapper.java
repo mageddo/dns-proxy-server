@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
 
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.Server;
 import com.mageddo.dnsproxyserver.config.SolverDocker;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.SolverStub;
@@ -11,9 +12,13 @@ import com.mageddo.dnsproxyserver.utils.Booleans;
 public class ConfigEnvMapper {
   public static Config toConfig(ConfigEnv config) {
     return Config.builder()
+      .server(Server
+        .builder()
+        .dnsServerNoEntriesResponseCode(config.getNoEntriesResponseCode())
+        .build()
+      )
       .logFile(config.getLogFile())
       .logLevel(ConfigFieldsValuesMapper.mapLogLevelFrom(config.getLogLevel()))
-      .noEntriesResponseCode(config.getNoEntriesResponseCode())
       .defaultDns(Config.DefaultDns
         .builder()
         .resolvConf(Config.DefaultDns.ResolvConf
