@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.config;
 
 import lombok.Builder;
 import lombok.Value;
+import org.apache.commons.lang3.BooleanUtils;
 
 import java.net.URI;
 
@@ -19,20 +20,29 @@ public class SolverDocker {
     if (this.dpsNetwork == null) {
       return false;
     }
-    return this.dpsNetwork.autoCreate;
+    return this.dpsNetwork.getAutoCreate();
   }
 
   public boolean shouldAutoConnect() {
     if (this.dpsNetwork == null) {
       return false;
     }
-    return this.dpsNetwork.autoConnect;
+    return this.dpsNetwork.getAutoConnect();
   }
 
   @Value
   @Builder
   public static class DpsNetwork {
+
     private Boolean autoCreate;
     private Boolean autoConnect;
+
+    public boolean getAutoConnect() {
+      return BooleanUtils.isTrue(this.autoConnect);
+    }
+
+    public boolean getAutoCreate() {
+      return BooleanUtils.isTrue(this.autoCreate);
+    }
   }
 }
