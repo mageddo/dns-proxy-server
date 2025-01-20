@@ -159,7 +159,7 @@ public class Config {
     if(this.solverDocker == null){
       return false;
     }
-    return this.solverDocker.getHostMachineFallback();
+    return this.solverDocker.shouldUseHostMachineFallback();
   }
 
   @Value

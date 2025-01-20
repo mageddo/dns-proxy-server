@@ -17,7 +17,7 @@ public class SolverDocker {
   private DpsNetwork dpsNetwork;
   private Boolean hostMachineFallback;
 
-  public boolean getHostMachineFallback() {
+  public boolean shouldUseHostMachineFallback() {
     return BooleanUtils.toBoolean(hostMachineFallback);
   }
 
@@ -25,14 +25,14 @@ public class SolverDocker {
     if (this.dpsNetwork == null) {
       return false;
     }
-    return this.dpsNetwork.getAutoCreate();
+    return this.dpsNetwork.shouldAutoCreate();
   }
 
   public boolean shouldAutoConnect() {
     if (this.dpsNetwork == null) {
       return false;
     }
-    return this.dpsNetwork.getAutoConnect();
+    return this.dpsNetwork.shouldAutoConnect();
   }
 
   @Value
@@ -42,11 +42,11 @@ public class SolverDocker {
     private Boolean autoCreate;
     private Boolean autoConnect;
 
-    public boolean getAutoConnect() {
+    public boolean shouldAutoConnect() {
       return BooleanUtils.isTrue(this.autoConnect);
     }
 
-    public boolean getAutoCreate() {
+    public boolean shouldAutoCreate() {
       return BooleanUtils.isTrue(this.autoCreate);
     }
   }
