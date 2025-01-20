@@ -109,6 +109,7 @@ public class Config {
     return this.solverRemote.getDnsServers();
   }
 
+  @JsonIgnore
   public Boolean getRegisterContainerNames() {
     if (this.solverDocker == null) {
       return null;
@@ -116,6 +117,7 @@ public class Config {
     return this.solverDocker.getRegisterContainerNames();
   }
 
+  @JsonIgnore
   public String getDockerDomain() {
     if(this.solverDocker == null){
       return null;
@@ -123,6 +125,7 @@ public class Config {
     return this.solverDocker.getDomain();
   }
 
+  @JsonIgnore
   public boolean getDockerSolverMustConfigureDpsNetwork() {
     if(this.solverDocker == null){
       return false;
@@ -130,6 +133,7 @@ public class Config {
     return this.solverDocker.shouldAutoCreateDpsNetwork();
   }
 
+  @JsonIgnore
   public boolean getDpsNetworkAutoConnect() {
     if(this.solverDocker == null){
       return false;
@@ -137,6 +141,7 @@ public class Config {
     return this.solverDocker.shouldAutoConnect();
   }
 
+  @JsonIgnore
   public URI getDockerDaemonUri() {
     if(this.solverDocker == null){
       return null;
@@ -144,6 +149,7 @@ public class Config {
     return this.solverDocker.getDockerDaemonUri();
   }
 
+  @JsonIgnore
   public SolverDocker.DpsNetwork getDockerSolverDpsNetwork() {
     return this.solverDocker.getDpsNetwork();
   }

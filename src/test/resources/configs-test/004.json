@@ -5,16 +5,19 @@
     "resolvConf" : { }
   },
   "dnsServerPort" : 5391,
-  "domain" : "acme",
-  "dpsNetworkAutoConnect" : true,
   "envs" : [ {
     "name" : "MARROI"
   } ],
-  "hostMachineHostname" : "batata.com",
   "logFile" : "/var/log/dns-proxy-server.log",
   "logLevel" : "DEBUG",
-  "mustConfigureDpsNetwork" : true,
-  "registerContainerNames" : true,
+  "solverDocker" : {
+    "domain" : "acme",
+    "dpsNetwork" : {
+      "autoConnect" : true,
+      "autoCreate" : true
+    },
+    "registerContainerNames" : true
+  },
   "solverRemote" : {
     "circuitBreaker" : {
       "failureThreshold" : 3,
