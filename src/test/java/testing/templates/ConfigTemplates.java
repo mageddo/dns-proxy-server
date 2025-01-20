@@ -2,6 +2,7 @@ package testing.templates;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.LogLevel;
+import com.mageddo.dnsproxyserver.config.Server;
 import com.mageddo.dnsproxyserver.config.SolverDocker;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.SolverStub;
@@ -21,6 +22,14 @@ public class ConfigTemplates {
   private static Config.ConfigBuilder defaultBuilder() {
     return Config
       .builder()
+      .server(Server
+        .builder()
+        .serverProtocol(SimpleServer.Protocol.UDP_TCP)
+        .webServerPort(8080)
+        .dnsServerPort(53)
+        .dnsServerNoEntriesResponseCode(3)
+        .build()
+      )
       .logFile("/tmp/dps.log")
       .defaultDns(Config.DefaultDns
         .builder()
@@ -33,18 +42,14 @@ public class ConfigTemplates {
         )
         .build()
       )
-      .serverProtocol(SimpleServer.Protocol.UDP_TCP)
       .configPath(Paths.get("/tmp/config.json"))
-      .webServerPort(8080)
       .version("3.0.0")
-      .dnsServerPort(53)
       .logLevel(LogLevel.WARNING)
       .solverRemote(SolverRemote
         .builder()
         .active(true)
         .build()
       )
-      .noEntriesResponseCode(3)
       .solverDocker(SolverDocker
         .builder()
         .domain("docker")

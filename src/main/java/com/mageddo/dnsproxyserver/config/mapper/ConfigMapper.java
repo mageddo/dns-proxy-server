@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.config.mapper;
 
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.Server;
 import com.mageddo.dnsproxyserver.config.SolverDocker;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.SolverStub;
@@ -32,13 +33,18 @@ public class ConfigMapper {
 
   private static Config mapFrom0(List<Config> configs) {
     final var config = Config.builder()
+      .server(Server
+        .builder()
+        .webServerPort(Numbers.firstPositive(mapField(Config::getWebServerPort, configs)))
+        .dnsServerPort(Numbers.firstPositive(mapField(Config::getDnsServerPort, configs)))
+        .serverProtocol(firstNonNullRequiring(mapField(Config::getServerProtocol, configs)))
+        .dnsServerNoEntriesResponseCode(firstNonNullRequiring(mapField(Config::getNoEntriesResponseCode, configs)))
+        .build()
+      )
       .version(ConfigPropDAO.getVersion())
-      .webServerPort(Numbers.firstPositive(mapField(Config::getWebServerPort, configs)))
-      .dnsServerPort(Numbers.firstPositive(mapField(Config::getDnsServerPort, configs)))
       .logLevel(firstNonNullRequiring(mapField(Config::getLogLevel, configs)))
       .logFile(firstNonNullRequiring(mapField(Config::getLogFile, configs)))
       .configPath(firstNonNullRequiring(mapField(Config::getConfigPath, configs)))
-      .serverProtocol(firstNonNullRequiring(mapField(Config::getServerProtocol, configs)))
       .defaultDns(Config.DefaultDns
         .builder()
         .active(firstNonNullRequiring(mapField(Config::isDefaultDnsActive, configs)))
@@ -49,7 +55,6 @@ public class ConfigMapper {
           .build())
         .build()
       )
-      .noEntriesResponseCode(firstNonNullRequiring(mapField(Config::getNoEntriesResponseCode, configs)))
       .solverRemote(SolverRemote
         .builder()
         .active(firstNonNullRequiring(mapField(Config::isSolverRemoteActive, configs)))
@@ -85,7 +90,11 @@ public class ConfigMapper {
   private static Config buildDefault() {
     return Config
       .builder()
-      .serverProtocol(SimpleServer.Protocol.UDP_TCP)
+      .server(Server
+        .builder()
+        .serverProtocol(SimpleServer.Protocol.UDP_TCP)
+        .build()
+      )
       .solverRemote(SolverRemote
         .builder()
         .active(true)

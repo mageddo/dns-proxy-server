@@ -7,26 +7,36 @@ public class ConfigValidator {
   public static void validate(Config config) {
     Validate.notNull(config.getVersion(), "version");
     Validate.notNull(config.getRemoteDnsServers(), "remote dns servers");
-    Validate.isTrue(config.getWebServerPort() != null && config.getWebServerPort() > 0, "web server port");
-    Validate.isTrue(config.getDnsServerPort() != null && config.getDnsServerPort() > 0, "dns server port");
+
+    validateServer(config);
+
     Validate.notNull(config.getLogFile(), "log file");
-    Validate.notNull(config.getRegisterContainerNames(), "register container names");
     Validate.notNull(config.getHostMachineHostname(), "host machine hostname");
-    Validate.notNull(config.getDockerDomain(), "domain");
-    Validate.notNull(config.getDockerSolverMustConfigureDpsNetwork(), "must configure dps network");
-    Validate.notNull(config.getDpsNetworkAutoConnect(), "DPS network auto connect");
     Validate.notNull(config.getDefaultDnsResolvConfPaths(), "Resolvconf paths");
 
     validateDefaultDns(config);
 
-    Validate.notNull(config.getDockerSolverHostMachineFallbackActive(), "Docker solver host machine fallback active");
-    Validate.notNull(config.getServerProtocol(), "Server Protocol");
+    validateDockerSolver(config);
 
     Validate.notNull(config.getSolverRemote(), "Solver Remote");
     Validate.notNull(config.getSolverStub(), "Solver Stub");
     Validate.notNull(config.isSolverRemoteActive(), "Solver remote active");
 
     CircuitBreakerValidator.validate(config.getSolverRemoteCircuitBreakerStrategy());
+  }
+
+  private static void validateDockerSolver(Config config) {
+    Validate.notNull(config.getRegisterContainerNames(), "register container names");
+    Validate.notNull(config.getDockerDomain(), "domain");
+    Validate.notNull(config.getDockerSolverMustConfigureDpsNetwork(), "must configure dps network");
+    Validate.notNull(config.getDpsNetworkAutoConnect(), "DPS network auto connect");
+    Validate.notNull(config.getDockerSolverHostMachineFallbackActive(), "Docker solver host machine fallback active");
+    Validate.notNull(config.getServerProtocol(), "Server Protocol");
+  }
+
+  private static void validateServer(Config config) {
+    Validate.isTrue(config.getWebServerPort() != null && config.getWebServerPort() > 0, "web server port");
+    Validate.isTrue(config.getDnsServerPort() != null && config.getDnsServerPort() > 0, "dns server port");
   }
 
   private static void validateDefaultDns(Config config) {

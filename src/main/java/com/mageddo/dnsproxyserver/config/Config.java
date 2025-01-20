@@ -118,17 +118,17 @@ public class Config {
   }
 
   @JsonIgnore
-  public boolean getDockerSolverMustConfigureDpsNetwork() {
+  public Boolean getDockerSolverMustConfigureDpsNetwork() {
     if (this.solverDocker == null) {
-      return false;
+      return null;
     }
     return this.solverDocker.shouldAutoCreateDpsNetwork();
   }
 
   @JsonIgnore
-  public boolean getDpsNetworkAutoConnect() {
+  public Boolean getDpsNetworkAutoConnect() {
     if (this.solverDocker == null) {
-      return false;
+      return null;
     }
     return this.solverDocker.shouldAutoConnect();
   }
@@ -147,9 +147,9 @@ public class Config {
   }
 
   @JsonIgnore
-  public boolean getDockerSolverHostMachineFallbackActive() {
+  public Boolean getDockerSolverHostMachineFallbackActive() {
     if (this.solverDocker == null) {
-      return false;
+      return null;
     }
     return this.solverDocker.shouldUseHostMachineFallback();
   }
@@ -161,23 +161,23 @@ public class Config {
     return this.solverSystem.getHostMachineHostname();
   }
 
-  public int getDnsServerPort() {
+  public Integer getNoEntriesResponseCode() {
     if (this.server == null) {
-      return 0;
-    }
-    return this.server.getDnsServerPort();
-  }
-
-  public int getNoEntriesResponseCode() {
-    if (this.server == null) {
-      return 0;
+      return null;
     }
     return this.server.getDnsServerNoEntriesResponseCode();
   }
 
-  public int getWebServerPort() {
+  public Integer getDnsServerPort() {
     if (this.server == null) {
-      return 0;
+      return null;
+    }
+    return this.server.getDnsServerPort();
+  }
+
+  public Integer getWebServerPort() {
+    if (this.server == null) {
+      return null;
     }
     return this.server.getWebServerPort();
   }
