@@ -5,6 +5,7 @@ import com.mageddo.dnsproxyserver.config.LogLevel;
 import com.mageddo.dnsproxyserver.config.SolverDocker;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.SolverStub;
+import com.mageddo.dnsproxyserver.config.SolverSystem;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigEnv;
 import com.mageddo.dnsserver.SimpleServer;
 
@@ -33,7 +34,6 @@ public class ConfigTemplates {
         .build()
       )
       .serverProtocol(SimpleServer.Protocol.UDP_TCP)
-      .hostMachineHostname("host.docker")
       .configPath(Paths.get("/tmp/config.json"))
       .webServerPort(8080)
       .version("3.0.0")
@@ -56,6 +56,11 @@ public class ConfigTemplates {
           .autoCreate(false)
           .build()
         )
+        .build()
+      )
+      .solverSystem(SolverSystem
+        .builder()
+        .hostMachineHostname("host.docker")
         .build()
       )
       .source(Config.Source.TESTS_TEMPLATE)

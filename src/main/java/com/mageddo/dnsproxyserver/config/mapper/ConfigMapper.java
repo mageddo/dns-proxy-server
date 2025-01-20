@@ -4,6 +4,7 @@ import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.SolverDocker;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.SolverStub;
+import com.mageddo.dnsproxyserver.config.SolverSystem;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigPropDAO;
 import com.mageddo.dnsproxyserver.config.validator.ConfigValidator;
@@ -36,7 +37,6 @@ public class ConfigMapper {
       .dnsServerPort(Numbers.firstPositive(mapField(Config::getDnsServerPort, configs)))
       .logLevel(firstNonNullRequiring(mapField(Config::getLogLevel, configs)))
       .logFile(firstNonNullRequiring(mapField(Config::getLogFile, configs)))
-      .hostMachineHostname(firstNonNullRequiring(mapField(Config::getHostMachineHostname, configs)))
       .configPath(firstNonNullRequiring(mapField(Config::getConfigPath, configs)))
       .serverProtocol(firstNonNullRequiring(mapField(Config::getServerProtocol, configs)))
       .defaultDns(Config.DefaultDns
@@ -69,6 +69,11 @@ public class ConfigMapper {
         .domain(firstNonNullRequiring(mapField(Config::getDockerDomain, configs)))
         .hostMachineFallback(firstNonNullRequiring(mapField(Config::getDockerSolverHostMachineFallbackActive, configs)))
         .dpsNetwork(firstNonNullRequiring(mapField(Config::getDockerSolverDpsNetwork, configs)))
+        .build()
+      )
+      .solverSystem(SolverSystem
+        .builder()
+        .hostMachineHostname(firstNonNullRequiring(mapField(Config::getHostMachineHostname, configs)))
         .build()
       )
       .source(Config.Source.MERGED)

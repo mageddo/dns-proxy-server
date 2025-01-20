@@ -4,6 +4,7 @@ import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.SolverDocker;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.SolverStub;
+import com.mageddo.dnsproxyserver.config.SolverSystem;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigFlag;
 import com.mageddo.dnsproxyserver.utils.Booleans;
 import com.mageddo.utils.Files;
@@ -14,7 +15,6 @@ public class ConfigFlagMapper {
       .configPath(Files.pathOf(config.getConfigFilePath()))
       .logFile(config.getLogToFile())
       .logLevel(ConfigFieldsValuesMapper.mapLogLevelFrom(config.getLogLevel()))
-      .hostMachineHostname(config.getHostMachineHostname())
       .noEntriesResponseCode(config.getNoEntriesResponseCode())
       .webServerPort(config.getWebServerPort())
       .dnsServerPort(config.getDnsServerPort())
@@ -49,6 +49,11 @@ public class ConfigFlagMapper {
         .dockerDaemonUri(config.getDockerHost())
         .registerContainerNames(config.getRegisterContainerNames())
         .domain(config.getDomain())
+        .build()
+      )
+      .solverSystem(SolverSystem
+        .builder()
+        .hostMachineHostname(config.getHostMachineHostname())
         .build()
       )
       .source(Config.Source.FLAG)

@@ -4,6 +4,7 @@ import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.SolverDocker;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.SolverStub;
+import com.mageddo.dnsproxyserver.config.SolverSystem;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigEnv;
 import com.mageddo.dnsproxyserver.utils.Booleans;
 
@@ -12,7 +13,6 @@ public class ConfigEnvMapper {
     return Config.builder()
       .logFile(config.getLogFile())
       .logLevel(ConfigFieldsValuesMapper.mapLogLevelFrom(config.getLogLevel()))
-      .hostMachineHostname(config.getHostMachineHostname())
       .noEntriesResponseCode(config.getNoEntriesResponseCode())
       .defaultDns(Config.DefaultDns
         .builder()
@@ -46,6 +46,11 @@ public class ConfigEnvMapper {
         .dockerDaemonUri(config.getDockerHost())
         .registerContainerNames(config.getRegisterContainerNames())
         .domain(config.getDomain())
+        .build()
+      )
+      .solverSystem(SolverSystem
+        .builder()
+        .hostMachineHostname(config.getHostMachineHostname())
         .build()
       )
       .source(Config.Source.ENV)

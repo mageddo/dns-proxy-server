@@ -58,7 +58,6 @@ public class Config {
 
   private SolverDocker solverDocker;
 
-  private String hostMachineHostname;
   private SolverSystem solverSystem;
 
   private String activeEnv;
@@ -119,7 +118,7 @@ public class Config {
 
   @JsonIgnore
   public String getDockerDomain() {
-    if(this.solverDocker == null){
+    if (this.solverDocker == null) {
       return null;
     }
     return this.solverDocker.getDomain();
@@ -127,7 +126,7 @@ public class Config {
 
   @JsonIgnore
   public boolean getDockerSolverMustConfigureDpsNetwork() {
-    if(this.solverDocker == null){
+    if (this.solverDocker == null) {
       return false;
     }
     return this.solverDocker.shouldAutoCreateDpsNetwork();
@@ -135,7 +134,7 @@ public class Config {
 
   @JsonIgnore
   public boolean getDpsNetworkAutoConnect() {
-    if(this.solverDocker == null){
+    if (this.solverDocker == null) {
       return false;
     }
     return this.solverDocker.shouldAutoConnect();
@@ -143,7 +142,7 @@ public class Config {
 
   @JsonIgnore
   public URI getDockerDaemonUri() {
-    if(this.solverDocker == null){
+    if (this.solverDocker == null) {
       return null;
     }
     return this.solverDocker.getDockerDaemonUri();
@@ -156,10 +155,17 @@ public class Config {
 
   @JsonIgnore
   public boolean getDockerSolverHostMachineFallbackActive() {
-    if(this.solverDocker == null){
+    if (this.solverDocker == null) {
       return false;
     }
     return this.solverDocker.shouldUseHostMachineFallback();
+  }
+
+  public String getHostMachineHostname() {
+    if (this.solverSystem == null) {
+      return null;
+    }
+    return this.solverSystem.getHostMachineHostname();
   }
 
   @Value
