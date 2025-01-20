@@ -39,9 +39,11 @@ public class Config {
 
   private DefaultDns defaultDns;
 
+  // tag:Log
   private LogLevel logLevel;
 
   private String logFile;
+  // end:Log
 
   private Path configPath;
 
@@ -53,8 +55,10 @@ public class Config {
 
   private SolverSystem solverSystem;
 
+  // tag:Local
   private String activeEnv;
   private List<Env> envs;
+  // end:Local
 
   @NonNull
   private Source source;
