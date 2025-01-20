@@ -10,6 +10,10 @@
   } ],
   "logFile" : "/var/log/dns-proxy-server.log",
   "logLevel" : "DEBUG",
+  "server" : {
+    "dnsServerPort" : 5391,
+    "webServerPort" : 9393
+  },
   "solverDocker" : {
     "domain" : "acme",
     "dpsNetwork" : {
