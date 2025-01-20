@@ -17,6 +17,10 @@ public class SolverDocker {
   private DpsNetwork dpsNetwork;
   private Boolean hostMachineFallback;
 
+  public boolean getHostMachineFallback() {
+    return BooleanUtils.toBoolean(hostMachineFallback);
+  }
+
   public boolean shouldAutoCreateDpsNetwork() {
     if (this.dpsNetwork == null) {
       return false;
