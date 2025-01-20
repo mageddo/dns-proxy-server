@@ -15,6 +15,7 @@ public class SolverDocker {
   private Boolean registerContainerNames;
   private String domain;
   private DpsNetwork dpsNetwork;
+  private Boolean hostMachineFallback;
 
   public boolean shouldAutoCreateDpsNetwork() {
     if (this.dpsNetwork == null) {

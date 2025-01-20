@@ -45,11 +45,11 @@ public class ConfigTemplates {
         .build()
       )
       .noEntriesResponseCode(3)
-      .dockerSolverHostMachineFallbackActive(true)
       .solverDocker(SolverDocker
         .builder()
         .domain("docker")
         .registerContainerNames(false)
+        .hostMachineFallback(true)
         .dpsNetwork(SolverDocker.DpsNetwork
           .builder()
           .autoConnect(false)

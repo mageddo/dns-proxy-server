@@ -16,7 +16,6 @@ public class ConfigFlagMapper {
       .logLevel(ConfigFieldsValuesMapper.mapLogLevelFrom(config.getLogLevel()))
       .hostMachineHostname(config.getHostMachineHostname())
       .noEntriesResponseCode(config.getNoEntriesResponseCode())
-      .dockerSolverHostMachineFallbackActive(config.getDockerSolverHostMachineFallbackActive())
       .webServerPort(config.getWebServerPort())
       .dnsServerPort(config.getDnsServerPort())
       .defaultDns(Config.DefaultDns.builder()
@@ -40,6 +39,7 @@ public class ConfigFlagMapper {
       )
       .solverDocker(SolverDocker
         .builder()
+        .hostMachineFallback(config.getDockerSolverHostMachineFallbackActive())
         .dpsNetwork(SolverDocker.DpsNetwork
           .builder()
           .autoCreate(config.getDpsNetwork())

@@ -50,7 +50,6 @@ public class ConfigMapper {
         .build()
       )
       .noEntriesResponseCode(firstNonNullRequiring(mapField(Config::getNoEntriesResponseCode, configs)))
-      .dockerSolverHostMachineFallbackActive(firstNonNullRequiring(mapField(Config::getDockerSolverHostMachineFallbackActive, configs)))
       .solverRemote(SolverRemote
         .builder()
         .active(firstNonNullRequiring(mapField(Config::isSolverRemoteActive, configs)))
@@ -68,6 +67,7 @@ public class ConfigMapper {
         .dockerDaemonUri(firstNonNullRequiring(mapField(Config::getDockerDaemonUri, configs)))
         .registerContainerNames(firstNonNullRequiring(mapField(Config::getRegisterContainerNames, configs)))
         .domain(firstNonNullRequiring(mapField(Config::getDockerDomain, configs)))
+        .hostMachineFallback(firstNonNullRequiring(mapField(Config::getDockerSolverHostMachineFallbackActive, configs)))
         .dpsNetwork(firstNonNullRequiring(mapField(Config::getDockerSolverDpsNetwork, configs)))
         .build()
       )

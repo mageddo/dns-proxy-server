@@ -47,19 +47,19 @@ public class Config {
 
   private String logFile;
 
-  private String hostMachineHostname;
 
   private Path configPath;
 
   private Integer noEntriesResponseCode;
-
-  private Boolean dockerSolverHostMachineFallbackActive;
 
   private SolverStub solverStub;
 
   private SolverRemote solverRemote;
 
   private SolverDocker solverDocker;
+
+  private String hostMachineHostname;
+  private SolverSystem solverSystem;
 
   private String activeEnv;
   private List<Env> envs;
@@ -152,6 +152,14 @@ public class Config {
   @JsonIgnore
   public SolverDocker.DpsNetwork getDockerSolverDpsNetwork() {
     return this.solverDocker.getDpsNetwork();
+  }
+
+  @JsonIgnore
+  public boolean getDockerSolverHostMachineFallbackActive() {
+    if(this.solverDocker == null){
+      return false;
+    }
+    return this.solverDocker.getHostMachineFallback();
   }
 
   @Value

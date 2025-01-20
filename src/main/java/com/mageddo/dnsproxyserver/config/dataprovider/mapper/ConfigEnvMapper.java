@@ -14,7 +14,6 @@ public class ConfigEnvMapper {
       .logLevel(ConfigFieldsValuesMapper.mapLogLevelFrom(config.getLogLevel()))
       .hostMachineHostname(config.getHostMachineHostname())
       .noEntriesResponseCode(config.getNoEntriesResponseCode())
-      .dockerSolverHostMachineFallbackActive(config.getDockerSolverHostMachineFallbackActive())
       .defaultDns(Config.DefaultDns
         .builder()
         .resolvConf(Config.DefaultDns.ResolvConf
@@ -37,6 +36,7 @@ public class ConfigEnvMapper {
       )
       .solverDocker(SolverDocker
         .builder()
+        .hostMachineFallback(config.getDockerSolverHostMachineFallbackActive())
         .dpsNetwork(SolverDocker.DpsNetwork
           .builder()
           .autoCreate(config.getDpsNetwork())
