@@ -24,6 +24,7 @@ import java.util.List;
 
 import static com.mageddo.dnsproxyserver.utils.ListOfObjectUtils.mapField;
 import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonEmptyListRequiring;
+import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonNull;
 import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonNullRequiring;
 
 public class ConfigMapper {
@@ -89,8 +90,8 @@ public class ConfigMapper {
       )
       .solverLocal(SolverLocal
         .builder()
-        .activeEnv(firstNonNullRequiring(mapField(Config::getActiveEnv, configs)))
-        .envs(firstNonNullRequiring(mapField(Config::getEnvs, configs)))
+        .activeEnv(firstNonNull(mapField(Config::getActiveEnv, configs)))
+        .envs(firstNonNull(mapField(Config::getEnvs, configs)))
         .build()
       )
       .source(Config.Source.MERGED)
