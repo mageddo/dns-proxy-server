@@ -1,6 +1,7 @@
 package testing.templates;
 
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.Log;
 import com.mageddo.dnsproxyserver.config.LogLevel;
 import com.mageddo.dnsproxyserver.config.Server;
 import com.mageddo.dnsproxyserver.config.SolverDocker;
@@ -30,7 +31,12 @@ public class ConfigTemplates {
         .dnsServerNoEntriesResponseCode(3)
         .build()
       )
-      .logFile("/tmp/dps.log")
+      .log(Log
+        .builder()
+        .file("/tmp/dps.log")
+        .level(LogLevel.WARNING)
+        .build()
+      )
       .defaultDns(Config.DefaultDns
         .builder()
         .active(true)
@@ -44,7 +50,6 @@ public class ConfigTemplates {
       )
       .configPath(Paths.get("/tmp/config.json"))
       .version("3.0.0")
-      .logLevel(LogLevel.WARNING)
       .solverRemote(SolverRemote
         .builder()
         .active(true)

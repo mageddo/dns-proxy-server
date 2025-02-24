@@ -8,8 +8,10 @@
   "envs" : [ {
     "name" : "MARROI"
   } ],
-  "logFile" : "/var/log/dns-proxy-server.log",
-  "logLevel" : "DEBUG",
+  "log" : {
+    "file" : "/var/log/dns-proxy-server.log",
+    "level" : "DEBUG"
+  },
   "server" : {
     "dnsServerPort" : 5391,
     "webServerPort" : 9393

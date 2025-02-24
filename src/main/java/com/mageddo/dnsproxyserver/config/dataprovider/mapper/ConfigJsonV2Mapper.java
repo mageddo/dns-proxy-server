@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
 import com.mageddo.dnsproxyserver.config.CanaryRateThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.Log;
 import com.mageddo.dnsproxyserver.config.Server;
 import com.mageddo.dnsproxyserver.config.SolverDocker;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
@@ -41,8 +42,12 @@ public class ConfigJsonV2Mapper {
         )
         .build()
       )
-      .logLevel(ConfigFieldsValuesMapper.mapLogLevelFrom(json.getLogLevel()))
-      .logFile(ConfigFieldsValuesMapper.mapLogFileFrom(json.getLogFile()))
+      .log(Log
+        .builder()
+        .level(ConfigFieldsValuesMapper.mapLogLevelFrom(json.getLogLevel()))
+        .file(ConfigFieldsValuesMapper.mapLogFileFrom(json.getLogFile()))
+        .build()
+      )
       .configPath(configFileAbsolutePath)
       .solverRemote(toSolverRemote(json))
       .solverStub(toSolverStub(json.getSolverStub()))

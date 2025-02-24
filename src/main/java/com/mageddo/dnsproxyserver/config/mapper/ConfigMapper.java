@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.config.mapper;
 
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.Log;
 import com.mageddo.dnsproxyserver.config.Server;
 import com.mageddo.dnsproxyserver.config.SolverDocker;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
@@ -42,8 +43,12 @@ public class ConfigMapper {
         .build()
       )
       .version(ConfigPropDAO.getVersion())
-      .logLevel(firstNonNullRequiring(mapField(Config::getLogLevel, configs)))
-      .logFile(firstNonNullRequiring(mapField(Config::getLogFile, configs)))
+      .log(Log
+        .builder()
+        .level(firstNonNullRequiring(mapField(Config::getLogLevel, configs)))
+        .file(firstNonNullRequiring(mapField(Config::getLogFile, configs)))
+        .build()
+      )
       .configPath(firstNonNullRequiring(mapField(Config::getConfigPath, configs)))
       .defaultDns(Config.DefaultDns
         .builder()

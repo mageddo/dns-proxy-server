@@ -189,6 +189,22 @@ public class Config {
     return this.server.getServerProtocol();
   }
 
+  @JsonIgnore
+  public LogLevel getLogLevel() {
+    if (this.log == null) {
+      return null;
+    }
+    return this.log.getLevel();
+  }
+
+  @JsonIgnore
+  public String getLogFile() {
+    if (this.log == null) {
+      return null;
+    }
+    return this.log.getFile();
+  }
+
   @Value
   @Builder(toBuilder = true)
   public static class DefaultDns {
