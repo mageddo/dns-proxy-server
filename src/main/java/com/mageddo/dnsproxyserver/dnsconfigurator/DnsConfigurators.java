@@ -34,8 +34,9 @@ public class DnsConfigurators implements StartupEvent {
   @Override
   public void onStart() {
     final var config = this.findConfig();
-    log.debug("action=setAsDefaultDns, active={}", config.getDefaultDns());
-    if (!Boolean.TRUE.equals(config.getDefaultDns())) {
+    final var defaultDnsActive = config.isDefaultDnsActive();
+    log.debug("action=setAsDefaultDns, active={}", defaultDnsActive);
+    if (!defaultDnsActive) {
       return;
     }
 
@@ -56,7 +57,7 @@ public class DnsConfigurators implements StartupEvent {
           if (e instanceof IOException) {
             log.warn("status=failedToConfigureAsDefaultDns, msg={}:{}", ClassUtils.getName(e), e.getMessage());
           } else {
-            log.warn("status=failedToConfigureAsDefaultDns, path={}, msg={}", config.getResolvConfPaths(), e.getMessage(), e);
+            log.warn("status=failedToConfigureAsDefaultDns, path={}, msg={}", config.getDefaultDnsResolvConfPaths(), e.getMessage(), e);
           }
           if (this.tooManyFailures()) {
             log.warn("status=too-many-failures, action=stopping-default-dns-configuration, failures={}", this.failures.get());
@@ -95,7 +96,7 @@ public class DnsConfigurators implements StartupEvent {
         log.debug("status=won't try to restore as it has failed to configure");
         return;
       }
-      log.debug("status=restoringResolvConf, path={}", config.getResolvConfPaths());
+      log.debug("status=restoringResolvConf, path={}", config.getDefaultDnsResolvConfPaths());
       this.getInstance().restore();
     }));
   }

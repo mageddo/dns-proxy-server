@@ -20,6 +20,9 @@ public class ConfigJsonV2EnvsMapper {
   }
 
   public static List<Config.Entry> toDomainEntries(List<ConfigJsonV2.Entry> hostnames) {
+    if (hostnames == null) {
+      return null;
+    }
     return hostnames
       .stream()
       .map(ConfigJsonV2EnvsMapper::toDomainEntry)

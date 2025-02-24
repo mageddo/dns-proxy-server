@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.apache.commons.lang3.Validate;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URI;
@@ -29,54 +30,207 @@ import static com.mageddo.commons.lang.Objects.mapOrNull;
  * @see com.mageddo.dnsproxyserver.config.application.ConfigService
  */
 @Value
-@Builder(toBuilder = true)
+@Builder(toBuilder = true, builderClassName = "ConfigBuilder")
 public class Config {
 
   private String version;
 
-  @Builder.Default
-  private List<IpAddr> remoteDnsServers = new ArrayList<>();
+  private Server server;
 
-  private Integer webServerPort;
+  private DefaultDns defaultDns;
 
-  private Integer dnsServerPort;
-
-  private Boolean defaultDns;
-
-  private LogLevel logLevel;
-
-  private String logFile;
-
-  private Boolean registerContainerNames;
-
-  private String hostMachineHostname;
-
-  private String domain;
-
-  private Boolean mustConfigureDpsNetwork;
-
-  private Boolean dpsNetworkAutoConnect;
+  private Log log;
 
   private Path configPath;
-
-  private String resolvConfPaths;
-
-  private SimpleServer.Protocol serverProtocol;
-
-  private URI dockerHost;
-
-  private Boolean resolvConfOverrideNameServers;
-
-  private Integer noEntriesResponseCode;
-
-  private Boolean dockerSolverHostMachineFallbackActive;
 
   private SolverStub solverStub;
 
   private SolverRemote solverRemote;
 
+  private SolverDocker solverDocker;
+
+  private SolverSystem solverSystem;
+
+  private SolverLocal solverLocal;
+
   @NonNull
   private Source source;
+
+  @JsonIgnore
+  public Boolean isDefaultDnsActive() {
+    if (this.defaultDns == null) {
+      return null;
+    }
+    return this.defaultDns.active;
+  }
+
+  @JsonIgnore
+  public String getDefaultDnsResolvConfPaths() {
+    if (this.getDefaultDnsResolvConf() == null) {
+      return null;
+    }
+    return this.getDefaultDnsResolvConf().paths;
+  }
+
+  @JsonIgnore
+  public Boolean isResolvConfOverrideNameServersActive() {
+    if (this.getDefaultDnsResolvConf() == null) {
+      return null;
+    }
+    return this.getDefaultDnsResolvConf().overrideNameServers;
+  }
+
+  @JsonIgnore
+  private DefaultDns.ResolvConf getDefaultDnsResolvConf() {
+    if (this.defaultDns == null) {
+      return null;
+    }
+    return this.defaultDns.resolvConf;
+  }
+
+  @Nonnull
+  @JsonIgnore
+  public List<IpAddr> getRemoteDnsServers() {
+    if (this.solverRemote == null) {
+      return Collections.emptyList();
+    }
+    return this.solverRemote.getDnsServers();
+  }
+
+  @JsonIgnore
+  public Boolean getRegisterContainerNames() {
+    if (this.solverDocker == null) {
+      return null;
+    }
+    return this.solverDocker.getRegisterContainerNames();
+  }
+
+  @JsonIgnore
+  public String getDockerDomain() {
+    if (this.solverDocker == null) {
+      return null;
+    }
+    return this.solverDocker.getDomain();
+  }
+
+  @JsonIgnore
+  public Boolean getDockerSolverMustConfigureDpsNetwork() {
+    if (this.solverDocker == null) {
+      return null;
+    }
+    return this.solverDocker.shouldAutoCreateDpsNetwork();
+  }
+
+  @JsonIgnore
+  public Boolean getDpsNetworkAutoConnect() {
+    if (this.solverDocker == null) {
+      return null;
+    }
+    return this.solverDocker.shouldAutoConnect();
+  }
+
+  @JsonIgnore
+  public URI getDockerDaemonUri() {
+    if (this.solverDocker == null) {
+      return null;
+    }
+    return this.solverDocker.getDockerDaemonUri();
+  }
+
+  @JsonIgnore
+  public SolverDocker.DpsNetwork getDockerSolverDpsNetwork() {
+    return this.solverDocker.getDpsNetwork();
+  }
+
+  @JsonIgnore
+  public Boolean getDockerSolverHostMachineFallbackActive() {
+    if (this.solverDocker == null) {
+      return null;
+    }
+    return this.solverDocker.shouldUseHostMachineFallback();
+  }
+
+  public String getHostMachineHostname() {
+    if (this.solverSystem == null) {
+      return null;
+    }
+    return this.solverSystem.getHostMachineHostname();
+  }
+
+  public Integer getNoEntriesResponseCode() {
+    if (this.server == null) {
+      return null;
+    }
+    return this.server.getDnsServerNoEntriesResponseCode();
+  }
+
+  public Integer getDnsServerPort() {
+    if (this.server == null) {
+      return null;
+    }
+    return this.server.getDnsServerPort();
+  }
+
+  public Integer getWebServerPort() {
+    if (this.server == null) {
+      return null;
+    }
+    return this.server.getWebServerPort();
+  }
+
+  public SimpleServer.Protocol getServerProtocol() {
+    if (this.server == null) {
+      return null;
+    }
+    return this.server.getServerProtocol();
+  }
+
+  @JsonIgnore
+  public LogLevel getLogLevel() {
+    if (this.log == null) {
+      return null;
+    }
+    return this.log.getLevel();
+  }
+
+  @JsonIgnore
+  public String getLogFile() {
+    if (this.log == null) {
+      return null;
+    }
+    return this.log.getFile();
+  }
+
+  @JsonIgnore
+  public List<Env> getEnvs() {
+    if (this.solverLocal == null) {
+      return null;
+    }
+    return this.solverLocal.getEnvs();
+  }
+
+  @JsonIgnore
+  public String getActiveEnv() {
+    if (this.solverLocal == null) {
+      return null;
+    }
+    return this.solverLocal.getActiveEnv();
+  }
+
+  @Value
+  @Builder(toBuilder = true)
+  public static class DefaultDns {
+
+    private Boolean active;
+    private ResolvConf resolvConf;
+
+    @Value
+    @Builder(toBuilder = true)
+    public static class ResolvConf {
+      private String paths;
+      private Boolean overrideNameServers;
+    }
+  }
 
   @JsonIgnore
   public Boolean isSolverRemoteActive() {
@@ -153,6 +307,12 @@ public class Config {
       return new Env(DEFAULT_ENV, new ArrayList<>());
     }
 
+    public Entry getFirstEntry() {
+      if (this.entries == null || this.entries.isEmpty()) {
+        return null;
+      }
+      return this.entries.getFirst();
+    }
   }
 
   @Value
@@ -249,5 +409,10 @@ public class Config {
         return ConfigEntryTypes.is(this, Config.Entry.Type.A, Config.Entry.Type.AAAA);
       }
     }
+  }
+
+  public static class ConfigBuilder {
+
+
   }
 }

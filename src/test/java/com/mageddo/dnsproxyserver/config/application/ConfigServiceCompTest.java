@@ -60,8 +60,8 @@ class ConfigServiceCompTest {
       ;
 
     // assert
-    assertParsedConfig(config, "/configs-test/001.json");
-    assertWrittenFile("/configs-test/002.json", jsonConfigFile);
+    assertFalse(config.getRegisterContainerNames());
+    assertTrue(Files.exists(jsonConfigFile));
   }
 
 

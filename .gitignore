@@ -70,6 +70,7 @@ examples/tmp
 issues
 /files
 tmp/
-Poc.java
+Poc.*
+
 
 src/stress-test/docker/dps-stress-test-instance/files

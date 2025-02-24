@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @deprecated see #594.
  */
-@Deprecated(forRemoval = true)
+@Deprecated
 public interface ConfigJson {
 
   String getActiveEnv();
@@ -57,4 +57,7 @@ public interface ConfigJson {
 
   ConfigJsonV2.CircuitBreaker getSolverRemoteCircuitBreaker();
 
+  default boolean hasRemoteDnsServers(){
+    return getRemoteDnsServers() != null && !getRemoteDnsServers().isEmpty();
+  }
 }

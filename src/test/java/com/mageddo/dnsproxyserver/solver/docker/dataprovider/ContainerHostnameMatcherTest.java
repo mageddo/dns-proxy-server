@@ -2,7 +2,6 @@ package com.mageddo.dnsproxyserver.solver.docker.dataprovider;
 
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
-import com.mageddo.dnsproxyserver.solver.docker.dataprovider.ContainerHostnameMatcher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import testing.templates.ConfigTemplates;
@@ -92,7 +91,7 @@ class ContainerHostnameMatcherTest {
 
     // assert
     assertTrue(test, String.valueOf(hostname));
-    assertEquals("docker", config.getDomain());
+    assertEquals("docker", config.getDockerDomain());
     assertTrue(config.getRegisterContainerNames());
   }
 
@@ -108,7 +107,7 @@ class ContainerHostnameMatcherTest {
 
     // assert
     assertTrue(test, String.valueOf(hostname));
-    assertEquals("docker", config.getDomain());
+    assertEquals("docker", config.getDockerDomain());
     assertTrue(config.getRegisterContainerNames());
   }
 
@@ -126,7 +125,7 @@ class ContainerHostnameMatcherTest {
     // assert
     assertFalse(test, String.valueOf(hostname));
     assertFalse(config.getRegisterContainerNames());
-    assertEquals("docker", config.getDomain());
+    assertEquals("docker", config.getDockerDomain());
   }
 
 }

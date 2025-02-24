@@ -19,7 +19,7 @@ public class DockerConfig {
   public DockerClient dockerClient() {
     final var dockerHost = Configs
       .getInstance()
-      .getDockerHost()
+      .getDockerDaemonUri()
       ;
     final var config = DefaultDockerClientConfig.createDefaultConfigBuilder()
       .withDockerHost(Objects.mapOrNull(dockerHost, URI::toString))

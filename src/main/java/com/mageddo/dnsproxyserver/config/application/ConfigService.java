@@ -32,7 +32,8 @@ public class ConfigService {
   public Config findCurrentConfig() {
     final var configs = this.findConfigs();
     log.trace("baseConfigs={}", configs);
-    return ConfigMapper.mapFrom(configs);
+    final var config = ConfigMapper.mapFrom(configs);
+    return config;
   }
 
   public SolverRemote findCurrentConfigRemote(){
@@ -42,9 +43,10 @@ public class ConfigService {
   }
 
   List<Config> findConfigs() {
-    return this.findConfigDaos()
+    final var config = this.findConfigDaos()
       .map(ConfigDAO::find)
       .toList();
+    return config;
   }
 
   Stream<ConfigDAO> findConfigDaos() {

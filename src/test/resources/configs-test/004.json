@@ -1,22 +1,40 @@
 {
-  "defaultDns" : false,
+  "defaultDns" : {
+    "active" : false,
+    "resolvConf" : { }
+  },
   "dnsServerPort" : 5391,
-  "domain" : "acme",
-  "dpsNetworkAutoConnect" : true,
-  "hostMachineHostname" : "batata.com",
-  "logFile" : "/var/log/dns-proxy-server.log",
-  "logLevel" : "DEBUG",
-  "mustConfigureDpsNetwork" : true,
-  "registerContainerNames" : true,
-  "remoteDnsServers" : [ ],
-  "source" : "JSON",
+  "log" : {
+    "file" : "/var/log/dns-proxy-server.log",
+    "level" : "DEBUG"
+  },
+  "server" : {
+    "dnsServerPort" : 5391,
+    "webServerPort" : 9393
+  },
+  "solverDocker" : {
+    "domain" : "acme",
+    "dpsNetwork" : {
+      "autoConnect" : true,
+      "autoCreate" : true
+    },
+    "registerContainerNames" : true
+  },
+  "solverLocal" : {
+    "activeEnv" : "MARROI",
+    "envs" : [ {
+      "name" : "MARROI"
+    } ]
+  },
   "solverRemote" : {
     "circuitBreaker" : {
       "failureThreshold" : 3,
       "failureThresholdCapacity" : 10,
       "successThreshold" : 5,
       "testDelay" : 60.0
-    }
+    },
+    "dnsServers" : [ ]
   },
+  "source" : "JSON",
   "webServerPort" : 9393
 }

@@ -1,3 +1,6 @@
+## 3.32.5
+* Structuring Domain Model config.Config as proposed in section "New Modeling Propose". #594
+
 ## 3.32.4
 * Migrating aarch docker image as the previous one is not available. #612
 

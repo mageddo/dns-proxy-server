@@ -16,7 +16,9 @@ class ConfigTest {
   @Test
   void mustDeleteConfigFile(){
 
-    final var config = Configs.getInstance();
+    final var config = Configs.getContext()
+      .configService()
+      .findCurrentConfig();
 
     final var configPath = config.getConfigPath();
     assertTrue(Files.exists(configPath));

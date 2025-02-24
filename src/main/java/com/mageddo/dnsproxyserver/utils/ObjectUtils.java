@@ -7,8 +7,6 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
-
 public class ObjectUtils {
 
   public static String firstNonBlankRequiring(String... args) {
@@ -27,13 +25,17 @@ public class ObjectUtils {
     throw throwError().get();
   }
 
+  public static <T> T firstNonNull(List<T> args) {
+    return (T) org.apache.commons.lang3.ObjectUtils.firstNonNull(args.toArray(Object[]::new));
+  }
+
   public static <T> T firstNonNullRequiring(List<T> args) {
     return (T) firstNonNullRequiring(args.toArray(Object[]::new));
   }
 
   public static <T> T firstNonNullRequiring(T... args) {
     return Optional
-      .ofNullable(firstNonNull(args))
+      .ofNullable(org.apache.commons.lang3.ObjectUtils.firstNonNull(args))
       .orElseThrow(throwError())
       ;
   }

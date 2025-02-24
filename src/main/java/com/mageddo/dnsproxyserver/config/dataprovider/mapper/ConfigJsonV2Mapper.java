@@ -3,6 +3,10 @@ package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
 import com.mageddo.dnsproxyserver.config.CanaryRateThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.Log;
+import com.mageddo.dnsproxyserver.config.Server;
+import com.mageddo.dnsproxyserver.config.SolverDocker;
+import com.mageddo.dnsproxyserver.config.SolverLocal;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.SolverStub;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
@@ -21,25 +25,53 @@ public class ConfigJsonV2Mapper {
 
   public static Config toConfig(ConfigJson json, Path configFileAbsolutePath) {
     return Config.builder()
-      .webServerPort(json.getWebServerPort())
-      .dnsServerPort(json.getDnsServerPort())
-      .defaultDns(json.getDefaultDns())
-      .logLevel(ConfigFieldsValuesMapper.mapLogLevelFrom(json.getLogLevel()))
-      .logFile(ConfigFieldsValuesMapper.mapLogFileFrom(json.getLogFile()))
-      .registerContainerNames(json.getRegisterContainerNames())
-      .hostMachineHostname(json.getHostMachineHostname())
-      .domain(json.getDomain())
-      .mustConfigureDpsNetwork(json.getDpsNetwork())
-      .dpsNetworkAutoConnect(json.getDpsNetworkAutoConnect())
-      .remoteDnsServers(json.getRemoteDnsServers())
-      .serverProtocol(json.getServerProtocol())
-      .dockerHost(json.getDockerHost())
-      .resolvConfOverrideNameServers(json.getResolvConfOverrideNameServers())
-      .noEntriesResponseCode(json.getNoEntriesResponseCode())
-      .dockerSolverHostMachineFallbackActive(json.getDockerSolverHostMachineFallbackActive())
+      .server(Server
+        .builder()
+        .dnsServerNoEntriesResponseCode(json.getNoEntriesResponseCode())
+        .webServerPort(json.getWebServerPort())
+        .dnsServerPort(json.getDnsServerPort())
+        .serverProtocol(json.getServerProtocol())
+        .build()
+      )
+      .defaultDns(Config.DefaultDns
+        .builder()
+        .active(json.getDefaultDns())
+        .resolvConf(Config.DefaultDns.ResolvConf
+          .builder()
+          .overrideNameServers(json.getResolvConfOverrideNameServers())
+          .build()
+        )
+        .build()
+      )
+      .log(Log
+        .builder()
+        .level(ConfigFieldsValuesMapper.mapLogLevelFrom(json.getLogLevel()))
+        .file(ConfigFieldsValuesMapper.mapLogFileFrom(json.getLogFile()))
+        .build()
+      )
       .configPath(configFileAbsolutePath)
       .solverRemote(toSolverRemote(json))
       .solverStub(toSolverStub(json.getSolverStub()))
+      .solverLocal(SolverLocal
+        .builder()
+        .activeEnv(json.getActiveEnv())
+        .envs(json.getEnvs())
+        .build()
+      )
+      .solverDocker(SolverDocker
+        .builder()
+        .dpsNetwork(SolverDocker.DpsNetwork
+          .builder()
+          .autoCreate(json.getDpsNetwork())
+          .autoConnect(json.getDpsNetworkAutoConnect())
+          .build()
+        )
+        .hostMachineFallback(json.getDockerSolverHostMachineFallbackActive())
+        .dockerDaemonUri(json.getDockerHost())
+        .registerContainerNames(json.getRegisterContainerNames())
+        .domain(json.getDomain())
+        .build()
+      )
       .source(Config.Source.JSON)
       .build();
   }
@@ -64,7 +96,12 @@ public class ConfigJsonV2Mapper {
   }
 
   static boolean nothingIsSet(ConfigJson json) {
-    return ObjectUtils.allNull(json.getNoRemoteServers(), json.getSolverRemote(), json.getSolverRemoteCircuitBreaker());
+    return ObjectUtils.allNull(
+      json.getNoRemoteServers(),
+      json.getSolverRemote(),
+      json.getSolverRemoteCircuitBreaker(),
+      json.hasRemoteDnsServers() ? json.getRemoteDnsServers() : null
+    );
   }
 
   static boolean isPossibleToBuildComplete(ConfigJson json) {
@@ -75,6 +112,7 @@ public class ConfigJsonV2Mapper {
     return SolverRemote
       .builder()
       .active(Booleans.reverseWhenNotNull(json.getNoRemoteServers()))
+      .dnsServers(json.getRemoteDnsServers())
       .build();
   }
 
@@ -83,6 +121,7 @@ public class ConfigJsonV2Mapper {
       .builder()
       .active(Booleans.reverseWhenNotNull(json.getNoRemoteServers()))
       .circuitBreaker(mapCircuitBreaker(circuitBreaker))
+      .dnsServers(json.getRemoteDnsServers())
       .build();
   }
 

@@ -112,10 +112,10 @@ public class DpsContainerService {
 
   public boolean connectRunningContainersToDpsNetwork(){
     final var config = Configs.getInstance();
-    if (!config.getMustConfigureDpsNetwork() || !config.getDpsNetworkAutoConnect()) {
+    if (!config.getDockerSolverMustConfigureDpsNetwork() || !config.getDpsNetworkAutoConnect()) {
       log.info(
         "status=autoConnectDpsNetworkDisabled, dpsNetwork={}, dpsNetworkAutoConnect={}",
-        config.getMustConfigureDpsNetwork(), config.getDpsNetworkAutoConnect()
+        config.getDockerSolverMustConfigureDpsNetwork(), config.getDpsNetworkAutoConnect()
       );
       return false;
     }
