@@ -47,7 +47,7 @@ jobs:
           && ls -lhS ./build/*
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: native-image-source
           path: ./build/artifacts/native-image-source/dns-proxy-server.jar
@@ -84,7 +84,7 @@ jobs:
       - name: Install Deps
         run: sudo apt-get install rename docker-compose -y
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: native-image-source
           path: ./build/artifacts/native-image-source/
@@ -125,7 +125,7 @@ jobs:
       - name: Install Deps
         run: sudo apt-get install rename docker-compose -y
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: native-image-source
           path: ./build/artifacts/native-image-source/
@@ -173,7 +173,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: native-image-source
           path: ./build/artifacts/native-image-source/
