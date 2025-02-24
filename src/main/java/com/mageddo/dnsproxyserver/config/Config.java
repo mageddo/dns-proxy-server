@@ -39,11 +39,7 @@ public class Config {
 
   private DefaultDns defaultDns;
 
-  // tag:Log
-  private LogLevel logLevel;
-
-  private String logFile;
-  // end:Log
+  private Log log;
 
   private Path configPath;
 
