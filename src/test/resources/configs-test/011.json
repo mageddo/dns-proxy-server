@@ -1,0 +1,9 @@
+{
+  "version" : 2,
+  "activeEnv" : "",
+  "remoteDnsServers" : ["4.4.4.4" ],
+  "envs" : [ {
+    "name" : "",
+    "hostnames" : null
+  } ]
+}

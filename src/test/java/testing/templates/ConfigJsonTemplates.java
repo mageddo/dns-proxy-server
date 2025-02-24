@@ -26,4 +26,8 @@ public class ConfigJsonTemplates {
     return JsonConfigs.loadConfig(TestUtils.readString(path));
   }
 
+  public static ConfigJson withDnsServers() {
+    final var path = "/configs-test/011.json";
+    return JsonConfigs.loadConfig(TestUtils.readString(path));
+  }
 }

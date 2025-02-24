@@ -96,7 +96,12 @@ public class ConfigJsonV2Mapper {
   }
 
   static boolean nothingIsSet(ConfigJson json) {
-    return ObjectUtils.allNull(json.getNoRemoteServers(), json.getSolverRemote(), json.getSolverRemoteCircuitBreaker());
+    return ObjectUtils.allNull(
+      json.getNoRemoteServers(),
+      json.getSolverRemote(),
+      json.getSolverRemoteCircuitBreaker(),
+      json.hasRemoteDnsServers() ? json.getRemoteDnsServers() : null
+    );
   }
 
   static boolean isPossibleToBuildComplete(ConfigJson json) {

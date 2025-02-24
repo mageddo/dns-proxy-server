@@ -57,4 +57,7 @@ public interface ConfigJson {
 
   ConfigJsonV2.CircuitBreaker getSolverRemoteCircuitBreaker();
 
+  default boolean hasRemoteDnsServers(){
+    return getRemoteDnsServers() != null && !getRemoteDnsServers().isEmpty();
+  }
 }

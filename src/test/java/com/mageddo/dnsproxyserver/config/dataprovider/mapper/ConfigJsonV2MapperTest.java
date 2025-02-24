@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import static com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig.Name.CANARY_RATE_THRESHOLD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 class ConfigJsonV2MapperTest {
@@ -62,6 +63,18 @@ class ConfigJsonV2MapperTest {
     final var circuitBreakerStrategyConfig = config.getSolverRemoteCircuitBreakerStrategy();
     assertEquals(CANARY_RATE_THRESHOLD, circuitBreakerStrategyConfig.name());
 
+  }
+
+  @Test
+  void mustMapRemoteDnsServerAddress(){
+    final var configJson = ConfigJsonTemplates.withDnsServers();
+
+    final var config = toConfig(configJson);
+
+    final var dnsServers = config.getRemoteDnsServers();
+    assertNotNull(dnsServers);
+    assertEquals(1, dnsServers.size());
+    assertEquals("4.4.4.4", String.valueOf(dnsServers.getFirst()));
   }
 
   static Config toConfig(ConfigJson configJson) {
