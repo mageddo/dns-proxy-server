@@ -51,14 +51,10 @@ public class Config {
 
   private SolverSystem solverSystem;
 
-  // tag:Local
-  private String activeEnv;
-  private List<Env> envs;
-  // end:Local
+  private SolverLocal solverLocal;
 
   @NonNull
   private Source source;
-
 
   @JsonIgnore
   public Boolean isDefaultDnsActive() {
@@ -203,6 +199,22 @@ public class Config {
       return null;
     }
     return this.log.getFile();
+  }
+
+  @JsonIgnore
+  public List<Env> getEnvs() {
+    if (this.solverLocal == null) {
+      return null;
+    }
+    return this.solverLocal.getEnvs();
+  }
+
+  @JsonIgnore
+  public String getActiveEnv() {
+    if (this.solverLocal == null) {
+      return null;
+    }
+    return this.solverLocal.getActiveEnv();
   }
 
   @Value

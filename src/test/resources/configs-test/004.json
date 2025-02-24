@@ -1,13 +1,9 @@
 {
-  "activeEnv" : "MARROI",
   "defaultDns" : {
     "active" : false,
     "resolvConf" : { }
   },
   "dnsServerPort" : 5391,
-  "envs" : [ {
-    "name" : "MARROI"
-  } ],
   "log" : {
     "file" : "/var/log/dns-proxy-server.log",
     "level" : "DEBUG"
@@ -23,6 +19,12 @@
       "autoCreate" : true
     },
     "registerContainerNames" : true
+  },
+  "solverLocal" : {
+    "activeEnv" : "MARROI",
+    "envs" : [ {
+      "name" : "MARROI"
+    } ]
   },
   "solverRemote" : {
     "circuitBreaker" : {

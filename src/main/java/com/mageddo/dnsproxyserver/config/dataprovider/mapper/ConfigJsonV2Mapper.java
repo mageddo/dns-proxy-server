@@ -6,6 +6,7 @@ import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Log;
 import com.mageddo.dnsproxyserver.config.Server;
 import com.mageddo.dnsproxyserver.config.SolverDocker;
+import com.mageddo.dnsproxyserver.config.SolverLocal;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.SolverStub;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
@@ -51,8 +52,12 @@ public class ConfigJsonV2Mapper {
       .configPath(configFileAbsolutePath)
       .solverRemote(toSolverRemote(json))
       .solverStub(toSolverStub(json.getSolverStub()))
-      .activeEnv(json.getActiveEnv())
-      .envs(json.getEnvs())
+      .solverLocal(SolverLocal
+        .builder()
+        .activeEnv(json.getActiveEnv())
+        .envs(json.getEnvs())
+        .build()
+      )
       .solverDocker(SolverDocker
         .builder()
         .dpsNetwork(SolverDocker.DpsNetwork
