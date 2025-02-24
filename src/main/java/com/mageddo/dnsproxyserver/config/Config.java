@@ -307,6 +307,12 @@ public class Config {
       return new Env(DEFAULT_ENV, new ArrayList<>());
     }
 
+    public Entry getFirstEntry() {
+      if (this.entries == null || this.entries.isEmpty()) {
+        return null;
+      }
+      return this.entries.getFirst();
+    }
   }
 
   @Value

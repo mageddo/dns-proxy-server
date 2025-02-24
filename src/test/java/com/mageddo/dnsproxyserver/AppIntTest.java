@@ -79,7 +79,7 @@ public class AppIntTest {
       final var port = clientApp.getDnsServerPort();
       final var res = queryStartedServer(port, hostToQuery);
 
-      assertTrue(Messages.isSuccess(res));
+      assertTrue(Messages.isSuccess(res), () -> Messages.simplePrint(res));
       assertEquals("192.168.0.1", Messages.findAnswerRawIP(res));
 
     }

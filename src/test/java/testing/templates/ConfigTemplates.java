@@ -5,13 +5,16 @@ import com.mageddo.dnsproxyserver.config.Log;
 import com.mageddo.dnsproxyserver.config.LogLevel;
 import com.mageddo.dnsproxyserver.config.Server;
 import com.mageddo.dnsproxyserver.config.SolverDocker;
+import com.mageddo.dnsproxyserver.config.SolverLocal;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.SolverStub;
 import com.mageddo.dnsproxyserver.config.SolverSystem;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigEnv;
 import com.mageddo.dnsserver.SimpleServer;
+import com.mageddo.net.IP;
 
 import java.nio.file.Paths;
+import java.util.List;
 
 public class ConfigTemplates {
 
@@ -105,6 +108,26 @@ public class ConfigTemplates {
     return defaultBuilder()
       .solverStub(SolverStub.builder()
         .domainName("acme")
+        .build()
+      )
+      .build();
+  }
+
+  public static Config acmeSolverLocal() {
+    return defaultBuilder()
+      .solverLocal(SolverLocal.builder()
+        .activeEnv(Config.Env.DEFAULT_ENV)
+        .envs(List.of(
+          Config.Env.of("", List.of(
+            Config.Entry
+              .builder()
+              .hostname("acme.com")
+              .ip(IP.of("192.168.0.3"))
+              .type(Config.Entry.Type.A)
+              .ttl(300)
+              .build()
+          ))
+        ))
         .build()
       )
       .build();

@@ -4,6 +4,7 @@ import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Log;
 import com.mageddo.dnsproxyserver.config.Server;
 import com.mageddo.dnsproxyserver.config.SolverDocker;
+import com.mageddo.dnsproxyserver.config.SolverLocal;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.SolverStub;
 import com.mageddo.dnsproxyserver.config.SolverSystem;
@@ -84,6 +85,12 @@ public class ConfigMapper {
       .solverSystem(SolverSystem
         .builder()
         .hostMachineHostname(firstNonNullRequiring(mapField(Config::getHostMachineHostname, configs)))
+        .build()
+      )
+      .solverLocal(SolverLocal
+        .builder()
+        .activeEnv(firstNonNullRequiring(mapField(Config::getActiveEnv, configs)))
+        .envs(firstNonNullRequiring(mapField(Config::getEnvs, configs)))
         .build()
       )
       .source(Config.Source.MERGED)
