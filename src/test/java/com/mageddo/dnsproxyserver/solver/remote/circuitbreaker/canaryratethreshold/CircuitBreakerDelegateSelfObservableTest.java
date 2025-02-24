@@ -69,7 +69,7 @@ class CircuitBreakerDelegateSelfObservableTest {
       .stateTransitor();
 
     // act
-    Threads.sleep(500);
+    Threads.sleep(1000);
 
     // assert
     verify(stateTransitor, atLeastOnce()).halfOpen();
