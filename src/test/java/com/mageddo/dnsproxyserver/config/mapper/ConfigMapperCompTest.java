@@ -2,16 +2,23 @@ package com.mageddo.dnsproxyserver.config.mapper;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.net.IP;
+import dagger.sheath.junit.DaggerTest;
 import org.junit.jupiter.api.Test;
+import testing.ContextSupplier;
+import testing.Events;
 import testing.templates.ConfigTemplates;
 
+import javax.inject.Inject;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@DaggerTest(initializer = ContextSupplier.class, eventsHandler = Events.class)
+class ConfigMapperCompTest {
 
-class ConfigMapperTest {
+  @Inject
+  ConfigMapper configMapper;
 
   @Test
   void mustMapFromDaoConfigsToCurrentConfig() {
@@ -19,7 +26,7 @@ class ConfigMapperTest {
     final var config = ConfigTemplates.defaultWithoutId();
 
     // act
-    final var currentConfig = ConfigMapper.mapFrom(List.of(config));
+    final var currentConfig = this.configMapper.mapFrom(List.of(config));
 
     // assert
     assertNotNull(currentConfig);
@@ -32,7 +39,7 @@ class ConfigMapperTest {
     final var another = ConfigTemplates.acmeSolverStub();
 
     // act
-    final var currentConfig = ConfigMapper.mapFrom(List.of(theDefault, another));
+    final var currentConfig = this.configMapper.mapFrom(List.of(theDefault, another));
 
     // assert
     assertNotNull(currentConfig);
@@ -48,7 +55,7 @@ class ConfigMapperTest {
     final var theDefault = ConfigTemplates.defaultWithoutId();
     final var another = ConfigTemplates.acmeSolverLocal();
 
-    final var currentConfig = ConfigMapper.mapFrom(List.of(theDefault, another));
+    final var currentConfig = this.configMapper.mapFrom(List.of(theDefault, another));
 
     assertNotNull(currentConfig);
 

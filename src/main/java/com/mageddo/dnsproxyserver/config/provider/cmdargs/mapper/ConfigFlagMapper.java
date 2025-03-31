@@ -7,7 +7,7 @@ import com.mageddo.dnsproxyserver.config.SolverDocker;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.SolverStub;
 import com.mageddo.dnsproxyserver.config.SolverSystem;
-import com.mageddo.dnsproxyserver.config.dataprovider.mapper.LogLevelMapper;
+import com.mageddo.dnsproxyserver.config.mapper.LogLevelMapper;
 import com.mageddo.dnsproxyserver.config.provider.cmdargs.vo.ConfigFlag;
 import com.mageddo.dnsproxyserver.utils.Booleans;
 import com.mageddo.utils.Files;

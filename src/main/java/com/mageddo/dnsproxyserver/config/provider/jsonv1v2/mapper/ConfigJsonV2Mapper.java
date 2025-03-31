@@ -10,7 +10,7 @@ import com.mageddo.dnsproxyserver.config.SolverLocal;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.SolverStub;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
-import com.mageddo.dnsproxyserver.config.dataprovider.mapper.LogLevelMapper;
+import com.mageddo.dnsproxyserver.config.mapper.LogLevelMapper;
 import com.mageddo.dnsproxyserver.config.provider.jsonv1v2.vo.ConfigJson;
 import com.mageddo.dnsproxyserver.config.provider.jsonv1v2.vo.ConfigJsonV2;
 import com.mageddo.dnsproxyserver.config.provider.jsonv1v2.vo.ConfigJsonV2.CanaryRateThresholdCircuitBreaker;

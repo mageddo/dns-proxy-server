@@ -20,19 +20,21 @@ import java.util.stream.Stream;
 public class ConfigService {
 
   private final List<ConfigDAO> configDAOS;
+  private final ConfigMapper configMapper;
 
   @Inject
-  public ConfigService(Instance<ConfigDAO> configDAOS) {
+  public ConfigService(Instance<ConfigDAO> configDAOS, ConfigMapper configMapper) {
     this.configDAOS = configDAOS
       .stream()
       .toList()
     ;
+    this.configMapper = configMapper;
   }
 
   public Config findCurrentConfig() {
     final var configs = this.findConfigs();
     log.trace("baseConfigs={}", configs);
-    final var config = ConfigMapper.mapFrom(configs);
+    final var config = this.configMapper.mapFrom(configs);
     return config;
   }
 

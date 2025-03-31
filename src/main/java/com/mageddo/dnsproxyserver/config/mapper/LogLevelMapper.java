@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
+package com.mageddo.dnsproxyserver.config.mapper;
 
 import com.mageddo.dnsproxyserver.config.LogLevel;
 import lombok.extern.slf4j.Slf4j;

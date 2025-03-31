@@ -1,21 +1,16 @@
 package com.mageddo.dnsproxyserver.config.mapper;
 
-import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.Log;
-import com.mageddo.dnsproxyserver.config.Server;
-import com.mageddo.dnsproxyserver.config.SolverDocker;
-import com.mageddo.dnsproxyserver.config.SolverLocal;
-import com.mageddo.dnsproxyserver.config.SolverRemote;
-import com.mageddo.dnsproxyserver.config.SolverStub;
-import com.mageddo.dnsproxyserver.config.SolverSystem;
-import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
-import com.mageddo.dnsproxyserver.config.dataprovider.ConfigPropDAO;
+import com.mageddo.dnsproxyserver.config.*;
+import com.mageddo.dnsproxyserver.config.dataprovider.VersionDAO;
 import com.mageddo.dnsproxyserver.config.validator.ConfigValidator;
 import com.mageddo.dnsproxyserver.utils.Numbers;
 import com.mageddo.dnsserver.SimpleServer;
 import com.mageddo.net.IpAddr;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.SystemUtils;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -23,18 +18,21 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.mageddo.dnsproxyserver.utils.ListOfObjectUtils.mapField;
-import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonEmptyListRequiring;
-import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonNull;
-import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonNullRequiring;
+import static com.mageddo.dnsproxyserver.utils.ObjectUtils.*;
 
+@Singleton
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class ConfigMapper {
-  public static Config mapFrom(List<Config> configs) {
+
+  private final VersionDAO versionDAO;
+
+  public Config mapFrom(List<Config> configs) {
     final var configsWithDefault = new ArrayList<>(configs);
     configsWithDefault.add(buildDefault());
     return mapFrom0(configsWithDefault);
   }
 
-  private static Config mapFrom0(List<Config> configs) {
+  private Config mapFrom0(List<Config> configs) {
     final var config = Config.builder()
       .server(Server
         .builder()
@@ -44,7 +42,7 @@ public class ConfigMapper {
         .dnsServerNoEntriesResponseCode(firstNonNullRequiring(mapField(Config::getNoEntriesResponseCode, configs)))
         .build()
       )
-      .version(ConfigPropDAO.getVersion())
+      .version(this.versionDAO.findVersion())
       .log(Log
         .builder()
         .level(firstNonNullRequiring(mapField(Config::getLogLevel, configs)))
