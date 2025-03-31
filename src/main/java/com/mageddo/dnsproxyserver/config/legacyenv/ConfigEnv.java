@@ -4,7 +4,6 @@ import com.mageddo.dnsproxyserver.utils.Envs;
 import com.mageddo.http.UriUtils;
 import lombok.Builder;
 import lombok.Value;
-import org.apache.commons.lang3.StringUtils;
 
 import java.net.URI;
 import java.nio.file.Path;
@@ -91,11 +90,7 @@ public class ConfigEnv {
   }
 
   static String findLogFilePath() {
-    final var logFile = System.getenv(MG_LOG_FILE);
-    if (StringUtils.isBlank(logFile)) {
-      return null;
-    }
-    return logFile;
+    return Envs.getStringOrNull(MG_LOG_FILE);
   }
 
 }
