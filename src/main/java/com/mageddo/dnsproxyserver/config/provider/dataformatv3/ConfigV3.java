@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.config.provider.dataformatv3;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ConfigV3 {
 
@@ -15,45 +15,45 @@ public class ConfigV3 {
   }
 
   public static class DefaultDns {
-    public boolean active;
+    public Boolean active;
     public ResolvConf resolvConf;
   }
 
   public static class Dns {
-    public int port;
-    public int noEntriesResponseCode;
+    public Integer port;
+    public Integer noEntriesResponseCode;
   }
 
   public static class Docker {
-    public boolean registerContainerNames;
+    public Boolean registerContainerNames;
     public String domain;
-    public boolean hostMachineFallback;
+    public Boolean hostMachineFallback;
     public DpsNetwork dpsNetwork;
-    public Networks networks;
-    public Object dockerDaemonUri;
+//    public Networks networks;
+    public String dockerDaemonUri;
   }
 
   public static class DpsNetwork {
     public String name;
-    public boolean autoCreate;
-    public boolean autoConnect;
+    public Boolean autoCreate;
+    public Boolean autoConnect;
   }
 
   public static class Env {
     public String name;
-    public ArrayList<Hostname> hostnames;
+    public List<Hostname> hostnames;
   }
 
   public static class Hostname {
     public String type;
     public String hostname;
     public String ip;
-    public int ttl;
+    public Integer ttl;
   }
 
   public static class Local {
     public String activeEnv;
-    public ArrayList<Env> envs;
+    public List<Env> envs;
   }
 
   public static class Log {
@@ -62,18 +62,18 @@ public class ConfigV3 {
   }
 
   public static class Networks {
-    public ArrayList<String> preferredNetworkNames;
+    public List<String> preferredNetworkNames;
   }
 
   public static class Remote {
-    public boolean active;
-    public ArrayList<String> dnsServers;
+    public Boolean active;
+    public List<String> dnsServers;
     public CircuitBreaker circuitBreaker;
   }
 
   public static class ResolvConf {
     public String paths;
-    public boolean overrideNameServers;
+    public Boolean overrideNameServers;
   }
 
   public static class Server {
@@ -99,7 +99,7 @@ public class ConfigV3 {
   }
 
   public static class Web {
-    public int port;
+    public Integer port;
   }
 
 

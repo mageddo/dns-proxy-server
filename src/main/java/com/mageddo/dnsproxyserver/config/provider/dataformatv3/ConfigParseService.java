@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.config.provider.dataformatv3;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.mapper.ConfigMapper;
+import com.mageddo.dnsproxyserver.config.provider.dataformatv3.mapper.ConfigV3Mapper;
 import com.mageddo.dnsproxyserver.config.provider.dataformatv3.parser.Parser;
 import lombok.RequiredArgsConstructor;
 
