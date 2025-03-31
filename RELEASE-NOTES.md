@@ -1,3 +1,6 @@
+## 3.32.6
+* Refactoring | Create packages for each config data format module. #594
+
 ## 3.32.5
 * Structuring Domain Model config.Config as proposed in section "New Modeling Propose". #594
 
