@@ -4,6 +4,6 @@
   publicMethods = true, declaredMethods = true,
   publicFields = true, declaredFields = true
 )
-package com.mageddo.dnsproxyserver.config.cmdargs.dataprovider.vo;
+package com.mageddo.dnsproxyserver.config.provider.cmdargs.vo;
 
 import nativeimage.Reflection;

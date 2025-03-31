@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.config.application;
 
-import com.mageddo.dnsproxyserver.config.cmdargs.dataprovider.ConfigDAOCmdArgs;
-import com.mageddo.dnsproxyserver.config.legacyenv.ConfigDAOLegacyEnv;
+import com.mageddo.dnsproxyserver.config.provider.cmdargs.ConfigDAOCmdArgs;
+import com.mageddo.dnsproxyserver.config.provider.legacyenv.ConfigDAOLegacyEnv;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.legacyenv;
+package com.mageddo.dnsproxyserver.config.provider.legacyenv;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAO;

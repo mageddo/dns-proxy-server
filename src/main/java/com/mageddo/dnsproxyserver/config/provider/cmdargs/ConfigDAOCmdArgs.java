@@ -1,9 +1,9 @@
-package com.mageddo.dnsproxyserver.config.cmdargs.dataprovider;
+package com.mageddo.dnsproxyserver.config.provider.cmdargs;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAO;
-import com.mageddo.dnsproxyserver.config.cmdargs.dataprovider.mapper.ConfigFlagMapper;
-import com.mageddo.dnsproxyserver.config.cmdargs.dataprovider.vo.ConfigFlag;
+import com.mageddo.dnsproxyserver.config.provider.cmdargs.mapper.ConfigFlagMapper;
+import com.mageddo.dnsproxyserver.config.provider.cmdargs.vo.ConfigFlag;
 import lombok.RequiredArgsConstructor;
 
 import javax.inject.Inject;

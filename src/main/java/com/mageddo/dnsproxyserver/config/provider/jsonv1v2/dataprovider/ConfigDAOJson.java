@@ -1,9 +1,9 @@
-package com.mageddo.dnsproxyserver.config.jsonv1v2.dataprovider;
+package com.mageddo.dnsproxyserver.config.provider.jsonv1v2.dataprovider;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.application.ConfigFileFinderService;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAO;
-import com.mageddo.dnsproxyserver.config.jsonv1v2.mapper.ConfigJsonV2Mapper;
+import com.mageddo.dnsproxyserver.config.provider.jsonv1v2.mapper.ConfigJsonV2Mapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.legacyenv;
+package com.mageddo.dnsproxyserver.config.provider.cmdargs.mapper;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Log;
@@ -8,28 +8,32 @@ import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.SolverStub;
 import com.mageddo.dnsproxyserver.config.SolverSystem;
 import com.mageddo.dnsproxyserver.config.dataprovider.mapper.LogLevelMapper;
+import com.mageddo.dnsproxyserver.config.provider.cmdargs.vo.ConfigFlag;
 import com.mageddo.dnsproxyserver.utils.Booleans;
+import com.mageddo.utils.Files;
 
-public class ConfigEnvMapper {
-  public static Config toConfig(ConfigEnv config) {
+public class ConfigFlagMapper {
+  public static Config toConfig(ConfigFlag config) {
     return Config.builder()
       .server(Server
         .builder()
         .dnsServerNoEntriesResponseCode(config.getNoEntriesResponseCode())
+        .webServerPort(config.getWebServerPort())
+        .dnsServerPort(config.getDnsServerPort())
         .build()
       )
+      .configPath(Files.pathOf(config.getConfigFilePath()))
       .log(Log
         .builder()
-        .file(config.getLogFile())
+        .file(config.getLogToFile())
         .level(LogLevelMapper.mapLogLevelFrom(config.getLogLevel()))
         .build()
       )
-      .defaultDns(Config.DefaultDns
-        .builder()
+      .defaultDns(Config.DefaultDns.builder()
+        .active(config.getDefaultDns())
         .resolvConf(Config.DefaultDns.ResolvConf
           .builder()
           .overrideNameServers(config.getResolvConfOverrideNameServers())
-          .paths(config.getResolvConfPath())
           .build()
         )
         .build()
@@ -41,7 +45,7 @@ public class ConfigEnvMapper {
       )
       .solverStub(SolverStub
         .builder()
-        .domainName(config.getSolverStubDomainName())
+        .domainName(config.getStubSolverDomainName())
         .build()
       )
       .solverDocker(SolverDocker
@@ -63,7 +67,7 @@ public class ConfigEnvMapper {
         .hostMachineHostname(config.getHostMachineHostname())
         .build()
       )
-      .source(Config.Source.ENV)
+      .source(Config.Source.FLAG)
       .build();
   }
 }

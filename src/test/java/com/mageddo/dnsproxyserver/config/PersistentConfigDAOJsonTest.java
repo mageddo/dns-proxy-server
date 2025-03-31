@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.config;
 
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
-import com.mageddo.dnsproxyserver.config.jsonv1v2.dataprovider.PersistentConfigDAOJson;
+import com.mageddo.dnsproxyserver.config.provider.jsonv1v2.dataprovider.PersistentConfigDAOJson;
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
 import testing.templates.EnvTemplates;
 import testing.templates.HostnameQueryTemplates;

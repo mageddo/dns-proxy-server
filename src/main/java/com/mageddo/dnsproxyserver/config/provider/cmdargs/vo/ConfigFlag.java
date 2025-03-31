@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.cmdargs.dataprovider.vo;
+package com.mageddo.dnsproxyserver.config.provider.cmdargs.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigPropDAO;

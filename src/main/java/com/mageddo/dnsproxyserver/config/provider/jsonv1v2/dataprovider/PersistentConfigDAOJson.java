@@ -1,12 +1,12 @@
-package com.mageddo.dnsproxyserver.config.jsonv1v2.dataprovider;
+package com.mageddo.dnsproxyserver.config.provider.jsonv1v2.dataprovider;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.config.dataprovider.PersistentConfigDAO;
-import com.mageddo.dnsproxyserver.config.jsonv1v2.dataprovider.predicate.EntryPredicate;
-import com.mageddo.dnsproxyserver.config.jsonv1v2.dataprovider.predicate.EnvPredicate;
-import com.mageddo.dnsproxyserver.config.jsonv1v2.dataprovider.predicate.JsonEnvPredicate;
-import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJsonV2;
+import com.mageddo.dnsproxyserver.config.provider.jsonv1v2.dataprovider.predicate.EntryPredicate;
+import com.mageddo.dnsproxyserver.config.provider.jsonv1v2.dataprovider.predicate.EnvPredicate;
+import com.mageddo.dnsproxyserver.config.provider.jsonv1v2.dataprovider.predicate.JsonEnvPredicate;
+import com.mageddo.dnsproxyserver.config.provider.jsonv1v2.vo.ConfigJsonV2;
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

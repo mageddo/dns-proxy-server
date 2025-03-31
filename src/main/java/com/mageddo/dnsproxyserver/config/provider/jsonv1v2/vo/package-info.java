@@ -4,6 +4,6 @@
   publicMethods = true, declaredMethods = true,
   publicFields = true, declaredFields = true
 )
-package com.mageddo.dnsproxyserver.config.jsonv1v2.vo;
+package com.mageddo.dnsproxyserver.config.provider.jsonv1v2.vo;
 
 import nativeimage.Reflection;
