@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.config.application;
 
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOCmdArgs;
-import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOEnv;
+import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOLegacyEnv;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.doReturn;
 class ConfigFileFinderServiceTest {
 
   @Mock
-  ConfigDAOEnv configDAOEnv;
+  ConfigDAOLegacyEnv configDAOEnv;
 
   @Mock
   ConfigDAOCmdArgs configDAOCmdArgs;

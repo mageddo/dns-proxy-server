@@ -10,17 +10,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.apache.commons.lang3.Validate;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -88,7 +83,6 @@ public class Config {
     return this.defaultDns.resolvConf;
   }
 
-  @Nonnull
   @JsonIgnore
   public List<IpAddr> getRemoteDnsServers() {
     if (this.solverRemote == null) {

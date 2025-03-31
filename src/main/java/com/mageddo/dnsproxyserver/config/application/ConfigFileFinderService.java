@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.config.application;
 
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOCmdArgs;
-import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOEnv;
+import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOLegacyEnv;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigEnv;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigFlag;
 import com.mageddo.dnsproxyserver.utils.ObjectUtils;
@@ -17,7 +17,7 @@ import java.nio.file.Path;
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class ConfigFileFinderService {
 
-  private final ConfigDAOEnv configDAOEnv;
+  private final ConfigDAOLegacyEnv configDAOEnv;
   private final ConfigDAOCmdArgs configDAOCmdArgs;
 
   public Path findPath(){

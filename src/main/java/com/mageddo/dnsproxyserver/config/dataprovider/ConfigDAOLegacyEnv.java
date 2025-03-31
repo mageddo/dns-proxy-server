@@ -10,7 +10,7 @@ import javax.inject.Singleton;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
-public class ConfigDAOEnv implements ConfigDAO {
+public class ConfigDAOLegacyEnv implements ConfigDAO {
 
   @Override
   public Config find() {
