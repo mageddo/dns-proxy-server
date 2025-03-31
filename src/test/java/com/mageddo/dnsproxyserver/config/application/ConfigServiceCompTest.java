@@ -42,7 +42,7 @@ class ConfigServiceCompTest {
     final var names = this.service.findConfigNames();
 
     // assert
-    assertEquals("[ConfigDAOEnv, ConfigDAOJson, ConfigDAOCmdArgs]", names.toString());
+    assertEquals("[ConfigDAOLegacyEnv, ConfigDAOJson, ConfigDAOCmdArgs]", names.toString());
   }
 
   @Test
