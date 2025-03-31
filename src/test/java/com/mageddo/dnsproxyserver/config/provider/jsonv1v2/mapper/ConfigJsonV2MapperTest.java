@@ -1,8 +1,7 @@
-package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
+package com.mageddo.dnsproxyserver.config.provider.jsonv1v2.mapper;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.provider.jsonv1v2.vo.ConfigJson;
-import com.mageddo.dnsproxyserver.config.provider.jsonv1v2.mapper.ConfigJsonV2Mapper;
 import org.junit.jupiter.api.Test;
 import testing.templates.ConfigJsonTemplates;
 
@@ -10,10 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig.Name.CANARY_RATE_THRESHOLD;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ConfigJsonV2MapperTest {
 

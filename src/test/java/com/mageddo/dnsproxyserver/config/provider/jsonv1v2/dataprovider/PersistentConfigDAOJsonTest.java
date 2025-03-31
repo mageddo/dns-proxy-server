@@ -1,20 +1,19 @@
-package com.mageddo.dnsproxyserver.config;
+package com.mageddo.dnsproxyserver.config.provider.jsonv1v2.dataprovider;
 
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
-import com.mageddo.dnsproxyserver.config.provider.jsonv1v2.dataprovider.PersistentConfigDAOJson;
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
-import testing.templates.EnvTemplates;
-import testing.templates.HostnameQueryTemplates;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import testing.templates.EnvTemplates;
+import testing.templates.HostnameQueryTemplates;
 
-import static testing.templates.EnvTemplates.MAGEDDO_COM_CAMEL_CASE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.doReturn;
+import static testing.templates.EnvTemplates.MAGEDDO_COM_CAMEL_CASE;
 
 @ExtendWith(MockitoExtension.class)
 class PersistentConfigDAOJsonTest {

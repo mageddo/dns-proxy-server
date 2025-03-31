@@ -1,6 +1,5 @@
-package com.mageddo.dnsproxyserver.config.entrypoint;
+package com.mageddo.dnsproxyserver.config.provider.jsonv1v2.dataprovider;
 
-import com.mageddo.dnsproxyserver.config.provider.jsonv1v2.dataprovider.JsonConfigs;
 import com.mageddo.dnsproxyserver.config.provider.jsonv1v2.vo.ConfigJsonV2;
 import com.mageddo.dnsproxyserver.config.provider.jsonv1v2.vo.ConfigJsonV2.CanaryRateThresholdCircuitBreaker;
 import com.mageddo.dnsproxyserver.config.provider.jsonv1v2.vo.ConfigJsonV2.StaticThresholdCircuitBreaker;
@@ -13,12 +12,8 @@ import java.nio.file.Path;
 import java.time.Duration;
 
 import static com.mageddo.dnsproxyserver.config.provider.jsonv1v2.dataprovider.JsonConfigs.findVersion;
-import static com.mageddo.utils.TestUtils.readAndSortJson;
-import static com.mageddo.utils.TestUtils.readAsStream;
-import static com.mageddo.utils.TestUtils.readSortDonWriteNullsAndExcludeFields;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static com.mageddo.utils.TestUtils.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 class JsonConfigsTest {
 

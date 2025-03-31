@@ -1,16 +1,13 @@
-package com.mageddo.dnsproxyserver.config.flags;
+package com.mageddo.dnsproxyserver.config.provider.cmdargs.vo;
 
 import com.mageddo.commons.regex.Regexes;
-import com.mageddo.dnsproxyserver.config.provider.cmdargs.vo.ConfigFlag;
 import org.junit.jupiter.api.Test;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.regex.Pattern;
 
-import static com.mageddo.utils.TestUtils.readAndSortJson;
-import static com.mageddo.utils.TestUtils.readString;
-import static com.mageddo.utils.TestUtils.sortJson;
+import static com.mageddo.utils.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

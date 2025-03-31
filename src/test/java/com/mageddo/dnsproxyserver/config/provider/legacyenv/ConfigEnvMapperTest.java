@@ -1,6 +1,5 @@
-package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
+package com.mageddo.dnsproxyserver.config.provider.legacyenv;
 
-import com.mageddo.dnsproxyserver.config.provider.legacyenv.ConfigEnvMapper;
 import org.junit.jupiter.api.Test;
 import testing.templates.config.ConfigEnvTemplates;
 
