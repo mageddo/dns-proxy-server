@@ -3,7 +3,7 @@ package com.mageddo.dnsproxyserver.sandbox;
 import com.mageddo.commons.exec.CommandLines;
 import com.mageddo.commons.exec.NopResultHandler;
 import com.mageddo.commons.exec.Request;
-import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigEnv;
+import com.mageddo.dnsproxyserver.config.legacyenv.ConfigEnv;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.file.Path;

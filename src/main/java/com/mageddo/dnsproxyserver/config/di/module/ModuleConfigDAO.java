@@ -3,7 +3,7 @@ package com.mageddo.dnsproxyserver.config.di.module;
 import com.mageddo.di.InstanceImpl;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAO;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOCmdArgs;
-import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOLegacyEnv;
+import com.mageddo.dnsproxyserver.config.legacyenv.ConfigDAOLegacyEnv;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOJson;
 import dagger.Module;
 import dagger.Provides;

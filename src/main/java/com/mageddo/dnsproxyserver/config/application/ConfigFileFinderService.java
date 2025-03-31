@@ -1,8 +1,8 @@
 package com.mageddo.dnsproxyserver.config.application;
 
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOCmdArgs;
-import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAOLegacyEnv;
-import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigEnv;
+import com.mageddo.dnsproxyserver.config.legacyenv.ConfigDAOLegacyEnv;
+import com.mageddo.dnsproxyserver.config.legacyenv.ConfigEnv;
 import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigFlag;
 import com.mageddo.dnsproxyserver.utils.ObjectUtils;
 import lombok.RequiredArgsConstructor;

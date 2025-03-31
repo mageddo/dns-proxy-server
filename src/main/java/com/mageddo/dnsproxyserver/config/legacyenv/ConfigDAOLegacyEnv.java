@@ -1,8 +1,7 @@
-package com.mageddo.dnsproxyserver.config.dataprovider;
+package com.mageddo.dnsproxyserver.config.legacyenv;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.dataprovider.mapper.ConfigEnvMapper;
-import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigEnv;
+import com.mageddo.dnsproxyserver.config.dataprovider.ConfigDAO;
 import lombok.RequiredArgsConstructor;
 
 import javax.inject.Inject;

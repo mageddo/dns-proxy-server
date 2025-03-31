@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
+package com.mageddo.dnsproxyserver.config.legacyenv;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Log;
@@ -7,7 +7,7 @@ import com.mageddo.dnsproxyserver.config.SolverDocker;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.SolverStub;
 import com.mageddo.dnsproxyserver.config.SolverSystem;
-import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigEnv;
+import com.mageddo.dnsproxyserver.config.dataprovider.mapper.ConfigFieldsValuesMapper;
 import com.mageddo.dnsproxyserver.utils.Booleans;
 
 public class ConfigEnvMapper {
