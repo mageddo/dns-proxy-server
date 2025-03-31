@@ -16,7 +16,7 @@ public class JsonParser implements Parser {
     return parse("");
   }
 
-  public static ConfigV3 parse(String json) {
+  public ConfigV3 parse(String json) {
     return JsonUtils.readValue(json, ConfigV3.class);
   }
 
