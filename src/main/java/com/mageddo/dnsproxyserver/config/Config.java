@@ -33,28 +33,28 @@ import static com.mageddo.commons.lang.Objects.mapOrNull;
 @Builder(toBuilder = true, builderClassName = "ConfigBuilder")
 public class Config {
 
-  private String version;
+  String version;
 
-  private Server server;
+  Server server;
 
-  private DefaultDns defaultDns;
+  DefaultDns defaultDns;
 
-  private Log log;
+  Log log;
 
-  private Path configPath;
+  Path configPath;
 
-  private SolverStub solverStub;
+  SolverStub solverStub;
 
-  private SolverRemote solverRemote;
+  SolverRemote solverRemote;
 
-  private SolverDocker solverDocker;
+  SolverDocker solverDocker;
 
-  private SolverSystem solverSystem;
+  SolverSystem solverSystem;
 
-  private SolverLocal solverLocal;
+  SolverLocal solverLocal;
 
   @NonNull
-  private Source source;
+  Source source;
 
   @JsonIgnore
   public Boolean isDefaultDnsActive() {
