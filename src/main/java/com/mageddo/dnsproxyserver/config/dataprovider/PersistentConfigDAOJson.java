@@ -5,7 +5,7 @@ import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.config.dataprovider.predicate.EntryPredicate;
 import com.mageddo.dnsproxyserver.config.dataprovider.predicate.EnvPredicate;
 import com.mageddo.dnsproxyserver.config.dataprovider.predicate.JsonEnvPredicate;
-import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2;
+import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJsonV2;
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

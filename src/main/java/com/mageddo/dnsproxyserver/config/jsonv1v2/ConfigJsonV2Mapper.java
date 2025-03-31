@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
+package com.mageddo.dnsproxyserver.config.jsonv1v2;
 
 import com.mageddo.dnsproxyserver.config.CanaryRateThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
@@ -10,10 +10,11 @@ import com.mageddo.dnsproxyserver.config.SolverLocal;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.SolverStub;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
-import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJson;
-import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2;
-import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2.CanaryRateThresholdCircuitBreaker;
-import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2.StaticThresholdCircuitBreaker;
+import com.mageddo.dnsproxyserver.config.dataprovider.mapper.ConfigFieldsValuesMapper;
+import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJson;
+import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJsonV2;
+import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJsonV2.CanaryRateThresholdCircuitBreaker;
+import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJsonV2.StaticThresholdCircuitBreaker;
 import com.mageddo.dnsproxyserver.utils.Booleans;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;

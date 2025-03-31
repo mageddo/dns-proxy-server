@@ -1,7 +1,7 @@
 package testing.templates;
 
 import com.mageddo.dnsproxyserver.config.dataprovider.JsonConfigs;
-import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJson;
+import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJson;
 import com.mageddo.utils.TestUtils;
 
 public class ConfigJsonTemplates {

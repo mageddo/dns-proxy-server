@@ -1,9 +1,9 @@
 package com.mageddo.dnsproxyserver.config.entrypoint;
 
 import com.mageddo.dnsproxyserver.config.dataprovider.JsonConfigs;
-import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2;
-import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2.CanaryRateThresholdCircuitBreaker;
-import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2.StaticThresholdCircuitBreaker;
+import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJsonV2;
+import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJsonV2.CanaryRateThresholdCircuitBreaker;
+import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJsonV2.StaticThresholdCircuitBreaker;
 import org.apache.commons.lang3.ClassUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;

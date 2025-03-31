@@ -5,7 +5,7 @@ import com.mageddo.commons.exec.ProcessesWatchDog;
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.config.dataprovider.JsonConfigs;
-import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJson;
+import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJson;
 import com.mageddo.dnsproxyserver.sandbox.Instance;
 import com.mageddo.dnsproxyserver.sandbox.Sandbox;
 import com.mageddo.dnsproxyserver.server.Starter;

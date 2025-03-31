@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.dataprovider.vo;
+package com.mageddo.dnsproxyserver.config.jsonv1v2.vo;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsserver.SimpleServer;

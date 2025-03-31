@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.config.dataprovider.predicate;
 
-import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2;
+import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJsonV2;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.function.Predicate;

@@ -1,7 +1,7 @@
-package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
+package com.mageddo.dnsproxyserver.config.jsonv1v2;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigJsonV2;
+import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJsonV2;
 import com.mageddo.net.IP;
 import org.apache.commons.lang3.StringUtils;
 
