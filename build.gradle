@@ -72,7 +72,9 @@ dependencies {
   implementation('com.github.docker-java:docker-java-transport-httpclient5:3.3.4')
 
   implementation('info.picocli:picocli:4.7.6')
-  implementation('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1')
+  implementation('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.3')
+  implementation('com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.3')
+  implementation('org.yaml:snakeyaml:2.4')
 
   implementation('com.github.ben-manes.caffeine:caffeine:3.1.8')
 
