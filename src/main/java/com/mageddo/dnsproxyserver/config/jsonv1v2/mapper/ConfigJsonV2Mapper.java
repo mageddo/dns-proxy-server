@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.jsonv1v2;
+package com.mageddo.dnsproxyserver.config.jsonv1v2.mapper;
 
 import com.mageddo.dnsproxyserver.config.CanaryRateThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
@@ -10,7 +10,7 @@ import com.mageddo.dnsproxyserver.config.SolverLocal;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.SolverStub;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
-import com.mageddo.dnsproxyserver.config.dataprovider.mapper.ConfigFieldsValuesMapper;
+import com.mageddo.dnsproxyserver.config.dataprovider.mapper.LogLevelMapper;
 import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJson;
 import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJsonV2;
 import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJsonV2.CanaryRateThresholdCircuitBreaker;
@@ -46,8 +46,8 @@ public class ConfigJsonV2Mapper {
       )
       .log(Log
         .builder()
-        .level(ConfigFieldsValuesMapper.mapLogLevelFrom(json.getLogLevel()))
-        .file(ConfigFieldsValuesMapper.mapLogFileFrom(json.getLogFile()))
+        .level(LogLevelMapper.mapLogLevelFrom(json.getLogLevel()))
+        .file(LogLevelMapper.mapLogFileFrom(json.getLogFile()))
         .build()
       )
       .configPath(configFileAbsolutePath)

@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.jsonv1v2;
+package com.mageddo.dnsproxyserver.config.jsonv1v2.mapper;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJsonV1;

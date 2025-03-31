@@ -1,9 +1,9 @@
-package com.mageddo.dnsproxyserver.config.dataprovider;
+package com.mageddo.dnsproxyserver.config.jsonv1v2.dataprovider;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.application.Configs;
-import com.mageddo.dnsproxyserver.config.jsonv1v2.ConfigJsonV2Mapper;
+import com.mageddo.dnsproxyserver.config.jsonv1v2.mapper.ConfigJsonV2Mapper;
 import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJson;
 import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJsonV1;
 import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJsonV2;

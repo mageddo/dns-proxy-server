@@ -3,7 +3,7 @@ package com.mageddo.dnsproxyserver.dataprovider;
 import ch.qos.logback.classic.Level;
 import com.mageddo.commons.io.IoUtils;
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.dataprovider.mapper.ConfigFieldsValuesMapper;
+import com.mageddo.dnsproxyserver.config.dataprovider.mapper.LogLevelMapper;
 import com.mageddo.logback.LogbackUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,7 +19,7 @@ public class LogSettingsDAOSlf4j implements LogSettingsDAO {
 
   @Override
   public void setupLogFile(Config config) {
-    final var logFile = ConfigFieldsValuesMapper.mapLogFileFrom(config.getLogFile());
+    final var logFile = LogLevelMapper.mapLogFileFrom(config.getLogFile());
     if (logFile == null) {
       disableLogging();
     } else if (isLogFileConfig(logFile)) {

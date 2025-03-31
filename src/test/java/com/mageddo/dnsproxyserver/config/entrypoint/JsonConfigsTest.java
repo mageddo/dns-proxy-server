@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.config.entrypoint;
 
-import com.mageddo.dnsproxyserver.config.dataprovider.JsonConfigs;
+import com.mageddo.dnsproxyserver.config.jsonv1v2.dataprovider.JsonConfigs;
 import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJsonV2;
 import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJsonV2.CanaryRateThresholdCircuitBreaker;
 import com.mageddo.dnsproxyserver.config.jsonv1v2.vo.ConfigJsonV2.StaticThresholdCircuitBreaker;
@@ -12,7 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 
-import static com.mageddo.dnsproxyserver.config.dataprovider.JsonConfigs.findVersion;
+import static com.mageddo.dnsproxyserver.config.jsonv1v2.dataprovider.JsonConfigs.findVersion;
 import static com.mageddo.utils.TestUtils.readAndSortJson;
 import static com.mageddo.utils.TestUtils.readAsStream;
 import static com.mageddo.utils.TestUtils.readSortDonWriteNullsAndExcludeFields;

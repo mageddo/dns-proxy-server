@@ -6,7 +6,7 @@ import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 
 @Slf4j
-public class ConfigFieldsValuesMapper {
+public class LogLevelMapper {
   public static LogLevel mapLogLevelFrom(String logLevelName) {
     final var level = EnumUtils.getEnumIgnoreCase(LogLevel.class, logLevelName);
     if (StringUtils.isNotBlank(logLevelName) && level == null) {

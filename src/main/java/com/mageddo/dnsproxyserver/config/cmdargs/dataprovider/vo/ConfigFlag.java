@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.dataprovider.vo;
+package com.mageddo.dnsproxyserver.config.cmdargs.dataprovider.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mageddo.dnsproxyserver.config.dataprovider.ConfigPropDAO;
@@ -14,7 +14,6 @@ import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.Callable;
-
 
 @Getter
 @NoArgsConstructor

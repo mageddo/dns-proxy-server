@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.dataprovider.mapper;
+package com.mageddo.dnsproxyserver.config.cmdargs.dataprovider.mapper;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Log;
@@ -7,7 +7,8 @@ import com.mageddo.dnsproxyserver.config.SolverDocker;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.SolverStub;
 import com.mageddo.dnsproxyserver.config.SolverSystem;
-import com.mageddo.dnsproxyserver.config.dataprovider.vo.ConfigFlag;
+import com.mageddo.dnsproxyserver.config.dataprovider.mapper.LogLevelMapper;
+import com.mageddo.dnsproxyserver.config.cmdargs.dataprovider.vo.ConfigFlag;
 import com.mageddo.dnsproxyserver.utils.Booleans;
 import com.mageddo.utils.Files;
 
@@ -25,7 +26,7 @@ public class ConfigFlagMapper {
       .log(Log
         .builder()
         .file(config.getLogToFile())
-        .level(ConfigFieldsValuesMapper.mapLogLevelFrom(config.getLogLevel()))
+        .level(LogLevelMapper.mapLogLevelFrom(config.getLogLevel()))
         .build()
       )
       .defaultDns(Config.DefaultDns.builder()

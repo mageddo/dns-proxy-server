@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.config.dataprovider;
 
-import com.mageddo.dnsproxyserver.config.jsonv1v2.ConfigDAOJson;
+import com.mageddo.dnsproxyserver.config.jsonv1v2.dataprovider.ConfigDAOJson;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
