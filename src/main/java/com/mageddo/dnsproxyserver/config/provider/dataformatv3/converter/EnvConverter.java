@@ -34,6 +34,6 @@ public class EnvConverter implements Converter {
 
   @Override
   public int priority() {
-    return 2;
+    return 0;
   }
 }
