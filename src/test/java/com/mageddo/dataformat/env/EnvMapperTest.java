@@ -18,7 +18,7 @@ class EnvMapperTest {
     final var expected = JsonUtils.readTree(ConfigV3Templates.buildJson());
 
     // Act
-    final var json = this.mapper.toJson(env, "DPS__");
+    final var json = this.mapper.toJson(env, "DPS_");
     final var actual = JsonUtils.readTree(json);
 
     // Assert

@@ -12,7 +12,7 @@ import java.util.Map;
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class EnvConverter implements Converter {
 
-  private static final String PREFIX = "DPS__";
+  private static final String PREFIX = "DPS_";
 
   private final EnvMapper envMapper;
   private final JsonConverter jsonConverter;
@@ -29,7 +29,7 @@ public class EnvConverter implements Converter {
 
   @Override
   public String serialize(ConfigV3 config) {
-    return this.jsonConverter.serialize(config);
+    throw new UnsupportedOperationException();
   }
 
   @Override

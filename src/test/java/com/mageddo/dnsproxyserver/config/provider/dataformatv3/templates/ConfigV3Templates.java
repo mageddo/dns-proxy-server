@@ -59,7 +59,7 @@ public class ConfigV3Templates {
       """);
   }
 
-  public ConfigV3 build() {
+  public static ConfigV3 build() {
     return new JsonConverter().parse(buildJson());
   }
 

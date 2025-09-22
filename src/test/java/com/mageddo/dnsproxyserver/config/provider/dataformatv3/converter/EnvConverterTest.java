@@ -14,8 +14,8 @@ class EnvConverterTest {
   @Test
   void mustParseEnvironmentIntoConfig() {
     // Arrange
+    final var expected = ConfigV3Templates.build();
     final var env = ConfigV3EnvTemplates.build();
-    final var expected = new ConfigV3Templates().build();
 
     // Act
     final var actual = this.converter.parse(env);
