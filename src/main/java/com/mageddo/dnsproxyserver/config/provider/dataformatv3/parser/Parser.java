@@ -6,7 +6,7 @@ public interface Parser {
 
   ConfigV3 parse();
 
-  String marshal(ConfigV3 config);
+  String serialize(ConfigV3 config);
 
   int priority();
 

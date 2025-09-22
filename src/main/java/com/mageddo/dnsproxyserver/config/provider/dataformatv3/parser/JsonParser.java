@@ -21,7 +21,7 @@ public class JsonParser implements Parser {
   }
 
   @Override
-  public String marshal(ConfigV3 config) {
+  public String serialize(ConfigV3 config) {
     return JsonUtils.prettyWriteValueAsString(config);
   }
 

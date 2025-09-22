@@ -10,12 +10,12 @@ class YamlParserTest {
   YamlParser parser = new YamlParser();
 
   @Test
-  void mustParseAndMarshalWithTheExactSameContent() {
+  void mustParseAndSerializeWithTheExactSameContent() {
 
     final var yaml = ConfigV3Templates.buildYaml();
 
     final var parsed = parser.parse(yaml);
-    final var marshalled = parser.marshal(parsed);
+    final var marshalled = parser.serialize(parsed);
     final var marshalledParsed = parser.parse(yaml);
 
     assertEquals(yaml, marshalled);

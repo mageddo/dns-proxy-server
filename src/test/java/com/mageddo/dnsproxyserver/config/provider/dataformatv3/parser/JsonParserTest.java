@@ -10,12 +10,12 @@ class JsonParserTest {
   JsonParser parser = new JsonParser();
 
   @Test
-  void mustParseAndMarshalWithTheExactSameContent() {
+  void mustParseAndSerializeWithTheExactSameContent() {
 
     final var json = ConfigV3Templates.buildJson();
 
     final var parsed = parser.parse(json);
-    final var marshalled = parser.marshal(parsed);
+    final var marshalled = parser.serialize(parsed);
     final var marshalledParsed = parser.parse(json);
 
     assertEquals(json, marshalled);
