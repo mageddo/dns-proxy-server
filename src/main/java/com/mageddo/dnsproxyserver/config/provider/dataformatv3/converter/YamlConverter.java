@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.provider.dataformatv3.parser;
+package com.mageddo.dnsproxyserver.config.provider.dataformatv3.converter;
 
 import com.mageddo.dataformat.yaml.YamlUtils;
 import com.mageddo.dnsproxyserver.config.provider.dataformatv3.ConfigV3;

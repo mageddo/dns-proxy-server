@@ -1,11 +1,13 @@
 package com.mageddo.dnsproxyserver.config.provider.dataformatv3.templates;
 
 import com.mageddo.dataformat.yaml.YamlUtils;
+import com.mageddo.dnsproxyserver.config.provider.dataformatv3.ConfigV3;
+import com.mageddo.dnsproxyserver.config.provider.dataformatv3.converter.JsonConverter;
 import com.mageddo.json.JsonUtils;
 
 public class ConfigV3Templates {
 
-  public static String buildYaml(){
+  public static String buildYaml() {
     return YamlUtils.format("""
       ---
       version: 3
@@ -57,7 +59,11 @@ public class ConfigV3Templates {
       """);
   }
 
-  public static String buildJson(){
+  public ConfigV3 build() {
+    return new JsonConverter().parse(buildJson());
+  }
+
+  public static String buildJson() {
     return JsonUtils.prettify("""
       {
         "version": 3,
