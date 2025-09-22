@@ -76,7 +76,7 @@ public class ConfigEnv {
       .logLevel(Envs.getStringOrNull(MG_LOG_LEVEL))
       .registerContainerNames(Envs.getBooleanOrNull(MG_REGISTER_CONTAINER_NAMES))
       .hostMachineHostname(Envs.getStringOrNull(MG_HOST_MACHINE_HOSTNAME))
-      .domain(Envs.getStringOrNull(MG_HOST_MACHINE_HOSTNAME))
+      .domain(Envs.getStringOrNull(MG_DOMAIN))
       .dpsNetwork(Envs.getBooleanOrNull(MG_DPS_NETWORK))
       .dpsNetworkAutoConnect(Envs.getBooleanOrNull(MG_DPS_NETWORK_AUTO_CONNECT))
       .dockerHost(UriUtils.createURI(Envs.getStringOrNull(MG_DOCKER_HOST)))
