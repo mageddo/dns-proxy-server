@@ -29,4 +29,8 @@ public class Numbers {
     }
     return null;
   }
+
+  public static boolean canBeInt(long asLong) {
+    return asLong >= Integer.MIN_VALUE && asLong <= Integer.MAX_VALUE;
+  }
 }
