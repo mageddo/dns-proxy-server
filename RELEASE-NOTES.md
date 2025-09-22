@@ -1,4 +1,7 @@
 ## 3.32.6
+* Bugfix: Fixing domain env variable setting. #628
+
+## 3.32.6
 * Refactoring | Create packages for each config data format module. #594
 
 ## 3.32.5
