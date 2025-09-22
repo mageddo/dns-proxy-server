@@ -1,4 +1,4 @@
-## 3.32.6
+## 3.32.7
 * Bugfix: Fixing domain env variable setting. #628
 
 ## 3.32.6
