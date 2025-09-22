@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ParserTest {
+class ConverterTest {
 
-  private final JsonParser jsonParser = new JsonParser();
-  private final YamlParser yamlParser = new YamlParser();
+  private final JsonConverter jsonParser = new JsonConverter();
+  private final YamlConverter yamlParser = new YamlConverter();
 
   @Test
   void yamlAndJsonParsingMustGenerateSameVo(){

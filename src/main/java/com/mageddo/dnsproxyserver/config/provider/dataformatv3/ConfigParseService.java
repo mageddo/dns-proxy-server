@@ -3,7 +3,7 @@ package com.mageddo.dnsproxyserver.config.provider.dataformatv3;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.mapper.ConfigMapper;
 import com.mageddo.dnsproxyserver.config.provider.dataformatv3.mapper.ConfigV3Mapper;
-import com.mageddo.dnsproxyserver.config.provider.dataformatv3.parser.Parser;
+import com.mageddo.dnsproxyserver.config.provider.dataformatv3.parser.Converter;
 import lombok.RequiredArgsConstructor;
 
 import javax.inject.Inject;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class ConfigParseService {
 
-  private final List<Parser> unorderedParsers;
+  private final List<Converter> unorderedConverters;
   private final ConfigMapper configMapper;
 
   public Config parseMerging(){
@@ -23,14 +23,14 @@ public class ConfigParseService {
     return this.configMapper.mapFrom(configs);
   }
 
-  private List<Config> findConfigs(List<Parser> parsers) {
-    return parsers.stream()
-           .map(Parser::parse)
-           .map(ConfigV3Mapper::toConfig)
-           .toList();
+  private List<Config> findConfigs(List<Converter> converters) {
+    return converters.stream()
+                     .map(Converter::parse)
+                     .map(ConfigV3Mapper::toConfig)
+                     .toList();
   }
 
-  public List<Parser> findParsersInOrder() {
+  public List<Converter> findParsersInOrder() {
     throw new UnsupportedOperationException();
   }
 

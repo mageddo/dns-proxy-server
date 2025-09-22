@@ -3,22 +3,22 @@ package com.mageddo.dnsproxyserver.config.provider.dataformatv3.parser;
 import com.mageddo.dnsproxyserver.config.provider.dataformatv3.templates.ConfigV3Templates;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class YamlParserTest {
+class JsonConverterTest {
 
-  YamlParser parser = new YamlParser();
+  JsonConverter parser = new JsonConverter();
 
   @Test
   void mustParseAndSerializeWithTheExactSameContent() {
 
-    final var yaml = ConfigV3Templates.buildYaml();
+    final var json = ConfigV3Templates.buildJson();
 
-    final var parsed = parser.parse(yaml);
+    final var parsed = parser.parse(json);
     final var marshalled = parser.serialize(parsed);
-    final var marshalledParsed = parser.parse(yaml);
+    final var marshalledParsed = parser.parse(json);
 
-    assertEquals(yaml, marshalled);
+    assertEquals(json, marshalled);
     assertEquals(parsed, marshalledParsed);
 
   }

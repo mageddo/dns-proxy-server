@@ -9,7 +9,7 @@ import javax.inject.Singleton;
 
 @Singleton
 @NoArgsConstructor(onConstructor_ = @Inject)
-public class JsonParser implements Parser {
+public class JsonConverter implements Converter {
 
   @Override
   public ConfigV3 parse() {
