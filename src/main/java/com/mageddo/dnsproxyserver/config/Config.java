@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 import static com.mageddo.commons.lang.Objects.mapOrNull;
 
 /**
- * @see ConfigV2Service
+ * @see ConfigService
  */
 @Value
 @Builder(toBuilder = true, builderClassName = "ConfigBuilder")
