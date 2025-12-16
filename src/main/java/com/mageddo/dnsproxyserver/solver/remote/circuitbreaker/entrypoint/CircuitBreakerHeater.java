@@ -6,7 +6,7 @@ import javax.ejb.Singleton;
 import javax.inject.Inject;
 
 import com.mageddo.di.Eager;
-import com.mageddo.dnsproxyserver.config.dataformat.v2.ConfigService;
+import com.mageddo.dnsproxyserver.config.ConfigService;
 import com.mageddo.dnsproxyserver.solver.remote.application.failsafe.CircuitBreakerFactory;
 import com.mageddo.net.IpAddr;
 
@@ -27,7 +27,7 @@ public class CircuitBreakerHeater implements Eager {
   }
 
   private List<IpAddr> findRemoteServers() {
-    return this.configService.findCurrentConfig()
+    return this.configService.find()
         .getRemoteDnsServers();
   }
 }

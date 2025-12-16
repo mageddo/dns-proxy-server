@@ -1,19 +1,19 @@
 package com.mageddo.dnsproxyserver.config.application;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.LogLevel;
-import com.mageddo.dnsproxyserver.config.dataformat.v2.ConfigService;
-import com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.ConfigDAOCmdArgs;
 import com.mageddo.dnsproxyserver.config.configurer.di.Context;
-import dagger.sheath.junit.DaggerTest;
-import lombok.SneakyThrows;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.ConfigDAOCmdArgs;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import javax.inject.Inject;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import dagger.sheath.junit.DaggerTest;
+import lombok.SneakyThrows;
 
 import static com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig.Name.CANARY_RATE_THRESHOLD;
 import static com.mageddo.utils.TestUtils.readAndSortJson;
@@ -31,20 +31,6 @@ class ConfigServiceCompTest {
     "version", "configPath", "resolvConfPaths",
     "dockerHost"
   };
-
-  @Inject
-  ConfigService service;
-
-  @Test
-  void mustPutDaosInTheExpectedOrder() {
-    // arrange
-
-    // act
-    final var names = this.service.findConfigNames();
-
-    // assert
-    assertEquals("[ConfigDAOLegacyEnv, ConfigDAOJson, ConfigDAOCmdArgs]", names.toString());
-  }
 
   @Test
   void mustParseDefaultConfigsAndCreateJsonConfigFile(@TempDir Path tmpDir) {

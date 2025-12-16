@@ -16,4 +16,9 @@ public class ConfigService {
   public Config find() {
     return this.configDAO.find();
   }
+
+  public CircuitBreakerStrategyConfig findCircuitBreaker() {
+    return this.find()
+        .getSolverRemoteCircuitBreakerStrategy();
+  }
 }
