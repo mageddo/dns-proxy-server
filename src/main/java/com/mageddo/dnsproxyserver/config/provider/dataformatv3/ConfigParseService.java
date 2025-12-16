@@ -17,20 +17,21 @@ public class ConfigParseService {
   private final List<Converter> unorderedConverters;
   private final ConfigMapper configMapper;
 
-  public Config parseMerging(){
-    final var parsers = this.findParsersInOrder();
-    final var configs = this.findConfigs(parsers);
+  public Config parseMerging() {
+    final var converters = this.findConvertersSorted();
+    final var configs = this.findConfigs(converters);
     return this.configMapper.mapFrom(configs);
   }
 
   private List<Config> findConfigs(List<Converter> converters) {
-    return converters.stream()
-                     .map(Converter::parse)
-                     .map(ConfigV3Mapper::toConfig)
-                     .toList();
+    return converters
+      .stream()
+      .map(Converter::parse)
+      .map(ConfigV3Mapper::toConfig)
+      .toList();
   }
 
-  public List<Converter> findParsersInOrder() {
+  public List<Converter> findConvertersSorted() {
     throw new UnsupportedOperationException();
   }
 

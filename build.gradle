@@ -86,8 +86,8 @@ dependencies {
   stressTestCompileOnly('org.projectlombok:lombok:1.18.+')
   stressTestAnnotationProcessor('org.projectlombok:lombok:1.18.+')
 
-  testImplementation("org.junit.jupiter:junit-jupiter:5.10.+")
-  testImplementation('org.mockito:mockito-junit-jupiter:5.12.+')
+  testImplementation("org.junit.jupiter:junit-jupiter:5.11.3")
+  testImplementation("org.mockito:mockito-junit-jupiter:5.11.0")
   testImplementation('org.hamcrest:hamcrest:3.0')
   testImplementation('io.rest-assured:rest-assured:5.5.0')
   testImplementation('org.reflections:reflections:0.10.2')

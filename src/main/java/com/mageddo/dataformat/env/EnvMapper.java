@@ -23,7 +23,7 @@ public class EnvMapper {
   private static final Pattern ARRAY_INDEX_PATTERN = Pattern.compile("(.+)_([0-9]+)$");
   private static final Pattern INTEGER_PATTERN = Pattern.compile("-?[0-9]+");
 
-  private final SegmentMapper segmentMapper =  new SegmentMapper();
+  private final SegmentMapper segmentMapper = new SegmentMapper();
 
   public String toJson(final Map<String, String> env, final String varsPrefix) {
     final var root = new LinkedHashMap<String, Object>();
