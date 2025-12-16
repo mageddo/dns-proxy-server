@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.config.provider.dataformatv3.converter;
 
-import com.mageddo.dnsproxyserver.config.dataprovider.v3.converter.JsonConfigDAO;
-import com.mageddo.dnsproxyserver.config.dataprovider.v3.converter.YamlConfigDAO;
+import com.mageddo.dnsproxyserver.config.dataformat.v3.dataprovider.JsonConfigDAO;
+import com.mageddo.dnsproxyserver.config.dataformat.v3.dataprovider.YamlConfigDAO;
 import com.mageddo.dnsproxyserver.config.provider.dataformatv3.templates.ConfigV3Templates;
 
 import org.junit.jupiter.api.Test;

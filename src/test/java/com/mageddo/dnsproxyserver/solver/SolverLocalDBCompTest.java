@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.solver;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.dataprovider.PersistentConfigDAO;
+import com.mageddo.dnsproxyserver.config.dataformat.PersistentConfigDAO;
 import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.dns.utils.Messages;
 

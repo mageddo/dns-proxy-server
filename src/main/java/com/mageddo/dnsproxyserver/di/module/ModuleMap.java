@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.di.module;
 
-import com.mageddo.dnsproxyserver.config.dataprovider.PersistentConfigDAO;
+import com.mageddo.dnsproxyserver.config.dataformat.PersistentConfigDAO;
 import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacade;
 import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacade;
 import com.mageddo.dnsproxyserver.server.dns.ServerStarter;

@@ -1,6 +1,6 @@
 package testing.templates.config;
 
-import com.mageddo.dnsproxyserver.config.dataprovider.v2.legacyenv.ConfigEnv;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.legacyenv.ConfigEnv;
 
 import java.nio.file.Paths;
 

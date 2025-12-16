@@ -1,7 +1,7 @@
 package testing;
 
 import com.mageddo.dnsproxyserver.config.application.Configs;
-import com.mageddo.dnsproxyserver.config.dataprovider.v2.cmdargs.ConfigDAOCmdArgs;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.ConfigDAOCmdArgs;
 import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.net.SocketUtils;
 
