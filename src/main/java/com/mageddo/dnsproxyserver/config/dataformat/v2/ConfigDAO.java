@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.dataformat;
+package com.mageddo.dnsproxyserver.config.dataformat.v2;
 
 import com.mageddo.dnsproxyserver.config.Config;
 

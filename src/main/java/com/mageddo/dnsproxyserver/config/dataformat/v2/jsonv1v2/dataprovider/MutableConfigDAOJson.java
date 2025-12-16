@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.application.Configs;
-import com.mageddo.dnsproxyserver.config.dataformat.PersistentConfigDAO;
+import com.mageddo.dnsproxyserver.config.dataformat.MutableConfigDAO;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.predicate.EntryPredicate;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.predicate.EnvPredicate;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.predicate.JsonEnvPredicate;
@@ -23,7 +23,7 @@ import java.util.function.Predicate;
 @Slf4j
 @Singleton
 @NoArgsConstructor(onConstructor_ = @Inject)
-public class PersistentConfigDAOJson implements PersistentConfigDAO {
+public class MutableConfigDAOJson implements MutableConfigDAO {
 
   @Override
   public Config findActive() {

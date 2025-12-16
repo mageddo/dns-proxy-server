@@ -11,7 +11,7 @@ import javax.inject.Singleton;
 import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
-import com.mageddo.dnsproxyserver.config.dataformat.ConfigDAO;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.ConfigDAO;
 import com.mageddo.dnsproxyserver.config.mapper.ConfigMapper;
 
 import org.apache.commons.lang3.ClassUtils;

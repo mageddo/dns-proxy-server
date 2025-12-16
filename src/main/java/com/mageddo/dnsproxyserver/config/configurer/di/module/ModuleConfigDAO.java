@@ -6,7 +6,7 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Singleton;
 
 import com.mageddo.di.InstanceImpl;
-import com.mageddo.dnsproxyserver.config.dataformat.ConfigDAO;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.ConfigDAO;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.ConfigDAOCmdArgs;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.ConfigDAOJson;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.legacyenv.ConfigDAOLegacyEnv;

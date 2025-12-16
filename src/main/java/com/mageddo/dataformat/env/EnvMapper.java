@@ -1,19 +1,22 @@
 package com.mageddo.dataformat.env;
 
-import com.mageddo.dnsproxyserver.utils.Numbers;
-import com.mageddo.json.JsonUtils;
-import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.CaseUtils;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import com.mageddo.dnsproxyserver.utils.Numbers;
+import com.mageddo.json.JsonUtils;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.CaseUtils;
+
+import lombok.NoArgsConstructor;
 
 @Singleton
 @NoArgsConstructor(onConstructor_ = @Inject)
@@ -35,9 +38,9 @@ public class EnvMapper {
   }
 
   private void insertPropertyAt(
-    Map<String, Object> root,
-    Map.Entry<String, String> entry,
-    String varsPrefix
+      Map<String, Object> root,
+      Map.Entry<String, String> entry,
+      String varsPrefix
   ) {
     this.insert(root, buildEnvWithoutPrefix(entry.getKey(), varsPrefix), entry.getValue());
   }
@@ -46,12 +49,13 @@ public class EnvMapper {
     return key.substring(prefix.length());
   }
 
-  private Stream<Map.Entry<String, String>> findMatchingEnvs(Map<String, String> env, String varsPrefix) {
+  private Stream<Map.Entry<String, String>> findMatchingEnvs(Map<String, String> env,
+      String varsPrefix) {
     return env.entrySet()
-              .stream()
-              .filter(e -> e.getKey() != null && e.getKey()
-                                                  .startsWith(varsPrefix))
-              .sorted(Map.Entry.comparingByKey());
+        .stream()
+        .filter(e -> e.getKey() != null && e.getKey()
+            .startsWith(varsPrefix))
+        .sorted(Map.Entry.comparingByKey());
   }
 
   @SuppressWarnings("unchecked")
@@ -185,8 +189,8 @@ public class EnvMapper {
 
   private static boolean isInteger(String value) {
     return INTEGER_PATTERN
-      .matcher(value)
-      .matches();
+        .matcher(value)
+        .matches();
   }
 
 }

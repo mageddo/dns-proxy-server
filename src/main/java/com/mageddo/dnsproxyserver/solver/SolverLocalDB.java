@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.solver;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
-import com.mageddo.dnsproxyserver.config.dataformat.PersistentConfigDAO;
+import com.mageddo.dnsproxyserver.config.dataformat.MutableConfigDAO;
 import com.mageddo.dnsproxyserver.config.ConfigEntryTypes;
 import com.mageddo.dns.utils.Messages;
 import dagger.Lazy;
@@ -25,7 +25,7 @@ public class SolverLocalDB implements Solver {
 
   public  static final String NAME = "SolverLocalDB";
 
-  private final PersistentConfigDAO persistentConfigDAO;
+  private final MutableConfigDAO mutableConfigDAO;
   private final Lazy<SolverDelegate> solverDelegate;
 
   @Override
@@ -79,7 +79,7 @@ public class SolverLocalDB implements Solver {
   }
 
   Config.Entry findEntryTo(HostnameQuery host) {
-    return this.persistentConfigDAO.findEntryForActiveEnv(host);
+    return this.mutableConfigDAO.findEntryForActiveEnv(host);
   }
 
 }

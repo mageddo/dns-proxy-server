@@ -7,7 +7,6 @@ import javax.inject.Singleton;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.dataformat.v3.dataprovider.ConfigDAO;
-import com.mageddo.dnsproxyserver.config.dataformat.v3.mapper.ConfigMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,11 +24,7 @@ public class ConfigV3Service {
   }
 
   private List<Config> findConfigs(List<ConfigDAO> configDAOS) {
-    return configDAOS
-      .stream()
-      .map(ConfigDAO::find)
-      .map(ConfigMapper::of)
-      .toList();
+    throw new UnsupportedOperationException();
   }
 
   List<ConfigDAO> findConvertersSorted() {

@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.server.rest;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.dataformat.PersistentConfigDAO;
+import com.mageddo.dnsproxyserver.config.dataformat.MutableConfigDAO;
 import com.mageddo.dnsproxyserver.server.rest.reqres.EnvV1;
 import com.mageddo.http.HttpMapper;
 import com.mageddo.http.WebServer;
@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response.Status;
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class EnvResource implements HttpMapper {
 
-  private final PersistentConfigDAO persistentConfigDAO;
+  private final MutableConfigDAO mutableConfigDAO;
 
   @Override
   public void map(WebServer server) {
@@ -26,12 +26,12 @@ public class EnvResource implements HttpMapper {
       Encoders.encodeJson(
           exchange,
           Status.OK,
-          EnvV1.of(this.persistentConfigDAO.findActiveEnv().getName())
+          EnvV1.of(this.mutableConfigDAO.findActiveEnv().getName())
       );
     });
 
     server.get("/env", exchange -> {
-      final var result = this.persistentConfigDAO
+      final var result = this.mutableConfigDAO
           .findEnvs()
           .stream()
           .map(it -> EnvV1.of(it.getName()))
@@ -41,17 +41,17 @@ public class EnvResource implements HttpMapper {
 
     server.post("/env", exchange -> {
       final var env = Decoders.jsonDecode(exchange, EnvV1.class);
-      this.persistentConfigDAO.createEnv(Config.Env.empty(env.getName()));
+      this.mutableConfigDAO.createEnv(Config.Env.empty(env.getName()));
     });
 
     server.put("/env/active", exchange -> {
       final var env = Decoders.jsonDecode(exchange, EnvV1.class);
-      this.persistentConfigDAO.changeActiveEnv(env.getName());
+      this.mutableConfigDAO.changeActiveEnv(env.getName());
     });
 
     server.delete("/env", exchange -> {
       final var env = Decoders.jsonDecode(exchange, EnvV1.class);
-      this.persistentConfigDAO.deleteEnv(env.getName());
+      this.mutableConfigDAO.deleteEnv(env.getName());
     });
 
   }
