@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.configurer.di.module;
+package com.mageddo.dnsproxyserver.config.configurer;
 
 import java.util.Set;
 
@@ -16,9 +16,9 @@ import dagger.Provides;
 import dagger.multibindings.ElementsIntoSet;
 
 @Module
-public interface ModuleConfigDAO {
+public interface ModuleV2ConfigDAO {
   @Provides
-  static Instance<ConfigDAO> multiSourceConfigDAOInstance(Set<ConfigDAO> instances){
+  static Instance<ConfigDAO> multiSourceConfigDAOInstance(Set<ConfigDAO> instances) {
     return new InstanceImpl<>(instances);
   }
 
@@ -26,7 +26,7 @@ public interface ModuleConfigDAO {
   @Singleton
   @ElementsIntoSet
   static Set<ConfigDAO> configDaos(
-          ConfigDAOLegacyEnv o1, ConfigDAOCmdArgs o2, ConfigDAOJson o3
+      ConfigDAOLegacyEnv o1, ConfigDAOCmdArgs o2, ConfigDAOJson o3
   ) {
     return Set.of(o1, o2, o3);
   }

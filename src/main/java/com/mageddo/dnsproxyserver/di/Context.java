@@ -10,7 +10,9 @@ import javax.inject.Singleton;
 
 import com.mageddo.di.CDIImpl;
 import com.mageddo.di.Eager;
-import com.mageddo.dnsproxyserver.config.configurer.di.module.ModuleConfigDAO;
+import com.mageddo.dnsproxyserver.config.configurer.ModuleV2ConfigDAO;
+import com.mageddo.dnsproxyserver.config.configurer.ModuleV3ConfigDAO;
+import com.mageddo.dnsproxyserver.config.configurer.di.DaggerContext;
 import com.mageddo.dnsproxyserver.di.module.ModuleDao;
 import com.mageddo.dnsproxyserver.di.module.ModuleDockerClient;
 import com.mageddo.dnsproxyserver.di.module.ModuleEager;
@@ -26,7 +28,6 @@ import com.mageddo.dnsproxyserver.solver.Solver;
 import com.mageddo.dnsproxyserver.solver.docker.application.ContainerSolvingService;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
 import com.mageddo.dnsproxyserver.solver.remote.configurator.SolverRemoteModule;
-
 import com.mageddo.dnsproxyserver.version.configurer.dagger.ModuleVersionConfigurer;
 
 import org.apache.commons.lang3.Validate;
@@ -44,7 +45,8 @@ import jdk.jfr.Name;
   ModuleSolver.class,
   ModuleStartup.class,
   ModuleMap.class,
-  ModuleConfigDAO.class,
+  ModuleV2ConfigDAO.class,
+  ModuleV3ConfigDAO.class,
   ModuleVersionConfigurer.class,
   SolverRemoteModule.class,
   ModuleEager.class
