@@ -29,8 +29,7 @@ public class ConfigFileDAOImpl implements ConfigFileDAO {
   public void save(Config config) {
     try {
       final var path = this.findFilePath();
-      final var extension = findExtension(path);
-      final var converter = this.converterFactory.find(extension);
+      final var converter = this.findConverter(path);
       final var raw = converter.to(config);
       Files.writeString(
           path,
@@ -48,8 +47,7 @@ public class ConfigFileDAOImpl implements ConfigFileDAO {
   public Config find() {
     try {
       final var path = this.findFilePath();
-      final var extension = findExtension(path);
-      final var converter = this.converterFactory.find(extension);
+      final var converter = this.findConverter(path);
       if (!Files.exists(path)) {
         return null;
       }
@@ -64,8 +62,7 @@ public class ConfigFileDAOImpl implements ConfigFileDAO {
     return this.configFilePathDAO.find();
   }
 
-  private Converter findConverter() {
-    final var path = this.findFilePath();
+  private Converter findConverter(Path path) {
     final var extension = findExtension(path);
     return this.converterFactory.find(extension);
   }
