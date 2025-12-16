@@ -4,8 +4,7 @@ import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.dataprovider.PersistentConfigDAO;
 import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.dns.utils.Messages;
-import com.mageddo.dnsproxyserver.solver.SolverLocalDB;
-import com.mageddo.dnsproxyserver.solver.SolverProvider;
+
 import testing.templates.EntryTemplates;
 import testing.templates.docker.SolverTemplates;
 import dagger.sheath.InjectMock;

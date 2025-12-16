@@ -1,8 +1,8 @@
 package com.mageddo.dnsproxyserver.config.provider.dataformatv3.converter;
 
 import com.mageddo.dnsproxyserver.config.provider.dataformatv3.templates.ConfigV3Templates;
-import com.mageddo.dnsproxyserver.config.dataformat.v3.converter.JsonConverter;
-import com.mageddo.dnsproxyserver.config.dataformat.v3.converter.YamlConverter;
+import com.mageddo.dnsproxyserver.config.dataprovider.v3.converter.JsonConverter;
+import com.mageddo.dnsproxyserver.config.dataprovider.v3.converter.YamlConverter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

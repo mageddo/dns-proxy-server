@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.config.provider.jsonv1v2.dataprovider;
 
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
-import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.PersistentConfigDAOJson;
+import com.mageddo.dnsproxyserver.config.dataprovider.v2.jsonv1v2.dataprovider.PersistentConfigDAOJson;
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
