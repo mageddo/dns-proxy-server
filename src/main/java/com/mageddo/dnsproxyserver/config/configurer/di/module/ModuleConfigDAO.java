@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.di.module;
+package com.mageddo.dnsproxyserver.config.configurer.di.module;
 
 import java.util.Set;
 
