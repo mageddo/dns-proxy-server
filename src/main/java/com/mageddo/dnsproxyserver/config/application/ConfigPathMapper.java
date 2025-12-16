@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.nio.file.Path;
 
 @Slf4j
-class ConfigPathMapper {
+public class ConfigPathMapper {
 
   public static Path build(Path workDir, Path configFilePath) {
     final var path = build0(workDir, configFilePath);
