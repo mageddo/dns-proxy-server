@@ -1,24 +1,37 @@
 package com.mageddo.dnsproxyserver.config.mapper;
 
-import com.mageddo.dnsproxyserver.config.*;
-import com.mageddo.dnsproxyserver.config.dataprovider.VersionDAO;
-import com.mageddo.dnsproxyserver.config.validator.ConfigValidator;
-import com.mageddo.dnsproxyserver.utils.Numbers;
-import com.mageddo.dnsserver.SimpleServer;
-import com.mageddo.net.IpAddr;
-import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.SystemUtils;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.Log;
+import com.mageddo.dnsproxyserver.config.Server;
+import com.mageddo.dnsproxyserver.config.SolverDocker;
+import com.mageddo.dnsproxyserver.config.SolverLocal;
+import com.mageddo.dnsproxyserver.config.SolverRemote;
+import com.mageddo.dnsproxyserver.config.SolverStub;
+import com.mageddo.dnsproxyserver.config.SolverSystem;
+import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
+import com.mageddo.dnsproxyserver.version.VersionDAO;
+import com.mageddo.dnsproxyserver.config.validator.ConfigValidator;
+import com.mageddo.dnsproxyserver.utils.Numbers;
+import com.mageddo.dnsserver.SimpleServer;
+import com.mageddo.net.IpAddr;
+
+import org.apache.commons.lang3.SystemUtils;
+
+import lombok.RequiredArgsConstructor;
+
 import static com.mageddo.dnsproxyserver.utils.ListOfObjectUtils.mapField;
-import static com.mageddo.dnsproxyserver.utils.ObjectUtils.*;
+import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonEmptyListRequiring;
+import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonNull;
+import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonNullRequiring;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)

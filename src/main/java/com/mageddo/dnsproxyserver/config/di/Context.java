@@ -1,14 +1,17 @@
 package com.mageddo.dnsproxyserver.config.di;
 
 
-import com.mageddo.dnsproxyserver.config.application.ConfigService;
-import com.mageddo.dnsproxyserver.config.di.module.ModuleConfigDAO;
-import dagger.Component;
-
 import javax.inject.Singleton;
 
+import com.mageddo.dnsproxyserver.config.application.ConfigService;
+import com.mageddo.dnsproxyserver.config.di.module.ModuleConfigDAO;
+
+import com.mageddo.dnsproxyserver.version.configurer.dagger.ModuleVersionConfigurer;
+
+import dagger.Component;
+
 @Singleton
-@Component(modules = ModuleConfigDAO.class)
+@Component(modules = {ModuleConfigDAO.class, ModuleVersionConfigurer.class})
 public interface Context {
 
   static Context create() {

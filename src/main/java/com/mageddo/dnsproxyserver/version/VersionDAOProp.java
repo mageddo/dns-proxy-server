@@ -1,6 +1,5 @@
-package com.mageddo.dnsproxyserver.config.provider.prop;
+package com.mageddo.dnsproxyserver.version;
 
-import com.mageddo.dnsproxyserver.config.dataprovider.VersionDAO;
 import lombok.NoArgsConstructor;
 
 import javax.inject.Inject;

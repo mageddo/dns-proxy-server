@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.dataprovider;
+package com.mageddo.dnsproxyserver.version;
 
 public interface VersionDAO {
   String findVersion();
