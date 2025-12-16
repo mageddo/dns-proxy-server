@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.config.application;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.LogLevel;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.ConfigService;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.ConfigDAOCmdArgs;
 import com.mageddo.dnsproxyserver.config.configurer.di.Context;
 import dagger.sheath.junit.DaggerTest;

@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.application;
+package com.mageddo.dnsproxyserver.config.dataformat.v2;
 
 import java.util.Comparator;
 import java.util.List;
@@ -11,7 +11,6 @@ import javax.inject.Singleton;
 import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
-import com.mageddo.dnsproxyserver.config.dataformat.v2.ConfigDAO;
 import com.mageddo.dnsproxyserver.config.mapper.ConfigMapper;
 
 import org.apache.commons.lang3.ClassUtils;

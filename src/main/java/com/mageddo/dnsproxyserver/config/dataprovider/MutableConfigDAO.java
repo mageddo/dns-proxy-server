@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.config.dataformat;
+package com.mageddo.dnsproxyserver.config.dataprovider;
 
 import java.util.List;
 

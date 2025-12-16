@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.config;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.ConfigService;
 import com.mageddo.dnsserver.SimpleServer;
 import com.mageddo.net.IP;
 import com.mageddo.net.IpAddr;
@@ -22,7 +23,7 @@ import java.util.stream.Stream;
 import static com.mageddo.commons.lang.Objects.mapOrNull;
 
 /**
- * @see com.mageddo.dnsproxyserver.config.application.ConfigService
+ * @see ConfigService
  */
 @Value
 @Builder(toBuilder = true, builderClassName = "ConfigBuilder")

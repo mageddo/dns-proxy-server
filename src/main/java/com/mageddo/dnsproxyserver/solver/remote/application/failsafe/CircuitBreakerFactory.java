@@ -3,7 +3,7 @@ package com.mageddo.dnsproxyserver.solver.remote.application.failsafe;
 import com.mageddo.commons.lang.tuple.Pair;
 import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
-import com.mageddo.dnsproxyserver.config.application.ConfigService;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.ConfigService;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.application.FailsafeCircuitBreakerFactory;
@@ -25,7 +25,6 @@ import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Supplier;
 
 @Slf4j
 @Singleton
