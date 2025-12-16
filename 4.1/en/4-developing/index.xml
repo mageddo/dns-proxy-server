@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Developing on DNS Proxy Server</title>
+    <link>http://mageddo.github.io/dns-proxy-server/4.1/en/4-developing/</link>
+    <description>Recent content in Developing on DNS Proxy Server</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    
+	<atom:link href="http://mageddo.github.io/dns-proxy-server/4.1/en/4-developing/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Compiling from source</title>
+      <link>http://mageddo.github.io/dns-proxy-server/4.1/en/4-developing/compiling/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mageddo.github.io/dns-proxy-server/4.1/en/4-developing/compiling/</guid>
+      <description> Requirements See the requirements.
+Building from Source Build the frontend files (optional)
+./builder.bash build-frontend  Build and run the program
+Jar file $ ./gradlew clean build compTest shadowJar -i $ java -jar dns-proxy-server-*-all.jar  Native Image Generated possible necessary metadata
+./gradlew clean -Pagent compTest ./gradlew metadataCopy  Generate the binary
+$ ./gradlew -x check clean build nativeIntTest nativeImageJar nativeCompile $ ./build/native/nativeCompile/dns-proxy-server  </description>
+    </item>
+    
+    <item>
+      <title>Generating the docs</title>
+      <link>http://mageddo.github.io/dns-proxy-server/4.1/en/4-developing/generating-docs/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mageddo.github.io/dns-proxy-server/4.1/en/4-developing/generating-docs/</guid>
+      <description> Introduction DPS uses Hugo and the theme-learn to generate static docs.
+Requirements  Hugo 0.55.4  Live Docs Preview Vanilla $ hugo server --source docs  Docker $ docker-compose -f docker-compose-dev.yml up docs  Generating Doc Statics To generate the HTML use the following
+$ ./builder.bash docs  </description>
+    </item>
+    
+    <item>
+      <title>Release Process</title>
+      <link>http://mageddo.github.io/dns-proxy-server/4.1/en/4-developing/releasing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mageddo.github.io/dns-proxy-server/4.1/en/4-developing/releasing/</guid>
+      <description>Feature Request - Phase 1  Create a pull request CI will be checked automatically Once CI is passing, the author @mageddo must approve the PR Merge the PR  Pre-Releasing New Version - Phase 2  Define the new version number Document the new version and changes at RELEASE-NOTES.md Generate the git tag with the steps below  Patch Version
+$ ./gradlew release  Major Version
+$ VERSION=3.18.0 &amp;amp;&amp;amp; .</description>
+    </item>
+    
+    <item>
+      <title>Stress Tests</title>
+      <link>http://mageddo.github.io/dns-proxy-server/4.1/en/4-developing/stress-tests/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mageddo.github.io/dns-proxy-server/4.1/en/4-developing/stress-tests/</guid>
+      <description>Start DPS Instance to be tested
+./gradlew clean build compTest shadowJar nativeImageJar nativeCompile -i cp build/native/nativeCompile/dns-proxy-server ./src/stress-test/docker/dps-stress-test-instance/files/ docker-compose -f src/stress-test/docker/dps-stress-test-instance/docker-compose.yml up --build  Start Grafana Stack to Collect Performance Metrics
+docker-compose -f src/stress-test/docker/grafana/docker-compose.yml up --build  Run the Stress Test Suite
+./gradlew build stressTest  Access http://localhost:3000 to see the metrics</description>
+    </item>
+    
+  </channel>
+</rss>

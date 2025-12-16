@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Specify from which network solve container IP on DNS Proxy Server</title>
+    <link>http://mageddo.github.io/dns-proxy-server/4.1/en/2-features/specify-from-which-network-solve-container/</link>
+    <description>Recent content in Specify from which network solve container IP on DNS Proxy Server</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    
+	<atom:link href="http://mageddo.github.io/dns-proxy-server/4.1/en/2-features/specify-from-which-network-solve-container/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+  </channel>
+</rss>
