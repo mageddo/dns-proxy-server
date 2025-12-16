@@ -1,22 +1,18 @@
 package com.mageddo.dnsproxyserver.config.dataformat.v3.dataprovider;
 
-import com.mageddo.dataformat.yaml.YamlUtils;
+import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.dataformat.v3.ConfigV3;
+import com.mageddo.dnsproxyserver.config.dataformat.v3.mapper.ConfigV3YamlMapper;
 
 public class YamlConfigDAO implements ConfigDAO {
 
   @Override
-  public ConfigV3 find() {
+  public Config find() {
     return null;
   }
 
   public ConfigV3 parse(String yaml) {
-    return YamlUtils.readValue(yaml, ConfigV3.class);
-  }
-
-  @Override
-  public String serialize(ConfigV3 config) {
-    return YamlUtils.writeValueAsString(config);
+    return ConfigV3YamlMapper.of(yaml);
   }
 
   @Override
