@@ -1,9 +1,9 @@
 package com.mageddo.dnsproxyserver.config.dataformat;
 
+import java.util.List;
+
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
-
-import java.util.List;
 
 public interface MutableConfigDAO {
 
