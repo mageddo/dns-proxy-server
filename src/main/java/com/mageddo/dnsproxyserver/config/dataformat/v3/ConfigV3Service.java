@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.config.dataformat.v3;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
@@ -30,6 +31,7 @@ public class ConfigV3Service {
   public Config find() {
     final var configs = this.daos.stream()
         .map(ConfigDAO::find)
+        .filter(Objects::nonNull)
         .toList();
     return this.configMapper.mapFrom(configs);
   }
