@@ -11,7 +11,7 @@ import javax.inject.Singleton;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.predicate.EntryPredicate;
-import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.predicate.EnvPredicate;
+import com.mageddo.dnsproxyserver.config.predicate.EnvPredicate;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.predicate.JsonEnvPredicate;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo.ConfigJsonV2;
 import com.mageddo.dnsproxyserver.config.dataprovider.MutableConfigDAO;
@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MutableConfigDAOJson implements MutableConfigDAO {
 
   @Override
-  public Config findActive() {
+  public Config find() {
     return Configs.getInstance();
   }
 

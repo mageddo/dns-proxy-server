@@ -1,6 +1,5 @@
 package com.mageddo.dnsproxyserver.config.dataformat.v3.file;
 
-import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -10,43 +9,40 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.application.Configs;
+import com.mageddo.dnsproxyserver.config.Config.Env;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.JsonConfigs;
-import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.predicate.EntryPredicate;
-import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.predicate.EnvPredicate;
-import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.predicate.JsonEnvPredicate;
-import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo.ConfigJsonV2;
 import com.mageddo.dnsproxyserver.config.dataprovider.MutableConfigDAO;
+import com.mageddo.dnsproxyserver.config.predicate.EntryPredicate;
+import com.mageddo.dnsproxyserver.config.predicate.EnvPredicate;
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Singleton
-@NoArgsConstructor(onConstructor_ = @Inject)
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class MutableConfigDAOFile implements MutableConfigDAO {
 
+  private final ConfigFileDAO configFileDAO;
+
   @Override
-  public Config findActive() {
-    return Configs.getInstance();
+  public Config find() {
+    return this.configFileDAO.find();
   }
 
   @Override
-  public Config.Env findActiveEnv() {
-    final var configJson = JsonConfigs.loadConfigAsConfig();
-    return findEnv(configJson.getActiveEnv(), configJson);
+  public Env findActiveEnv() {
+    final var config = this.find();
+    return findEnv(config.getActiveEnv(), config);
   }
 
   @Override
-  public Config.Env findEnv(String envKey) {
-    final var configPath = Configs
-        .getInstance()
-        .getConfigPath();
-    return findEnv(envKey, JsonConfigs.loadConfigAsConfig(configPath));
+  public Env findEnv(String envKey) {
+    return findEnv(envKey, this.find());
   }
 
   @Override
@@ -69,16 +65,16 @@ public class MutableConfigDAOFile implements MutableConfigDAO {
 
   @Override
   public void addEntry(String env, Config.Entry entry) {
-    final var config = JsonConfigs.loadConfigJson();
-    final var found = findOrBind(env, config);
-    found.add(ConfigJsonV2.Entry.from(entry));
-    save(config);
+    final var config = this.find();
+    final var found = this.findOrBind(env, config);
+    found.add(entry);
+    this.save(config);
   }
 
   @Override
   public boolean updateEntry(String env, Config.Entry entry) {
-    final var config = JsonConfigs.loadConfigJson();
-    final var found = findOrBind(env, config);
+    final var config = this.find();
+    final var found = this.findOrBind(env, config);
     final var hostnames = found.getHostnames();
     if (hostnames.isEmpty()) {
       return false;
@@ -87,16 +83,16 @@ public class MutableConfigDAOFile implements MutableConfigDAO {
         EntryPredicate.byId(entry.getId()),
         hostnames,
         (foundEntry, i, entries) -> {
-          entries.set(i, ConfigJsonV2.Entry.from(entry));
-          save(config);
+          entries.set(i, entry);
+          this.save(config);
         }
     );
   }
 
   @Override
   public boolean removeEntry(String env, String hostname) {
-    final var config = JsonConfigs.loadConfigJson();
-    final var found = findOrBind(env, config);
+    final var config = this.find();
+    final var found = this.findOrBind(env, config);
     final var hostnames = found.getHostnames();
     if (hostnames.isEmpty()) {
       return false;
@@ -106,43 +102,46 @@ public class MutableConfigDAOFile implements MutableConfigDAO {
         hostnames,
         (foundEntry, i, entries) -> {
           entries.remove((int) i);
-          save(config);
+          this.save(config);
         }
     );
   }
 
   @Override
-  public void createEnv(Config.Env env) {
-    final var config = JsonConfigs.loadConfigJson();
-
-    final var alreadyExists = config
-        .get_envs()
+  public void createEnv(Env env) {
+    final var config = this.find();
+    final var alreadyExists = config.getEnvs()
         .stream()
-        .anyMatch(JsonEnvPredicate.byName(env.getName()));
+        .anyMatch(EnvPredicate.byName(env.getName()));
 
     Validate.isTrue(!alreadyExists, "The '%s' env already exists", env.getName());
 
-    config
-        .get_envs()
-        .add(ConfigJsonV2.Env.from(env))
+    config.getEnvs()
+        .add(env)
     ;
     save(config);
   }
 
   @Override
   public void deleteEnv(String name) {
-    final var config = JsonConfigs.loadConfigJson();
+    final var config = this.find();
     final var filtered = config
-        .get_envs()
+        .getEnvs()
         .stream()
-        .filter(JsonEnvPredicate.nameIsNot(name))
+        .filter(EnvPredicate.nameIsNot(name))
         .toList();
-    config.set_envs(filtered);
-    save(config);
+    this.save(config.toBuilder()
+        .solverLocal(config.getSolverLocal()
+            .toBuilder()
+            .envs(filtered)
+            .build()
+        )
+        .build()
+    );
   }
 
   @Override
-  public List<Config.Env> findEnvs() {
+  public List<Env> findEnvs() {
     return JsonConfigs.loadConfigJson()
         .getEnvs();
   }
@@ -164,47 +163,51 @@ public class MutableConfigDAOFile implements MutableConfigDAO {
 
   @Override
   public void changeActiveEnv(String name) {
-    final var config = JsonConfigs.loadConfigJson()
-        .setActiveEnv(name);
-    save(config);
+    final var sourceConfig = this.find();
+    final var config = sourceConfig
+        .toBuilder()
+        .solverLocal(sourceConfig.getSolverLocal()
+            .toBuilder()
+            .activeEnv(name)
+            .build()
+        )
+        .build();
+    this.save(config);
   }
 
-  ConfigJsonV2.Env findOrBind(String envKey, ConfigJsonV2 configJson) {
-    for (final var env : configJson.get_envs()) {
+  Env findOrBind(String envKey, Config config) {
+    for (final var env : config.getEnvs()) {
       if (Objects.equals(env.getName(), envKey)) {
         log.trace("status=envFound, activeEnv={}", envKey);
         return env;
       }
     }
     log.debug("status=envNotFound, action=creating, activeEnv={}", envKey);
-    final var def = ConfigJsonV2.Env.from(Config.Env.of(envKey, Collections.emptyList()));
-    configJson.get_envs()
+    final var def = Env.of(envKey, Collections.emptyList());
+    config.getEnvs()
         .add(def);
     return def;
   }
 
-  static Config.Env findEnv(String envKey, final Config config) {
+  static Env findEnv(String envKey, final Config config) {
     final var env = config
         .getEnvs()
         .stream()
         .filter(EnvPredicate.byName(envKey))
         .findFirst()
-        .orElse(Config.Env.theDefault());
+        .orElse(Env.theDefault());
     log.trace("activeEnv={}", env.getName());
     return env;
   }
 
-  static void save(ConfigJsonV2 config) {
-    final var configPath = Configs
-        .getInstance()
-        .getConfigPath();
-    JsonConfigs.write(configPath, config);
+  void save(Config config) {
+    this.configFileDAO.save(config);
   }
 
   static boolean findHostname(
-      Predicate<ConfigJsonV2.Entry> p,
-      List<ConfigJsonV2.Entry> hostnames,
-      TriConsumer<ConfigJsonV2.Entry, Integer, List<ConfigJsonV2.Entry>> c
+      Predicate<Config.Entry> p,
+      List<Config.Entry> hostnames,
+      TriConsumer<Config.Entry, Integer, List<Config.Entry>> c
   ) {
     for (int i = 0; i < hostnames.size(); i++) {
       final var foundEntry = hostnames.get(i);

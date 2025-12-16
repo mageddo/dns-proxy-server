@@ -7,7 +7,7 @@ import lombok.Value;
 import java.util.List;
 
 @Value
-@Builder
+@Builder(toBuilder = true)
 public class SolverLocal {
 
   private String activeEnv;

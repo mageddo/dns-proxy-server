@@ -7,7 +7,7 @@ import com.mageddo.dnsproxyserver.solver.HostnameQuery;
 
 public interface MutableConfigDAO {
 
-  Config findActive();
+  Config find();
 
   Config.Env findActiveEnv();
 

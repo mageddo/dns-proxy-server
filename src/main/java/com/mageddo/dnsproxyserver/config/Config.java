@@ -1,14 +1,15 @@
 package com.mageddo.dnsproxyserver.config;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mageddo.dnsproxyserver.config.dataformat.v2.ConfigV2Service;
 import com.mageddo.dnsserver.SimpleServer;
 import com.mageddo.net.IP;
 import com.mageddo.net.IpAddr;
+
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+
 import org.apache.commons.lang3.Validate;
 
 import java.io.IOException;
@@ -282,8 +283,12 @@ public class Config {
 
     public static final String DEFAULT_ENV = "";
 
-    private String name;
-    private List<Entry> entries;
+    String name;
+    List<Entry> entries;
+
+    public List<Entry> getHostnames() {
+      return this.entries;
+    }
 
     public static Env empty(String name) {
       return of(name, Collections.emptyList());
@@ -381,7 +386,8 @@ public class Config {
       }
 
       public static Set<Type> asSet() {
-        return Stream.of(values()).collect(Collectors.toSet());
+        return Stream.of(values())
+            .collect(Collectors.toSet());
       }
 
       public static boolean contains(Type type) {
