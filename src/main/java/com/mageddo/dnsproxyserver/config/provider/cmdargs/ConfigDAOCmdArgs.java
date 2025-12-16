@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor_ = @Inject))
 public class ConfigDAOCmdArgs implements ConfigDAO {
 
   private static String[] args = new String[]{};

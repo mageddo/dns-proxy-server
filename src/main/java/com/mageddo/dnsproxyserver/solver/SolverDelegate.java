@@ -17,7 +17,7 @@ import java.time.Duration;
  */
 @Slf4j
 @Singleton
-@AllArgsConstructor(onConstructor = @__({@Inject}))
+@AllArgsConstructor(onConstructor_ = @Inject))
 public class SolverDelegate {
 
   private final SolverProvider solverProvider;

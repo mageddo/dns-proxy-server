@@ -15,7 +15,7 @@ import static com.mageddo.dnsproxyserver.quarkus.Quarkus.isTest;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor_ = @Inject))
 public class Starter {
 
   public static final String DNS_SERVER_MUST_START_FLAG = "mg.server.server.must-start";

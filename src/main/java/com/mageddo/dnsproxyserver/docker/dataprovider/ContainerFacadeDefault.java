@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 @Slf4j
 @Default
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor_ = @Inject))
 public class ContainerFacadeDefault implements ContainerFacade {
 
   private final DockerClient dockerClient;

@@ -13,7 +13,7 @@ import java.util.List;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor_ = @Inject))
 public class DockerNetworkService {
 
   private final NetworkDAO networkDAO;

@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response.Status;
 import java.util.Collections;
 
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor_ = @Inject))
 public class NetworkResource implements HttpMapper {
 
   private final DockerNetworkService networkService;

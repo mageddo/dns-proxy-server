@@ -18,7 +18,7 @@ import javax.inject.Singleton;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor_ = @Inject))
 public class CircuitBreakerFactory {
 
   CircuitBreakerDelegateSelfObservable buildWithoutHealthCheck(CanaryRateThresholdCircuitBreakerStrategyConfig config) {

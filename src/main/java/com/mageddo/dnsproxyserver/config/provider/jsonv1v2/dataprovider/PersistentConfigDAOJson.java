@@ -22,7 +22,7 @@ import java.util.function.Predicate;
 
 @Slf4j
 @Singleton
-@NoArgsConstructor(onConstructor = @__({@Inject}))
+@NoArgsConstructor(onConstructor_ = @Inject))
 public class PersistentConfigDAOJson implements PersistentConfigDAO {
 
   @Override

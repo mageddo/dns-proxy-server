@@ -15,7 +15,7 @@ import javax.inject.Singleton;
 import javax.ws.rs.core.Response.Status;
 
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor_ = @Inject))
 public class HostnameResource implements HttpMapper {
 
   private final PersistentConfigDAO persistentConfigDAO;

@@ -18,7 +18,7 @@ import java.util.List;
 @Slf4j
 @Singleton
 @Default
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor_ = @Inject))
 public class ContainerDAODefault implements ContainerDAO {
 
   private final ContainerFacade containerFacade;

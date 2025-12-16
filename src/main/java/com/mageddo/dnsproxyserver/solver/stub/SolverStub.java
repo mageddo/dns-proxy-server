@@ -23,7 +23,7 @@ import static com.mageddo.dns.utils.Messages.findQuestionTypeCode;
 
 @Slf4j
 @Singleton
-@AllArgsConstructor(onConstructor = @__({@Inject}))
+@AllArgsConstructor(onConstructor_ = @Inject))
 public class SolverStub implements Solver {
 
   public static final String DOMAIN_NAME = "stub";

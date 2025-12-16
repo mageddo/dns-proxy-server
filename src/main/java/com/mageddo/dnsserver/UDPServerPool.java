@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor_ = @Inject))
 public class UDPServerPool {
 
   private final RequestHandler requestHandler;

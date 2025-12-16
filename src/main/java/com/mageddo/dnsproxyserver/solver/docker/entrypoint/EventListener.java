@@ -18,7 +18,7 @@ import java.io.Closeable;
 
 @Slf4j
 @Singleton
-@AllArgsConstructor(onConstructor = @__({@Inject}))
+@AllArgsConstructor(onConstructor_ = @Inject))
 public class EventListener implements StartupEvent {
 
   private final DockerClient dockerClient;

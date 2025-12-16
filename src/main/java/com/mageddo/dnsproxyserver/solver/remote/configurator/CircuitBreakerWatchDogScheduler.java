@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor_ = @Inject))
 public class CircuitBreakerWatchDogScheduler implements StartupEvent {
 
   private final ScheduledExecutorService executor = ThreadPool.scheduled(1);

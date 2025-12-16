@@ -9,7 +9,7 @@ import javax.inject.Singleton;
 
 @Slf4j
 @Singleton
-@AllArgsConstructor(onConstructor = @__({@Inject}))
+@AllArgsConstructor(onConstructor_ = @Inject))
 public class SimpleServer {
 
   private final UDPServerPool udpServerPool;

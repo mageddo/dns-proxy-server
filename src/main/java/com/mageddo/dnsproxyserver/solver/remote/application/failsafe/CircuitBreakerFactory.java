@@ -29,7 +29,7 @@ import java.util.function.Supplier;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor_ = @Inject))
 /**
  * fixme #533 Move failsafe.CircuitBreakerFactory  to another package, this is not specific for failsafe
  */

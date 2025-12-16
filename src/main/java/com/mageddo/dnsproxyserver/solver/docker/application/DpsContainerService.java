@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor_ = @Inject))
 public class DpsContainerService {
 
   public static final String DPS_CONTAINER_IP = "172.157.5.249";

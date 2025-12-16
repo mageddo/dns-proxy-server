@@ -15,7 +15,7 @@ import javax.inject.Singleton;
 @Slf4j
 @Default
 @Singleton
-@AllArgsConstructor(onConstructor = @__({@Inject}))
+@AllArgsConstructor(onConstructor_ = @Inject))
 public class DpsDockerEnvironmentSetupService {
 
   private final DockerDAO dockerDAO;

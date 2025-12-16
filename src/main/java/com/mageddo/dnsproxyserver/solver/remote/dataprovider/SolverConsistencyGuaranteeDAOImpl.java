@@ -9,7 +9,7 @@ import javax.inject.Singleton;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor_ = @Inject))
 public class SolverConsistencyGuaranteeDAOImpl implements SolverConsistencyGuaranteeDAO {
 
   private final SolverCacheFactory solverCacheFactory;

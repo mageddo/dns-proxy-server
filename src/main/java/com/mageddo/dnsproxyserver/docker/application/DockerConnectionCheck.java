@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor_ = @Inject))
 public class DockerConnectionCheck {
 
   public static final Duration DEFAULT_TTL = Duration.ofSeconds(30);

@@ -14,7 +14,7 @@ import java.nio.file.Path;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor_ = @Inject))
 public class ConfigFileFinderService {
 
   private final ConfigDAOLegacyEnv configDAOEnv;

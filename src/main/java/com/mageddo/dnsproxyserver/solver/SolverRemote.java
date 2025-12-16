@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor_ = @Inject))
 public class SolverRemote implements Solver, AutoCloseable {
 
   private final CircuitBreakerService circuitBreakerService;

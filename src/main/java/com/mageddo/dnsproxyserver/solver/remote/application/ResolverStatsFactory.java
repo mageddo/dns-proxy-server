@@ -11,7 +11,7 @@ import javax.inject.Singleton;
 import java.util.List;
 
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor_ = @Inject))
 public class ResolverStatsFactory {
 
   private final CircuitBreakerService circuitBreakerService;

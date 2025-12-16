@@ -22,7 +22,7 @@ import static com.mageddo.commons.lang.Objects.mapOrNull;
 
 @Slf4j
 @Singleton
-@AllArgsConstructor(onConstructor = @__({@Inject}))
+@AllArgsConstructor(onConstructor_ = @Inject))
 public class NetworkDAODefault implements NetworkDAO {
 
   private final DockerClient dockerClient;
