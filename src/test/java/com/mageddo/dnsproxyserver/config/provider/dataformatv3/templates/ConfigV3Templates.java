@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.config.provider.dataformatv3.templates;
 
 import com.mageddo.dataformat.yaml.YamlUtils;
 import com.mageddo.dnsproxyserver.config.dataformat.v3.ConfigV3;
-import com.mageddo.dnsproxyserver.config.dataformat.v3.dataprovider.JsonConfigDAO;
+import com.mageddo.dnsproxyserver.config.dataformat.v3.mapper.ConfigV3JsonMapper;
 import com.mageddo.json.JsonUtils;
 
 public class ConfigV3Templates {
@@ -60,7 +60,7 @@ public class ConfigV3Templates {
   }
 
   public static ConfigV3 build() {
-    return new JsonConfigDAO().parse(buildJson());
+    return ConfigV3JsonMapper.of(buildJson());
   }
 
   public static String buildJson() {
