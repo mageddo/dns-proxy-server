@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DaggerTest(component = Context.class)
-class ConfigServiceCompTest {
+class ConfigV2ServiceCompTest {
 
   static final String[] excludingFields = new String[]{
     "version", "configPath", "resolvConfPaths",

@@ -5,7 +5,8 @@ import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.mageddo.dnsproxyserver.config.dataformat.v2.ConfigService;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.ConfigV2Service;
+import com.mageddo.dnsproxyserver.config.dataformat.v3.ConfigV3Service;
 import com.mageddo.dnsproxyserver.utils.Envs;
 
 import lombok.RequiredArgsConstructor;
@@ -14,13 +15,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class ConfigFactory {
 
-  private final ConfigService configService;
+  private final ConfigV2Service configV2Service;
+  private final ConfigV3Service configV3Service;
 
   public Config find() {
     if (this.isLegacyConfigActive()) {
-      return this.configService.findCurrentConfig();
+      return this.configV2Service.findCurrentConfig();
     }
-    throw new UnsupportedOperationException("Config V3 is not active yet");
+    return this.configV3Service.find();
   }
 
   boolean isLegacyConfigActive() {

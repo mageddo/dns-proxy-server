@@ -3,7 +3,7 @@ package com.mageddo.dnsproxyserver.config.configurer.di;
 
 import javax.inject.Singleton;
 
-import com.mageddo.dnsproxyserver.config.dataformat.v2.ConfigService;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.ConfigV2Service;
 import com.mageddo.dnsproxyserver.config.configurer.di.module.ModuleConfigDAO;
 
 import com.mageddo.dnsproxyserver.version.configurer.dagger.ModuleVersionConfigurer;
@@ -18,5 +18,5 @@ public interface Context {
     return DaggerContext.create();
   }
 
-   ConfigService configService();
+   ConfigV2Service configService();
 }

@@ -1,34 +1,37 @@
 package com.mageddo.dnsproxyserver.config.dataformat.v3;
 
+import java.util.Comparator;
 import java.util.List;
 
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.dataformat.v3.dataprovider.ConfigDAO;
-
-import lombok.RequiredArgsConstructor;
+import com.mageddo.dnsproxyserver.config.mapper.ConfigMapper;
 
 @Singleton
-@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class ConfigV3Service {
 
-  private final List<ConfigDAO> unorderedConfigDAOS;
-  private final com.mageddo.dnsproxyserver.config.mapper.ConfigMapper configMapper;
+  private final List<ConfigDAO> daos;
+  private final ConfigMapper configMapper;
+
+  @Inject
+  public ConfigV3Service(Instance<ConfigDAO> daos, ConfigMapper configMapper) {
+    this.daos = daos
+        .stream()
+        .sorted(Comparator.comparing(ConfigDAO::priority))
+        .toList()
+    ;
+    this.configMapper = configMapper;
+  }
 
   public Config find() {
-    final var converters = this.findConvertersSorted();
-    final var configs = this.findConfigs(converters);
+    final var configs = this.daos.stream()
+        .map(ConfigDAO::find)
+        .toList();
     return this.configMapper.mapFrom(configs);
-  }
-
-  private List<Config> findConfigs(List<ConfigDAO> configDAOS) {
-    throw new UnsupportedOperationException();
-  }
-
-  List<ConfigDAO> findConvertersSorted() {
-    throw new UnsupportedOperationException();
   }
 
 }

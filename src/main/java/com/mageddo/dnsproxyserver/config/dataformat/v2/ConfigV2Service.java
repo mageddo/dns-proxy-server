@@ -19,13 +19,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Singleton
-public class ConfigService {
+public class ConfigV2Service {
 
   private final List<ConfigDAO> configDAOS;
   private final ConfigMapper configMapper;
 
   @Inject
-  public ConfigService(Instance<ConfigDAO> configDAOS, ConfigMapper configMapper) {
+  public ConfigV2Service(Instance<ConfigDAO> configDAOS, ConfigMapper configMapper) {
     this.configDAOS = configDAOS
         .stream()
         .toList()

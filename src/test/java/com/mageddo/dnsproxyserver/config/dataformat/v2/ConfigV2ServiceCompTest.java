@@ -11,10 +11,10 @@ import dagger.sheath.junit.DaggerTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DaggerTest(component = Context.class)
-class ConfigServiceCompTest {
+class ConfigV2ServiceCompTest {
 
   @Inject
-  ConfigService service;
+  ConfigV2Service service;
 
   @Test
   void mustPutDaosInTheExpectedOrder() {
