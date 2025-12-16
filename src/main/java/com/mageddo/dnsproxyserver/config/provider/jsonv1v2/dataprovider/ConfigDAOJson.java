@@ -13,7 +13,7 @@ import java.nio.file.Path;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor_ = @Inject))
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class ConfigDAOJson implements ConfigDAO {
 
   private final ConfigFileFinderService configFileFinderService;

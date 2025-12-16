@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-@RequiredArgsConstructor(onConstructor_ = @Inject))
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class ConfigDAOLegacyEnv implements ConfigDAO {
 
   @Override

@@ -14,7 +14,7 @@ import javax.inject.Singleton;
 import javax.ws.rs.core.Response.Status;
 
 @Singleton
-@RequiredArgsConstructor(onConstructor_ = @Inject))
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class EnvResource implements HttpMapper {
 
   private final PersistentConfigDAO persistentConfigDAO;

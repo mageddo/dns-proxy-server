@@ -27,7 +27,7 @@ import static com.mageddo.commons.lang.Objects.mapOrNull;
 @Slf4j
 @Default
 @Singleton
-@AllArgsConstructor(onConstructor_ = @Inject))
+@AllArgsConstructor(onConstructor_ = @Inject)
 public class ContainerSolvingService {
 
   private final NetworkDAO networkDAO;

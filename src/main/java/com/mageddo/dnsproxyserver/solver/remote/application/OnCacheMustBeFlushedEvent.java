@@ -9,7 +9,7 @@ import javax.inject.Singleton;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor_ = @Inject))
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class OnCacheMustBeFlushedEvent {
 
   private final SolverConsistencyGuaranteeDAO solverConsistencyGuaranteeDAO;

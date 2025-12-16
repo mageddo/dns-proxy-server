@@ -20,7 +20,7 @@ import java.util.Map;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor_ = @Inject))
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class DpsContainerDAODefault implements DpsContainerDAO {
 
   static final String DPS_INSIDE_CONTAINER_YES = "1";

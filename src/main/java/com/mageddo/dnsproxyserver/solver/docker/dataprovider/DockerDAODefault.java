@@ -18,7 +18,7 @@ import java.util.List;
 @Slf4j
 @Default
 @Singleton
-@RequiredArgsConstructor(onConstructor_ = @Inject))
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class DockerDAODefault implements DockerDAO {
 
   private final DockerClient dockerClient;

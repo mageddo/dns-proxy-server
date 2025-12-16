@@ -20,7 +20,7 @@ import java.time.Duration;
  */
 @Slf4j
 @Singleton
-@AllArgsConstructor(onConstructor_ = @Inject))
+@AllArgsConstructor(onConstructor_ = @Inject)
 public class SolverLocalDB implements Solver {
 
   public  static final String NAME = "SolverLocalDB";

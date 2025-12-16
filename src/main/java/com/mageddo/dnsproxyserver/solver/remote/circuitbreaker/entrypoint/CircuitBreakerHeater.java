@@ -13,7 +13,7 @@ import com.mageddo.net.IpAddr;
 import lombok.AllArgsConstructor;
 
 @Singleton
-@AllArgsConstructor(onConstructor_ = @Inject))
+@AllArgsConstructor(onConstructor_ = @Inject)
 public class CircuitBreakerHeater implements Eager {
 
   private final CircuitBreakerFactory circuitBreakerFactory;

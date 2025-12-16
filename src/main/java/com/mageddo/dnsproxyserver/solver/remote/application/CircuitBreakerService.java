@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor_ = @Inject))
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class CircuitBreakerService {
 
   private final CircuitBreakerFactory circuitBreakerFactory;

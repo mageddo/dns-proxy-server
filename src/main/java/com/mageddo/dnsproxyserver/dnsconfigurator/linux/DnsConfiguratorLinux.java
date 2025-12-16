@@ -31,7 +31,7 @@ import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 @Slf4j
 @Default
 @Singleton
-@RequiredArgsConstructor(onConstructor_ = @Inject))
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class DnsConfiguratorLinux implements DnsConfigurator {
 
   private final AtomicBoolean resolvedConfigured = new AtomicBoolean();

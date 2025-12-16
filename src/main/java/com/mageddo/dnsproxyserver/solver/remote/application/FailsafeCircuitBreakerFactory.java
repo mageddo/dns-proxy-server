@@ -17,7 +17,7 @@ import java.net.InetSocketAddress;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor_ = @Inject))
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class FailsafeCircuitBreakerFactory {
 
   private final OnCacheMustBeFlushedEvent onCacheMustBeFlushedEvent;

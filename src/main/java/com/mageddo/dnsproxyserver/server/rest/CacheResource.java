@@ -16,7 +16,7 @@ import javax.ws.rs.core.Response;
 import static com.mageddo.http.codec.Encoders.encodeJson;
 
 @Singleton
-@RequiredArgsConstructor(onConstructor_ = @Inject))
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class CacheResource implements HttpMapper {
 
   public static final String CACHE_NAME_PARAM = "name";

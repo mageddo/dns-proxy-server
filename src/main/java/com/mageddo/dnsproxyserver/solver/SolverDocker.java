@@ -14,7 +14,7 @@ import javax.inject.Singleton;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor_ = @Inject))
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class SolverDocker implements Solver {
 
   private final ContainerSolvingService containerSolvingService;

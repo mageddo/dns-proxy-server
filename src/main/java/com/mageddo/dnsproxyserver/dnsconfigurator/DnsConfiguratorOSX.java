@@ -11,7 +11,7 @@ import javax.inject.Singleton;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor_ = @Inject))
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class DnsConfiguratorOSX implements DnsConfigurator {
 
   private final DnsConfiguratorDefault configuratorDefault;
