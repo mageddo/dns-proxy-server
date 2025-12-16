@@ -15,14 +15,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class ConfigFileReader {
 
-  private final ConfigDAOFactory configDAOFactory;
   private final ConfigFilePathDAO configFilePathDAO;
 
   public Config read() {
-    final var path = this.findConfigPath();
-    final var extension = Files.findExtension(path);
-    return this.configDAOFactory.findByExtension(extension)
-        .find();
+
   }
 
 

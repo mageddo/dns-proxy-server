@@ -7,4 +7,8 @@ public class ConfigMapper {
   public static Config of(ConfigV3 configV3) {
     throw new UnsupportedOperationException();
   }
+
+  public static ConfigV3 toV3(Config config) {
+    throw new UnsupportedOperationException();
+  }
 }
