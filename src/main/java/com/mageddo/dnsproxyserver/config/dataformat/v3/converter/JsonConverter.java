@@ -1,6 +1,6 @@
-package com.mageddo.dnsproxyserver.config.provider.dataformatv3.converter;
+package com.mageddo.dnsproxyserver.config.dataformat.v3.converter;
 
-import com.mageddo.dnsproxyserver.config.provider.dataformatv3.ConfigV3;
+import com.mageddo.dnsproxyserver.config.dataformat.v3.ConfigV3;
 import com.mageddo.json.JsonUtils;
 import lombok.NoArgsConstructor;
 

@@ -1,14 +1,16 @@
-package com.mageddo.dnsproxyserver.config.provider.dataformatv3;
+package com.mageddo.dnsproxyserver.config.dataformat.v3;
 
-import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.mapper.ConfigMapper;
-import com.mageddo.dnsproxyserver.config.provider.dataformatv3.mapper.ConfigV3Mapper;
-import com.mageddo.dnsproxyserver.config.provider.dataformatv3.converter.Converter;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.List;
+
+import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.mapper.ConfigMapper;
+import com.mageddo.dnsproxyserver.config.dataformat.v3.converter.Converter;
+import com.mageddo.dnsproxyserver.config.dataformat.v3.mapper.ConfigV3Mapper;
+
+import lombok.RequiredArgsConstructor;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)

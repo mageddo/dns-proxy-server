@@ -1,8 +1,8 @@
 package com.mageddo.dnsproxyserver.config.provider.dataformatv3.templates;
 
 import com.mageddo.dataformat.yaml.YamlUtils;
-import com.mageddo.dnsproxyserver.config.provider.dataformatv3.ConfigV3;
-import com.mageddo.dnsproxyserver.config.provider.dataformatv3.converter.JsonConverter;
+import com.mageddo.dnsproxyserver.config.dataformat.v3.ConfigV3;
+import com.mageddo.dnsproxyserver.config.dataformat.v3.converter.JsonConverter;
 import com.mageddo.json.JsonUtils;
 
 public class ConfigV3Templates {
