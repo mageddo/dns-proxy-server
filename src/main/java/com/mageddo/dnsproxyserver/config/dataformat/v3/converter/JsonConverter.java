@@ -1,11 +1,12 @@
 package com.mageddo.dnsproxyserver.config.dataformat.v3.converter;
 
-import com.mageddo.dnsproxyserver.config.dataformat.v3.ConfigV3;
-import com.mageddo.json.JsonUtils;
-import lombok.NoArgsConstructor;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import com.mageddo.dnsproxyserver.config.dataformat.v3.ConfigV3;
+import com.mageddo.json.JsonUtils;
+
+import lombok.NoArgsConstructor;
 
 @Singleton
 @NoArgsConstructor(onConstructor_ = @Inject)

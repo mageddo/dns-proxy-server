@@ -1,7 +1,8 @@
 package com.mageddo.dnsproxyserver.config.provider.jsonv1v2.mapper;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.provider.jsonv1v2.vo.ConfigJson;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.mapper.ConfigJsonV2Mapper;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo.ConfigJson;
 import org.junit.jupiter.api.Test;
 import testing.templates.ConfigJsonTemplates;
 

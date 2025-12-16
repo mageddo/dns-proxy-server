@@ -1,8 +1,9 @@
 package com.mageddo.dnsproxyserver.config.provider.jsonv1v2.dataprovider;
 
-import com.mageddo.dnsproxyserver.config.provider.jsonv1v2.vo.ConfigJsonV2;
-import com.mageddo.dnsproxyserver.config.provider.jsonv1v2.vo.ConfigJsonV2.CanaryRateThresholdCircuitBreaker;
-import com.mageddo.dnsproxyserver.config.provider.jsonv1v2.vo.ConfigJsonV2.StaticThresholdCircuitBreaker;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.JsonConfigs;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo.ConfigJsonV2;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo.ConfigJsonV2.CanaryRateThresholdCircuitBreaker;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo.ConfigJsonV2.StaticThresholdCircuitBreaker;
 import org.apache.commons.lang3.ClassUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -11,7 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 
-import static com.mageddo.dnsproxyserver.config.provider.jsonv1v2.dataprovider.JsonConfigs.findVersion;
+import static com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.JsonConfigs.findVersion;
 import static com.mageddo.utils.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.*;
 

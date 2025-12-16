@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.config.provider.cmdargs.mapper;
 
+import com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.mapper.ConfigFlagMapper;
 import org.junit.jupiter.api.Test;
 import testing.templates.ConfigFlagTemplates;
 

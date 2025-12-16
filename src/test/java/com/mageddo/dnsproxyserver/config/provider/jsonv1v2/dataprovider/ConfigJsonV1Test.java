@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.config.provider.jsonv1v2.dataprovider;
 
+import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.JsonConfigs;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 

@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.config.application;
 
-import com.mageddo.dnsproxyserver.config.provider.cmdargs.ConfigDAOCmdArgs;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.ConfigDAOCmdArgs;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import testing.templates.ConfigFlagTemplates;

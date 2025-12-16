@@ -9,7 +9,7 @@ import com.mageddo.dnsproxyserver.config.SolverLocal;
 import com.mageddo.dnsproxyserver.config.SolverRemote;
 import com.mageddo.dnsproxyserver.config.SolverStub;
 import com.mageddo.dnsproxyserver.config.SolverSystem;
-import com.mageddo.dnsproxyserver.config.provider.legacyenv.ConfigEnv;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.legacyenv.ConfigEnv;
 import com.mageddo.dnsserver.SimpleServer;
 import com.mageddo.net.IP;
 

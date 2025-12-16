@@ -1,6 +1,6 @@
 package testing.templates;
 
-import com.mageddo.dnsproxyserver.config.provider.jsonv1v2.vo.ConfigJson;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo.ConfigJson;
 import com.mageddo.net.IpAddr;
 import com.mageddo.net.SocketUtils;
 import lombok.Builder;

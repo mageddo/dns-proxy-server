@@ -1,6 +1,6 @@
 package com.mageddo.dnsproxyserver.config.application;
 
-import com.mageddo.dnsproxyserver.config.provider.cmdargs.vo.ConfigFlag;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.vo.ConfigFlag;
 import com.mageddo.utils.Files;
 import com.mageddo.utils.Runtime;
 import com.mageddo.utils.Tests;
