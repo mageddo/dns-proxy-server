@@ -1,20 +1,20 @@
 package com.mageddo.dnsproxyserver.config.provider.dataformatv3.converter;
 
 import com.mageddo.dataformat.env.EnvMapper;
+import com.mageddo.dnsproxyserver.config.dataprovider.v3.converter.EnvConfigDAO;
 import com.mageddo.dnsproxyserver.config.provider.dataformatv3.templates.ConfigV3EnvTemplates;
 import com.mageddo.dnsproxyserver.config.provider.dataformatv3.templates.ConfigV3Templates;
-import com.mageddo.dnsproxyserver.config.dataprovider.v3.converter.EnvConverter;
-import com.mageddo.dnsproxyserver.config.dataprovider.v3.converter.JsonConverter;
+import com.mageddo.dnsproxyserver.config.dataprovider.v3.converter.JsonConfigDAO;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class EnvConverterTest {
+class EnvConfigDAOTest {
 
-  private final EnvConverter converter = new EnvConverter(new EnvMapper(), new JsonConverter());
+  private final EnvConfigDAO converter = new EnvConfigDAO(new EnvMapper(), new JsonConfigDAO());
 
   @Test
-  void mustParseEnvironmentIntoConfig() {
+  void mustFindEnvironmentIntoConfig() {
     // Arrange
     final var expected = ConfigV3Templates.build();
     final var env = ConfigV3EnvTemplates.build();

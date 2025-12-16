@@ -2,9 +2,9 @@ package com.mageddo.dnsproxyserver.config.dataprovider.v3.converter;
 
 import com.mageddo.dnsproxyserver.config.dataprovider.v3.ConfigV3;
 
-public interface Converter {
+public interface ConfigDAO {
 
-  ConfigV3 parse();
+  ConfigV3 find();
 
   String serialize(ConfigV3 config);
 

@@ -3,10 +3,10 @@ package com.mageddo.dnsproxyserver.config.dataprovider.v3.converter;
 import com.mageddo.dataformat.yaml.YamlUtils;
 import com.mageddo.dnsproxyserver.config.dataprovider.v3.ConfigV3;
 
-public class YamlConverter implements Converter {
+public class YamlConfigDAO implements ConfigDAO {
 
   @Override
-  public ConfigV3 parse() {
+  public ConfigV3 find() {
     return null;
   }
 

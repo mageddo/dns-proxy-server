@@ -10,15 +10,15 @@ import java.util.Map;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)
-public class EnvConverter implements Converter {
+public class EnvConfigDAO implements ConfigDAO {
 
   private static final String PREFIX = "DPS_";
 
   private final EnvMapper envMapper;
-  private final JsonConverter jsonConverter;
+  private final JsonConfigDAO jsonConverter;
 
   @Override
-  public ConfigV3 parse() {
+  public ConfigV3 find() {
     return this.parse(System.getenv());
   }
 

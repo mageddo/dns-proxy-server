@@ -6,7 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.dataprovider.v3.converter.Converter;
+import com.mageddo.dnsproxyserver.config.dataprovider.v3.converter.ConfigDAO;
 import com.mageddo.dnsproxyserver.config.dataprovider.v3.mapper.ConfigMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class ConfigV3Service {
 
-  private final List<Converter> unorderedConverters;
+  private final List<ConfigDAO> unorderedConfigDAOS;
   private final com.mageddo.dnsproxyserver.config.mapper.ConfigMapper configMapper;
 
   public Config find() {
@@ -24,15 +24,15 @@ public class ConfigV3Service {
     return this.configMapper.mapFrom(configs);
   }
 
-  private List<Config> findConfigs(List<Converter> converters) {
-    return converters
+  private List<Config> findConfigs(List<ConfigDAO> configDAOS) {
+    return configDAOS
       .stream()
-      .map(Converter::parse)
+      .map(ConfigDAO::find)
       .map(ConfigMapper::of)
       .toList();
   }
 
-  List<Converter> findConvertersSorted() {
+  List<ConfigDAO> findConvertersSorted() {
     throw new UnsupportedOperationException();
   }
 

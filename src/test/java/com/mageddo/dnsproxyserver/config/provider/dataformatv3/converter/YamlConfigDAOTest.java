@@ -1,17 +1,17 @@
 package com.mageddo.dnsproxyserver.config.provider.dataformatv3.converter;
 
 import com.mageddo.dnsproxyserver.config.provider.dataformatv3.templates.ConfigV3Templates;
-import com.mageddo.dnsproxyserver.config.dataprovider.v3.converter.YamlConverter;
+import com.mageddo.dnsproxyserver.config.dataprovider.v3.converter.YamlConfigDAO;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class YamlConverterTest {
+class YamlConfigDAOTest {
 
-  YamlConverter parser = new YamlConverter();
+  YamlConfigDAO parser = new YamlConfigDAO();
 
   @Test
-  void mustParseAndSerializeWithTheExactSameContent() {
+  void mustFindAndSerializeWithTheExactSameContent() {
 
     final var yaml = ConfigV3Templates.buildYaml();
 

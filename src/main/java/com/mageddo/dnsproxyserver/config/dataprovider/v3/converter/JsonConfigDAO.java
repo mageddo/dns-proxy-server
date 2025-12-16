@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 
 @Singleton
 @NoArgsConstructor(onConstructor_ = @Inject)
-public class JsonConverter implements Converter {
+public class JsonConfigDAO implements ConfigDAO {
 
   @Override
-  public ConfigV3 parse() {
+  public ConfigV3 find() {
     return parse("");
   }
 
