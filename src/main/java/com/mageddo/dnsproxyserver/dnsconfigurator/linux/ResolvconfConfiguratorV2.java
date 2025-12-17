@@ -66,35 +66,37 @@ public class ResolvconfConfiguratorV2 {
       final String dpsNameserverHost,
       final CleanedContent cleaned
   ) {
-    final var nameserversToComment =
-        collectNameserversToComment(dpsNameserverHost, cleaned);
+    final var nameserversToComment = collectNameserversToComment(dpsNameserverHost, cleaned);
 
-    // Preserve original non-nameserver content when it exists (systemd-resolved case).
-    final var preservedNonNameserverLines = removeActiveNameserverLines(cleaned.originalLines());
+    final var lines = cleaned.originalLines();
+    final var insertionIndex = indexAfterHeaderComments(lines);
 
-    final var out = new ArrayList<String>();
+    final var prefix = new ArrayList<>(lines.subList(0, insertionIndex));
+    final var suffix = removeActiveNameserverLines(lines.subList(insertionIndex, lines.size()));
 
-    // Always start with entries
-    out.add(BEGIN_ENTRIES);
-    out.add(nameserverLine(dpsNameserverHost));
-    out.add(END_ENTRIES);
+    final var outLines = new ArrayList<String>();
+
+    outLines.addAll(prefix);
+
+    // blocks must come after header comments (systemd-resolved expectation)
+    outLines.add(BEGIN_ENTRIES);
+    outLines.add(nameserverLine(dpsNameserverHost));
+    outLines.add(END_ENTRIES);
 
     if (!nameserversToComment.isEmpty()) {
-      out.add("");
-      out.add(BEGIN_COMMENTS);
+      outLines.add("");
+      outLines.add(BEGIN_COMMENTS);
       for (final var ns : nameserversToComment) {
-        out.add(commentedNameserverLine(ns));
+        outLines.add(commentedNameserverLine(ns));
       }
-      out.add(END_COMMENTS);
+      outLines.add(END_COMMENTS);
     }
 
-    // If we have extra settings/comments besides nameservers, preserve them after the blocks.
-    if (!preservedNonNameserverLines.isEmpty()) {
-      out.addAll(preservedNonNameserverLines);
-    }
+    // preserve remaining config (options/search/etc.) exactly after the blocks
+    outLines.addAll(suffix);
 
-    trimTrailingBlankLines(out);
-    return joinLines(out) + LINE_BREAK;
+    trimTrailingBlankLines(outLines);
+    return joinLines(outLines) + LINE_BREAK;
   }
 
   private static List<String> removeActiveNameserverLines(final List<String> lines) {
@@ -105,7 +107,6 @@ public class ResolvconfConfiguratorV2 {
       }
       out.add(line);
     }
-    // Keep formatting (including blank line before "options" as in templates)
     return out;
   }
 
@@ -248,10 +249,11 @@ public class ResolvconfConfiguratorV2 {
     final var lines = splitLines(normalizedContent);
     final var restored = new ArrayList<String>();
 
-    final var nameserversFromDpsComments = new ArrayList<String>();
-
     boolean insideEntriesBlock = false;
     boolean insideCommentsBlock = false;
+
+    // nameservers read from the dps-comments block; emitted when block ends
+    final var nameserversFromBlock = new ArrayList<String>();
 
     for (final var line : lines) {
       final var trimmed = line.trim();
@@ -266,10 +268,19 @@ public class ResolvconfConfiguratorV2 {
       }
       if (trimmed.equals(BEGIN_COMMENTS)) {
         insideCommentsBlock = true;
+        nameserversFromBlock.clear();
         continue;
       }
       if (trimmed.equals(END_COMMENTS)) {
         insideCommentsBlock = false;
+
+        // emit restored nameservers exactly where the block was
+        final var seen = new LinkedHashSet<String>();
+        for (final var ns : nameserversFromBlock) {
+          if (seen.add(ns)) {
+            restored.add(nameserverLine(ns));
+          }
+        }
         continue;
       }
 
@@ -278,11 +289,10 @@ public class ResolvconfConfiguratorV2 {
       }
 
       if (insideCommentsBlock) {
-        // "# nameserver X" => collect X to become active "nameserver X"
-        final var uncommented = uncommentNameserverIfPresent(line);
+        final var uncommented = uncommentNameserverIfPresent(line); // "# nameserver X" -> "nameserver X"
         final var ns = uncommented == null ? null : extractActiveNameserver(uncommented);
         if (ns != null) {
-          nameserversFromDpsComments.add(ns);
+          nameserversFromBlock.add(ns);
         }
         continue;
       }
@@ -292,7 +302,6 @@ public class ResolvconfConfiguratorV2 {
       }
 
       if (isInlineDpsComment(line)) {
-        // "# nameserver X # dps-comment" -> "nameserver X"
         final var restoredLine = restoreInlineDpsComment(line);
         if (restoredLine != null && !restoredLine.isBlank()) {
           restored.add(restoredLine);
@@ -300,24 +309,18 @@ public class ResolvconfConfiguratorV2 {
         continue;
       }
 
-      restored.add(line);
-    }
-
-    // Append nameservers from dps-comments as active nameservers (dedup, preserve order)
-    final var seen = new LinkedHashSet<String>();
-    for (final var ns : nameserversFromDpsComments) {
-      if (seen.add(ns)) {
-        restored.add(nameserverLine(ns));
+      // IMPORTANT: tests expect blank lines removed on restore
+      if (line.isBlank()) {
+        continue;
       }
+
+      restored.add(line);
     }
 
     trimTrailingBlankLines(restored);
     return joinLines(restored) + LINE_BREAK;
   }
 
-  private static void appendLine(final StringBuilder out, final String value) {
-    out.append(value).append(LINE_BREAK);
-  }
 
   private static DnsAddress parseDnsAddress(final String addr) {
     return new DnsAddress(addr);
