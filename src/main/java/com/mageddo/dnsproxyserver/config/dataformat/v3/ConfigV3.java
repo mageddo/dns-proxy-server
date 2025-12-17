@@ -27,10 +27,6 @@ public class ConfigV3 {
   public DefaultDns defaultDns;
   public Log log;
 
-  @Data
-  @Accessors(chain = true)
-  @FieldDefaults(level = AccessLevel.PRIVATE)
-
   @JsonTypeInfo(
       use = JsonTypeInfo.Id.NAME,
       include = JsonTypeInfo.As.PROPERTY,

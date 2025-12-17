@@ -3,7 +3,11 @@ package com.mageddo.dnsproxyserver.config.dataformat.v3.mapper;
 import java.net.URI;
 import java.util.Objects;
 
+import com.mageddo.dnsproxyserver.config.CanaryRateThresholdCircuitBreakerStrategyConfig;
+import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.NonResilientCircuitBreakerStrategyConfig;
+import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.dataformat.v3.ConfigV3;
 import com.mageddo.dnsserver.SimpleServer;
 import com.mageddo.net.IP;
@@ -170,7 +174,8 @@ public class ConfigMapper {
                 .map(IpAddr::of)
                 .collect(toList())
         )
-        .circuitBreaker(null)
+        .circuitBreaker(mapCircuitBreakerToDomain(s.getRemote()
+            .getCircuitBreaker()))
         .build();
   }
 
@@ -285,24 +290,26 @@ public class ConfigMapper {
                   .map(IpAddr::toString)
                   .collect(toList())
           )
+          .setCircuitBreaker(mapCircuitBreakerToV3(config.getSolverRemoteCircuitBreakerStrategy()))
       );
     }
 
     if (config.getSolverDocker() != null) {
       solver.setDocker(new ConfigV3.Docker()
-          .setDomain(config.getDockerDomain())
-          .setRegisterContainerNames(config.getRegisterContainerNames())
-          .setHostMachineFallback(config.getDockerSolverHostMachineFallbackActive())
-          .setDockerDaemonUri(Objects.toString(config.getDockerDaemonUri(), null))
-          .setDpsNetwork(
-              config.getDockerSolverDpsNetwork() == null
-                  ? null
-                  : new ConfigV3.DpsNetwork()
-                  .setAutoCreate(config.getDockerSolverDpsNetwork()
-                      .getAutoCreate())
-                  .setAutoConnect(config.getDockerSolverDpsNetwork()
-                      .getAutoConnect())
-          )
+              .setDomain(config.getDockerDomain())
+              .setRegisterContainerNames(config.getRegisterContainerNames())
+              .setHostMachineFallback(config.getDockerSolverHostMachineFallbackActive())
+              .setDockerDaemonUri(Objects.toString(config.getDockerDaemonUri(), null))
+              .setDpsNetwork(
+                  config.getDockerSolverDpsNetwork() == null
+                      ? null
+                      : new ConfigV3.DpsNetwork()
+//                      .setName(config.getDockerSolverDpsNetwork().getName())
+                      .setAutoCreate(config.getDockerSolverDpsNetwork()
+                          .getAutoCreate())
+                      .setAutoConnect(config.getDockerSolverDpsNetwork()
+                          .getAutoConnect())
+              )
       );
     }
 
@@ -350,5 +357,60 @@ public class ConfigMapper {
     }
 
     return solver;
+  }
+
+  /* ================= CIRCUIT BREAKER ================= */
+
+  private static CircuitBreakerStrategyConfig mapCircuitBreakerToDomain(final ConfigV3.CircuitBreaker cb) {
+    if (cb == null) {
+      return null;
+    }
+
+    return switch (cb.getName()) {
+      case STATIC_THRESHOLD -> {
+        final var st = (ConfigV3.CircuitBreaker.StaticThreshold) cb;
+        yield StaticThresholdCircuitBreakerStrategyConfig.builder()
+            .failureThreshold(st.getFailureThreshold())
+            .failureThresholdCapacity(st.getFailureThresholdCapacity())
+            .successThreshold(st.getSuccessThreshold())
+            .testDelay(st.getTestDelay())
+            .build();
+      }
+      case CANARY_RATE_THRESHOLD -> {
+        final var cr = (ConfigV3.CircuitBreaker.CanaryRateThreshold) cb;
+        yield CanaryRateThresholdCircuitBreakerStrategyConfig.builder()
+            .failureRateThreshold(cr.getFailureRateThreshold())
+            .minimumNumberOfCalls(cr.getMinimumNumberOfCalls())
+            .permittedNumberOfCallsInHalfOpenState(cr.getPermittedNumberOfCallsInHalfOpenState())
+            .build();
+      }
+      case NON_RESILIENT -> new NonResilientCircuitBreakerStrategyConfig();
+    };
+  }
+
+  private static ConfigV3.CircuitBreaker mapCircuitBreakerToV3(final CircuitBreakerStrategyConfig strategy) {
+    if (strategy == null) {
+      return null;
+    }
+
+    return switch (strategy.name()) {
+      case STATIC_THRESHOLD -> {
+        final var st = (StaticThresholdCircuitBreakerStrategyConfig) strategy;
+        yield new ConfigV3.CircuitBreaker.StaticThreshold()
+            .setFailureThreshold(st.getFailureThreshold())
+            .setFailureThresholdCapacity(st.getFailureThresholdCapacity())
+            .setSuccessThreshold(st.getSuccessThreshold())
+            .setTestDelay(st.getTestDelay());
+      }
+      case CANARY_RATE_THRESHOLD -> {
+        final var cr = (CanaryRateThresholdCircuitBreakerStrategyConfig) strategy;
+        yield new ConfigV3.CircuitBreaker.CanaryRateThreshold()
+            .setFailureRateThreshold(cr.getFailureRateThreshold())
+            .setMinimumNumberOfCalls(cr.getMinimumNumberOfCalls())
+            .setPermittedNumberOfCallsInHalfOpenState(
+                cr.getPermittedNumberOfCallsInHalfOpenState());
+      }
+      case NON_RESILIENT -> null; // V3 não tem subtype; serializa como "sem circuit breaker"
+    };
   }
 }
