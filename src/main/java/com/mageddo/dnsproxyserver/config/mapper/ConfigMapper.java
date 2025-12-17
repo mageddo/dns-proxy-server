@@ -73,11 +73,11 @@ public class ConfigMapper {
         .build();
   }
 
-  private static List<Config.Entry> replaceEntry(
+  static List<Config.Entry> replaceEntry(
       List<Config.Entry> entries, Config.Entry entry
   ) {
-    final var store = keyBy(entries, Config.Entry::getId);
-    store.put(entry.getId(), entry);
+    final var store = keyBy(entries, Config.Entry::getHostname);
+    store.put(entry.getHostname(), entry);
     return new ArrayList<>(store.values());
   }
 
