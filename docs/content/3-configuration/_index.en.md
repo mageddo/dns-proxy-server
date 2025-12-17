@@ -4,104 +4,7 @@ weight: 3
 pre: "<b>3. </b>"
 ---
 
-Current Version: `3`.
-
-## Configuration Formats
-ENV, YAML, JSON and some command line arguments are the supported configuration formats.
-
-### YAML/JSON File Path Configuration
-Default: `conf/config.json`
-
-The location can be changed by setting `DPS_CONFIG_FILE_PATH`, `MG_CONFIG_FILE_PATH` legacy env or
-`--conf-path` command line argument. The path can be relative (to the binary path) or absolute.
-
-### Working Dir
-Default: `DPS executing path, a.k.a Working Directory`
-
-Is the path which will be used when **ConfigFilePath** is set as a relative path.
-Can be set by `DPS_WORK_DIR` or `DPS_WORK_DIR` legacy env.
-
-### Environment Variable configuration
-Environment Variable configuration are dynamically generated respecting the file configuration using the format:
-
-* `DPS_${property}`
-* `DPS_${property}__${subProperty}`, ex: `DPS_SERVER__PROTOCOL`
-* `DPS_${property}_${index}__${property}`, ex: `DPS_SOLVER__LOCAL__ENVS_0__HOSTNAMES_0__TARGET`
-
-**Boolean values**
-
-You can use `1` or `true` (case-insensitive) to specify which the flag is activated, any other
-value will be considered false.
-
-### Terminal configuration
-Run one of the commands below to get the commandline instructions help:
-
-```bash
-$ ./dns-proxy-server --help
-```
-
-```bash
-$ docker run defreitas/dns-proxy-server --help
-```
-
-## File Configuration Example
-* [Solver remote circuit breaker configuration][3]
-
-```yaml
----
-version: 3
-server:
-  dns:
-    port: 53
-    noEntriesResponseCode: 3
-  web:
-    port: 5380
-  protocol: UDP_TCP
-solver:
-  remote:
-    active: true
-    dnsServers:
-      - 8.8.8.8
-      - 4.4.4.4:53
-    circuitBreaker:
-      type: CANARY_RATE_THRESHOLD
-      failureRateThreshold: 21
-      minimumNumberOfCalls: 50
-      permittedNumberOfCallsInHalfOpenState: 10
-  docker:
-    registerContainerNames: false
-    domain: docker
-    hostMachineFallback: true
-    dpsNetwork:
-      name: dps
-      autoCreate: false
-      autoConnect: false
-    dockerDaemonUri:
-  system:
-    hostMachineHostname: host.docker
-  local:
-    activeEnv: ''
-    envs:
-      - name: ''
-        hostnames:
-          - type: A
-            hostname: dps-sample.dev
-            ip: 192.168.0.254
-            ttl: 30
-  stub:
-    domainName: stub
-defaultDns:
-  active: true
-  resolvConf:
-    paths: "/host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf"
-    overrideNameServers: true
-log:
-  level: DEBUG
-  file: console
-```
-
-
-## Configurations
+Current Version: `3`. See [how to set the configurations][5]. 
 
 ### Server
 
@@ -198,6 +101,67 @@ Common DNS resolution mechanisms used by DPS. Solvers are evaluated according to
 | `log.file` | Output target for logs (file path or console). | `console` |
 
 
+### File Configuration Example
+* [Solver remote circuit breaker configuration][3]
+
+```yaml
+version: 3
+server:
+  dns:
+    port: 53
+    noEntriesResponseCode: 3
+  web:
+    port: 5380
+  protocol: UDP_TCP
+solver:
+  remote:
+    active: true
+    dnsServers:
+      - 8.8.8.8
+      - 4.4.4.4:53
+    circuitBreaker:
+      type: CANARY_RATE_THRESHOLD
+      failureRateThreshold: 21
+      minimumNumberOfCalls: 50
+      permittedNumberOfCallsInHalfOpenState: 10
+  docker:
+    registerContainerNames: false
+    domain: docker
+    hostMachineFallback: true
+    dpsNetwork:
+      name: dps
+      autoCreate: false
+      autoConnect: false
+    dockerDaemonUri:
+  system:
+    hostMachineHostname: host.docker
+  local:
+    activeEnv: ''
+    envs:
+      - name: ''
+        hostnames:
+          - type: A
+            hostname: dps-sample.dev
+            ip: 192.168.0.254
+            ttl: 30
+  stub:
+    domainName: stub
+defaultDns:
+  active: true
+  resolvConf:
+    paths: "/host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf"
+    overrideNameServers: true
+log:
+  level: DEBUG
+  file: console
+```
+
+
+### Legacy Configuration
+[[ref][4]]
+
 [1]: {{%relref "2-features/auto-configuration-as-default-dns/_index.md" %}}
 [2]: {{%relref "2-features/local-entries/_index.md" %}}
 [3]: {{%relref "2-features/remote-solver-circuitbreaker/_index.en.md" %}}
+[4]: {{%relref "3-configuration/legacy.en.md" %}}
+[5]: {{%relref "3-configuration/format.en.md" %}}

@@ -1,5 +1,5 @@
 ---
-title: Configuration
+title: Legacy Configuration (v2)
 weight: 3
 pre: "<b>3. </b>"
 ---
