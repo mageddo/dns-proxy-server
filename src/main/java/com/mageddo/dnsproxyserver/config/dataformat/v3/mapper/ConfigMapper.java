@@ -8,6 +8,7 @@ import com.mageddo.commons.Collections;
 import com.mageddo.dnsproxyserver.config.CanaryRateThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.Config.Entry;
 import com.mageddo.dnsproxyserver.config.Config.SolverDocker.DpsNetwork;
 import com.mageddo.dnsproxyserver.config.NonResilientCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
@@ -102,16 +103,15 @@ public class ConfigMapper {
       return null;
     }
 
+    final var resolvConf = d.getResolvConf();
     return Config.DefaultDns.builder()
         .active(d.getActive())
         .resolvConf(
-            d.getResolvConf() == null
+            resolvConf == null
                 ? null
                 : Config.DefaultDns.ResolvConf.builder()
-                .paths(d.getResolvConf()
-                    .getPaths())
-                .overrideNameServers(d.getResolvConf()
-                    .getOverrideNameServers())
+                .paths(resolvConf.getPaths())
+                .overrideNameServers(resolvConf.getOverrideNameServers())
                 .build()
         )
         .build();
@@ -122,16 +122,15 @@ public class ConfigMapper {
       return null;
     }
 
+    final var resolvConf = d.getResolvConf();
     return new ConfigV3.DefaultDns()
         .setActive(d.getActive())
         .setResolvConf(
-            d.getResolvConf() == null
+            resolvConf == null
                 ? null
                 : new ConfigV3.ResolvConf()
-                .setPaths(d.getResolvConf()
-                    .getPaths())
-                .setOverrideNameServers(d.getResolvConf()
-                    .getOverrideNameServers())
+                .setPaths(resolvConf.getPaths())
+                .setOverrideNameServers(resolvConf.getOverrideNameServers())
         );
   }
 
@@ -143,8 +142,7 @@ public class ConfigMapper {
     }
 
     return Config.Log.builder()
-        .level(l.getLevel() != null ? Config.Log.Level.valueOf(
-            l.getLevel()) : null)
+        .level(l.getLevel() != null ? Config.Log.Level.valueOf(l.getLevel()) : null)
         .file(l.getFile())
         .build();
   }
@@ -154,9 +152,9 @@ public class ConfigMapper {
       return null;
     }
 
+    final var level = l.getLevel();
     return new ConfigV3.Log()
-        .setLevel(l.getLevel() != null ? l.getLevel()
-            .name() : null)
+        .setLevel(level != null ? level.name() : null)
         .setFile(l.getFile());
   }
 
@@ -167,21 +165,15 @@ public class ConfigMapper {
       return null;
     }
 
+    final var remote = s.getRemote();
     return Config.SolverRemote.builder()
-        .active(s.getRemote()
-            .getActive())
+        .active(remote.getActive())
         .dnsServers(
-            s.getRemote()
-                .getDnsServers() == null
+            remote.getDnsServers() == null
                 ? emptyList()
-                : s.getRemote()
-                .getDnsServers()
-                .stream()
-                .map(IpAddr::of)
-                .collect(toList())
+                : Collections.map(remote.getDnsServers(), IpAddr::of)
         )
-        .circuitBreaker(mapCircuitBreakerToDomain(s.getRemote()
-            .getCircuitBreaker()))
+        .circuitBreaker(mapCircuitBreakerToDomain(remote.getCircuitBreaker()))
         .build();
   }
 
@@ -253,11 +245,11 @@ public class ConfigMapper {
     );
   }
 
-  private static Config.Entry mapEntry(final ConfigV3.Hostname h) {
-    return Config.Entry.builder()
+  private static Entry mapEntry(final ConfigV3.Hostname h) {
+    return Entry.builder()
         .hostname(h.getHostname())
         .ttl(h.getTtl())
-        .type(Config.Entry.Type.valueOf(h.getType()))
+        .type(Entry.Type.valueOf(h.getType()))
         .target(h.getTarget())
         .ip(h.getIp() != null ? IP.of(h.getIp()) : null)
         .build();
@@ -330,17 +322,7 @@ public class ConfigMapper {
                       .setHostnames(
                           env.getEntries() == null
                               ? emptyList()
-                              : env.getEntries()
-                              .stream()
-                              .map(entry -> new ConfigV3.Hostname()
-                                  .setHostname(entry.getHostname())
-                                  .setType(entry.getType()
-                                      .name())
-                                  .setIp(entry.getIpAsText())
-                                  .setTarget(entry.getTarget())
-                                  .setTtl(entry.getTtl())
-                              )
-                              .collect(toList())
+                              : Collections.map(env.getEntries(), ConfigMapper::mapEntryV3)
                       )
                   )
                   .collect(toList())
@@ -351,7 +333,8 @@ public class ConfigMapper {
     if (config.getSolverStub() != null) {
       solver.setStub(new ConfigV3.Stub()
           .setDomainName(config.getSolverStub()
-              .getDomainName())
+              .getDomainName()
+          )
       );
     }
 
@@ -364,6 +347,16 @@ public class ConfigMapper {
     return solver;
   }
 
+  private static ConfigV3.Hostname mapEntryV3(Entry entry) {
+    return new ConfigV3.Hostname()
+        .setHostname(entry.getHostname())
+        .setType(entry.getType()
+            .name())
+        .setIp(entry.getIpAsText())
+        .setTarget(entry.getTarget())
+        .setTtl(entry.getTtl());
+  }
+
   static ConfigV3.DpsNetwork.Config mapDpsNetworkConfigV3(DpsNetwork.NetworkConfig config) {
     return ConfigV3.DpsNetwork.Config.builder()
         .subNet(config.getSubNet())
@@ -372,13 +365,6 @@ public class ConfigMapper {
         .build();
   }
 
-  static DpsNetwork.NetworkConfig mapDpsNetworkConfigV3x(ConfigV3.DpsNetwork.Config config) {
-    return DpsNetwork.NetworkConfig.builder()
-        .subNet(config.getSubNet())
-        .ipRange(config.getIpRange())
-        .gateway(config.getGateway())
-        .build();
-  }
 
   /* ================= CIRCUIT BREAKER ================= */
 
