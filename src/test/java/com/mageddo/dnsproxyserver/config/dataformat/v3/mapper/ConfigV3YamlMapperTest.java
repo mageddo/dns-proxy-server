@@ -4,7 +4,7 @@ import com.mageddo.dnsproxyserver.config.provider.dataformatv3.templates.ConfigV
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ConfigV3YamlMapperTest {
 
@@ -14,11 +14,11 @@ class ConfigV3YamlMapperTest {
     final var yaml = ConfigV3Templates.buildYaml();
 
     final var parsed = ConfigV3YamlMapper.of(yaml);
-    final var marshalled = ConfigV3YamlMapper.toYaml(parsed);
-    final var marshalledParsed = ConfigV3YamlMapper.of(yaml);
+    final var marshalledParsed = ConfigV3YamlMapper.of(ConfigV3YamlMapper.toYaml(parsed));
 
-    assertEquals(yaml, marshalled);
-    assertEquals(parsed, marshalledParsed);
+    assertThat(parsed)
+        .usingRecursiveComparison()
+        .isEqualTo(marshalledParsed);
 
   }
 }

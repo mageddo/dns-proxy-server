@@ -18,7 +18,7 @@ class EnvMapperTest {
 
     final var env = ConfigV3EnvTemplates.build();
 
-    final var expected = TestUtils.sortJson(ConfigV3Templates.buildJson());
+    final var expected = TestUtils.sortJson(ConfigV3Templates.defaultJson_2025_12());
 
     final var json = this.mapper.toJson(env, ConfigV3EnvMapper.PREFIX);
     final var actual = TestUtils.sortJson(json);
