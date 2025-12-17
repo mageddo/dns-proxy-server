@@ -80,7 +80,7 @@ public class Config {
   }
 
   @JsonIgnore
-  private DefaultDns.ResolvConf getDefaultDnsResolvConf() {
+  DefaultDns.ResolvConf getDefaultDnsResolvConf() {
     if (this.defaultDns == null) {
       return null;
     }
@@ -219,14 +219,14 @@ public class Config {
   @Builder(toBuilder = true)
   public static class DefaultDns {
 
-    private Boolean active;
-    private ResolvConf resolvConf;
+    Boolean active;
+    ResolvConf resolvConf;
 
     @Value
     @Builder(toBuilder = true)
     public static class ResolvConf {
-      private String paths;
-      private Boolean overrideNameServers;
+      String paths;
+      Boolean overrideNameServers;
     }
   }
 
@@ -322,26 +322,26 @@ public class Config {
   public static class Entry {
 
     @NonNull
-    private Long id;
+    Long id;
 
     @NonNull
-    private String hostname;
+    String hostname;
 
     /**
      * Used when {@link #type} in {@link Type#AAAA} , {@link Type#A}
      */
-    private IP ip;
+    IP ip;
 
     /**
      * Target hostname when {@link #type} = {@link Type#CNAME}
      */
-    private String target;
+    String target;
 
     @NonNull
-    private Integer ttl;
+    Integer ttl;
 
     @NonNull
-    private Config.Entry.Type type;
+    Config.Entry.Type type;
 
     public String requireTextIp() {
       Validate.isTrue(this.type.isAddressSolving() && this.ip != null, "IP is required");
@@ -372,7 +372,7 @@ public class Config {
       /**
        * See {@link org.xbill.DNS.Type}
        */
-      private final int type;
+      final int type;
 
       public boolean isNot(Type... types) {
         return ConfigEntryTypes.isNot(this.type, types);
@@ -434,7 +434,7 @@ public class Config {
       TRACE,
       ;
 
-      private final String slf4jName;
+      final String slf4jName;
 
       Level() {
         this.slf4jName = null;
@@ -465,12 +465,12 @@ public class Config {
   @Builder
   public static class Server {
 
-    private Integer webServerPort;
+    Integer webServerPort;
 
-    private Integer dnsServerPort;
-    private Integer dnsServerNoEntriesResponseCode;
+    Integer dnsServerPort;
+    Integer dnsServerNoEntriesResponseCode;
 
-    private SimpleServer.Protocol serverProtocol;
+    SimpleServer.Protocol serverProtocol;
 
 
   }
@@ -479,11 +479,11 @@ public class Config {
   @Builder(toBuilder = true)
   public static class SolverDocker {
 
-    private URI dockerDaemonUri;
-    private Boolean registerContainerNames;
-    private String domain;
-    private DpsNetwork dpsNetwork;
-    private Boolean hostMachineFallback;
+    URI dockerDaemonUri;
+    Boolean registerContainerNames;
+    String domain;
+    DpsNetwork dpsNetwork;
+    Boolean hostMachineFallback;
 
     public boolean shouldUseHostMachineFallback() {
       return BooleanUtils.toBoolean(hostMachineFallback);
@@ -507,8 +507,8 @@ public class Config {
     @Builder
     public static class DpsNetwork {
 
-      private Boolean autoCreate;
-      private Boolean autoConnect;
+      Boolean autoCreate;
+      Boolean autoConnect;
 
       public boolean shouldAutoConnect() {
         return BooleanUtils.isTrue(this.autoConnect);
@@ -524,8 +524,8 @@ public class Config {
   @Builder(toBuilder = true)
   public static class SolverLocal {
 
-    private String activeEnv;
-    private List<Env> envs;
+    String activeEnv;
+    List<Env> envs;
 
     @JsonIgnore
     public Env getFirst() {
@@ -540,24 +540,24 @@ public class Config {
   @Builder
   public static class SolverRemote {
 
-    private Boolean active;
+    Boolean active;
 
-    private CircuitBreakerStrategyConfig circuitBreaker;
+    CircuitBreakerStrategyConfig circuitBreaker;
 
     @Builder.Default
-    private List<IpAddr> dnsServers = new ArrayList<>();
+    List<IpAddr> dnsServers = new ArrayList<>();
 
   }
 
   @Value
   @Builder
   public static class SolverStub {
-    private String domainName;
+    String domainName;
   }
 
   @Value
   @Builder
   public static class SolverSystem {
-    private String hostMachineHostname;
+    String hostMachineHostname;
   }
 }
