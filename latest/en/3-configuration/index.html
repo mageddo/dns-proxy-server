@@ -12,20 +12,20 @@
     <title>Configuration Reference :: DNS Proxy Server</title>
 
     
-    <link href="/dns-proxy-server/latest/css/nucleus.css?1765996471" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/fontawesome-all.min.css?1765996471" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/hybrid.css?1765996471" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/featherlight.min.css?1765996471" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/perfect-scrollbar.min.css?1765996471" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/auto-complete.css?1765996471" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/atom-one-dark-reasonable.css?1765996471" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/theme.css?1765996471" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/hugo-theme.css?1765996471" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/nucleus.css?1766006381" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/fontawesome-all.min.css?1766006381" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/hybrid.css?1766006381" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/featherlight.min.css?1766006381" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/perfect-scrollbar.min.css?1766006381" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/auto-complete.css?1766006381" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/atom-one-dark-reasonable.css?1766006381" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/theme.css?1766006381" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/hugo-theme.css?1766006381" rel="stylesheet">
     
-      <link href="/dns-proxy-server/latest/css/theme-mine.css?1765996471" rel="stylesheet">
+      <link href="/dns-proxy-server/latest/css/theme-mine.css?1766006381" rel="stylesheet">
     
 
-    <script src="/dns-proxy-server/latest/js/jquery-3.3.1.min.js?1765996471"></script>
+    <script src="/dns-proxy-server/latest/js/jquery-3.3.1.min.js?1766006381"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -53,14 +53,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/dns-proxy-server/latest/js/lunr.min.js?1765996471"></script>
-<script type="text/javascript" src="/dns-proxy-server/latest/js/auto-complete.js?1765996471"></script>
+<script type="text/javascript" src="/dns-proxy-server/latest/js/lunr.min.js?1766006381"></script>
+<script type="text/javascript" src="/dns-proxy-server/latest/js/auto-complete.js?1766006381"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/mageddo.github.io\/dns-proxy-server\/latest\/en";
     
 </script>
-<script type="text/javascript" src="/dns-proxy-server/latest/js/search.js?1765996471"></script>
+<script type="text/javascript" src="/dns-proxy-server/latest/js/search.js?1766006381"></script>
 
     
   </div>
@@ -1349,8 +1349,42 @@
 <td>Whether all containers should be auto-connected to the DPS network.</td>
 <td><code>false</code></td>
 </tr>
+
+<tr>
+<td><code>solver.docker.dpsNetwork.configs</code></td>
+<td>Docker network IP configuration</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>solver.docker.dpsNetwork.configs[].subNet</code></td>
+<td>Subnet</td>
+<td><code>172.20.0.0/16</code></td>
+</tr>
+
+<tr>
+<td><code>solver.docker.dpsNetwork.configs[].ipRange</code></td>
+<td>Ip Range</td>
+<td><code>172.20.5.0/24</code></td>
+</tr>
+
+<tr>
+<td><code>solver.docker.dpsNetwork.configs[].gateway</code></td>
+<td>Gateway</td>
+<td><code>172.20.5.1</code></td>
+</tr>
 </tbody>
 </table>
+
+<p>Default DPS network settings</p>
+
+<pre><code class="language-yaml">---
+- subNet: 172.20.0.0/16
+  ipRange: 172.20.5.0/24
+  gateway: 172.20.5.1
+- subNet: fc00:5c6f:db50::/64
+  gateway: fc00:5c6f:db50::1
+</code></pre>
 
 <hr />
 
@@ -1486,7 +1520,7 @@
 <li><a href="/dns-proxy-server/latest/en/2-features/remote-solver-circuitbreaker/">Solver remote circuit breaker configuration</a></li>
 </ul>
 
-<pre><code class="language-json">version: 3
+<pre><code class="language-yaml">version: 3
 server:
   dns:
     port: 53
@@ -1513,6 +1547,12 @@ solver:
       name: dps
       autoCreate: false
       autoConnect: false
+      configs:
+        - subNet: 172.20.0.0/16
+          ipRange: 172.20.5.0/24
+          gateway: 172.20.5.1
+        - subNet: fc00:5c6f:db50::/64
+          gateway: fc00:5c6f:db50::1
     dockerDaemonUri:
   system:
     hostMachineHostname: host.docker
@@ -2186,20 +2226,20 @@ log:
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/dns-proxy-server/latest/js/clipboard.min.js?1765996471"></script>
-    <script src="/dns-proxy-server/latest/js/perfect-scrollbar.min.js?1765996471"></script>
-    <script src="/dns-proxy-server/latest/js/perfect-scrollbar.jquery.min.js?1765996471"></script>
-    <script src="/dns-proxy-server/latest/js/jquery.sticky.js?1765996471"></script>
-    <script src="/dns-proxy-server/latest/js/featherlight.min.js?1765996471"></script>
-    <script src="/dns-proxy-server/latest/js/html5shiv-printshiv.min.js?1765996471"></script>
-    <script src="/dns-proxy-server/latest/js/highlight.pack.js?1765996471"></script>
+    <script src="/dns-proxy-server/latest/js/clipboard.min.js?1766006381"></script>
+    <script src="/dns-proxy-server/latest/js/perfect-scrollbar.min.js?1766006381"></script>
+    <script src="/dns-proxy-server/latest/js/perfect-scrollbar.jquery.min.js?1766006381"></script>
+    <script src="/dns-proxy-server/latest/js/jquery.sticky.js?1766006381"></script>
+    <script src="/dns-proxy-server/latest/js/featherlight.min.js?1766006381"></script>
+    <script src="/dns-proxy-server/latest/js/html5shiv-printshiv.min.js?1766006381"></script>
+    <script src="/dns-proxy-server/latest/js/highlight.pack.js?1766006381"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/dns-proxy-server/latest/js/modernizr.custom-3.6.0.js?1765996471"></script>
-    <script src="/dns-proxy-server/latest/js/learn.js?1765996471"></script>
-    <script src="/dns-proxy-server/latest/js/hugo-learn.js?1765996471"></script>
+    <script src="/dns-proxy-server/latest/js/modernizr.custom-3.6.0.js?1766006381"></script>
+    <script src="/dns-proxy-server/latest/js/learn.js?1766006381"></script>
+    <script src="/dns-proxy-server/latest/js/hugo-learn.js?1766006381"></script>
 
-    <link href="/dns-proxy-server/latest/mermaid/mermaid.css?1765996471" type="text/css" rel="stylesheet" />
-    <script src="/dns-proxy-server/latest/mermaid/mermaid.js?1765996471"></script>
+    <link href="/dns-proxy-server/latest/mermaid/mermaid.css?1766006381" type="text/css" rel="stylesheet" />
+    <script src="/dns-proxy-server/latest/mermaid/mermaid.js?1766006381"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
