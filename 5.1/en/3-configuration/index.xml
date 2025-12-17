@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Configuration Reference on DNS Proxy Server</title>
+    <link>http://mageddo.github.io/dns-proxy-server/5.1/en/3-configuration/</link>
+    <description>Recent content in Configuration Reference on DNS Proxy Server</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    
+	<atom:link href="http://mageddo.github.io/dns-proxy-server/5.1/en/3-configuration/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Supported Formats</title>
+      <link>http://mageddo.github.io/dns-proxy-server/5.1/en/3-configuration/format/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mageddo.github.io/dns-proxy-server/5.1/en/3-configuration/format/</guid>
+      <description>Supported Formats  ENV YAML JSON Command Line Arguments  YAML/JSON File Path Configuration Default: conf/config.json
+The location can be changed by setting DPS_CONFIG_FILE_PATH, MG_CONFIG_FILE_PATH legacy env or --conf-path command line argument. The path can be relative (to the binary path) or absolute.
+Working Dir Default: DPS executing path, a.k.a Working Directory
+Is the path which will be used when ConfigFilePath is set as a relative path. Can be set by DPS_WORK_DIR or DPS_WORK_DIR legacy env.</description>
+    </item>
+    
+    <item>
+      <title>Legacy Configuration (v2)</title>
+      <link>http://mageddo.github.io/dns-proxy-server/5.1/en/3-configuration/legacy/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mageddo.github.io/dns-proxy-server/5.1/en/3-configuration/legacy/</guid>
+      <description>Important: Legacy configurations are supported only for read, they won&amp;rsquo;t receive new properties, can be replaced when using the GUI to make changes on the settings and can be removed on future versions of DPS.
+I would recommend to migrate to version 3.
+Remote DNS Servers Remote DNS servers to be asked when can not solve from docker or local storage. Default: 8.8.8.8.
+Web Server Port Web GUI port, Default: 5380.</description>
+    </item>
+    
+  </channel>
+</rss>
