@@ -12,7 +12,7 @@ public class CanaryRateThresholdCircuitBreakerStrategyConfig implements CircuitB
   private int permittedNumberOfCallsInHalfOpenState;
 
   @Override
-  public Name name() {
-    return Name.CANARY_RATE_THRESHOLD;
+  public Type getType() {
+    return Type.CANARY_RATE_THRESHOLD;
   }
 }

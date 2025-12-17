@@ -11,14 +11,14 @@ import static com.mageddo.dnsproxyserver.utils.Numbers.positiveOrNull;
 public class CircuitBreakerValidator {
   public static void validate(CircuitBreakerStrategyConfig config) {
     try {
-      switch (config.name()) {
+      switch (config.getType()) {
         case STATIC_THRESHOLD -> validate((StaticThresholdCircuitBreakerStrategyConfig) config);
         case CANARY_RATE_THRESHOLD ->
             validate((CanaryRateThresholdCircuitBreakerStrategyConfig) config);
       }
     } catch (Exception e) {
       throw new IllegalArgumentException(
-          String.format("status=badParams, circuitBreaker=%s: %s", config.name(), e.getMessage()),
+          String.format("status=badParams, circuitBreaker=%s: %s", config.getType(), e.getMessage()),
           e
       );
     }

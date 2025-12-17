@@ -363,14 +363,16 @@ public class ConfigMapper {
 
   /* ================= CIRCUIT BREAKER ================= */
 
-  private static CircuitBreakerStrategyConfig mapCircuitBreakerToDomain(final ConfigV3.CircuitBreaker cb) {
+  private static CircuitBreakerStrategyConfig mapCircuitBreakerToDomain(
+      CircuitBreakerStrategyConfig cb
+  ) {
     if (cb == null) {
       return null;
     }
 
-    return switch (cb.getName()) {
+    return switch (cb.getType()) {
       case STATIC_THRESHOLD -> {
-        final var st = (ConfigV3.CircuitBreaker.StaticThreshold) cb;
+        final var st = (ConfigV3.StaticThreshold) cb;
         yield StaticThresholdCircuitBreakerStrategyConfig.builder()
             .failureThreshold(st.getFailureThreshold())
             .failureThresholdCapacity(st.getFailureThresholdCapacity())
@@ -379,7 +381,7 @@ public class ConfigMapper {
             .build();
       }
       case CANARY_RATE_THRESHOLD -> {
-        final var cr = (ConfigV3.CircuitBreaker.CanaryRateThreshold) cb;
+        final var cr = (ConfigV3.CanaryRateThreshold) cb;
         yield CanaryRateThresholdCircuitBreakerStrategyConfig.builder()
             .failureRateThreshold(cr.getFailureRateThreshold())
             .minimumNumberOfCalls(cr.getMinimumNumberOfCalls())
@@ -390,15 +392,17 @@ public class ConfigMapper {
     };
   }
 
-  private static ConfigV3.CircuitBreaker mapCircuitBreakerToV3(final CircuitBreakerStrategyConfig strategy) {
+  static CircuitBreakerStrategyConfig mapCircuitBreakerToV3(
+      CircuitBreakerStrategyConfig strategy
+  ) {
     if (strategy == null) {
       return null;
     }
 
-    return switch (strategy.name()) {
+    return switch (strategy.getType()) {
       case STATIC_THRESHOLD -> {
         final var st = (StaticThresholdCircuitBreakerStrategyConfig) strategy;
-        yield new ConfigV3.CircuitBreaker.StaticThreshold()
+        yield new ConfigV3.StaticThreshold()
             .setFailureThreshold(st.getFailureThreshold())
             .setFailureThresholdCapacity(st.getFailureThresholdCapacity())
             .setSuccessThreshold(st.getSuccessThreshold())
@@ -406,7 +410,7 @@ public class ConfigMapper {
       }
       case CANARY_RATE_THRESHOLD -> {
         final var cr = (CanaryRateThresholdCircuitBreakerStrategyConfig) strategy;
-        yield new ConfigV3.CircuitBreaker.CanaryRateThreshold()
+        yield new ConfigV3.CanaryRateThreshold()
             .setFailureRateThreshold(cr.getFailureRateThreshold())
             .setMinimumNumberOfCalls(cr.getMinimumNumberOfCalls())
             .setPermittedNumberOfCallsInHalfOpenState(

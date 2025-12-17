@@ -24,8 +24,12 @@ public class ConfigV3Templates {
           dnsServers:
           - 8.8.8.8
           - 4.4.4.4:53
-          circuitBreaker:
-            name: STATIC_THRESHOLD
+          circuitBreaker: !<STATIC_THRESHOLD>
+              name: STATIC_THRESHOLD
+              failureThreshold: null
+              failureThresholdCapacity: null
+              successThreshold: null
+              testDelay: null
         docker:
           registerContainerNames: false
           domain: docker

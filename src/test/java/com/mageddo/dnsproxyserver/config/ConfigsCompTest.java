@@ -14,7 +14,6 @@ import dagger.sheath.junit.DaggerTest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 @DaggerTest(component = Context.class)
 class ConfigsCompTest {
 

@@ -9,7 +9,7 @@ import testing.templates.ConfigJsonTemplates;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig.Name.CANARY_RATE_THRESHOLD;
+import static com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig.Type.CANARY_RATE_THRESHOLD;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ConfigJsonV2MapperTest {
@@ -59,7 +59,7 @@ class ConfigJsonV2MapperTest {
     final var config = toConfig(configJson);
 
     final var circuitBreakerStrategyConfig = config.getSolverRemoteCircuitBreakerStrategy();
-    assertEquals(CANARY_RATE_THRESHOLD, circuitBreakerStrategyConfig.name());
+    assertEquals(CANARY_RATE_THRESHOLD, circuitBreakerStrategyConfig.getType());
 
   }
 

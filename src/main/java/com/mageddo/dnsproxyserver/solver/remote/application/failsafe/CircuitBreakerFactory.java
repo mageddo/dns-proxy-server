@@ -61,7 +61,7 @@ public class CircuitBreakerFactory {
 
   CircuitBreakerDelegate findCircuitBreakerHotLoad(InetSocketAddress address) {
     final var config = this.findCircuitBreakerConfig();
-    return switch (config.name()) {
+    return switch (config.getType()) {
       case STATIC_THRESHOLD -> this.buildStaticThresholdFailSafeCircuitBreaker(address, config);
       case NON_RESILIENT -> new CircuitBreakerDelegateNonResilient();
       case CANARY_RATE_THRESHOLD -> this.buildCanaryRateThreshold(config, address);

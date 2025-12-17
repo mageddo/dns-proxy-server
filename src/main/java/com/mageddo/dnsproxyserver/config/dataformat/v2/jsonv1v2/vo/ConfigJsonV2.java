@@ -10,7 +10,6 @@ import com.fasterxml.jackson.datatype.jsr310.deser.DurationDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.DurationSerializer;
 import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.mapper.ConfigJsonV2EnvsMapper;
 import com.mageddo.dnsserver.SimpleServer;
 import com.mageddo.net.IP;
@@ -137,7 +136,7 @@ public class ConfigJsonV2 implements ConfigJson {
     private String target; // target hostname when type=CNAME
 
     private Integer ttl;
-    private Type type;
+    private Config.Entry.Type type;
 
     public static Entry from(Config.Entry entry) {
       return new Entry()
@@ -160,7 +159,7 @@ public class ConfigJsonV2 implements ConfigJson {
     public static Entry sample() {
       return Entry.from(Config.Entry
         .builder()
-        .type(Type.A)
+        .type(Config.Entry.Type.A)
         .hostname("dps-sample.dev")
         .ip(IP.of("192.168.0.254"))
         .ttl(30)
@@ -197,7 +196,7 @@ public class ConfigJsonV2 implements ConfigJson {
   })
   public interface CircuitBreaker {
 
-    CircuitBreakerStrategyConfig.Name strategy();
+    CircuitBreakerStrategyConfig.Type strategy();
 
   }
 
@@ -214,8 +213,8 @@ public class ConfigJsonV2 implements ConfigJson {
     private Duration testDelay;
 
     @Override
-    public CircuitBreakerStrategyConfig.Name strategy() {
-      return CircuitBreakerStrategyConfig.Name.STATIC_THRESHOLD;
+    public CircuitBreakerStrategyConfig.Type strategy() {
+      return CircuitBreakerStrategyConfig.Type.STATIC_THRESHOLD;
     }
   }
 
@@ -227,8 +226,8 @@ public class ConfigJsonV2 implements ConfigJson {
     private int permittedNumberOfCallsInHalfOpenState;
 
     @Override
-    public CircuitBreakerStrategyConfig.Name strategy() {
-      return CircuitBreakerStrategyConfig.Name.CANARY_RATE_THRESHOLD;
+    public CircuitBreakerStrategyConfig.Type strategy() {
+      return CircuitBreakerStrategyConfig.Type.CANARY_RATE_THRESHOLD;
     }
   }
 }

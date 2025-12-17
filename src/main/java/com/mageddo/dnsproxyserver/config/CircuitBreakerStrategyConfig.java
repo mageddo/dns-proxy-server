@@ -5,9 +5,9 @@ import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.Circu
 
 public interface CircuitBreakerStrategyConfig {
 
-  Name name();
+  Type getType();
 
-  enum Name {
+  enum Type {
     /**
      * @see CircuitBreakerDelegateStaticThresholdFailsafe
      */

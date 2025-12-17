@@ -17,7 +17,7 @@ public class ConverterFactory {
   public Converter find(String format) {
     return switch (StringUtils.lowerCase(format)) {
       case "json" -> this.jsonConverter;
-      case "yaml" -> this.yamlConverter;
+      case "yml", "yaml" -> this.yamlConverter;
       default -> throw new UnsupportedOperationException("Unsupported format: " + format);
     };
   }

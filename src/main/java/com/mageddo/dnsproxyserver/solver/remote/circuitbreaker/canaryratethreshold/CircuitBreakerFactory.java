@@ -36,7 +36,7 @@ public class CircuitBreakerFactory {
 
   public CircuitBreakerDelegate build(CircuitBreakerStrategyConfig config, IpAddr addr) {
     Validate.isTrue(
-      config.name() == CircuitBreakerStrategyConfig.Name.CANARY_RATE_THRESHOLD,
+      config.getType() == CircuitBreakerStrategyConfig.Type.CANARY_RATE_THRESHOLD,
       "Not the expected config: " + ClassUtils.getSimpleName(config)
     );
     return this.build((CanaryRateThresholdCircuitBreakerStrategyConfig) config, new DnsServerHealthChecker(addr));

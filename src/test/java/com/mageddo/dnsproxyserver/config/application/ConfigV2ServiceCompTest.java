@@ -14,7 +14,7 @@ import org.junit.jupiter.api.io.TempDir;
 import dagger.sheath.junit.DaggerTest;
 import lombok.SneakyThrows;
 
-import static com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig.Name.CANARY_RATE_THRESHOLD;
+import static com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig.Type.CANARY_RATE_THRESHOLD;
 import static com.mageddo.utils.TestUtils.readAndSortJson;
 import static com.mageddo.utils.TestUtils.readAndSortJsonExcluding;
 import static com.mageddo.utils.TestUtils.readAsStream;
@@ -94,7 +94,7 @@ class ConfigV2ServiceCompTest {
       ;
 
     // assert
-    assertEquals(CANARY_RATE_THRESHOLD, config.getSolverRemoteCircuitBreakerStrategy().name());
+    assertEquals(CANARY_RATE_THRESHOLD, config.getSolverRemoteCircuitBreakerStrategy().getType());
   }
 
   static void assertParsedConfig(Config config, String expectedFilePath) {
