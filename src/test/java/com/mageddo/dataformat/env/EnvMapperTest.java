@@ -15,16 +15,14 @@ class EnvMapperTest {
 
   @Test
   void mustConvertEnvVariablesToJsonStructure() {
-    // Arrange
+
     final var env = ConfigV3EnvTemplates.build();
 
     final var expected = TestUtils.sortJson(ConfigV3Templates.buildJson());
 
-    // Act
     final var json = this.mapper.toJson(env, ConfigV3EnvMapper.PREFIX);
     final var actual = TestUtils.sortJson(json);
 
-    // Assert
     assertEquals(expected, actual);
   }
 }
