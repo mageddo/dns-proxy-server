@@ -118,6 +118,7 @@ public class ConfigV3Templates {
                   {
                     "type": "A",
                     "hostname": "github.com",
+                    "target": null,
                     "ip": "192.168.0.1",
                     "ttl": 255
                   }
