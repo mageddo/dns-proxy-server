@@ -261,17 +261,18 @@ public class Config {
 
   public enum Source {
     JSON,
+    YAML,
+    FILE,
     FLAG,
     DEFAULT,
     MERGED,
     ENV,
-    FILE,
 
     /**
      * Used for testing only;
      */
     @Deprecated
-    TESTS_TEMPLATE, YAML,
+    TESTS_TEMPLATE,
 
   }
 
