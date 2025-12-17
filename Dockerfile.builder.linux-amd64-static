@@ -13,8 +13,7 @@ RUN apt-get update -y && \
   && rm -rf /var/lib/apt/lists/*
 
 RUN musl-gcc -v
-ENV CC=musl-gcc
-ENV PATH="$PATH"
+ENV CC=/usr/bin/musl-gcc
 ENV GRAALVM_URL='https://github.com/graalvm/graalvm-ce-builds/releases/download/jdk-21.0.2/graalvm-community-jdk-21.0.2_linux-x64_bin.tar.gz'
 
 RUN mkdir /graalvm &&\

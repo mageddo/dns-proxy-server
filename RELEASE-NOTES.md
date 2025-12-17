@@ -1,4 +1,4 @@
-## 5.0.1
+## 5.0.2
 * Refactoring Linux amd64 static build to work on Github Actions
 
 ## 5.0.0
