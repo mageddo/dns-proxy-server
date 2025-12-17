@@ -359,11 +359,10 @@ public class ConfigMapper {
   }
 
   static ConfigV3.DpsNetwork.Config mapDpsNetworkConfigV3(DpsNetwork.NetworkConfig config) {
-    return ConfigV3.DpsNetwork.Config.builder()
-        .subNet(config.getSubNet())
-        .ipRange(config.getIpRange())
-        .gateway(config.getGateway())
-        .build();
+    return new ConfigV3.DpsNetwork.Config()
+        .setSubNet(config.getSubNet())
+        .setIpRange(config.getIpRange())
+        .setGateway(config.getGateway());
   }
 
 

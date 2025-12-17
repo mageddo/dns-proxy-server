@@ -11,11 +11,9 @@ import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.dataformat.v3.jackson.CircuitBreakerConverter;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
-import lombok.extern.jackson.Jacksonized;
 
 @Data
 @Accessors(chain = true)
@@ -102,8 +100,6 @@ public class ConfigV3 {
     List<Config> configs;
 
     @Data
-    @Builder
-    @Jacksonized
     @Accessors(chain = true)
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class Config {
