@@ -524,7 +524,7 @@ public interface Advapi32 extends StdCallLibrary {
    * information, call GetLastError.
    */
   boolean SetSecurityDescriptorDacl(SECURITY_DESCRIPTOR pSecurityDescriptor, boolean bDaclPresent
-      , ACL pDacl, boolean bDaclDefaulted);
+   , ACL pDacl, boolean bDaclDefaulted);
 
   /**
    * The InitializeAcl function initializes a new ACL structure.
@@ -551,17 +551,17 @@ public interface Advapi32 extends StdCallLibrary {
 
   /**
    * The AddAce function adds one or more access control entries (ACEs) to a specified access
-   * control list (ACL).
+               * control list (ACL).
    *
    * @param pAcl               A pointer to an ACL. This function adds an ACE to this ACL.
    * @param dwAceRevision      Specifies the revision level of the ACL being modified. This value
    *                           can be ACL_REVISION or
    *                           ACL_REVISION_DS. Use ACL_REVISION_DS if the ACL contains
    *                           object-specific ACEs. This value
-   *                           must be compatible with the AceType field of all ACEs in pAceList.
+   *                           must be compatible with the AceType field of    ACEs in pAceList.
    *                           Otherwise, the function
    *                           will fail and set the last error to ERROR_INVALID_PARAMETER.
-   * @param dwStartingAceIndex Specifies the position in the ACL's list of ACEs at which to add
+   * @param dwStartingAceIndex Specifies the position in the ACL's list of A    at which to add
    *                           new ACEs. A value of zero
    *                           inserts the ACEs at the beginning of the list. A value of MAXDWORD
    *                           appends the ACEs to the end
@@ -570,7 +570,7 @@ public interface Advapi32 extends StdCallLibrary {
    *                           specified ACL. The ACEs in the list
    *                           must be stored contiguously.
    * @param nAceListLength     Specifies the size, in bytes, of the input buffer pointed to by
-   *                           the pAceList parameter.
+ *                           the pAceList parameter.
    * @return If the function succeeds, the return value is nonzero. If the
    * function fails, the return value is zero. For extended error
    * information, call GetLastError.
@@ -1039,14 +1039,14 @@ public interface Advapi32 extends StdCallLibrary {
 
   /**
    * See
-   * {@link #RegSetValueEx(com.sun.jna.platform.win32.WinReg.HKEY, java.lang.String, int, int, com.sun.jna.Pointer, int) }
+   * {@link #SetValueEx(com.sun.jna.platform.win32.WinReg.HKEY, java.lang.String, int, int, com.sun.jna.Pointer, int) }
    */
   int RegSetValueEx(HKEY hKey, String lpValueName, int Reserved,
       int dwType, char[] lpData, int cbData);
 
   /**
    * See
-   * {@link #RegSetValueEx(com.sun.jna.platform.win32.WinReg.HKEY, java.lang.String, int, int, com.jna.Pointer, int) }
+   *  ink #RegSetValueEx(com.sun.jna.platform.win32.WinReg.HKEY, java.lang.String, int, int, com.jna.Pointer, int) }
    */
   int RegSetValueEx(HKEY hKey, String lpValueName, int Reserved,
       int dwType, byte[] lpData, int cbData);
@@ -1161,7 +1161,7 @@ public interface Advapi32 extends StdCallLibrary {
 
   /**
    * See
-   * {@link #RegEnumValue(com.sun.jna.platform.win32.WinReg.HKEY, int, char[], com.sun.jna.ptr.IntByReference, com.sun.jna.ptr.IntByReference, com.sun.jna.ptr.IntByReference, com.sun.jna.Pointer, com.sun.jna.ptr.IntByReference)}.
+ * {@link #RegEnumValue(com.sun.jna.platform.win32.WinReg.HKEY, int, char[], com.sun.jna.ptr.IntByReference, com.sun.jna.ptr.IntByReference, com.sun.jna.ptr.IntByReference, com.sun.jna.Pointer, com.sun.jna.ptr.IntByReference)}.
    */
   int RegEnumValue(HKEY hKey, int dwIndex, char[] lpValueName,
       IntByReference lpcchValueName, IntByReference reserved,
@@ -1337,7 +1337,7 @@ public interface Advapi32 extends StdCallLibrary {
 
   /**
    * See
-   * {@link #RegGetValue(com.sun.jna.platform.win32.WinReg.HKEY, java.lang.String, java.lang.String, int, com.sun.jna.ptr.IntByReference, com.sun.jna.Pointer, com.sun.jna.ptr.IntByReference)}.
+   * {@link egGetValue(com.sun.jna.platform.win32.WinReg.HKEY, java.lang.String, java.langing, int, com.sun.jna.ptr.IntByReference, com.sun.jna.Pointer, com.sun.jna.ptr.IntByReference)}.
    */
   int RegGetValue(HKEY hkey, String lpSubKey, String lpValue,
       int dwFlags, IntByReference pdwType, byte[] pvData,
@@ -1945,8 +1945,8 @@ public interface Advapi32 extends StdCallLibrary {
    *                           that
    *                           are in the following states:
    *                           {@link Winsvc#SERVICE_START_PENDING},
-   *                           {@link Winsvc#SERVICE_STOP_PENDING},
-   *                           {@link Winsvc#SERVICE_RUNNING},
+                           *                           {@link Winsvc#SERVICE_STOP_PENDING},
+   *                           {@link                           c#SERVICE_RUNNING},
    *                           {@link Winsvc#SERVICE_CONTINUE_PENDING},
    *                           {@link Winsvc#SERVICE_PAUSE_PENDING},
    *                           and {@link Winsvc#SERVICE_PAUSED}.</td></tr>
@@ -2004,7 +2004,7 @@ public interface Advapi32 extends StdCallLibrary {
    * <table>
    * <tr><th>Return code</th><th>Description</th></tr>
    * <tr><td>{@link WinError#ERROR_ACCESS_DENIED}</td><td>The handle does not have the
-   * {@link Winsvc#SERVICE_ENUMERATE_DEPENDENTS} access right.</td></tr>
+  * {@link Winsvc#SERVICE_ENUMERATE_DEPENDENTS} access right.</td></tr>
    * <tr><td>{@link WinError#ERROR_INVALID_HANDLE}</td><td>The specified handle is invalid
    * .</td></tr>
    * <tr><td>{@link WinError#ERROR_INVALID_PARAMETER}</td><td>A parameter that was specified is
@@ -2062,7 +2062,7 @@ public interface Advapi32 extends StdCallLibrary {
    *                           <tr><td>{@link WinNT#SERVICE_WIN32_OWN_PROCESS}</td><td>Services
    *                           that run in their own processes.</td></tr>
    *                           <tr><td>{@link WinNT#SERVICE_WIN32_SHARE_PROCESS}</td><td>Services
-   *                           that share a process with one or more other services. For more
+   *                           that share a process with on    more other services. For more
    *                           information, see Service Programs.</td></tr>
    *                           </table>
    * @param dwServiceState     The state of the services to be enumerated.
@@ -2073,8 +2073,7 @@ public interface Advapi32 extends StdCallLibrary {
    *                           <tr><td>{@link Winsvc#SERVICE_ACTIVE}</td><td>Enumerates services
    *                           that
    *                           are in the following states:
-   *                           {@link Winsvc#SERVICE_START_PENDING},
-   *                           {@link Winsvc#SERVICE_STOP_PENDING},
+   *                           {@link Winsvc#SERVICE_START_PENDING},                                                      {@link Winsvc#SERVICE_STOP_PENDING},
    *                           {@link Winsvc#SERVICE_RUNNING},
    *                           {@link Winsvc#SERVICE_CONTINUE_PENDING},
    *                           {@link Winsvc#SERVICE_PAUSE_PENDING},
@@ -2082,7 +2081,7 @@ public interface Advapi32 extends StdCallLibrary {
    *                           <tr><td>{@link Winsvc#SERVICE_INACTIVE}</td><td>Enumerates
    *                           services that
    *                           are in the {@link Winsvc#SERVICE_STOPPED} state.</td></tr>
-   *                           <tr><td>{@link Winsvc#SERVICE_STATE_ALL}</td><td>Combines the
+   *                           <tr><td>{@link Winsvc#SERVICE_STATE_ALL}</                           <td>Combines the
    *                           following
    *                           states: {@link Winsvc#SERVICE_ACTIVE} and
    *                           {@link Winsvc#SERVICE_INACTIVE}.</td></tr>
@@ -2092,11 +2091,11 @@ public interface Advapi32 extends StdCallLibrary {
    *                           depends on the value of the InfoLevel
    *                           parameter.
    *
-   *                           <p>The maximum size of this array is 256K bytes. To determine the
+   *                           <p>The maximum size of this array is 256Ktes. To determine the
    *                           required
-   *                           size, specify NULL for this parameter and 0 for the cbBufSize
+   *                           size, specify NULL for t    parameter and 0 for the cbBufSize
    *                           parameter.
-   *                           The function will fail and GetLastError will return
+   *                           The function will fail and GetLa   rror will return
    *                           ERROR_MORE_DATA. The
    *                           pcbBytesNeeded parameter will receive the required size.</p>
    *
@@ -3229,7 +3228,7 @@ public interface Advapi32 extends StdCallLibrary {
    * If a required DLL cannot be located or fails to initialize, the
    * process is terminated.<br>
    * To get the termination status of a process, call
-   * GetExitCodeProcess.
+   * tExitCodeProcess.
    * @see
    * <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms682431%28v=vs.85%29.aspx">MSDN</a>
    */
@@ -3576,13 +3575,13 @@ public interface Advapi32 extends StdCallLibrary {
    * .</td></tr>
    * <tr><td>ERROR_DUPLICATE_SERVICE_NAME</td><td>The display name already exists in the service
    * control manager database either as a service name or as another display name.</td></tr>
-   * <tr><td>ERROR_INVALID_HANDLE</td><td>The handle to the specified service control manager
+     tr><td>ERROR_INVALID_HANDLE</td><td>The handle to the specified service control manager
    * database is invalid.</td></tr>
    * <tr><td>ERROR_INVALID_NAME</td><td>The specified service name is invalid.</td></tr>
    * <tr><td>ERROR_INVALID_PARAMETER</td><td>A parameter that was specified is invalid.</td></tr>
    * <tr><td>ERROR_INVALID_SERVICE_ACCOUNT</td><td>The user account name specified in the
    * lpServiceStartName parameter does not exist.</td></tr>
-   * <tr><td>ERROR_SERVICE_EXISTS</td><td>The specified service already exists in this database
+   * <tr><td>ERROR_SERVICE_EXISTS</td><td>The specified service  eady exists in this database
    * .</td></tr>
    * <tr><td>ERROR_SERVICE_MARKED_FOR_DELETE</td><td>The specified service already exists in this
    * database and has been marked for deletion.</td></tr>

@@ -403,7 +403,7 @@ public interface Kernel32 extends StdCallLibrary, WinNT, Wincon {
    * @return The return value specifies the type of drive.
    * @see
    * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa364939(v=vs.85).aspx">GetDriveType</a>
-   */
+    /
   int GetDriveType(String lpRootPathName);
 
   /**
@@ -1468,12 +1468,12 @@ public interface Kernel32 extends StdCallLibrary, WinNT, Wincon {
    * @param relationshipType The type of relationship to retrieve. This parameter can be
    *                         one of the following values:
    *                         {@link com.sun.jna.platform.win32.WinNT.LOGICAL_PROCESSOR_RELATIONSHIP#RelationCache},
-   *                         {@link com.sun.jna.platform.win32.WinNT.LOGICAL_PROCESSOR_RELATIONSHIP#RelationGroup},
-   *                         {@link com.sun.jna.platform.win32.WinNT.LOGICAL_PROCESSOR_RELATIONSHIP#RelationNumaNode},
-   *                         {@link com.sun.jna.platform.win32.WinNT.LOGICAL_PROCESSOR_RELATIONSHIP#RelationProcessorCore},
-   *                         {@link com.sun.jna.platform.win32.WinNT.LOGICAL_PROCESSOR_RELATIONSHIP#RelationProcessorPackage},
+   *                                              {@link com.sun.jna.platform.win32.WinNT.LOGICAL_PROCESSOR_RELATIONSHIP#RelationGroup},
+   *                                              {@link com.sun.jna.platform.win32.WinNT.CAL_PROCESSOR_RELATIONSHIPationNumaNode},
+   *                         {@link com.sun.jna.platform.win32.WinNT.CAL_PROCESSOR_RELATIONSHIP#RelationProcessorCore},
+   *                                              {@link com.sun.jna.platform.win32.WinNT.LOGICAL_PROCESSOR_RELATIONSHIP#RelationProcessorPackage},
    *                         or
-   *                         {@link com.sun.jna.platform.win32.WinNT.LOGICAL_PROCESSOR_RELATIONSHIP#RelationAll}
+*                         {@link com.sun.jna.platform.win32.WinNT.LOGICAL_PROCESSOR_RELATIONSHIP#RelationAll}
    * @param buffer           A pointer to a buffer that receives an array of
    *                         {@link WinNT.SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX}
    *                         structures. If the function fails, the contents of this buffer
@@ -1497,7 +1497,7 @@ public interface Kernel32 extends StdCallLibrary, WinNT, Wincon {
    * extended error information, call {@link #GetLastError()}.
    */
   boolean GetLogicalProcessorInformationEx(int relationshipType, Pointer buffer,
-      DWORDByReference returnedLength);
+ DWORDByReference returnedLength);
 
   /**
    * Retrieves information about the system's current usage of both physical
@@ -1902,7 +1902,7 @@ public interface Kernel32 extends StdCallLibrary, WinNT, Wincon {
    *                             is not needed.
    * @param lpCurInstances       A pointer to a variable that receives the number
    *                             of current pipe instances. This parameter can be {@code null} if
-   *                             this
+  *                             this
    *                             information is not needed.
    * @param lpMaxCollectionCount A pointer to a variable that receives the
    *                             maximum number of bytes to be collected on the client's computer
@@ -1917,7 +1917,7 @@ public interface Kernel32 extends StdCallLibrary, WinNT, Wincon {
    *                             {@code null}
    *                             if this information is not needed.
    * @param lpUserName           A buffer that receives the user name string associated
-   *                             with the client application.  This parameter can be {@code null}
+   *                             with the    nt application.  This parameter can be {@code null}
    *                             if this
    *                             information is not needed.
    * @param nMaxUserNameSize     The size of the buffer specified by the <tt>lpUserName</tt>
@@ -2049,8 +2049,7 @@ public interface Kernel32 extends StdCallLibrary, WinNT, Wincon {
    * @return {@code true} if successful, {@code false} otherwise.
    * To get extended error information, call {@link #GetLastError()}.
    * @see
-   * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365790(v=vs.85).aspx">TransactNamedPipe documentation</a>
-   */
+   * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365790(v=vs.85).aspx">TransactNamedPipe documentation</a>    */
   public boolean TransactNamedPipe(HANDLE hNamedPipe,
       byte[] lpInBuffer, int nInBufferSize,
       byte[] lpOutBuffer, int nOutBufferSize,
@@ -2077,8 +2076,7 @@ public interface Kernel32 extends StdCallLibrary, WinNT, Wincon {
    * To get extended error information, call {@link #GetLastError()}.
    * @see
    * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365800(v=vs.85).aspx">WaitNamedPipe documentation</a>
-   */
-  public boolean WaitNamedPipe(String lpNamedPipeName, int nTimeOut);
+        public boolean WaitNamedPipe(String lpNamedPipeName, int nTimeOut);
 
   /**
    * Sets certain properties of an object handle.
@@ -2740,7 +2738,7 @@ public interface Kernel32 extends StdCallLibrary, WinNT, Wincon {
    * @param lpTargetPath The path string that will implement this device.
    *                     The string is an MS-DOS path string unless the {@code DDD_RAW_TARGET_PATH}
    *                     flag is specified, in which case this string is a path string.
-   * @return {@code true} if succeeds. If fails then call {@link #GetLastError()}
+   * @return {@code true} if succeeds. If f  s then call {@link #GetLastError()}
    * to get extended error information
    * @see
    * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa363904(v=vs.85).aspx">DefineDosDevice</a>
@@ -2887,7 +2885,7 @@ public interface Kernel32 extends StdCallLibrary, WinNT, Wincon {
    * @return If the function succeeds, the return value is nonzero and the lpFindFileData
    * parameter contains
    * information about the next file or directory found. If the function fails, the return value
-   * is zero and the
+  * is zero and the
    * contents of lpFindFileData are indeterminate. To get extended error information, call the
    * GetLastError function.
    * If the function fails because no more matching files can be found, the GetLastError function
@@ -2942,7 +2940,7 @@ public interface Kernel32 extends StdCallLibrary, WinNT, Wincon {
    *                              to the mounted folder
    * @return {@code true} if succeeds. If fails then call {@link #GetLastError()}
    * to get extended error information. If no more mount points found then the reported
-   * error is {@code ERROR_NO_MORE_FILES}. In this case, simply call
+   * error is {@code ERROR_NO_MORE_FILES}. In this ca simply call
    * {@link #FindVolumeMountPointClose(com.sun.jna.platform.win32.WinNT.HANDLE)}
    * @see
    * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa364432(v=vs.85).aspx">FindNextVolumeMountPoint</a>
@@ -2960,9 +2958,9 @@ public interface Kernel32 extends StdCallLibrary, WinNT, Wincon {
    * @return {@code true} if succeeds. If fails then call {@link #GetLastError()}
    * to get extended error information
    * @see
-   * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa364435(v=vs.85).aspx">FindVolumeMountPointClose</a>
+ * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa364435(v=vs.85).aspx">FindVolumeMountPointClose</a>
    */
-  boolean FindVolumeMountPointClose(HANDLE hFindVolumeMountPoint);
+   olean FindVolumeMountPointClose(HANDLE hFindVolumeMountPoint);
 
   /**
    * Retrieves a volume GUID path for the volume that is associated with the
@@ -3048,7 +3046,7 @@ public interface Kernel32 extends StdCallLibrary, WinNT, Wincon {
    *                                 C:\&quot;.
    * @param lpVolumeNameBuffer       If not {@code null} then receives the name of
    *                                 the specified volume. The buffer size is specified by the
-   *                                 <tt>nVolumeNameSize</tt>
+          *                                 <tt>nVolumeNameSize</tt>
    *                                 parameter.
    * @param nVolumeNameSize          The length of the volume name buffer - max. size is
    *                                 {@link WinDef#MAX_PATH} + 1 - ignored if no volume name
@@ -3127,7 +3125,7 @@ public interface Kernel32 extends StdCallLibrary, WinNT, Wincon {
    * @see
    * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa364998(v=vs.85).aspx">GetVolumePathNamesForVolumeName</a>
    */
-  boolean GetVolumePathNamesForVolumeName(String lpszVolumeName,
+  boolean  VolumePathNamesForVolumeName(String lpszVolumeName,
       char[] lpszVolumePathNames, int cchBufferLength,
       IntByReference lpcchReturnLength);
 
@@ -3165,7 +3163,7 @@ public interface Kernel32 extends StdCallLibrary, WinNT, Wincon {
    * {@link #FindVolumeClose(com.sun.jna.platform.win32.WinNT.HANDLE)}
    * @see
    * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa364431(v=vs.85).aspx">FindNextVolume</a>
-   * @see Kernel32Util#extractVolumeGUID(String)
+   * @see Kernel32Util#ractVolumeGUIDring)
    */
   boolean FindNextVolume(HANDLE hFindVolume, char[] lpszVolumeName, int cchBufferLength);
 
@@ -3179,7 +3177,7 @@ public interface Kernel32 extends StdCallLibrary, WinNT, Wincon {
    * @see
    * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa364433(v=vs.85).aspx">FindVolumeClose</a>
    */
-  boolean FindVolumeClose(HANDLE hFindVolume);
+  oolean FindVolumeClose(HANDLE hFindVolume);
 
   /**
    * Retrieves the current control settings for a specified communications
@@ -3207,7 +3205,7 @@ public interface Kernel32 extends StdCallLibrary, WinNT, Wincon {
    * see the {@link Kernel32#SetCommTimeouts} function.
    *
    * @param hFile          [in] A handle to the communications device. The
-   *                       {@link com.sun.jna.platform.win32.Kernel32#CreateFile(String, int, int, com.sun.jna.platform.win32.WinBase.SECURITY_ATTRIBUTES, int, int, com.sun.jna.platform.win32.WinNT.HANDLE)}
+   *                       {@link com.sun.jna.platform.win32.Kernel32#CreateFile(String, int, int, com.sun.jna.platform.win32.WinBase.SECURITY_ATTRIBUTES, int, int, com.sun.jna.platform.2.WinNT.HANDLE)}
    *                       function returns this handle.
    * @param lpCommTimeouts [in] A pointer to a {@link WinBase.COMMTIMEOUTS} structure in
    *                       which the time-out information is returned.
@@ -3659,16 +3657,16 @@ public interface Kernel32 extends StdCallLibrary, WinNT, Wincon {
   boolean Module32NextW(HANDLE hSnapshot, Tlhelp32.MODULEENTRY32W lpme);
 
   /**
-   * Controls whether the system will handle the specified types of serious
+   * Controls whether the system will   ndle the specified types of serious
    * errors or whether the process will handle them.
    *
    * @param umode The process error mode.
    * @return The return value is the previous state of the error-mode bit
    * flags.
    * @see
-   * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms680621(v=vs.85).aspx">MSDN</a>
+  * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms680621(v=vs.85).aspx">MSDN</a>
    */
-  int SetErrorMode(int umode);
+  int  ErrorMode(int umode);
 
   /**
    * Retrieves the address of an exported function or variable from the
@@ -3777,7 +3775,7 @@ public interface Kernel32 extends StdCallLibrary, WinNT, Wincon {
    * information, call GetLastError.
    */
   boolean GetProcessTimes(HANDLE hProcess, FILETIME lpCreationTime, FILETIME lpExitTime,
-      FILETIME lpKernelTime,
+     FILETIME lpKernelTime,
       FILETIME lpUserTime);
 
   /**
@@ -3867,8 +3865,8 @@ public interface Kernel32 extends StdCallLibrary, WinNT, Wincon {
    * Opens an existing named mutex object.
    *
    * @param dwDesiredAccess The access to the mutex object. Only the {@link WinNT#SYNCHRONIZE}
-   *                        access
-   *                        right is required to use a mutex; to change the mutex's security,
+                        *                        access
+   *                      right is required to use a mutex; to change the mutex's security,
    *                        specify
    *                        {@link WinBase#MUTEX_ALL_ACCESS}.
    * @param bInheritHandle  If this value is TRUE, processes created by this process will inherit
@@ -4171,7 +4169,7 @@ public interface Kernel32 extends StdCallLibrary, WinNT, Wincon {
    * buffer.</td></tr>
    * </table>
    * @see <A HREF="https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase
-   * -getapplicationrestartsettings">MSDN Entry</A>
+      * -getapplicationrestartsettings">MSDN Entry</A>
    */
   HRESULT GetApplicationRestartSettings(HANDLE hProcess, char[] pwzCommandline,
       IntByReference pcchSize, IntByReference pdwFlags);

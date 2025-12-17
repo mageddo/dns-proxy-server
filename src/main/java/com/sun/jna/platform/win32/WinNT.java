@@ -736,7 +736,7 @@ public interface WinNT extends WinError, WinDef, WinBase, BaseTSD {
    * If Data Execution Prevention is enabled, an attempt to execute code in
    * the committed region results in an access violation.
    *
-   * @see
+   *    e
    * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa366786(v=vs.85).aspx">MSDN</a>
    */
   int PAGE_READONLY = 0x02;
@@ -746,7 +746,7 @@ public interface WinNT extends WinError, WinDef, WinBase, BaseTSD {
    * If Data Execution Prevention is enabled, attempting to execute code in
    * the committed region results in an access violation.
    *
-   * @see
+* @see
    * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa366786(v=vs.85).aspx">MSDN</a>
    */
   int PAGE_READWRITE = 0x04;
@@ -1877,7 +1877,7 @@ public interface WinNT extends WinError, WinDef, WinBase, BaseTSD {
    */
   @FieldOrder(
       {"dwOSVersionInfoSize", "dwMajorVersion", "dwMinorVersion", "dwBuildNumber", "dwPlatformId"
-          , "szCSDVersion"})
+ , "szCSDVersion"})
   public static class OSVERSIONINFO extends Structure {
     /**
      * Size of this data structure, in bytes. Set this member to
@@ -2878,7 +2878,7 @@ public interface WinNT extends WinError, WinDef, WinBase, BaseTSD {
 
   /**
    * Defines the mapping of generic access rights to specific and standard access rights for an
-   * object
+  * object
    */
   @FieldOrder({"genericRead", "genericWrite", "genericExecute", "genericAll"})
   public static class GENERIC_MAPPING extends Structure {
@@ -3732,7 +3732,7 @@ public interface WinNT extends WinError, WinDef, WinBase, BaseTSD {
           "BroadcastCapacityResolution",
           "DischargePolicy", "VideoTimeout", "VideoDimDisplay", "VideoReserved", "SpindownTimeout",
           "OptimizeForPower", "FanThrottleTolerance", "ForcedThrottle", "MinThrottle",
-          "OverThrottled"})
+ "OverThrottled"})
   class SYSTEM_POWER_POLICY extends Structure {
     public int Revision;
     public POWER_ACTION_POLICY PowerButton;
@@ -3878,7 +3878,7 @@ public interface WinNT extends WinError, WinDef, WinBase, BaseTSD {
 
   /**
    * Indicates that the memory pages within the region are private (that is, not shared by other
-   * processes).
+  * processes).
    */
   int MEM_PRIVATE = 0x20000;
 
@@ -3994,13 +3994,13 @@ public interface WinNT extends WinError, WinDef, WinBase, BaseTSD {
     /**
      * The memory protection option when the region was initially allocated.
      * This member can be one of the memory protection constants or 0 if the caller does not have
-     * access.
+ * access.
      */
     public DWORD allocationProtect;
 
     /**
      * The size of the region beginning at the base address in which all pages have identical
-     * attributes, in bytes.
+    * attributes, in bytes.
      */
     public SIZE_T regionSize;
 

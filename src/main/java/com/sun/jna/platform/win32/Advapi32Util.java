@@ -2691,7 +2691,7 @@ public abstract class Advapi32Util {
    *                           formats for the different object types, see SE_OBJECT_TYPE in
    *                           {@link AccCtrl.SE_OBJECT_TYPE}
    * @param objectType         Object type referred to by the path. See
-   *                           {@link AccCtrl.SE_OBJECT_TYPE} for valid definitions.
+                           *                           {@link AccCtrl.SE_OBJECT_TYPE} for valid definitions.
    * @param getSACL            Get SACL of the object. See {@link Advapi32#GetNamedSecurityInfo}
    *                           for process privilege requirements in getting the SACL.
    * @return Memory containing the self relative security descriptor
@@ -2741,8 +2741,8 @@ public abstract class Advapi32Util {
    *                               from which to retrieve security information. For descriptions
    *                               of the string
    *                               formats for the different object types, see
-   *                               {@link AccCtrl.SE_OBJECT_TYPE}.
-   * @param objectType             Object type referred to by the path. See
+                               *                               {@link AccCtrl.SE_OBJECT_TYPE}.
+   * @param ob             Type             Object type referred to by the path. See
    *                               {@link AccCtrl.SE_OBJECT_TYPE} for valid definitions.
    * @param securityDescriptor     A security descriptor to set.
    * @param setOwner               Set the owner. The owner is extracted from securityDescriptor
@@ -2762,7 +2762,7 @@ public abstract class Advapi32Util {
    *                               See {@link Advapi32#SetNamedSecurityInfo} for process
    *                               privilege requirements in getting the SACL.
    * @param setDACLProtectedStatus Set DACL protected status as contained within
-   *                               securityDescriptor.control.
+ *                               securityDescriptor.control.
    * @param setSACLProtectedStatus Set SACL protected status as contained within
    *                               securityDescriptor.control.
    */
@@ -2962,7 +2962,7 @@ public abstract class Advapi32Util {
    * @param file                   File object containing a path to a file system object.
    * @param securityDescriptor     The security descriptor to set.
    * @param setOwner               Set the owner. See {@link Advapi32#SetNamedSecurityInfo} for
-   *                               process privilege requirements in setting the owner.
+ *                               process privilege requirements in setting the owner.
    * @param setGroup               Set the group.
    * @param setDACL                Set the DACL.
    * @param setSACL                Set the SACL. See {@link Advapi32#SetNamedSecurityInfo} for
