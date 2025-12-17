@@ -30,16 +30,7 @@ public class ConfigJsonFileTemplates {
             }
           ]
         }
-      ],
-      "solverRemote" : {
-        "circuitBreaker": {
-          "name": "STATIC_THRESHOLD",
-          "failureThreshold": 3,
-          "failureThresholdCapacity": 10,
-          "successThreshold": 5,
-          "testDelay": "PT20S"
-        }
-      }
+      ]
     }
     """;
 
