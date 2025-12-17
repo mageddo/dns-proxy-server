@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
 
 import dagger.sheath.junit.DaggerTest;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 @DaggerTest(component = Context.class)
 class ConfigsCompTest {
@@ -26,7 +26,7 @@ class ConfigsCompTest {
 
     final var path = this.dao.find();
     assertTrue(Files.exists(path));
-    assertThat(path.toString(), containsString("-junit"));
+    assertThat(path.toString()).contains("-junit");
 
   }
 }
