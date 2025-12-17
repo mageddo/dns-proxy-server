@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.ContainerNetwork;
-import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.Config.SolverDocker;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.docker.application.Labels;
 import com.mageddo.dnsproxyserver.solver.docker.Container;
@@ -25,8 +25,14 @@ public class ContainerMapper {
   public static final String DEFAULT_NETWORK_LABEL = "dps.network";
 
   public static Container of(InspectContainerResponse inspect) {
+    return of(inspect, findPreferred());
+  }
+
+  public static Container of(
+      InspectContainerResponse inspect, SolverDocker.Networks.Preferred preferred
+  ) {
     final var foundNetworks = buildNetworks(inspect);
-    final var possibleNetworksNames = buildNetworkNames(inspect);
+    final var possibleNetworksNames = buildNetworkNames(inspect, preferred);
     return Container
         .builder()
         .id(inspect.getId())
@@ -68,17 +74,18 @@ public class ContainerMapper {
         ;
   }
 
-  static Set<String> buildNetworkNames(InspectContainerResponse c) {
-    final var preferred = findPreferred();
+  static Set<String> buildNetworkNames(
+      InspectContainerResponse c, SolverDocker.Networks.Preferred preferred
+  ) {
     if (preferred.isOverrideDefault() && preferred.getNames() != null) {
       return new LinkedHashSet<>(preferred.getNames());
     }
     if (preferred.getNames() == null) {
       return buildDefault(c);
     }
-    final var set = buildDefault(c);
-    set.addAll(preferred.getNames());
-    return set;
+    final var names = new LinkedHashSet<>(preferred.getNames());
+    names.addAll(buildDefault(c));
+    return names;
   }
 
   private static LinkedHashSet<String> buildDefault(InspectContainerResponse c) {
@@ -91,7 +98,7 @@ public class ContainerMapper {
         .collect(Collectors.toCollection(LinkedHashSet::new));
   }
 
-  private static Config.SolverDocker.Networks.Preferred findPreferred() {
+  private static SolverDocker.Networks.Preferred findPreferred() {
     return Configs.getInstance()
         .getSolverDocker()
         .getNetworks()
