@@ -34,6 +34,7 @@ public final class ConfigV3EnvTemplates {
     env.put("DPS_SOLVER__LOCAL__ACTIVE_ENV", "");
     env.put("DPS_SOLVER__LOCAL__ENVS_0__NAME", "");
     env.put("DPS_SOLVER__LOCAL__ENVS_0__HOSTNAMES_0__TYPE", "A");
+    env.put("DPS_SOLVER__LOCAL__ENVS_0__HOSTNAMES_0__TARGET", null);
     env.put("DPS_SOLVER__LOCAL__ENVS_0__HOSTNAMES_0__HOSTNAME", "github.com");
     env.put("DPS_SOLVER__LOCAL__ENVS_0__HOSTNAMES_0__IP", "192.168.0.1");
     env.put("DPS_SOLVER__LOCAL__ENVS_0__HOSTNAMES_0__TTL", "255");
