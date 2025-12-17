@@ -86,23 +86,21 @@ public class ResolvconfConfiguratorV2 {
         .append(LINE_BREAK);
   }
 
-  private static String buildNonOverrideOutput(final String dpsNameserverHost,
-      final CleanedContent cleaned) {
+  private static String buildNonOverrideOutput(
+      final String dpsNameserverHost, final CleanedContent cleaned
+  ) {
+
     final var lines = cleaned.originalLines();
-
     final var insertionIndex = indexAfterHeaderComments(lines);
-    final var remainderStart = skipBlankLines(lines, insertionIndex);
-
-    final var out = new ArrayList<String>();
-    out.addAll(lines.subList(0, insertionIndex));
+    final var out = new ArrayList<>(lines.subList(0, insertionIndex));
 
     ensureBlankLine(out);
-
     out.add(BEGIN_ENTRIES);
     out.add(nameserverLine(dpsNameserverHost));
     out.add(END_ENTRIES);
-    out.add(""); // exactly one blank line between END_ENTRIES and the remainder
+    out.add("");
 
+    final var remainderStart = skipBlankLines(lines, insertionIndex);
     out.addAll(lines.subList(remainderStart, lines.size()));
 
     trimTrailingBlankLines(out);
@@ -158,7 +156,7 @@ public class ResolvconfConfiguratorV2 {
     if (lines.isEmpty()) {
       return;
     }
-    if (!lines.get(lines.size() - 1)
+    if (!lines.getLast()
         .isBlank()) {
       lines.add("");
     }
@@ -372,10 +370,6 @@ public class ResolvconfConfiguratorV2 {
 
   private static void writeString(final Path path, final String content) {
     try {
-      final var parent = path.getParent();
-      if (parent != null) {
-        Files.createDirectories(parent);
-      }
       Files.writeString(path, content);
     } catch (final IOException e) {
       throw new UncheckedIOException("Failed to write file: " + path, e);
