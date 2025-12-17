@@ -186,7 +186,7 @@
 	"title": "Versions",
 	"tags": [],
 	"description": "",
-	"content": " latest 5.1 5.0 4.3 4.2 4.1 4.0 3.32 3.31 3.30 3.29 3.27 3.26 3.25 3.24 3.23 3.22 3.21 3.20 3.19 3.18 3.17 3.16 3.15 3.14 3.13 3.12 3.11 3.9 3.8 3.7 3.6 3.5 3.4 3.3 3.2 3.1 3.0 2.19 2.18 2.15 2.14 2.13  "
+	"content": " latest 5.1 5.1 5.0 4.3 4.2 4.1 4.0 3.32 3.31 3.30 3.29 3.27 3.26 3.25 3.24 3.23 3.22 3.21 3.20 3.19 3.18 3.17 3.16 3.15 3.14 3.13 3.12 3.11 3.9 3.8 3.7 3.6 3.5 3.4 3.3 3.2 3.1 3.0 2.19 2.18 2.15 2.14 2.13  "
 },
 {
 	"uri": "http://mageddo.github.io/dns-proxy-server/5.1/en/2-features/specify-from-which-network-solve-container/",
@@ -235,7 +235,7 @@
 	"title": "Credits",
 	"tags": [],
 	"description": "",
-	"content": " Contributors Thanks to them  for making Open Source Software a better place !\n.ghContributors{ display:flex; flex-flow: wrap; align-content: flex-start }\n.ghContributors \u0026gt; div{ width: 50% ; display: inline-flex; margin-bottom: 5px; } .ghContributors \u0026gt; div label{ padding-left: 4px ; } .ghContributors \u0026gt; div span{ font-size: x-small; padding-left: 4px ; }\n  @mageddo 924 commits \n @josielrocha 9 commits \n @mrubli 3 commits \n @addshore 3 commits \n @ThisIsQasim 2 commits \n @AJenbo 1 commits \n @Copilot 1 commits \n @dvarrazzo 1 commits \n @defung 1 commits \n @imartinezortiz 1 commits \n @SimJoSt 1 commits \n @dependabot[bot] 1 commits \n\n"
+	"content": " Contributors Thanks to them  for making Open Source Software a better place !\n.ghContributors{ display:flex; flex-flow: wrap; align-content: flex-start }\n.ghContributors \u0026gt; div{ width: 50% ; display: inline-flex; margin-bottom: 5px; } .ghContributors \u0026gt; div label{ padding-left: 4px ; } .ghContributors \u0026gt; div span{ font-size: x-small; padding-left: 4px ; }\n  @mageddo 925 commits \n @josielrocha 9 commits \n @mrubli 3 commits \n @addshore 3 commits \n @ThisIsQasim 2 commits \n @AJenbo 1 commits \n @Copilot 1 commits \n @dvarrazzo 1 commits \n @defung 1 commits \n @imartinezortiz 1 commits \n @SimJoSt 1 commits \n @dependabot[bot] 1 commits \n\n"
 },
 {
 	"uri": "http://mageddo.github.io/dns-proxy-server/5.1/en/2-features/docker-different-networks-solving/",
