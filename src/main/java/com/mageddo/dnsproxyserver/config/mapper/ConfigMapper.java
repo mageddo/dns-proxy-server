@@ -12,11 +12,13 @@ import javax.inject.Singleton;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Config.DefaultDns;
+import com.mageddo.dnsproxyserver.config.Config.Env;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.validator.ConfigValidator;
 import com.mageddo.dnsproxyserver.utils.Numbers;
 import com.mageddo.dnsproxyserver.version.VersionDAO;
 import com.mageddo.dnsserver.SimpleServer;
+import com.mageddo.net.IP;
 import com.mageddo.net.IpAddr;
 
 import org.apache.commons.lang3.SystemUtils;
@@ -38,7 +40,7 @@ public class ConfigMapper {
       + "/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf";
   private final VersionDAO versionDAO;
 
-  public static Config add(Config config, Config.Env def) {
+  public static Config add(Config config, Env def) {
     final var envs = new ArrayList<>(config.getEnvs());
     envs.add(def);
     return config.toBuilder()
@@ -51,9 +53,9 @@ public class ConfigMapper {
 
   public static Config replace(Config config, String envKey, Config.Entry entry) {
 
-    final var store = keyBy(config.getEnvs(), Config.Env::getName);
+    final var store = keyBy(config.getEnvs(), Env::getName);
     store.computeIfPresent(envKey, (key, env) -> replaceEntry(env, entry));
-    store.computeIfAbsent(envKey, __ -> Config.Env.of(envKey, List.of(entry)));
+    store.computeIfAbsent(envKey, __ -> Env.of(envKey, List.of(entry)));
 
     return config.toBuilder()
         .solverLocal(config.getSolverLocal()
@@ -63,7 +65,7 @@ public class ConfigMapper {
         .build();
   }
 
-  private static Config.Env replaceEntry(Config.Env env, Config.Entry entry) {
+  private static Env replaceEntry(Env env, Config.Entry entry) {
     return env.toBuilder()
         .entries(replaceEntry(env.getEntries(), entry))
         .build();
@@ -78,7 +80,7 @@ public class ConfigMapper {
   }
 
   public static Config add(Config config, String env) {
-    return add(config, Config.Env.of(env, Collections.emptyList()));
+    return add(config, Env.of(env, Collections.emptyList()));
   }
 
   public static Config remove(Config config, String envKey, String hostname) {
@@ -96,10 +98,10 @@ public class ConfigMapper {
         .build();
   }
 
-  static List<Config.Env> removeHostName(
+  static List<Env> removeHostName(
       Config config, String envKey, String hostname
   ) {
-    final var envsStore = keyBy(config.getEnvs(), Config.Env::getName);
+    final var envsStore = keyBy(config.getEnvs(), Env::getName);
     if (!envsStore.containsKey(envKey)) {
       return null;
     }
@@ -208,7 +210,7 @@ public class ConfigMapper {
     return config;
   }
 
-  private static Config buildDefault() {
+  static Config buildDefault() {
     return Config
         .builder()
         .server(Config.Server
@@ -241,7 +243,27 @@ public class ConfigMapper {
             .dockerDaemonUri(buildDefaultDockerHost())
             .build()
         )
+        .solverLocal(Config.SolverLocal.builder()
+            .activeEnv(Env.DEFAULT_ENV)
+            .envs(List.of(defaultEnv()))
+            .build()
+        )
         .source(Config.Source.DEFAULT)
+        .build();
+  }
+
+  static Env defaultEnv() {
+    return Env.of(Env.DEFAULT_ENV, List.of(aSampleEntry()));
+  }
+
+  static Config.Entry aSampleEntry() {
+    return Config.Entry
+        .builder()
+        .type(Config.Entry.Type.A)
+        .hostname("dps-sample.dev")
+        .ip(IP.of("192.168.0.254"))
+        .ttl(30)
+        .id(1L)
         .build();
   }
 
