@@ -1,17 +1,18 @@
 package testing.templates;
 
-import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo.ConfigJson;
-import com.mageddo.net.IpAddr;
-import com.mageddo.net.SocketUtils;
-import lombok.Builder;
-import lombok.SneakyThrows;
-import lombok.Value;
-import lombok.experimental.Accessors;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+
+import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo.ConfigJson;
+import com.mageddo.net.IpAddr;
+import com.mageddo.net.SocketUtils;
+
+import lombok.Builder;
+import lombok.SneakyThrows;
+import lombok.Value;
+import lombok.experimental.Accessors;
 
 public class ConfigFlagArgsTemplates {
 
@@ -46,7 +47,16 @@ public class ConfigFlagArgsTemplates {
         "defaultDns" : false,
         "logLevel" : "TRACE",
         "remoteDnsServers": ["%s"],
-        "envs": []
+        "envs": [],
+        "solverRemote" : {
+          "circuitBreaker": {
+            "name": "STATIC_THRESHOLD",
+            "failureThreshold": 3,
+            "failureThresholdCapacity": 10,
+            "successThreshold": 5,
+            "testDelay": "PT20S"
+          }
+        }
       }
       """.formatted(webServerPort, dnsServerPort, remoteAddr.toString());
     return writeToTempPath(configJsonContent);
