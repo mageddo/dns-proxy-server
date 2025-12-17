@@ -46,9 +46,10 @@ class DnsConfiguratorLinuxTest {
     this.configurator.configure(ip);
 
     // assert
-    assertEquals(
-        """
-            nameserver 10.10.0.1 # dps-entry
+    assertEquals("""
+            # BEGIN dps-entries
+            nameserver 10.10.0.1
+            # END dps-entries
             """,
         Files.readString(resolvFile)
     );
