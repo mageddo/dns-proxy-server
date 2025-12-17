@@ -23,6 +23,7 @@ import org.apache.commons.lang3.SystemUtils;
 import lombok.RequiredArgsConstructor;
 
 import static com.mageddo.dnsproxyserver.utils.ListOfObjectUtils.mapField;
+import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonEmptyList;
 import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonEmptyListRequiring;
 import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonNull;
 import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonNullRequiring;
@@ -49,7 +50,8 @@ public class ConfigMapper {
             .dnsServerPort(Numbers.firstPositive(mapField(Config::getDnsServerPort, configs)))
             .serverProtocol(firstNonNullRequiring(mapField(Config::getServerProtocol, configs)))
             .dnsServerNoEntriesResponseCode(
-                firstNonNullRequiring(mapField(Config::getNoEntriesResponseCode, configs)))
+                firstNonNullRequiring(mapField(Config::getNoEntriesResponseCode, configs))
+            )
             .build()
         )
         .version(this.versionDAO.findVersion())
@@ -75,7 +77,8 @@ public class ConfigMapper {
             .builder()
             .active(firstNonNullRequiring(mapField(Config::isSolverRemoteActive, configs)))
             .circuitBreaker(firstNonNullRequiring(
-                mapField(Config::getSolverRemoteCircuitBreakerStrategy, configs)))
+                mapField(Config::getSolverRemoteCircuitBreakerStrategy, configs)
+            ))
             .dnsServers(firstNonEmptyListRequiring(mapField(Config::getRemoteDnsServers, configs)))
             .build()
         )
@@ -104,7 +107,7 @@ public class ConfigMapper {
         .solverLocal(Config.SolverLocal
             .builder()
             .activeEnv(firstNonNull(mapField(Config::getActiveEnv, configs)))
-            .envs(firstNonNull(mapField(Config::getEnvs, configs)))
+            .envs(firstNonEmptyList(mapField(Config::getEnvs, configs)))
             .build()
         )
         .source(Config.Source.MERGED)

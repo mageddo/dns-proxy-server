@@ -207,7 +207,7 @@ public class Config {
   @JsonIgnore
   public List<Env> getEnvs() {
     if (this.solverLocal == null) {
-      return Collections.singletonList(Env.theDefault());
+      return Collections.emptyList();
     }
     return this.solverLocal.getEnvs();
   }

@@ -16,9 +16,17 @@ public class ObjectUtils {
         ;
   }
 
+  public static <T> List<T> firstNonEmptyList(List<List<T>> lists) {
+    for (final var list : lists) {
+      if (list != null && !list.isEmpty()) {
+        return list;
+      }
+    }
+    return null;
+  }
   public static <T> List<T> firstNonEmptyListRequiring(List<List<T>> lists) {
     for (final var list : lists) {
-      if (!list.isEmpty()) {
+      if (list != null && !list.isEmpty()) {
         return list;
       }
     }
