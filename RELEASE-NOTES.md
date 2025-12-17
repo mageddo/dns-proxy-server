@@ -1,15 +1,13 @@
-## 4.3.0
-* Defining **Canary Rate Threshold** as the default Circuit Breaker Strategy, see the [docs][4_3_0_1].
-
-[4_3_0_1]: https://mageddo.github.io/dns-proxy-server/4.3/en/2-features/remote-solver-circuitbreaker/#canary-rate-threshold
-
-## 4.2.0
-* Activating Config v3 for beta testing
-
-## 4.1.0
+## 5.0.0
 * Refactoring config module to support config v3
+* Activating Config v3 for beta testing
 * Commited Arc Drawio to the source code
 * Setup code style
+
+Breaking Changes
+* Defining **Canary Rate Threshold** as the default Circuit Breaker Strategy, see the [docs][5_0_0_1].
+
+[5_0_0_1]: https://mageddo.github.io/dns-proxy-server/4.3/en/2-features/remote-solver-circuitbreaker/#canary-rate-threshold
 
 ## 4.0.0
 * Dependency Update: Upgraded Docker Java client library from 3.3.4 to 3.7.0 for latest features, bug fixes, and security updates.
