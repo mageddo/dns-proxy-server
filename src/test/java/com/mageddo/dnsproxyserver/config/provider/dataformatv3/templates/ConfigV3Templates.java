@@ -48,6 +48,7 @@ public class ConfigV3Templates {
             hostnames:
             - type: A
               hostname: github.com
+              target:
               ip: 192.168.0.1
               ttl: 255
         stub:
