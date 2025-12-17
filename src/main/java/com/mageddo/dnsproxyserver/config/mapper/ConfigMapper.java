@@ -285,7 +285,7 @@ public class ConfigMapper {
                 .configs(List.of(
                     SolverDocker.DpsNetwork.NetworkConfig.builder()
                         .subNet("172.157.0.0/16")
-                        .ipRange("172.157.5.3/24")
+                        .ipRange("172.157.5.0/24")
                         .gateway("172.157.5.1")
                         .build(),
                     SolverDocker.DpsNetwork.NetworkConfig.builder()
