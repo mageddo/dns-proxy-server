@@ -243,12 +243,6 @@ public class Config {
     return this.solverRemote.getActive();
   }
 
-  public void resetConfigFile() {
-    // FIXME nao deveria mais precisar resetar o rquivo porque agora só se escreve quando
-    //   o dao da tela for chamado.
-    throw new UnsupportedOperationException();
-  }
-
   @JsonIgnore
   public CircuitBreakerStrategyConfig getSolverRemoteCircuitBreakerStrategy() {
     if (this.solverRemote == null) {
