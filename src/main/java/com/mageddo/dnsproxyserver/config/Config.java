@@ -408,7 +408,7 @@ public class Config {
       }
 
       public boolean isAddressSolving() {
-        return ConfigEntryTypes.is(this, Config.Entry.Type.A, Config.Entry.Type.AAAA);
+        return ConfigEntryTypes.is(this, com.mageddo.dnsproxyserver.config.Config.Entry.Type.A, com.mageddo.dnsproxyserver.config.Config.Entry.Type.AAAA);
       }
     }
   }
@@ -505,8 +505,18 @@ public class Config {
     @Builder
     public static class DpsNetwork {
 
+      String name;
       Boolean autoCreate;
       Boolean autoConnect;
+      List<Config> config;
+
+      @Value
+      @Builder
+      public static class Config {
+        String subNet;
+        String ipRange;
+        String gateway;
+      }
 
       public boolean shouldAutoConnect() {
         return BooleanUtils.isTrue(this.autoConnect);

@@ -1,11 +1,14 @@
 package com.mageddo.dnsproxyserver.config.dataformat.v3.mapper;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Objects;
 
+import com.mageddo.commons.Collections;
 import com.mageddo.dnsproxyserver.config.CanaryRateThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.Config.SolverDocker.DpsNetwork;
 import com.mageddo.dnsproxyserver.config.NonResilientCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.dataformat.v3.ConfigV3;
@@ -25,7 +28,7 @@ public class ConfigMapper {
       return null;
     }
 
-    return Config.builder()
+    return com.mageddo.dnsproxyserver.config.Config.builder()
         .version(String.valueOf(c.getVersion()))
         .server(mapServer(c.getServer()))
         .defaultDns(mapDefaultDns(c.getDefaultDns()))
@@ -59,7 +62,7 @@ public class ConfigMapper {
       return null;
     }
 
-    return Config.Server.builder()
+    return com.mageddo.dnsproxyserver.config.Config.Server.builder()
         .dnsServerPort(s.getDns() != null ? s.getDns()
             .getPort() : null)
         .dnsServerNoEntriesResponseCode(
@@ -99,12 +102,12 @@ public class ConfigMapper {
       return null;
     }
 
-    return Config.DefaultDns.builder()
+    return com.mageddo.dnsproxyserver.config.Config.DefaultDns.builder()
         .active(d.getActive())
         .resolvConf(
             d.getResolvConf() == null
                 ? null
-                : Config.DefaultDns.ResolvConf.builder()
+                : com.mageddo.dnsproxyserver.config.Config.DefaultDns.ResolvConf.builder()
                 .paths(d.getResolvConf()
                     .getPaths())
                 .overrideNameServers(d.getResolvConf()
@@ -139,8 +142,9 @@ public class ConfigMapper {
       return null;
     }
 
-    return Config.Log.builder()
-        .level(l.getLevel() != null ? Config.Log.Level.valueOf(l.getLevel()) : null)
+    return com.mageddo.dnsproxyserver.config.Config.Log.builder()
+        .level(l.getLevel() != null ? com.mageddo.dnsproxyserver.config.Config.Log.Level.valueOf(
+            l.getLevel()) : null)
         .file(l.getFile())
         .build();
   }
@@ -163,7 +167,7 @@ public class ConfigMapper {
       return null;
     }
 
-    return Config.SolverRemote.builder()
+    return com.mageddo.dnsproxyserver.config.Config.SolverRemote.builder()
         .active(s.getRemote()
             .getActive())
         .dnsServers(
@@ -186,7 +190,7 @@ public class ConfigMapper {
       return null;
     }
 
-    return Config.SolverDocker.builder()
+    return com.mageddo.dnsproxyserver.config.Config.SolverDocker.builder()
         .registerContainerNames(s.getDocker()
             .getRegisterContainerNames())
         .domain(s.getDocker()
@@ -200,20 +204,33 @@ public class ConfigMapper {
                 .getDockerDaemonUri())
                 : null
         )
-        .dpsNetwork(
-            s.getDocker()
-                .getDpsNetwork() == null
-                ? null
-                : Config.SolverDocker.DpsNetwork.builder()
-                .autoCreate(s.getDocker()
-                    .getDpsNetwork()
-                    .getAutoCreate())
-                .autoConnect(s.getDocker()
-                    .getDpsNetwork()
-                    .getAutoConnect())
-                .build()
-        )
+        .dpsNetwork(mapDomainDpsNetwork(s))
         .build();
+  }
+
+  private static DpsNetwork mapDomainDpsNetwork(ConfigV3.Solver s) {
+    final var dpsNetwork = s.getDocker()
+        .getDpsNetwork();
+    if (dpsNetwork == null) {
+      return null;
+    }
+    return DpsNetwork.builder()
+        .name(dpsNetwork.getName())
+        .autoCreate(dpsNetwork.getAutoCreate())
+        .autoConnect(dpsNetwork.getAutoConnect())
+        .config(mapDomainDpsNetworkDef(dpsNetwork.getConfigs()))
+        .build();
+  }
+
+  private static List<DpsNetwork.Config> mapDomainDpsNetworkDef(
+      List<ConfigV3.DpsNetwork.Config> configs
+  ) {
+    return Collections.map(configs, config -> DpsNetwork.Config.builder()
+        .gateway(config.getGateway())
+        .ipRange(config.getIpRange())
+        .subNet(config.getSubNet())
+        .build()
+    );
   }
 
   private static Config.SolverLocal mapSolverLocal(final ConfigV3.Solver s) {
@@ -221,7 +238,7 @@ public class ConfigMapper {
       return null;
     }
 
-    return Config.SolverLocal.builder()
+    return com.mageddo.dnsproxyserver.config.Config.SolverLocal.builder()
         .activeEnv(s.getLocal()
             .getActiveEnv())
         .envs(
@@ -238,7 +255,7 @@ public class ConfigMapper {
   }
 
   private static Config.Env mapEnv(final ConfigV3.Env e) {
-    return Config.Env.of(
+    return com.mageddo.dnsproxyserver.config.Config.Env.of(
         e.getName(),
         e.getHostnames() == null
             ? emptyList()
@@ -250,10 +267,10 @@ public class ConfigMapper {
   }
 
   private static Config.Entry mapEntry(final ConfigV3.Hostname h) {
-    return Config.Entry.builder()
+    return com.mageddo.dnsproxyserver.config.Config.Entry.builder()
         .hostname(h.getHostname())
         .ttl(h.getTtl())
-        .type(Config.Entry.Type.valueOf(h.getType()))
+        .type(com.mageddo.dnsproxyserver.config.Config.Entry.Type.valueOf(h.getType()))
         .target(h.getTarget())
         .ip(h.getIp() != null ? IP.of(h.getIp()) : null)
         .build();
@@ -264,7 +281,7 @@ public class ConfigMapper {
       return null;
     }
 
-    return Config.SolverStub.builder()
+    return com.mageddo.dnsproxyserver.config.Config.SolverStub.builder()
         .domainName(s.getStub()
             .getDomainName())
         .build();
@@ -275,7 +292,7 @@ public class ConfigMapper {
       return null;
     }
 
-    return Config.SolverSystem.builder()
+    return com.mageddo.dnsproxyserver.config.Config.SolverSystem.builder()
         .hostMachineHostname(s.getSystem()
             .getHostMachineHostname())
         .build();

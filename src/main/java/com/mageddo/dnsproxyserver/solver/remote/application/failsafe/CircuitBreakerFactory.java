@@ -71,8 +71,9 @@ public class CircuitBreakerFactory {
     };
   }
 
-  CircuitBreakerDelegate buildCanaryRateThreshold(CircuitBreakerStrategyConfig config,
-      InetSocketAddress address) {
+  CircuitBreakerDelegate buildCanaryRateThreshold(
+      CircuitBreakerStrategyConfig config, InetSocketAddress address
+  ) {
     return this.canaryThresholdFactory.build(config, IpAddrs.from(address));
   }
 

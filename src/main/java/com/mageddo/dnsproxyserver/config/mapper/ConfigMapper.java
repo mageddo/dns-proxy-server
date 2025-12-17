@@ -15,8 +15,10 @@ import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Config.DefaultDns;
 import com.mageddo.dnsproxyserver.config.Config.Env;
+import com.mageddo.dnsproxyserver.config.Config.SolverDocker;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.validator.ConfigValidator;
+import com.mageddo.dnsproxyserver.solver.docker.Network;
 import com.mageddo.dnsproxyserver.utils.Numbers;
 import com.mageddo.dnsproxyserver.version.VersionDAO;
 import com.mageddo.dnsserver.SimpleServer;
@@ -76,7 +78,7 @@ public class ConfigMapper {
   static List<Config.Entry> replaceEntry(
       List<Config.Entry> entries, Config.Entry entry
   ) {
-    final var store = keyBy(entries, Config.Entry::getHostname);
+    final var store = keyBy(entries, com.mageddo.dnsproxyserver.config.Config.Entry::getHostname);
     store.put(entry.getHostname(), entry);
     return new ArrayList<>(store.values());
   }
@@ -111,7 +113,7 @@ public class ConfigMapper {
     final var entryStore = env.getEntries()
         .stream()
         .collect(Collectors.groupingBy(
-            Config.Entry::getHostname,
+            com.mageddo.dnsproxyserver.config.Config.Entry::getHostname,
             Collectors.reducing((a, b) -> a)
         ));
 
@@ -139,83 +141,86 @@ public class ConfigMapper {
   }
 
   private Config mapFrom0(List<Config> configs) {
-    final var config = Config.builder()
-        .server(Config.Server
+    final var config = com.mageddo.dnsproxyserver.config.Config.builder()
+        .server(com.mageddo.dnsproxyserver.config.Config.Server
             .builder()
-            .webServerPort(Numbers.firstPositive(mapField(Config::getWebServerPort, configs)))
-            .dnsServerPort(Numbers.firstPositive(mapField(Config::getDnsServerPort, configs)))
-            .serverProtocol(firstNonNullRequiring(mapField(Config::getServerProtocol, configs)))
+            .webServerPort(Numbers.firstPositive(mapField(com.mageddo.dnsproxyserver.config.Config::getWebServerPort, configs)))
+            .dnsServerPort(Numbers.firstPositive(mapField(com.mageddo.dnsproxyserver.config.Config::getDnsServerPort, configs)))
+            .serverProtocol(firstNonNullRequiring(mapField(
+                com.mageddo.dnsproxyserver.config.Config::getServerProtocol, configs)))
             .dnsServerNoEntriesResponseCode(
-                firstNonNullRequiring(mapField(Config::getNoEntriesResponseCode, configs))
+                firstNonNullRequiring(mapField(com.mageddo.dnsproxyserver.config.Config::getNoEntriesResponseCode, configs))
             )
             .build()
         )
         .version(this.versionDAO.findVersion())
-        .log(Config.Log
+        .log(com.mageddo.dnsproxyserver.config.Config.Log
             .builder()
-            .level(firstNonNullRequiring(mapField(Config::getLogLevel, configs)))
-            .file(firstNonNullRequiring(mapField(Config::getLogFile, configs)))
+            .level(firstNonNullRequiring(mapField(com.mageddo.dnsproxyserver.config.Config::getLogLevel, configs)))
+            .file(firstNonNullRequiring(mapField(com.mageddo.dnsproxyserver.config.Config::getLogFile, configs)))
             .build()
         )
         .defaultDns(DefaultDns
             .builder()
-            .active(firstNonNullRequiring(mapField(Config::isDefaultDnsActive, configs)))
+            .active(firstNonNullRequiring(mapField(com.mageddo.dnsproxyserver.config.Config::isDefaultDnsActive, configs)))
             .resolvConf(DefaultDns.ResolvConf
                 .builder()
                 .paths(
-                    firstNonNullRequiring(mapField(Config::getDefaultDnsResolvConfPaths, configs)))
+                    firstNonNullRequiring(mapField(com.mageddo.dnsproxyserver.config.Config::getDefaultDnsResolvConfPaths, configs)))
                 .overrideNameServers(firstNonNullRequiring(
-                    mapField(Config::isResolvConfOverrideNameServersActive, configs)))
+                    mapField(com.mageddo.dnsproxyserver.config.Config::isResolvConfOverrideNameServersActive, configs)))
                 .build())
             .build()
         )
-        .solverRemote(Config.SolverRemote
+        .solverRemote(com.mageddo.dnsproxyserver.config.Config.SolverRemote
             .builder()
-            .active(firstNonNullRequiring(mapField(Config::isSolverRemoteActive, configs)))
+            .active(firstNonNullRequiring(mapField(com.mageddo.dnsproxyserver.config.Config::isSolverRemoteActive, configs)))
             .circuitBreaker(firstNonNullRequiring(
-                mapField(Config::getSolverRemoteCircuitBreakerStrategy, configs)
+                mapField(com.mageddo.dnsproxyserver.config.Config::getSolverRemoteCircuitBreakerStrategy, configs)
             ))
-            .dnsServers(firstNonEmptyListRequiring(mapField(Config::getRemoteDnsServers, configs)))
+            .dnsServers(firstNonEmptyListRequiring(mapField(
+                com.mageddo.dnsproxyserver.config.Config::getRemoteDnsServers, configs)))
             .build()
         )
-        .solverStub(Config.SolverStub
+        .solverStub(com.mageddo.dnsproxyserver.config.Config.SolverStub
             .builder()
-            .domainName(firstNonNullRequiring(mapField(Config::getSolverStubDomainName, configs)))
+            .domainName(firstNonNullRequiring(mapField(com.mageddo.dnsproxyserver.config.Config::getSolverStubDomainName, configs)))
             .build()
         )
-        .solverDocker(Config.SolverDocker
+        .solverDocker(SolverDocker
             .builder()
-            .dockerDaemonUri(firstNonNullRequiring(mapField(Config::getDockerDaemonUri, configs)))
+            .dockerDaemonUri(firstNonNullRequiring(mapField(
+                com.mageddo.dnsproxyserver.config.Config::getDockerDaemonUri, configs)))
             .registerContainerNames(
-                firstNonNullRequiring(mapField(Config::getRegisterContainerNames, configs)))
-            .domain(firstNonNullRequiring(mapField(Config::getDockerDomain, configs)))
+                firstNonNullRequiring(mapField(com.mageddo.dnsproxyserver.config.Config::getRegisterContainerNames, configs)))
+            .domain(firstNonNullRequiring(mapField(com.mageddo.dnsproxyserver.config.Config::getDockerDomain, configs)))
             .hostMachineFallback(firstNonNullRequiring(
-                mapField(Config::getDockerSolverHostMachineFallbackActive, configs)))
-            .dpsNetwork(firstNonNullRequiring(mapField(Config::getDockerSolverDpsNetwork, configs)))
+                mapField(com.mageddo.dnsproxyserver.config.Config::getDockerSolverHostMachineFallbackActive, configs)))
+            .dpsNetwork(firstNonNullRequiring(mapField(com.mageddo.dnsproxyserver.config.Config::getDockerSolverDpsNetwork, configs)))
             .build()
         )
-        .solverSystem(Config.SolverSystem
+        .solverSystem(com.mageddo.dnsproxyserver.config.Config.SolverSystem
             .builder()
             .hostMachineHostname(
-                firstNonNullRequiring(mapField(Config::getHostMachineHostname, configs)))
+                firstNonNullRequiring(mapField(com.mageddo.dnsproxyserver.config.Config::getHostMachineHostname, configs)))
             .build()
         )
-        .solverLocal(Config.SolverLocal
+        .solverLocal(com.mageddo.dnsproxyserver.config.Config.SolverLocal
             .builder()
-            .activeEnv(firstNonNull(mapField(Config::getActiveEnv, configs)))
-            .envs(firstNonEmptyList(mapField(Config::getEnvs, configs)))
+            .activeEnv(firstNonNull(mapField(com.mageddo.dnsproxyserver.config.Config::getActiveEnv, configs)))
+            .envs(firstNonEmptyList(mapField(com.mageddo.dnsproxyserver.config.Config::getEnvs, configs)))
             .build()
         )
-        .source(Config.Source.MERGED)
+        .source(com.mageddo.dnsproxyserver.config.Config.Source.MERGED)
         .build();
     ConfigValidator.validate(config);
     return config;
   }
 
   static Config buildDefault() {
-    return Config
+    return com.mageddo.dnsproxyserver.config.Config
         .builder()
-        .server(Config.Server
+        .server(com.mageddo.dnsproxyserver.config.Config.Server
             .builder()
             .serverProtocol(SimpleServer.Protocol.UDP_TCP)
             .build()
@@ -229,28 +234,45 @@ public class ConfigMapper {
             )
             .build()
         )
-        .solverRemote(Config.SolverRemote
+        .solverRemote(com.mageddo.dnsproxyserver.config.Config.SolverRemote
             .builder()
             .active(true)
             .circuitBreaker(defaultCircuitBreaker())
             .dnsServers(Collections.singletonList(IpAddr.of("8.8.8.8:53")))
             .build()
         )
-        .solverStub(Config.SolverStub.builder()
+        .solverStub(com.mageddo.dnsproxyserver.config.Config.SolverStub.builder()
             .domainName("stub")
             .build()
         )
-        .solverDocker(Config.SolverDocker
+        .solverDocker(SolverDocker
             .builder()
             .dockerDaemonUri(buildDefaultDockerHost())
+            .dpsNetwork(SolverDocker.DpsNetwork.builder()
+                .autoConnect(false)
+                .autoCreate(false)
+                .name(Network.Name.DPS.lowerCaseName())
+                .config(List.of(
+                    SolverDocker.DpsNetwork.Config.builder()
+                        .subNet("172.157.0.0/16")
+                        .ipRange("172.157.5.3/24")
+                        .gateway("172.157.5.1")
+                        .build(),
+                    SolverDocker.DpsNetwork.Config.builder()
+                        .subNet("fc00:5c6f:db50::/64")
+                        .gateway("fc00:5c6f:db50::1")
+                        .build()
+                ))
+                .build()
+            )
             .build()
         )
-        .solverLocal(Config.SolverLocal.builder()
+        .solverLocal(com.mageddo.dnsproxyserver.config.Config.SolverLocal.builder()
             .activeEnv(Env.DEFAULT_ENV)
             .envs(List.of(defaultEnv()))
             .build()
         )
-        .source(Config.Source.DEFAULT)
+        .source(com.mageddo.dnsproxyserver.config.Config.Source.DEFAULT)
         .build();
   }
 
@@ -267,9 +289,9 @@ public class ConfigMapper {
   }
 
   static Config.Entry aSampleEntry() {
-    return Config.Entry
+    return com.mageddo.dnsproxyserver.config.Config.Entry
         .builder()
-        .type(Config.Entry.Type.A)
+        .type(com.mageddo.dnsproxyserver.config.Config.Entry.Type.A)
         .hostname("dps-sample.dev")
         .ip(IP.of("192.168.0.254"))
         .ttl(30)

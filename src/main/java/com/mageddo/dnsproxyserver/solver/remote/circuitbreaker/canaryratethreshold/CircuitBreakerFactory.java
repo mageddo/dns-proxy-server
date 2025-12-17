@@ -33,8 +33,8 @@ public class CircuitBreakerFactory {
     final var canaryRateThresholdCircuitBreaker = new CircuitBreakerDelegateCanaryRateThreshold(
         this.createResilienceCircuitBreakerFrom(config), healthChecker.toString()
     );
-    return new CircuitBreakerDelegateSelfObservable(canaryRateThresholdCircuitBreaker,
-        healthChecker
+    return new CircuitBreakerDelegateSelfObservable(
+        canaryRateThresholdCircuitBreaker, healthChecker
     );
   }
 

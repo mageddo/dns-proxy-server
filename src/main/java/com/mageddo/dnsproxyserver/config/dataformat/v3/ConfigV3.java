@@ -93,9 +93,20 @@ public class ConfigV3 {
   @Accessors(chain = true)
   @FieldDefaults(level = AccessLevel.PRIVATE)
   static public class DpsNetwork {
+
     String name;
     Boolean autoCreate;
     Boolean autoConnect;
+    List<Config> configs;
+
+    @Data
+    @Accessors(chain = true)
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    public static class Config {
+      String subNet;
+      String ipRange;
+      String gateway;
+    }
   }
 
   @Data
