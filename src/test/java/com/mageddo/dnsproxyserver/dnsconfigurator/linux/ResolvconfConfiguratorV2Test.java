@@ -306,4 +306,27 @@ class ResolvconfConfiguratorV2Test {
         Files.readString(resolvFile)
     );
   }
+
+  @Test
+  void mustPreserveOriginalSettingsAndCommentsWhenContainsDpsV1(
+      @TempDir Path tmpDir
+  ) throws Exception {
+
+    // arrange
+    final var resolvFile = tmpDir.resolve("resolv.conf");
+    final var ip = IpAddrTemplates.local();
+
+    final var original = ResolvConfTemplates.defaultSystemResolvedConfWithDpsV1();
+    Files.writeString(resolvFile, original);
+
+    // act
+    final var overrideNameServers = true;
+    ResolvconfConfiguratorV2.process(resolvFile, ip, overrideNameServers);
+
+    // assert
+    assertEquals(
+        ResolvConfTemplates.defaultSystemResolvedConfDpsChanged(),
+        Files.readString(resolvFile)
+    );
+  }
 }
