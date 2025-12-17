@@ -25,14 +25,14 @@ ENV JAVA_HOME=/graalvm
 ENV PATH="${PATH}:$JAVA_HOME/bin"
 RUN uname -a && whoami && $JAVA_HOME/bin/java -version
 
-#WORKDIR /app/build
-#COPY ./build/artifacts/native-image-source/ /app/build
-#
-#RUN ls -lha &&\
-#  native-image --static --libc=musl -jar dns-proxy-server.jar dns-proxy-server
-#
-#RUN ls -lhS &&\
-#  mkdir -p ./artifacts/linux-amd64-static &&\
-#  mv ./dns-proxy-server ./artifacts/linux-amd64-static/
+WORKDIR /app/build
+COPY ./build/artifacts/native-image-source/ /app/build
+
+RUN ls -lha &&\
+  native-image --static --libc=musl -jar dns-proxy-server.jar dns-proxy-server
+
+RUN ls -lhS &&\
+  mkdir -p ./artifacts/linux-amd64-static &&\
+  mv ./dns-proxy-server ./artifacts/linux-amd64-static/
 
 ENTRYPOINT cat
