@@ -4,7 +4,7 @@
 * Creating the docs for config v3
 * Fixing Hostname Entry Update API
 * Fixing intermittent unit test
-* MutableConfigDAO: Caching queries
+* MutableConfigFileDAO: Caching queries
 
 [5_1_0_1]: https://github.com/mageddo/dns-proxy-server/issues/627
 
