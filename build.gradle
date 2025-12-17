@@ -89,6 +89,7 @@ dependencies {
   testImplementation("org.junit.jupiter:junit-jupiter:5.11.3")
   testImplementation("org.mockito:mockito-junit-jupiter:5.11.0")
   testImplementation('org.hamcrest:hamcrest:3.0')
+  testImplementation('org.assertj:assertj-core:3.27.6')
   testImplementation('io.rest-assured:rest-assured:5.5.0')
   testImplementation('org.reflections:reflections:0.10.2')
 

@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class ConfigV3EnvMapper {
 
-  private static final String PREFIX = "DPS_";
+  public static final String PREFIX = "DPS_";
 
   private final EnvMapper envMapper;
 

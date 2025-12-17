@@ -1,25 +1,28 @@
 package com.mageddo.dataformat.env;
 
+import com.mageddo.dnsproxyserver.config.dataformat.v3.mapper.ConfigV3EnvMapper;
 import com.mageddo.dnsproxyserver.config.provider.dataformatv3.templates.ConfigV3EnvTemplates;
 import com.mageddo.dnsproxyserver.config.provider.dataformatv3.templates.ConfigV3Templates;
-import com.mageddo.json.JsonUtils;
+import com.mageddo.utils.TestUtils;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EnvMapperTest {
 
-  private final EnvMapper mapper = new EnvMapper();
+  final EnvMapper mapper = new EnvMapper();
 
   @Test
   void mustConvertEnvVariablesToJsonStructure() {
     // Arrange
     final var env = ConfigV3EnvTemplates.build();
-    final var expected = JsonUtils.readTree(ConfigV3Templates.buildJson());
+
+    final var expected = TestUtils.sortJson(ConfigV3Templates.buildJson());
 
     // Act
-    final var json = this.mapper.toJson(env, "DPS_");
-    final var actual = JsonUtils.readTree(json);
+    final var json = this.mapper.toJson(env, ConfigV3EnvMapper.PREFIX);
+    final var actual = TestUtils.sortJson(json);
 
     // Assert
     assertEquals(expected, actual);
