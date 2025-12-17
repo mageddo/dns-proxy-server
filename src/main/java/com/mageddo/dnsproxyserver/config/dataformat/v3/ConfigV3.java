@@ -30,7 +30,7 @@ public class ConfigV3 {
   @JsonTypeInfo(
       use = JsonTypeInfo.Id.NAME,
       include = JsonTypeInfo.As.PROPERTY,
-      property = "strategy",
+      property = "name",
       defaultImpl = CircuitBreaker.CanaryRateThreshold.class
   )
   @JsonSubTypes({
