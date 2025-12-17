@@ -1,27 +1,28 @@
 package com.mageddo.dnsproxyserver.config;
 
+import java.net.URI;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mageddo.dnsserver.SimpleServer;
 import com.mageddo.net.IP;
 import com.mageddo.net.IpAddr;
 
-import lombok.Builder;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
-
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import lombok.Builder;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
 
 import static com.mageddo.commons.lang.Objects.mapOrNull;
 
@@ -361,6 +362,7 @@ public class Config {
       }
     }
 
+    // TODO move to a separate mapper
     @RequiredArgsConstructor
     public enum Type {
 
