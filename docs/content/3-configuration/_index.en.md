@@ -48,14 +48,17 @@ Common DNS resolution mechanisms used by DPS. Solvers are evaluated according to
 
 ### Docker Solver
 
-| Name | Description | Default Value |
-|------|-------------|---------------|
-| `solver.docker.registerContainerNames` | Whether container or service names should be registered as DNS hostnames. | `false` |
-| `solver.docker.domain` | Domain suffix used when registering Docker containers and services. | `docker` |
-| `solver.docker.hostMachineFallback` | Whether the host machine IP should be returned when a container is found but has no IP. | `true` |
-| `solver.docker.dockerDaemonUri` | Docker daemon URI used to connect to Docker. | OS dependent |
-| `solver.docker.dpsNetwork.autoCreate` | Whether DPS should automatically create a Docker bridge network. | `false` |
-| `solver.docker.dpsNetwork.autoConnect` | Whether all containers should be auto-connected to the DPS network. | `false` |
+| Name                                         | Description                                                                             | Default Value |
+|----------------------------------------------|-----------------------------------------------------------------------------------------|---------------|
+| `solver.docker.registerContainerNames`       | Whether container or service names should be registered as DNS hostnames.               | `false` |
+| `solver.docker.domain`                       | Domain suffix used when registering Docker containers and services.                     | `docker` |
+| `solver.docker.hostMachineFallback`          | Whether the host machine IP should be returned when a container is found but has no IP. | `true` |
+| `solver.docker.dockerDaemonUri`              | Docker daemon URI used to connect to Docker.                                            | OS dependent |
+| `solver.docker.dpsNetwork.autoCreate`        | Whether DPS should automatically create a Docker bridge network.                        | `false` |
+| `solver.docker.dpsNetwork.autoConnect`       | Whether all containers should be auto-connected to the DPS network.                     | `false` |
+| `solver.docker.dpsNetwork.configs`           | Docker network IP configuration                                                         |  |
+| `solver.docker.dpsNetwork.configs[].subNet` | Subnet                                                                                  | `172.20.0.0/16` |
+| `solver.docker.dpsNetwork.configs[].ipRange` | Ip Range                                                                                | `172.20.5.0/24` |
 
 ---
 
@@ -132,6 +135,12 @@ solver:
       name: dps
       autoCreate: false
       autoConnect: false
+      configs:
+        - subNet: 172.20.0.0/16
+          ipRange: 172.20.5.0/24
+          gateway: 172.20.5.1
+        - subNet: fc00:5c6f:db50::/64
+          gateway: fc00:5c6f:db50::1
     dockerDaemonUri:
   system:
     hostMachineHostname: host.docker
