@@ -9,7 +9,7 @@
 
     <link rel="icon" href="/dns-proxy-server/latest/images/favicon.png" type="image/png">
 
-    <title>Configuring a Service Discovery solution on Docker using DNS Proxy Server and NGINX :: DNS Proxy Server</title>
+    <title>Legacy Configuration (v2) :: DNS Proxy Server</title>
 
     
     <link href="/dns-proxy-server/latest/css/nucleus.css?1765983766" rel="stylesheet">
@@ -36,7 +36,7 @@
     <link href="/dns-proxy-server/latest/css/style.css" rel="stylesheet" type="text/css" />
 
   </head>
-  <body class="" data-url="/dns-proxy-server/latest/en/5-tutorials/docker-reverse-proxy/">
+  <body class="" data-url="/dns-proxy-server/latest/en/3-configuration/legacy/">
     <nav id="sidebar" class="showVisitedLinks">
 
 
@@ -700,7 +700,7 @@
   
     
     <li data-nav-id="/dns-proxy-server/latest/en/3-configuration/" title="Configuration Reference" class="dd-item 
-        
+        parent
         
         
         ">
@@ -745,7 +745,7 @@
  
   
     
-      <li data-nav-id="/dns-proxy-server/latest/en/3-configuration/legacy/" title="Legacy Configuration (v2)" class="dd-item ">
+      <li data-nav-id="/dns-proxy-server/latest/en/3-configuration/legacy/" title="Legacy Configuration (v2)" class="dd-item active">
         <a href="/dns-proxy-server/latest/en/3-configuration/legacy/">
         <b>3. </b>Legacy Configuration (v2)
         <i class="fas fa-check read-icon"></i>
@@ -772,7 +772,7 @@
   
     
     <li data-nav-id="/dns-proxy-server/latest/en/5-tutorials/" title="Tutorials" class="dd-item 
-        parent
+        
         
         
         ">
@@ -798,7 +798,7 @@
  
   
     
-      <li data-nav-id="/dns-proxy-server/latest/en/5-tutorials/docker-reverse-proxy/" title="Configuring a Service Discovery solution on Docker using DNS Proxy Server and NGINX" class="dd-item active">
+      <li data-nav-id="/dns-proxy-server/latest/en/5-tutorials/docker-reverse-proxy/" title="Configuring a Service Discovery solution on Docker using DNS Proxy Server and NGINX" class="dd-item ">
         <a href="/dns-proxy-server/latest/en/5-tutorials/docker-reverse-proxy/">
         Create a Service Discovery solution
         <i class="fas fa-check read-icon"></i>
@@ -1048,7 +1048,7 @@
                   
                     
                     
-                      <option id="en" value="http://mageddo.github.io/dns-proxy-server/latest/en/5-tutorials/docker-reverse-proxy/" selected>English</option>
+                      <option id="en" value="http://mageddo.github.io/dns-proxy-server/latest/en/3-configuration/legacy/" selected>English</option>
                     
                   
               
@@ -1107,7 +1107,7 @@
                   
                   
                   <div id="top-github-link">
-                    <a class="github-link" title='Edit this page' href="https://github.com/mageddo/dns-proxy-server/edit/master/docs/content/5-tutorials/docker-reverse-proxy.en.md" target="blank">
+                    <a class="github-link" title='Edit this page' href="https://github.com/mageddo/dns-proxy-server/edit/master/docs/content/3-configuration/legacy.en.md" target="blank">
                       <i class="fas fa-code-branch"></i>
                       <span id="top-github-link-text">Edit this page</span>
                     </a>
@@ -1138,7 +1138,7 @@
             
           
           
-            <a href='/dns-proxy-server/latest/en/'></a> > <a href='/dns-proxy-server/latest/en/5-tutorials/'>Tutorials</a> > Configuring a Service Discovery solution on Docker using DNS Proxy Server and NGINX
+            <a href='/dns-proxy-server/latest/en/'></a> > <a href='/dns-proxy-server/latest/en/3-configuration/'>Configuration Reference</a> > Legacy Configuration (v2)
           
          
           
@@ -1157,22 +1157,39 @@
 <ul>
 <li>
 <ul>
-<li>
+<li><a href="#remote-dns-servers">Remote DNS Servers</a></li>
+<li><a href="#web-server-port">Web Server Port</a></li>
+<li><a href="#dns-server-port">DNS Server Port</a></li>
+<li><a href="#log-level">Log Level</a></li>
+<li><a href="#log-file">Log File</a></li>
+<li><a href="#register-container-names">Register Container Names</a></li>
+<li><a href="#domain">Domain</a></li>
+<li><a href="#dps-network">DPS Network</a></li>
+<li><a href="#dps-network-auto-connect">DPS Network Auto Connect</a></li>
+<li><a href="#default-dns">Default DNS</a></li>
+<li><a href="#host-machine-hostname">Host Machine Hostname</a></li>
+<li><a href="#server-protocol">Server Protocol</a></li>
+<li><a href="#docker-host">Docker Host</a></li>
+<li><a href="#resolvconf-override-name-servers">Resolvconf Override Name Servers</a></li>
+<li><a href="#resolvconf">Resolvconf</a></li>
+<li><a href="#no-remote-servers">No Remote Servers</a></li>
+<li><a href="#active-env">Active Env</a></li>
+<li><a href="#no-entries-response-code">No Entries Response Code</a></li>
+<li><a href="#local-entries-solving-localdb">Local Entries Solving (LocalDB)</a></li>
+<li><a href="#docker-solver-host-machine-ip-fallback">Docker Solver Host Machine IP Fallback</a></li>
+<li><a href="#stub-solver">Stub Solver</a>
 <ul>
-<li>
+<li><a href="#stub-solver-domain-name">Stub Solver - Domain Name</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#config-file-path">Config File Path</a>
 <ul>
-<li><a href="#requirements">Requirements</a></li>
-<li><a href="#tested-on">Tested on:</a></li>
+<li><a href="#config-file-path-1">Config File Path</a></li>
+<li><a href="#working-dir-optional">Working Dir (Optional)</a></li>
 </ul></li>
-<li><a href="#introducing">Introducing</a></li>
-</ul></li>
-<li><a href="#configuring">Configuring</a></li>
-<li><a href="#testing">Testing</a>
-<ul>
-<li><a href="#from-the-hostname">From the hostname</a></li>
-<li><a href="#apps-can-also-access-each-other-by-its-hostname">Apps can also access each other by its hostname</a></li>
-</ul></li>
-</ul></li>
+<li><a href="#example-json-configuration">Example JSON configuration</a></li>
+<li><a href="#environment-variable-configuration">Environment variable configuration</a></li>
+<li><a href="#terminal-configuration">Terminal configuration</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -1191,7 +1208,7 @@
           
             <h1>
               
-              Configuring a Service Discovery solution on Docker using DNS Proxy Server and NGINX
+              Legacy Configuration (v2)
             </h1>
           
 
@@ -1201,121 +1218,466 @@
 
 
 
-<h5 id="requirements">Requirements</h5>
+<p><strong>Important</strong>: Legacy configurations are supported only for read, they won&rsquo;t receive new properties,
+can be replaced when using the GUI to make changes on the settings and can be removed on future versions of DPS.</p>
+
+<p>I would recommend to migrate to version 3.</p>
+
+<h3 id="remote-dns-servers">Remote DNS Servers</h3>
+
+<p>Remote DNS servers to be asked when can not solve from docker or local storage.
+Default: <code>8.8.8.8</code>.</p>
+
+<h3 id="web-server-port">Web Server Port</h3>
+
+<p>Web GUI port, Default: <code>5380</code>.</p>
+
+<h3 id="dns-server-port">DNS Server Port</h3>
+
+<p>Default: <code>53</code>.</p>
+
+<h3 id="log-level">Log Level</h3>
+
+<p>Default: <code>INFO</code>.</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>MG_LOG_LEVEL</code></td>
+<td><code>logLevel</code></td>
+<td>See &ndash;help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="log-file">Log File</h3>
+
+<p>Where the log will be written. Default: console.</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>MG_LOG_FILE</code></td>
+<td><code>logFile</code></td>
+<td>See &ndash;help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="register-container-names">Register Container Names</h3>
+
+<p>If should register container name / service name as a hostname. Default: false.</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>MG_REGISTER_CONTAINER_NAMES</code></td>
+<td><code>registerContainerNames</code></td>
+<td>See &ndash;help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="domain">Domain</h3>
+
+<p>The container names domain used on the registered container, services. Default: <code>docker</code>.</p>
+
+<p>Ex:</p>
+
+<pre><code class="language-bash">docker run --rm --name nginx nginx
+</code></pre>
+
+<p>Will register a container with the name <code>nginx.docker</code></p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>MG_DOMAIN</code></td>
+<td><code>domain</code></td>
+<td>See &ndash;help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="dps-network">DPS Network</h3>
+
+<p>If should create a bridge network for dps container. Default: false.</p>
+
+<h3 id="dps-network-auto-connect">DPS Network Auto Connect</h3>
+
+<p>If should connect all containers to dps container so they can surely talk with each other. requires DPS Network Option.
+Default: false.</p>
+
+<h3 id="default-dns">Default DNS</h3>
+
+<p>If DPS must be set as the default DNS automatically, commonly requires DPS be run as sudo/administrator permissions,
+this options also won&rsquo;t work in some cases when running inside a docker container, <a href="/dns-proxy-server/latest/en/2-features/auto-configuration-as-default-dns/">see the feature details</a>.</p>
+
+<h3 id="host-machine-hostname">Host Machine Hostname</h3>
+
+<p>Hostname to solve machine IP, domain can be changed by Domain option. Default: <code>host.docker</code>.</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>MG_HOST_MACHINE_HOSTNAME</code></td>
+<td><code>hostMachineHostname</code></td>
+<td>See &ndash;help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="server-protocol">Server Protocol</h3>
+
+<p>Protocol to start the dns server. Default: <code>UDP_TCP</code>.</p>
+
+<h3 id="docker-host">Docker Host</h3>
+
+<p>Docker host address. Default value is SO dependent.</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>MG_DOCKER_HOST</code></td>
+<td><code>dockerHost</code></td>
+<td>See &ndash;help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="resolvconf-override-name-servers">Resolvconf Override Name Servers</h3>
+
+<p>If must comment all existing nameservers at <code>resolv.conf</code> file (Linux, MacOS) or just put DPS at the first place.
+Default: true.</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>MG_RESOLVCONF_OVERRIDE_NAMESERVERS</code></td>
+<td><code>resolvConfOverrideNameServers</code></td>
+<td>See &ndash;help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="resolvconf">Resolvconf</h3>
+
+<p>Linux/Mac resolvconf or systemd-resolved path to set DPS as default DNS.
+Default: <code>/host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf</code>.</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>MG_RESOLVCONF</td>
+<td></td>
+<td>See &ndash;help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="no-remote-servers">No Remote Servers</h3>
+
+<p>If remote servers like 8.8.8.8 must be disabled and only local solvers like docker containers or local db must be used.
+Default: false.</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>MG_NO_REMOTE_SERVERS</code></td>
+<td><code>noRemoteServers</code></td>
+<td>See &ndash;help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="active-env">Active Env</h3>
+
+<p>Active Env used to query local db entries. Default `` (Empty String).</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td></td>
+<td><code>activeEnv</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="no-entries-response-code">No Entries Response Code</h3>
+
+<p>Response code to use when no entries are returned by the configured solvers. Default: 3</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>MG_NO_ENTRIES_RESPONSE_CODE</td>
+<td><code>noEntriesResponseCode</code></td>
+<td>See -help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="local-entries-solving-localdb">Local Entries Solving (LocalDB)</h3>
+
+<p>See <a href="/dns-proxy-server/latest/en/2-features/local-entries/">Local Entries Solving</a> docs.</p>
+
+<h3 id="docker-solver-host-machine-ip-fallback">Docker Solver Host Machine IP Fallback</h3>
+
+<p>Whether should answer host machine IP when a matching container is found but it hasn&rsquo;t
+an IP to be answered, see Github Issue <a href="https://github.com/mageddo/dns-proxy-server/issues/442">#442</a>.
+Default: true</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>MG_DOCKER_SOLVER_HOST_MACHINE_FALLBACK_ACTIVE</td>
+<td><code>dockerSolverHostMachineFallbackActive</code></td>
+<td>See -help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="stub-solver">Stub Solver</h3>
+
+<h4 id="stub-solver-domain-name">Stub Solver - Domain Name</h4>
+
+<p>The domain name used for stub solver resolved hostnames. Default: <code>stub</code>.</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>MG_STUB_SOLVER_DOMAIN_NAME</td>
+<td><code>solverStub.domainName</code></td>
+<td>See -help</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="config-file-path">Config File Path</h2>
+
+<p>The location of the external config file (as the JSON file) can be changed by setting two variables:</p>
+
+<h3 id="config-file-path-1">Config File Path</h3>
+
+<p>Relative or absolute path to the config file. Default: <code>conf/config.json</code></p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>MG_CONFIG_FILE_PATH</td>
+<td>N/A</td>
+<td>See -help</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="working-dir-optional">Working Dir (Optional)</h3>
+
+<p>Is the path which will be used when <strong>ConfigFilePath</strong> is set as a relative path.
+Default: <code>DPS executing path, aka Working Directory</code>.</p>
+
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>JSON</th>
+<th>Terminal</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>MG_WORK_DIR</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="example-json-configuration">Example JSON configuration</h2>
+
+<p><strong>Version 2</strong></p>
+
+<pre><code class="language-json">{
+  &quot;version&quot;: 2,
+  &quot;remoteDnsServers&quot;: [ &quot;8.8.8.8&quot;, &quot;4.4.4.4:54&quot; ],
+  &quot;envs&quot;: [
+    {
+      &quot;name&quot;: &quot;&quot;, // empty string is the default enviroment
+      &quot;hostnames&quot;: [ // all local hostnames entries
+        {
+          &quot;id&quot;: 1, // (optional) used to control it will be automatically generated if not passed
+          &quot;type&quot;: &quot;A&quot;,
+          &quot;hostname&quot;: &quot;github.com&quot;,
+          &quot;ip&quot;: &quot;192.168.0.1&quot;,
+          &quot;ttl&quot;: 255 // how many seconds cache this entry
+        }
+      ]
+    }
+  ],
+  &quot;activeEnv&quot;: &quot;&quot;, 
+  &quot;webServerPort&quot;: 5380, 
+  &quot;dnsServerPort&quot;: 53, 
+  &quot;logLevel&quot;: &quot;INFO&quot;,
+  &quot;logFile&quot;: &quot;console&quot;,
+  &quot;registerContainerNames&quot;: false, 
+  &quot;domain&quot;: &quot;docker&quot;, 
+  &quot;dpsNetwork&quot;: false,
+  &quot;dpsNetworkAutoConnect&quot;: false, 
+  &quot;defaultDns&quot;: true,
+  &quot;hostMachineHostname&quot; : &quot;host.docker&quot;, 
+  &quot;serverProtocol&quot;: &quot;UDP_TCP&quot;, 
+  &quot;dockerHost&quot;: null,
+  &quot;resolvConfOverrideNameServers&quot;: true,
+  &quot;noRemoteServers&quot;: false,
+  &quot;noEntriesResponseCode&quot;: 3,
+  &quot;dockerSolverHostMachineFallbackActive&quot;: true,
+  &quot;solverRemote&quot; : {
+    &quot;circuitBreaker&quot; : { 
+      &quot;failureThreshold&quot; : 3, 
+      &quot;failureThresholdCapacity&quot; : 10,
+      &quot;successThreshold&quot; : 5, 
+      &quot;testDelay&quot; : &quot;PT20S&quot;
+    }
+  }
+}
+</code></pre>
 
 <ul>
-<li>DPS already configured, <a href="/dns-proxy-server/latest/en/1-getting-started/running-it/">see the docs</a> if you haven&rsquo;t yet.</li>
+<li><a href="/dns-proxy-server/latest/en/2-features/remote-solver-circuitbreaker/">Solver remote circuit breaker configuration</a></li>
 </ul>
 
-<h5 id="tested-on">Tested on:</h5>
+<h2 id="environment-variable-configuration">Environment variable configuration</h2>
 
-<ul>
-<li>DPS 3.11</li>
-<li>OS: Mac, Linux, Windows</li>
-</ul>
-
-<h4 id="introducing">Introducing</h4>
-
-<p>You will see how to develop with docker containers solving them by hostnames from your host machine
-as the following picture shows:</p>
-
-<p><img src="https://i.imgur.com/wr9GSeR.png" alt="" /></p>
-
-<p>if you know about DPS you will figure out that&rsquo;s a very basic DPS feature and you don&rsquo;t need complex configurations to
-achieve that, except on MAC and Windows as docker runs its containers on a virtual machine so
-DPS default feature to solve containers names will work but the solved IPs are worthless because they aren&rsquo;t
-accessible from the host.</p>
-
-<p>To fix that we will configure an API Gateway, Service Discovery, Reverse Proxy solution combining DPS with Nginx,
-see final solution below:</p>
-
-<p><img src="https://i.imgur.com/poI0sKZ.png" alt="" />
-Source: <a href="https://excalidraw.com/#json=BuYYx179GhmvHCexDZHGv,2hN_IgZo9HTfID-neSACQw">excalidraw</a></p>
-
-<h3 id="configuring">Configuring</h3>
-
-<p>The pratice is simpler than the theory, let&rsquo;s get it working:</p>
-
-<p>Configuring Nginx reverse proxy and two web apps for test</p>
-
-<pre><code class="language-bash">$ git clone https://github.com/mageddo/dns-proxy-server.git
-$ cd examples/api-gateway_service-discovery_reverse-proxy
-$ docker-compose build --no-cache
-$ docker-compose up
-</code></pre>
-
-<p><code>docker-compose up</code> created three containers, the first is a nginx reverse proxy which will listen to the host machine
-80 port and two others are web apps which the reverse proxy will proxy to depending on the hostname queried.</p>
-
-<p>Reverse Proxy will listen all <code>.webapp</code> hostnames and proxy to <code>.container</code> containers.<br />
-See <a href="https://github.com/mageddo/dns-proxy-server/blob/master/examples/api-gateway_service-discovery_reverse-proxy/docker-compose.yml">docker-compose.yml</a> for more details about each docker service.</p>
-
-<p>The final step is to configure a wildcard to handle when something on the host queries for <code>.webapp</code>:</p>
-
-<p><img src="https://i.imgur.com/xRrk2Mk.png" alt="" /></p>
-
-<h3 id="testing">Testing</h3>
-
-<h4 id="from-the-hostname">From the hostname</h4>
-
-<p>Web app 1 is working:</p>
-
-<pre><code class="language-bash">$ curl -i -X GET http://web-app.webapp
-HTTP/1.1 200 OK
-Server: nginx/1.23.3
-Date: Thu, 16 Mar 2023 03:18:53 GMT
-Content-Type: text/html
-Content-Length: 37
-Connection: keep-alive
-Last-Modified: Thu, 16 Mar 2023 02:35:50 GMT
-ETag: &quot;64128086-25&quot;
-Accept-Ranges: bytes
-
-&lt;h1&gt;Hello World from web-app!!!&lt;/h1&gt;
-</code></pre>
-
-<p>Web app 2 is also working:</p>
-
-<pre><code class="language-bash">$ curl -i -X GET http://web-app-2.webapp
-HTTP/1.1 200 OK
-Server: nginx/1.23.3
-Date: Thu, 16 Mar 2023 03:30:19 GMT
-Content-Type: text/html
-Content-Length: 615
-Connection: keep-alive
-Last-Modified: Tue, 13 Dec 2022 15:53:53 GMT
-ETag: &quot;6398a011-267&quot;
-Accept-Ranges: bytes
-
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;title&gt;Welcome to nginx!&lt;/title&gt;
-...
-</code></pre>
-
-<h4 id="apps-can-also-access-each-other-by-its-hostname">Apps can also access each other by its hostname</h4>
-
-<p>No reverse proxy is necessary here, so you can connect a web-app to a database container by its hostname for example.</p>
-
-<p>web-app-1 connecting to web-app-2</p>
-
-<pre><code class="language-bash">$ docker-compose run web-app curl -I web-app-2.webapp.container
-HTTP/1.1 200 OK
-Server: nginx/1.23.3
-Date: Thu, 16 Mar 2023 03:55:02 GMT
-Content-Type: text/html
-Content-Length: 615
-Last-Modified: Tue, 13 Dec 2022 15:53:53 GMT
-Connection: keep-alive
-</code></pre>
-
-<p>That&rsquo;s all, if you have any contribution or question feel free to open a pull request or an issue on the Github repo,
-thanks for reading.</p>
+<p>Boolean values</p>
 
 <blockquote>
-<p>Service Discovery, API Gateway, Service Discovery, Reverse Proxy</p>
+<p>You can use <code>1</code> or <code>true</code> (case insensitive) to specify which the flag is activated, any other
+value will be considered false.</p>
 </blockquote>
+
+<h2 id="terminal-configuration">Terminal configuration</h2>
+
+<p>Run one of the commands below to get the commandline instructions help:</p>
+
+<pre><code class="language-bash">$ ./dns-proxy-server --help
+</code></pre>
+
+<pre><code class="language-bash">$ docker run defreitas/dns-proxy-server --help
+</code></pre>
 
 
 <footer class=" footline" >
@@ -1731,6 +2093,7 @@ thanks for reading.</p>
             
                 
                     
+                    
                 
                 
 
@@ -1744,41 +2107,8 @@ thanks for reading.</p>
             
                 
                     
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
                         
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-            
-        
-                    
                         
-            
-            
-                
-                    
                     
                 
                 
@@ -1787,6 +2117,9 @@ thanks for reading.</p>
                     
                     
 
+                    
+            
+        
                     
                         
             
@@ -1815,6 +2148,38 @@ thanks for reading.</p>
                     
                         
                         
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
                     
                 
                 
@@ -1948,10 +2313,10 @@ thanks for reading.</p>
 	 
 	 
 		
-			<a class="nav nav-prev" href="/dns-proxy-server/latest/en/5-tutorials/" title="Tutorials"> <i class="fa fa-chevron-left"></i></a>
+			<a class="nav nav-prev" href="/dns-proxy-server/latest/en/3-configuration/format/" title="Supported Formats"> <i class="fa fa-chevron-left"></i></a>
 		
 		
-			<a class="nav nav-next" href="/dns-proxy-server/latest/en/4-developing/" title="Developing" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+			<a class="nav nav-next" href="/dns-proxy-server/latest/en/5-tutorials/" title="Tutorials" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
 		
 	
     </div>

@@ -23,6 +23,30 @@ $ curl -X DELETE dns.mageddo:5380/network/disconnect-containers/?networkId=85e75
     </item>
     
     <item>
+      <title>Supported Formats</title>
+      <link>http://mageddo.github.io/dns-proxy-server/5.0/en/3-configuration/format/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mageddo.github.io/dns-proxy-server/5.0/en/3-configuration/format/</guid>
+      <description>Supported Formats  ENV YAML JSON Command Line Arguments  YAML/JSON File Path Configuration Default: conf/config.json
+The location can be changed by setting DPS_CONFIG_FILE_PATH, MG_CONFIG_FILE_PATH legacy env or --conf-path command line argument. The path can be relative (to the binary path) or absolute.
+Working Dir Default: DPS executing path, a.k.a Working Directory
+Is the path which will be used when ConfigFilePath is set as a relative path. Can be set by DPS_WORK_DIR or DPS_WORK_DIR legacy env.</description>
+    </item>
+    
+    <item>
+      <title>Legacy Configuration (v2)</title>
+      <link>http://mageddo.github.io/dns-proxy-server/5.0/en/3-configuration/legacy/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mageddo.github.io/dns-proxy-server/5.0/en/3-configuration/legacy/</guid>
+      <description>Important: Legacy configurations are supported only for read, they won&amp;rsquo;t receive new properties, can be replaced when using the GUI to make changes on the settings and can be removed on future versions of DPS.
+I would recommend to migrate to version 3.
+Remote DNS Servers Remote DNS servers to be asked when can not solve from docker or local storage. Default: 8.8.8.8.
+Web Server Port Web GUI port, Default: 5380.</description>
+    </item>
+    
+    <item>
       <title>Release Version Control</title>
       <link>http://mageddo.github.io/dns-proxy-server/5.0/en/1-getting-started/versioning/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -87,7 +111,7 @@ if you know about DPS you will figure out that&amp;rsquo;s a very basic DPS feat
       <description>Contributors Thanks to them  for making Open Source Software a better place !
 .ghContributors{ display:flex; flex-flow: wrap; align-content: flex-start }
 .ghContributors &amp;gt; div{ width: 50% ; display: inline-flex; margin-bottom: 5px; } .ghContributors &amp;gt; div label{ padding-left: 4px ; } .ghContributors &amp;gt; div span{ font-size: x-small; padding-left: 4px ; }
-  @mageddo 918 commits 
+  @mageddo 921 commits 
  @josielrocha 9 commits 
  @mrubli 3 commits 
  @addshore 3 commits</description>

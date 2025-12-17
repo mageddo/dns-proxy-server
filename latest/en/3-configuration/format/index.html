@@ -9,7 +9,7 @@
 
     <link rel="icon" href="/dns-proxy-server/latest/images/favicon.png" type="image/png">
 
-    <title>Configuring a Service Discovery solution on Docker using DNS Proxy Server and NGINX :: DNS Proxy Server</title>
+    <title>Supported Formats :: DNS Proxy Server</title>
 
     
     <link href="/dns-proxy-server/latest/css/nucleus.css?1765983766" rel="stylesheet">
@@ -36,7 +36,7 @@
     <link href="/dns-proxy-server/latest/css/style.css" rel="stylesheet" type="text/css" />
 
   </head>
-  <body class="" data-url="/dns-proxy-server/latest/en/5-tutorials/docker-reverse-proxy/">
+  <body class="" data-url="/dns-proxy-server/latest/en/3-configuration/format/">
     <nav id="sidebar" class="showVisitedLinks">
 
 
@@ -700,7 +700,7 @@
   
     
     <li data-nav-id="/dns-proxy-server/latest/en/3-configuration/" title="Configuration Reference" class="dd-item 
-        
+        parent
         
         
         ">
@@ -726,7 +726,7 @@
  
   
     
-      <li data-nav-id="/dns-proxy-server/latest/en/3-configuration/format/" title="Supported Formats" class="dd-item ">
+      <li data-nav-id="/dns-proxy-server/latest/en/3-configuration/format/" title="Supported Formats" class="dd-item active">
         <a href="/dns-proxy-server/latest/en/3-configuration/format/">
         <b>2. </b>Supported Formats
         <i class="fas fa-check read-icon"></i>
@@ -772,7 +772,7 @@
   
     
     <li data-nav-id="/dns-proxy-server/latest/en/5-tutorials/" title="Tutorials" class="dd-item 
-        parent
+        
         
         
         ">
@@ -798,7 +798,7 @@
  
   
     
-      <li data-nav-id="/dns-proxy-server/latest/en/5-tutorials/docker-reverse-proxy/" title="Configuring a Service Discovery solution on Docker using DNS Proxy Server and NGINX" class="dd-item active">
+      <li data-nav-id="/dns-proxy-server/latest/en/5-tutorials/docker-reverse-proxy/" title="Configuring a Service Discovery solution on Docker using DNS Proxy Server and NGINX" class="dd-item ">
         <a href="/dns-proxy-server/latest/en/5-tutorials/docker-reverse-proxy/">
         Create a Service Discovery solution
         <i class="fas fa-check read-icon"></i>
@@ -1048,7 +1048,7 @@
                   
                     
                     
-                      <option id="en" value="http://mageddo.github.io/dns-proxy-server/latest/en/5-tutorials/docker-reverse-proxy/" selected>English</option>
+                      <option id="en" value="http://mageddo.github.io/dns-proxy-server/latest/en/3-configuration/format/" selected>English</option>
                     
                   
               
@@ -1107,7 +1107,7 @@
                   
                   
                   <div id="top-github-link">
-                    <a class="github-link" title='Edit this page' href="https://github.com/mageddo/dns-proxy-server/edit/master/docs/content/5-tutorials/docker-reverse-proxy.en.md" target="blank">
+                    <a class="github-link" title='Edit this page' href="https://github.com/mageddo/dns-proxy-server/edit/master/docs/content/3-configuration/format.en.md" target="blank">
                       <i class="fas fa-code-branch"></i>
                       <span id="top-github-link-text">Edit this page</span>
                     </a>
@@ -1138,7 +1138,7 @@
             
           
           
-            <a href='/dns-proxy-server/latest/en/'></a> > <a href='/dns-proxy-server/latest/en/5-tutorials/'>Tutorials</a> > Configuring a Service Discovery solution on Docker using DNS Proxy Server and NGINX
+            <a href='/dns-proxy-server/latest/en/'></a> > <a href='/dns-proxy-server/latest/en/3-configuration/'>Configuration Reference</a> > Supported Formats
           
          
           
@@ -1155,23 +1155,12 @@
 <ul>
 <li>
 <ul>
-<li>
+<li><a href="#supported-formats">Supported Formats</a>
 <ul>
-<li>
-<ul>
-<li>
-<ul>
-<li><a href="#requirements">Requirements</a></li>
-<li><a href="#tested-on">Tested on:</a></li>
-</ul></li>
-<li><a href="#introducing">Introducing</a></li>
-</ul></li>
-<li><a href="#configuring">Configuring</a></li>
-<li><a href="#testing">Testing</a>
-<ul>
-<li><a href="#from-the-hostname">From the hostname</a></li>
-<li><a href="#apps-can-also-access-each-other-by-its-hostname">Apps can also access each other by its hostname</a></li>
-</ul></li>
+<li><a href="#yaml-json-file-path-configuration">YAML/JSON File Path Configuration</a></li>
+<li><a href="#working-dir">Working Dir</a></li>
+<li><a href="#environment-variable-configuration">Environment Variable configuration</a></li>
+<li><a href="#terminal-configuration">Terminal configuration</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -1191,7 +1180,7 @@
           
             <h1>
               
-              Configuring a Service Discovery solution on Docker using DNS Proxy Server and NGINX
+              Supported Formats
             </h1>
           
 
@@ -1201,121 +1190,53 @@
 
 
 
-<h5 id="requirements">Requirements</h5>
+<h2 id="supported-formats">Supported Formats</h2>
 
 <ul>
-<li>DPS already configured, <a href="/dns-proxy-server/latest/en/1-getting-started/running-it/">see the docs</a> if you haven&rsquo;t yet.</li>
+<li>ENV</li>
+<li>YAML</li>
+<li>JSON</li>
+<li>Command Line Arguments</li>
 </ul>
 
-<h5 id="tested-on">Tested on:</h5>
+<h3 id="yaml-json-file-path-configuration">YAML/JSON File Path Configuration</h3>
+
+<p><strong>Default</strong>: <code>conf/config.json</code></p>
+
+<p>The location can be changed by setting <code>DPS_CONFIG_FILE_PATH</code>, <code>MG_CONFIG_FILE_PATH</code> legacy env or
+<code>--conf-path</code> command line argument. The path can be relative (to the binary path) or absolute.</p>
+
+<h3 id="working-dir">Working Dir</h3>
+
+<p><strong>Default</strong>: DPS executing path, a.k.a Working Directory</p>
+
+<p>Is the path which will be used when <strong>ConfigFilePath</strong> is set as a relative path.
+Can be set by <code>DPS_WORK_DIR</code> or <code>DPS_WORK_DIR</code> legacy env.</p>
+
+<h3 id="environment-variable-configuration">Environment Variable configuration</h3>
+
+<p>Environment Variable configuration are dynamically generated respecting the file configuration using the format:</p>
 
 <ul>
-<li>DPS 3.11</li>
-<li>OS: Mac, Linux, Windows</li>
+<li><code>DPS_${property}</code></li>
+<li><code>DPS_${property}__${subProperty}</code>, ex: <code>DPS_SERVER__PROTOCOL</code></li>
+<li><code>DPS_${property}_${index}__${property}</code>, ex: <code>DPS_SOLVER__LOCAL__ENVS_0__HOSTNAMES_0__TARGET</code></li>
 </ul>
 
-<h4 id="introducing">Introducing</h4>
+<p><strong>Boolean values</strong></p>
 
-<p>You will see how to develop with docker containers solving them by hostnames from your host machine
-as the following picture shows:</p>
+<p>You can use <code>1</code> or <code>true</code> (case-insensitive) to specify which the flag is activated, any other
+value will be considered false.</p>
 
-<p><img src="https://i.imgur.com/wr9GSeR.png" alt="" /></p>
+<h3 id="terminal-configuration">Terminal configuration</h3>
 
-<p>if you know about DPS you will figure out that&rsquo;s a very basic DPS feature and you don&rsquo;t need complex configurations to
-achieve that, except on MAC and Windows as docker runs its containers on a virtual machine so
-DPS default feature to solve containers names will work but the solved IPs are worthless because they aren&rsquo;t
-accessible from the host.</p>
+<p>Run one of the commands below to get the commandline instructions help:</p>
 
-<p>To fix that we will configure an API Gateway, Service Discovery, Reverse Proxy solution combining DPS with Nginx,
-see final solution below:</p>
-
-<p><img src="https://i.imgur.com/poI0sKZ.png" alt="" />
-Source: <a href="https://excalidraw.com/#json=BuYYx179GhmvHCexDZHGv,2hN_IgZo9HTfID-neSACQw">excalidraw</a></p>
-
-<h3 id="configuring">Configuring</h3>
-
-<p>The pratice is simpler than the theory, let&rsquo;s get it working:</p>
-
-<p>Configuring Nginx reverse proxy and two web apps for test</p>
-
-<pre><code class="language-bash">$ git clone https://github.com/mageddo/dns-proxy-server.git
-$ cd examples/api-gateway_service-discovery_reverse-proxy
-$ docker-compose build --no-cache
-$ docker-compose up
+<pre><code class="language-bash">$ ./dns-proxy-server --help
 </code></pre>
 
-<p><code>docker-compose up</code> created three containers, the first is a nginx reverse proxy which will listen to the host machine
-80 port and two others are web apps which the reverse proxy will proxy to depending on the hostname queried.</p>
-
-<p>Reverse Proxy will listen all <code>.webapp</code> hostnames and proxy to <code>.container</code> containers.<br />
-See <a href="https://github.com/mageddo/dns-proxy-server/blob/master/examples/api-gateway_service-discovery_reverse-proxy/docker-compose.yml">docker-compose.yml</a> for more details about each docker service.</p>
-
-<p>The final step is to configure a wildcard to handle when something on the host queries for <code>.webapp</code>:</p>
-
-<p><img src="https://i.imgur.com/xRrk2Mk.png" alt="" /></p>
-
-<h3 id="testing">Testing</h3>
-
-<h4 id="from-the-hostname">From the hostname</h4>
-
-<p>Web app 1 is working:</p>
-
-<pre><code class="language-bash">$ curl -i -X GET http://web-app.webapp
-HTTP/1.1 200 OK
-Server: nginx/1.23.3
-Date: Thu, 16 Mar 2023 03:18:53 GMT
-Content-Type: text/html
-Content-Length: 37
-Connection: keep-alive
-Last-Modified: Thu, 16 Mar 2023 02:35:50 GMT
-ETag: &quot;64128086-25&quot;
-Accept-Ranges: bytes
-
-&lt;h1&gt;Hello World from web-app!!!&lt;/h1&gt;
+<pre><code class="language-bash">$ docker run defreitas/dns-proxy-server --help
 </code></pre>
-
-<p>Web app 2 is also working:</p>
-
-<pre><code class="language-bash">$ curl -i -X GET http://web-app-2.webapp
-HTTP/1.1 200 OK
-Server: nginx/1.23.3
-Date: Thu, 16 Mar 2023 03:30:19 GMT
-Content-Type: text/html
-Content-Length: 615
-Connection: keep-alive
-Last-Modified: Tue, 13 Dec 2022 15:53:53 GMT
-ETag: &quot;6398a011-267&quot;
-Accept-Ranges: bytes
-
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;title&gt;Welcome to nginx!&lt;/title&gt;
-...
-</code></pre>
-
-<h4 id="apps-can-also-access-each-other-by-its-hostname">Apps can also access each other by its hostname</h4>
-
-<p>No reverse proxy is necessary here, so you can connect a web-app to a database container by its hostname for example.</p>
-
-<p>web-app-1 connecting to web-app-2</p>
-
-<pre><code class="language-bash">$ docker-compose run web-app curl -I web-app-2.webapp.container
-HTTP/1.1 200 OK
-Server: nginx/1.23.3
-Date: Thu, 16 Mar 2023 03:55:02 GMT
-Content-Type: text/html
-Content-Length: 615
-Last-Modified: Tue, 13 Dec 2022 15:53:53 GMT
-Connection: keep-alive
-</code></pre>
-
-<p>That&rsquo;s all, if you have any contribution or question feel free to open a pull request or an issue on the Github repo,
-thanks for reading.</p>
-
-<blockquote>
-<p>Service Discovery, API Gateway, Service Discovery, Reverse Proxy</p>
-</blockquote>
 
 
 <footer class=" footline" >
@@ -1731,54 +1652,6 @@ thanks for reading.</p>
             
                 
                     
-                
-                
-
-                    
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
                     
                 
                 
@@ -1805,6 +1678,25 @@ thanks for reading.</p>
             
         
                     
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
             
         
                     
@@ -1813,8 +1705,37 @@ thanks for reading.</p>
             
                 
                     
+                
+                
+
+                    
+                    
+                    
+
+                    
                         
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
                         
+            
+            
+                
                     
                 
                 
@@ -1948,10 +1869,10 @@ thanks for reading.</p>
 	 
 	 
 		
-			<a class="nav nav-prev" href="/dns-proxy-server/latest/en/5-tutorials/" title="Tutorials"> <i class="fa fa-chevron-left"></i></a>
+			<a class="nav nav-prev" href="/dns-proxy-server/latest/en/3-configuration/" title="Configuration Reference"> <i class="fa fa-chevron-left"></i></a>
 		
 		
-			<a class="nav nav-next" href="/dns-proxy-server/latest/en/4-developing/" title="Developing" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+			<a class="nav nav-next" href="/dns-proxy-server/latest/en/3-configuration/legacy/" title="Legacy Configuration (v2)" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
 		
 	
     </div>

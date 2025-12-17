@@ -12,20 +12,20 @@
     <title>Remote Solver Circuit Breaker :: DNS Proxy Server</title>
 
     
-    <link href="/dns-proxy-server/5.0/css/nucleus.css?1765980255" rel="stylesheet">
-    <link href="/dns-proxy-server/5.0/css/fontawesome-all.min.css?1765980255" rel="stylesheet">
-    <link href="/dns-proxy-server/5.0/css/hybrid.css?1765980255" rel="stylesheet">
-    <link href="/dns-proxy-server/5.0/css/featherlight.min.css?1765980255" rel="stylesheet">
-    <link href="/dns-proxy-server/5.0/css/perfect-scrollbar.min.css?1765980255" rel="stylesheet">
-    <link href="/dns-proxy-server/5.0/css/auto-complete.css?1765980255" rel="stylesheet">
-    <link href="/dns-proxy-server/5.0/css/atom-one-dark-reasonable.css?1765980255" rel="stylesheet">
-    <link href="/dns-proxy-server/5.0/css/theme.css?1765980255" rel="stylesheet">
-    <link href="/dns-proxy-server/5.0/css/hugo-theme.css?1765980255" rel="stylesheet">
+    <link href="/dns-proxy-server/5.0/css/nucleus.css?1765983766" rel="stylesheet">
+    <link href="/dns-proxy-server/5.0/css/fontawesome-all.min.css?1765983766" rel="stylesheet">
+    <link href="/dns-proxy-server/5.0/css/hybrid.css?1765983766" rel="stylesheet">
+    <link href="/dns-proxy-server/5.0/css/featherlight.min.css?1765983766" rel="stylesheet">
+    <link href="/dns-proxy-server/5.0/css/perfect-scrollbar.min.css?1765983766" rel="stylesheet">
+    <link href="/dns-proxy-server/5.0/css/auto-complete.css?1765983766" rel="stylesheet">
+    <link href="/dns-proxy-server/5.0/css/atom-one-dark-reasonable.css?1765983766" rel="stylesheet">
+    <link href="/dns-proxy-server/5.0/css/theme.css?1765983766" rel="stylesheet">
+    <link href="/dns-proxy-server/5.0/css/hugo-theme.css?1765983766" rel="stylesheet">
     
-      <link href="/dns-proxy-server/5.0/css/theme-mine.css?1765980255" rel="stylesheet">
+      <link href="/dns-proxy-server/5.0/css/theme-mine.css?1765983766" rel="stylesheet">
     
 
-    <script src="/dns-proxy-server/5.0/js/jquery-3.3.1.min.js?1765980255"></script>
+    <script src="/dns-proxy-server/5.0/js/jquery-3.3.1.min.js?1765983766"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -53,14 +53,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/dns-proxy-server/5.0/js/lunr.min.js?1765980255"></script>
-<script type="text/javascript" src="/dns-proxy-server/5.0/js/auto-complete.js?1765980255"></script>
+<script type="text/javascript" src="/dns-proxy-server/5.0/js/lunr.min.js?1765983766"></script>
+<script type="text/javascript" src="/dns-proxy-server/5.0/js/auto-complete.js?1765983766"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/mageddo.github.io\/dns-proxy-server\/5.0\/en";
     
 </script>
-<script type="text/javascript" src="/dns-proxy-server/5.0/js/search.js?1765980255"></script>
+<script type="text/javascript" src="/dns-proxy-server/5.0/js/search.js?1765983766"></script>
 
     
   </div>
@@ -699,18 +699,66 @@
  
   
     
-    <li data-nav-id="/dns-proxy-server/5.0/en/3-configuration/" title="Configuration" class="dd-item 
+    <li data-nav-id="/dns-proxy-server/5.0/en/3-configuration/" title="Configuration Reference" class="dd-item 
         
         
         
         ">
       <a href="/dns-proxy-server/5.0/en/3-configuration/">
-          <b>3. </b>Configuration
+          <b>3. </b>Configuration Reference
           
             <i class="fas fa-check read-icon"></i>
           
       </a>
       
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dns-proxy-server/5.0/en/3-configuration/format/" title="Supported Formats" class="dd-item ">
+        <a href="/dns-proxy-server/5.0/en/3-configuration/format/">
+        <b>2. </b>Supported Formats
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dns-proxy-server/5.0/en/3-configuration/legacy/" title="Legacy Configuration (v2)" class="dd-item ">
+        <a href="/dns-proxy-server/5.0/en/3-configuration/legacy/">
+        <b>3. </b>Legacy Configuration (v2)
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
               
     </li>
   
@@ -1107,22 +1155,17 @@
 <ul>
 <li>
 <ul>
-<li><a href="#static-threshold">Static Threshold</a>
-<ul>
-<li>
-<ul>
-<li><a href="#configuration-example">Configuration Example</a></li>
-</ul></li>
-</ul></li>
 <li><a href="#canary-rate-threshold">Canary Rate Threshold</a>
 <ul>
 <li>
 <ul>
 <li><a href="#consider-all-remote-servers-circuits-as-open-on-app-start">Consider all remote servers circuits as open on app start</a></li>
-<li><a href="#configuration-example-1">Configuration Example</a></li>
 </ul></li>
 </ul></li>
+<li><a href="#static-threshold">Static Threshold</a>
+<ul>
 <li><a href="#refs">Refs</a></li>
+</ul></li>
 </ul></li>
 </ul>
 </nav>
@@ -1154,54 +1197,6 @@
 
 <p>DPS use circuit breaker strategies to choose the most available Remote Server from the configured ones.</p>
 
-<h2 id="static-threshold">Static Threshold</h2>
-
-<ul>
-<li>Consider all remote servers circuits as <strong>closed</strong> on app start.</li>
-<li>Opens and closes circuits based on fixed number of failures or successes.</li>
-</ul>
-
-<h4 id="configuration-example">Configuration Example</h4>
-
-<pre><code class="language-json">{
-  &quot;version&quot;: 2,
-  &quot;remoteDnsServers&quot;: [],
-  &quot;envs&quot;: [],
-  &quot;activeEnv&quot;: &quot;&quot;,
-  &quot;webServerPort&quot;: 5380,
-  &quot;dnsServerPort&quot;: 53,
-  &quot;logLevel&quot;: &quot;INFO&quot;,
-  &quot;logFile&quot;: &quot;console&quot;,
-  &quot;registerContainerNames&quot;: false,
-  &quot;domain&quot;: &quot;docker&quot;,
-  &quot;dpsNetwork&quot;: false,
-  &quot;dpsNetworkAutoConnect&quot;: false,
-  &quot;defaultDns&quot;: true,
-  &quot;hostMachineHostname&quot;: &quot;host.docker&quot;,
-  &quot;serverProtocol&quot;: &quot;UDP_TCP&quot;,
-  &quot;dockerHost&quot;: null,
-  &quot;resolvConfOverrideNameServers&quot;: true,
-  &quot;noRemoteServers&quot;: false,
-  &quot;noEntriesResponseCode&quot;: 3,
-  &quot;dockerSolverHostMachineFallbackActive&quot;: true,
-  &quot;solverRemote&quot;: {
-    &quot;circuitBreaker&quot;: {
-      &quot;failureThreshold&quot;: 3,
-      &quot;failureThresholdCapacity&quot;: 10,
-      &quot;successThreshold&quot;: 5,
-      &quot;testDelay&quot;: &quot;PT20S&quot;
-    }
-  }
-}
-</code></pre>
-
-<ul>
-<li><strong>failureThreshold</strong>: How many attempts before open the circuit?</li>
-<li><strong>failureThresholdCapacity</strong>: How many attempts store to the stack?</li>
-<li><strong>successThreshold</strong>: How many attempts before close the circuit?</li>
-<li><strong>testDelay</strong>: How much time to wait before test the circuit again?, see <a href="https://docs.oracle.com/javase/8/docs/api/java/time/Duration.html#toString--">Duration docs</a> for format explanation</li>
-</ul>
-
 <h2 id="canary-rate-threshold">Canary Rate Threshold</h2>
 
 <ul>
@@ -1214,50 +1209,84 @@
 <p>Test them on startup and add the healthy ones as HALF_OPEN this will evict to app get resolution fails right on the
 start because the first server on the remote servers list is offline.</p>
 
-<h4 id="configuration-example-1">Configuration Example</h4>
+<p>Activated by <code>solver.remote.circuitBreaker.type=CANARY_RATE_THRESHOLD</code></p>
 
-<pre><code class="language-json">{
-  &quot;version&quot;: 2,
-  &quot;remoteDnsServers&quot;: [],
-  &quot;envs&quot;: [],
-  &quot;activeEnv&quot;: &quot;&quot;,
-  &quot;webServerPort&quot;: 5380,
-  &quot;dnsServerPort&quot;: 53,
-  &quot;logLevel&quot;: &quot;INFO&quot;,
-  &quot;logFile&quot;: &quot;console&quot;,
-  &quot;registerContainerNames&quot;: false,
-  &quot;domain&quot;: &quot;docker&quot;,
-  &quot;dpsNetwork&quot;: false,
-  &quot;dpsNetworkAutoConnect&quot;: false,
-  &quot;defaultDns&quot;: true,
-  &quot;hostMachineHostname&quot;: &quot;host.docker&quot;,
-  &quot;serverProtocol&quot;: &quot;UDP_TCP&quot;,
-  &quot;dockerHost&quot;: null,
-  &quot;resolvConfOverrideNameServers&quot;: true,
-  &quot;noRemoteServers&quot;: false,
-  &quot;noEntriesResponseCode&quot;: 3,
-  &quot;dockerSolverHostMachineFallbackActive&quot;: true,
-  &quot;solverRemote&quot;: {
-    &quot;circuitBreaker&quot;: {
-      &quot;strategy&quot;: &quot;CANARY_RATE_THRESHOLD&quot;,
-      &quot;failureRateThreshold&quot;: 21,
-      &quot;minimumNumberOfCalls&quot;: 50,
-      &quot;permittedNumberOfCallsInHalfOpenState&quot;: 10
-    }
-  }
-}
-</code></pre>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Default Value</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>solver.remote.circuitBreaker.failureRateThreshold</code></td>
+<td>Failure rate percentage which, when equal to or greater than this value, causes the CircuitBreaker to transition to open. Valid values are greater than 0 and less than or equal to 100.</td>
+<td><code>21</code></td>
+</tr>
+
+<tr>
+<td><code>solver.remote.circuitBreaker.minimumNumberOfCalls</code></td>
+<td>Minimum number of calls required (per sliding window) before the CircuitBreaker starts calculating the failure rate.</td>
+<td><code>50</code></td>
+</tr>
+
+<tr>
+<td><code>solver.remote.circuitBreaker.permittedNumberOfCallsInHalfOpenState</code></td>
+<td>Number of calls allowed while the CircuitBreaker is in the half-open state.</td>
+<td><code>10</code></td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="static-threshold">Static Threshold</h2>
 
 <ul>
-<li><strong>failureRateThreshold</strong>: If the failure rate is equal to or greater than this threshold, the CircuitBreaker will
-transition to open. rules: values greater than 0 and not greater than 100.</li>
-<li><strong>minimumNumberOfCalls</strong>: Configures the minimum number of calls which are required (per sliding window period) before
-the CircuitBreaker can calculate the error rate.</li>
-<li><strong>permittedNumberOfCallsInHalfOpenState</strong>: Configures the number of permitted calls when the CircuitBreaker is half
-open.</li>
+<li>Consider all remote servers circuits as <strong>closed</strong> on app start.</li>
+<li>Opens and closes circuits based on fixed number of failures or successes.</li>
 </ul>
 
-<h2 id="refs">Refs</h2>
+<p>Activated by <code>solver.remote.circuitBreaker.type=STATIC_THRESHOLD</code></p>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Default Value</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>solver.remote.circuitBreaker.failureThreshold</code></td>
+<td>How many failed attempts are allowed before opening the circuit.</td>
+<td><code>3</code></td>
+</tr>
+
+<tr>
+<td><code>solver.remote.circuitBreaker.failureThresholdCapacity</code></td>
+<td>How many failed attempts should be stored in the internal buffer used to evaluate failures.</td>
+<td><code>10</code></td>
+</tr>
+
+<tr>
+<td><code>solver.remote.circuitBreaker.successThreshold</code></td>
+<td>How many successful attempts are required to close the circuit after it has been opened.</td>
+<td><code>5</code></td>
+</tr>
+
+<tr>
+<td><code>solver.remote.circuitBreaker.testDelay</code></td>
+<td>How long the system should wait before testing the circuit again after it is opened. See Duration format <a href="https://docs.oracle.com/javase/8/docs/api/java/time/Duration.html#toString--">documentation</a> for details.</td>
+<td><code>PT20S</code></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="refs">Refs</h3>
 
 <ul>
 <li><a href="https://github.com/mageddo/dns-proxy-server/issues/533">A more resilient circuit breaker strategy #533</a></li>
@@ -1695,6 +1724,38 @@ open.</li>
                     
 
                     
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
             
         
                     
@@ -1880,20 +1941,20 @@ open.</li>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/dns-proxy-server/5.0/js/clipboard.min.js?1765980255"></script>
-    <script src="/dns-proxy-server/5.0/js/perfect-scrollbar.min.js?1765980255"></script>
-    <script src="/dns-proxy-server/5.0/js/perfect-scrollbar.jquery.min.js?1765980255"></script>
-    <script src="/dns-proxy-server/5.0/js/jquery.sticky.js?1765980255"></script>
-    <script src="/dns-proxy-server/5.0/js/featherlight.min.js?1765980255"></script>
-    <script src="/dns-proxy-server/5.0/js/html5shiv-printshiv.min.js?1765980255"></script>
-    <script src="/dns-proxy-server/5.0/js/highlight.pack.js?1765980255"></script>
+    <script src="/dns-proxy-server/5.0/js/clipboard.min.js?1765983766"></script>
+    <script src="/dns-proxy-server/5.0/js/perfect-scrollbar.min.js?1765983766"></script>
+    <script src="/dns-proxy-server/5.0/js/perfect-scrollbar.jquery.min.js?1765983766"></script>
+    <script src="/dns-proxy-server/5.0/js/jquery.sticky.js?1765983766"></script>
+    <script src="/dns-proxy-server/5.0/js/featherlight.min.js?1765983766"></script>
+    <script src="/dns-proxy-server/5.0/js/html5shiv-printshiv.min.js?1765983766"></script>
+    <script src="/dns-proxy-server/5.0/js/highlight.pack.js?1765983766"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/dns-proxy-server/5.0/js/modernizr.custom-3.6.0.js?1765980255"></script>
-    <script src="/dns-proxy-server/5.0/js/learn.js?1765980255"></script>
-    <script src="/dns-proxy-server/5.0/js/hugo-learn.js?1765980255"></script>
+    <script src="/dns-proxy-server/5.0/js/modernizr.custom-3.6.0.js?1765983766"></script>
+    <script src="/dns-proxy-server/5.0/js/learn.js?1765983766"></script>
+    <script src="/dns-proxy-server/5.0/js/hugo-learn.js?1765983766"></script>
 
-    <link href="/dns-proxy-server/5.0/mermaid/mermaid.css?1765980255" type="text/css" rel="stylesheet" />
-    <script src="/dns-proxy-server/5.0/mermaid/mermaid.js?1765980255"></script>
+    <link href="/dns-proxy-server/5.0/mermaid/mermaid.css?1765983766" type="text/css" rel="stylesheet" />
+    <script src="/dns-proxy-server/5.0/mermaid/mermaid.js?1765983766"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
