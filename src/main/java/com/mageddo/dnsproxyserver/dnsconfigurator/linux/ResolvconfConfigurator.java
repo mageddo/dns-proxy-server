@@ -8,6 +8,10 @@ import com.mageddo.conf.parser.EntryType;
 import com.mageddo.dnsproxyserver.utils.Dns;
 import com.mageddo.net.IpAddr;
 
+/**
+ * @deprecated deprecated because of #627, use {@link ResolvconfConfiguratorV2}
+ */
+@Deprecated
 public class ResolvconfConfigurator {
 
   public static void process(Path confFile, IpAddr addr) {
