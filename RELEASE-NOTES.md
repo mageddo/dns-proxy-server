@@ -1,3 +1,8 @@
+## 5.2.0
+Docker Solver
+* Fixing DPS Docker Network IP Range
+* Created option to customize the docker network
+
 ## 5.1.3
 * Changed resolv.conf handling format to make it compatible with alpine linux see [#627][5_1_0_1][1].
 * Refactoring Linux amd64 static build to work on Github Actions
