@@ -15,6 +15,8 @@ import com.mageddo.dnsproxyserver.config.NonResilientCircuitBreakerStrategyConfi
 import com.mageddo.dnsproxyserver.config.dataformat.v3.ConfigV3;
 import com.mageddo.dnsproxyserver.config.dataformat.v3.ConfigV3.StaticThreshold;
 
+import com.mageddo.json.JsonUtils;
+
 import org.apache.commons.lang3.EnumUtils;
 
 public interface CircuitBreakerConverter {
@@ -35,7 +37,7 @@ public interface CircuitBreakerConverter {
 
     @Override
     public CircuitBreakerStrategyConfig deserialize(
-        JsonParser jsonParser, DeserializationContext deserializationContext
+        JsonParser jsonParser, DeserializationContext ctx
     ) throws IOException {
       if (jsonParser.currentToken() == JsonToken.VALUE_NULL) {
         return null;
@@ -49,17 +51,16 @@ public interface CircuitBreakerConverter {
           CircuitBreakerStrategyConfig.Type.CANARY_RATE_THRESHOLD
       );
       return switch (type) {
-        case CANARY_RATE_THRESHOLD -> readAs(node, ConfigV3.CanaryRateThreshold.class);
-        case STATIC_THRESHOLD -> readAs(node, StaticThreshold.class);
+        case CANARY_RATE_THRESHOLD -> readAs(ctx, node, ConfigV3.CanaryRateThreshold.class);
+        case STATIC_THRESHOLD -> readAs(ctx, node, StaticThreshold.class);
         case NON_RESILIENT -> new NonResilientCircuitBreakerStrategyConfig();
       };
     }
 
-    static <T> T readAs(JsonNode node, Class<T> type) throws IOException {
-      final var traverse = node.traverse();
-      try (traverse) {
-        return traverse.readValueAs(type);
-      }
+    static <T> T readAs(
+        DeserializationContext ctx, JsonNode node, Class<T> type
+    ) {
+      return JsonUtils.readValue(node.toPrettyString(), type);
     }
   }
 }
