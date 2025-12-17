@@ -57,8 +57,8 @@ public class TCPServer implements AutoCloseable {
 
   void start0(int port, InetAddress address, SocketClientMessageHandler handler) {
     log.info("status=tcpServerStarting, port={}", port);
-    final var addr = Ips.getAnyLocalAddress(); // todo porque isso funciona e sem passar o
-    // endereço nao?
+    // TODO por que isso funciona e sem passar o endereço nao ?
+    final var addr = Ips.getAnyLocalAddress();
     try (var server = this.server = new ServerSocket(port, 50, addr)) {
 
       Socket socket;

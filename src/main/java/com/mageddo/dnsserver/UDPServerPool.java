@@ -24,7 +24,8 @@ public class UDPServerPool {
 
   public void start(int port) {
     this.servers = Collections.singletonList(
-        new UDPServer(Ips.getAnyLocalAddress(port), this.requestHandler));
+        new UDPServer(Ips.getAnyLocalAddress(port), this.requestHandler)
+    );
     this.servers.forEach(UDPServer::start);
     final var addresses = this.servers
         .stream()
