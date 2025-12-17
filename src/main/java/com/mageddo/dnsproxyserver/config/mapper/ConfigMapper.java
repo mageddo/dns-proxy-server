@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.mageddo.commons.lang.ValueResolver;
 import com.mageddo.dnsproxyserver.config.CanaryRateThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.Config;
@@ -141,6 +142,7 @@ public class ConfigMapper {
   }
 
   private Config mapFrom0(List<Config> configs) {
+
     final var config = Config.builder()
         .server(Config.Server
             .builder()
@@ -166,10 +168,13 @@ public class ConfigMapper {
             .resolvConf(DefaultDns.ResolvConf
                 .builder()
                 .paths(
-                    firstNonNullRequiring(mapField(Config::getDefaultDnsResolvConfPaths, configs)))
+                    firstNonNullRequiring(mapField(Config::getDefaultDnsResolvConfPaths, configs))
+                )
                 .overrideNameServers(firstNonNullRequiring(
-                    mapField(Config::isResolvConfOverrideNameServersActive, configs)))
-                .build())
+                    mapField(Config::isResolvConfOverrideNameServersActive, configs))
+                )
+                .build()
+            )
             .build()
         )
         .solverRemote(Config.SolverRemote
@@ -197,7 +202,30 @@ public class ConfigMapper {
             .hostMachineFallback(firstNonNullRequiring(
                 mapField(Config::getDockerSolverHostMachineFallbackActive, configs)
             ))
-            .dpsNetwork(firstNonNullRequiring(mapField(Config::getDockerSolverDpsNetwork, configs)))
+            .dpsNetwork(
+                SolverDocker.DpsNetwork.builder()
+                    .name(ValueResolver.findFirst(
+                        configs,
+                        Config::getDockerSolverDpsNetwork,
+                        SolverDocker.DpsNetwork::getName
+                    ))
+                    .autoCreate(ValueResolver.findFirst(
+                        configs,
+                        Config::getDockerSolverDpsNetwork,
+                        SolverDocker.DpsNetwork::getAutoCreate
+                    ))
+                    .autoConnect(ValueResolver.findFirst(
+                        configs,
+                        Config::getDockerSolverDpsNetwork,
+                        SolverDocker.DpsNetwork::getAutoConnect
+                    ))
+                    .configs(ValueResolver.findFirst(
+                        configs,
+                        Config::getDockerSolverDpsNetwork,
+                        SolverDocker.DpsNetwork::getConfigs
+                    ))
+                    .build()
+            )
             .build()
         )
         .solverSystem(Config.SolverSystem
