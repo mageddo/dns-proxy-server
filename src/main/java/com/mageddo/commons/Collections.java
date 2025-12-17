@@ -103,6 +103,9 @@ public class Collections {
   public static <From, To> Stream<To> mapStream(
       Collection<From> source, Function<From, To> mapper
   ) {
+    if (source == null) {
+      return null;
+    }
     return mapStream(source.stream(), mapper);
   }
 
