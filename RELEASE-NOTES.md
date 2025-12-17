@@ -1,8 +1,11 @@
-## 5.0.5
+## 5.1.0
+* Changed resolv.conf handling format to make it compatible with alpine linux see [#627][5_1_0_1][1].
 * Refactoring Linux amd64 static build to work on Github Actions
 * Creating the docs for config v3
 * Fixing Hostname Entry Update API
 * Fixing intermittent unit test
+
+[5_1_0_1]: https://github.com/mageddo/dns-proxy-server/issues/627
 
 ## 5.0.0
 * Refactoring config module to support config v3
