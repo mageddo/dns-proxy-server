@@ -403,16 +403,16 @@ public class ResolvconfConfiguratorV2 {
   }
 
   private static void trimLeadingBlankLines(final List<String> lines) {
-    while (!lines.isEmpty() && lines.get(0)
+    while (!lines.isEmpty() && lines.getFirst()
         .isBlank()) {
-      lines.remove(0);
+      lines.removeFirst();
     }
   }
 
   private static void trimTrailingBlankLines(final List<String> lines) {
-    while (!lines.isEmpty() && lines.get(lines.size() - 1)
+    while (!lines.isEmpty() && lines.getLast()
         .isBlank()) {
-      lines.remove(lines.size() - 1);
+      lines.removeLast();
     }
   }
 
