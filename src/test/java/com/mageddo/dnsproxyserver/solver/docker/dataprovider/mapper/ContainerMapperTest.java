@@ -1,11 +1,15 @@
 package com.mageddo.dnsproxyserver.solver.docker.dataprovider.mapper;
 
+import java.util.List;
+
+import com.mageddo.dnsproxyserver.config.Config.SolverDocker;
 import com.mageddo.net.IP;
 
 import org.junit.jupiter.api.Test;
 
 import testing.templates.docker.InspectContainerResponseTemplates;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static testing.templates.docker.InspectContainerResponseTemplates.ngixWithDefaultBridgeNetworkOnly;
@@ -40,6 +44,47 @@ class ContainerMapperTest {
     assertNotNull(container);
     assertEquals("[172.17.0.4]", String.valueOf(container.getIps()));
     assertEquals("[shibata, dps, bridge]", String.valueOf(container.getPreferredNetworkNames()));
+
+  }
+
+  @Test
+  void mustPreferSpecifiedNetworks() {
+
+    // arrange
+    final var inspect = ngixWithDefaultBridgeNetworkOnly();
+    final var preferred = SolverDocker.Networks.Preferred.builder()
+        .names(List.of("batata"))
+        .overrideDefault(false)
+        .build();
+
+    // act
+    final var container = ContainerMapper.of(inspect, preferred);
+
+    // assert
+    assertNotNull(container);
+    assertThat(container.getPreferredNetworkNames()).containsExactly(
+        "batata", "shibata", "dps", "bridge"
+    );
+
+  }
+
+  @Test
+  void mustReplaceBySpecifiedNetworks() {
+    // arrange
+    final var inspect = ngixWithDefaultBridgeNetworkOnly();
+    final var preferred = SolverDocker.Networks.Preferred.builder()
+        .names(List.of("batata"))
+        .overrideDefault(true)
+        .build();
+
+    // act
+    final var container = ContainerMapper.of(inspect, preferred);
+
+    // assert
+    assertNotNull(container);
+    assertThat(container.getPreferredNetworkNames()).containsExactly(
+        "batata"
+    );
 
   }
 
