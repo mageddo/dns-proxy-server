@@ -5,6 +5,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -103,13 +104,23 @@ public class ConfigMapper {
       return null;
     }
     final var env = envsStore.get(envKey);
-    final var entryStore = keyBy(env.getEntries(), Config.Entry::getHostname);
+    final var entryStore = env.getEntries()
+        .stream()
+        .collect(Collectors.groupingBy(
+            Config.Entry::getHostname,
+            Collectors.reducing((a, b) -> a)
+        ));
+
     if (!entryStore.containsKey(hostname)) {
       return null;
     }
     entryStore.remove(hostname);
     final var updatedEnv = env.toBuilder()
-        .entries(new ArrayList<>(entryStore.values()))
+        .entries(entryStore.values()
+            .stream()
+            .map(it -> it.orElse(null))
+            .toList()
+        )
         .build();
 
     envsStore.put(envKey, updatedEnv);
