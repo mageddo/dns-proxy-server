@@ -84,7 +84,7 @@ Default DPS network settings
 | `solver.docker.networks.preferred.overrideDefault` | If will disable DPS and BRIDGE default networks when solving                            | false           |
 
 See more on [specify from which network solve container][6].
----
+
 
 ### System Solver
 

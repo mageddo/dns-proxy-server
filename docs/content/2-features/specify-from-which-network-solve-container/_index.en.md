@@ -32,3 +32,10 @@ Non-authoritative answer:
 Name:	server1.acme.com
 Address: 192.168.16.2
 ```
+
+You can also specify default preferred networks
+
+| Name                                               | Description                                                                             | Default Value   |
+|----------------------------------------------------|-----------------------------------------------------------------------------------------|-----------------|
+| `solver.docker.networks.preferred.names`           | Which networks DPS must prioritize when discovering container IP                        |                 |
+| `solver.docker.networks.preferred.overrideDefault` | If will disable DPS and BRIDGE default networks when solving                            | false           |
