@@ -88,19 +88,6 @@ public class MutableConfigDAOFile implements MutableConfigDAO {
     }
     this.save(config);
     return true;
-//    final var found = this.findOrBind(env, config);
-//    final var hostnames = found.getHostnames();
-//    if (hostnames.isEmpty()) {
-//      return false;
-//    }
-//    return findHostname(
-//        EntryPredicate.exactName(hostname),
-//        hostnames,
-//        (foundEntry, i, entries) -> {
-//          entries.remove((int) i);
-//          this.save(config);
-//        }
-//    );
   }
 
   @Override
