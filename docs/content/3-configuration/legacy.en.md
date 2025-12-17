@@ -4,7 +4,10 @@ weight: 3
 pre: "<b>3. </b>"
 ---
 
-## Configs
+**Important**: Legacy configurations are supported only for read, they won't receive new properties,
+can be replaced when using the GUI to make changes on the settings and can be removed on future versions of DPS.
+
+I would recommend to migrate to version 3. 
 
 ### Remote DNS Servers
 Remote DNS servers to be asked when can not solve from docker or local storage.

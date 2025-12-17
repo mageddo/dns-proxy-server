@@ -89,7 +89,7 @@ Common DNS resolution mechanisms used by DPS. Solvers are evaluated according to
 |------|-------------|---------------|
 | `defaultDns.active` | Whether DPS should be automatically configured as the system default DNS. | `false` |
 | `defaultDns.resolvConf.overrideNameServers` | Whether existing nameservers should be commented out or DPS should be placed first. | `true` |
-| `defaultDns.resolvConf.paths` | Resolv.conf or systemd-resolved configuration paths used to apply default DNS. | `/host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf` |
+| `defaultDns.resolvConf.paths` | Resolv.conf or systemd-resolved configuration paths used to apply default DNS. | /host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf |
 
 ---
 
@@ -104,7 +104,7 @@ Common DNS resolution mechanisms used by DPS. Solvers are evaluated according to
 ### File Configuration Example
 * [Solver remote circuit breaker configuration][3]
 
-```yaml
+```json
 version: 3
 server:
   dns:
