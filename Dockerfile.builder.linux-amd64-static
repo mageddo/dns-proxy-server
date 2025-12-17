@@ -5,7 +5,6 @@ RUN apt-get update -y && \
     build-essential \
     musl musl-dev musl-tools \
     zlib1g-dev \
-    zlib1g-dev-musl \
     curl ca-certificates \
   && ln -sf /usr/bin/musl-gcc /usr/local/bin/x86_64-linux-musl-gcc \
   && rm -rf /var/lib/apt/lists/*
@@ -13,6 +12,13 @@ RUN apt-get update -y && \
 RUN musl-gcc -v
 ENV CC=/usr/bin/musl-gcc
 ENV GRAALVM_URL='https://github.com/graalvm/graalvm-ce-builds/releases/download/jdk-21.0.2/graalvm-community-jdk-21.0.2_linux-x64_bin.tar.gz'
+
+RUN cd / && curl -L -o zlib.tar.gz https://www.zlib.net/fossils/zlib-1.2.11.tar.gz && \
+    mkdir zlib && tar -xvzf zlib.tar.gz -C zlib --strip-components 1 && \
+    cd /zlib && ./configure --static --prefix=/usr/x86_64-linux-musl && \
+    make && make install && \
+    cp -v /usr/x86_64-linux-musl/lib/libz.a /usr/lib/x86_64-linux-musl/ &&\
+    rm -rf /zlib && rm -f /zlib.tar.gz
 
 RUN mkdir /graalvm &&\
   curl -L $GRAALVM_URL > /tmp/graalvm.tgz &&\
