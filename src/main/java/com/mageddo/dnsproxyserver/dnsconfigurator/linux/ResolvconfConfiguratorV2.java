@@ -139,11 +139,16 @@ public class ResolvconfConfiguratorV2 {
     // candidates from inline "# ... # dps-comment" removed during cleanup
     nameservers.addAll(cleaned.inlineCommentCandidates());
 
-    // active nameservers from cleaned file
     for (final var line : cleaned.originalLines()) {
-      final var ns = extractActiveNameserver(line);
-      if (ns != null) {
-        nameservers.add(ns);
+      final var active = extractActiveNameserver(line);
+      if (active != null) {
+        nameservers.add(active);
+        continue;
+      }
+
+      final var commented = extractCommentedNameserver(line);
+      if (commented != null) {
+        nameservers.add(commented);
       }
     }
 
@@ -337,6 +342,15 @@ public class ResolvconfConfiguratorV2 {
     }
     final var parts = trimmed.split("\\s+");
     return parts.length >= 2 ? parts[1].trim() : null;
+  }
+
+  private static String extractCommentedNameserver(final String line) {
+    final var trimmed = line.trim();
+    if (!trimmed.startsWith("#")) {
+      return null;
+    }
+    final var uncommented = trimmed.substring(1).trim(); // remove '#'
+    return extractActiveNameserver(uncommented); // reuse parser: "nameserver X"
   }
 
   private static String uncommentNameserverIfPresent(final String line) {
