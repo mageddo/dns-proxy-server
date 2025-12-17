@@ -9,6 +9,7 @@ import com.mageddo.dnsproxyserver.config.CanaryRateThresholdCircuitBreakerStrate
 import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Config.Entry;
+import com.mageddo.dnsproxyserver.config.Config.Log;
 import com.mageddo.dnsproxyserver.config.Config.SolverDocker.DpsNetwork;
 import com.mageddo.dnsproxyserver.config.NonResilientCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
@@ -136,18 +137,18 @@ public class ConfigMapper {
 
   /* ================= LOG ================= */
 
-  private static Config.Log mapLog(final ConfigV3.Log l) {
+  private static Log mapLog(final ConfigV3.Log l) {
     if (l == null) {
       return null;
     }
 
-    return Config.Log.builder()
-        .level(l.getLevel() != null ? Config.Log.Level.valueOf(l.getLevel()) : null)
+    return Log.builder()
+        .level(l.getLevel() != null ? Log.Level.valueOf(l.getLevel()) : null)
         .file(l.getFile())
         .build();
   }
 
-  private static ConfigV3.Log mapLogV3(final Config.Log l) {
+  private static ConfigV3.Log mapLogV3(final Log l) {
     if (l == null) {
       return null;
     }
