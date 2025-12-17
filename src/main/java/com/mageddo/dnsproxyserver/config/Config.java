@@ -483,6 +483,8 @@ public class Config {
     DpsNetwork dpsNetwork;
     Boolean hostMachineFallback;
 
+    Networks networks;
+
     public boolean shouldUseHostMachineFallback() {
       return BooleanUtils.toBoolean(hostMachineFallback);
     }
@@ -499,6 +501,23 @@ public class Config {
         return false;
       }
       return this.dpsNetwork.shouldAutoConnect();
+    }
+
+    @Value
+    @Builder
+    public static class Networks {
+
+      Preferred preferred;
+
+      @Value
+      @Builder
+      public static class Preferred {
+
+        boolean overrideDefault;
+
+        List<String> names;
+
+      }
     }
 
     @Value

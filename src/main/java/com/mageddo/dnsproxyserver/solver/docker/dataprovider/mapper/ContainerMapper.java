@@ -10,6 +10,8 @@ import java.util.stream.Stream;
 
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.ContainerNetwork;
+import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.docker.application.Labels;
 import com.mageddo.dnsproxyserver.solver.docker.Container;
 import com.mageddo.dnsproxyserver.solver.docker.Network;
@@ -67,6 +69,19 @@ public class ContainerMapper {
   }
 
   static Set<String> buildNetworkNames(InspectContainerResponse c) {
+    final var preferred = findPreferred();
+    if (preferred.isOverrideDefault() && preferred.getNames() != null) {
+      return new LinkedHashSet<>(preferred.getNames());
+    }
+    if (preferred.getNames() == null) {
+      return buildDefault(c);
+    }
+    final var set = buildDefault(c);
+    set.addAll(preferred.getNames());
+    return set;
+  }
+
+  private static LinkedHashSet<String> buildDefault(InspectContainerResponse c) {
     return Stream.of(
             Labels.findLabelValue(c.getConfig(), DEFAULT_NETWORK_LABEL),
             Network.Name.DPS.lowerCaseName(),
@@ -74,6 +89,13 @@ public class ContainerMapper {
         )
         .filter(Objects::nonNull)
         .collect(Collectors.toCollection(LinkedHashSet::new));
+  }
+
+  private static Config.SolverDocker.Networks.Preferred findPreferred() {
+    return Configs.getInstance()
+        .getSolverDocker()
+        .getNetworks()
+        .getPreferred();
   }
 
   static IP buildDefaultIp(InspectContainerResponse c, IP.Version version) {
