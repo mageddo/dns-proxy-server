@@ -42,7 +42,7 @@ class ConfigV2ServiceCompTest {
     // act
     final var config = Configs.getContext()
       .configService()
-      .findCurrentConfig()
+      .find()
       ;
 
     // assert
@@ -59,7 +59,7 @@ class ConfigV2ServiceCompTest {
     // act
     final var config = Configs.getContext()
       .configService()
-      .findCurrentConfig()
+      .find()
       ;
 
     // assert
@@ -74,7 +74,7 @@ class ConfigV2ServiceCompTest {
     // act
     final var config = Configs.getContext()
       .configService()
-      .findCurrentConfig()
+      .find()
       ;
 
     // assert
@@ -90,7 +90,7 @@ class ConfigV2ServiceCompTest {
     // act
     final var config = Configs.getContext()
       .configService()
-      .findCurrentConfig()
+      .find()
       ;
 
     // assert
