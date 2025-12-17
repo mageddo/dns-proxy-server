@@ -1,16 +1,22 @@
 package com.mageddo.dnsproxyserver.di.module;
 
-import com.mageddo.dnsproxyserver.config.dataprovider.MutableConfigDAO;
-import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.MutableConfigDAOJson;
+import javax.inject.Singleton;
+
 import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacade;
 import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacadeDefault;
 import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacade;
 import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacadeDefault;
-import com.mageddo.dnsproxyserver.solver.docker.dataprovider.*;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.ContainerDAO;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.ContainerDAODefault;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAODefault;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DpsContainerDAO;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DpsContainerDAODefault;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.NetworkDAO;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.NetworkDAODefault;
+
 import dagger.Binds;
 import dagger.Module;
-
-import javax.inject.Singleton;
 
 @Module
 public interface ModuleDao {
@@ -24,10 +30,6 @@ public interface ModuleDao {
   ContainerFacade containerFacade(ContainerFacadeDefault impl);
 
   // ---------------- END:FACADE --------------- //
-
-  @Binds
-  @Singleton
-  MutableConfigDAO configDAO(MutableConfigDAOJson impl);
 
   @Binds
   @Singleton

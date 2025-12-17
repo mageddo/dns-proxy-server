@@ -5,6 +5,7 @@ import dagger.Component;
 import dagger.Module;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 @Component(modules = AppByProvider.MainModule.class)
 public interface AppByProvider {
@@ -34,6 +35,7 @@ public interface AppByProvider {
   @Module
   interface MainModule {
     @Binds
+    @Singleton
     Iface iface(IfaceImpl impl);
   }
 

@@ -37,8 +37,10 @@ public interface ModuleV3ConfigDAO {
   }
 
   @Binds
+  @Singleton
   ConfigFileDAO configFile(ConfigFileDAOImpl impl);
 
   @Binds
+  @Singleton
   ConfigFilePathDAO configFilePath(ConfigFilePathDAOImpl impl);
 }

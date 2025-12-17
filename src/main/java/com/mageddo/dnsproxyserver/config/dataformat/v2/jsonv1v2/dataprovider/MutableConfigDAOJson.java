@@ -5,27 +5,21 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.predicate.EntryPredicate;
-import com.mageddo.dnsproxyserver.config.predicate.EnvPredicate;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.predicate.JsonEnvPredicate;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo.ConfigJsonV2;
 import com.mageddo.dnsproxyserver.config.dataprovider.MutableConfigDAO;
+import com.mageddo.dnsproxyserver.config.predicate.EnvPredicate;
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Singleton
-@NoArgsConstructor(onConstructor_ = @Inject)
 public class MutableConfigDAOJson implements MutableConfigDAO {
 
   @Override

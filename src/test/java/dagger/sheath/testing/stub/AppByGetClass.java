@@ -10,6 +10,8 @@ import org.apache.commons.lang3.Validate;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
+import javax.inject.Singleton;
+
 import java.util.Map;
 
 @Component(modules = AppByGetClass.MainModule.class)
@@ -56,6 +58,7 @@ public interface AppByGetClass {
   interface MainModule {
 
     @Binds
+    @Singleton
     Iface iface(IfaceImpl impl);
 
     @Binds
