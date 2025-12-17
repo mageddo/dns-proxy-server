@@ -1,17 +1,21 @@
 package com.mageddo.dnsproxyserver.solver;
 
+import javax.inject.Inject;
+
+import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.dataformat.v3.file.ConfigFileDAO;
 import com.mageddo.dnsproxyserver.config.dataprovider.MutableConfigDAO;
 import com.mageddo.dnsproxyserver.di.Context;
-import com.mageddo.dns.utils.Messages;
 
-import testing.templates.EntryTemplates;
-import testing.templates.docker.SolverTemplates;
-import dagger.sheath.InjectMock;
-import dagger.sheath.junit.DaggerTest;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.inject.Inject;
+import dagger.sheath.InjectMock;
+import dagger.sheath.junit.DaggerTest;
+import testing.templates.EntryTemplates;
+import testing.templates.docker.SolverTemplates;
 
 import static com.mageddo.dns.utils.Hostnames.toAbsoluteName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,8 +34,17 @@ class SolverLocalDBCompTest {
   @Inject
   MutableConfigDAO mutableConfigDAO;
 
+  @Inject
+  ConfigFileDAO configFileDAO;
+
   @InjectMock
   SolverProvider solverProvider;
+
+  @AfterEach
+  @BeforeEach
+  void each() {
+    this.configFileDAO.delete();
+  }
 
   @Test
   void mustNotSolveFromLocalDBWhenNoJsonIsConfigured() {
@@ -111,8 +124,8 @@ class SolverLocalDBCompTest {
     // assert
     assertNotNull(res);
     assertEquals(
-      "acme.com.    45  IN  AAAA  2001:db8:1:0:0:0:0:2",
-      Messages.detailedPrint(res.getMessage())
+        "acme.com.    45  IN  AAAA  2001:db8:1:0:0:0:0:2",
+        Messages.detailedPrint(res.getMessage())
     );
 
   }

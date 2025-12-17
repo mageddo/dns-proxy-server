@@ -254,6 +254,7 @@ public class ConfigMapper {
         .hostname(h.getHostname())
         .ttl(h.getTtl())
         .type(Config.Entry.Type.valueOf(h.getType()))
+        .target(h.getTarget())
         .ip(h.getIp() != null ? IP.of(h.getIp()) : null)
         .build();
   }
@@ -335,6 +336,7 @@ public class ConfigMapper {
                                   .setType(entry.getType()
                                       .name())
                                   .setIp(entry.getIpAsText())
+                                  .setTarget(entry.getTarget())
                                   .setTtl(entry.getTtl())
                               )
                               .collect(toList())

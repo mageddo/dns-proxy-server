@@ -113,6 +113,7 @@ public class ConfigV3 {
   static public class Hostname {
     String type;
     String hostname;
+    String target;
     String ip;
     Integer ttl;
   }
