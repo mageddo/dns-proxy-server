@@ -1,12 +1,6 @@
 package com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.mapper;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.Log;
-import com.mageddo.dnsproxyserver.config.Server;
-import com.mageddo.dnsproxyserver.config.SolverDocker;
-import com.mageddo.dnsproxyserver.config.SolverRemote;
-import com.mageddo.dnsproxyserver.config.SolverStub;
-import com.mageddo.dnsproxyserver.config.SolverSystem;
 import com.mageddo.dnsproxyserver.config.mapper.LogLevelMapper;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.vo.ConfigFlag;
 import com.mageddo.dnsproxyserver.utils.Booleans;
@@ -15,7 +9,7 @@ import com.mageddo.utils.Files;
 public class ConfigFlagMapper {
   public static Config toConfig(ConfigFlag config) {
     return Config.builder()
-      .server(Server
+      .server(Config.Server
         .builder()
         .dnsServerNoEntriesResponseCode(config.getNoEntriesResponseCode())
         .webServerPort(config.getWebServerPort())
@@ -23,7 +17,7 @@ public class ConfigFlagMapper {
         .build()
       )
       .configPath(Files.pathOf(config.getConfigFilePath()))
-      .log(Log
+      .log(Config.Log
         .builder()
         .file(config.getLogToFile())
         .level(LogLevelMapper.mapLogLevelFrom(config.getLogLevel()))
@@ -38,20 +32,20 @@ public class ConfigFlagMapper {
         )
         .build()
       )
-      .solverRemote(SolverRemote
+      .solverRemote(Config.SolverRemote
         .builder()
         .active(Booleans.reverseWhenNotNull(config.getNoRemoteServers()))
         .build()
       )
-      .solverStub(SolverStub
+      .solverStub(Config.SolverStub
         .builder()
         .domainName(config.getStubSolverDomainName())
         .build()
       )
-      .solverDocker(SolverDocker
+      .solverDocker(Config.SolverDocker
         .builder()
         .hostMachineFallback(config.getDockerSolverHostMachineFallbackActive())
-        .dpsNetwork(SolverDocker.DpsNetwork
+        .dpsNetwork(Config.SolverDocker.DpsNetwork
           .builder()
           .autoCreate(config.getDpsNetwork())
           .autoConnect(config.getDpsNetworkAutoConnect())
@@ -62,7 +56,7 @@ public class ConfigFlagMapper {
         .domain(config.getDomain())
         .build()
       )
-      .solverSystem(SolverSystem
+      .solverSystem(Config.SolverSystem
         .builder()
         .hostMachineHostname(config.getHostMachineHostname())
         .build()

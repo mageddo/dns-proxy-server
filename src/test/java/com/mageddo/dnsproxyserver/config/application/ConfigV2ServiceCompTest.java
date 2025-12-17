@@ -4,7 +4,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.LogLevel;
 import com.mageddo.dnsproxyserver.config.configurer.di.Context;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.ConfigDAOCmdArgs;
 
@@ -64,7 +63,7 @@ class ConfigV2ServiceCompTest {
       ;
 
     // assert
-    assertEquals(LogLevel.WARNING, config.getLogLevel());
+    assertEquals(Config.Log.Level.WARNING, config.getLogLevel());
   }
 
   @Test

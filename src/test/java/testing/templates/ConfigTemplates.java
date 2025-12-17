@@ -1,14 +1,6 @@
 package testing.templates;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.Log;
-import com.mageddo.dnsproxyserver.config.LogLevel;
-import com.mageddo.dnsproxyserver.config.Server;
-import com.mageddo.dnsproxyserver.config.SolverDocker;
-import com.mageddo.dnsproxyserver.config.SolverLocal;
-import com.mageddo.dnsproxyserver.config.SolverRemote;
-import com.mageddo.dnsproxyserver.config.SolverStub;
-import com.mageddo.dnsproxyserver.config.SolverSystem;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.legacyenv.ConfigEnv;
 import com.mageddo.dnsserver.SimpleServer;
 import com.mageddo.net.IP;
@@ -26,7 +18,7 @@ public class ConfigTemplates {
   private static Config.ConfigBuilder defaultBuilder() {
     return Config
       .builder()
-      .server(Server
+      .server(Config.Server
         .builder()
         .serverProtocol(SimpleServer.Protocol.UDP_TCP)
         .webServerPort(8080)
@@ -34,10 +26,10 @@ public class ConfigTemplates {
         .dnsServerNoEntriesResponseCode(3)
         .build()
       )
-      .log(Log
+      .log(Config.Log
         .builder()
         .file("/tmp/dps.log")
-        .level(LogLevel.WARNING)
+        .level(Config.Log.Level.WARNING)
         .build()
       )
       .defaultDns(Config.DefaultDns
@@ -53,17 +45,17 @@ public class ConfigTemplates {
       )
       .configPath(Paths.get("/tmp/config.json"))
       .version("3.0.0")
-      .solverRemote(SolverRemote
+      .solverRemote(Config.SolverRemote
         .builder()
         .active(true)
         .build()
       )
-      .solverDocker(SolverDocker
+      .solverDocker(Config.SolverDocker
         .builder()
         .domain("docker")
         .registerContainerNames(false)
         .hostMachineFallback(true)
-        .dpsNetwork(SolverDocker.DpsNetwork
+        .dpsNetwork(Config.SolverDocker.DpsNetwork
           .builder()
           .autoConnect(false)
           .autoCreate(false)
@@ -71,7 +63,7 @@ public class ConfigTemplates {
         )
         .build()
       )
-      .solverSystem(SolverSystem
+      .solverSystem(Config.SolverSystem
         .builder()
         .hostMachineHostname("host.docker")
         .build()
@@ -96,7 +88,7 @@ public class ConfigTemplates {
 
   public static Config withSolverRemoteDisabled() {
     return defaultBuilder()
-      .solverRemote(SolverRemote
+      .solverRemote(Config.SolverRemote
         .builder()
         .active(false)
         .build()
@@ -106,7 +98,7 @@ public class ConfigTemplates {
 
   public static Config acmeSolverStub() {
     return defaultBuilder()
-      .solverStub(SolverStub.builder()
+      .solverStub(Config.SolverStub.builder()
         .domainName("acme")
         .build()
       )
@@ -115,7 +107,7 @@ public class ConfigTemplates {
 
   public static Config acmeSolverLocal() {
     return defaultBuilder()
-      .solverLocal(SolverLocal.builder()
+      .solverLocal(Config.SolverLocal.builder()
         .activeEnv(Config.Env.DEFAULT_ENV)
         .envs(List.of(
           Config.Env.of("", List.of(

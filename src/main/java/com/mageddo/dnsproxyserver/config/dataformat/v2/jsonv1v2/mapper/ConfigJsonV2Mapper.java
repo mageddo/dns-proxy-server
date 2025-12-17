@@ -3,12 +3,6 @@ package com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.mapper;
 import com.mageddo.dnsproxyserver.config.CanaryRateThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.Log;
-import com.mageddo.dnsproxyserver.config.Server;
-import com.mageddo.dnsproxyserver.config.SolverDocker;
-import com.mageddo.dnsproxyserver.config.SolverLocal;
-import com.mageddo.dnsproxyserver.config.SolverRemote;
-import com.mageddo.dnsproxyserver.config.SolverStub;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.mapper.LogLevelMapper;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo.ConfigJson;
@@ -26,7 +20,7 @@ public class ConfigJsonV2Mapper {
 
   public static Config toConfig(ConfigJson json, Path configFileAbsolutePath) {
     return Config.builder()
-      .server(Server
+      .server(Config.Server
         .builder()
         .dnsServerNoEntriesResponseCode(json.getNoEntriesResponseCode())
         .webServerPort(json.getWebServerPort())
@@ -44,7 +38,7 @@ public class ConfigJsonV2Mapper {
         )
         .build()
       )
-      .log(Log
+      .log(Config.Log
         .builder()
         .level(LogLevelMapper.mapLogLevelFrom(json.getLogLevel()))
         .file(LogLevelMapper.mapLogFileFrom(json.getLogFile()))
@@ -53,15 +47,15 @@ public class ConfigJsonV2Mapper {
       .configPath(configFileAbsolutePath)
       .solverRemote(toSolverRemote(json))
       .solverStub(toSolverStub(json.getSolverStub()))
-      .solverLocal(SolverLocal
+      .solverLocal(Config.SolverLocal
         .builder()
         .activeEnv(json.getActiveEnv())
         .envs(json.getEnvs())
         .build()
       )
-      .solverDocker(SolverDocker
+      .solverDocker(Config.SolverDocker
         .builder()
-        .dpsNetwork(SolverDocker.DpsNetwork
+        .dpsNetwork(Config.SolverDocker.DpsNetwork
           .builder()
           .autoCreate(json.getDpsNetwork())
           .autoConnect(json.getDpsNetworkAutoConnect())
@@ -77,17 +71,17 @@ public class ConfigJsonV2Mapper {
       .build();
   }
 
-  private static SolverStub toSolverStub(ConfigJsonV2.SolverStub solverStub) {
+  private static Config.SolverStub toSolverStub(ConfigJsonV2.SolverStub solverStub) {
     if (solverStub == null) {
       return null;
     }
-    return SolverStub
+    return Config.SolverStub
       .builder()
       .domainName(solverStub.getDomainName())
       .build();
   }
 
-  static SolverRemote toSolverRemote(ConfigJson json) {
+  static Config.SolverRemote toSolverRemote(ConfigJson json) {
     if (nothingIsSet(json)) {
       return null;
     } else if (isPossibleToBuildComplete(json)) {
@@ -109,16 +103,16 @@ public class ConfigJsonV2Mapper {
     return ObjectUtils.allNotNull(json.getSolverRemote(), json.getSolverRemoteCircuitBreaker());
   }
 
-  static SolverRemote buildSimpleSolverRemote(ConfigJson json) {
-    return SolverRemote
+  static Config.SolverRemote buildSimpleSolverRemote(ConfigJson json) {
+    return Config.SolverRemote
       .builder()
       .active(Booleans.reverseWhenNotNull(json.getNoRemoteServers()))
       .dnsServers(json.getRemoteDnsServers())
       .build();
   }
 
-  static SolverRemote buildCompleteSolverRemote(ConfigJson json, ConfigJsonV2.CircuitBreaker circuitBreaker) {
-    return SolverRemote
+  static Config.SolverRemote buildCompleteSolverRemote(ConfigJson json, ConfigJsonV2.CircuitBreaker circuitBreaker) {
+    return Config.SolverRemote
       .builder()
       .active(Booleans.reverseWhenNotNull(json.getNoRemoteServers()))
       .circuitBreaker(mapCircuitBreaker(circuitBreaker))

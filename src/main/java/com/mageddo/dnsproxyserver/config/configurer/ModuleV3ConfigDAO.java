@@ -10,7 +10,12 @@ import com.mageddo.dnsproxyserver.config.dataformat.v3.dataprovider.ConfigDAO;
 import com.mageddo.dnsproxyserver.config.dataformat.v3.dataprovider.ConfigDAOFileDelegate;
 import com.mageddo.dnsproxyserver.config.dataformat.v3.dataprovider.EnvConfigDAO;
 import com.mageddo.dnsproxyserver.config.dataformat.v3.dataprovider.YamlConfigDAO;
+import com.mageddo.dnsproxyserver.config.dataformat.v3.file.ConfigFileDAO;
+import com.mageddo.dnsproxyserver.config.dataformat.v3.file.ConfigFileDAOImpl;
+import com.mageddo.dnsproxyserver.config.dataformat.v3.file.ConfigFilePathDAO;
+import com.mageddo.dnsproxyserver.config.dataformat.v3.file.ConfigFilePathDAOImpl;
 
+import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.ElementsIntoSet;
@@ -31,4 +36,9 @@ public interface ModuleV3ConfigDAO {
     return Set.of(o1, o2, o3);
   }
 
+  @Binds
+  ConfigFileDAO configFile(ConfigFileDAOImpl impl);
+
+  @Binds
+  ConfigFilePathDAO configFilePath(ConfigFilePathDAOImpl impl);
 }

@@ -10,6 +10,8 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 import java.io.IOException;
@@ -182,7 +184,7 @@ public class Config {
   }
 
   @JsonIgnore
-  public LogLevel getLogLevel() {
+  public Log.Level getLogLevel() {
     if (this.log == null) {
       return null;
     }
@@ -415,5 +417,147 @@ public class Config {
   public static class ConfigBuilder {
 
 
+  }
+
+  @Value
+  @Builder
+  public static class Log {
+    Level level;
+    String file;
+
+    public enum Level {
+
+      ERROR,
+      WARNING("WARN"),
+      INFO,
+      DEBUG,
+      TRACE,
+      ;
+
+      private final String slf4jName;
+
+      Level() {
+        this.slf4jName = null;
+      }
+
+      Level(String slf4jName) {
+        this.slf4jName = slf4jName;
+      }
+
+      public String getSlf4jName() {
+        return StringUtils.firstNonBlank(this.slf4jName, this.name());
+      }
+
+      @Override
+      public String toString() {
+        return this.name();
+      }
+
+      public ch.qos.logback.classic.Level toLogbackLevel() {
+        return ch.qos.logback.classic.Level.convertAnSLF4JLevel(
+            org.slf4j.event.Level.valueOf(this.getSlf4jName())
+        );
+      }
+    }
+  }
+
+  @Value
+  @Builder
+  public static class Server {
+
+    private Integer webServerPort;
+
+    private Integer dnsServerPort;
+    private Integer dnsServerNoEntriesResponseCode;
+
+    private SimpleServer.Protocol serverProtocol;
+
+
+  }
+
+  @Value
+  @Builder(toBuilder = true)
+  public static class SolverDocker {
+
+    private URI dockerDaemonUri;
+    private Boolean registerContainerNames;
+    private String domain;
+    private DpsNetwork dpsNetwork;
+    private Boolean hostMachineFallback;
+
+    public boolean shouldUseHostMachineFallback() {
+      return BooleanUtils.toBoolean(hostMachineFallback);
+    }
+
+    public boolean shouldAutoCreateDpsNetwork() {
+      if (this.dpsNetwork == null) {
+        return false;
+      }
+      return this.dpsNetwork.shouldAutoCreate();
+    }
+
+    public boolean shouldAutoConnect() {
+      if (this.dpsNetwork == null) {
+        return false;
+      }
+      return this.dpsNetwork.shouldAutoConnect();
+    }
+
+    @Value
+    @Builder
+    public static class DpsNetwork {
+
+      private Boolean autoCreate;
+      private Boolean autoConnect;
+
+      public boolean shouldAutoConnect() {
+        return BooleanUtils.isTrue(this.autoConnect);
+      }
+
+      public boolean shouldAutoCreate() {
+        return BooleanUtils.isTrue(this.autoCreate);
+      }
+    }
+  }
+
+  @Value
+  @Builder(toBuilder = true)
+  public static class SolverLocal {
+
+    private String activeEnv;
+    private List<Env> envs;
+
+    @JsonIgnore
+    public Env getFirst() {
+      if (this.envs == null || this.envs.isEmpty()) {
+        return null;
+      }
+      return this.envs.getFirst();
+    }
+  }
+
+  @Value
+  @Builder
+  public static class SolverRemote {
+
+    private Boolean active;
+
+    private CircuitBreakerStrategyConfig circuitBreaker;
+
+    @Builder.Default
+    private List<IpAddr> dnsServers = new ArrayList<>();
+
+  }
+
+  @Value
+  @Builder
+  public static class SolverStub {
+    private String domainName;
+  }
+
+  @Value
+  @Builder
+  public static class SolverSystem {
+    private String hostMachineHostname;
   }
 }

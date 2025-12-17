@@ -26,8 +26,6 @@ public class ConfigFactory {
   }
 
   boolean isLegacyConfigActive() {
-    return true
-        // FIXME disable legacy by default
-        || Objects.requireNonNullElse(Envs.getBooleanOrNull("DPS_LEGACY_CONFIG_ACTIVE"), false);
+    return Objects.requireNonNullElse(Envs.getBooleanOrNull("DPS_LEGACY_CONFIG_ACTIVE"), false);
   }
 }

@@ -10,13 +10,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.Log;
-import com.mageddo.dnsproxyserver.config.Server;
-import com.mageddo.dnsproxyserver.config.SolverDocker;
-import com.mageddo.dnsproxyserver.config.SolverLocal;
-import com.mageddo.dnsproxyserver.config.SolverRemote;
-import com.mageddo.dnsproxyserver.config.SolverStub;
-import com.mageddo.dnsproxyserver.config.SolverSystem;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.version.VersionDAO;
 import com.mageddo.dnsproxyserver.config.validator.ConfigValidator;
@@ -47,7 +40,7 @@ public class ConfigMapper {
 
   private Config mapFrom0(List<Config> configs) {
     final var config = Config.builder()
-      .server(Server
+      .server(Config.Server
         .builder()
         .webServerPort(Numbers.firstPositive(mapField(Config::getWebServerPort, configs)))
         .dnsServerPort(Numbers.firstPositive(mapField(Config::getDnsServerPort, configs)))
@@ -56,7 +49,7 @@ public class ConfigMapper {
         .build()
       )
       .version(this.versionDAO.findVersion())
-      .log(Log
+      .log(Config.Log
         .builder()
         .level(firstNonNullRequiring(mapField(Config::getLogLevel, configs)))
         .file(firstNonNullRequiring(mapField(Config::getLogFile, configs)))
@@ -73,19 +66,19 @@ public class ConfigMapper {
           .build())
         .build()
       )
-      .solverRemote(SolverRemote
+      .solverRemote(Config.SolverRemote
         .builder()
         .active(firstNonNullRequiring(mapField(Config::isSolverRemoteActive, configs)))
         .circuitBreaker(firstNonNullRequiring(mapField(Config::getSolverRemoteCircuitBreakerStrategy, configs)))
         .dnsServers(firstNonEmptyListRequiring(mapField(Config::getRemoteDnsServers, configs)))
         .build()
       )
-      .solverStub(SolverStub
+      .solverStub(Config.SolverStub
         .builder()
         .domainName(firstNonNullRequiring(mapField(Config::getSolverStubDomainName, configs)))
         .build()
       )
-      .solverDocker(SolverDocker
+      .solverDocker(Config.SolverDocker
         .builder()
         .dockerDaemonUri(firstNonNullRequiring(mapField(Config::getDockerDaemonUri, configs)))
         .registerContainerNames(firstNonNullRequiring(mapField(Config::getRegisterContainerNames, configs)))
@@ -94,12 +87,12 @@ public class ConfigMapper {
         .dpsNetwork(firstNonNullRequiring(mapField(Config::getDockerSolverDpsNetwork, configs)))
         .build()
       )
-      .solverSystem(SolverSystem
+      .solverSystem(Config.SolverSystem
         .builder()
         .hostMachineHostname(firstNonNullRequiring(mapField(Config::getHostMachineHostname, configs)))
         .build()
       )
-      .solverLocal(SolverLocal
+      .solverLocal(Config.SolverLocal
         .builder()
         .activeEnv(firstNonNull(mapField(Config::getActiveEnv, configs)))
         .envs(firstNonNull(mapField(Config::getEnvs, configs)))
@@ -114,23 +107,23 @@ public class ConfigMapper {
   private static Config buildDefault() {
     return Config
       .builder()
-      .server(Server
+      .server(Config.Server
         .builder()
         .serverProtocol(SimpleServer.Protocol.UDP_TCP)
         .build()
       )
-      .solverRemote(SolverRemote
+      .solverRemote(Config.SolverRemote
         .builder()
         .active(true)
         .circuitBreaker(defaultCircuitBreaker())
         .dnsServers(Collections.singletonList(IpAddr.of("8.8.8.8:53")))
         .build()
       )
-      .solverStub(SolverStub.builder()
+      .solverStub(Config.SolverStub.builder()
         .domainName("stub")
         .build()
       )
-      .solverDocker(SolverDocker
+      .solverDocker(Config.SolverDocker
         .builder()
         .dockerDaemonUri(buildDefaultDockerHost())
         .build()
