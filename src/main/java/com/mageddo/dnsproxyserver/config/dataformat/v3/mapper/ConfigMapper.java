@@ -18,6 +18,8 @@ import static java.util.stream.Collectors.toList;
 
 public class ConfigMapper {
 
+  public static final int VERSION = 3;
+
   public static Config of(final ConfigV3 c, Config.Source source) {
     if (c == null) {
       return null;
@@ -43,7 +45,7 @@ public class ConfigMapper {
     }
 
     return new ConfigV3()
-        .setVersion(Integer.parseInt(config.getVersion()))
+        .setVersion(VERSION)
         .setServer(mapServerV3(config))
         .setDefaultDns(mapDefaultDnsV3(config.getDefaultDns()))
         .setLog(mapLogV3(config.getLog()))

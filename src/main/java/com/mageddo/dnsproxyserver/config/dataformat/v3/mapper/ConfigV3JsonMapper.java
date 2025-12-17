@@ -1,6 +1,9 @@
 package com.mageddo.dnsproxyserver.config.dataformat.v3.mapper;
 
+import java.nio.file.Path;
+
 import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.JsonConfigs;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.mapper.ConfigJsonV2Mapper;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo.ConfigJson;
 import com.mageddo.dnsproxyserver.config.dataformat.v3.ConfigV3;
 import com.mageddo.json.JsonUtils;
@@ -22,7 +25,7 @@ public class ConfigV3JsonMapper {
   }
 
   private static ConfigV3 of(ConfigJson config) {
-    return null;
+    return ConfigMapper.toV3(ConfigJsonV2Mapper.toConfig(config, Path.of("/tmp/stub")));
   }
 
   public static String toJson(ConfigV3 config) {

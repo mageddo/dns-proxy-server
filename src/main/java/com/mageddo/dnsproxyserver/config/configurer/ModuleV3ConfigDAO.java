@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 
 import com.mageddo.di.InstanceImpl;
 import com.mageddo.dnsproxyserver.config.dataformat.v3.dataprovider.ConfigDAO;
+import com.mageddo.dnsproxyserver.config.dataformat.v3.dataprovider.ConfigDAOCmdArgsDelegate;
 import com.mageddo.dnsproxyserver.config.dataformat.v3.dataprovider.ConfigDAOFileDelegate;
 import com.mageddo.dnsproxyserver.config.dataformat.v3.dataprovider.EnvConfigDAO;
 import com.mageddo.dnsproxyserver.config.dataformat.v3.file.ConfigFileDAO;
@@ -30,9 +31,9 @@ public interface ModuleV3ConfigDAO {
   @Singleton
   @ElementsIntoSet
   static Set<ConfigDAO> configDaos(
-      EnvConfigDAO o1, ConfigDAOFileDelegate o2
+      EnvConfigDAO o1, ConfigDAOFileDelegate o2, ConfigDAOCmdArgsDelegate o3
   ) {
-    return Set.of(o1, o2);
+    return Set.of(o1, o2, o3);
   }
 
   @Binds
