@@ -28,7 +28,7 @@ public class ConfigMapper {
       return null;
     }
 
-    return com.mageddo.dnsproxyserver.config.Config.builder()
+    return Config.builder()
         .version(String.valueOf(c.getVersion()))
         .server(mapServer(c.getServer()))
         .defaultDns(mapDefaultDns(c.getDefaultDns()))
@@ -62,7 +62,7 @@ public class ConfigMapper {
       return null;
     }
 
-    return com.mageddo.dnsproxyserver.config.Config.Server.builder()
+    return Config.Server.builder()
         .dnsServerPort(s.getDns() != null ? s.getDns()
             .getPort() : null)
         .dnsServerNoEntriesResponseCode(
@@ -102,12 +102,12 @@ public class ConfigMapper {
       return null;
     }
 
-    return com.mageddo.dnsproxyserver.config.Config.DefaultDns.builder()
+    return Config.DefaultDns.builder()
         .active(d.getActive())
         .resolvConf(
             d.getResolvConf() == null
                 ? null
-                : com.mageddo.dnsproxyserver.config.Config.DefaultDns.ResolvConf.builder()
+                : Config.DefaultDns.ResolvConf.builder()
                 .paths(d.getResolvConf()
                     .getPaths())
                 .overrideNameServers(d.getResolvConf()
@@ -142,8 +142,8 @@ public class ConfigMapper {
       return null;
     }
 
-    return com.mageddo.dnsproxyserver.config.Config.Log.builder()
-        .level(l.getLevel() != null ? com.mageddo.dnsproxyserver.config.Config.Log.Level.valueOf(
+    return Config.Log.builder()
+        .level(l.getLevel() != null ? Config.Log.Level.valueOf(
             l.getLevel()) : null)
         .file(l.getFile())
         .build();
@@ -167,7 +167,7 @@ public class ConfigMapper {
       return null;
     }
 
-    return com.mageddo.dnsproxyserver.config.Config.SolverRemote.builder()
+    return Config.SolverRemote.builder()
         .active(s.getRemote()
             .getActive())
         .dnsServers(
@@ -190,7 +190,7 @@ public class ConfigMapper {
       return null;
     }
     final var docker = s.getDocker();
-    return com.mageddo.dnsproxyserver.config.Config.SolverDocker.builder()
+    return Config.SolverDocker.builder()
         .registerContainerNames(docker.getRegisterContainerNames())
         .domain(docker.getDomain())
         .hostMachineFallback(docker.getHostMachineFallback())
@@ -232,7 +232,7 @@ public class ConfigMapper {
       return null;
     }
 
-    return com.mageddo.dnsproxyserver.config.Config.SolverLocal.builder()
+    return Config.SolverLocal.builder()
         .activeEnv(s.getLocal()
             .getActiveEnv())
         .envs(
@@ -249,7 +249,7 @@ public class ConfigMapper {
   }
 
   private static Config.Env mapEnv(final ConfigV3.Env e) {
-    return com.mageddo.dnsproxyserver.config.Config.Env.of(
+    return Config.Env.of(
         e.getName(),
         e.getHostnames() == null
             ? emptyList()
@@ -261,10 +261,10 @@ public class ConfigMapper {
   }
 
   private static Config.Entry mapEntry(final ConfigV3.Hostname h) {
-    return com.mageddo.dnsproxyserver.config.Config.Entry.builder()
+    return Config.Entry.builder()
         .hostname(h.getHostname())
         .ttl(h.getTtl())
-        .type(com.mageddo.dnsproxyserver.config.Config.Entry.Type.valueOf(h.getType()))
+        .type(Config.Entry.Type.valueOf(h.getType()))
         .target(h.getTarget())
         .ip(h.getIp() != null ? IP.of(h.getIp()) : null)
         .build();
@@ -275,7 +275,7 @@ public class ConfigMapper {
       return null;
     }
 
-    return com.mageddo.dnsproxyserver.config.Config.SolverStub.builder()
+    return Config.SolverStub.builder()
         .domainName(s.getStub()
             .getDomainName())
         .build();
@@ -286,7 +286,7 @@ public class ConfigMapper {
       return null;
     }
 
-    return com.mageddo.dnsproxyserver.config.Config.SolverSystem.builder()
+    return Config.SolverSystem.builder()
         .hostMachineHostname(s.getSystem()
             .getHostMachineHostname())
         .build();
