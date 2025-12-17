@@ -40,6 +40,7 @@ public class Config {
 
   Log log;
 
+  @Deprecated(forRemoval = true)
   Path configPath;
 
   SolverStub solverStub;
@@ -137,6 +138,9 @@ public class Config {
 
   @JsonIgnore
   public SolverDocker.DpsNetwork getDockerSolverDpsNetwork() {
+    if (this.solverDocker == null) {
+      return null;
+    }
     return this.solverDocker.getDpsNetwork();
   }
 
@@ -239,14 +243,9 @@ public class Config {
   }
 
   public void resetConfigFile() {
-    if (this.getConfigPath() == null) {
-      throw new IllegalStateException("config file is null");
-    }
-    try {
-      Files.deleteIfExists(this.getConfigPath());
-    } catch (IOException e) {
-      throw new UncheckedIOException(e);
-    }
+    // FIXME nao deveria mais precisar resetar o rquivo porque agora só se escreve quando
+    //   o dao da tela for chamado.
+    throw new UnsupportedOperationException();
   }
 
   @JsonIgnore
@@ -277,7 +276,7 @@ public class Config {
      * Used for testing only;
      */
     @Deprecated
-    TESTS_TEMPLATE,
+    TESTS_TEMPLATE, YAML,
 
   }
 

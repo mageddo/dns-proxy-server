@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 public class ConverterYaml implements Converter {
   @Override
   public Config of(String raw) {
-    return ConfigMapper.of(ConfigV3YamlMapper.of(raw));
+    return ConfigMapper.of(ConfigV3YamlMapper.of(raw), Config.Source.YAML);
   }
 
   @Override

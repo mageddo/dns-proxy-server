@@ -15,7 +15,7 @@ public class Configs {
     return Singletons.createOrGet(Config.class, () -> {
           log.trace("status=cacheHotLoading");
           return context.configService()
-              .findCurrentConfig();
+              .find();
         }
     );
   }

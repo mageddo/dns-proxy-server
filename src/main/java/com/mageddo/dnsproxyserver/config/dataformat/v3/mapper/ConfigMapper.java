@@ -18,7 +18,7 @@ import static java.util.stream.Collectors.toList;
 
 public class ConfigMapper {
 
-  public static Config of(final ConfigV3 c) {
+  public static Config of(final ConfigV3 c, Config.Source source) {
     if (c == null) {
       return null;
     }
@@ -33,7 +33,7 @@ public class ConfigMapper {
         .solverLocal(mapSolverLocal(c.getSolver()))
         .solverStub(mapSolverStub(c.getSolver()))
         .solverSystem(mapSolverSystem(c.getSolver()))
-        .source(Config.Source.FILE)
+        .source(source)
         .build();
   }
 

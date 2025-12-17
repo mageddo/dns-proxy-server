@@ -17,7 +17,7 @@ public class EnvConfigDAO implements ConfigDAO {
 
   @Override
   public Config find() {
-    return ConfigMapper.of(this.envMapper.ofSystemEnv());
+    return ConfigMapper.of(this.envMapper.ofSystemEnv(), Config.Source.ENV);
   }
 
   @Override

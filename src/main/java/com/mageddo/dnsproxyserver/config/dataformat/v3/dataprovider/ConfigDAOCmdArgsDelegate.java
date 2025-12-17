@@ -22,6 +22,6 @@ public class ConfigDAOCmdArgsDelegate implements ConfigDAO {
 
   @Override
   public int priority() {
-    return 3;
+    return 2;
   }
 }

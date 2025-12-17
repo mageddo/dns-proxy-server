@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class ConverterJson implements Converter {
   @Override
   public Config of(String raw) {
-    return ConfigMapper.of(ConfigV3JsonMapper.of(raw));
+    return ConfigMapper.of(ConfigV3JsonMapper.of(raw), Config.Source.JSON);
   }
 
   @Override

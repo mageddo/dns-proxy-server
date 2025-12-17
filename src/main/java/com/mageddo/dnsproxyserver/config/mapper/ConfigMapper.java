@@ -55,7 +55,6 @@ public class ConfigMapper {
         .file(firstNonNullRequiring(mapField(Config::getLogFile, configs)))
         .build()
       )
-      .configPath(firstNonNullRequiring(mapField(Config::getConfigPath, configs)))
       .defaultDns(Config.DefaultDns
         .builder()
         .active(firstNonNullRequiring(mapField(Config::isDefaultDnsActive, configs)))
