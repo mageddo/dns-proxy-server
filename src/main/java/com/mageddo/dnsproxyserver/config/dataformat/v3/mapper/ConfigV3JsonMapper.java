@@ -8,9 +8,14 @@ import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo.ConfigJson;
 import com.mageddo.dnsproxyserver.config.dataformat.v3.ConfigV3;
 import com.mageddo.json.JsonUtils;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class ConfigV3JsonMapper {
 
   public static ConfigV3 of(String json) {
+    if (StringUtils.isBlank(json)) {
+      return null;
+    }
     final var tree = JsonUtils.readTree(json);
     final var version = tree.at("/version")
         .asInt(0);

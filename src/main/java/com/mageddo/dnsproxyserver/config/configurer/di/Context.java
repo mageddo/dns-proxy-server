@@ -7,6 +7,7 @@ import com.mageddo.dnsproxyserver.config.ConfigService;
 import com.mageddo.dnsproxyserver.config.configurer.ModuleConfigDAO;
 import com.mageddo.dnsproxyserver.config.configurer.ModuleV2ConfigDAO;
 import com.mageddo.dnsproxyserver.config.configurer.ModuleV3ConfigDAO;
+import com.mageddo.dnsproxyserver.config.dataformat.v3.file.ConfigFilePathDAO;
 import com.mageddo.dnsproxyserver.version.configurer.dagger.ModuleVersionConfigurer;
 
 import dagger.Component;
@@ -24,5 +25,7 @@ public interface Context {
     return DaggerContext.create();
   }
 
-   ConfigService configService();
+  ConfigService configService();
+
+  ConfigFilePathDAO configFilePathDAO();
 }
