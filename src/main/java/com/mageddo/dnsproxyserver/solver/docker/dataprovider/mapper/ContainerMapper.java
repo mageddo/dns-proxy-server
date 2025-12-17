@@ -78,19 +78,43 @@ public class ContainerMapper {
       InspectContainerResponse c, SolverDocker.Networks.Preferred preferred
   ) {
     if (preferred.isOverrideDefault() && preferred.getNames() != null) {
-      return new LinkedHashSet<>(preferred.getNames());
+      final var set = new LinkedHashSet<String>();
+      final var principal = mapPrincipalNetworkName(c);
+      if (preferred != null) {
+        set.add(principal);
+      }
+      set.addAll(preferred.getNames());
+      return set;
     }
     if (preferred.getNames() == null) {
-      return buildDefault(c);
+      return buildDefault();
     }
-    final var names = new LinkedHashSet<>(preferred.getNames());
-    names.addAll(buildDefault(c));
+
+    final var names = new LinkedHashSet<String>();
+    final var principal = mapPrincipalNetworkName(c);
+    if (principal != null) {
+      names.add(principal);
+    }
+    names.addAll(preferred.getNames());
+    names.addAll(buildDefault());
     return names;
   }
 
-  private static LinkedHashSet<String> buildDefault(InspectContainerResponse c) {
+  private static LinkedHashSet<String> buildDefault() {
+    return buildDefault(null);
+  }
+
+  private static LinkedHashSet<String> buildDefaultWithPrincipal(InspectContainerResponse c) {
+    return buildDefault(mapPrincipalNetworkName(c));
+  }
+
+  private static String mapPrincipalNetworkName(InspectContainerResponse c) {
+    return Labels.findLabelValue(c.getConfig(), DEFAULT_NETWORK_LABEL);
+  }
+
+  private static LinkedHashSet<String> buildDefault(String principalNetworkName) {
     return Stream.of(
-            Labels.findLabelValue(c.getConfig(), DEFAULT_NETWORK_LABEL),
+            principalNetworkName,
             Network.Name.DPS.lowerCaseName(),
             Network.Name.BRIDGE.lowerCaseName()
         )
