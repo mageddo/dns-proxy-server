@@ -39,9 +39,13 @@ public class MutableConfigDAOFile implements MutableConfigDAO {
         .find();
   }
 
+  Config findCached() {
+    return Configs.getInstance();
+  }
+
   @Override
   public Env findActiveEnv() {
-    final var config = this.find();
+    final var config = this.findCached();
     return findEnv(config.getActiveEnv(), config);
   }
 
