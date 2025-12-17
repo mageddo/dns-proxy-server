@@ -220,6 +220,13 @@ public class Config {
     return this.solverLocal.getActiveEnv();
   }
 
+  public SolverDocker.Networks getDockerSolverNetworks() {
+    if (this.solverDocker == null) {
+      return null;
+    }
+    return this.solverDocker.networks;
+  }
+
   @Value
   @Builder(toBuilder = true)
   public static class DefaultDns {

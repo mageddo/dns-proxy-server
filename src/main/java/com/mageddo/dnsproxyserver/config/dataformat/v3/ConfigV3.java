@@ -85,7 +85,7 @@ public class ConfigV3 {
     String domain;
     Boolean hostMachineFallback;
     DpsNetwork dpsNetwork;
-    //    Networks networks;
+    Networks networks;
     String dockerDaemonUri;
   }
 
@@ -148,13 +148,27 @@ public class ConfigV3 {
   @Accessors(chain = true)
   @FieldDefaults(level = AccessLevel.PRIVATE)
   static public class Networks {
-    List<String> preferredNetworkNames;
+
+    Preferred preferred;
+
+    @Data
+    @Accessors(chain = true)
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    public static class Preferred {
+
+      List<String> names;
+
+      Boolean overrideDefault;
+
+
+    }
   }
 
   @Data
   @Accessors(chain = true)
   @FieldDefaults(level = AccessLevel.PRIVATE)
   static public class Remote {
+
     Boolean active;
     List<String> dnsServers;
 

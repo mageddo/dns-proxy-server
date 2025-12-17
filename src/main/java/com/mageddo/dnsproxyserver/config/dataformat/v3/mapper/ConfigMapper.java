@@ -192,6 +192,21 @@ public class ConfigMapper {
             : null
         )
         .dpsNetwork(mapDomainDpsNetwork(s))
+        .networks(mapNetworks(docker.getNetworks()))
+        .build();
+  }
+
+  private static Config.SolverDocker.Networks mapNetworks(ConfigV3.Networks networks) {
+    if (networks == null) {
+      return null;
+    }
+    final var preferred = networks.getPreferred();
+    return Config.SolverDocker.Networks.builder()
+        .preferred(Config.SolverDocker.Networks.Preferred.builder()
+            .names(preferred.getNames())
+            .overrideDefault(preferred.getOverrideDefault())
+            .build()
+        )
         .build();
   }
 
@@ -289,7 +304,8 @@ public class ConfigMapper {
       );
     }
 
-    if (config.getSolverDocker() != null) {
+    final var solverDocker = config.getSolverDocker();
+    if (solverDocker != null) {
       final var dpsNetwork = config.getDockerSolverDpsNetwork();
       solver.setDocker(new ConfigV3.Docker()
           .setDomain(config.getDockerDomain())
@@ -307,6 +323,7 @@ public class ConfigMapper {
                       Collections.map(dpsNetwork.getConfigs(), ConfigMapper::mapDpsNetworkConfigV3)
                   )
           )
+          .setNetworks(mapNetworksDf(solverDocker.getNetworks()))
       );
     }
 
@@ -346,6 +363,18 @@ public class ConfigMapper {
     }
 
     return solver;
+  }
+
+  private static ConfigV3.Networks mapNetworksDf(Config.SolverDocker.Networks networks) {
+    if (networks == null) {
+      return null;
+    }
+    final var preferred = networks.getPreferred();
+    return new ConfigV3.Networks()
+        .setPreferred(new ConfigV3.Networks.Preferred()
+            .setNames(preferred.getNames())
+            .setOverrideDefault(preferred.isOverrideDefault())
+        );
   }
 
   private static ConfigV3.Hostname mapEntryV3(Entry entry) {

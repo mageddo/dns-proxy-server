@@ -204,27 +204,35 @@ public class ConfigMapper {
             ))
             .dpsNetwork(
                 SolverDocker.DpsNetwork.builder()
-                    .name(ValueResolver.findFirst(
+                    .name(ValueResolver.findFirstOrThrow(
                         configs,
                         Config::getDockerSolverDpsNetwork,
                         SolverDocker.DpsNetwork::getName
                     ))
-                    .autoCreate(ValueResolver.findFirst(
+                    .autoCreate(ValueResolver.findFirstOrThrow(
                         configs,
                         Config::getDockerSolverDpsNetwork,
                         SolverDocker.DpsNetwork::getAutoCreate
                     ))
-                    .autoConnect(ValueResolver.findFirst(
+                    .autoConnect(ValueResolver.findFirstOrThrow(
                         configs,
                         Config::getDockerSolverDpsNetwork,
                         SolverDocker.DpsNetwork::getAutoConnect
                     ))
-                    .configs(ValueResolver.findFirst(
+                    .configs(ValueResolver.findFirstOrThrow(
                         configs,
                         Config::getDockerSolverDpsNetwork,
                         SolverDocker.DpsNetwork::getConfigs
                     ))
                     .build()
+            )
+            .networks(SolverDocker.Networks.builder()
+                .preferred(ValueResolver.findFirstOrThrow(
+                    configs,
+                    Config::getDockerSolverNetworks,
+                    SolverDocker.Networks::getPreferred
+                ))
+                .build()
             )
             .build()
         )
