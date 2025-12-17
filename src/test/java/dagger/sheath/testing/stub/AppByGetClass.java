@@ -1,18 +1,18 @@
 package dagger.sheath.testing.stub;
 
+import java.util.Map;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
+
+import org.apache.commons.lang3.Validate;
+
 import dagger.Binds;
 import dagger.Component;
 import dagger.Module;
 import dagger.multibindings.ClassKey;
 import dagger.multibindings.IntoMap;
 import jdk.jfr.Name;
-import org.apache.commons.lang3.Validate;
-
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.inject.Singleton;
-
-import java.util.Map;
 
 @Component(modules = AppByGetClass.MainModule.class)
 public interface AppByGetClass {
@@ -58,7 +58,6 @@ public interface AppByGetClass {
   interface MainModule {
 
     @Binds
-    @Singleton
     Iface iface(IfaceImpl impl);
 
     @Binds
