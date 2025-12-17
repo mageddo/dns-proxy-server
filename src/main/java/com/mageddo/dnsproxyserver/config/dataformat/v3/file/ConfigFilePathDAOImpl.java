@@ -1,7 +1,6 @@
 package com.mageddo.dnsproxyserver.config.dataformat.v3.file;
 
 import java.nio.file.Path;
-import java.util.Objects;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -38,9 +37,9 @@ public class ConfigFilePathDAOImpl implements ConfigFilePathDAO {
   }
 
   private Path findWorkDir() {
-    return Objects.requireNonNullElseGet(
+    return ObjectUtils.firstNonNull(
         Envs.getPathOrNull("DPS_WORK_DIR"),
-        () -> Envs.getPathOrNull(ConfigEnv.MG_WORK_DIR)
+        Envs.getPathOrNull(ConfigEnv.MG_WORK_DIR)
     );
   }
 

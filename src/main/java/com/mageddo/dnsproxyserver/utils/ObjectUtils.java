@@ -1,19 +1,19 @@
 package com.mageddo.dnsproxyserver.utils;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class ObjectUtils {
 
   public static String firstNonBlankRequiring(String... args) {
     return Optional
-      .ofNullable(StringUtils.firstNonBlank(args))
-      .orElseThrow(throwError())
-      ;
+        .ofNullable(StringUtils.firstNonBlank(args))
+        .orElseThrow(throwError())
+        ;
   }
 
   public static <T> List<T> firstNonEmptyListRequiring(List<List<T>> lists) {
@@ -29,24 +29,30 @@ public class ObjectUtils {
     return (T) org.apache.commons.lang3.ObjectUtils.firstNonNull(args.toArray(Object[]::new));
   }
 
+  @SafeVarargs
+  public static <T> T firstNonNull(T... args) {
+    return org.apache.commons.lang3.ObjectUtils.firstNonNull(args);
+  }
+
   public static <T> T firstNonNullRequiring(List<T> args) {
     return (T) firstNonNullRequiring(args.toArray(Object[]::new));
   }
 
   public static <T> T firstNonNullRequiring(T... args) {
     return Optional
-      .ofNullable(org.apache.commons.lang3.ObjectUtils.firstNonNull(args))
-      .orElseThrow(throwError())
-      ;
+        .ofNullable(org.apache.commons.lang3.ObjectUtils.firstNonNull(args))
+        .orElseThrow(throwError())
+        ;
   }
 
   public static <T> T firstMatchRequiring(List<T> args, Predicate<T> predicate) {
     return args
-      .stream()
-      .filter(predicate)
-      .findFirst()
-      .orElseThrow(() -> new IllegalArgumentException("At least one argument should match the predicate!"))
-      ;
+        .stream()
+        .filter(predicate)
+        .findFirst()
+        .orElseThrow(
+            () -> new IllegalArgumentException("At least one argument should match the predicate!"))
+        ;
   }
 
   static Supplier<IllegalArgumentException> throwError() {

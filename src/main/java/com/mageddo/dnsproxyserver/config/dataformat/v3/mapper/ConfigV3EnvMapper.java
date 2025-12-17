@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.config.dataformat.v3.mapper;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -22,8 +23,10 @@ public class ConfigV3EnvMapper {
     return this.of(System.getenv());
   }
 
-  public ConfigV3 of(Map<String, String> env) {
-    final var json = this.envMapper.toJson(env, PREFIX);
+  public ConfigV3 of(Map<String, String> source) {
+    final var copy = new HashMap<>(source);
+    copy.put("DPS_VERSION", "3");
+    final var json = this.envMapper.toJson(copy, PREFIX);
     return ConfigV3JsonMapper.of(json);
   }
 

@@ -410,7 +410,7 @@ public class ConfigMapper {
             .setPermittedNumberOfCallsInHalfOpenState(
                 cr.getPermittedNumberOfCallsInHalfOpenState());
       }
-      case NON_RESILIENT -> null; // V3 não tem subtype; serializa como "sem circuit breaker"
+      default -> null;
     };
   }
 }
