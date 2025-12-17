@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.solver.docker.dataprovider.mapper;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -78,26 +79,27 @@ public class ContainerMapper {
       InspectContainerResponse c, SolverDocker.Networks.Preferred preferred
   ) {
     if (preferred.isOverrideDefault() && preferred.getNames() != null) {
-      final var set = new LinkedHashSet<String>();
-      final var principal = mapPrincipalNetworkName(c);
-      if (preferred != null) {
-        set.add(principal);
-      }
-      set.addAll(preferred.getNames());
-      return set;
+      return mapPrincipalNetworkWith(c, preferred.getNames());
     }
     if (preferred.getNames() == null) {
-      return buildDefault();
+      return buildDefaultWithPrincipal(c);
     }
+    return mapPrincipalNetworkWith(c, preferred.getNames(), buildDefault());
+  }
 
-    final var names = new LinkedHashSet<String>();
+  @SafeVarargs
+  private static Set<String> mapPrincipalNetworkWith(
+      InspectContainerResponse c, Collection<String>... namesCollections
+  ) {
+    final var set = new LinkedHashSet<String>();
     final var principal = mapPrincipalNetworkName(c);
-    if (principal != null) {
-      names.add(principal);
+    if (StringUtils.isNotBlank(principal)) {
+      set.add(principal);
     }
-    names.addAll(preferred.getNames());
-    names.addAll(buildDefault());
-    return names;
+    for (var names : namesCollections) {
+      set.addAll(names);
+    }
+    return set;
   }
 
   private static LinkedHashSet<String> buildDefault() {
