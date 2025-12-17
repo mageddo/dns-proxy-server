@@ -3,12 +3,10 @@ FROM debian:11
 RUN apt-get update -y && \
   apt-get install -y --no-install-recommends \
     build-essential \
-    musl \
-    musl-dev \
-    musl-tools \
+    musl musl-dev musl-tools \
     zlib1g-dev \
-    curl \
-    ca-certificates \
+    zlib1g-dev-musl \
+    curl ca-certificates \
   && ln -sf /usr/bin/musl-gcc /usr/local/bin/x86_64-linux-musl-gcc \
   && rm -rf /var/lib/apt/lists/*
 
