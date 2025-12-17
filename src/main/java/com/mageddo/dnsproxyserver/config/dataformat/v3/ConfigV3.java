@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.config.dataformat.v3;
 import java.time.Duration;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -45,6 +46,7 @@ public class ConfigV3 {
   })
   public static interface CircuitBreaker {
 
+    @JsonIgnore
     CircuitBreakerStrategyConfig.Name getName();
 
     @Data
