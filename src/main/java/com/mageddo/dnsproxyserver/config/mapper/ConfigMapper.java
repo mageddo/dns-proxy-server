@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.mageddo.dnsproxyserver.config.CanaryRateThresholdCircuitBreakerStrategyConfig;
+import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Config.DefaultDns;
 import com.mageddo.dnsproxyserver.config.Config.Env;
@@ -252,6 +254,14 @@ public class ConfigMapper {
         .build();
   }
 
+  public static CircuitBreakerStrategyConfig defaultCircuitBreaker() {
+    return CanaryRateThresholdCircuitBreakerStrategyConfig.builder()
+        .failureRateThreshold(21)
+        .minimumNumberOfCalls(50)
+        .permittedNumberOfCallsInHalfOpenState(10)
+        .build();
+  }
+
   static Env defaultEnv() {
     return Env.of(Env.DEFAULT_ENV, List.of(aSampleEntry()));
   }
@@ -267,7 +277,7 @@ public class ConfigMapper {
         .build();
   }
 
-  public static StaticThresholdCircuitBreakerStrategyConfig defaultCircuitBreaker() {
+  public static StaticThresholdCircuitBreakerStrategyConfig staticThresholdCircuitBreakerConfig() {
     return StaticThresholdCircuitBreakerStrategyConfig
         .builder()
         .failureThreshold(3)
