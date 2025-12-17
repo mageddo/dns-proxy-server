@@ -61,8 +61,8 @@ public class DpsContainerService {
   }
 
   void connectDpsContainerToDpsNetwork(Container container) {
-    final var containerIpAtDpsNetwork = container.getNetworkIp(IP.Version.IPV4,
-        Network.Name.DPS.lowerCaseName()
+    final var containerIpAtDpsNetwork = container.getNetworkIp(
+        IP.Version.IPV4, Network.Name.DPS.lowerCaseName()
     );
     if (containerIpAtDpsNetwork == null) {
       this.networkDAO.connect(Network.Name.DPS.lowerCaseName(), container.getId());

@@ -8,13 +8,13 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.api.model.Network.Ipam;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.docker.application.Containers;
 import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacade;
 import com.mageddo.dnsproxyserver.solver.docker.Container;
 import com.mageddo.dnsproxyserver.solver.docker.Network;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.mapper.ContainerMapper;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.mapper.IpamMapper;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -65,15 +65,18 @@ public class DpsContainerDAODefault implements DpsContainerDAO {
 
   @Override
   public void createDpsNetwork() {
-    final var currentVersion = Configs.getInstance()
-        .getVersion();
+    final var config = Configs.getInstance();
+    final var currentVersion = config.getVersion();
+    final var network = config.getSolverDocker()
+        .getDpsNetwork();
+    final var ipamConfigs = IpamMapper.of(network.getConfigs());
     final var res = this.dockerClient
         .createNetworkCmd()
         .withName(Network.Name.DPS.lowerCaseName())
         .withDriver(Network.Name.BRIDGE.lowerCaseName())
         .withCheckDuplicate(false)
         .withEnableIpv6(true)
-        .withIpam(buildIpAddressManagement())
+        .withIpam(ipamConfigs)
         .withInternal(false)
         .withAttachable(true)
         .withLabels(Map.of(
@@ -81,22 +84,10 @@ public class DpsContainerDAODefault implements DpsContainerDAO {
             "version", currentVersion
         ))
         .exec();
-    log.info("status=networkCreated, id={}, warnings={}", res.getId(),
-        Arrays.toString(res.getWarnings())
+    log.info(
+        "status=networkCreated, id={}, warnings={}",
+        res.getId(), Arrays.toString(res.getWarnings())
     );
-  }
-
-  static Ipam buildIpAddressManagement() {
-    return new Ipam()
-        .withConfig(
-            new Ipam.Config()
-                .withSubnet("172.157.0.0/16")
-                .withIpRange("172.157.5.3/24")
-                .withGateway("172.157.5.1"),
-            new Ipam.Config()
-                .withSubnet("fc00:5c6f:db50::/64")
-                .withGateway("fc00:5c6f:db50::1")
-        );
   }
 
   String getDpsContainerEnvValue() {
