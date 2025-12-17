@@ -4,6 +4,7 @@ import java.time.Duration;
 
 import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
+import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegate;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.HealthChecker;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.statetransitor.StateTransitor;
 
@@ -24,15 +25,14 @@ import static org.mockito.Mockito.verify;
 class CircuitBreakerDelegateSelfObservableTest {
 
   CircuitBreakerDelegateSelfObservable strategy;
-
-  @Mock
-  CircuitBreakerDelegateCanaryRateThreshold delegate;
+  CircuitBreakerDelegate delegate;
 
   @Mock
   HealthChecker healthChecker;
 
   @BeforeEach
   void beforeEach() {
+    this.delegate = this.buildDefaultDelegateMock();
     this.strategy = spy(new CircuitBreakerDelegateSelfObservable(
         this.delegate,
         Duration.ofMillis(1000 / 30),
@@ -55,10 +55,7 @@ class CircuitBreakerDelegateSelfObservableTest {
   void mustHalfOpenCircuitAfterConfiguredTimeAndSatisfyHealthCheck() {
 
     // arrange
-    final var stateTransitor = mock(StateTransitor.class);
-    doReturn(stateTransitor)
-        .when(this.delegate)
-        .stateTransitor();
+    final var stateTransitor = this.delegate.stateTransitor();
 
     doReturn(CircuitStatus.OPEN)
         .when(this.delegate)
@@ -91,4 +88,14 @@ class CircuitBreakerDelegateSelfObservableTest {
     // assert
     assertEquals(CircuitStatus.OPEN, this.strategy.findStatus());
   }
+
+  private CircuitBreakerDelegate buildDefaultDelegateMock() {
+    final var delegate = mock(CircuitBreakerDelegate.class);
+    final var stateTransitor = mock(StateTransitor.class);
+    doReturn(stateTransitor)
+        .when(delegate)
+        .stateTransitor();
+    return delegate;
+  }
+
 }
