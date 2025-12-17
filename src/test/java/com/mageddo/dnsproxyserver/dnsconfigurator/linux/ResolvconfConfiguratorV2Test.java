@@ -21,7 +21,7 @@ class ResolvconfConfiguratorV2Test {
     final var resolvFile = Files.createTempFile(tmpDir, "resolv", ".conf");
 
     // act
-    ResolvconfConfigurator.process(resolvFile, IpAddrTemplates.local());
+    ResolvconfConfiguratorV2.process(resolvFile, IpAddrTemplates.local());
 
     // assert
     assertEquals("""
@@ -58,7 +58,7 @@ class ResolvconfConfiguratorV2Test {
         """);
 
     // act
-    ResolvconfConfigurator.process(resolvFile, ip);
+    ResolvconfConfiguratorV2.process(resolvFile, ip);
 
     // assert
     assertEquals(
@@ -86,7 +86,7 @@ class ResolvconfConfiguratorV2Test {
     Files.writeString(resolvFile, "nameserver 8.8.8.8");
 
     // act
-    ResolvconfConfigurator.process(resolvFile, ip);
+    ResolvconfConfiguratorV2.process(resolvFile, ip);
 
     // assert
     assertEquals(
@@ -114,7 +114,7 @@ class ResolvconfConfiguratorV2Test {
     Files.writeString(resolvFile, "nameserver 8.8.8.8\nnameserver 4.4.4.4 # dps-entry");
 
     // act
-    ResolvconfConfigurator.process(resolvFile, ip);
+    ResolvconfConfiguratorV2.process(resolvFile, ip);
     // assert
     assertEquals(
         """
@@ -154,7 +154,7 @@ class ResolvconfConfiguratorV2Test {
     );
 
     // act
-    ResolvconfConfigurator.restore(resolvFile);
+    ResolvconfConfiguratorV2.restore(resolvFile);
 
     // assert
     assertEquals(
@@ -178,7 +178,7 @@ class ResolvconfConfiguratorV2Test {
 
     // act
     final var ex = assertThrows(IllegalArgumentException.class, () -> {
-          ResolvconfConfigurator.process(resolvFile, addr);
+          ResolvconfConfiguratorV2.process(resolvFile, addr);
         }
     );
 
@@ -205,7 +205,7 @@ class ResolvconfConfiguratorV2Test {
     );
 
     // act
-    ResolvconfConfigurator.process(resolvFile, ip, false);
+    ResolvconfConfiguratorV2.process(resolvFile, ip, false);
 
     // assert
     assertEquals(
@@ -242,8 +242,8 @@ class ResolvconfConfiguratorV2Test {
     );
 
     // act
-    ResolvconfConfigurator.process(resolvFile, ip, false);
-    ResolvconfConfigurator.process(resolvFile, ip, false);
+    ResolvconfConfiguratorV2.process(resolvFile, ip, false);
+    ResolvconfConfiguratorV2.process(resolvFile, ip, false);
 
     // assert
     assertEquals(
