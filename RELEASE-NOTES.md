@@ -1,4 +1,4 @@
-## 5.1.0
+## 5.1.1
 * Changed resolv.conf handling format to make it compatible with alpine linux see [#627][5_1_0_1][1].
 * Refactoring Linux amd64 static build to work on Github Actions
 * Creating the docs for config v3
