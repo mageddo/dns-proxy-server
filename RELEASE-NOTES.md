@@ -1,3 +1,6 @@
+## 5.0.1
+* Refactoring Linux amd64 static build to work on Github Actions
+
 ## 5.0.0
 * Refactoring config module to support config v3
 * Activating Config v3 for beta testing
