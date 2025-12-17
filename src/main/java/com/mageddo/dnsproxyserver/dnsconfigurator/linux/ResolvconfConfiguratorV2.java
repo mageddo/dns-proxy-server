@@ -93,7 +93,9 @@ public class ResolvconfConfiguratorV2 {
     }
 
     // preserve remaining config (options/search/etc.) exactly after the blocks
-    outLines.addAll(suffix);
+    final var normalizedSuffix = new ArrayList<>(suffix);
+    trimLeadingBlankLines(normalizedSuffix);
+    outLines.addAll(normalizedSuffix);
 
     trimTrailingBlankLines(outLines);
     return joinLines(outLines) + LINE_BREAK;
