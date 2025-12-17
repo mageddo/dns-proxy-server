@@ -1,8 +1,12 @@
 package com.mageddo.dnsproxyserver.config.provider.jsonv1v2.dataprovider;
 
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
+import com.mageddo.dnsproxyserver.config.application.Configs;
+import com.mageddo.dnsproxyserver.config.dataformat.v3.file.MutableConfigDAOFile;
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,11 +22,19 @@ import static org.mockito.Mockito.doReturn;
 import static testing.templates.EnvTemplates.MAGEDDO_COM_CAMEL_CASE;
 
 @ExtendWith(MockitoExtension.class)
-class MutableConfigDAOJsonTest {
+class MutableConfigDAOFileTest {
 
   @Spy
   @InjectMocks
-  MutableConfigDAOJson dao;
+  MutableConfigDAOFile dao;
+
+  @AfterEach
+  @BeforeEach
+  void beforeEach() {
+    Configs.getContext()
+        .confFigFileDAO()
+        .delete();
+  }
 
   @Test
   void mustDoCaseInsensitiveFind() {
