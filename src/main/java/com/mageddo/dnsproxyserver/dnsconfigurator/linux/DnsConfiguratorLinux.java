@@ -58,7 +58,7 @@ public class DnsConfiguratorLinux implements DnsConfigurator {
 
     if (confFile.isResolvconf()) {
       final var overrideNameServers = this.isOverrideNameServersActive();
-      ResolvconfConfigurator.process(confFile.getPath(), addr, overrideNameServers);
+      ResolvconfConfiguratorV2.process(confFile.getPath(), addr, overrideNameServers);
     } else if (confFile.isResolved()) {
       this.configureResolved(addr, confFile);
     } else {
@@ -82,7 +82,7 @@ public class DnsConfiguratorLinux implements DnsConfigurator {
 
     final var confFile = this.getConfFile();
     if (confFile.isResolvconf()) {
-      ResolvconfConfigurator.restore(confFile.getPath());
+      ResolvconfConfiguratorV2.restore(confFile.getPath());
     } else if (confFile.isResolved()) {
       ResolvedConfigurator.restore(confFile.getPath());
       tryRestartResolved();
