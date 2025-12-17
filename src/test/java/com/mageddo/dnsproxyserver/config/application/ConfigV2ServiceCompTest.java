@@ -32,7 +32,9 @@ class ConfigV2ServiceCompTest {
   };
 
   @Test
-  void mustParseDefaultConfigsAndCreateJsonConfigFile(@TempDir Path tmpDir) {
+  void mustParseDefaultConfigsAndNotCreateJsonConfigFileUntilItIsChanged(
+      @TempDir Path tmpDir
+  ) {
 
     // arrange
     final var jsonConfigFile = tmpDir.resolve("tmpfile.json");
@@ -47,7 +49,7 @@ class ConfigV2ServiceCompTest {
 
     // assert
     assertFalse(config.getRegisterContainerNames());
-    assertTrue(Files.exists(jsonConfigFile));
+    assertFalse(Files.exists(jsonConfigFile));
   }
 
 
