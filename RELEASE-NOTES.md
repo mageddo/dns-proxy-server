@@ -1,6 +1,7 @@
-## 5.0.3
+## 5.0.4
 * Refactoring Linux amd64 static build to work on Github Actions
 * Creating the docs for config v3
+* Fixing Hostname Entry Update API
 
 ## 5.0.0
 * Refactoring config module to support config v3
