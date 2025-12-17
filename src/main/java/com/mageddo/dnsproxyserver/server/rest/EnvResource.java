@@ -1,5 +1,12 @@
 package com.mageddo.dnsproxyserver.server.rest;
 
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import javax.ws.rs.core.Response.Status;
+
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.dataprovider.MutableConfigDAO;
 import com.mageddo.dnsproxyserver.server.rest.reqres.EnvV1;
@@ -7,11 +14,8 @@ import com.mageddo.http.HttpMapper;
 import com.mageddo.http.WebServer;
 import com.mageddo.http.codec.Decoders;
 import com.mageddo.http.codec.Encoders;
-import lombok.RequiredArgsConstructor;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.ws.rs.core.Response.Status;
+import lombok.RequiredArgsConstructor;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)
@@ -35,7 +39,10 @@ public class EnvResource implements HttpMapper {
           .findEnvs()
           .stream()
           .map(it -> EnvV1.of(it.getName()))
-          .toList();
+          .collect(Collectors.toCollection(ArrayList::new));
+      if(result.isEmpty()) {
+        result.add(EnvV1.of(Config.Env.DEFAULT_ENV));
+      }
       Encoders.encodeJson(exchange, Status.OK, result);
     });
 

@@ -16,6 +16,7 @@ import com.mageddo.net.IP;
 import com.mageddo.net.IpAddr;
 
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
@@ -525,7 +526,12 @@ public class Config {
   public static class SolverLocal {
 
     String activeEnv;
+
     List<Env> envs;
+
+    public List<Env> getEnvs() {
+      return ObjectUtils.firstNonNull(this.envs, Collections.emptyList());
+    }
 
     @JsonIgnore
     public Env getFirst() {
