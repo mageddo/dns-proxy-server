@@ -28,7 +28,7 @@ public class NetExecutorWatchdog implements AutoCloseable {
       int pingTimeoutInMs) {
 
     final var pingFuture = this.threadPool.submit(
-        () -> Networks.ping(pingAddr.getRawIP(), pingAddr.getPort(), pingTimeoutInMs)
+        () -> Networks.ping(pingAddr.getIpAsText(), pingAddr.getPort(), pingTimeoutInMs)
     );
 
     boolean mustCheckPing = true;

@@ -34,6 +34,6 @@ public class ResolverMapper {
   }
 
   public static InetSocketAddress toInetSocketAddress(IpAddr addr) {
-    return InetAddresses.toSocketAddress(addr.getRawIP(), addr.getPortOrDef(53));
+    return InetAddresses.toSocketAddress(addr.getIpAsText(), addr.getPortOrDef(53));
   }
 }

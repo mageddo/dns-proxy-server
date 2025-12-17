@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.ResolvFile.Type;
 
 public class LinuxResolverConfDetector {
+
   public static Type detect(Path path) {
 
     if (isSystemdResolved(path)) {

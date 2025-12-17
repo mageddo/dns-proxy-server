@@ -29,12 +29,12 @@ public class IpAddr {
   @Override
   public String toString() {
     if (this.port == null) {
-      return this.getRawIP();
+      return this.getIpAsText();
     }
     return String.format("%s:%d", this.ip, this.port);
   }
 
-  public String getRawIP() {
+  public String getIpAsText() {
     return this.ip.toText();
   }
 

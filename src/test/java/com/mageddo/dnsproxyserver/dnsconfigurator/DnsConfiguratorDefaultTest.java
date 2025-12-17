@@ -60,7 +60,7 @@ class DnsConfiguratorDefaultTest {
     this.configurator.configure(addr);
 
     // assert
-    verify(this.configurator).updateDnsServers(eq(network), eq(singletonList(addr.getRawIP())));
+    verify(this.configurator).updateDnsServers(eq(network), eq(singletonList(addr.getIpAsText())));
     assertEquals("{WI-FI=[8.8.8.8]}", this.configurator.getServersBefore()
         .toString()
     );

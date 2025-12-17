@@ -20,9 +20,9 @@ public class ResolvedConfigurator {
 
   private static String formatAddr(IpAddr addr) {
     if (Dns.isDefaultPortOrNull(addr)) {
-      return addr.getRawIP();
+      return addr.getIpAsText();
     }
-    return String.format("%s:%s", addr.getRawIP(), addr.getPort());
+    return String.format("%s:%s", addr.getIpAsText(), addr.getPort());
   }
 
   public static void restore(Path confFile) {
