@@ -51,7 +51,6 @@ public interface AppByBindingMap {
   interface MainModule {
 
     @Binds
-    @Singleton
     Iface iface(IfaceImpl impl);
 
     @Binds

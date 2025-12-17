@@ -35,7 +35,6 @@ public interface AppByProvider {
   @Module
   interface MainModule {
     @Binds
-    @Singleton
     Iface iface(IfaceImpl impl);
   }
 
