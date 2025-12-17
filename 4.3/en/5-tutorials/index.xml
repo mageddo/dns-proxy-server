@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tutorials on DNS Proxy Server</title>
+    <link>http://mageddo.github.io/dns-proxy-server/4.3/en/5-tutorials/</link>
+    <description>Recent content in Tutorials on DNS Proxy Server</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    
+	<atom:link href="http://mageddo.github.io/dns-proxy-server/4.3/en/5-tutorials/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Configuring a Service Discovery solution on Docker using DNS Proxy Server and NGINX</title>
+      <link>http://mageddo.github.io/dns-proxy-server/4.3/en/5-tutorials/docker-reverse-proxy/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mageddo.github.io/dns-proxy-server/4.3/en/5-tutorials/docker-reverse-proxy/</guid>
+      <description>Requirements  DPS already configured, see the docs if you haven&amp;rsquo;t yet.  Tested on:  DPS 3.11 OS: Mac, Linux, Windows  Introducing You will see how to develop with docker containers solving them by hostnames from your host machine as the following picture shows:
+if you know about DPS you will figure out that&amp;rsquo;s a very basic DPS feature and you don&amp;rsquo;t need complex configurations to achieve that, except on MAC and Windows as docker runs its containers on a virtual machine so DPS default feature to solve containers names will work but the solved IPs are worthless because they aren&amp;rsquo;t accessible from the host.</description>
+    </item>
+    
+  </channel>
+</rss>

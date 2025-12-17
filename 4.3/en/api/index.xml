@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>API on DNS Proxy Server</title>
+    <link>http://mageddo.github.io/dns-proxy-server/4.3/en/api/</link>
+    <description>Recent content in API on DNS Proxy Server</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    
+	<atom:link href="http://mageddo.github.io/dns-proxy-server/4.3/en/api/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>V1 Network API</title>
+      <link>http://mageddo.github.io/dns-proxy-server/4.3/en/api/v1/networks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mageddo.github.io/dns-proxy-server/4.3/en/api/v1/networks/</guid>
+      <description> Disconnect containers from network DELETE /network/disconnect-containers HTTP/1.1  Parameters
+   Name Type Decription     netoworkId string The networkId which the containers will be disconnected from    Reponse
+HTTP/1.1 200 [ &amp;quot;success for 551adbb704bf95ae73f3f8e497560609d2016d1566196298f1787f087af4b5cd&amp;quot;, &amp;quot;success for 5f5ce51404b15069795006e7319f270db4f6d822a067e61808eeb0b2922087db&amp;quot; ]  Example
+$ curl -X DELETE dns.mageddo:5380/network/disconnect-containers/?networkId=85e7564c6b71  </description>
+    </item>
+    
+  </channel>
+</rss>
