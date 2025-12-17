@@ -252,13 +252,13 @@ public class ConfigMapper {
                 .autoConnect(false)
                 .autoCreate(false)
                 .name(Network.Name.DPS.lowerCaseName())
-                .config(List.of(
-                    SolverDocker.DpsNetwork.Config.builder()
+                .configs(List.of(
+                    SolverDocker.DpsNetwork.NetworkConfig.builder()
                         .subNet("172.157.0.0/16")
                         .ipRange("172.157.5.3/24")
                         .gateway("172.157.5.1")
                         .build(),
-                    SolverDocker.DpsNetwork.Config.builder()
+                    SolverDocker.DpsNetwork.NetworkConfig.builder()
                         .subNet("fc00:5c6f:db50::/64")
                         .gateway("fc00:5c6f:db50::1")
                         .build()

@@ -508,11 +508,11 @@ public class Config {
       String name;
       Boolean autoCreate;
       Boolean autoConnect;
-      List<Config> config;
+      List<NetworkConfig> configs;
 
       @Value
       @Builder
-      public static class Config {
+      public static class NetworkConfig {
         String subNet;
         String ipRange;
         String gateway;

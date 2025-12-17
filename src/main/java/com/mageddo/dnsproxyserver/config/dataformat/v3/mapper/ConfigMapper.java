@@ -212,18 +212,18 @@ public class ConfigMapper {
         .name(dpsNetwork.getName())
         .autoCreate(dpsNetwork.getAutoCreate())
         .autoConnect(dpsNetwork.getAutoConnect())
-        .config(mapDomainDpsNetworkConfigs(dpsNetwork.getConfigs()))
+        .configs(mapDomainDpsNetworkConfigs(dpsNetwork.getConfigs()))
         .build();
   }
 
-  private static List<DpsNetwork.Config> mapDomainDpsNetworkConfigs(
+  private static List<DpsNetwork.NetworkConfig> mapDomainDpsNetworkConfigs(
       List<ConfigV3.DpsNetwork.Config> configs
   ) {
     return Collections.map(configs, ConfigMapper::mapDomainDpsNetworkConfig);
   }
 
-  static DpsNetwork.Config mapDomainDpsNetworkConfig(ConfigV3.DpsNetwork.Config config) {
-    return DpsNetwork.Config.builder()
+  static DpsNetwork.NetworkConfig mapDomainDpsNetworkConfig(ConfigV3.DpsNetwork.Config config) {
+    return DpsNetwork.NetworkConfig.builder()
         .gateway(config.getGateway())
         .ipRange(config.getIpRange())
         .subNet(config.getSubNet())
@@ -291,32 +291,29 @@ public class ConfigMapper {
     if (config.getSolverRemote() != null) {
       solver.setRemote(new ConfigV3.Remote()
           .setActive(config.isSolverRemoteActive())
-          .setDnsServers(
-              config.getRemoteDnsServers()
-                  .stream()
-                  .map(IpAddr::toString)
-                  .collect(toList())
-          )
+          .setDnsServers(Collections.map(config.getRemoteDnsServers(), IpAddr::toString))
           .setCircuitBreaker(mapCircuitBreakerToV3(config.getSolverRemoteCircuitBreakerStrategy()))
       );
     }
 
     if (config.getSolverDocker() != null) {
+      final var dpsNetwork = config.getDockerSolverDpsNetwork();
       solver.setDocker(new ConfigV3.Docker()
-              .setDomain(config.getDockerDomain())
-              .setRegisterContainerNames(config.getRegisterContainerNames())
-              .setHostMachineFallback(config.getDockerSolverHostMachineFallbackActive())
-              .setDockerDaemonUri(Objects.toString(config.getDockerDaemonUri(), null))
-              .setDpsNetwork(
-                  config.getDockerSolverDpsNetwork() == null
-                      ? null
-                      : new ConfigV3.DpsNetwork()
-//                      .setName(config.getDockerSolverDpsNetwork().getName())
-                      .setAutoCreate(config.getDockerSolverDpsNetwork()
-                          .getAutoCreate())
-                      .setAutoConnect(config.getDockerSolverDpsNetwork()
-                          .getAutoConnect())
-              )
+          .setDomain(config.getDockerDomain())
+          .setRegisterContainerNames(config.getRegisterContainerNames())
+          .setHostMachineFallback(config.getDockerSolverHostMachineFallbackActive())
+          .setDockerDaemonUri(Objects.toString(config.getDockerDaemonUri(), null))
+          .setDpsNetwork(
+              dpsNetwork == null
+                  ? null
+                  : new ConfigV3.DpsNetwork()
+                  .setName(dpsNetwork.getName())
+                  .setAutoCreate(dpsNetwork.getAutoCreate())
+                  .setAutoConnect(dpsNetwork.getAutoConnect())
+                  .setConfigs(
+                      Collections.map(dpsNetwork.getConfigs(), ConfigMapper::mapDpsNetworkConfigV3)
+                  )
+          )
       );
     }
 
@@ -365,6 +362,22 @@ public class ConfigMapper {
     }
 
     return solver;
+  }
+
+  static ConfigV3.DpsNetwork.Config mapDpsNetworkConfigV3(DpsNetwork.NetworkConfig config) {
+    return ConfigV3.DpsNetwork.Config.builder()
+        .subNet(config.getSubNet())
+        .ipRange(config.getIpRange())
+        .gateway(config.getGateway())
+        .build();
+  }
+
+  static DpsNetwork.NetworkConfig mapDpsNetworkConfigV3x(ConfigV3.DpsNetwork.Config config) {
+    return DpsNetwork.NetworkConfig.builder()
+        .subNet(config.getSubNet())
+        .ipRange(config.getIpRange())
+        .gateway(config.getGateway())
+        .build();
   }
 
   /* ================= CIRCUIT BREAKER ================= */
