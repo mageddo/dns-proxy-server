@@ -1,16 +1,18 @@
 package com.mageddo.dnsproxyserver.solver.remote.application;
 
+import java.util.concurrent.CompletableFuture;
+
 import com.mageddo.net.NetExecutorWatchdog;
 import com.mageddo.utils.Executors;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import testing.templates.MessageTemplates;
 import testing.templates.solver.remote.RequestTemplates;
-
-import java.util.concurrent.CompletableFuture;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -39,12 +41,12 @@ class RemoteResultSupplierTest {
     final var answer = MessageTemplates.buildAAnswer(query);
 
     doReturn(true)
-      .when(this.supplier)
-      .isPingWhileGettingQueryResponseActive();
+        .when(this.supplier)
+        .isPingWhileGettingQueryResponseActive();
 
     doReturn(CompletableFuture.completedFuture(answer))
-      .when(this.supplier)
-      .sendQueryAsyncToResolver(any());
+        .when(this.supplier)
+        .sendQueryAsyncToResolver(any());
 
     // act
     final var res = this.supplier.get();
@@ -56,7 +58,7 @@ class RemoteResultSupplierTest {
   }
 
   @Test
-  void pingRemoteServerWhileQueryingDisabledByDefault(){
+  void pingRemoteServerWhileQueryingDisabledByDefault() {
 
     // act
     final var active = this.supplier.isPingWhileGettingQueryResponseActive();

@@ -1,12 +1,12 @@
 package com.mageddo.dnsproxyserver.solver;
 
-import com.mageddo.dnsproxyserver.solver.SolverSystem;
-import testing.templates.MessageTemplates;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import testing.templates.MessageTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 

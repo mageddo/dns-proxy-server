@@ -1,15 +1,17 @@
 package com.mageddo.dnsproxyserver.docker.dataprovider;
 
+import java.util.List;
+
 import com.github.dockerjava.api.exception.NotFoundException;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import testing.templates.docker.ContainerTemplates;
 import testing.templates.docker.InspectContainerResponseTemplates;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -29,7 +31,8 @@ class ContainerFacadeDefaultTest {
     final var containerId = "a39bba9a8bab2899";
 
     doThrow(new NotFoundException("Container not found"))
-      .when(this.facade).inspect(containerId)
+        .when(this.facade)
+        .inspect(containerId)
     ;
 
     // act
@@ -45,7 +48,8 @@ class ContainerFacadeDefaultTest {
     final var containerId = "a39bba9a8bab28aa";
 
     doThrow(new NullPointerException("Unexpected failure"))
-      .when(this.facade).inspect(containerId)
+        .when(this.facade)
+        .inspect(containerId)
     ;
 
     // act
@@ -62,15 +66,17 @@ class ContainerFacadeDefaultTest {
     final var containers = List.of(c1, c2);
 
     doReturn(InspectContainerResponseTemplates.withDpsLabel())
-      .when(this.facade).safeInspect(c1.getId())
+        .when(this.facade)
+        .safeInspect(c1.getId())
     ;
 
     doReturn(null)
-      .when(this.facade).safeInspect(c2.getId())
+        .when(this.facade)
+        .safeInspect(c2.getId())
     ;
 
     final var filtered = this.facade.inspectFilteringValidContainers(containers)
-      .toList();
+        .toList();
 
     assertEquals(1, filtered.size());
   }

@@ -1,12 +1,14 @@
 package com.mageddo.dnsproxyserver.solver.docker.application;
 
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.NetworkDAO;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import testing.templates.server.dns.solver.docker.ContainerTemplates;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -68,15 +70,15 @@ class DpsContainerServiceTest {
   }
 
   @Test
-  void mustCheckDockerConnectionBeforeUseDockerDao(){
+  void mustCheckDockerConnectionBeforeUseDockerDao() {
     // arrange
     doReturn(true)
-      .when(this.dpsContainerService)
-      .isDpsRunningInsideContainer()
+        .when(this.dpsContainerService)
+        .isDpsRunningInsideContainer()
     ;
     doReturn(false)
-      .when(this.dpsContainerService)
-      .isDockerConnected();
+        .when(this.dpsContainerService)
+        .isDockerConnected();
 
     // act
     this.dpsContainerService.findDpsIP();

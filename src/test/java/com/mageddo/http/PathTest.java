@@ -2,12 +2,12 @@ package com.mageddo.http;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PathTest {
 
   @Test
-  void mustBuildPathFromSubdirs(){
+  void mustBuildPathFromSubdirs() {
     // arrange
 
     // ct
@@ -18,7 +18,7 @@ class PathTest {
   }
 
   @Test
-  void mustBuildPathFromOnlyRootDir(){
+  void mustBuildPathFromOnlyRootDir() {
     // arrange
 
     // ct
@@ -29,7 +29,7 @@ class PathTest {
   }
 
   @Test
-  void pathWithFile(){
+  void pathWithFile() {
     // arrange
 
     // ct

@@ -1,11 +1,12 @@
 package dagger.sheath.reflection;
 
-import dagger.sheath.templates.SignatureTemplates;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import dagger.sheath.templates.SignatureTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -15,13 +16,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class SignatureTest {
 
   @Test
-  void mustConvertFieldToSignature(){
+  void mustConvertFieldToSignature() {
     final var sig = fieldToSignature(Car.class, "passengers");
-    assertEquals("Signature(clazz=interface java.util.List, typeArguments=[class java.lang.String])", sig.toString());
+    assertEquals(
+        "Signature(clazz=interface java.util.List, typeArguments=[class java.lang.String])",
+        sig.toString()
+    );
   }
 
   @Test
-  void mustGetCorrectTypeFromField(){
+  void mustGetCorrectTypeFromField() {
     final var signature = fieldToSignature(Car.class, "passengers");
     assertEquals(List.class, signature.getClazz());
     assertEquals("java.lang.String", signature.getFirstTypeArgumentName());
@@ -29,7 +33,7 @@ class SignatureTest {
   }
 
   @Test
-  void mustMatchFieldsWithSameTypeAndGenerics(){
+  void mustMatchFieldsWithSameTypeAndGenerics() {
 
     final var passengers = fieldToSignature(Car.class, "passengers");
     final var accessories = fieldToSignature(Car.class, "accessories");
@@ -39,7 +43,7 @@ class SignatureTest {
   }
 
   @Test
-  void fieldsWithDifferentGenericCantMatch(){
+  void fieldsWithDifferentGenericCantMatch() {
 
     final var passengers = fieldToSignature(Car.class, "passengers");
     final var accessories = fieldToSignature(Car.class, "tripsKms");
@@ -49,7 +53,7 @@ class SignatureTest {
   }
 
   @Test
-  void mustMatchFieldsWithCompatibleTypes(){
+  void mustMatchFieldsWithCompatibleTypes() {
 
     final var ancestor = SignatureTemplates.listOfNumber();
     final var impl = SignatureTemplates.listOfInteger();
@@ -60,7 +64,7 @@ class SignatureTest {
 
 
   @Test
-  void differentNumberOfTypeArgumentsMustNotMatch(){
+  void differentNumberOfTypeArgumentsMustNotMatch() {
 
     final var ancestor = SignatureTemplates.pairOfString();
     final var impl = SignatureTemplates.listOfString();
@@ -70,7 +74,7 @@ class SignatureTest {
   }
 
   @Test
-  void fieldsWithIncompatibleTypesArgumentsMustNotMatch(){
+  void fieldsWithIncompatibleTypesArgumentsMustNotMatch() {
 
     final var ancestor = SignatureTemplates.listOfNumber();
     final var impl = SignatureTemplates.listOfString();
@@ -80,7 +84,7 @@ class SignatureTest {
   }
 
   @Test
-  void fieldsWithMoreThanOneTypeArgumentAndIncompatibleTypesArgumentsMustNotMatch(){
+  void fieldsWithMoreThanOneTypeArgumentAndIncompatibleTypesArgumentsMustNotMatch() {
 
     final var ancestor = SignatureTemplates.pairOfString();
     final var impl = SignatureTemplates.pairOfStringAndInteger();
@@ -90,7 +94,7 @@ class SignatureTest {
   }
 
   @Test
-  void whenImplHasNotTypeArgumentsTheyCantMatch(){
+  void whenImplHasNotTypeArgumentsTheyCantMatch() {
 
     final var ancestor = SignatureTemplates.pairOfString();
     final var impl = SignatureTemplates.pair();
@@ -100,7 +104,7 @@ class SignatureTest {
   }
 
   @Test
-  void ancestorsWithoutTypeArgumentsSpecificationMustMatch(){
+  void ancestorsWithoutTypeArgumentsSpecificationMustMatch() {
 
     final var ancestor = SignatureTemplates.list();
     final var impl = SignatureTemplates.listOfString();
@@ -110,12 +114,14 @@ class SignatureTest {
   }
 
   @Test
-  void mustParseMethodReturnTypeWithTypeArguments(){
+  void mustParseMethodReturnTypeWithTypeArguments() {
     final var method = SignatureTemplates.ofMethodIteratorList();
 
     final var sig = Signature.ofMethodReturnType(method);
 
-    assertEquals("Signature(clazz=interface java.util.Iterator, typeArguments=[E])", sig.toString());
+    assertEquals("Signature(clazz=interface java.util.Iterator, typeArguments=[E])",
+        sig.toString()
+    );
   }
 
   private static Signature fieldToSignature(final Class<Car> clazz, final String fieldName) {

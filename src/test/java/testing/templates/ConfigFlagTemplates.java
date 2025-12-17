@@ -1,8 +1,8 @@
 package testing.templates;
 
-import com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.vo.ConfigFlag;
-
 import java.nio.file.Path;
+
+import com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.vo.ConfigFlag;
 
 public class ConfigFlagTemplates {
   public static ConfigFlag build() {
@@ -13,7 +13,7 @@ public class ConfigFlagTemplates {
     return ConfigFlag.parse(new String[]{"--conf-path", path.toString()});
   }
 
-  public static ConfigFlag withHelpFlag(){
+  public static ConfigFlag withHelpFlag() {
     return ConfigFlag.parse(new String[]{"--help"});
   }
 

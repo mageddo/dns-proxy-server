@@ -1,6 +1,7 @@
 package dagger.sheath.binding;
 
 import org.junit.jupiter.api.Test;
+
 import dagger.sheath.testing.stub.AppByBindingMap;
 import dagger.sheath.testing.stub.AppByGetClass;
 import dagger.sheath.testing.stub.DaggerAppByBindingMap;
@@ -14,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class BindingMethodTest {
 
   @Test
-  void wontFindBindingMethodWhenTheCtxDontSupportsIt(){
+  void wontFindBindingMethodWhenTheCtxDontSupportsIt() {
     // arrange
     final var ctx = DaggerAppByProvider.create();
     final var nop = ctx.root();
@@ -27,7 +28,7 @@ public class BindingMethodTest {
   }
 
   @Test
-  void mustFindBeanUsingBindingMap(){
+  void mustFindBeanUsingBindingMap() {
     // arrange
     final var ctx = DaggerAppByBindingMap.create();
     final var nop = ctx.root();
@@ -43,7 +44,7 @@ public class BindingMethodTest {
   }
 
   @Test
-  void mustFindBeanUsingByGetClass(){
+  void mustFindBeanUsingByGetClass() {
     // arrange
     final var ctx = DaggerAppByGetClass.create();
     final var nop = ctx.root();

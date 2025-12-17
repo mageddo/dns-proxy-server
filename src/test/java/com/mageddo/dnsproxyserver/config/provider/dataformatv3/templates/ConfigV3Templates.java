@@ -9,59 +9,59 @@ public class ConfigV3Templates {
 
   public static String buildYaml() {
     return YamlUtils.format("""
-      ---
-      version: 3
-      server:
-        dns:
-          port: 53
-          noEntriesResponseCode: 3
-        web:
-          port: 5380
-        protocol: UDP_TCP
-      solver:
-        remote:
+        ---
+        version: 3
+        server:
+          dns:
+            port: 53
+            noEntriesResponseCode: 3
+          web:
+            port: 5380
+          protocol: UDP_TCP
+        solver:
+          remote:
+            active: true
+            dnsServers:
+            - 8.8.8.8
+            - 4.4.4.4:53
+            circuitBreaker:
+                failureThreshold: null
+                failureThresholdCapacity: null
+                successThreshold: null
+                testDelay: null
+                type: STATIC_THRESHOLD
+          docker:
+            registerContainerNames: false
+            domain: docker
+            hostMachineFallback: true
+            dpsNetwork:
+              name: dps
+              autoCreate: false
+              autoConnect: false
+            dockerDaemonUri:\s
+          system:
+            hostMachineHostname: host.docker
+          local:
+            activeEnv: ''
+            envs:
+            - name: ''
+              hostnames:
+              - type: A
+                hostname: github.com
+                target:
+                ip: 192.168.0.1
+                ttl: 255
+          stub:
+            domainName: stub
+        defaultDns:
           active: true
-          dnsServers:
-          - 8.8.8.8
-          - 4.4.4.4:53
-          circuitBreaker:
-              failureThreshold: null
-              failureThresholdCapacity: null
-              successThreshold: null
-              testDelay: null
-              type: STATIC_THRESHOLD
-        docker:
-          registerContainerNames: false
-          domain: docker
-          hostMachineFallback: true
-          dpsNetwork:
-            name: dps
-            autoCreate: false
-            autoConnect: false
-          dockerDaemonUri:\s
-        system:
-          hostMachineHostname: host.docker
-        local:
-          activeEnv: ''
-          envs:
-          - name: ''
-            hostnames:
-            - type: A
-              hostname: github.com
-              target:
-              ip: 192.168.0.1
-              ttl: 255
-        stub:
-          domainName: stub
-      defaultDns:
-        active: true
-        resolvConf:
-          paths: "/host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf"
-          overrideNameServers: true
-      log:
-        level: DEBUG
-        file: console
-      """);
+          resolvConf:
+            paths: "/host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf"
+            overrideNameServers: true
+        log:
+          level: DEBUG
+          file: console
+        """);
   }
 
   public static ConfigV3 build() {
@@ -70,80 +70,80 @@ public class ConfigV3Templates {
 
   public static String buildJson() {
     return JsonUtils.prettify("""
-      {
-        "version": 3,
-        "server": {
-          "dns": {
-            "port": 53,
-            "noEntriesResponseCode": 3
+        {
+          "version": 3,
+          "server": {
+            "dns": {
+              "port": 53,
+              "noEntriesResponseCode": 3
+            },
+            "web": {
+              "port": 5380
+            },
+            "protocol": "UDP_TCP"
           },
-          "web": {
-            "port": 5380
-          },
-          "protocol": "UDP_TCP"
-        },
-        "solver": {
-          "remote": {
-            "active": true,
-            "dnsServers": [
-              "8.8.8.8", "4.4.4.4:53"
-            ],
-            "circuitBreaker": {
-              "failureThreshold" : null,
-              "failureThresholdCapacity" : null,
-              "successThreshold" : null,
-              "testDelay" : null,
-              "type": "STATIC_THRESHOLD"
+          "solver": {
+            "remote": {
+              "active": true,
+              "dnsServers": [
+                "8.8.8.8", "4.4.4.4:53"
+              ],
+              "circuitBreaker": {
+                "failureThreshold" : null,
+                "failureThresholdCapacity" : null,
+                "successThreshold" : null,
+                "testDelay" : null,
+                "type": "STATIC_THRESHOLD"
+              }
+            },
+            "docker": {
+              "registerContainerNames": false,
+              "domain": "docker",
+              "hostMachineFallback": true,
+              "dpsNetwork": {
+                "name": "dps",
+                "autoCreate": false,
+                "autoConnect": false
+              },
+              "dockerDaemonUri": null
+            },
+            "system": {
+              "hostMachineHostname": "host.docker"
+            },
+            "local": {
+              "activeEnv": "",
+              "envs": [
+                {
+                  "name": "",
+                  "hostnames": [
+                    {
+                      "type": "A",
+                      "hostname": "github.com",
+                      "target": null,
+                      "ip": "192.168.0.1",
+                      "ttl": 255
+                    }
+                  ]
+                }
+              ]
+            },
+            "stub": {
+              "domainName": "stub"
             }
           },
-          "docker": {
-            "registerContainerNames": false,
-            "domain": "docker",
-            "hostMachineFallback": true,
-            "dpsNetwork": {
-              "name": "dps",
-              "autoCreate": false,
-              "autoConnect": false
-            },
-            "dockerDaemonUri": null
+          "defaultDns": {
+            "active": true,
+            "resolvConf": {
+              "paths": "/host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf",
+              "overrideNameServers": true
+            }
           },
-          "system": {
-            "hostMachineHostname": "host.docker"
-          },
-          "local": {
-            "activeEnv": "",
-            "envs": [
-              {
-                "name": "",
-                "hostnames": [
-                  {
-                    "type": "A",
-                    "hostname": "github.com",
-                    "target": null,
-                    "ip": "192.168.0.1",
-                    "ttl": 255
-                  }
-                ]
-              }
-            ]
-          },
-          "stub": {
-            "domainName": "stub"
+          "log": {
+            "level": "DEBUG",
+            "file": "console"
           }
-        },
-        "defaultDns": {
-          "active": true,
-          "resolvConf": {
-            "paths": "/host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf",
-            "overrideNameServers": true
-          }
-        },
-        "log": {
-          "level": "DEBUG",
-          "file": "console"
         }
-      }
-      """);
+        """);
   }
 
 }

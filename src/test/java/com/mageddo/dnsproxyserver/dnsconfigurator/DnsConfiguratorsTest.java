@@ -1,13 +1,15 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator;
 
 import com.mageddo.commons.concurrent.Threads;
-import testing.templates.ConfigTemplates;
-import testing.templates.IpAddrTemplates;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import testing.templates.ConfigTemplates;
+import testing.templates.IpAddrTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -23,18 +25,23 @@ class DnsConfiguratorsTest {
   DnsConfigurators configurators;
 
   @Test
-  void mustFailAndStopAfterMaxTries(){
+  void mustFailAndStopAfterMaxTries() {
     // arrange
     doReturn(ConfigTemplates.defaultWithoutId())
-      .when(this.configurators)
-      .findConfig()
+        .when(this.configurators)
+        .findConfig()
     ;
-    doNothing().when(this.configurators).configureShutdownHook(any());
-    doReturn(2).when(this.configurators).getInitialDelay();
-    doReturn(5).when(this.configurators).getDelay();
-    doReturn(IpAddrTemplates.local()).when(this.configurators).findIpAddr();
+    doNothing().when(this.configurators)
+        .configureShutdownHook(any());
+    doReturn(2).when(this.configurators)
+        .getInitialDelay();
+    doReturn(5).when(this.configurators)
+        .getDelay();
+    doReturn(IpAddrTemplates.local()).when(this.configurators)
+        .findIpAddr();
 
-    doThrow(new IllegalAccessError("Mocked error")).when(this.configurators).configure(any());
+    doThrow(new IllegalAccessError("Mocked error")).when(this.configurators)
+        .configure(any());
 
     // act
     this.configurators.onStart();

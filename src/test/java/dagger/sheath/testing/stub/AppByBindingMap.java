@@ -1,17 +1,16 @@
 package dagger.sheath.testing.stub;
 
+import java.util.Map;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
+
 import dagger.Binds;
 import dagger.Component;
 import dagger.Module;
 import dagger.multibindings.ClassKey;
 import dagger.multibindings.IntoMap;
 import jdk.jfr.Name;
-
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.inject.Singleton;
-
-import java.util.Map;
 
 @Component(modules = AppByBindingMap.MainModule.class)
 public interface AppByBindingMap {

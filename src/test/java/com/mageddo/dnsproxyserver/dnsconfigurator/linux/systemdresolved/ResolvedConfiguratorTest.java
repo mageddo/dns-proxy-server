@@ -1,12 +1,14 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator.linux.systemdresolved;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.ResolvedConfigurator;
-import testing.templates.IpAddrTemplates;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
+import testing.templates.IpAddrTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -42,7 +44,8 @@ class ResolvedConfiguratorTest {
         #DNS=192.168.0.128
         #FallbackDNS=
         #Domains=
-        """);
+        """
+    );
     final var localIp = IpAddrTemplates.local();
 
     // act
@@ -60,7 +63,8 @@ class ResolvedConfiguratorTest {
         #FallbackDNS=
         #Domains=
         DNS=10.10.0.1 # dps-entry
-        """, Files.readString(confFile));
+        """, Files.readString(confFile)
+    );
   }
 
 
@@ -72,7 +76,8 @@ class ResolvedConfiguratorTest {
         DNS=8.8.8.8
         FallbackDNS=
         Domains=
-        """);
+        """
+    );
     final var localIp = IpAddrTemplates.local();
 
     // act
@@ -85,7 +90,8 @@ class ResolvedConfiguratorTest {
         FallbackDNS=
         Domains=
         DNS=10.10.0.1 # dps-entry
-        """, Files.readString(confFile));
+        """, Files.readString(confFile)
+    );
   }
 
   @Test
@@ -94,7 +100,8 @@ class ResolvedConfiguratorTest {
     final var confFile = Files.writeString(tmpDir.resolve("file.conf"), """
         [Resolve]
         DNS=192.168.0.1 # dps-entry
-        """);
+        """
+    );
     final var localIp = IpAddrTemplates.local();
 
     // act
@@ -142,7 +149,8 @@ class ResolvedConfiguratorTest {
     // arrange
     final var confFile = Files.writeString(tmpDir.resolve("file.conf"), """
         [Resolve]
-        """);
+        """
+    );
     final var addr = IpAddrTemplates.localPort54();
 
     // act

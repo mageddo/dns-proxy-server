@@ -3,11 +3,13 @@ package com.mageddo.dnsproxyserver.config.provider.jsonv1v2.dataprovider;
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.MutableConfigDAOJson;
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import testing.templates.EnvTemplates;
 import testing.templates.HostnameQueryTemplates;
 
@@ -30,8 +32,8 @@ class MutableConfigDAOJsonTest {
     final var env = EnvTemplates.buildWithCamelCaseHost();
 
     doReturn(env)
-      .when(this.dao)
-      .findActiveEnv();
+        .when(this.dao)
+        .findActiveEnv();
 
     // act
     final var entry = this.dao.findEntryForActiveEnv(hostname);
@@ -42,14 +44,14 @@ class MutableConfigDAOJsonTest {
   }
 
   @Test
-  void mustSolveQuadARecord(){
+  void mustSolveQuadARecord() {
     // arrange
     final var query = HostnameQueryTemplates.acmeComQuadA();
 
     final var env = EnvTemplates.acmeQuadA();
     doReturn(env)
-      .when(this.dao)
-      .findActiveEnv();
+        .when(this.dao)
+        .findActiveEnv();
 
     // act
     final var found = this.dao.findEntryForActiveEnv(query);
@@ -59,14 +61,14 @@ class MutableConfigDAOJsonTest {
   }
 
   @Test
-  void mustSolveQueriedTypeWhenTwoDifferentTypesAreAvailable(){
+  void mustSolveQueriedTypeWhenTwoDifferentTypesAreAvailable() {
     // arrange
     final var query = HostnameQueryTemplates.acmeComQuadA();
 
     final var env = EnvTemplates.acmeAAndQuadA();
     doReturn(env)
-      .when(this.dao)
-      .findActiveEnv();
+        .when(this.dao)
+        .findActiveEnv();
 
     // act
     final var found = this.dao.findEntryForActiveEnv(query);
@@ -78,14 +80,14 @@ class MutableConfigDAOJsonTest {
 
 
   @Test
-  void mustReturnWhatExistsWhenNotBestMatchIsFound(){
+  void mustReturnWhatExistsWhenNotBestMatchIsFound() {
     // arrange
     final var query = HostnameQueryTemplates.acmeComQuadA();
 
     final var env = EnvTemplates.acmeCname();
     doReturn(env)
-      .when(this.dao)
-      .findActiveEnv();
+        .when(this.dao)
+        .findActiveEnv();
 
     // act
     final var found = this.dao.findEntryForActiveEnv(query);

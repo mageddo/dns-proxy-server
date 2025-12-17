@@ -1,11 +1,12 @@
 package dagger.sheath.binding;
 
-import dagger.sheath.CtxWrapper;
-
-import javax.inject.Provider;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
+
+import javax.inject.Provider;
+
+import dagger.sheath.CtxWrapper;
 
 public class BindingMapMethod {
 
@@ -19,7 +20,8 @@ public class BindingMapMethod {
 
   public <T> Provider<T> get(Class<T> clazz) {
     try {
-      final Map<Class<?>, Provider<?>> bindings = (Map<Class<?>, Provider<?>>) this.method.invoke(this.ctx);
+      final Map<Class<?>, Provider<?>> bindings = (Map<Class<?>, Provider<?>>) this.method.invoke(
+          this.ctx);
       return (Provider<T>) bindings.get(clazz);
     } catch (IllegalAccessException | InvocationTargetException e) {
       throw new IllegalStateException(e);
@@ -35,7 +37,8 @@ public class BindingMapMethod {
 
   private static boolean isGetBindingsMap(Method m) {
     return m.getParameterTypes().length == 0
-        && m.getReturnType().isAssignableFrom(Map.class)
+        && m.getReturnType()
+        .isAssignableFrom(Map.class)
         ;
   }
 

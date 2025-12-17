@@ -1,14 +1,15 @@
 package com.mageddo.supporting.circuitbreaker.testing.sandbox.resilience4j;
 
-import com.mageddo.supporting.circuitbreaker.testing.sandbox.Result;
-import com.mageddo.supporting.circuitbreaker.testing.sandbox.State;
-import com.mageddo.supporting.circuitbreaker.testing.sandbox.Stats;
-import com.mageddo.supporting.circuitbreaker.testing.sandbox.AbstractCircuitBreakerSandBox;
-import io.github.resilience4j.circuitbreaker.CircuitBreaker;
-
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.LocalDateTime;
+
+import com.mageddo.supporting.circuitbreaker.testing.sandbox.AbstractCircuitBreakerSandBox;
+import com.mageddo.supporting.circuitbreaker.testing.sandbox.Result;
+import com.mageddo.supporting.circuitbreaker.testing.sandbox.State;
+import com.mageddo.supporting.circuitbreaker.testing.sandbox.Stats;
+
+import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 
 public class Resilience4jCircuitBreakerSandBox extends AbstractCircuitBreakerSandBox {
 
@@ -24,7 +25,7 @@ public class Resilience4jCircuitBreakerSandBox extends AbstractCircuitBreakerSan
   }
 
   @Override
-  public Result calcStats(Stats stats, Runnable r)  {
+  public Result calcStats(Stats stats, Runnable r) {
     return StatsCalculator.calcStats(stats, r);
   }
 
@@ -45,7 +46,8 @@ public class Resilience4jCircuitBreakerSandBox extends AbstractCircuitBreakerSan
   }
 
   public static String runSuccess(CircuitBreaker breaker) {
-    return breaker.executeSupplier(() -> LocalDateTime.now().toString());
+    return breaker.executeSupplier(() -> LocalDateTime.now()
+        .toString());
   }
 
   public static void testCircuitOnError(

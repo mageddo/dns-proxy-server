@@ -1,10 +1,10 @@
 package testing.templates.solver.remote;
 
-import com.mageddo.commons.circuitbreaker.CircuitCheckException;
-import com.mageddo.dnsproxyserver.solver.remote.Result;
-
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
+
+import com.mageddo.commons.circuitbreaker.CircuitCheckException;
+import com.mageddo.dnsproxyserver.solver.remote.Result;
 
 public class ResultSupplierTemplates {
   public static Supplier<Result> alwaysFail() {

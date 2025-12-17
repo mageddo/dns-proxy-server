@@ -1,7 +1,10 @@
 package com.mageddo.dnsproxyserver.config.application;
 
+import java.nio.file.Paths;
+
 import com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.ConfigDAOCmdArgs;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.legacyenv.ConfigDAOLegacyEnv;
+
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,10 +12,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import testing.templates.ConfigFlagTemplates;
 import testing.templates.config.ConfigEnvTemplates;
-
-import java.nio.file.Paths;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -35,13 +37,13 @@ class ConfigFileFinderServiceTest {
   void mustUseEnvConfig() {
     // arrange
     doReturn(ConfigEnvTemplates.withConfigFilePath())
-      .when(this.configDAOEnv)
-      .findRaw()
+        .when(this.configDAOEnv)
+        .findRaw()
     ;
 
     doReturn(ConfigFlagTemplates.withConfigFilePath())
-      .when(this.configDAOCmdArgs)
-      .findRaw()
+        .when(this.configDAOCmdArgs)
+        .findRaw()
     ;
 
     // act
@@ -56,13 +58,13 @@ class ConfigFileFinderServiceTest {
   void mustUseArgsConfigWhenEnvNotSet() {
     // arrange
     doReturn(ConfigEnvTemplates.empty())
-      .when(this.configDAOEnv)
-      .findRaw()
+        .when(this.configDAOEnv)
+        .findRaw()
     ;
 
     doReturn(ConfigFlagTemplates.withConfigFilePath())
-      .when(this.configDAOCmdArgs)
-      .findRaw()
+        .when(this.configDAOCmdArgs)
+        .findRaw()
     ;
 
     // act
@@ -78,13 +80,13 @@ class ConfigFileFinderServiceTest {
   void mustUseRandomGeneratedConfigPathWhenRunningInTestsAndNoCustomPathIsSpecified() {
     // arrange
     doReturn(ConfigEnvTemplates.empty())
-      .when(this.configDAOEnv)
-      .findRaw()
+        .when(this.configDAOEnv)
+        .findRaw()
     ;
 
     doReturn(ConfigFlagTemplates.empty())
-      .when(this.configDAOCmdArgs)
-      .findRaw()
+        .when(this.configDAOCmdArgs)
+        .findRaw()
     ;
 
     // act

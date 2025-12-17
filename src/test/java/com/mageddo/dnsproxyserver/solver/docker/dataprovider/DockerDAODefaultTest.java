@@ -1,14 +1,16 @@
 package com.mageddo.dnsproxyserver.solver.docker.dataprovider;
 
+import java.util.List;
+
 import com.mageddo.net.IP;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import testing.templates.server.dns.solver.docker.NetworkTemplates;
 
-import java.util.List;
+import testing.templates.server.dns.solver.docker.NetworkTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -28,8 +30,8 @@ class DockerDAODefaultTest {
     // arrange
     final var version = IP.Version.IPV6;
     doReturn(NetworkTemplates.withBridgeIpv4AndIpv6Network())
-      .when(this.dockerDAO)
-      .findBestNetwork(eq(version));
+        .when(this.dockerDAO)
+        .findBestNetwork(eq(version));
 
     // act
     final var ip = this.dockerDAO.findHostMachineIp(version);
@@ -46,13 +48,13 @@ class DockerDAODefaultTest {
     // arrange
     final var version = IP.Version.IPV6;
     final var networks = List.of(
-      NetworkTemplates.withOverlayIpv4AndIpv6Network(),
-      NetworkTemplates.withBridgeIpv4AndIpv6Network()
+        NetworkTemplates.withOverlayIpv4AndIpv6Network(),
+        NetworkTemplates.withBridgeIpv4AndIpv6Network()
     );
 
     doReturn(networks)
-      .when(this.dockerDAO)
-      .findNetworks();
+        .when(this.dockerDAO)
+        .findNetworks();
 
     // act
     final var ip = this.dockerDAO.findHostMachineIp(version);
@@ -69,13 +71,13 @@ class DockerDAODefaultTest {
     // arrange
     final var version = IP.Version.IPV4;
     final var networks = List.of(
-      NetworkTemplates.withHostDriverWithoutIps(),
-      NetworkTemplates.withBridgeIpv4AndIpv6Network()
+        NetworkTemplates.withHostDriverWithoutIps(),
+        NetworkTemplates.withBridgeIpv4AndIpv6Network()
     );
 
     doReturn(networks)
-      .when(this.dockerDAO)
-      .findNetworks();
+        .when(this.dockerDAO)
+        .findNetworks();
 
     // act
     final var ip = this.dockerDAO.findHostMachineIp(version);

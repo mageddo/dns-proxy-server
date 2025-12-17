@@ -10,11 +10,11 @@ public class IpTemplates {
   public static final String LOCAL_192 = "192.168.0.10";
   public static final String ZERO = "0.0.0.0";
 
-  public static IP local(){
+  public static IP local() {
     return IP.of(LOCAL);
   }
 
-  public static IP loopback(){
+  public static IP loopback() {
     return IP.of("127.0.0.1");
   }
 }

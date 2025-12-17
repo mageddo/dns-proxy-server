@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.solver.stub;
 
 import com.mageddo.dnsproxyserver.solver.stub.addressexpression.AddressExpressions;
 import com.mageddo.net.IP;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

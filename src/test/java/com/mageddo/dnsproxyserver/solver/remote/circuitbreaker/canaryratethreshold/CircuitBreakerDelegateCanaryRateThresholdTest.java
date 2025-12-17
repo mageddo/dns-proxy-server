@@ -1,17 +1,19 @@
 package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.canaryratethreshold;
 
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
+
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.commons.circuitbreaker.CircuitIsOpenException;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
-import io.github.resilience4j.circuitbreaker.CircuitBreaker;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import testing.templates.circuitbreaker.Resilience4jCircuitBreakerTemplates;
 import testing.templates.solver.remote.ResultTemplates;
-
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

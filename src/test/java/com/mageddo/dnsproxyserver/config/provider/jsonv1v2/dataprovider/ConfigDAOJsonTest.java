@@ -1,15 +1,17 @@
 package com.mageddo.dnsproxyserver.config.provider.jsonv1v2.dataprovider;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.ConfigDAOJson;
-import lombok.SneakyThrows;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
+import lombok.SneakyThrows;
 
 import static com.mageddo.utils.TestUtils.readAndSortJsonExcluding;
 import static com.mageddo.utils.TestUtils.readAsStream;
@@ -22,8 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class ConfigDAOJsonTest {
 
   static final String[] excludingFields = new String[]{
-    "version", "configPath", "resolvConfPaths",
-    "dockerHost"
+      "version", "configPath", "resolvConfPaths",
+      "dockerHost"
   };
 
   final ConfigDAOJson configDAOJson = new ConfigDAOJson(null);
@@ -40,8 +42,8 @@ class ConfigDAOJsonTest {
 
     // assert
     assertEquals(
-      readAndSortJsonExcluding("/configs-test/004.json", excludingFields),
-      readSortDonWriteNullsAndExcludeFields(config, excludingFields)
+        readAndSortJsonExcluding("/configs-test/004.json", excludingFields),
+        readSortDonWriteNullsAndExcludeFields(config, excludingFields)
     );
   }
 
@@ -60,7 +62,7 @@ class ConfigDAOJsonTest {
   }
 
   @Test
-  void mustConfigureStubSolverDomain(@TempDir Path tmpDir){
+  void mustConfigureStubSolverDomain(@TempDir Path tmpDir) {
     // arrange
     final var sourceConfigFile = "/configs-test/010.json";
     final var configPathToUse = tmpDir.resolve("tmpfile.json");

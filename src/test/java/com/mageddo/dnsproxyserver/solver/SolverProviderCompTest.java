@@ -1,13 +1,14 @@
 package com.mageddo.dnsproxyserver.solver;
 
-import com.mageddo.dnsproxyserver.solver.SolverProvider;
-import dagger.sheath.junit.DaggerTest;
-import org.junit.jupiter.api.Test;
-import testing.ContextSupplier;
-import testing.Events;
+import java.util.Arrays;
 
 import javax.inject.Inject;
-import java.util.Arrays;
+
+import org.junit.jupiter.api.Test;
+
+import dagger.sheath.junit.DaggerTest;
+import testing.ContextSupplier;
+import testing.Events;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

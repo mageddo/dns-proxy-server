@@ -1,7 +1,9 @@
 package com.mageddo.circuitbreaker.failsafe;
 
 import com.mageddo.commons.concurrent.Threads;
+
 import org.junit.jupiter.api.Test;
+
 import testing.templates.solver.remote.FailSafeCircuitBreakerTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -57,7 +59,7 @@ class CircuitStatusRefreshTest {
   }
 
   @Test
-  void mustIgnoreNulls(){
+  void mustIgnoreNulls() {
     final var refreshed = CircuitStatusRefresh.refresh(null);
     assertFalse(refreshed);
   }

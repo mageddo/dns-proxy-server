@@ -1,7 +1,9 @@
 package com.mageddo.dnsproxyserver.config.provider.legacyenv;
 
 import com.mageddo.dnsproxyserver.config.dataformat.v2.legacyenv.ConfigEnvMapper;
+
 import org.junit.jupiter.api.Test;
+
 import testing.templates.config.ConfigEnvTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -10,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class ConfigEnvMapperTest {
 
   @Test
-  void mustMapStubSolverDomainName(){
+  void mustMapStubSolverDomainName() {
 
     final var configEnv = ConfigEnvTemplates.withStubSolverDomainName();
 

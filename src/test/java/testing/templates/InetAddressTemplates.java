@@ -1,8 +1,8 @@
 package testing.templates;
 
-import lombok.SneakyThrows;
-
 import java.net.InetAddress;
+
+import lombok.SneakyThrows;
 
 public class InetAddressTemplates {
 

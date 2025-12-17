@@ -10,32 +10,32 @@ public class EntryTemplates {
 
   public static Config.Entry a(String host) {
     return Config.Entry
-      .builder()
-      .hostname(host)
-      .ip(IP.of("10.10.0.1"))
-      .ttl(45)
-      .type(Type.A)
-      .build()
-      ;
+        .builder()
+        .hostname(host)
+        .ip(IP.of("10.10.0.1"))
+        .ttl(45)
+        .type(Type.A)
+        .build()
+        ;
   }
 
   public static Config.Entry cname(String from, String to) {
     return Config.Entry
-      .builder()
-      .hostname(from)
-      .target(to)
-      .ttl(45)
-      .type(Type.CNAME)
-      .build()
-      ;
+        .builder()
+        .hostname(from)
+        .target(to)
+        .ttl(45)
+        .type(Type.CNAME)
+        .build()
+        ;
   }
 
   public static Config.Entry aaaa(String host) {
     return a(host)
-      .toBuilder()
-      .type(Type.AAAA)
-      .ip(IP.of(IpTemplates.LOCAL_IPV6))
-      .build();
+        .toBuilder()
+        .type(Type.AAAA)
+        .ip(IP.of(IpTemplates.LOCAL_IPV6))
+        .build();
   }
 
   public static Config.Entry acmeQuadA() {

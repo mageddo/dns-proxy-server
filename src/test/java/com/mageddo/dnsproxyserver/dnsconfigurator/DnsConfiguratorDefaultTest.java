@@ -1,7 +1,9 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator;
 
-import testing.templates.IpAddrTemplates;
+import java.util.List;
+
 import com.mageddo.os.Platform;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,7 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
+import testing.templates.IpAddrTemplates;
 
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -40,18 +42,18 @@ class DnsConfiguratorDefaultTest {
     final var network = "WI-FI";
 
     doReturn(true)
-      .when(this.configurator)
-      .updateDnsServers(any(), any())
+        .when(this.configurator)
+        .updateDnsServers(any(), any())
     ;
 
     doReturn(List.of("8.8.8.8"))
-      .when(this.configurator)
-      .findNetworkDnsServers(eq(network))
+        .when(this.configurator)
+        .findNetworkDnsServers(eq(network))
     ;
 
     doReturn(singletonList(network))
-      .when(this.configurator)
-      .findNetworks()
+        .when(this.configurator)
+        .findNetworks()
     ;
 
     // act
@@ -59,7 +61,9 @@ class DnsConfiguratorDefaultTest {
 
     // assert
     verify(this.configurator).updateDnsServers(eq(network), eq(singletonList(addr.getRawIP())));
-    assertEquals("{WI-FI=[8.8.8.8]}", this.configurator.getServersBefore().toString());
+    assertEquals("{WI-FI=[8.8.8.8]}", this.configurator.getServersBefore()
+        .toString()
+    );
   }
 
   @Test
@@ -69,18 +73,18 @@ class DnsConfiguratorDefaultTest {
     final var network = "WI-FI";
 
     doReturn(true)
-      .when(this.configurator)
-      .updateDnsServers(any(), any())
+        .when(this.configurator)
+        .updateDnsServers(any(), any())
     ;
 
     doReturn(List.of("8.8.8.8"))
-      .when(this.configurator)
-      .findNetworkDnsServers(eq(network))
+        .when(this.configurator)
+        .findNetworkDnsServers(eq(network))
     ;
 
     doReturn(singletonList(network))
-      .when(this.configurator)
-      .findNetworks()
+        .when(this.configurator)
+        .findNetworks()
     ;
 
     // act
@@ -90,7 +94,9 @@ class DnsConfiguratorDefaultTest {
     // assert
     verify(this.configurator, times(1)).updateDnsServers(anyString(), any());
     verify(this.configurator, times(1)).findNetworkDnsServers(any());
-    assertEquals("{WI-FI=[8.8.8.8]}", this.configurator.getServersBefore().toString());
+    assertEquals("{WI-FI=[8.8.8.8]}", this.configurator.getServersBefore()
+        .toString()
+    );
   }
 
 }

@@ -40,7 +40,10 @@ public final class ConfigV3EnvTemplates {
     env.put("DPS_SOLVER__LOCAL__ENVS_0__HOSTNAMES_0__TTL", "255");
     env.put("DPS_SOLVER__STUB__DOMAIN_NAME", "stub");
     env.put("DPS_DEFAULT_DNS__ACTIVE", "true");
-    env.put("DPS_DEFAULT_DNS__RESOLV_CONF__PATHS", "/host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf");
+    env.put("DPS_DEFAULT_DNS__RESOLV_CONF__PATHS",
+        "/host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,"
+            + "/etc/resolv.conf"
+    );
     env.put("DPS_DEFAULT_DNS__RESOLV_CONF__OVERRIDE_NAME_SERVERS", "true");
     env.put("DPS_LOG__LEVEL", "DEBUG");
     env.put("DPS_LOG__FILE", "console");

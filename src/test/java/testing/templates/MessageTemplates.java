@@ -1,6 +1,7 @@
 package testing.templates;
 
 import com.mageddo.dns.utils.Messages;
+
 import org.xbill.DNS.Flags;
 import org.xbill.DNS.Message;
 
@@ -40,7 +41,8 @@ public class MessageTemplates {
 
   public static Message buildAAnswerWithoutRA(Message query) {
     final var answer = buildAAnswer(query);
-    answer.getHeader().unsetFlag(Flags.RA);
+    answer.getHeader()
+        .unsetFlag(Flags.RA);
     return answer;
   }
 

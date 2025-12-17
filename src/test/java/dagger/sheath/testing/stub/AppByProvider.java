@@ -1,11 +1,10 @@
 package dagger.sheath.testing.stub;
 
+import javax.inject.Inject;
+
 import dagger.Binds;
 import dagger.Component;
 import dagger.Module;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 @Component(modules = AppByProvider.MainModule.class)
 public interface AppByProvider {

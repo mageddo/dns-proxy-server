@@ -1,23 +1,28 @@
 package com.mageddo.dnsproxyserver.config.provider.jsonv1v2.mapper;
 
-import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.mapper.ConfigJsonV2Mapper;
-import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo.ConfigJson;
-import org.junit.jupiter.api.Test;
-import testing.templates.ConfigJsonTemplates;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.mapper.ConfigJsonV2Mapper;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo.ConfigJson;
+
+import org.junit.jupiter.api.Test;
+
+import testing.templates.ConfigJsonTemplates;
+
 import static com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig.Type.CANARY_RATE_THRESHOLD;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class ConfigJsonV2MapperTest {
 
   static final Path RANDOM_CONFIG_PATH = Paths.get("/tmp/conf.json");
 
   @Test
-  void mustMapSolverRemoteAsInactiveWhenNoRemoteServersFlagIsSet(){
+  void mustMapSolverRemoteAsInactiveWhenNoRemoteServersFlagIsSet() {
     // arrange
     final var configJson = ConfigJsonTemplates.withNoRemoteServersAndCircuitBreakerDefined();
 
@@ -29,7 +34,7 @@ class ConfigJsonV2MapperTest {
   }
 
   @Test
-  void mustMapSolverRemoteAsInactiveEvenWhenCircuitBreakerIsNOTSet(){
+  void mustMapSolverRemoteAsInactiveEvenWhenCircuitBreakerIsNOTSet() {
     // arrange
     final var configJson = ConfigJsonTemplates.withoutCircuitBreakerDefinedWithNoRemoteServers();
 
@@ -41,7 +46,7 @@ class ConfigJsonV2MapperTest {
   }
 
   @Test
-  void mustReturnNullWhenNothingIsSet(){
+  void mustReturnNullWhenNothingIsSet() {
     // arrange
     final var configJson = ConfigJsonTemplates.noRemoteServerFlagsSet();
 
@@ -53,7 +58,7 @@ class ConfigJsonV2MapperTest {
   }
 
   @Test
-  void mustMapCanaryRateCircuitBreaker(){
+  void mustMapCanaryRateCircuitBreaker() {
     final var configJson = ConfigJsonTemplates.canaryRateThresholdCircuitBreaker();
 
     final var config = toConfig(configJson);
@@ -64,7 +69,7 @@ class ConfigJsonV2MapperTest {
   }
 
   @Test
-  void mustMapRemoteDnsServerAddress(){
+  void mustMapRemoteDnsServerAddress() {
     final var configJson = ConfigJsonTemplates.withDnsServers();
 
     final var config = toConfig(configJson);

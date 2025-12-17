@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import testing.templates.MessageTemplates;
 import testing.templates.ResponseTemplates;
 
@@ -26,8 +27,8 @@ class RequestHandlerDefaultTest {
     final var mesRes = MessageTemplates.acmeAResponse();
 
     doReturn(ResponseTemplates.acmeAResponse())
-      .when(this.handler)
-      .solve(eq(mesRes))
+        .when(this.handler)
+        .solve(eq(mesRes))
     ;
 
     // act

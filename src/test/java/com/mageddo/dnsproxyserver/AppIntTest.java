@@ -1,5 +1,10 @@
 package com.mageddo.dnsproxyserver;
 
+import java.nio.file.Path;
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+
 import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.commons.exec.ProcessesWatchDog;
 import com.mageddo.dns.utils.Messages;
@@ -13,20 +18,17 @@ import com.mageddo.dnsproxyserver.solver.SimpleResolver;
 import com.mageddo.dnsproxyserver.utils.Ips;
 import com.mageddo.net.IpAddr;
 import com.mageddo.utils.Executors;
-import lombok.SneakyThrows;
-import lombok.Value;
-import lombok.extern.slf4j.Slf4j;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.xbill.DNS.Message;
+
+import lombok.SneakyThrows;
+import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
 import testing.templates.ConfigFlagArgsTemplates;
 import testing.templates.ConfigJsonFileTemplates;
-
-import java.nio.file.Path;
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.concurrent.ExecutorService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -43,7 +45,8 @@ public class AppIntTest {
   @AfterAll
   static void afterAll() {
     Starter.setMustStartFlagActive(false);
-    ProcessesWatchDog.instance().killAllProcesses();
+    ProcessesWatchDog.instance()
+        .killAllProcesses();
   }
 
   @Test
@@ -88,11 +91,15 @@ public class AppIntTest {
 
   private static App buildClientAppAndWait(ExecutorService executor, Integer serverPort) {
     final var remoteAddr = IpAddr.of("127.0.0.1", serverPort);
-    return buildAppAndWait(executor, ConfigFlagArgsTemplates.withRandomPortsAndNotAsDefaultDnsUsingRemote(remoteAddr));
+    return buildAppAndWait(executor,
+        ConfigFlagArgsTemplates.withRandomPortsAndNotAsDefaultDnsUsingRemote(remoteAddr)
+    );
   }
 
   private static Result buildAndStartServerApp(String hostToQuery) {
-    final var configFile = ConfigJsonFileTemplates.withRandomPortsAndNotAsDefaultDnsAndCustomLocalDBEntry(hostToQuery);
+    final var configFile =
+        ConfigJsonFileTemplates.withRandomPortsAndNotAsDefaultDnsAndCustomLocalDBEntry(
+        hostToQuery);
     final var instance = Sandbox.runFromGradleTests(configFile);
     return Result.of(configFile, instance);
   }

@@ -1,18 +1,20 @@
 package com.mageddo.dnsproxyserver.solver.remote.application.failsafe;
 
+import java.net.InetSocketAddress;
+
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegateStaticThresholdFailsafe;
 import com.mageddo.net.SocketUtils;
-import dev.failsafe.CircuitBreaker;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import dev.failsafe.CircuitBreaker;
 import testing.templates.InetSocketAddressTemplates;
 import testing.templates.solver.remote.FailSafeCircuitBreakerTemplates;
-
-import java.net.InetSocketAddress;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -32,10 +34,13 @@ class CircuitBreakerPingCheckerServiceTest {
     // arrange
     final var addr = InetSocketAddressTemplates._8_8_8_8();
     final var circuitBreaker = FailSafeCircuitBreakerTemplates.buildDefault();
-    doReturn(true).when(this.service).ping(any());
+    doReturn(true).when(this.service)
+        .ping(any());
 
     // act
-    final var ok = this.service.safeCheck(addr, new CircuitBreakerDelegateStaticThresholdFailsafe(circuitBreaker));
+    final var ok = this.service.safeCheck(addr,
+        new CircuitBreakerDelegateStaticThresholdFailsafe(circuitBreaker)
+    );
 
     // assert
     assertTrue(ok);
@@ -45,8 +50,10 @@ class CircuitBreakerPingCheckerServiceTest {
   void mustReturnFalseWhenPingReturnsFalse() {
     // arrange
     final var addr = InetSocketAddressTemplates._8_8_8_8();
-    final var circuitBreaker = new CircuitBreakerDelegateStaticThresholdFailsafe(FailSafeCircuitBreakerTemplates.buildDefault()) ;
-    doReturn(false).when(this.service).ping(any());
+    final var circuitBreaker = new CircuitBreakerDelegateStaticThresholdFailsafe(
+        FailSafeCircuitBreakerTemplates.buildDefault());
+    doReturn(false).when(this.service)
+        .ping(any());
 
     // act
     final var ok = this.service.safeCheck(addr, circuitBreaker);
@@ -59,8 +66,10 @@ class CircuitBreakerPingCheckerServiceTest {
   void mustReturnFalseWhenThereIsAFatalException() {
     // arrange
     final var addr = InetSocketAddressTemplates._8_8_8_8();
-    final var circuitBreaker = new CircuitBreakerDelegateStaticThresholdFailsafe(FailSafeCircuitBreakerTemplates.buildDefault());
-    doThrow(new RuntimeException("unknown error")).when(this.service).ping(any());
+    final var circuitBreaker = new CircuitBreakerDelegateStaticThresholdFailsafe(
+        FailSafeCircuitBreakerTemplates.buildDefault());
+    doThrow(new RuntimeException("unknown error")).when(this.service)
+        .ping(any());
 
     // act
     final var ok = this.service.safeCheck(addr, circuitBreaker);
@@ -75,7 +84,9 @@ class CircuitBreakerPingCheckerServiceTest {
     // arrange
     final var server = SocketUtils.createServerOnRandomPort();
     final var address = (InetSocketAddress) server.getLocalSocketAddress();
-    final var circuitBreaker = new CircuitBreakerDelegateStaticThresholdFailsafe(CircuitBreaker.<Result>builder().build());
+    final var circuitBreaker = new CircuitBreakerDelegateStaticThresholdFailsafe(
+        CircuitBreaker.<Result>builder()
+            .build());
 
     try (server) {
       // act

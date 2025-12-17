@@ -27,8 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ConfigV2ServiceCompTest {
 
   static final String[] excludingFields = new String[]{
-    "version", "configPath", "resolvConfPaths",
-    "dockerHost"
+      "version", "configPath", "resolvConfPaths",
+      "dockerHost"
   };
 
   @Test
@@ -43,9 +43,8 @@ class ConfigV2ServiceCompTest {
 
     // act
     final var config = Configs.getContext()
-      .configService()
-      .find()
-      ;
+        .configService()
+        .find();
 
     // assert
     assertFalse(config.getRegisterContainerNames());
@@ -54,30 +53,28 @@ class ConfigV2ServiceCompTest {
 
 
   @Test
-  void mustParseLowerCaseLogLevel(){
+  void mustParseLowerCaseLogLevel() {
     // arrange
     ConfigDAOCmdArgs.setArgs(new String[]{"--log-level", "warning"});
 
     // act
     final var config = Configs.getContext()
-      .configService()
-      .find()
-      ;
+        .configService()
+        .find();
 
     // assert
     assertEquals(Config.Log.Level.WARNING, config.getLogLevel());
   }
 
   @Test
-  void mustDisableRemoteServersRespectingConfig(@TempDir Path tmpDir){
+  void mustDisableRemoteServersRespectingConfig(@TempDir Path tmpDir) {
     // arrange
     writeAndSetCustomConfigFile(tmpDir, "/configs-test/006.json");
 
     // act
     final var config = Configs.getContext()
-      .configService()
-      .find()
-      ;
+        .configService()
+        .find();
 
     // assert
     assertFalse(config.isSolverRemoteActive());
@@ -85,30 +82,33 @@ class ConfigV2ServiceCompTest {
   }
 
   @Test
-  void mustParseCanaryRateThreshold(@TempDir Path tmpDir){
+  void mustParseCanaryRateThreshold(@TempDir Path tmpDir) {
     // arrange
     writeAndSetCustomConfigFile(tmpDir, "/configs-test/009.json");
 
     // act
     final var config = Configs.getContext()
-      .configService()
-      .find()
-      ;
+        .configService()
+        .find();
 
     // assert
-    assertEquals(CANARY_RATE_THRESHOLD, config.getSolverRemoteCircuitBreakerStrategy().getType());
+    assertEquals(CANARY_RATE_THRESHOLD, config.getSolverRemoteCircuitBreakerStrategy()
+        .getType()
+    );
   }
 
   static void assertParsedConfig(Config config, String expectedFilePath) {
     assertEquals(
-      readAndSortJsonExcluding(expectedFilePath, excludingFields),
-      readAndSortJsonExcluding(config, excludingFields)
+        readAndSortJsonExcluding(expectedFilePath, excludingFields),
+        readAndSortJsonExcluding(config, excludingFields)
     );
   }
 
   static void assertWrittenFile(String expectedFilePath, Path jsonConfigFile) {
     assertTrue(Files.exists(jsonConfigFile));
-    assertEquals(readAndSortJson(expectedFilePath), readSortDonWriteNullsAndExcludeFields(jsonConfigFile));
+    assertEquals(readAndSortJson(expectedFilePath),
+        readSortDonWriteNullsAndExcludeFields(jsonConfigFile)
+    );
   }
 
   static void writeAndSetCustomConfigFile(Path tmpDir, String sourceConfigFile) {

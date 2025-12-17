@@ -1,20 +1,21 @@
 package com.mageddo.dnsproxyserver.solver;
 
+import javax.inject.Inject;
+
 import com.mageddo.dns.utils.Messages;
-import com.mageddo.dnsproxyserver.solver.SolverSystem;
-import testing.templates.HostnameTemplates;
 import com.mageddo.dnsproxyserver.usecase.HostMachineService;
 import com.mageddo.net.IP;
-import dagger.sheath.InjectMock;
-import dagger.sheath.junit.DaggerTest;
+
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 import org.xbill.DNS.Flags;
 import org.xbill.DNS.Rcode;
+
+import dagger.sheath.InjectMock;
+import dagger.sheath.junit.DaggerTest;
 import testing.ContextSupplier;
 import testing.Events;
-
-import javax.inject.Inject;
+import testing.templates.HostnameTemplates;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,8 +42,8 @@ class SolverSystemCompTest {
     final var query = Messages.aQuestion(hostname);
 
     doReturn(IP.of("192.168.0.1"))
-      .when(this.machineService)
-      .findHostMachineIP(any())
+        .when(this.machineService)
+        .findHostMachineIP(any())
     ;
 
     // act

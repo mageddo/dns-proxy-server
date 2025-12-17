@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.solver;
 
 import com.mageddo.commons.concurrent.Threads;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -13,11 +14,11 @@ import static org.mockito.Mockito.verify;
 class SolverCacheFactoryTest {
 
   SolverCacheFactory factory = spy(new SolverCacheFactory(
-    new SolverCache(CacheName.Name.GLOBAL), new SolverCache(CacheName.Name.GLOBAL)
+      new SolverCache(CacheName.Name.GLOBAL), new SolverCache(CacheName.Name.GLOBAL)
   ));
 
   @Test
-  void mustClearCacheInBackground(){
+  void mustClearCacheInBackground() {
     // arrange
     assertEquals(0, this.factory.getProcessedInBackground());
 

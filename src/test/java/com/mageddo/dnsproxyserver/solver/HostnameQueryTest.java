@@ -1,9 +1,9 @@
 package com.mageddo.dnsproxyserver.solver;
 
-import com.mageddo.dnsproxyserver.solver.HostnameQuery;
+import org.junit.jupiter.api.Test;
+
 import testing.templates.HostnameQueryTemplates;
 import testing.templates.HostnameTemplates;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class HostnameQueryTest {
 
   @Test
-  void mustMatchWildcard(){
+  void mustMatchWildcard() {
 
     // arrange
     final var acme = HostnameQueryTemplates.acmeComWildcard();
@@ -25,7 +25,7 @@ class HostnameQueryTest {
   }
 
   @Test
-  void mustMatchWildcardWhenUsingSubdomain(){
+  void mustMatchWildcardWhenUsingSubdomain() {
 
     // arrange
     final var acme = HostnameQueryTemplates.orangeAcmeComWildcard();
@@ -39,7 +39,7 @@ class HostnameQueryTest {
   }
 
   @Test
-  void mustMatchExactHostname(){
+  void mustMatchExactHostname() {
 
     // arrange
     final var acme = HostnameQueryTemplates.acmeComWildcard();
@@ -53,7 +53,7 @@ class HostnameQueryTest {
   }
 
   @Test
-  void mustMatchRegex(){
+  void mustMatchRegex() {
 
     // arrange
     final var acme = HostnameQuery.ofRegex(HostnameTemplates.ACME_HOSTNAME);
@@ -68,7 +68,7 @@ class HostnameQueryTest {
   }
 
   @Test
-  void mustRespectRegexTemplate(){
+  void mustRespectRegexTemplate() {
 
     // arrange
     final var hostname = HostnameQuery.ofRegex("a");

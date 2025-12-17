@@ -5,11 +5,11 @@ import com.mageddo.net.IP;
 
 public class HostnameQueryTemplates {
 
-  public static HostnameQuery acmeComWildcard(){
+  public static HostnameQuery acmeComWildcard() {
     return HostnameQuery.ofWildcard(HostnameTemplates.ACME_HOSTNAME);
   }
 
-  public static HostnameQuery orangeAcmeComWildcard(){
+  public static HostnameQuery orangeAcmeComWildcard() {
     return HostnameQuery.ofWildcard(HostnameTemplates.ORANGE_ACME_HOSTNAME);
   }
 

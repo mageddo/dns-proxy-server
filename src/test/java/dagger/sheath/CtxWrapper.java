@@ -1,16 +1,18 @@
 package dagger.sheath;
 
-import dagger.sheath.binding.BindingMethod;
-import dagger.sheath.reflection.Signature;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.Validate;
-import org.apache.commons.lang3.reflect.FieldUtils;
-
-import javax.inject.Provider;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Objects;
 import java.util.function.Consumer;
+
+import javax.inject.Provider;
+
+import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.reflect.FieldUtils;
+
+import dagger.sheath.binding.BindingMethod;
+import dagger.sheath.reflection.Signature;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class CtxWrapper {
@@ -54,8 +56,10 @@ public class CtxWrapper {
 
     // todo procurar a classe que o obj grah impl estende ou a interface que ele implementa
     //  Pegar a anotação @Component e pegar os modulos
-    //  andar pelos metodos de cada modulo procurando pelo método que retorna o tipo da interface desejada
-    //  e que tenha @Binds , provides nao serve como ele pode receber um tipo pra internamente montar o
+    //  andar pelos metodos de cada modulo procurando pelo método que retorna o tipo da interface
+    //  desejada
+    //  e que tenha @Binds , provides nao serve como ele pode receber um tipo pra internamente
+    //  montar o
     //  tipo retornado mas daih nao da obter a instancia
 
   }
@@ -63,10 +67,10 @@ public class CtxWrapper {
   private Object findUsingCtx(Signature signature) {
     try {
       final var method = MethodUtils
-        .getAllMethods(this.getCtxClass())
-        .stream()
-        .filter(it -> isAssignable(it, signature))
-        .findFirst();
+          .getAllMethods(this.getCtxClass())
+          .stream()
+          .filter(it -> isAssignable(it, signature))
+          .findFirst();
       if (method.isPresent()) {
         return MethodUtils.invoke(method.get(), this.ctx, true);
       }

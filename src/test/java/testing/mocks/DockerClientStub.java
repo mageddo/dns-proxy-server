@@ -1,5 +1,10 @@
 package testing.mocks;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
 import com.github.dockerjava.api.DockerClientDelegate;
 import com.github.dockerjava.api.command.ConnectToNetworkCmd;
 import com.github.dockerjava.api.command.DockerCmdSyncExec;
@@ -8,12 +13,8 @@ import com.github.dockerjava.api.command.ListContainersCmd;
 import com.github.dockerjava.core.command.ConnectToNetworkCmdImpl;
 import com.github.dockerjava.core.command.InspectContainerCmdImpl;
 import com.github.dockerjava.core.command.ListContainersCmdImpl;
+
 import lombok.Getter;
-
-import javax.annotation.Nonnull;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -54,7 +55,8 @@ public class DockerClientStub extends DockerClientDelegate {
     if (this.inspectContainerCmdMap.containsKey(containerId)) {
       return this.inspectContainerCmdMap.get(containerId);
     } else {
-      final var inspectCmd = spy(new InspectContainerCmdImpl(this.inspectContainerExecution, containerId));
+      final var inspectCmd = spy(
+          new InspectContainerCmdImpl(this.inspectContainerExecution, containerId));
       inspectContainerCmdMap.put(containerId, inspectCmd);
       return inspectCmd;
     }

@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.solver.docker.dataprovider.mapper;
 
-import com.mageddo.dnsproxyserver.solver.docker.dataprovider.mapper.ContainerCompactMapper;
 import org.junit.jupiter.api.Test;
+
 import testing.templates.docker.ContainerTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

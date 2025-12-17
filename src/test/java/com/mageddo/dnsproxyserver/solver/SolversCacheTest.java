@@ -1,18 +1,5 @@
 package com.mageddo.dnsproxyserver.solver;
 
-import com.mageddo.commons.concurrent.ThreadPool;
-import com.mageddo.commons.concurrent.Threads;
-import com.mageddo.dns.utils.Messages;
-import com.mageddo.dnsproxyserver.solver.CacheName.Name;
-import lombok.SneakyThrows;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.xbill.DNS.Flags;
-import org.xbill.DNS.Message;
-import testing.templates.MessageTemplates;
-import testing.templates.ResponseTemplates;
-
 import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -24,6 +11,21 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.IntStream;
+
+import com.mageddo.commons.concurrent.ThreadPool;
+import com.mageddo.commons.concurrent.Threads;
+import com.mageddo.dns.utils.Messages;
+import com.mageddo.dnsproxyserver.solver.CacheName.Name;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.xbill.DNS.Flags;
+import org.xbill.DNS.Message;
+
+import lombok.SneakyThrows;
+import testing.templates.MessageTemplates;
+import testing.templates.ResponseTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -56,14 +58,16 @@ class SolversCacheTest {
 
     // act
     final var res = this.cache.handleRes(req, message -> {
-      return Response.of(Messages.aAnswer(message, "0.0.0.0"), Duration.ofMillis(50));
-    });
+          return Response.of(Messages.aAnswer(message, "0.0.0.0"), Duration.ofMillis(50));
+        }
+    );
 
     // assert
     assertNotNull(res);
     assertNotNull(this.cache.get(key));
 
-    Threads.sleep(res.getDpsTtl().plusMillis(10));
+    Threads.sleep(res.getDpsTtl()
+        .plusMillis(10));
     assertNull(this.cache.get(key));
   }
 
@@ -74,14 +78,19 @@ class SolversCacheTest {
     final var req = MessageTemplates.acmeAQuery();
 
     // act
-    final var res = this.cache.handle(req, message -> Response.internalSuccess(Messages.aAnswer(message, "0.0.0.0")));
+    final var res = this.cache.handle(req,
+        message -> Response.internalSuccess(Messages.aAnswer(message, "0.0.0.0"))
+    );
 
     // assert
     assertNotNull(res);
     assertEquals(1, this.cache.getSize());
 
     final var header = res.getHeader();
-    assertEquals(req.getHeader().getID(), res.getHeader().getID());
+    assertEquals(req.getHeader()
+        .getID(), res.getHeader()
+        .getID()
+    );
     assertTrue(header.getFlag(Flags.QR));
 
   }
@@ -113,8 +122,8 @@ class SolversCacheTest {
 
     // act
     this.runNTimes(
-      it -> pool.submit(() -> this.cache.handle(MessageTemplates.randomHostnameAQuery(), fn)),
-      30
+        it -> pool.submit(() -> this.cache.handle(MessageTemplates.randomHostnameAQuery(), fn)),
+        30
     );
 
     pool.shutdown();
@@ -132,8 +141,8 @@ class SolversCacheTest {
 
   void runNTimes(final Consumer<Integer> task, final int times) {
     IntStream.range(0, times)
-      .boxed()
-      .forEach(task);
+        .boxed()
+        .forEach(task);
   }
 
   @SneakyThrows
@@ -156,10 +165,11 @@ class SolversCacheTest {
 
   private Object handleRequest(Message req, Random r) {
     this.cache.handleRes(req, message -> {
-      final var res = Response.internalSuccess(Messages.aAnswer(message, "0.0.0.0"));
-      Threads.sleep(r.nextInt(10));
-      return res;
-    });
+          final var res = Response.internalSuccess(Messages.aAnswer(message, "0.0.0.0"));
+          Threads.sleep(r.nextInt(10));
+          return res;
+        }
+    );
     return null;
   }
 

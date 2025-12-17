@@ -10,12 +10,12 @@ class CommandLinesTest {
 
 
   @Test
-  void mustValidateWhenExitsWithErrorCode(){
+  void mustValidateWhenExitsWithErrorCode() {
 
     final var result = CommandLines.exec(
-      new CommandLine("sh")
-      .addArgument("-c")
-      .addArgument("exit 3", false)
+        new CommandLine("sh")
+            .addArgument("-c")
+            .addArgument("exit 3", false)
     );
 
     final var ex = assertThrows(ExecutionValidationFailedException.class, result::checkExecution);
@@ -25,7 +25,7 @@ class CommandLinesTest {
   }
 
   @Test
-  void mustExecuteCommand(){
+  void mustExecuteCommand() {
 
     final var result = CommandLines.exec("echo %s", "hey");
 
@@ -37,10 +37,10 @@ class CommandLinesTest {
   void mustExecuteAndPrintOutputConcurrently() {
 
     final var result = CommandLines.exec(
-      new CommandLine("sh")
-        .addArgument("-c")
-        .addArgument("echo hi && sleep 0.2 && echo hi2", false),
-      new NopResultHandler()
+        new CommandLine("sh")
+            .addArgument("-c")
+            .addArgument("echo hi && sleep 0.2 && echo hi2", false),
+        new NopResultHandler()
     );
 
     result.printOutToLogsInBackground();
@@ -48,9 +48,9 @@ class CommandLinesTest {
     result.waitProcessToFinish();
 
     final var expectedOut = """
-      hi
-      hi2
-      """;
+        hi
+        hi2
+        """;
     assertEquals(expectedOut, result.getOutAsString());
   }
 }

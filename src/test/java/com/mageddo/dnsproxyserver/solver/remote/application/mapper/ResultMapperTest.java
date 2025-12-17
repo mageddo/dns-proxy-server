@@ -1,15 +1,17 @@
 package com.mageddo.dnsproxyserver.solver.remote.application.mapper;
 
+import java.net.SocketTimeoutException;
+import java.util.concurrent.CompletableFuture;
+
 import com.mageddo.dnsproxyserver.solver.Response;
 import com.mageddo.dnsproxyserver.solver.Responses;
+
 import org.junit.jupiter.api.Test;
 import org.xbill.DNS.Flags;
 import org.xbill.DNS.Message;
+
 import testing.templates.MessageTemplates;
 import testing.templates.solver.remote.RequestTemplates;
-
-import java.net.SocketTimeoutException;
-import java.util.concurrent.CompletableFuture;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -58,7 +60,8 @@ class ResultMapperTest {
   void mustReturnNullWhenGetTimeout() {
 
     // arrange
-    final CompletableFuture<Message> failedFuture = CompletableFuture.failedFuture(new SocketTimeoutException("Deu ruim"));
+    final CompletableFuture<Message> failedFuture = CompletableFuture.failedFuture(
+        new SocketTimeoutException("Deu ruim"));
     final var randomReq = RequestTemplates.buildDefault();
 
     // act
@@ -78,7 +81,7 @@ class ResultMapperTest {
 
     // act
     final var result = ResultMapper.from(future, RequestTemplates.buildDefault())
-      .getSuccessResponse();
+        .getSuccessResponse();
 
     // assert
     assertTrue(Responses.hasFlag(result, Flags.RA));

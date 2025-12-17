@@ -1,8 +1,8 @@
 package com.mageddo.wait;
 
-import org.junit.jupiter.api.Test;
-
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -17,7 +17,7 @@ class WaitTest {
     final var counter = new AtomicInteger(3);
 
     final var res = new Wait<>()
-      .until(() -> counter.decrementAndGet() == expectedValue ? true : null);
+        .until(() -> counter.decrementAndGet() == expectedValue ? true : null);
 
     assertTrue(res);
     assertEquals(expectedValue, counter.get());
@@ -27,9 +27,10 @@ class WaitTest {
   @Test
   void mustGetTimeoutWhenExpectationNeverHappen() {
     assertThrows(
-      UnsatisfiedConditionException.class, () -> {
-        new Wait<>().until(() -> null);
-      })
+        UnsatisfiedConditionException.class, () -> {
+          new Wait<>().until(() -> null);
+        }
+    )
     ;
   }
 }

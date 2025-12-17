@@ -1,10 +1,10 @@
 package com.mageddo.dnsproxyserver.server;
 
+import java.util.Set;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Set;
 
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
@@ -19,8 +19,10 @@ class StarterTest {
   @Test
   void wontStartInTestMode() {
 
-    doNothing().when(this.starter).startWebServer();
-    doNothing().when(this.starter).startDnsServer();
+    doNothing().when(this.starter)
+        .startWebServer();
+    doNothing().when(this.starter)
+        .startDnsServer();
 
     this.starter.start();
 
@@ -34,8 +36,10 @@ class StarterTest {
 
     Starter.setMustStartFlagActive(true);
 
-    doNothing().when(this.starter).startWebServer();
-    doNothing().when(this.starter).startDnsServer();
+    doNothing().when(this.starter)
+        .startWebServer();
+    doNothing().when(this.starter)
+        .startDnsServer();
 
     this.starter.start();
 

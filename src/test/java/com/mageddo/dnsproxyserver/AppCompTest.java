@@ -57,7 +57,8 @@ class AppCompTest {
     // arrange
     final var args = new String[]{"--create-tmp-dir"};
     this.setupStub(args);
-    doNothing().when(this.app).startContext();
+    doNothing().when(this.app)
+        .startContext();
 
     // act
     this.app.start();
@@ -76,12 +77,12 @@ class AppCompTest {
     this.setupStub(args);
 
     doThrow(new IllegalAccessError("mocked fatal error"))
-      .when(this.app)
-      .checkHiddenCommands()
+        .when(this.app)
+        .checkHiddenCommands()
     ;
     doNothing()
-      .when(this.app)
-      .exitWithError(anyInt())
+        .when(this.app)
+        .exitWithError(anyInt())
     ;
 
     // act
@@ -94,8 +95,8 @@ class AppCompTest {
   RuntimeException mockExitMethod() {
     final var expectedException = new App.SystemExitException("testing");
     doThrow(expectedException)
-      .when(this.app)
-      .exitGracefully()
+        .when(this.app)
+        .exitGracefully()
     ;
     return expectedException;
   }

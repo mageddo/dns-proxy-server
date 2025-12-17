@@ -21,8 +21,8 @@ class DpsContainerDAODefaultTest {
   void mustCheckIsRunningInsideContainer() {
     // arrange
     doReturn(DPS_INSIDE_CONTAINER_YES)
-      .when(this.dpsContainerDAO)
-      .getDpsContainerEnvValue()
+        .when(this.dpsContainerDAO)
+        .getDpsContainerEnvValue()
     ;
 
     // act

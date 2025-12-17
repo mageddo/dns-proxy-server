@@ -1,13 +1,11 @@
 package com.mageddo.dnsproxyserver.solver;
 
-import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dns.utils.Messages;
-import com.mageddo.dnsproxyserver.solver.HostnameQuery;
-import com.mageddo.dnsproxyserver.solver.Responses;
-import com.mageddo.dnsproxyserver.solver.SolverDocker;
+import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.solver.docker.application.ContainerSolvingService;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
 import com.mageddo.net.IP;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +14,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.xbill.DNS.Flags;
+
 import testing.templates.HostnameTemplates;
 import testing.templates.MessageTemplates;
 import testing.templates.docker.EntryTemplates;
@@ -56,12 +55,12 @@ class SolverDockerTest {
     final var hostname = HostnameQuery.ofWildcard(HostnameTemplates.ACME_HOSTNAME);
 
     doReturn(true)
-      .when(this.dockerDAO)
-      .isConnected()
+        .when(this.dockerDAO)
+        .isConnected()
     ;
     doReturn(entry)
-      .when(this.containerSolvingService)
-      .findBestMatch(eq(hostname));
+        .when(this.containerSolvingService)
+        .findBestMatch(eq(hostname));
 
     // act
     final var res = this.solver.handle(query);
@@ -70,7 +69,9 @@ class SolverDockerTest {
     assertNotNull(res);
 
     final var resText = res.toString();
-    assertTrue(resText.contains(entry.getIp().toText()), resText);
+    assertTrue(resText.contains(entry.getIp()
+        .toText()), resText
+    );
     verify(this.containerSolvingService).findBestMatch(hostname);
   }
 
@@ -81,13 +82,13 @@ class SolverDockerTest {
     final var entry = EntryTemplates.localIpv6();
 
     doReturn(true)
-      .when(this.dockerDAO)
-      .isConnected()
+        .when(this.dockerDAO)
+        .isConnected()
     ;
 
     doReturn(entry)
-      .when(this.containerSolvingService)
-      .findBestMatch(any());
+        .when(this.containerSolvingService)
+        .findBestMatch(any());
 
     // act
     final var res = this.solver.handle(query);
@@ -96,7 +97,9 @@ class SolverDockerTest {
     assertNotNull(res);
     assertTrue(Responses.hasFlag(res, Flags.RA));
     final var resText = res.toString();
-    assertTrue(resText.contains(entry.getIp().toText()), resText);
+    assertTrue(resText.contains(entry.getIp()
+        .toText()), resText
+    );
     verify(this.containerSolvingService).findBestMatch(this.hostnameQueryCaptor.capture());
 
     final var v = this.hostnameQueryCaptor.getValue();
@@ -110,13 +113,13 @@ class SolverDockerTest {
     final var entry = EntryTemplates.hostnameMatchedButNoAddress();
 
     doReturn(true)
-      .when(this.dockerDAO)
-      .isConnected()
+        .when(this.dockerDAO)
+        .isConnected()
     ;
 
     doReturn(entry)
-      .when(this.containerSolvingService)
-      .findBestMatch(any());
+        .when(this.containerSolvingService)
+        .findBestMatch(any());
 
     // act
     final var res = this.solver.handle(query);
@@ -135,13 +138,13 @@ class SolverDockerTest {
     final var entry = EntryTemplates.hostnameNotMatched();
 
     doReturn(true)
-      .when(this.dockerDAO)
-      .isConnected()
+        .when(this.dockerDAO)
+        .isConnected()
     ;
 
     doReturn(entry)
-      .when(this.containerSolvingService)
-      .findBestMatch(any());
+        .when(this.containerSolvingService)
+        .findBestMatch(any());
 
     // act
     final var res = this.solver.handle(query);

@@ -1,13 +1,15 @@
 package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application;
 
+import java.util.function.Supplier;
+
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.commons.circuitbreaker.CircuitIsOpenException;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
-import testing.templates.solver.remote.FailSafeCircuitBreakerTemplates;
 
-import java.util.function.Supplier;
+import testing.templates.solver.remote.FailSafeCircuitBreakerTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -47,6 +49,7 @@ class CircuitBreakerDelegateStaticThresholdFailsafeTest {
   }
 
   static CircuitBreakerDelegateStaticThresholdFailsafe buildCircuitBreaker() {
-    return new CircuitBreakerDelegateStaticThresholdFailsafe(FailSafeCircuitBreakerTemplates.fastCircuit());
+    return new CircuitBreakerDelegateStaticThresholdFailsafe(
+        FailSafeCircuitBreakerTemplates.fastCircuit());
   }
 }

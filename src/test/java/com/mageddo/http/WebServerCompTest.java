@@ -1,6 +1,7 @@
 package com.mageddo.http;
 
 import com.mageddo.http.codec.Encoders;
+
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -23,16 +24,16 @@ class WebServerCompTest {
 
       // act
       final var response = given()
-        .port(PORT)
-        .get("/hello-world")
-        .then()
-        .log()
-        .ifValidationFails();
+          .port(PORT)
+          .get("/hello-world")
+          .then()
+          .log()
+          .ifValidationFails();
 
       // assert
       response
-        .statusCode(HttpStatus.OK)
-        .body(equalTo(body))
+          .statusCode(HttpStatus.OK)
+          .body(equalTo(body))
       ;
     }
   }
@@ -40,23 +41,24 @@ class WebServerCompTest {
   @Test
   void mustFallbackToNotFoundPage() throws Exception {
     // arrange
-    final var theServer = new WebServer(server -> {});
+    final var theServer = new WebServer(server -> {
+    });
     try (theServer) {
 
       theServer.start(PORT);
 
       // act
       final var response = given()
-        .port(PORT)
-        .get("/hello-world")
-        .then()
-        .log()
-        .ifValidationFails();
+          .port(PORT)
+          .get("/hello-world")
+          .then()
+          .log()
+          .ifValidationFails();
 
       // assert
       response
-        .statusCode(HttpStatus.NOT_FOUND)
-        .body(equalTo(WebServer.DEFAULT_RES_BODY))
+          .statusCode(HttpStatus.NOT_FOUND)
+          .body(equalTo(WebServer.DEFAULT_RES_BODY))
       ;
     }
   }
@@ -74,16 +76,16 @@ class WebServerCompTest {
 
       // act
       final var response = given()
-        .port(PORT)
-        .get("/hello-world/pateta")
-        .then()
-        .log()
-        .ifValidationFails();
+          .port(PORT)
+          .get("/hello-world/pateta")
+          .then()
+          .log()
+          .ifValidationFails();
 
       // assert
       response
-        .statusCode(HttpStatus.OK)
-        .body(equalTo(body))
+          .statusCode(HttpStatus.OK)
+          .body(equalTo(body))
       ;
     }
   }
@@ -101,16 +103,16 @@ class WebServerCompTest {
 
       // act
       final var response = given()
-        .port(PORT)
-        .get("/hello-world/pateta")
-        .then()
-        .log()
-        .ifValidationFails();
+          .port(PORT)
+          .get("/hello-world/pateta")
+          .then()
+          .log()
+          .ifValidationFails();
 
       // assert
       response
-        .statusCode(HttpStatus.OK)
-        .body(equalTo("Root Path"))
+          .statusCode(HttpStatus.OK)
+          .body(equalTo("Root Path"))
       ;
     }
   }
@@ -128,16 +130,16 @@ class WebServerCompTest {
 
       // act
       final var response = given()
-        .port(PORT)
-        .get("/hello-world/pateta.css")
-        .then()
-        .log()
-        .ifValidationFails();
+          .port(PORT)
+          .get("/hello-world/pateta.css")
+          .then()
+          .log()
+          .ifValidationFails();
 
       // assert
       response
-        .statusCode(HttpStatus.NOT_FOUND)
-        .body(equalTo(WebServer.DEFAULT_RES_BODY))
+          .statusCode(HttpStatus.NOT_FOUND)
+          .body(equalTo(WebServer.DEFAULT_RES_BODY))
       ;
     }
   }
@@ -156,16 +158,16 @@ class WebServerCompTest {
 
       // act
       final var response = given()
-        .port(PORT)
-        .get("/hello-world")
-        .then()
-        .log()
-        .ifValidationFails();
+          .port(PORT)
+          .get("/hello-world")
+          .then()
+          .log()
+          .ifValidationFails();
 
       // assert
       response
-        .statusCode(HttpStatus.OK)
-        .body(equalTo(resBody))
+          .statusCode(HttpStatus.OK)
+          .body(equalTo(resBody))
       ;
     }
   }

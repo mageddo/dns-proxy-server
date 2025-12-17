@@ -1,18 +1,21 @@
 package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.canaryratethreshold;
 
+import java.time.Duration;
+
+import javax.inject.Inject;
+
 import com.mageddo.commons.circuitbreaker.CircuitIsOpenException;
 import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dnsproxyserver.config.CanaryRateThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
-import dagger.sheath.junit.DaggerTest;
+
 import org.junit.jupiter.api.Test;
+
+import dagger.sheath.junit.DaggerTest;
 import testing.ContextSupplier;
 import testing.Events;
 import testing.templates.CircuitBreakerConfigTemplates;
 import testing.templates.solver.remote.ResultSupplierTemplates;
-
-import javax.inject.Inject;
-import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;

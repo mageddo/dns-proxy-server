@@ -1,11 +1,11 @@
 package testing;
 
+import java.util.function.Supplier;
+
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.ConfigDAOCmdArgs;
 import com.mageddo.dnsproxyserver.di.Context;
 import com.mageddo.net.SocketUtils;
-
-import java.util.function.Supplier;
 
 public class ContextSupplier implements Supplier<Context> {
   @Override

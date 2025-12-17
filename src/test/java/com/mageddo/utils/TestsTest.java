@@ -9,12 +9,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class TestsTest {
 
   @BeforeEach
-  void beforeEach(){
+  void beforeEach() {
     Tests.resetCache();
   }
 
   @Test
-  void mustCacheInTestCalls(){
+  void mustCacheInTestCalls() {
 
     for (int i = 0; i < 3; i++) {
       assertTrue(Tests.inTest());
@@ -24,12 +24,12 @@ class TestsTest {
   }
 
   @Test
-  void mustBeJunitTest(){
+  void mustBeJunitTest() {
     assertTrue(Tests.inTestHotLoad());
   }
 
   @Test
-  void hotCallsAreNotCached(){
+  void hotCallsAreNotCached() {
     for (int i = 0; i < 3; i++) {
       assertTrue(Tests.inTestHotLoad());
     }
@@ -38,7 +38,7 @@ class TestsTest {
 
   @Test
   void mustBeJunitTestEvenWhenRunningInBackground() throws Exception {
-    try(final var executor = Executors.newThreadExecutor()){
+    try (final var executor = Executors.newThreadExecutor()) {
       final var task = executor.submit(Tests::inTestHotLoad);
       assertTrue(task.get());
     }

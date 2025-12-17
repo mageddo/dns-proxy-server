@@ -1,13 +1,16 @@
 package com.mageddo.dnsproxyserver.config.provider.jsonv1v2.dataprovider;
 
-import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.JsonConfigs;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static com.mageddo.utils.TestUtils.*;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.JsonConfigs;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import static com.mageddo.utils.TestUtils.readAndSortJson;
+import static com.mageddo.utils.TestUtils.readAsStream;
+import static com.mageddo.utils.TestUtils.readSortDonWriteNullsAndExcludeFields;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ConfigJsonV1Test {
@@ -23,8 +26,8 @@ class ConfigJsonV1Test {
 
     // assert
     assertEquals(
-      readAndSortJson("/config-json-v1-test/002.json"),
-      readSortDonWriteNullsAndExcludeFields(config)
+        readAndSortJson("/config-json-v1-test/002.json"),
+        readSortDonWriteNullsAndExcludeFields(config)
     );
   }
 

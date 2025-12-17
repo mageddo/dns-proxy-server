@@ -19,7 +19,7 @@ public class ConfigFlagArgsTemplates {
   public static String[] withRandomPortsAndNotAsDefaultDnsUsingRemote(IpAddr addr) {
     final var configPath = makeConfigFileRandomPortAndCustomRemote(addr);
     return new String[]{
-      "--conf-path=" + configPath.toString()
+        "--conf-path=" + configPath.toString()
     };
   }
 
@@ -28,10 +28,10 @@ public class ConfigFlagArgsTemplates {
     final var dnsServerPort = SocketUtils.findRandomFreePort();
 
     return new String[]{
-      "--default-dns=false",
-      "--web-server-port=" + webServerPort,
-      "--server-port=" + dnsServerPort,
-      "--log-level=TRACE",
+        "--default-dns=false",
+        "--web-server-port=" + webServerPort,
+        "--server-port=" + dnsServerPort,
+        "--log-level=TRACE",
     };
   }
 
@@ -40,25 +40,25 @@ public class ConfigFlagArgsTemplates {
     final var webServerPort = SocketUtils.findRandomFreePort();
     final var dnsServerPort = SocketUtils.findRandomFreePort();
     final var configJsonContent = """
-      {
-        "version": 2,
-        "webServerPort" : %d,
-        "dnsServerPort" : %d,
-        "defaultDns" : false,
-        "logLevel" : "TRACE",
-        "remoteDnsServers": ["%s"],
-        "envs": [],
-        "solverRemote" : {
-          "circuitBreaker": {
-            "name": "STATIC_THRESHOLD",
-            "failureThreshold": 3,
-            "failureThresholdCapacity": 10,
-            "successThreshold": 5,
-            "testDelay": "PT20S"
+        {
+          "version": 2,
+          "webServerPort" : %d,
+          "dnsServerPort" : %d,
+          "defaultDns" : false,
+          "logLevel" : "TRACE",
+          "remoteDnsServers": ["%s"],
+          "envs": [],
+          "solverRemote" : {
+            "circuitBreaker": {
+              "name": "STATIC_THRESHOLD",
+              "failureThreshold": 3,
+              "failureThresholdCapacity": 10,
+              "successThreshold": 5,
+              "testDelay": "PT20S"
+            }
           }
         }
-      }
-      """.formatted(webServerPort, dnsServerPort, remoteAddr.toString());
+        """.formatted(webServerPort, dnsServerPort, remoteAddr.toString());
     return writeToTempPath(configJsonContent);
   }
 
@@ -69,7 +69,7 @@ public class ConfigFlagArgsTemplates {
 
   public static String[] withConfigFilePath() {
     return new String[]{
-      "--conf-path=flag-relative-path/flag-config.json"
+        "--conf-path=flag-relative-path/flag-config.json"
     };
   }
 

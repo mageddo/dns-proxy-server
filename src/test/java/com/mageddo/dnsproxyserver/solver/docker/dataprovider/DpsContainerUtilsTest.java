@@ -1,6 +1,5 @@
 package com.mageddo.dnsproxyserver.solver.docker.dataprovider;
 
-import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DpsContainerUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,7 +21,8 @@ class DpsContainerUtilsTest {
   @Test
   void mustParseWhenMultipleHostnamesWithWhiteSpaces() {
     // arrange
-    final var envs = new String[]{"HOSTNAME=xxx", "HOSTNAMES=acme.com, mageddo.com , ahnegao.com.br"};
+    final var envs = new String[]{"HOSTNAME=xxx", "HOSTNAMES=acme.com, mageddo.com , ahnegao.com"
+        + ".br"};
 
     // act
     final var hostnames = DpsContainerUtils.findHostnamesFromEnv(envs);

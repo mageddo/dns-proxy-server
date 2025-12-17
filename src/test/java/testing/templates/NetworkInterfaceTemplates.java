@@ -1,12 +1,13 @@
 package testing.templates;
 
-import lombok.SneakyThrows;
-import org.mockito.Mockito;
-import org.mockito.quality.Strictness;
-
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.stream.Stream;
+
+import org.mockito.Mockito;
+import org.mockito.quality.Strictness;
+
+import lombok.SneakyThrows;
 
 import static org.mockito.Mockito.doReturn;
 
@@ -21,34 +22,34 @@ public class NetworkInterfaceTemplates {
 
   @SneakyThrows
   static NetworkInterface buildNetworkInterface(
-    final boolean isLoopback,
-    final int index,
-    final InetAddress address
+      final boolean isLoopback,
+      final int index,
+      final InetAddress address
   ) {
     final var loopback = Mockito.mock(
-      NetworkInterface.class,
-      Mockito
-        .withSettings()
-        .strictness(Strictness.LENIENT)
+        NetworkInterface.class,
+        Mockito
+            .withSettings()
+            .strictness(Strictness.LENIENT)
     );
     doReturn(isLoopback)
-      .when(loopback)
-      .isLoopback()
+        .when(loopback)
+        .isLoopback()
     ;
 
     doReturn(index)
-      .when(loopback)
-      .getIndex()
+        .when(loopback)
+        .getIndex()
     ;
 
     doReturn(Stream.of(address))
-      .when(loopback)
-      .inetAddresses()
+        .when(loopback)
+        .inetAddresses()
     ;
 
     doReturn(true)
-      .when(loopback)
-      .isUp()
+        .when(loopback)
+        .isUp()
     ;
     return loopback;
   }

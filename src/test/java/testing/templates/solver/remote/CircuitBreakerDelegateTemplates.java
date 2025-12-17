@@ -8,7 +8,7 @@ import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.canaryratethresho
 public class CircuitBreakerDelegateTemplates {
   public static CircuitBreakerDelegate buildCanaryRateThreshold() {
     return new CircuitBreakerDelegateSelfObservable(
-      new CircuitBreakerDelegateNonResilient(), new HealthCheckerStatic(true)
+        new CircuitBreakerDelegateNonResilient(), new HealthCheckerStatic(true)
     );
   }
 }

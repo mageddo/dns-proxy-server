@@ -1,15 +1,18 @@
 package com.mageddo.dnsproxyserver.config.mapper;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.net.IP;
-import dagger.sheath.junit.DaggerTest;
+
 import org.junit.jupiter.api.Test;
+
+import dagger.sheath.junit.DaggerTest;
 import testing.ContextSupplier;
 import testing.Events;
 import testing.templates.ConfigTemplates;
-
-import javax.inject.Inject;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -50,7 +53,7 @@ class ConfigMapperCompTest {
   }
 
   @Test
-  void mustMapSolverLocal(){
+  void mustMapSolverLocal() {
 
     final var theDefault = ConfigTemplates.defaultWithoutId();
     final var another = ConfigTemplates.acmeSolverLocal();

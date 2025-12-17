@@ -10,21 +10,23 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 class DpsBinaryExecutableFinderIntTest {
 
   @Test
-  void mustFindDpsNativeExecutablePath(){
+  void mustFindDpsNativeExecutablePath() {
     assumeTrue(ImageInfo.inImageRuntimeCode());
 
     final var found = DpsBinaryExecutableFinder.findPath();
 
-    assertTrue(found.toString().endsWith("-tests"));
+    assertTrue(found.toString()
+        .endsWith("-tests"));
   }
 
   @Test
-  void mustFindDpsJarPath(){
+  void mustFindDpsJarPath() {
     assumeFalse(ImageInfo.inImageRuntimeCode());
 
     final var found = DpsBinaryExecutableFinder.findPath();
 
-    assertTrue(found.toString().endsWith(".jar"));
+    assertTrue(found.toString()
+        .endsWith(".jar"));
   }
 
 

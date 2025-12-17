@@ -1,15 +1,16 @@
 package com.mageddo.supporting.circuitbreaker.testing.sandbox.failsafe;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.time.LocalDateTime;
+
 import com.mageddo.supporting.circuitbreaker.testing.sandbox.AbstractCircuitBreakerSandBox;
 import com.mageddo.supporting.circuitbreaker.testing.sandbox.Result;
 import com.mageddo.supporting.circuitbreaker.testing.sandbox.State;
 import com.mageddo.supporting.circuitbreaker.testing.sandbox.Stats;
+
 import dev.failsafe.CircuitBreaker;
 import dev.failsafe.Failsafe;
-
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.time.LocalDateTime;
 
 
 public class FailSafeCircuitBreakerSandBox extends AbstractCircuitBreakerSandBox {
@@ -26,7 +27,7 @@ public class FailSafeCircuitBreakerSandBox extends AbstractCircuitBreakerSandBox
   }
 
   @Override
-  public Result calcStats(Stats stats, Runnable r)  {
+  public Result calcStats(Stats stats, Runnable r) {
     return StatsCalculator.calcStats(stats, r);
   }
 
@@ -49,7 +50,8 @@ public class FailSafeCircuitBreakerSandBox extends AbstractCircuitBreakerSandBox
 
   public static String runSuccess(CircuitBreaker<String> breaker) {
     return Failsafe.with(breaker)
-        .get(() -> LocalDateTime.now().toString());
+        .get(() -> LocalDateTime.now()
+            .toString());
   }
 
   public static void testCircuitOnError(

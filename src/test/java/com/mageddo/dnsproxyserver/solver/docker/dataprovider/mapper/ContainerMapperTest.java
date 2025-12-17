@@ -1,8 +1,9 @@
 package com.mageddo.dnsproxyserver.solver.docker.dataprovider.mapper;
 
-import com.mageddo.dnsproxyserver.solver.docker.dataprovider.mapper.ContainerMapper;
 import com.mageddo.net.IP;
+
 import org.junit.jupiter.api.Test;
+
 import testing.templates.docker.InspectContainerResponseTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,7 +15,7 @@ import static testing.templates.docker.InspectContainerResponseTemplates.ngixWit
 class ContainerMapperTest {
 
   @Test
-  void mustPutSpecifiedNetworkFirst(){
+  void mustPutSpecifiedNetworkFirst() {
     // arrange
     final var inspect = InspectContainerResponseTemplates.withDpsLabel();
 
@@ -43,7 +44,7 @@ class ContainerMapperTest {
   }
 
   @Test
-  void mustMapOverlayNetwork(){
+  void mustMapOverlayNetwork() {
     // arrange
     final var inspect = InspectContainerResponseTemplates.withCustomBridgeAndOverlayNetwork();
 

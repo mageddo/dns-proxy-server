@@ -10,12 +10,12 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 class NetworksTest {
 
   @BeforeAll
-  static void beforeAll(){
+  static void beforeAll() {
     assumeTrue(OS.isFamilyMac());
   }
 
   @Test
-  void mustListNetworks(){
+  void mustListNetworks() {
     // arrange
 
     // act

@@ -10,13 +10,13 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 class ResolvedServiceTest {
 
   @BeforeEach
-  void beforeEach(){
+  void beforeEach() {
     assumeTrue(OS.isFamilyUnix() && !OS.isFamilyMac());
   }
 
   @Test
   @Disabled
-  void mustRestartResolved(){
+  void mustRestartResolved() {
 
     // arrange
 

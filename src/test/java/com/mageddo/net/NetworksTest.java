@@ -1,5 +1,7 @@
 package com.mageddo.net;
 
+import java.net.InetSocketAddress;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,10 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import testing.templates.IpTemplates;
 import testing.templates.NetworkInterfaceTemplates;
-
-import java.net.InetSocketAddress;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -58,7 +59,8 @@ class NetworksTest {
     // arrange
 
     // act
-    final var ips = Networks.findMachineIps().toString();
+    final var ips = Networks.findMachineIps()
+        .toString();
 
     // assert
     assertTrue(ips.contains("127"), ips);
@@ -68,7 +70,8 @@ class NetworksTest {
   void mustPreferNonLoopbackAddresses() {
     // arrange
     doReturn(NetworkInterfaceTemplates.localAndLoopback())
-      .when(this.network).findNetworkInterfaces();
+        .when(this.network)
+        .findNetworkInterfaces();
 
     // act
     final var ip = Networks.findCurrentMachineIP();

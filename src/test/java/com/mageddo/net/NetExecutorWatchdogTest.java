@@ -1,13 +1,14 @@
 package com.mageddo.net;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import testing.templates.IpAddrTemplates;
 
-import java.util.concurrent.CompletableFuture;
+import testing.templates.IpAddrTemplates;
 
 @ExtendWith(MockitoExtension.class)
 class NetExecutorWatchdogTest {
@@ -17,7 +18,7 @@ class NetExecutorWatchdogTest {
   NetExecutorWatchdog watchdog;
 
   @Test
-  void mustCancelPingWhenFutureGetsDoneFirst(){
+  void mustCancelPingWhenFutureGetsDoneFirst() {
     // arrange
     final var ip = IpAddrTemplates.unknown();
     final var future = CompletableFuture.completedFuture(new Object());

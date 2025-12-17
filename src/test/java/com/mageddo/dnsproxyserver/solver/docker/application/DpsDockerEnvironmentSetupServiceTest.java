@@ -1,7 +1,5 @@
 package com.mageddo.dnsproxyserver.solver.docker.application;
 
-import com.mageddo.dnsproxyserver.solver.docker.application.DpsContainerService;
-import com.mageddo.dnsproxyserver.solver.docker.application.DpsDockerEnvironmentSetupService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,16 +23,16 @@ class DpsDockerEnvironmentSetupServiceTest {
   DpsDockerEnvironmentSetupService setupService;
 
   @Test
-  void mustSetupNetworkWhenFeatureIsActive(){
+  void mustSetupNetworkWhenFeatureIsActive() {
 
     // arrange
     doReturn(true)
-      .when(this.setupService)
-      .isMustConfigureDpsNetwork()
+        .when(this.setupService)
+        .isMustConfigureDpsNetwork()
     ;
     doNothing()
-      .when(this.setupService)
-      .createNetworkIfAbsent()
+        .when(this.setupService)
+        .createNetworkIfAbsent()
     ;
 
     // act
@@ -47,12 +45,12 @@ class DpsDockerEnvironmentSetupServiceTest {
   }
 
   @Test
-  void mustDoNothingSetupNetworkWhenFeatureIsInactive(){
+  void mustDoNothingSetupNetworkWhenFeatureIsInactive() {
 
     // arrange
     doReturn(false)
-      .when(this.setupService)
-      .isMustConfigureDpsNetwork()
+        .when(this.setupService)
+        .isMustConfigureDpsNetwork()
     ;
 
     // act

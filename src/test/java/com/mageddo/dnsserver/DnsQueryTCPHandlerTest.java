@@ -1,13 +1,5 @@
 package com.mageddo.dnsserver;
 
-import com.mageddo.commons.concurrent.ThreadPool;
-import com.mageddo.commons.concurrent.Threads;
-import com.mageddo.utils.Shorts;
-import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.Test;
-import testing.templates.MessageTemplates;
-import testing.templates.SocketClientTemplates;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -16,6 +8,16 @@ import java.io.PipedOutputStream;
 import java.io.UncheckedIOException;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
+
+import com.mageddo.commons.concurrent.ThreadPool;
+import com.mageddo.commons.concurrent.Threads;
+import com.mageddo.utils.Shorts;
+
+import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Test;
+
+import testing.templates.MessageTemplates;
+import testing.templates.SocketClientTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,23 +39,23 @@ class DnsQueryTCPHandlerTest {
     final var queryOut = new PipedOutputStream(in);
 
     ThreadPool
-      .scheduled()
-      .schedule(
-        () -> {
+        .scheduled()
+        .schedule(
+            () -> {
 
-          writeMsgHeaderSlowly(queryOut, (short) querySize);
+              writeMsgHeaderSlowly(queryOut, (short) querySize);
 
-          final var data = query.toWire();
-          writeQueryMsgSlowly(queryOut, data);
+              final var data = query.toWire();
+              writeQueryMsgSlowly(queryOut, data);
 
-          // wait some time before "timeout"
-          Threads.sleep(50);
-          IOUtils.closeQuietly(queryOut);
+              // wait some time before "timeout"
+              Threads.sleep(50);
+              IOUtils.closeQuietly(queryOut);
 
-        },
-        50,
-        TimeUnit.MILLISECONDS
-      );
+            },
+            50,
+            TimeUnit.MILLISECONDS
+        );
 
     final var client = SocketClientTemplates.buildWith(in, out);
 
@@ -65,9 +67,9 @@ class DnsQueryTCPHandlerTest {
     assertEquals(querySize, actualSize);
     assertEquals(querySize, Shorts.fromBytes(out.toByteArray(), 0));
     assertArrayEquals(
-      query.toWire(),
-      Arrays.copyOfRange(out.toByteArray(), 2, out.size()),
-      String.format("%s <> %s", query, out)
+        query.toWire(),
+        Arrays.copyOfRange(out.toByteArray(), 2, out.size()),
+        String.format("%s <> %s", query, out)
     );
 
   }

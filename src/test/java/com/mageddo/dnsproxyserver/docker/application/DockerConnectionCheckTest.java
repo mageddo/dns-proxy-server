@@ -1,17 +1,18 @@
 package com.mageddo.dnsproxyserver.docker.application;
 
+import java.time.LocalDateTime;
+
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.VersionCmd;
 import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dnsproxyserver.di.module.ModuleDockerClient;
 import com.mageddo.dnsproxyserver.docker.application.DockerConnectionCheck.Status;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -52,16 +53,17 @@ class DockerConnectionCheckTest {
   void dockerMustBeConnected() {
     // arrange
     doReturn(true)
-      .when(this.connectionCheck).isSupportedPlatform();
+        .when(this.connectionCheck)
+        .isSupportedPlatform();
 
     final var versionCmd = mock(VersionCmd.class);
     doReturn(versionCmd)
-      .when(this.dockerClient)
-      .versionCmd();
+        .when(this.dockerClient)
+        .versionCmd();
 
     doReturn(null)
-      .when(versionCmd)
-      .exec();
+        .when(versionCmd)
+        .exec();
 
     // act
     final var connected = this.connectionCheck.isConnected();
@@ -76,21 +78,24 @@ class DockerConnectionCheckTest {
     // arrange
 
     doReturn(true)
-      .when(this.connectionCheck).isSupportedPlatform();
+        .when(this.connectionCheck)
+        .isSupportedPlatform();
 
     this.connectionCheck.status = Status.connected();
     assertTrue(this.connectionCheck.isConnected());
 
-    this.connectionCheck.status = new Status(true, LocalDateTime.now().minusSeconds(31));
+    this.connectionCheck.status = new Status(true, LocalDateTime.now()
+        .minusSeconds(31)
+    );
 
     final var versionCmd = mock(VersionCmd.class);
     doReturn(versionCmd)
-      .when(this.dockerClient)
-      .versionCmd();
+        .when(this.dockerClient)
+        .versionCmd();
 
     doThrow(new RuntimeException("Whatever not connected error"))
-      .when(versionCmd)
-      .exec();
+        .when(versionCmd)
+        .exec();
 
     // act
     this.connectionCheck.isConnected();

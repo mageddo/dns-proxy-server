@@ -3,12 +3,14 @@ package com.mageddo.dnsproxyserver.utils;
 import org.junit.jupiter.api.Test;
 
 import static com.mageddo.dnsproxyserver.utils.Envs.parseBoolean;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class EnvsTest {
 
   @Test
-  void mustParseAsTrue(){
+  void mustParseAsTrue() {
     // arrange
 
     // act
@@ -20,7 +22,7 @@ class EnvsTest {
   }
 
   @Test
-  void mustParseAsFalse(){
+  void mustParseAsFalse() {
     // arrange
 
     // act
@@ -33,7 +35,7 @@ class EnvsTest {
   }
 
   @Test
-  void mustParseAsNull(){
+  void mustParseAsNull() {
     // arrange
 
     // act

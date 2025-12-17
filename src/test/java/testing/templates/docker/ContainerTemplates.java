@@ -3,6 +3,7 @@ package testing.templates.docker;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.dockerjava.api.model.Container;
 import com.mageddo.json.JsonUtils;
+
 import lombok.SneakyThrows;
 
 import static testing.templates.docker.InspectContainerResponseTemplates.buildTree;
@@ -25,7 +26,7 @@ public class ContainerTemplates {
   @SneakyThrows
   private static Container parse(ObjectNode tree) {
     return JsonUtils
-      .instance()
-      .treeToValue(tree, Container.class);
+        .instance()
+        .treeToValue(tree, Container.class);
   }
 }

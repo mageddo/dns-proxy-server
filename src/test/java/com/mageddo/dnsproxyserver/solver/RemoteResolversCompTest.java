@@ -1,12 +1,12 @@
 package com.mageddo.dnsproxyserver.solver;
 
-import com.mageddo.dnsproxyserver.solver.RemoteResolvers;
-import dagger.sheath.junit.DaggerTest;
+import javax.inject.Inject;
+
 import org.junit.jupiter.api.Test;
+
+import dagger.sheath.junit.DaggerTest;
 import testing.ContextSupplier;
 import testing.Events;
-
-import javax.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,7 +17,7 @@ class RemoteResolversCompTest {
   RemoteResolvers remoteResolvers;
 
   @Test
-  void mustBuildWithDefaultRemoteServer(){
+  void mustBuildWithDefaultRemoteServer() {
 
     // arrange
 

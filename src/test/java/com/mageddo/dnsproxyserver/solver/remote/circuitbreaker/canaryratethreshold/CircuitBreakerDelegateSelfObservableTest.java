@@ -1,16 +1,17 @@
 package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.canaryratethreshold;
 
+import java.time.Duration;
+
 import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.HealthChecker;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.statetransitor.StateTransitor;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.atLeastOnce;
@@ -33,9 +34,9 @@ class CircuitBreakerDelegateSelfObservableTest {
   @BeforeEach
   void beforeEach() {
     this.strategy = spy(new CircuitBreakerDelegateSelfObservable(
-      this.delegate,
-      Duration.ofMillis(1000 / 30),
-      this.healthChecker
+        this.delegate,
+        Duration.ofMillis(1000 / 30),
+        this.healthChecker
     ));
   }
 
@@ -55,18 +56,18 @@ class CircuitBreakerDelegateSelfObservableTest {
 
     // arrange
     doReturn(CircuitStatus.OPEN)
-      .when(this.delegate)
-      .findStatus()
+        .when(this.delegate)
+        .findStatus()
     ;
     doReturn(true)
-      .when(this.healthChecker)
-      .isHealthy()
+        .when(this.healthChecker)
+        .isHealthy()
     ;
 
     final var stateTransitor = mock(StateTransitor.class);
     doReturn(stateTransitor)
-      .when(this.delegate)
-      .stateTransitor();
+        .when(this.delegate)
+        .stateTransitor();
 
     // act
     Threads.sleep(1000);
@@ -80,8 +81,8 @@ class CircuitBreakerDelegateSelfObservableTest {
   void mustNotHalfOpenCircuitAfterHealthCheckRunAndGetNoSuccess() {
     // arrange
     doReturn(CircuitStatus.OPEN)
-      .when(this.delegate)
-      .findStatus()
+        .when(this.delegate)
+        .findStatus()
     ;
 
     // act

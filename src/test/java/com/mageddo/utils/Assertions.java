@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Assertions {
   public static void validResponse(Message m) {
-    assertTrue(m.getHeader().getFlag(Flags.QR));
+    assertTrue(m.getHeader()
+        .getFlag(Flags.QR));
   }
 }

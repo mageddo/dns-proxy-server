@@ -1,9 +1,11 @@
 package com.mageddo.dnsproxyserver.solver.docker.dataprovider.mapper;
 
 import com.mageddo.dnsproxyserver.docker.domain.Drivers;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import testing.templates.docker.NetworkTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,7 +36,7 @@ class NetworkMapperTest {
   }
 
   @Test
-  void mustSolveIpv4AddressEvenWhenIpv6IsAvailable(){
+  void mustSolveIpv4AddressEvenWhenIpv6IsAvailable() {
 
     // arrange
     final var network = buildBridgeIpv4AndIpv6Network();
@@ -48,7 +50,7 @@ class NetworkMapperTest {
   }
 
   @Test
-  void mustLeadWhenNoIpv6IsReturned(){
+  void mustLeadWhenNoIpv6IsReturned() {
 
     // arrange
     final var dockerNetwork = buildBridgeIpv4OnlyNetwork();
@@ -58,11 +60,13 @@ class NetworkMapperTest {
 
     // assert
     assertNotNull(network);
-    assertEquals("[172.21.0.1]", network.getGateways().toString());
+    assertEquals("[172.21.0.1]", network.getGateways()
+        .toString()
+    );
   }
 
   @Test
-  void mustLeadWhenNoIpamConfigIsAvailable(){
+  void mustLeadWhenNoIpamConfigIsAvailable() {
 
     // arrange
     final var dockerNetwork = buildHostNetworkWithNoIpam();
@@ -73,7 +77,9 @@ class NetworkMapperTest {
     // assert
     assertNotNull(network);
     assertFalse(network.hasAnyGateway());
-    assertEquals("[]", network.getGateways().toString());
+    assertEquals("[]", network.getGateways()
+        .toString()
+    );
   }
 
 
@@ -81,7 +87,7 @@ class NetworkMapperTest {
    * see https://github.com/mageddo/dns-proxy-server/issues/481
    */
   @Test
-  void mustExtractIpWhenASubnetIsSetAtIpv6TheGatewayIp(){
+  void mustExtractIpWhenASubnetIsSetAtIpv6TheGatewayIp() {
 
     // arrange
     final var dockerNetwork = NetworkTemplates.buildBridgeWithSubnetIPAtGatewayProp();
@@ -92,11 +98,13 @@ class NetworkMapperTest {
     // assert
     assertNotNull(network);
     assertTrue(network.hasAnyGateway());
-    assertEquals("[172.19.0.1, fddb:21e4:36d4:2:0:0:0:1]", network.getGateways().toString());
+    assertEquals("[172.19.0.1, fddb:21e4:36d4:2:0:0:0:1]", network.getGateways()
+        .toString()
+    );
   }
 
   @Test
-  void mustMapFromCustomNetworkWithoutGateway(){
+  void mustMapFromCustomNetworkWithoutGateway() {
 
     // arrange
     final var dockerNetwork = NetworkTemplates.buildCustomIpv4NetworkWithoutGateway();

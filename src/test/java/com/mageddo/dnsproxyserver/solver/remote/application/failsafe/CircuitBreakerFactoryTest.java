@@ -3,13 +3,15 @@ package com.mageddo.dnsproxyserver.solver.remote.application.failsafe;
 import com.mageddo.dnsproxyserver.solver.remote.application.FailsafeCircuitBreakerFactory;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application.CircuitBreakerDelegateNonResilient;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.canaryratethreshold.CircuitBreakerDelegateSelfObservable;
-import dev.failsafe.CircuitBreaker;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import dev.failsafe.CircuitBreaker;
 import testing.templates.CircuitBreakerConfigTemplates;
 import testing.templates.InetSocketAddressTemplates;
 import testing.templates.solver.remote.CircuitBreakerDelegateTemplates;
@@ -34,16 +36,16 @@ class CircuitBreakerFactoryTest {
   FailsafeCircuitBreakerFactory failsafeCircuitBreakerFactory;
 
   @Test
-  void mustCreateANewCircuitBreakerInstanceWhenDifferentKeyIsUsed(){
+  void mustCreateANewCircuitBreakerInstanceWhenDifferentKeyIsUsed() {
     // arrange
     doReturn(CircuitBreakerConfigTemplates.buildDefault())
-      .when(this.factory)
-      .findCircuitBreakerConfig()
+        .when(this.factory)
+        .findCircuitBreakerConfig()
     ;
 
     doReturn(mock(CircuitBreaker.class))
-      .when(this.failsafeCircuitBreakerFactory)
-      .build(any(), any());
+        .when(this.failsafeCircuitBreakerFactory)
+        .build(any(), any());
 
     // act
     final var a = this.factory.findCircuitBreaker(InetSocketAddressTemplates._8_8_8_8_addr());
@@ -55,18 +57,18 @@ class CircuitBreakerFactoryTest {
   }
 
   @Test
-  void mustReuseCircuitBreakerInstanceWhenSameKeyIsUsed(){
+  void mustReuseCircuitBreakerInstanceWhenSameKeyIsUsed() {
     // arrange
     final var addr = InetSocketAddressTemplates._8_8_8_8_addr();
 
     doReturn(CircuitBreakerConfigTemplates.buildDefault())
-      .when(this.factory)
-      .findCircuitBreakerConfig()
+        .when(this.factory)
+        .findCircuitBreakerConfig()
     ;
 
     doReturn(mock(CircuitBreaker.class))
-      .when(this.failsafeCircuitBreakerFactory)
-      .build(any(), any());
+        .when(this.failsafeCircuitBreakerFactory)
+        .build(any(), any());
 
     // act
     final var a = this.factory.findCircuitBreaker(addr);
@@ -82,10 +84,11 @@ class CircuitBreakerFactoryTest {
   void mustCheckAllExistentCircuitsAndCountSuccessWhenSafeCheckReturnsTrue() {
     // arrange
     doReturn(CircuitBreakerConfigTemplates.buildDefault())
-      .when(this.factory)
-      .findCircuitBreakerConfig()
+        .when(this.factory)
+        .findCircuitBreakerConfig()
     ;
-    doReturn(true).when(this.factory).circuitBreakerSafeCheck(any());
+    doReturn(true).when(this.factory)
+        .circuitBreakerSafeCheck(any());
 
     final var addr = InetSocketAddressTemplates._8_8_8_8_addr();
     this.factory.findCircuitBreaker(addr);
@@ -103,10 +106,11 @@ class CircuitBreakerFactoryTest {
   void mustCheckAndCountErrorWhenSafeCheckReturnsFalse() {
     // arrange
     doReturn(CircuitBreakerConfigTemplates.buildDefault())
-      .when(this.factory)
-      .findCircuitBreakerConfig()
+        .when(this.factory)
+        .findCircuitBreakerConfig()
     ;
-    doReturn(false).when(this.factory).circuitBreakerSafeCheck(any());
+    doReturn(false).when(this.factory)
+        .circuitBreakerSafeCheck(any());
 
     final var addr = InetSocketAddressTemplates._8_8_8_8_addr();
     this.factory.findCircuitBreaker(addr);
@@ -120,13 +124,13 @@ class CircuitBreakerFactoryTest {
   }
 
   @Test
-  void mustBuildNonResilientCircuitBreaker(){
+  void mustBuildNonResilientCircuitBreaker() {
 
     // arrange
     final var addr = InetSocketAddressTemplates._8_8_8_8_addr();
     doReturn(CircuitBreakerConfigTemplates.buildNonResilientConfig())
-      .when(this.factory)
-      .findCircuitBreakerConfig();
+        .when(this.factory)
+        .findCircuitBreakerConfig();
 
     // act
     final var circuitBreaker = this.factory.findCircuitBreaker(addr);
@@ -137,7 +141,7 @@ class CircuitBreakerFactoryTest {
   }
 
   @Test
-  void mustReturnNullWhenNoStatusIsFound(){
+  void mustReturnNullWhenNoStatusIsFound() {
 
     final var addr = InetSocketAddressTemplates._8_8_8_8();
 
@@ -147,16 +151,16 @@ class CircuitBreakerFactoryTest {
   }
 
   @Test
-  void mustBuildCanaryRateThresholdCircuitBreaker(){
+  void mustBuildCanaryRateThresholdCircuitBreaker() {
     // arrange
     final var addr = InetSocketAddressTemplates._8_8_8_8();
     doReturn(CircuitBreakerConfigTemplates.fastCanaryRateThreshold())
-      .when(this.factory)
-      .findCircuitBreakerConfig();
+        .when(this.factory)
+        .findCircuitBreakerConfig();
 
     doReturn(CircuitBreakerDelegateTemplates.buildCanaryRateThreshold())
-      .when(this.factory)
-      .buildCanaryRateThreshold(any(), any());
+        .when(this.factory)
+        .buildCanaryRateThreshold(any(), any());
 
     // act
     final var circuitBreaker = this.factory.findCircuitBreaker(addr);

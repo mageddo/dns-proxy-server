@@ -1,7 +1,8 @@
 package com.mageddo.net;
 
-import testing.templates.IpAddrTemplates;
 import org.junit.jupiter.api.Test;
+
+import testing.templates.IpAddrTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -12,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class IpAddrTest {
 
   @Test
-  void mustParseIpv4AddrWithoutPort(){
+  void mustParseIpv4AddrWithoutPort() {
 
     // arrange
     final var str = IpAddrTemplates.LOCAL;
@@ -22,13 +23,15 @@ class IpAddrTest {
 
     // assert
     assertNotNull(addr);
-    assertEquals(str, addr.getIp().toText());
+    assertEquals(str, addr.getIp()
+        .toText()
+    );
     assertNull(addr.getPort());
 
   }
 
   @Test
-  void mustParseIpv4AddrWithPort(){
+  void mustParseIpv4AddrWithPort() {
 
     // arrange
     final var str = IpAddrTemplates.LOCAL_54;
@@ -38,13 +41,15 @@ class IpAddrTest {
 
     // assert
     assertNotNull(addr);
-    assertEquals(IpAddrTemplates.LOCAL, addr.getIp().toText());
+    assertEquals(IpAddrTemplates.LOCAL, addr.getIp()
+        .toText()
+    );
     assertEquals(IpAddrTemplates.PORT_54, addr.getPort());
 
   }
 
   @Test
-  void mustParseIpv6AddrWithPort(){
+  void mustParseIpv6AddrWithPort() {
 
     // arrange
     final var str = IpAddrTemplates.LOCAL_IPV6_54;
@@ -54,13 +59,15 @@ class IpAddrTest {
 
     // assert
     assertNotNull(addr);
-    assertEquals(IpAddrTemplates.LOCAL_IPV6, addr.getIp().toText());
+    assertEquals(IpAddrTemplates.LOCAL_IPV6, addr.getIp()
+        .toText()
+    );
     assertEquals(IpAddrTemplates.PORT_54, addr.getPort());
 
   }
 
   @Test
-  void mustParseIpv6AddrWithoutPort(){
+  void mustParseIpv6AddrWithoutPort() {
 
     // arrange
     final var str = IpAddrTemplates.LOCAL_IPV6;
@@ -70,13 +77,15 @@ class IpAddrTest {
 
     // assert
     assertNotNull(addr);
-    assertEquals(str, addr.getIp().toText());
+    assertEquals(str, addr.getIp()
+        .toText()
+    );
     assertNull(addr.getPort());
 
   }
 
   @Test
-  void mustLeadWithNullIp(){
+  void mustLeadWithNullIp() {
 
     // arrange
     final String str = null;
@@ -91,18 +100,21 @@ class IpAddrTest {
 
 
   @Test
-  void mustFailureWithInvalidValue(){
+  void mustFailureWithInvalidValue() {
 
     // arrange
     final String str = "a";
 
     // act
     final var ex = assertThrows(RuntimeException.class, () -> {
-      IpAddr.of(str);
-    });
+          IpAddr.of(str);
+        }
+    );
 
     // assert
-    assertTrue(ex.getMessage().contains("valid IP"), ex.getMessage());
+    assertTrue(ex.getMessage()
+        .contains("valid IP"), ex.getMessage()
+    );
 
   }
 }

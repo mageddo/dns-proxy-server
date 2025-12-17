@@ -8,49 +8,50 @@ public class EnvTemplates {
   public static final String MAGEDDO_COM = "mageddo.com";
   public static final String MAGEDDO_COM_CAMEL_CASE = "mAgeDdo.cOm";
 
-  public static Config.Env buildWithoutId(){
+  public static Config.Env buildWithoutId() {
     return Config.Env.theDefault()
-      .add(Config.Entry
-        .builder()
-        .ip(IP.of("192.168.0.1"))
-        .ttl(30)
-        .type(Config.Entry.Type.A)
-        .hostname(MAGEDDO_COM)
-        .build()
-      );
+        .add(Config.Entry
+            .builder()
+            .ip(IP.of("192.168.0.1"))
+            .ttl(30)
+            .type(Config.Entry.Type.A)
+            .hostname(MAGEDDO_COM)
+            .build()
+        );
   }
 
-  public static Config.Env buildWithCamelCaseHost(){
+  public static Config.Env buildWithCamelCaseHost() {
     return Config.Env.theDefault()
-      .add(Config.Entry
-        .builder()
-        .ip(IP.of("192.168.0.1"))
-        .ttl(30)
-        .type(Config.Entry.Type.A)
-        .hostname(MAGEDDO_COM_CAMEL_CASE)
-        .build()
-      );
-  }
-  public static Config.Env acmeQuadA(){
-    return Config.Env.theDefault()
-      .add(EntryTemplates.acmeQuadA());
+        .add(Config.Entry
+            .builder()
+            .ip(IP.of("192.168.0.1"))
+            .ttl(30)
+            .type(Config.Entry.Type.A)
+            .hostname(MAGEDDO_COM_CAMEL_CASE)
+            .build()
+        );
   }
 
-  public static Config.Env acmeA(){
+  public static Config.Env acmeQuadA() {
     return Config.Env.theDefault()
-      .add(EntryTemplates.acmeA());
+        .add(EntryTemplates.acmeQuadA());
   }
 
-  public static Config.Env acmeAAndQuadA(){
+  public static Config.Env acmeA() {
     return Config.Env.theDefault()
-      .add(EntryTemplates.acmeA())
-      .add(EntryTemplates.acmeQuadA())
-      ;
+        .add(EntryTemplates.acmeA());
+  }
+
+  public static Config.Env acmeAAndQuadA() {
+    return Config.Env.theDefault()
+        .add(EntryTemplates.acmeA())
+        .add(EntryTemplates.acmeQuadA())
+        ;
   }
 
   public static Config.Env acmeCname() {
     return Config.Env.theDefault()
-      .add(EntryTemplates.acmeCname())
-      ;
+        .add(EntryTemplates.acmeCname())
+        ;
   }
 }

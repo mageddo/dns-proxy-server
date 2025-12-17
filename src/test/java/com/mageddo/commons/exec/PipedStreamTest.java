@@ -1,9 +1,9 @@
 package com.mageddo.commons.exec;
 
-import org.junit.jupiter.api.Test;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
@@ -22,6 +22,8 @@ class PipedStreamTest {
     // assert
     final var bout = (ByteArrayOutputStream) stream.getOriginalOut();
     assertArrayEquals(bytes, bout.toByteArray());
-    assertArrayEquals(bytes, stream.getPipedIn().readAllBytes());
+    assertArrayEquals(bytes, stream.getPipedIn()
+        .readAllBytes()
+    );
   }
 }

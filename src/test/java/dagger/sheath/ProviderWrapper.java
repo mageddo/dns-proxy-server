@@ -1,8 +1,8 @@
 package dagger.sheath;
 
-import dagger.internal.DelegateFactory;
-import dagger.internal.DoubleCheck;
-import lombok.extern.slf4j.Slf4j;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
+
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -10,8 +10,9 @@ import org.apache.commons.lang3.reflect.MethodUtils;
 import org.mockito.Mockito;
 import org.mockito.internal.util.MockUtil;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Objects;
+import dagger.internal.DelegateFactory;
+import dagger.internal.DoubleCheck;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ProviderWrapper {
@@ -42,8 +43,9 @@ public class ProviderWrapper {
         return;
       }
       Validate.isTrue(
-        Objects.equals(uninitialized, instance),
-        "Dagger beans were already used, can't mock/spy anymore, please wait DaggerTest to mock them"
+          Objects.equals(uninitialized, instance),
+          "Dagger beans were already used, can't mock/spy anymore, please wait DaggerTest to mock"
+              + " them"
       );
       FieldUtils.writeField(instanceField, this.provider, o, true);
     } catch (IllegalAccessException e) {
@@ -81,7 +83,9 @@ public class ProviderWrapper {
         return new ProviderWrapper(o, type);
       }
       final var providerClass = ClassUtils.getName(o);
-      Validate.isTrue(isGeneratedFactory(providerClass), "Unknown dagger provider: %s", providerClass);
+      Validate.isTrue(isGeneratedFactory(providerClass), "Unknown dagger provider: %s",
+          providerClass
+      );
       return new ProviderWrapper(o, type);
     } catch (IllegalAccessException e) {
       throw new IllegalStateException(e);

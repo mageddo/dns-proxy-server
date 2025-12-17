@@ -1,16 +1,19 @@
 package dagger.sheath.binding;
 
-import com.mageddo.commons.lang.Objects;
-import dagger.sheath.CtxWrapper;
-import jdk.jfr.Name;
-import org.apache.commons.lang3.reflect.MethodUtils;
-
-import javax.inject.Provider;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import javax.inject.Provider;
+
+import com.mageddo.commons.lang.Objects;
+
+import org.apache.commons.lang3.reflect.MethodUtils;
+
+import dagger.sheath.CtxWrapper;
+import jdk.jfr.Name;
 
 public class BindingMethod {
 
@@ -33,7 +36,8 @@ public class BindingMethod {
     for (final var method : methods) {
       final var bindingMethod = BindingMapMethod.of(ctx, method);
       if (bindingMethod != null) {
-        return new BindingMethod(clazz -> Objects.mapOrNull(bindingMethod.get(clazz), Provider::get));
+        return new BindingMethod(
+            clazz -> Objects.mapOrNull(bindingMethod.get(clazz), Provider::get));
       } else if (isGetByClass(method)) {
         return buildGetByClass(ctx, method);
       }
@@ -55,7 +59,9 @@ public class BindingMethod {
   static List<Method> filterBindingMethods(CtxWrapper ctx) {
     return MethodUtils.getMethodsListWithAnnotation(ctx.getCtxClass(), Name.class, true, true)
         .stream()
-        .filter(it -> it.getAnnotation(Name.class).value().equals("bindings"))
+        .filter(it -> it.getAnnotation(Name.class)
+            .value()
+            .equals("bindings"))
         .collect(Collectors.toList());
   }
 

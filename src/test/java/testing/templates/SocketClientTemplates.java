@@ -1,10 +1,10 @@
 package testing.templates;
 
-import com.mageddo.dnsserver.SocketClient;
-
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+
+import com.mageddo.dnsserver.SocketClient;
 
 import static org.mockito.Mockito.mock;
 

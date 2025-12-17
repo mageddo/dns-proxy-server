@@ -1,11 +1,13 @@
 package com.mageddo.dnsproxyserver.solver.docker.application;
 
+import java.util.List;
+
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
-import com.mageddo.dnsproxyserver.solver.docker.application.ContainerSolvingService;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.ContainerDAO;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.NetworkDAO;
 import com.mageddo.net.IP;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,11 +15,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import testing.templates.IpTemplates;
 import testing.templates.server.dns.solver.docker.ContainerTemplates;
 import testing.templates.server.dns.solver.docker.NetworkTemplates;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -68,13 +69,13 @@ class ContainerSolvingServiceTest {
     final var expectedIp = IP.of(IpTemplates.LOCAL_IPV6);
 
     doReturn(expectedIp)
-      .when(this.dockerDAO)
-      .findHostMachineIp(eq(version))
+        .when(this.dockerDAO)
+        .findHostMachineIp(eq(version))
     ;
 
     doReturn(true)
-      .when(this.containerSolvingService)
-      .isDockerSolverHostMachineFallbackActive()
+        .when(this.containerSolvingService)
+        .isDockerSolverHostMachineFallbackActive()
     ;
 
     // act
@@ -87,10 +88,10 @@ class ContainerSolvingServiceTest {
   }
 
   @DisplayName("""
-    When there is no a default bridge network but a custom, there is no dps network label,
-    there is no a DPS network but there is a custom bridge network and a other like overlay, must prioritize to use
-    the bridge network.
-    """)
+      When there is no a default bridge network but a custom, there is no dps network label,
+      there is no a DPS network but there is a custom bridge network and a other like overlay, must prioritize to use
+      the bridge network.
+      """)
   @Test
   void mustPreferCustomBridgeNetworkOverOtherNetworksWhenThereIsNotABetterMatch() {
     // arrange
@@ -99,12 +100,12 @@ class ContainerSolvingServiceTest {
 
     final var container = ContainerTemplates.withCustomBridgeAndOverlayNetwork();
     doReturn(NetworkTemplates.withOverlayDriver(overlayNetwork))
-      .when(this.networkDAO)
-      .findByName(eq(overlayNetwork))
+        .when(this.networkDAO)
+        .findByName(eq(overlayNetwork))
     ;
     doReturn(NetworkTemplates.withBridgeDriver(bridgeNetwork))
-      .when(this.networkDAO)
-      .findByName(eq(bridgeNetwork))
+        .when(this.networkDAO)
+        .findByName(eq(bridgeNetwork))
     ;
 
     // act
@@ -125,8 +126,8 @@ class ContainerSolvingServiceTest {
     final var version = IP.Version.IPV6;
 
     doReturn(false)
-      .when(this.containerSolvingService)
-      .isDockerSolverHostMachineFallbackActive()
+        .when(this.containerSolvingService)
+        .isDockerSolverHostMachineFallbackActive()
     ;
 
     // act
@@ -188,8 +189,8 @@ class ContainerSolvingServiceTest {
     final var version = IP.Version.IPV6;
 
     doReturn(NetworkTemplates.withBridgeDriver("my-net1"))
-      .when(this.networkDAO)
-      .findByName(anyString())
+        .when(this.networkDAO)
+        .findByName(anyString())
     ;
 
     // act
@@ -224,8 +225,8 @@ class ContainerSolvingServiceTest {
     final var version = IP.Version.IPV6;
 
     doReturn(NetworkTemplates.withBridgeDriver("my-net1"))
-      .when(this.networkDAO)
-      .findByName(anyString())
+        .when(this.networkDAO)
+        .findByName(anyString())
     ;
 
     // act
@@ -244,8 +245,8 @@ class ContainerSolvingServiceTest {
     final var container = ContainerTemplates.withDefaultBridgeNetworkOnly();
 
     doReturn(List.of(container))
-      .when(this.containerDAO)
-      .findActiveContainersMatching(eq(hostnameQuery));
+        .when(this.containerDAO)
+        .findActiveContainersMatching(eq(hostnameQuery));
 
     // act
     final var ip = this.containerSolvingService.findBestMatch(hostnameQuery);

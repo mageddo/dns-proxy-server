@@ -18,22 +18,22 @@ class ConfigsTest {
     // act
     final var env = EnvTemplates.buildWithoutId();
     final var firstEntry = env
-      .getEntries()
-      .stream()
-      .findFirst()
-      .get();
+        .getEntries()
+        .stream()
+        .findFirst()
+        .get();
 
     // assert
     assertNotNull(firstEntry.getId());
     final var currentNanoTime = System.nanoTime();
     assertTrue(
-      firstEntry.getId() < currentNanoTime,
-      String.format("id=%s, currentTimeInMillis=%s", firstEntry.getId(), currentNanoTime)
+        firstEntry.getId() < currentNanoTime,
+        String.format("id=%s, currentTimeInMillis=%s", firstEntry.getId(), currentNanoTime)
     );
   }
 
   @Test
-  void mustCreateDefaultConfigFileOnRandomPathWhenTesting(){
+  void mustCreateDefaultConfigFileOnRandomPathWhenTesting() {
 
     final var config = Configs.getInstance();
 

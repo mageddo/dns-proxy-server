@@ -10,35 +10,35 @@ import lombok.SneakyThrows;
 public class ConfigJsonFileTemplates {
 
   public static final String RANDOM_PORTS_NO_DEFAULT_CUSTOM_LOCAL_DB_ENTRY = """
-    {
-      "version": 2,
-      "webServerPort" : %d,
-      "dnsServerPort" : %d,
-      "defaultDns" : false,
-      "logLevel" : "TRACE",
-      "remoteDnsServers": [],
-      "envs": [
-        {
-          "name": "",
-          "hostnames": [
-            {
-              "id" : 1,
-              "type": "A",
-              "hostname": "%s",
-              "ip": "192.168.0.1",
-              "ttl": 255
-            }
-          ]
-        }
-      ]
-    }
-    """;
+      {
+        "version": 2,
+        "webServerPort" : %d,
+        "dnsServerPort" : %d,
+        "defaultDns" : false,
+        "logLevel" : "TRACE",
+        "remoteDnsServers": [],
+        "envs": [
+          {
+            "name": "",
+            "hostnames": [
+              {
+                "id" : 1,
+                "type": "A",
+                "hostname": "%s",
+                "ip": "192.168.0.1",
+                "ttl": 255
+              }
+            ]
+          }
+        ]
+      }
+      """;
 
   public static Path withRandomPortsAndNotAsDefaultDnsAndCustomLocalDBEntry(String host) {
     final var webServerPort = SocketUtils.findRandomFreePort();
     final var dnsServerPort = SocketUtils.findRandomFreePort();
     return writeToTempPathReplacing(
-      RANDOM_PORTS_NO_DEFAULT_CUSTOM_LOCAL_DB_ENTRY, webServerPort, dnsServerPort, host
+        RANDOM_PORTS_NO_DEFAULT_CUSTOM_LOCAL_DB_ENTRY, webServerPort, dnsServerPort, host
     );
   }
 

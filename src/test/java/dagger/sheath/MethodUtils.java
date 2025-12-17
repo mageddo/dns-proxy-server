@@ -20,9 +20,9 @@ public class MethodUtils {
     return methods;
   }
 
-  public static Object invoke(Method method, Object instance, boolean forceAccessible, Object... args)
-      throws InvocationTargetException, IllegalAccessException
-  {
+  public static Object invoke(Method method, Object instance, boolean forceAccessible,
+      Object... args)
+      throws InvocationTargetException, IllegalAccessException {
     if (forceAccessible && !method.canAccess(instance)) {
       method.setAccessible(true);
     }

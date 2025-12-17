@@ -8,10 +8,12 @@ public interface EventHandler<T> {
    *
    * @param component Dagger created component.
    */
-  default void afterSetup(T component) {}
+  default void afterSetup(T component) {
+  }
 
   /**
    * On after all junit event.
    */
-  default void afterAll(T component) {}
+  default void afterAll(T component) {
+  }
 }

@@ -1,16 +1,18 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Collections;
+
 import com.mageddo.dnsproxyserver.config.dataformat.v2.legacyenv.ConfigEnv;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.ResolvFile.Type;
-import testing.templates.IpAddrTemplates;
+
 import org.apache.commons.exec.OS;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Collections;
+import testing.templates.IpAddrTemplates;
 
 import static com.mageddo.utils.Files.createIfNotExists;
 import static com.mageddo.utils.Files.getPathName;
@@ -24,7 +26,7 @@ class DnsConfiguratorLinuxTest {
   DnsConfiguratorLinux configurator = spy(new DnsConfiguratorLinux());
 
   @BeforeEach
-  void beforeEach(){
+  void beforeEach() {
     assumeTrue(OS.isFamilyUnix());
   }
 
@@ -36,8 +38,8 @@ class DnsConfiguratorLinuxTest {
     final var ip = IpAddrTemplates.local();
 
     doReturn(Collections.singletonList(resolvFile))
-      .when(this.configurator)
-      .buildConfPaths()
+        .when(this.configurator)
+        .buildConfPaths()
     ;
 
     // act
@@ -45,10 +47,10 @@ class DnsConfiguratorLinuxTest {
 
     // assert
     assertEquals(
-      """
-        nameserver 10.10.0.1 # dps-entry
-        """,
-      Files.readString(resolvFile)
+        """
+            nameserver 10.10.0.1 # dps-entry
+            """,
+        Files.readString(resolvFile)
     );
 
   }
@@ -61,8 +63,8 @@ class DnsConfiguratorLinuxTest {
     final var ip = IpAddrTemplates.local();
 
     doReturn(Collections.singletonList(resolvFile))
-      .when(this.configurator)
-      .buildConfPaths()
+        .when(this.configurator)
+        .buildConfPaths()
     ;
 
     // act
@@ -70,10 +72,10 @@ class DnsConfiguratorLinuxTest {
 
     // assert
     assertEquals(
-      """
-        DNS=10.10.0.1 # dps-entry
-        """,
-      Files.readString(resolvFile)
+        """
+            DNS=10.10.0.1 # dps-entry
+            """,
+        Files.readString(resolvFile)
     );
 
   }
@@ -86,8 +88,8 @@ class DnsConfiguratorLinuxTest {
     final var ip = IpAddrTemplates.local();
 
     doReturn(Collections.singletonList(resolvFile))
-      .when(this.configurator)
-      .buildConfPaths()
+        .when(this.configurator)
+        .buildConfPaths()
     ;
 
     // act
@@ -96,10 +98,10 @@ class DnsConfiguratorLinuxTest {
 
     // assert
     assertEquals(
-      """
-        DNS=10.10.0.1 # dps-entry
-        """,
-      Files.readString(resolvFile)
+        """
+            DNS=10.10.0.1 # dps-entry
+            """,
+        Files.readString(resolvFile)
     );
 
   }
@@ -108,8 +110,8 @@ class DnsConfiguratorLinuxTest {
   void mustSplitResolvPathConfigToMultiplePaths() {
     // arrange
     doReturn(ConfigEnv.DEFAULT_RESOLV_CONF_PATH)
-      .when(this.configurator)
-      .getConfigResolvPaths()
+        .when(this.configurator)
+        .getConfigResolvPaths()
     ;
 
     // act
@@ -117,8 +119,9 @@ class DnsConfiguratorLinuxTest {
 
     // assert
     assertEquals(
-      "[/host/etc/systemd/resolved.conf, /host/etc/resolv.conf, /etc/systemd/resolved.conf, /etc/resolv.conf]",
-      paths.toString()
+        "[/host/etc/systemd/resolved.conf, /host/etc/resolv.conf, /etc/systemd/resolved.conf, "
+            + "/etc/resolv.conf]",
+        paths.toString()
     );
   }
 
@@ -129,8 +132,8 @@ class DnsConfiguratorLinuxTest {
     final var confB = createIfNotExists(tmpDir.resolve("resolv.conf"));
 
     doReturn(confA + "," + confB)
-      .when(this.configurator)
-      .getConfigResolvPaths()
+        .when(this.configurator)
+        .getConfigResolvPaths()
     ;
 
     // act

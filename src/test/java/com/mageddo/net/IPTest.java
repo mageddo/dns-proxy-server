@@ -1,14 +1,15 @@
 package com.mageddo.net;
 
-import testing.templates.IpTemplates;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import testing.templates.IpTemplates;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class IPTest {
 
   @Test
-  void mustBuildIpFromString(){
+  void mustBuildIpFromString() {
     // arrange
     final var ipStr = IpTemplates.LOCAL;
 

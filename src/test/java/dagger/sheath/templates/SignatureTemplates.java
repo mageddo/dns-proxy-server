@@ -1,12 +1,14 @@
 package dagger.sheath.templates;
 
+import java.lang.reflect.Method;
+import java.util.List;
+
 import com.fasterxml.jackson.core.type.TypeReference;
-import dagger.sheath.reflection.Signature;
+
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.lang.reflect.Method;
-import java.util.List;
+import dagger.sheath.reflection.Signature;
 
 public class SignatureTemplates {
   public static Signature listOfNumber() {

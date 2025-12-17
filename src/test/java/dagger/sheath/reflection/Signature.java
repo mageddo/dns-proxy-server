@@ -1,15 +1,17 @@
 package dagger.sheath.reflection;
 
-import com.google.common.reflect.TypeToken;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Value;
-import org.apache.commons.lang3.ObjectUtils;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+
+import com.google.common.reflect.TypeToken;
+
+import org.apache.commons.lang3.ObjectUtils;
+
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Value;
 
 @Value
 @Builder
@@ -21,7 +23,8 @@ public class Signature {
 
 
   public boolean isSameOrInheritFrom(Signature sig) {
-    return this.clazz.isAssignableFrom(sig.getClazz()) && this.areTypeArgumentsSameOrInheritFrom(sig);
+    return this.clazz.isAssignableFrom(sig.getClazz()) && this.areTypeArgumentsSameOrInheritFrom(
+        sig);
   }
 
   boolean areTypeArgumentsSameOrInheritFrom(Signature sig) {
@@ -46,8 +49,10 @@ public class Signature {
   }
 
   private boolean isTypeArgumentSameOrInheritFrom(Signature sig, int i) {
-    final var type = TypeToken.of(this.typeArguments[i]).getRawType();
-    final var otherType = TypeToken.of(sig.typeArguments[i]).getRawType();
+    final var type = TypeToken.of(this.typeArguments[i])
+        .getRawType();
+    final var otherType = TypeToken.of(sig.typeArguments[i])
+        .getRawType();
     return type.isAssignableFrom(otherType);
   }
 
@@ -60,18 +65,19 @@ public class Signature {
 
   public static Signature of(Field f) {
     return Signature
-      .builder()
-      .clazz(f.getType())
-      .typeArguments(findTypeArguments(f.getGenericType()))
-      .build();
+        .builder()
+        .clazz(f.getType())
+        .typeArguments(findTypeArguments(f.getGenericType()))
+        .build();
   }
 
   public static Signature of(Type type) {
     return Signature
-      .builder()
-      .clazz(TypeToken.of(type).getRawType())
-      .typeArguments(findTypeArguments(type))
-      .build();
+        .builder()
+        .clazz(TypeToken.of(type)
+            .getRawType())
+        .typeArguments(findTypeArguments(type))
+        .build();
   }
 
   public static Signature ofMethodReturnType(Method m) {

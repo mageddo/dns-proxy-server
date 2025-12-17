@@ -1,8 +1,10 @@
 package com.mageddo.dnsproxyserver.solver.stub;
 
 import com.mageddo.net.IP;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
 import testing.templates.HostnameTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,7 +25,9 @@ class HostnameIpExtractorTest {
   }
 
   @Test
-  @DisplayName("Must extract ipv4 from hostname starting with name, separated by dash, using dot-decimal notation")
+  @DisplayName(
+      "Must extract ipv4 from hostname starting with name, separated by dash, using dot-decimal "
+          + "notation")
   void mustExtractIpv4IpFromHostnameStartingWithNameSeparatedByDashUsingDotDecimalNotation() {
     final var hostname = HostnameTemplates.startingWithNameDashSeparationDotDecimalNotation();
 

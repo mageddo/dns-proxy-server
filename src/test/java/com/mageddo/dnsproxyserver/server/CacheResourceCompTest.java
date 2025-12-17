@@ -33,17 +33,17 @@ class CacheResourceCompTest {
 
     // act
     final var response = given()
-      .get("/v1/caches/size")
-      .then()
-      .log()
-      .ifValidationFails();
+        .get("/v1/caches/size")
+        .then()
+        .log()
+        .ifValidationFails();
 
     // assert
     response
-      .statusCode(Response.Status.OK.getStatusCode())
-      .body(equalTo("""
-        {"GLOBAL":0,"REMOTE":0}"""))
-      .log()
+        .statusCode(Response.Status.OK.getStatusCode())
+        .body(equalTo("""
+            {"GLOBAL":0,"REMOTE":0}"""))
+        .log()
     ;
   }
 
@@ -54,18 +54,18 @@ class CacheResourceCompTest {
 
     // act
     final var response = given()
-      .get("/v1/caches")
-      .then()
-      .log()
-      .ifValidationFails();
+        .get("/v1/caches")
+        .then()
+        .log()
+        .ifValidationFails();
 
     // assert
     response
-      .statusCode(Response.Status.OK.getStatusCode())
-      .body("GLOBAL", notNullValue())
-      .body("REMOTE.'A-acme.com'", notNullValue())
-      .body("REMOTE.'A-acme.com'.ttl", equalTo("PT5S"))
-      .log()
+        .statusCode(Response.Status.OK.getStatusCode())
+        .body("GLOBAL", notNullValue())
+        .body("REMOTE.'A-acme.com'", notNullValue())
+        .body("REMOTE.'A-acme.com'.ttl", equalTo("PT5S"))
+        .log()
     ;
   }
 
@@ -75,18 +75,18 @@ class CacheResourceCompTest {
 
     // act
     final var response = given()
-      .param("name", "GLOBAL")
-      .get("/v1/caches")
-      .then()
-      .log()
-      .ifValidationFails();
+        .param("name", "GLOBAL")
+        .get("/v1/caches")
+        .then()
+        .log()
+        .ifValidationFails();
 
     // assert
     response
-      .statusCode(Response.Status.OK.getStatusCode())
-      .body("GLOBAL", notNullValue())
-      .body("REMOTE", nullValue())
-      .log()
+        .statusCode(Response.Status.OK.getStatusCode())
+        .body("GLOBAL", notNullValue())
+        .body("REMOTE", nullValue())
+        .log()
     ;
   }
 }

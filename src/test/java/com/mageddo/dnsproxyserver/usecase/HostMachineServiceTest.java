@@ -1,12 +1,14 @@
 package com.mageddo.dnsproxyserver.usecase;
 
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import testing.templates.IpTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,14 +29,14 @@ class HostMachineServiceTest {
   void mustReturnHostIP() {
     // arrange
     doReturn(false)
-      .when(this.machineService)
-      .isDpsRunningInsideContainer()
+        .when(this.machineService)
+        .isDpsRunningInsideContainer()
     ;
 
     final var expectedIp = IpTemplates.local();
     doReturn(expectedIp)
-      .when(this.machineService)
-      .findCurrentMachineIp(any())
+        .when(this.machineService)
+        .findCurrentMachineIp(any())
     ;
 
     // act
@@ -48,14 +50,14 @@ class HostMachineServiceTest {
   void mustReturnHostIPEvenWhenRunningInsideDockerContainer() {
     // arrange
     doReturn(true)
-      .when(this.machineService)
-      .isDpsRunningInsideContainer()
+        .when(this.machineService)
+        .isDpsRunningInsideContainer()
     ;
 
     final var expectedIp = IpTemplates.local();
     doReturn(expectedIp)
-      .when(this.dockerDAO)
-      .findHostMachineIp(any())
+        .when(this.dockerDAO)
+        .findHostMachineIp(any())
     ;
 
     // act

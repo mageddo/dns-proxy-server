@@ -16,12 +16,12 @@ public class CircuitBreakerConfigTemplates {
 
   public static StaticThresholdCircuitBreakerStrategyConfig oneTryFailSuccess() {
     return StaticThresholdCircuitBreakerStrategyConfig
-      .builder()
-      .successThreshold(1)
-      .failureThreshold(1)
-      .failureThresholdCapacity(10)
-      .testDelay(Duration.ofMillis(10))
-      .build();
+        .builder()
+        .successThreshold(1)
+        .failureThreshold(1)
+        .failureThresholdCapacity(10)
+        .testDelay(Duration.ofMillis(10))
+        .build();
   }
 
   public static CircuitBreakerStrategyConfig buildNonResilientConfig() {
@@ -30,10 +30,10 @@ public class CircuitBreakerConfigTemplates {
 
   public static CanaryRateThresholdCircuitBreakerStrategyConfig fastCanaryRateThreshold() {
     return CanaryRateThresholdCircuitBreakerStrategyConfig.builder()
-      .permittedNumberOfCallsInHalfOpenState(10)
-      .minimumNumberOfCalls(1)
-      .failureRateThreshold(1)
-      .build();
+        .permittedNumberOfCallsInHalfOpenState(10)
+        .minimumNumberOfCalls(1)
+        .failureRateThreshold(1)
+        .build();
   }
 
 }
