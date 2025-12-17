@@ -11,7 +11,6 @@ public class EntryTypes {
   private static final String SEARCH = "SEARCH";
   public static final String OTHER = "OTHER";
 
-
   // parsed types
   public static final EntryType COMMENT_TYPE = EntryType.of(COMMENT);
   public static final EntryType COMMENTED_SERVER_TYPE = EntryType.of(COMMENTED_SERVER);

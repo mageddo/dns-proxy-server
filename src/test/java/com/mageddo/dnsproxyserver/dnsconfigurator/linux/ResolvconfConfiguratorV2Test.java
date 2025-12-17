@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class ResolvconfConfiguratorTest {
+class ResolvconfConfiguratorV2Test {
 
   @Test
   void mustConfigureDpsServerOnEmptyFile(@TempDir Path tmpDir) throws Exception {
@@ -25,7 +25,52 @@ class ResolvconfConfiguratorTest {
 
     // assert
     assertEquals("""
-            nameserver 10.10.0.1 # dps-entry
+            # BEGIN dps-entries
+            nameserver 10.10.0.1
+            # END dps-entries
+            """,
+        Files.readString(resolvFile)
+    );
+
+  }
+
+
+  @Test
+  void mustCleanUpDpsCommentsAndEntriesBeforeApply(@TempDir Path tmpDir) throws Exception {
+
+    // arrrange
+    final var resolvFile = tmpDir.resolve("resolv.conf");
+    final var ip = IpAddrTemplates.local();
+    Files.writeString(resolvFile, """
+            # BEGIN dps-entries
+            nameserver 10.10.0.6
+            # END dps-entries
+
+            # BEGIN dps-comments
+            # nameserver 5.5.5.5
+            # END dps-comments
+
+            nameserver 5.5.5.5 # dps-entry
+            # nameserver 8.8.8.8 # dps-comment
+            # nameserver 8.8.4.4 # dps-comment
+
+            nameserver 8.8.8.8
+        """);
+
+    // act
+    ResolvconfConfigurator.process(resolvFile, ip);
+
+    // assert
+    assertEquals(
+        """
+            # BEGIN dps-entries
+            nameserver 10.10.0.1
+            # END dps-entries
+
+            # BEGIN dps-comments
+            # nameserver 8.8.8.8
+            # nameserver 8.8.4.4
+            # END dps-comments
             """,
         Files.readString(resolvFile)
     );
@@ -46,8 +91,13 @@ class ResolvconfConfiguratorTest {
     // assert
     assertEquals(
         """
-            # nameserver 8.8.8.8 # dps-comment
-            nameserver 10.10.0.1 # dps-entry
+            # BEGIN dps-entries
+            nameserver 10.10.0.1
+            # END dps-entries
+
+            # BEGIN dps-comments
+            # nameserver 8.8.8.8
+            # END dps-comments
             """,
         Files.readString(resolvFile)
     );
@@ -68,8 +118,13 @@ class ResolvconfConfiguratorTest {
     // assert
     assertEquals(
         """
-            # nameserver 8.8.8.8 # dps-comment
-            nameserver 10.10.0.1 # dps-entry
+            # BEGIN dps-entries
+            nameserver 10.10.0.1
+            # END dps-entries
+
+            # BEGIN dps-comments
+            # nameserver 8.8.8.8
+            # END dps-comments
             """,
         Files.readString(resolvFile)
     );
@@ -87,6 +142,14 @@ class ResolvconfConfiguratorTest {
         # nameserver 7.7.7.7
         # nameserver 8.8.8.8 # dps-comment
         nameserver 9.9.9.9 # dps-entry
+
+        # BEGIN dps-entries
+        nameserver 10.10.0.1
+        # END dps-entries
+
+        # BEGIN dps-comments
+        # nameserver 8.8.4.4
+        # END dps-comments
         """
     );
 
@@ -99,6 +162,7 @@ class ResolvconfConfiguratorTest {
             # Provided by test
             # nameserver 7.7.7.7
             nameserver 8.8.8.8
+            nameserver 8.8.4.4
             """,
         Files.readString(resolvFile)
     );
@@ -147,7 +211,11 @@ class ResolvconfConfiguratorTest {
     assertEquals(
         """
             # Provided by test
-            nameserver 10.10.0.1 # dps-entry
+
+            # BEGIN dps-entries
+            nameserver 10.10.0.1
+            # END dps-entries
+
             nameserver 7.7.7.7
             # nameserver 8.8.8.8
             nameserver 8.8.4.4
@@ -158,7 +226,7 @@ class ResolvconfConfiguratorTest {
 
 
   @Test
-  void mustCreateExactlyOneDpsEntryWhenNameserversOverrideIsDisabled(@TempDir Path tmpDir)
+  void mustCreateExactlyOneDpsEntryEvenWhenCalledTwice(@TempDir Path tmpDir)
       throws Exception {
 
     // arrange
@@ -181,7 +249,11 @@ class ResolvconfConfiguratorTest {
     assertEquals(
         """
             # Provided by test
-            nameserver 10.10.0.1 # dps-entry
+
+            # BEGIN dps-entries
+            nameserver 10.10.0.1
+            # END dps-entries
+
             nameserver 7.7.7.7
             # nameserver 8.8.8.8
             nameserver 8.8.4.4
