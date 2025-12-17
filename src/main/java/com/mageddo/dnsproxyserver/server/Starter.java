@@ -1,15 +1,17 @@
 package com.mageddo.dnsproxyserver.server;
 
+import java.util.Set;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.di.StartupEvent;
 import com.mageddo.dnsproxyserver.server.dns.ServerStarter;
 import com.mageddo.http.WebServer;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.util.Set;
 
 import static com.mageddo.dnsproxyserver.quarkus.Quarkus.isTest;
 
@@ -36,7 +38,8 @@ public class Starter {
   }
 
   void startWebServer() {
-    this.webServer.start(Configs.getInstance().getWebServerPort());
+    this.webServer.start(Configs.getInstance()
+        .getWebServerPort());
   }
 
   void startDnsServer() {

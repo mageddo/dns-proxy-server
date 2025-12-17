@@ -1,20 +1,20 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
-import com.mageddo.conf.parser.ConfParser;
-import com.mageddo.conf.parser.EntryType;
-import com.mageddo.net.IpAddr;
-import com.mageddo.dnsproxyserver.utils.Dns;
-
 import java.nio.file.Path;
 import java.util.function.Function;
+
+import com.mageddo.conf.parser.ConfParser;
+import com.mageddo.conf.parser.EntryType;
+import com.mageddo.dnsproxyserver.utils.Dns;
+import com.mageddo.net.IpAddr;
 
 public class ResolvedConfigurator {
 
   public static void configure(Path confFile, IpAddr addr) {
     ConfParser.process(
-      confFile,
-      createParser(),
-      new ConfigureDPSHandler(() -> String.format("DNS=%s # dps-entry", formatAddr(addr)))
+        confFile,
+        createParser(),
+        new ConfigureDPSHandler(() -> String.format("DNS=%s # dps-entry", formatAddr(addr)))
     );
   }
 
@@ -27,9 +27,9 @@ public class ResolvedConfigurator {
 
   public static void restore(Path confFile) {
     ConfParser.process(
-      confFile,
-      createParser(),
-      new CleanerHandler()
+        confFile,
+        createParser(),
+        new CleanerHandler()
     );
   }
 

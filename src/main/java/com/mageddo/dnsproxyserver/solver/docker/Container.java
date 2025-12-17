@@ -1,16 +1,17 @@
 package com.mageddo.dnsproxyserver.solver.docker;
 
-import com.mageddo.net.IP;
-import lombok.Builder;
-import lombok.NonNull;
-import lombok.Value;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+
+import com.mageddo.net.IP;
+
+import lombok.Builder;
+import lombok.NonNull;
+import lombok.Value;
 
 @Value
 @Builder
@@ -35,23 +36,23 @@ public class Container {
 
   public IP geDefaultIp(IP.Version version) {
     return this.ips.stream()
-      .filter(it -> Objects.equals(it.version(), version))
-      .findFirst()
-      .orElse(null);
+        .filter(it -> Objects.equals(it.version(), version))
+        .findFirst()
+        .orElse(null);
   }
 
   public IP getNetworkIp(IP.Version version, String networkName) {
     return this.getNetworkOptional(networkName)
-      .map(it -> it.getIp(version))
-      .orElse(null);
+        .map(it -> it.getIp(version))
+        .orElse(null);
   }
 
   public String getFirstNetworkName() {
     return this.preferredNetworkNames
-      .stream()
-      .findFirst()
-      .orElse(null)
-      ;
+        .stream()
+        .findFirst()
+        .orElse(null)
+        ;
   }
 
   public Set<String> getNetworksNames() {
@@ -74,15 +75,15 @@ public class Container {
 
     public String getIpAsText(IP.Version version) {
       return Optional.ofNullable(this.getIp(version))
-        .map(IP::toText)
-        .orElse(null);
+          .map(IP::toText)
+          .orElse(null);
     }
 
     public IP getIp(IP.Version version) {
       return this.ips.stream()
-        .filter(it -> Objects.equals(it.version(), version))
-        .findFirst()
-        .orElse(null);
+          .filter(it -> Objects.equals(it.version(), version))
+          .findFirst()
+          .orElse(null);
     }
 
   }

@@ -13,7 +13,7 @@ public interface Stats extends Library {
 
   int syscall(int number, Object... args);
 
-  default int wrappedStat(String pathname, Stat statbuf){
+  default int wrappedStat(String pathname, Stat statbuf) {
     return this.syscall(4, pathname, statbuf);
   }
 

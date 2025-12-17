@@ -1,10 +1,10 @@
 package com.mageddo.utils;
 
-import com.mageddo.commons.lang.Singletons;
-
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
+
+import com.mageddo.commons.lang.Singletons;
 
 public class Tests {
 
@@ -19,22 +19,27 @@ public class Tests {
   static boolean inTestHotLoad() {
     hotCallsStat.incrementAndGet();
     return findAllThreads()
-      .stream()
-      .anyMatch(Tests::hashJunitInStackTrace);
+        .stream()
+        .anyMatch(Tests::hashJunitInStackTrace);
   }
 
-  private static Set<Thread> findAllThreads(){
-    return Thread.getAllStackTraces().keySet();
-  };
+  private static Set<Thread> findAllThreads() {
+    return Thread.getAllStackTraces()
+        .keySet();
+  }
+
+  ;
 
   private static boolean hashJunitInStackTrace(final Thread thread) {
     return hashClassInStackTrace(
-      thread,
-      (element) -> element.getClassName().startsWith(JUNIT_FRAMEWORK_PACKAGE)
+        thread,
+        (element) -> element.getClassName()
+            .startsWith(JUNIT_FRAMEWORK_PACKAGE)
     );
   }
 
-  private static boolean hashClassInStackTrace(Thread thread, final Predicate<StackTraceElement> p) {
+  private static boolean hashClassInStackTrace(Thread thread,
+      final Predicate<StackTraceElement> p) {
     for (final var element : thread.getStackTrace()) {
       if (p.test(element)) {
         return true;
@@ -47,7 +52,7 @@ public class Tests {
     return hotCallsStat.get();
   }
 
-  static void resetCache(){
+  static void resetCache() {
     hotCallsStat.set(0);
     Singletons.clear(CACHE_KEY);
   }

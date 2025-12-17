@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import com.mageddo.dnsproxyserver.version.VersionDAO;
 import com.mageddo.dnsproxyserver.version.VersionDAOProp;
+
 import dagger.Binds;
 import dagger.Module;
 

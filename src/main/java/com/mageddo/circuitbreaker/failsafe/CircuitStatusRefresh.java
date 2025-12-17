@@ -15,7 +15,8 @@ public class CircuitStatusRefresh {
   }
 
   private static boolean readyToChangeToHalOpen(CircuitBreaker<?> circuitBreaker) {
-    return circuitBreaker.isOpen() && circuitBreaker.getRemainingDelay().isZero();
+    return circuitBreaker.isOpen() && circuitBreaker.getRemainingDelay()
+        .isZero();
   }
 
 }

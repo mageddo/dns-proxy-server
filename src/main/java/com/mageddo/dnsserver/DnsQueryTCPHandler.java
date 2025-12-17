@@ -1,17 +1,19 @@
 package com.mageddo.dnsserver;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.nio.ByteBuffer;
+
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.utils.Shorts;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.MDC;
 import org.xbill.DNS.Message;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
-import java.nio.ByteBuffer;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Handles a TCP packet to a DNS query then sends the response back.
@@ -39,7 +41,7 @@ class DnsQueryTCPHandler implements SocketClientMessageHandler {
         final var buff = readBodyAndValidate(in, msgSize);
         final var query = new Message(buff);
         final var res = this.handler.handle(query, "tcp")
-          .toWire();
+            .toWire();
 
         final var out = client.getOut();
         out.write(Shorts.toBytes((short) res.length));
@@ -48,15 +50,15 @@ class DnsQueryTCPHandler implements SocketClientMessageHandler {
         out.flush();
 
         log.debug(
-          "status=success, queryMsgSize={}, resMsgSize={}, req={}",
-          msgSize, res.length, Messages.simplePrint(query)
+            "status=success, queryMsgSize={}, resMsgSize={}, req={}",
+            msgSize, res.length, Messages.simplePrint(query)
         );
 
       }
     } catch (UncheckedIOException | IOException e) {
       log.debug(
-        "status=socketClosed, runningTime={}, msg={}, class={}",
-        client.getRunningTime(), e.getMessage(), ClassUtils.getSimpleName(e)
+          "status=socketClosed, runningTime={}, msg={}, class={}",
+          client.getRunningTime(), e.getMessage(), ClassUtils.getSimpleName(e)
       );
     } catch (Exception e) {
       log.warn("status=request-failed, msg={}", e.getMessage(), e);
@@ -76,9 +78,9 @@ class DnsQueryTCPHandler implements SocketClientMessageHandler {
       }
 
       Validate.isTrue(
-        msgSize == offset,
-        "status=headerMsgSizeDifferentFromReadBytes!, haderMsgSize=%d, read=%d",
-        msgSize, read
+          msgSize == offset,
+          "status=headerMsgSizeDifferentFromReadBytes!, haderMsgSize=%d, read=%d",
+          msgSize, read
       );
       return buff;
     } catch (IOException e) {

@@ -1,5 +1,11 @@
 package com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Objects;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.application.Configs;
@@ -10,14 +16,9 @@ import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo.ConfigJsonV2;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo.ConfigJsonV2.Entry;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo.ConfigJsonV2.Env;
 import com.mageddo.json.JsonUtils;
+
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 public class JsonConfigs {
@@ -28,17 +29,17 @@ public class JsonConfigs {
 
   public static Config loadConfigAsConfig() {
     return ConfigJsonV2Mapper.toConfig(
-      loadConfigJson(),
-      Configs
-        .getInstance()
-        .getConfigPath()
+        loadConfigJson(),
+        Configs
+            .getInstance()
+            .getConfigPath()
     );
   }
 
   public static ConfigJsonV2 loadConfigJson() {
     final var configPath = Configs
-      .getInstance()
-      .getConfigPath();
+        .getInstance()
+        .getConfigPath();
     return (ConfigJsonV2) loadConfig(configPath);
   }
 
@@ -73,9 +74,10 @@ public class JsonConfigs {
     final var version = findVersion(tree);
     return switch (version) {
       case VERSION_2 -> objectMapper.treeToValue(tree, ConfigJsonV2.class);
-      case VERSION_1 -> objectMapper.treeToValue(tree, ConfigJsonV1.class).toConfigV2();
+      case VERSION_1 -> objectMapper.treeToValue(tree, ConfigJsonV1.class)
+          .toConfigV2();
       default -> throw new UnsupportedOperationException(String.format(
-        "unsupported config file version=%d, supported=%s", version, supportedVersions
+          "unsupported config file version=%d, supported=%s", version, supportedVersions
       ));
     };
   }
@@ -85,20 +87,20 @@ public class JsonConfigs {
     Files.createDirectories(configPath.getParent()); // ensure directories are created
     final var config = buildDefaultJsonConfig();
     JsonUtils
-      .prettyInstance()
-      .writeValue(configPath.toFile(), config);
+        .prettyInstance()
+        .writeValue(configPath.toFile(), config);
     log.info("status=createdDefaultConfigFile, path={}", configPath);
   }
 
   public static ConfigJsonV2 buildDefaultJsonConfig() {
     final var config = new ConfigJsonV2();
     config
-      .get_envs()
-      .add(
-        new Env()
-          .setName(Config.Env.DEFAULT_ENV)
-          .add(Entry.sample())
-      );
+        .get_envs()
+        .add(
+            new Env()
+                .setName(Config.Env.DEFAULT_ENV)
+                .add(Entry.sample())
+        );
     return config;
   }
 
@@ -111,8 +113,8 @@ public class JsonConfigs {
       Files.copy(configPath, backupPath);
     }
     JsonUtils
-      .prettyInstance()
-      .writeValue(configPath.toFile(), config)
+        .prettyInstance()
+        .writeValue(configPath.toFile(), config)
     ;
     log.info("status=configWritten, file={}", configPath);
   }
@@ -124,12 +126,13 @@ public class JsonConfigs {
   @SneakyThrows
   public static Integer findVersion(Path configPath) {
     final var node = JsonUtils
-      .instance()
-      .readTree(configPath.toFile());
+        .instance()
+        .readTree(configPath.toFile());
     return findVersion(node);
   }
 
   public static Integer findVersion(JsonNode tree) {
-    return tree.at("/version").asInt(VERSION_1);
+    return tree.at("/version")
+        .asInt(VERSION_1);
   }
 }

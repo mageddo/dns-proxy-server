@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.mageddo.dnsproxyserver.json.converter.IPConverter;
 import com.mageddo.utils.Bytes;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
@@ -57,10 +58,10 @@ public class IpAddr {
 
   public static IpAddr of(IP ip, Integer port) {
     return IpAddr
-      .builder()
-      .ip(ip)
-      .port(port)
-      .build();
+        .builder()
+        .ip(ip)
+        .port(port)
+        .build();
   }
 
   public static IpAddr of(Byte[] ip) {

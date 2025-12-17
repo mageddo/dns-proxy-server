@@ -24,6 +24,7 @@ public class ObjectUtils {
     }
     return null;
   }
+
   public static <T> List<T> firstNonEmptyListRequiring(List<List<T>> lists) {
     for (final var list : lists) {
       if (list != null && !list.isEmpty()) {

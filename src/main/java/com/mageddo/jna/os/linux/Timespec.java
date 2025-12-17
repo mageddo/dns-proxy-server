@@ -1,9 +1,9 @@
 package com.mageddo.jna.os.linux;
 
-import com.sun.jna.Structure;
-
 import java.util.Arrays;
 import java.util.List;
+
+import com.sun.jna.Structure;
 
 public class Timespec extends Structure {
 

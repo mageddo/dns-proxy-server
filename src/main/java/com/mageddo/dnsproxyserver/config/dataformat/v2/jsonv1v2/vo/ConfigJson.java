@@ -1,11 +1,11 @@
 package com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo;
 
+import java.net.URI;
+import java.util.List;
+
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsserver.SimpleServer;
 import com.mageddo.net.IpAddr;
-
-import java.net.URI;
-import java.util.List;
 
 /**
  * @deprecated see #594.
@@ -57,7 +57,7 @@ public interface ConfigJson {
 
   ConfigJsonV2.CircuitBreaker getSolverRemoteCircuitBreaker();
 
-  default boolean hasRemoteDnsServers(){
+  default boolean hasRemoteDnsServers() {
     return getRemoteDnsServers() != null && !getRemoteDnsServers().isEmpty();
   }
 }

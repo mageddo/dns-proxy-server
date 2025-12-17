@@ -1,5 +1,14 @@
 package com.mageddo.dnsproxyserver.solver;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import com.mageddo.dnsproxyserver.solver.remote.Request;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.application.CircuitBreakerService;
@@ -8,18 +17,12 @@ import com.mageddo.dnsproxyserver.solver.remote.application.ResolverStatsFactory
 import com.mageddo.dnsproxyserver.solver.remote.application.ResultSupplier;
 import com.mageddo.net.NetExecutorWatchdog;
 import com.mageddo.utils.Executors;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.time.StopWatch;
 import org.xbill.DNS.Message;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Stream;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Singleton
@@ -36,14 +39,14 @@ public class SolverRemote implements Solver, AutoCloseable {
     final var stopWatch = StopWatch.createStarted();
     final var result = this.queryResultFromAvailableResolvers(query, stopWatch);
     log.debug(
-      "status=finally, time={}, success={}, error={}",
-      stopWatch.getTime(), result.hasSuccessMessage(), result.hasErrorMessage()
+        "status=finally, time={}, success={}, error={}",
+        stopWatch.getTime(), result.hasSuccessMessage(), result.hasErrorMessage()
     );
     return Stream
-      .of(result.getSuccessResponse(), result.getErrorResponse())
-      .filter(Objects::nonNull)
-      .findFirst()
-      .orElse(null);
+        .of(result.getSuccessResponse(), result.getErrorResponse())
+        .filter(Objects::nonNull)
+        .findFirst()
+        .orElse(null);
   }
 
   Result queryResultFromAvailableResolvers(Message query, StopWatch stopWatch) {
@@ -72,17 +75,18 @@ public class SolverRemote implements Solver, AutoCloseable {
 
   Request buildRequest(Message query, int resolverIndex, StopWatch stopWatch, Resolver resolver) {
     return Request
-      .builder()
-      .resolverIndex(resolverIndex)
-      .query(query)
-      .stopWatch(stopWatch)
-      .resolver(resolver)
-      .build();
+        .builder()
+        .resolverIndex(resolverIndex)
+        .query(query)
+        .stopWatch(stopWatch)
+        .resolver(resolver)
+        .build();
   }
 
   Result safeQueryResult(Request req) {
     req.splitStopWatch();
-    return this.queryUsingCircuitBreaker(new RemoteResultSupplier(req, this.executor, this.netWatchdog));
+    return this.queryUsingCircuitBreaker(
+        new RemoteResultSupplier(req, this.executor, this.netWatchdog));
   }
 
   Result queryUsingCircuitBreaker(ResultSupplier sup) {

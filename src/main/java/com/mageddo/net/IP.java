@@ -27,18 +27,19 @@ public interface IP {
     return IpImpl.of(data);
   }
 
-  static List<IP> listOf(String ... ips) {
+  static List<IP> listOf(String... ips) {
     return Stream.of(ips)
-      .map(IP::of)
-      .toList();
+        .map(IP::of)
+        .toList();
   }
 
   boolean isLoopback();
 
   boolean notEqualTo(String ip);
 
-  default boolean isVersionEqualsTo(Version version){
-    return this.version().equals(version);
+  default boolean isVersionEqualsTo(Version version) {
+    return this.version()
+        .equals(version);
   }
 
   enum Version {

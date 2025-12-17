@@ -1,15 +1,17 @@
 package com.mageddo.dnsserver;
 
-import com.mageddo.commons.io.IoUtils;
-import com.mageddo.dns.utils.Messages;
-import com.mageddo.utils.Executors;
-import lombok.extern.slf4j.Slf4j;
-import org.xbill.DNS.Message;
-
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketAddress;
 import java.util.concurrent.ExecutorService;
+
+import com.mageddo.commons.io.IoUtils;
+import com.mageddo.dns.utils.Messages;
+import com.mageddo.utils.Executors;
+
+import org.xbill.DNS.Message;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class UDPServer {
@@ -57,9 +59,11 @@ public class UDPServer {
 
       server.send(new DatagramPacket(resData, resData.length, datagram.getSocketAddress()));
       log.debug(
-        "status=success, query={}, res={}, serverAddr={}, clientAddr={}, dataLength={}, datagramLength={}",
-        Messages.simplePrint(query), Messages.simplePrint(res),
-        server.getLocalAddress(), datagram.getSocketAddress(), datagram.getData().length, datagram.getLength()
+          "status=success, query={}, res={}, serverAddr={}, clientAddr={}, dataLength={}, "
+              + "datagramLength={}",
+          Messages.simplePrint(query), Messages.simplePrint(res),
+          server.getLocalAddress(), datagram.getSocketAddress(), datagram.getData().length,
+          datagram.getLength()
       );
     } catch (Exception e) {
       log.warn("status=messageHandleFailed, msg={}", e.getMessage(), e);

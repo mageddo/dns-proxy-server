@@ -1,21 +1,22 @@
 package com.mageddo.commons.exec;
 
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.time.Duration;
+
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.exec.ExecuteResultHandler;
 import org.apache.commons.exec.ExecuteWatchdog;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.time.Duration;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class CommandLines {
 
   public static Result exec(String commandLine, Object... args) {
     return exec(CommandLine.parse(String.format(commandLine, args)),
-      ExecuteWatchdog.INFINITE_TIMEOUT
+        ExecuteWatchdog.INFINITE_TIMEOUT
     );
   }
 
@@ -29,25 +30,25 @@ public class CommandLines {
 
   public static Result exec(CommandLine commandLine, long timeout) {
     return exec(
-      Request.builder()
-        .commandLine(commandLine)
-        .timeout(Duration.ofMillis(timeout))
-        .build()
+        Request.builder()
+            .commandLine(commandLine)
+            .timeout(Duration.ofMillis(timeout))
+            .build()
     );
   }
 
   private static void registerProcessWatch(ProcessAccessibleDaemonExecutor executor) {
     ProcessesWatchDog.instance()
-      .watch(executor::getProcess)
+        .watch(executor::getProcess)
     ;
   }
 
   public static Result exec(CommandLine commandLine, ExecuteResultHandler handler) {
     return exec(Request
-      .builder()
-      .commandLine(commandLine)
-      .handler(handler)
-      .build()
+        .builder()
+        .commandLine(commandLine)
+        .handler(handler)
+        .build()
     );
   }
 
@@ -65,7 +66,8 @@ public class CommandLines {
       }
     } catch (ExecuteException e) {
       if (request.getHandler() != null) {
-        request.getHandler().onProcessFailed(e);
+        request.getHandler()
+            .onProcessFailed(e);
       } else {
         exitCode = e.getExitValue();
       }
@@ -73,13 +75,13 @@ public class CommandLines {
       throw new UncheckedIOException(e);
     }
     return Result
-      .builder()
-      .executor(executor)
-      .processSupplier(executor::getProcess)
-      .out(request.getBestOut())
-      .exitCode(exitCode)
-      .request(request)
-      .build();
+        .builder()
+        .executor(executor)
+        .processSupplier(executor::getProcess)
+        .out(request.getBestOut())
+        .exitCode(exitCode)
+        .request(request)
+        .build();
   }
 
   private static ProcessAccessibleDaemonExecutor createExecutor() {

@@ -1,12 +1,12 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
+import java.nio.file.Path;
+import java.util.function.Function;
+
 import com.mageddo.conf.parser.ConfParser;
 import com.mageddo.conf.parser.EntryType;
 import com.mageddo.dnsproxyserver.utils.Dns;
 import com.mageddo.net.IpAddr;
-
-import java.nio.file.Path;
-import java.util.function.Function;
 
 public class ResolvconfConfigurator {
 
@@ -22,8 +22,10 @@ public class ResolvconfConfigurator {
         confFile,
         createParser(),
         new ResolvconfConfigureDPSHandler(
-          () -> String.format("nameserver %s # dps-entry", addr.getIp().toText()),
-          overrideNameServers
+            () -> String.format("nameserver %s # dps-entry", addr.getIp()
+                .toText()
+            ),
+            overrideNameServers
         )
     );
   }

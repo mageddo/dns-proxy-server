@@ -1,19 +1,21 @@
 package com.mageddo.jna.net.windows.registry;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.mageddo.jna.Exceptions;
 import com.mageddo.net.windows.registry.NetworkInterface;
 import com.sun.jna.platform.win32.Advapi32Util;
 import com.sun.jna.platform.win32.Win32Exception;
 import com.sun.jna.platform.win32.WinError;
 import com.sun.jna.platform.win32.WinReg;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.Validate;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import lombok.extern.slf4j.Slf4j;
 
 import static com.sun.jna.platform.win32.Advapi32Util.registryGetStringArray;
 import static com.sun.jna.platform.win32.Advapi32Util.registryGetStringValue;
@@ -32,45 +34,45 @@ public class NetworkRegistry {
   public static List<String> findStaticDnsServers(String networkId) {
     final String str = findNetworkStringValue(networkId, DNS_SERVER_ATTR);
     return Stream
-      .of(str.split(","))
-      .toList();
+        .of(str.split(","))
+        .toList();
   }
 
   public static List<String> findNetworksWithIpIds() {
     return NetworkRegistry
-      .findNetworksWithIp()
-      .stream()
-      .map(NetworkInterface::getId)
-      .toList()
-      ;
+        .findNetworksWithIp()
+        .stream()
+        .map(NetworkInterface::getId)
+        .toList()
+        ;
   }
 
   public static Set<String> findNetworksIds() {
     return Stream.of(Advapi32Util.registryGetKeys(
-        WinReg.HKEY_LOCAL_MACHINE,
-        "SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces"
-      ))
-      .collect(Collectors.toSet());
+            WinReg.HKEY_LOCAL_MACHINE,
+            "SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces"
+        ))
+        .collect(Collectors.toSet());
   }
 
   public static List<NetworkInterface> findNetworksWithIp() {
     return findNetworksIds()
-      .stream()
-      .map(NetworkRegistry::findNetworkInterfaceOrNull)
-      .filter(Objects::nonNull)
-      .filter(NetworkInterface::hasIp)
-      .toList()
-      ;
+        .stream()
+        .map(NetworkRegistry::findNetworkInterfaceOrNull)
+        .filter(Objects::nonNull)
+        .filter(NetworkInterface::hasIp)
+        .toList()
+        ;
   }
 
   public static NetworkInterface findNetworkInterfaceOrNull(String networkId) {
     try {
       return NetworkInterface.builder()
-        .id(networkId)
-        .staticIp(findIpAddress(networkId))
-        .dhcpIp(findDhcpIpAddress(networkId))
-        .staticDnsServers(findStaticDnsServers(networkId))
-        .build();
+          .id(networkId)
+          .staticIp(findIpAddress(networkId))
+          .dhcpIp(findDhcpIpAddress(networkId))
+          .staticDnsServers(findStaticDnsServers(networkId))
+          .build();
     } catch (Throwable e) {
       log.info("status=failedToFindInterface, nid={}, msg={}", networkId, e.getMessage());
       return null;
@@ -100,13 +102,18 @@ public class NetworkRegistry {
   }
 
   public static void updateDnsServer(String networkId, List<String> dnsServer) {
-    Validate.isTrue(dnsServer.size() <= 2, "You can configure almost to 2 servers, current=%d", dnsServer.size());
+    Validate.isTrue(dnsServer.size() <= 2, "You can configure almost to 2 servers, current=%d",
+        dnsServer.size()
+    );
     final var key = buildKey(networkId);
-    registrySetStringValue(WinReg.HKEY_LOCAL_MACHINE, key, DNS_SERVER_ATTR, String.join(",", dnsServer));
+    registrySetStringValue(WinReg.HKEY_LOCAL_MACHINE, key, DNS_SERVER_ATTR,
+        String.join(",", dnsServer)
+    );
   }
 
   private static String findNetworkFirstArrValue(final String networkId, final String property) {
-    return findFirstOrNull(registryGetStringArray(WinReg.HKEY_LOCAL_MACHINE, buildKey(networkId), property));
+    return findFirstOrNull(
+        registryGetStringArray(WinReg.HKEY_LOCAL_MACHINE, buildKey(networkId), property));
   }
 
   private static String findNetworkStringValue(final String networkId, final String property) {
@@ -115,12 +122,14 @@ public class NetworkRegistry {
 
   private static String findFirstOrNull(final String[] arr) {
     return arr == null ? null : Stream.of(arr)
-      .findFirst()
-      .orElse(null);
+        .findFirst()
+        .orElse(null);
   }
 
   private static String buildKey(String networkId) {
-    return String.format("SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces\\%s", networkId);
+    return String.format("SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces\\%s",
+        networkId
+    );
   }
 
 }

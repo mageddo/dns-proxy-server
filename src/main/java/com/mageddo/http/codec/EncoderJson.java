@@ -1,10 +1,10 @@
 package com.mageddo.http.codec;
 
-import com.mageddo.json.JsonUtils;
-import com.sun.net.httpserver.HttpExchange;
-
 import java.io.IOException;
 import java.io.UncheckedIOException;
+
+import com.mageddo.json.JsonUtils;
+import com.sun.net.httpserver.HttpExchange;
 
 public class EncoderJson implements Encoder {
 

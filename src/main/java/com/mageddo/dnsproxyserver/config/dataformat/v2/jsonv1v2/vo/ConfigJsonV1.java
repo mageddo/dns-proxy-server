@@ -1,18 +1,19 @@
 package com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo;
 
+import java.net.URI;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.mapper.ConfigJsonV1EnvsMapper;
 import com.mageddo.dnsserver.SimpleServer;
 import com.mageddo.net.IpAddr;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.Accessors;
-
-import java.net.URI;
-import java.util.List;
 
 /**
  * @deprecated it won't be extended, so it makes no sense to maintain it,
@@ -67,9 +68,9 @@ public class ConfigJsonV1 implements ConfigJson {
   @Override
   public List<IpAddr> getRemoteDnsServers() {
     return this.remoteDnsServers
-      .stream()
-      .map(IpAddr::of)
-      .toList();
+        .stream()
+        .map(IpAddr::of)
+        .toList();
   }
 
   @JsonIgnore
@@ -125,28 +126,29 @@ public class ConfigJsonV1 implements ConfigJson {
 
   public ConfigJsonV2 toConfigV2() {
     return new ConfigJsonV2()
-      .setDomain(this.getDomain())
-      .setActiveEnv(this.getActiveEnv())
-      .setDefaultDns(this.getDefaultDns())
-      .setDpsNetwork(this.getDpsNetwork())
-      .setDnsServerPort(this.getDnsServerPort())
-      .setWebServerPort(this.getWebServerPort())
-      .setDpsNetworkAutoConnect(this.getDpsNetworkAutoConnect())
-      .setHostMachineHostname(this.getHostMachineHostname())
-      .setRegisterContainerNames(this.getRegisterContainerNames())
-      .setLogFile(this.getLogFile())
-      .setLogLevel(this.getLogLevel())
-      .setRemoteDnsServers(this
-        .getRemoteDnsServers()
-        .stream()
-        .map(IpAddr::toString).toList()
-      )
-      .set_envs(this.getEnvs()
-        .stream()
-        .map(ConfigJsonV2.Env::from)
-        .toList()
-      )
-      ;
+        .setDomain(this.getDomain())
+        .setActiveEnv(this.getActiveEnv())
+        .setDefaultDns(this.getDefaultDns())
+        .setDpsNetwork(this.getDpsNetwork())
+        .setDnsServerPort(this.getDnsServerPort())
+        .setWebServerPort(this.getWebServerPort())
+        .setDpsNetworkAutoConnect(this.getDpsNetworkAutoConnect())
+        .setHostMachineHostname(this.getHostMachineHostname())
+        .setRegisterContainerNames(this.getRegisterContainerNames())
+        .setLogFile(this.getLogFile())
+        .setLogLevel(this.getLogLevel())
+        .setRemoteDnsServers(this
+            .getRemoteDnsServers()
+            .stream()
+            .map(IpAddr::toString)
+            .toList()
+        )
+        .set_envs(this.getEnvs()
+            .stream()
+            .map(ConfigJsonV2.Env::from)
+            .toList()
+        )
+        ;
   }
 
 

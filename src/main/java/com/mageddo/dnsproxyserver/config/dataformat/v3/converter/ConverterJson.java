@@ -4,9 +4,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.mageddo.dnsproxyserver.config.Config;
-
 import com.mageddo.dnsproxyserver.config.dataformat.v3.mapper.ConfigMapper;
-
 import com.mageddo.dnsproxyserver.config.dataformat.v3.mapper.ConfigV3JsonMapper;
 
 import lombok.RequiredArgsConstructor;

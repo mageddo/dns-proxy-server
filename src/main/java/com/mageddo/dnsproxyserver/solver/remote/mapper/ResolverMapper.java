@@ -1,14 +1,14 @@
 package com.mageddo.dnsproxyserver.solver.remote.mapper;
 
+import java.net.InetSocketAddress;
+import java.time.Duration;
+
 import com.mageddo.dnsproxyserver.solver.Resolver;
 import com.mageddo.dnsproxyserver.solver.SimpleResolver;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.ResolverStats;
 import com.mageddo.dnsproxyserver.utils.InetAddresses;
 import com.mageddo.net.IpAddr;
-
-import java.net.InetSocketAddress;
-import java.time.Duration;
 
 public class ResolverMapper {
 
@@ -26,11 +26,11 @@ public class ResolverMapper {
 
   public static ResolverStats toResolverStats(Resolver resolver, CircuitStatus status) {
     return ResolverStats
-      .builder()
-      .resolver(resolver)
-      .circuitStatus(status)
-      .build()
-      ;
+        .builder()
+        .resolver(resolver)
+        .circuitStatus(status)
+        .build()
+        ;
   }
 
   public static InetSocketAddress toInetSocketAddress(IpAddr addr) {

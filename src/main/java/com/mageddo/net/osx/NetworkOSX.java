@@ -1,8 +1,8 @@
 package com.mageddo.net.osx;
 
-import com.mageddo.net.Network;
-
 import java.util.List;
+
+import com.mageddo.net.Network;
 
 public class NetworkOSX implements Network {
   @Override

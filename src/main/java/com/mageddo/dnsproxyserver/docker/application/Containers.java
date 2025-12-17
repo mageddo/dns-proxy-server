@@ -1,12 +1,12 @@
 package com.mageddo.dnsproxyserver.docker.application;
 
-import com.github.dockerjava.api.model.Container;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import com.github.dockerjava.api.model.Container;
 
 public class Containers {
 
@@ -14,16 +14,16 @@ public class Containers {
 
   public static String toNames(List<Container> containers) {
     return containers
-      .stream()
-      .map(Containers::firstNameOrId)
-      .collect(Collectors.joining(", "));
+        .stream()
+        .map(Containers::firstNameOrId)
+        .collect(Collectors.joining(", "));
   }
 
   public static String firstNameOrId(Container c) {
     return Stream.of(c.getNames())
-      .findFirst()
-      .orElse(c.getId())
-      ;
+        .findFirst()
+        .orElse(c.getId())
+        ;
   }
 
   public static boolean containsNetworkName(Container container, String networkName) {
@@ -32,7 +32,7 @@ public class Containers {
       return false;
     }
     return settings
-      .getNetworks()
-      .containsKey(networkName);
+        .getNetworks()
+        .containsKey(networkName);
   }
 }

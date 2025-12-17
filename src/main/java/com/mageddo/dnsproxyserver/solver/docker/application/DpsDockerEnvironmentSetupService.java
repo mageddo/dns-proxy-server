@@ -1,16 +1,17 @@
 package com.mageddo.dnsproxyserver.solver.docker.application;
 
-import com.mageddo.dnsproxyserver.config.application.Configs;
-import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
-import com.mageddo.dnsproxyserver.solver.docker.dataprovider.NetworkDAO;
-import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DpsContainerDAO;
-import com.mageddo.dnsproxyserver.solver.docker.Network;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import com.mageddo.dnsproxyserver.config.application.Configs;
+import com.mageddo.dnsproxyserver.solver.docker.Network;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DpsContainerDAO;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.NetworkDAO;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Default
@@ -50,7 +51,8 @@ public class DpsDockerEnvironmentSetupService {
   }
 
   boolean isMustConfigureDpsNetwork() {
-    return Configs.getInstance().getDockerSolverMustConfigureDpsNetwork();
+    return Configs.getInstance()
+        .getDockerSolverMustConfigureDpsNetwork();
   }
 
   void createNetworkIfAbsent() {

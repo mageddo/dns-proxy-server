@@ -1,14 +1,15 @@
 package com.mageddo.concurrent;
 
-import com.mageddo.commons.concurrent.Threads;
-import com.mageddo.commons.lang.exception.UnchekedInterruptedException;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import com.mageddo.commons.concurrent.Threads;
+import com.mageddo.commons.lang.exception.UnchekedInterruptedException;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class SingleThreadQueueProcessor implements AutoCloseable {

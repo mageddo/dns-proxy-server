@@ -33,11 +33,13 @@ import lombok.extern.slf4j.Slf4j;
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 /**
- * fixme #533 Move failsafe.CircuitBreakerFactory  to another package, this is not specific for failsafe
+ * fixme #533 Move failsafe.CircuitBreakerFactory  to another package, this is not specific for
+ * failsafe
  */
 public class CircuitBreakerFactory {
 
-  private final Map<InetSocketAddress, CircuitBreakerDelegate> circuitBreakerMap = new ConcurrentHashMap<>();
+  private final Map<InetSocketAddress, CircuitBreakerDelegate> circuitBreakerMap =
+      new ConcurrentHashMap<>();
   private final ConfigService configService;
 
   // fixme #533 Delete CircuitBreakerPingCheckerService from CircuitBreakerFactory and related stuff
@@ -69,17 +71,19 @@ public class CircuitBreakerFactory {
     };
   }
 
-  CircuitBreakerDelegate buildCanaryRateThreshold(CircuitBreakerStrategyConfig config, InetSocketAddress address) {
+  CircuitBreakerDelegate buildCanaryRateThreshold(CircuitBreakerStrategyConfig config,
+      InetSocketAddress address) {
     return this.canaryThresholdFactory.build(config, IpAddrs.from(address));
   }
 
   private CircuitBreakerDelegateStaticThresholdFailsafe buildStaticThresholdFailSafeCircuitBreaker(
-    InetSocketAddress address, CircuitBreakerStrategyConfig config
+      InetSocketAddress address, CircuitBreakerStrategyConfig config
   ) {
-    return new CircuitBreakerDelegateStaticThresholdFailsafe(this.failsafeCircuitBreakerFactory.build(
-      address,
-      (StaticThresholdCircuitBreakerStrategyConfig) config
-    ));
+    return new CircuitBreakerDelegateStaticThresholdFailsafe(
+        this.failsafeCircuitBreakerFactory.build(
+            address,
+            (StaticThresholdCircuitBreakerStrategyConfig) config
+        ));
   }
 
   CircuitBreakerStrategyConfig findCircuitBreakerConfig() {
@@ -98,8 +102,8 @@ public class CircuitBreakerFactory {
       }
     }
     log.debug(
-      "status=checkEnded, successes={}, errors={}, circuits={}, timeElapsed={}",
-      successes, errors, this.circuitBreakerMap.size(), stopWatch.getTime()
+        "status=checkEnded, successes={}, errors={}, circuits={}, timeElapsed={}",
+        successes, errors, this.circuitBreakerMap.size(), stopWatch.getTime()
     );
     return Pair.of(successes, errors);
   }
@@ -114,9 +118,9 @@ public class CircuitBreakerFactory {
 
   public List<Stats> stats() {
     return this.circuitBreakerMap.keySet()
-      .stream()
-      .map(this::toStats)
-      .toList();
+        .stream()
+        .map(this::toStats)
+        .toList();
   }
 
   public CircuitStatus findStatus(InetSocketAddress remoteAddress) {
@@ -129,7 +133,8 @@ public class CircuitBreakerFactory {
 
   private Stats toStats(InetSocketAddress remoteAddr) {
     final var circuitBreaker = this.findCircuitBreakerFromCache(remoteAddr);
-    final var state = circuitBreaker.findStatus().name();
+    final var state = circuitBreaker.findStatus()
+        .name();
     return Stats.of(remoteAddr.toString(), state);
   }
 

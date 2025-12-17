@@ -10,7 +10,8 @@ public class DelegateOutputStream extends OutputStream {
   private final List<OutputStream> delegateOuts;
 
   public DelegateOutputStream(OutputStream... delegateOuts) {
-    this.delegateOuts = Stream.of(delegateOuts).toList();
+    this.delegateOuts = Stream.of(delegateOuts)
+        .toList();
   }
 
   public DelegateOutputStream(List<OutputStream> delegateOuts) {

@@ -1,10 +1,11 @@
 package com.mageddo.dnsproxyserver.version;
 
-import lombok.NoArgsConstructor;
+import java.util.Properties;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.Properties;
+
+import lombok.NoArgsConstructor;
 
 import static com.mageddo.commons.io.IoUtils.loadPropertiesFromResources;
 
@@ -12,9 +13,10 @@ import static com.mageddo.commons.io.IoUtils.loadPropertiesFromResources;
 @NoArgsConstructor(onConstructor_ = @Inject)
 public class VersionDAOProp implements VersionDAO {
 
-  private static final Properties resources = loadPropertiesFromResources("/application.properties");
+  private static final Properties resources = loadPropertiesFromResources(
+      "/application.properties");
 
-  public String findVersion(){
+  public String findVersion() {
     return resources.getProperty("version", "unknown");
   }
 

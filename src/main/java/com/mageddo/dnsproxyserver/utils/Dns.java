@@ -1,9 +1,10 @@
 package com.mageddo.dnsproxyserver.utils;
 
-import com.mageddo.net.IpAddr;
-import org.apache.commons.lang3.Validate;
-
 import java.util.Objects;
+
+import com.mageddo.net.IpAddr;
+
+import org.apache.commons.lang3.Validate;
 
 public class Dns {
 
@@ -23,9 +24,9 @@ public class Dns {
 
   public static void validateIsDefaultPort(IpAddr addr) {
     Validate.isTrue(
-      Dns.isDefaultPortOrNull(addr),
-      "Resolvconf requires dns server port to be=%s, passedPort=%d",
-      Dns.DEFAULT_PORT, addr.getPort()
+        Dns.isDefaultPortOrNull(addr),
+        "Resolvconf requires dns server port to be=%s, passedPort=%d",
+        Dns.DEFAULT_PORT, addr.getPort()
     );
   }
 }

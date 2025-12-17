@@ -18,7 +18,9 @@ public class CircuitBreakerValidator {
       }
     } catch (Exception e) {
       throw new IllegalArgumentException(
-          String.format("status=badParams, circuitBreaker=%s: %s", config.getType(), e.getMessage()),
+          String.format("status=badParams, circuitBreaker=%s: %s", config.getType(),
+              e.getMessage()
+          ),
           e
       );
     }

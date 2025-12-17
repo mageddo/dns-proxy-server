@@ -1,17 +1,17 @@
 package com.mageddo.dataformat.yaml;
 
+import java.io.UncheckedIOException;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 
-import java.io.UncheckedIOException;
-
 public class YamlUtils {
 
   public static final YAMLMapper mapper = YAMLMapper
-    .builder()
-    .enable(SerializationFeature.INDENT_OUTPUT)
-    .build();
+      .builder()
+      .enable(SerializationFeature.INDENT_OUTPUT)
+      .build();
 
   public static String format(String yaml) {
     try {

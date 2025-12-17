@@ -1,5 +1,10 @@
 package com.mageddo.dnsproxyserver.quarkus;
 
+import java.net.URI;
+import java.time.Duration;
+
+import javax.enterprise.inject.Produces;
+
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientImpl;
@@ -9,36 +14,31 @@ import com.mageddo.commons.lang.Objects;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.docker.dataprovider.DockerClientConnectionChecked;
 
-import javax.enterprise.inject.Produces;
-import java.net.URI;
-import java.time.Duration;
-
 public class DockerConfig {
 
   @Produces
   public DockerClient dockerClient() {
     final var dockerHost = Configs
-      .getInstance()
-      .getDockerDaemonUri()
-      ;
+        .getInstance()
+        .getDockerDaemonUri();
     final var config = DefaultDockerClientConfig.createDefaultConfigBuilder()
-      .withDockerHost(Objects.mapOrNull(dockerHost, URI::toString))
-      .withDockerTlsVerify(false)
-      .withApiVersion(RemoteApiVersion.VERSION_1_44)
+        .withDockerHost(Objects.mapOrNull(dockerHost, URI::toString))
+        .withDockerTlsVerify(false)
+        .withApiVersion(RemoteApiVersion.VERSION_1_44)
 //      .withDockerCertPath("/home/user/.docker")
 //      .withRegistryUsername(registryUser)
 //      .withRegistryPassword(registryPass)
 //      .withRegistryEmail(registryMail)
 //      .withRegistryUrl(registryUrl)
-      .build();
+        .build();
 
     final var httpClient = new ApacheDockerHttpClient.Builder()
-      .dockerHost(config.getDockerHost())
-      .sslConfig(config.getSSLConfig())
-      .maxConnections(5)
-      .connectionTimeout(Duration.ofMillis(300))
-      .responseTimeout(Duration.ofSeconds(3))
-      .build();
+        .dockerHost(config.getDockerHost())
+        .sslConfig(config.getSSLConfig())
+        .maxConnections(5)
+        .connectionTimeout(Duration.ofMillis(300))
+        .responseTimeout(Duration.ofSeconds(3))
+        .build();
 
     return new DockerClientConnectionChecked(DockerClientImpl.getInstance(config, httpClient));
   }

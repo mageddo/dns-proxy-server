@@ -5,6 +5,8 @@ public class Responses {
     if (r == null) {
       return false;
     }
-    return r.getMessage().getHeader().getFlag(flag);
+    return r.getMessage()
+        .getHeader()
+        .getFlag(flag);
   }
 }

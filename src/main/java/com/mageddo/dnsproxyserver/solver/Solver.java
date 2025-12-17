@@ -11,7 +11,8 @@ public interface Solver {
     return ClassUtils.getSimpleName(getClass());
   }
 
-  default boolean is(String name){
-    return this.name().equals(name);
+  default boolean is(String name) {
+    return this.name()
+        .equals(name);
   }
 }

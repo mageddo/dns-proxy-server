@@ -1,15 +1,17 @@
 package com.mageddo.dnsproxyserver.solver.remote.application;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+
 import com.mageddo.dnsproxyserver.solver.remote.Request;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.application.mapper.ResultMapper;
 import com.mageddo.net.IpAddr;
 import com.mageddo.net.NetExecutorWatchdog;
-import lombok.extern.slf4j.Slf4j;
+
 import org.xbill.DNS.Message;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class RemoteResultSupplier implements ResultSupplier {

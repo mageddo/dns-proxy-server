@@ -1,5 +1,12 @@
 package com.mageddo.json;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
+import java.lang.reflect.InvocationTargetException;
+
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -11,16 +18,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UncheckedIOException;
-import java.lang.reflect.InvocationTargetException;
-
 public final class JsonUtils {
 
-  public static final String PROVIDER_PATH = "/META-INF/services/com.mageddo.common.jackson.Providers";
+  public static final String PROVIDER_PATH = "/META-INF/services/com.mageddo.common.jackson"
+      + ".Providers";
 
   private static ObjectMapper instance;
   private static ObjectMapper prettyInstance;
@@ -56,9 +57,9 @@ public final class JsonUtils {
   public static ObjectMapper objectMapper() {
     final SimpleModule m = new SimpleModule();
     return new ObjectMapper()
-      .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-      .registerModule(new JavaTimeModule())
-      .registerModule(m);
+        .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+        .registerModule(new JavaTimeModule())
+        .registerModule(m);
   }
 
   public static ObjectMapper setInstance(ObjectMapper objectMapper) {
@@ -154,9 +155,12 @@ public final class JsonUtils {
         setInstance(objectMapper());
       } else {
         final Class<JsonConfig> clazz = (Class<JsonConfig>) Class.forName(line);
-        setInstance(clazz.getDeclaredConstructor().newInstance().objectMapper());
+        setInstance(clazz.getDeclaredConstructor()
+            .newInstance()
+            .objectMapper());
       }
-    } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException |
+    } catch (ClassNotFoundException | IllegalAccessException | InstantiationException |
+             NoSuchMethodException |
              InvocationTargetException e) {
       throw new RuntimeException(e);
     }

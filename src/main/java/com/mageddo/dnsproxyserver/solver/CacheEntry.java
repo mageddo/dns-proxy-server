@@ -1,10 +1,10 @@
 package com.mageddo.dnsproxyserver.solver;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
+
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)

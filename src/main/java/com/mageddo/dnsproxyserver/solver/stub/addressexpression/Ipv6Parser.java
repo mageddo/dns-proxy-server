@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.solver.stub.addressexpression;
 
 import com.mageddo.net.IP;
+
 import org.apache.commons.lang3.StringUtils;
 
 public class Ipv6Parser implements Parser {
@@ -9,7 +10,7 @@ public class Ipv6Parser implements Parser {
     if (isIpv6(addressExpression)) {
       try {
         return IP.of(addressExpression.replaceAll("-", ":"));
-      } catch (RuntimeException e){
+      } catch (RuntimeException e) {
         throw throwError(addressExpression);
       }
     }
@@ -21,7 +22,9 @@ public class Ipv6Parser implements Parser {
   }
 
   static boolean isIpv6(String addressExpression) {
-    return (addressExpression.contains("--") || StringUtils.countMatches(addressExpression, "-") >= IP.IPV4_BYTES)
-           && !addressExpression.contains(".");
+    return (addressExpression.contains("--") || StringUtils.countMatches(addressExpression,
+        "-"
+    ) >= IP.IPV4_BYTES)
+        && !addressExpression.contains(".");
   }
 }

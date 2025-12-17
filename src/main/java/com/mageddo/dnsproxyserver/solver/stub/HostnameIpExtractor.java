@@ -4,8 +4,10 @@ import com.mageddo.dns.Hostname;
 import com.mageddo.dnsproxyserver.solver.stub.addressexpression.AddressExpressions;
 import com.mageddo.dnsproxyserver.solver.stub.addressexpression.ParseException;
 import com.mageddo.net.IP;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.Validate;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class HostnameIpExtractor {
@@ -14,7 +16,9 @@ public class HostnameIpExtractor {
     try {
       return extract(hostname, domain);
     } catch (Exception e) {
-      log.info("status=failedToExtractIpFromHostname, hostname={}, msg={}", hostname, e.getMessage(), e);
+      log.info("status=failedToExtractIpFromHostname, hostname={}, msg={}", hostname,
+          e.getMessage(), e
+      );
       return null;
     }
   }

@@ -1,18 +1,20 @@
 package com.mageddo.dnsproxyserver.solver.remote.application;
 
+import java.net.InetSocketAddress;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import com.mageddo.commons.circuitbreaker.CircuitCheckException;
 import com.mageddo.commons.circuitbreaker.CircuitIsOpenException;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.application.failsafe.CircuitBreakerFactory;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.ClassUtils;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.net.InetSocketAddress;
-import java.util.function.Supplier;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j

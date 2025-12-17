@@ -1,5 +1,12 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Optional;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.config.application.Configs;
@@ -10,18 +17,14 @@ import com.mageddo.dnsproxyserver.solver.Solver;
 import com.mageddo.dnsproxyserver.solver.SolverCache;
 import com.mageddo.dnsproxyserver.solver.SolverProvider;
 import com.mageddo.dnsserver.RequestHandler;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.xbill.DNS.Message;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 
 import static com.mageddo.dns.utils.Messages.simplePrint;
 
@@ -37,12 +40,13 @@ public class RequestHandlerDefault implements RequestHandler {
 
   @Inject
   public RequestHandlerDefault(
-    SolverProvider solverProvider,
-    @CacheName(name = Name.GLOBAL) SolverCache cache
+      SolverProvider solverProvider,
+      @CacheName(name = Name.GLOBAL) SolverCache cache
   ) {
     this.solverProvider = solverProvider;
     this.cache = cache;
-    this.noEntriesRCode = Configs.getInstance().getNoEntriesResponseCode();
+    this.noEntriesRCode = Configs.getInstance()
+        .getNoEntriesResponseCode();
   }
 
   @Override
@@ -54,8 +58,8 @@ public class RequestHandlerDefault implements RequestHandler {
       return this.solveCaching(query, kind, stopWatch, queryStr);
     } catch (Exception e) {
       log.warn(
-        "status=solverFailed, totalTime={}, eClass={}, msg={}",
-        stopWatch.getTime(), ClassUtils.getSimpleName(e), e.getMessage(), e
+          "status=solverFailed, totalTime={}, eClass={}, msg={}",
+          stopWatch.getTime(), ClassUtils.getSimpleName(e), e.getMessage(), e
       );
       return this.buildDefaultRes(query);
     }
@@ -63,9 +67,11 @@ public class RequestHandlerDefault implements RequestHandler {
 
   Message solveCaching(Message query, String kind, StopWatch stopWatch, String queryStr) {
     final var res = Optional
-      .ofNullable(this.cache.handle(query, this::solveFixingCacheTTL))
-      .orElseGet(() -> this.buildDefaultRes(query));
-    log.debug("status=solveRes, kind={}, time={}, res={}, req={}", kind, stopWatch.getTime(), simplePrint(res), queryStr);
+        .ofNullable(this.cache.handle(query, this::solveFixingCacheTTL))
+        .orElseGet(() -> this.buildDefaultRes(query));
+    log.debug("status=solveRes, kind={}, time={}, res={}, req={}", kind, stopWatch.getTime(),
+        simplePrint(res), queryStr
+    );
     return res;
   }
 
@@ -93,21 +99,24 @@ public class RequestHandlerDefault implements RequestHandler {
     return null;
   }
 
-  Triple<String, Long, Response> solveAndSummarizeHandlingError(Message reqMsg, Solver solver, StopWatch stopWatch) {
+  Triple<String, Long, Response> solveAndSummarizeHandlingError(Message reqMsg, Solver solver,
+      StopWatch stopWatch) {
     final var solverName = solver.name();
     try {
       return this.solveAndSummarize(reqMsg, solver, stopWatch);
     } catch (Exception e) {
       log.warn(
-        "status=solverFailed, currentSolverTime={}, totalTime={}, solver={}, query={}, eClass={}, msg={}",
-        stopWatch.getTime() - stopWatch.getSplitTime(), stopWatch.getTime(), solverName,
-        simplePrint(reqMsg), ClassUtils.getSimpleName(e), e.getMessage(), e
+          "status=solverFailed, currentSolverTime={}, totalTime={}, solver={}, query={}, "
+              + "eClass={}, msg={}",
+          stopWatch.getTime() - stopWatch.getSplitTime(), stopWatch.getTime(), solverName,
+          simplePrint(reqMsg), ClassUtils.getSimpleName(e), e.getMessage(), e
       );
       return null;
     }
   }
 
-  Triple<String, Long, Response> solveAndSummarize(Message reqMsg, Solver solver, StopWatch stopWatch) {
+  Triple<String, Long, Response> solveAndSummarize(Message reqMsg, Solver solver,
+      StopWatch stopWatch) {
     stopWatch.split();
     final var solverName = solver.name();
     final var reqStr = simplePrint(reqMsg);
@@ -116,14 +125,14 @@ public class RequestHandlerDefault implements RequestHandler {
     final var solverTime = stopWatch.getTime() - stopWatch.getSplitTime();
     if (res == null) {
       log.trace(
-        "status=notSolved, currentSolverTime={}, totalTime={}, solver={}, req={}",
-        solverTime, stopWatch.getTime(), solverName, reqStr
+          "status=notSolved, currentSolverTime={}, totalTime={}, solver={}, req={}",
+          solverTime, stopWatch.getTime(), solverName, reqStr
       );
       return Triple.of(solverName, solverTime, null);
     }
     log.debug(
-      "status=solved, currentSolverTime={}, totalTime={}, solver={}, req={}, res={}",
-      solverTime, stopWatch.getTime(), solverName, reqStr, simplePrint(res)
+        "status=solved, currentSolverTime={}, totalTime={}, solver={}, req={}, res={}",
+        solverTime, stopWatch.getTime(), solverName, reqStr, simplePrint(res)
     );
     return Triple.of(solverName, solverTime, res);
   }

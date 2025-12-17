@@ -1,11 +1,11 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
-import com.mageddo.dnsproxyserver.dnsconfigurator.linux.ResolvFile.Type;
-
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
+import com.mageddo.dnsproxyserver.dnsconfigurator.linux.ResolvFile.Type;
 
 public class LinuxResolverConfDetector {
   public static Type detect(Path path) {
@@ -16,7 +16,8 @@ public class LinuxResolverConfDetector {
       return Type.RESOLVCONF;
     }
 
-    final var fileName = path.getFileName().toString();
+    final var fileName = path.getFileName()
+        .toString();
     if (fileName.equals("resolv.conf")) {
       return Type.RESOLVCONF;
     } else if (fileName.equals("resolved.conf")) {

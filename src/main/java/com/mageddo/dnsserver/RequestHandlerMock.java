@@ -1,9 +1,9 @@
 package com.mageddo.dnsserver;
 
-import org.xbill.DNS.Message;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.xbill.DNS.Message;
 
 public class RequestHandlerMock implements RequestHandler {
 
@@ -21,9 +21,9 @@ public class RequestHandlerMock implements RequestHandler {
 
   public Message getFirst() {
     return this.messages
-      .stream()
-      .findFirst()
-      .orElse(null)
-      ;
+        .stream()
+        .findFirst()
+        .orElse(null)
+        ;
   }
 }

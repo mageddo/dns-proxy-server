@@ -1,9 +1,9 @@
 package com.mageddo.dns.utils;
 
-import com.mageddo.dns.Hostname;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.mageddo.dns.Hostname;
 
 public class Wildcards {
   public static List<Hostname> buildHostAndWildcards(Hostname hostname) {

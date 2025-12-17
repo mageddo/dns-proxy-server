@@ -1,5 +1,7 @@
 package com.mageddo.dnsproxyserver.json.converter;
 
+import java.io.IOException;
+
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -8,12 +10,11 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.mageddo.net.IP;
 
-import java.io.IOException;
-
 public class IPConverter {
   public static class Serializer extends JsonSerializer<IP> {
     @Override
-    public void serialize(IP value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+    public void serialize(IP value, JsonGenerator gen, SerializerProvider serializers)
+        throws IOException {
       if (value == null) {
         gen.writeNull();
       } else {

@@ -8,7 +8,8 @@ import com.mageddo.dnsproxyserver.config.Config;
 public class EntryPredicate {
 
   public static Predicate<Config.Entry> nameMatches(String hostname) {
-    return it -> it.getHostname().matches(String.format(".*%s.*", hostname));
+    return it -> it.getHostname()
+        .matches(String.format(".*%s.*", hostname));
   }
 
   public static Predicate<Config.Entry> exactName(String hostname) {

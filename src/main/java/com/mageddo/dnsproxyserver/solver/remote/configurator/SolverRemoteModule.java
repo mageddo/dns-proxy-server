@@ -1,11 +1,12 @@
 package com.mageddo.dnsproxyserver.solver.remote.configurator;
 
+import javax.inject.Singleton;
+
 import com.mageddo.dnsproxyserver.solver.remote.dataprovider.SolverConsistencyGuaranteeDAO;
 import com.mageddo.dnsproxyserver.solver.remote.dataprovider.SolverConsistencyGuaranteeDAOImpl;
+
 import dagger.Binds;
 import dagger.Module;
-
-import javax.inject.Singleton;
 
 @Module
 public interface SolverRemoteModule {

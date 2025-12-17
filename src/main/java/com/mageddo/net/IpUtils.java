@@ -1,9 +1,10 @@
 package com.mageddo.net;
 
-import com.mageddo.commons.regex.Regexes;
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.regex.Pattern;
+
+import com.mageddo.commons.regex.Regexes;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class IpUtils {
 
@@ -20,22 +21,22 @@ public class IpUtils {
     return Regexes.matches(addr, IPV6_REGEX);
   }
 
-  public static String getIpv4AddressOnly(String addr){
+  public static String getIpv4AddressOnly(String addr) {
     final var groups = Regexes.groups(addr, IPV4_REGEX);
     return groups.get(IP_ADDR_GROUP);
   }
 
-  public static String getIpv4Port(String addr){
+  public static String getIpv4Port(String addr) {
     final var groups = Regexes.groups(addr, IPV4_REGEX);
     return groups.get(IP_PORT_GROUP);
   }
 
-  public static String getIpv6AddressOnly(String addr){
+  public static String getIpv6AddressOnly(String addr) {
     final var groups = Regexes.groups(addr, IPV6_REGEX);
     return groups.get(IP_ADDR_GROUP);
   }
 
-  public static String getIpv6Port(String addr){
+  public static String getIpv6Port(String addr) {
     final var groups = Regexes.groups(addr, IPV6_REGEX);
     return groups.get(IP_PORT_GROUP);
   }

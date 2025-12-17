@@ -1,8 +1,8 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
-import lombok.Value;
-
 import java.nio.file.Path;
+
+import lombok.Value;
 
 @Value
 public class ResolvFile {
@@ -28,7 +28,7 @@ public class ResolvFile {
     SYSTEMD_RESOLVED;
 
     public boolean isResolvconf() {
-       return this == RESOLVCONF;
+      return this == RESOLVCONF;
     }
 
     public boolean isResolved() {

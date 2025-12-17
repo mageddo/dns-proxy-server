@@ -1,11 +1,12 @@
 package com.mageddo.dnsproxyserver.config.dataformat.v2.legacyenv;
 
-import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.dataformat.v2.ConfigDAO;
-import lombok.RequiredArgsConstructor;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.ConfigDAO;
+
+import lombok.RequiredArgsConstructor;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)

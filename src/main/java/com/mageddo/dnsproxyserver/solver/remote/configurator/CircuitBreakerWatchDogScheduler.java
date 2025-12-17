@@ -1,15 +1,17 @@
 package com.mageddo.dnsproxyserver.solver.remote.configurator;
 
-import com.mageddo.commons.concurrent.ThreadPool;
-import com.mageddo.dnsproxyserver.di.StartupEvent;
-import com.mageddo.dnsproxyserver.solver.remote.application.failsafe.CircuitBreakerFactory;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
+import com.mageddo.commons.concurrent.ThreadPool;
+import com.mageddo.dnsproxyserver.di.StartupEvent;
+import com.mageddo.dnsproxyserver.solver.remote.application.failsafe.CircuitBreakerFactory;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Singleton
@@ -26,9 +28,9 @@ public class CircuitBreakerWatchDogScheduler implements StartupEvent {
 
   void logStats() {
     this.circuitBreakerFactory
-      .stats()
-      .forEach(stats -> {
-        log.debug("stats={}", stats);
-      });
+        .stats()
+        .forEach(stats -> {
+          log.debug("stats={}", stats);
+        });
   }
 }

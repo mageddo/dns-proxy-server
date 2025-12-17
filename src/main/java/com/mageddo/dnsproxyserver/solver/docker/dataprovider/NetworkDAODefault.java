@@ -1,5 +1,10 @@
 package com.mageddo.dnsproxyserver.solver.docker.dataprovider;
 
+import java.util.function.Predicate;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
 import com.mageddo.dnsproxyserver.docker.application.Containers;
@@ -9,14 +14,11 @@ import com.mageddo.dnsproxyserver.solver.docker.ContainerCompact;
 import com.mageddo.dnsproxyserver.solver.docker.Network;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.mapper.ContainerCompactMapper;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.mapper.NetworkMapper;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.tuple.Pair;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import java.util.function.Predicate;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import static com.mageddo.commons.lang.Objects.mapOrNull;
 
@@ -67,14 +69,14 @@ public class NetworkDAODefault implements NetworkDAO {
   @Override
   public void connectRunningContainersToNetwork(String networkName, Predicate<ContainerCompact> p) {
     this.dockerClient
-      .listContainersCmd()
-      .withStatusFilter(Containers.RUNNING_STATUS_LIST)
-      .exec()
-      .stream()
-      .filter(it -> Boolean.FALSE.equals(isHostNetwork(it)))
-      .filter(it -> !Containers.containsNetworkName(it, networkName))
-      .filter(it -> p.test(ContainerCompactMapper.of(it)))
-      .forEach(container -> this.connect(networkName, container.getId()))
+        .listContainersCmd()
+        .withStatusFilter(Containers.RUNNING_STATUS_LIST)
+        .exec()
+        .stream()
+        .filter(it -> Boolean.FALSE.equals(isHostNetwork(it)))
+        .filter(it -> !Containers.containsNetworkName(it, networkName))
+        .filter(it -> p.test(ContainerCompactMapper.of(it)))
+        .forEach(container -> this.connect(networkName, container.getId()))
     ;
   }
 

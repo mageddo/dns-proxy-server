@@ -11,10 +11,10 @@ public class DpsTokens {
 
   public static String uncomment(final String line) {
     return line
-      .substring(
-        2,
-        line
-          .indexOf(" " + COMMENT_END)
-      );
+        .substring(
+            2,
+            line
+                .indexOf(" " + COMMENT_END)
+        );
   }
 }

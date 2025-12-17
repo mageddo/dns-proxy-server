@@ -1,8 +1,8 @@
 package com.mageddo.utils;
 
-import com.mageddo.commons.concurrent.ThreadPool;
-
 import java.util.concurrent.ExecutorService;
+
+import com.mageddo.commons.concurrent.ThreadPool;
 
 public class Executors {
   public static ExecutorService newThreadExecutor() {

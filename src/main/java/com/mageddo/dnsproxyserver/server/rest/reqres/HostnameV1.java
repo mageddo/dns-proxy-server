@@ -19,22 +19,22 @@ public class HostnameV1 {
 
   public static HostnameV1 of(Config.Entry entry) {
     return new HostnameV1()
-      .setHostname(entry.getHostname())
-      .setIp(entry.getIpAsText())
-      .setTtl(entry.getTtl())
-      .setTarget(entry.getTarget())
-      .setType(entry.getType())
-      ;
+        .setHostname(entry.getHostname())
+        .setIp(entry.getIpAsText())
+        .setTtl(entry.getTtl())
+        .setTarget(entry.getTarget())
+        .setType(entry.getType())
+        ;
   }
 
   public Config.Entry toEntry() {
     return Config.Entry.builder()
-      .hostname(this.hostname)
-      .ttl(this.ttl)
-      .ip(IP.of(this.ip))
-      .type(this.type)
-      .target(this.target)
-      .build()
-      ;
+        .hostname(this.hostname)
+        .ttl(this.ttl)
+        .ip(IP.of(this.ip))
+        .type(this.type)
+        .target(this.target)
+        .build()
+        ;
   }
 }

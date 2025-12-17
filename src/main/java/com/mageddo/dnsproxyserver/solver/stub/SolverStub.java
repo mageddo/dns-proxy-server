@@ -1,5 +1,8 @@
 package com.mageddo.dnsproxyserver.solver.stub;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.ConfigEntryTypes;
@@ -7,12 +10,11 @@ import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.solver.Response;
 import com.mageddo.dnsproxyserver.solver.ResponseMapper;
 import com.mageddo.dnsproxyserver.solver.Solver;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.xbill.DNS.Message;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import static com.mageddo.dns.utils.Messages.findQuestionTypeCode;
 
@@ -32,7 +34,9 @@ public class SolverStub implements Solver {
   public Response handle(Message query) {
     final var questionType = Messages.findQuestionType(query);
     if (ConfigEntryTypes.isNot(questionType, Config.Entry.Type.A, Config.Entry.Type.AAAA)) {
-      log.debug("status=unsupportedType, type={}, query={}", findQuestionTypeCode(query), Messages.simplePrint(query));
+      log.debug("status=unsupportedType, type={}, query={}", findQuestionTypeCode(query),
+          Messages.simplePrint(query)
+      );
       return null;
     }
 
@@ -48,7 +52,9 @@ public class SolverStub implements Solver {
       return null;
     }
     if (!foundIp.isVersionEqualsTo(questionType.toVersion())) {
-      log.debug("status=incompatibleIpAndQueryType, hostname={}, questionType={}", hostname, questionType);
+      log.debug("status=incompatibleIpAndQueryType, hostname={}, questionType={}", hostname,
+          questionType
+      );
       return Response.nxDomain(query);
     }
     log.debug("status=solved, host={}, ip={}", hostname, foundIp);
@@ -57,7 +63,7 @@ public class SolverStub implements Solver {
 
   String findDomainName() {
     return Configs.getInstance()
-      .getSolverStub()
-      .getDomainName();
+        .getSolverStub()
+        .getDomainName();
   }
 }

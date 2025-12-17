@@ -1,16 +1,17 @@
 package com.mageddo.net;
 
-import com.mageddo.commons.circuitbreaker.CircuitCheckException;
-import com.mageddo.commons.concurrent.Threads;
-import com.mageddo.dnsproxyserver.utils.InetAddresses;
-import com.mageddo.utils.Executors;
-import lombok.extern.slf4j.Slf4j;
-
 import java.net.InetSocketAddress;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+
+import com.mageddo.commons.circuitbreaker.CircuitCheckException;
+import com.mageddo.commons.concurrent.Threads;
+import com.mageddo.dnsproxyserver.utils.InetAddresses;
+import com.mageddo.utils.Executors;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class NetExecutorWatchdog implements AutoCloseable {
@@ -23,10 +24,11 @@ public class NetExecutorWatchdog implements AutoCloseable {
    * Will ping the #pingAddr while waiting the future to be done, which occurs first will return,
    * if ping fails, exception is thrown. "future.get()" won't be called.
    */
-  public <T> CompletableFuture<T> watch(IpAddr pingAddr, CompletableFuture<T> future, int pingTimeoutInMs) {
+  public <T> CompletableFuture<T> watch(IpAddr pingAddr, CompletableFuture<T> future,
+      int pingTimeoutInMs) {
 
     final var pingFuture = this.threadPool.submit(
-      () -> Networks.ping(pingAddr.getRawIP(), pingAddr.getPort(), pingTimeoutInMs)
+        () -> Networks.ping(pingAddr.getRawIP(), pingAddr.getPort(), pingTimeoutInMs)
     );
 
     boolean mustCheckPing = true;
@@ -48,11 +50,12 @@ public class NetExecutorWatchdog implements AutoCloseable {
     try {
       final var pingSuccess = pingFuture.get();
       log.debug(
-        "stats=pingTested, success={}, address={}:{}", pingSuccess, address.getAddress(), address.getPort()
+          "stats=pingTested, success={}, address={}:{}", pingSuccess, address.getAddress(),
+          address.getPort()
       );
       if (!pingSuccess) {
         throw new CircuitCheckException(String.format(
-          "Failed to ping address: %s:%s", address.getAddress(), address.getPort()
+            "Failed to ping address: %s:%s", address.getAddress(), address.getPort()
         ));
       }
     } catch (InterruptedException ignored) {

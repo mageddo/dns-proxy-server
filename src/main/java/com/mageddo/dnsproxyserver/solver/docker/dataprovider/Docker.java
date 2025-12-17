@@ -1,16 +1,18 @@
 package com.mageddo.dnsproxyserver.solver.docker.dataprovider;
 
-import com.github.dockerjava.api.command.InspectContainerResponse;
-import com.github.dockerjava.api.model.ContainerConfig;
-import com.mageddo.dnsproxyserver.docker.application.Labels;
-import com.mageddo.dns.Hostname;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import com.github.dockerjava.api.command.InspectContainerResponse;
+import com.github.dockerjava.api.model.ContainerConfig;
+import com.mageddo.dns.Hostname;
+import com.mageddo.dnsproxyserver.docker.application.Labels;
+
+import org.apache.commons.lang3.StringUtils;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Docker {
@@ -29,14 +31,14 @@ public class Docker {
 
   static Set<Hostname> buildHostnamesFromServiceOrContainerNames(InspectContainerResponse container, String domain) {
     return Stream
-      .of(
-        buildFromContainerName(container, domain),
-        buildFromServiceName(container, domain)
-      )
-      .filter(Objects::nonNull)
-      .map(Hostname::of)
-      .collect(Collectors.toSet())
-      ;
+        .of(
+            buildFromContainerName(container, domain),
+            buildFromServiceName(container, domain)
+        )
+        .filter(Objects::nonNull)
+        .map(Hostname::of)
+        .collect(Collectors.toSet())
+        ;
   }
 
   static String buildFromServiceName(InspectContainerResponse container, String domain) {

@@ -1,14 +1,16 @@
 package com.mageddo.dnsproxyserver.solver;
 
-import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dns.Hostname;
 import com.mageddo.dns.utils.Wildcards;
+import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.net.IP;
+
+import org.apache.commons.lang3.StringUtils;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.Value;
-import org.apache.commons.lang3.StringUtils;
 
 @Value
 @Builder
@@ -41,20 +43,20 @@ public class HostnameQuery {
 
   public static HostnameQuery of(Hostname hostname, IP.Version version) {
     return HostnameQuery
-      .builder()
-      .hostname(hostname)
-      .version(version)
-      .build();
+        .builder()
+        .hostname(hostname)
+        .version(version)
+        .build();
   }
 
   public static HostnameQuery of(Hostname hostname, boolean wildcards, boolean regex) {
     return HostnameQuery
-      .builder()
-      .hostname(hostname)
-      .useWildcards(wildcards)
-      .useRegex(regex)
-      .version(IP.Version.IPV4)
-      .build();
+        .builder()
+        .hostname(hostname)
+        .useWildcards(wildcards)
+        .useRegex(regex)
+        .version(IP.Version.IPV4)
+        .build();
   }
 
   public static HostnameQuery of(String hostname) {
@@ -75,11 +77,11 @@ public class HostnameQuery {
 
   public static HostnameQuery ofWildcard(Hostname hostname, IP.Version version) {
     return builder()
-      .hostname(hostname)
-      .version(version)
-      .useWildcards(true)
-      .useRegex(false)
-      .build();
+        .hostname(hostname)
+        .version(version)
+        .useWildcards(true)
+        .useRegex(false)
+        .build();
   }
 
   public static HostnameQuery ofRegex(String hostname) {
@@ -96,11 +98,11 @@ public class HostnameQuery {
 
   public static HostnameQuery ofRegex(Hostname hostname, IP.Version version) {
     return builder()
-      .hostname(hostname)
-      .version(version)
-      .useWildcards(false)
-      .useRegex(true)
-      .build();
+        .hostname(hostname)
+        .version(version)
+        .useWildcards(false)
+        .useRegex(true)
+        .build();
   }
 
   public static HostnameQuery of(String hostname, IP.Version version) {
@@ -121,11 +123,12 @@ public class HostnameQuery {
       }
       return false;
     }
-    if (this.useRegex && hostnamePattern.startsWith(REGEX_TAG) && hostnamePattern.endsWith(REGEX_TAG)) {
+    if (this.useRegex && hostnamePattern.startsWith(REGEX_TAG) && hostnamePattern.endsWith(
+        REGEX_TAG)) {
       return this.hostname
-        .getCanonicalValue()
-        .matches(StringUtils.substringBetween(hostnamePattern, REGEX_TAG, REGEX_TAG))
-        ;
+          .getCanonicalValue()
+          .matches(StringUtils.substringBetween(hostnamePattern, REGEX_TAG, REGEX_TAG))
+          ;
     }
     return this.hostname.isEqualTo(hostnamePattern);
   }

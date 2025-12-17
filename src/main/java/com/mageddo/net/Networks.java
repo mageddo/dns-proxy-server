@@ -1,11 +1,5 @@
 package com.mageddo.net;
 
-import com.github.dockerjava.api.model.Container;
-import com.github.dockerjava.api.model.ContainerNetwork;
-import com.mageddo.dnsproxyserver.utils.Ips;
-import lombok.SneakyThrows;
-import org.apache.commons.lang3.StringUtils;
-
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
@@ -15,6 +9,14 @@ import java.net.UnknownHostException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+
+import com.github.dockerjava.api.model.Container;
+import com.github.dockerjava.api.model.ContainerNetwork;
+import com.mageddo.dnsproxyserver.utils.Ips;
+
+import org.apache.commons.lang3.StringUtils;
+
+import lombok.SneakyThrows;
 
 public class Networks {
 
@@ -27,43 +29,46 @@ public class Networks {
   @SneakyThrows
   public static IP findCurrentMachineIP(IP.Version version) {
     return findMachineIps()
-      .stream()
-      .filter(it -> it.version() == version) // todo needs a filter to exclude virtual network cards
-      .min(Comparator.comparing(it -> {
-        return it.isLoopback() ? Integer.MAX_VALUE : 0;
-      }))
-      .orElse(null);
+        .stream()
+        .filter(
+            it -> it.version() == version) // todo needs a filter to exclude virtual network cards
+        .min(Comparator.comparing(it -> {
+          return it.isLoopback() ? Integer.MAX_VALUE : 0;
+        }))
+        .orElse(null);
   }
 
   /**
-   * The "relevance" is understood as the IP which have most chances of represent the real hardware network interface,
+   * The "relevance" is understood as the IP which have most chances of represent the real
+   * hardware network interface,
    * we say "most chances" beucase java api haven't deterministic information on that.
    *
    * @return Machine ips ordered by relevance.
    */
   static List<IP> findMachineIps() {
     return findInterfaces()
-      .stream()
-      .sorted(Comparator.comparingInt(NetworkInterface::getIndex))
-      .flatMap(NetworkInterface::inetAddresses)
-      .map(it -> IP.of(it.getAddress()))
-      .toList()
-      ;
+        .stream()
+        .sorted(Comparator.comparingInt(NetworkInterface::getIndex))
+        .flatMap(NetworkInterface::inetAddresses)
+        .map(it -> IP.of(it.getAddress()))
+        .toList()
+        ;
   }
 
   static List<NetworkInterface> findInterfaces() {
     return network.findNetworkInterfaces()
-      .filter(it -> {
-        try {
-          return it.isUp();
-        } catch (SocketException e) {
-          return false;
-        }
-      })
-      .toList();
+        .filter(it -> {
+          try {
+            return it.isUp();
+          } catch (SocketException e) {
+            return false;
+          }
+        })
+        .toList();
   }
 
-  // todo methods below are docker related methods so supposed to be on com.mageddo.dnsproxyserver.docker.net package
+  // todo methods below are docker related methods so supposed to be on com.mageddo
+  // .dnsproxyserver.docker.net package
   public static String findIpv4Address(String networkName, Container container) {
     final var containerNetwork = findContainerNetwork(networkName, container);
     if (containerNetwork == null) {
@@ -78,24 +83,24 @@ public class Networks {
       return null;
     }
     return settings
-      .getNetworks()
-      .get(networkName);
+        .getNetworks()
+        .get(networkName);
   }
 
   public static String findIpv4Address(ContainerNetwork containerNetwork) {
     return Optional
-      .ofNullable(containerNetwork)
-      .map(ContainerNetwork::getIpAddress)
-      .map(StringUtils::trimToNull)
-      .orElse(null);
+        .ofNullable(containerNetwork)
+        .map(ContainerNetwork::getIpAddress)
+        .map(StringUtils::trimToNull)
+        .orElse(null);
   }
 
   public static String findIpv6Address(ContainerNetwork containerNetwork) {
     return Optional
-      .ofNullable(containerNetwork)
-      .map(ContainerNetwork::getGlobalIPv6Address)
-      .map(StringUtils::trimToNull)
-      .orElse(null);
+        .ofNullable(containerNetwork)
+        .map(ContainerNetwork::getGlobalIPv6Address)
+        .map(StringUtils::trimToNull)
+        .orElse(null);
   }
 
   public static String findIP(ContainerNetwork network, IP.Version version) {

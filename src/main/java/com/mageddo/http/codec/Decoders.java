@@ -7,7 +7,7 @@ public class Decoders {
   private Decoders() {
   }
 
-  public static  <T> T jsonDecode(HttpExchange exchange, Class<T> clazz) {
+  public static <T> T jsonDecode(HttpExchange exchange, Class<T> clazz) {
     return new DecoderJson().decode(exchange, clazz);
   }
 }

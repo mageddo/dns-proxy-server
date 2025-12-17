@@ -1,11 +1,11 @@
 package com.mageddo.dnsproxyserver.solver.docker.dataprovider;
 
 
+import java.util.function.Predicate;
+
 import com.mageddo.dnsproxyserver.docker.domain.NetworkConnectionStatus;
 import com.mageddo.dnsproxyserver.solver.docker.ContainerCompact;
 import com.mageddo.dnsproxyserver.solver.docker.Network;
-
-import java.util.function.Predicate;
 
 public interface NetworkDAO {
 

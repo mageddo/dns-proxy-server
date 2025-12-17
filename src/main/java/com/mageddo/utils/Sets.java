@@ -9,7 +9,7 @@ public class Sets {
 
   public static <T> Set<T> ordered(T... o) {
     return Stream.of(o)
-      .collect(Collectors.toCollection(LinkedHashSet::new))
-      ;
+        .collect(Collectors.toCollection(LinkedHashSet::new))
+        ;
   }
 }

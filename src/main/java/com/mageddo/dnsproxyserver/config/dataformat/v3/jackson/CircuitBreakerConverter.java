@@ -14,7 +14,6 @@ import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.NonResilientCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.dataformat.v3.ConfigV3;
 import com.mageddo.dnsproxyserver.config.dataformat.v3.ConfigV3.StaticThreshold;
-
 import com.mageddo.json.JsonUtils;
 
 import org.apache.commons.lang3.EnumUtils;

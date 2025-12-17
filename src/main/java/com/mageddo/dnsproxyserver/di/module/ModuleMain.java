@@ -1,11 +1,12 @@
 package com.mageddo.dnsproxyserver.di.module;
 
-import com.mageddo.dnsserver.RequestHandler;
+import javax.inject.Singleton;
+
 import com.mageddo.dnsproxyserver.server.dns.RequestHandlerDefault;
+import com.mageddo.dnsserver.RequestHandler;
+
 import dagger.Binds;
 import dagger.Module;
-
-import javax.inject.Singleton;
 
 @Module
 public interface ModuleMain {

@@ -1,14 +1,16 @@
 package com.mageddo.net;
 
-import com.google.common.net.InetAddresses;
-import com.mageddo.dnsproxyserver.utils.Ips;
-import com.mageddo.utils.Bytes;
-import lombok.EqualsAndHashCode;
-import org.apache.commons.lang3.StringUtils;
-
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Objects;
+
+import com.google.common.net.InetAddresses;
+import com.mageddo.dnsproxyserver.utils.Ips;
+import com.mageddo.utils.Bytes;
+
+import org.apache.commons.lang3.StringUtils;
+
+import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(of = "ip")
 class IpImpl implements IP {
@@ -97,8 +99,8 @@ class IpImpl implements IP {
 
   static RuntimeException invalidAddressEx(Throwable e) {
     return new RuntimeException(
-      String.format("Array of bytes is not a valid IP representation: %s", e.getMessage()),
-      e
+        String.format("Array of bytes is not a valid IP representation: %s", e.getMessage()),
+        e
     );
   }
 }

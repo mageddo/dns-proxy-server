@@ -1,11 +1,5 @@
 package com.mageddo.dnsserver;
 
-import com.mageddo.commons.concurrent.Threads;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.time.StopWatch;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -15,6 +9,14 @@ import java.net.SocketAddress;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import com.mageddo.commons.concurrent.Threads;
+
+import org.apache.commons.lang3.time.StopWatch;
+
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @EqualsAndHashCode(of = "id")
@@ -79,8 +81,8 @@ public class SocketClient implements Runnable, AutoCloseable {
       this.read(in);
     } catch (IOException e) {
       log.warn(
-        "status=unexpected-client-close, client={}, runTime={}, msg={}",
-        this, stopWatch.getTime(), e.getMessage(), e
+          "status=unexpected-client-close, client={}, runTime={}, msg={}",
+          this, stopWatch.getTime(), e.getMessage(), e
       );
     } finally {
       log.debug("status=finalizeClient, client={}, runTime={}", this, stopWatch.getTime());
@@ -115,15 +117,17 @@ public class SocketClient implements Runnable, AutoCloseable {
   }
 
   public boolean isOpen() {
-    return !Thread.currentThread().isInterrupted()
-      && this.socket.isConnected()
-      && !this.socket.isClosed()
-      && !this.socket.isInputShutdown()
-      && !this.socket.isInputShutdown();
+    return !Thread.currentThread()
+        .isInterrupted()
+        && this.socket.isConnected()
+        && !this.socket.isClosed()
+        && !this.socket.isInputShutdown()
+        && !this.socket.isInputShutdown();
   }
 
   public String getId() {
-    return String.valueOf(this.id).substring(0, 8) + this.getSocketAddress();
+    return String.valueOf(this.id)
+        .substring(0, 8) + this.getSocketAddress();
   }
 
   public SocketAddress getSocketAddress() {

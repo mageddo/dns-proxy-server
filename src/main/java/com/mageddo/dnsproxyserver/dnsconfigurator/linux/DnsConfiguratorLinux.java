@@ -1,5 +1,17 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
+import java.nio.file.Path;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Predicate;
+
+import javax.enterprise.inject.Default;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.dnsconfigurator.DnsConfigurator;
@@ -10,20 +22,11 @@ import com.mageddo.io.path.predicate.PathIsFilePredicate;
 import com.mageddo.io.path.predicate.PathIsWritablePredicate;
 import com.mageddo.net.IpAddr;
 import com.mageddo.utils.Tests;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.ClassUtils;
 
-import javax.enterprise.inject.Default;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.nio.file.Path;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Predicate;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import static com.mageddo.dnsproxyserver.utils.Splits.splitToPaths;
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
@@ -38,9 +41,9 @@ public class DnsConfiguratorLinux implements DnsConfigurator {
 
   private volatile AtomicReference<ResolvFile> confFile;
   private final List<Predicate<Path>> pathPredicates = List.of(
-    new PathExistsPredicate(),
-    new PathIsFilePredicate(),
-    new PathIsWritablePredicate()
+      new PathExistsPredicate(),
+      new PathIsFilePredicate(),
+      new PathIsWritablePredicate()
   );
 
   @Override
@@ -66,8 +69,8 @@ public class DnsConfiguratorLinux implements DnsConfigurator {
 
   private boolean isOverrideNameServersActive() {
     return Configs
-      .getInstance()
-      .isResolvConfOverrideNameServersActive();
+        .getInstance()
+        .isResolvConfOverrideNameServersActive();
   }
 
   @Override
@@ -95,43 +98,47 @@ public class DnsConfiguratorLinux implements DnsConfigurator {
 
   ResolvFile findBestConfFile() {
     return this.buildConfPaths()
-      .stream()
-      .filter(it -> {
-          final var unmetPredicate = this.findUnmetPredicate(it);
-          unmetPredicate.ifPresent(pathPredicate -> {
-            log.info("status=noValidConfFile, file={}, condition={}", it, ClassUtils.getSimpleName(pathPredicate));
-          });
-          return unmetPredicate.isEmpty();
-        }
-      )
-      .map(this::toResolvFile)
-      .findFirst()
-      .orElse(null)
-      ;
+        .stream()
+        .filter(it -> {
+              final var unmetPredicate = this.findUnmetPredicate(it);
+              unmetPredicate.ifPresent(pathPredicate -> {
+                log.info("status=noValidConfFile, file={}, condition={}", it,
+                    ClassUtils.getSimpleName(pathPredicate)
+                );
+              });
+              return unmetPredicate.isEmpty();
+            }
+        )
+        .map(this::toResolvFile)
+        .findFirst()
+        .orElse(null)
+        ;
   }
 
   private Optional<Predicate<Path>> findUnmetPredicate(Path it) {
     return this.pathPredicates
-      .stream()
-      .filter(p -> !p.test(it))
-      .findFirst();
+        .stream()
+        .filter(p -> !p.test(it))
+        .findFirst();
   }
 
   List<Path> buildConfPaths() {
     return Objects.firstNonNull(
-      splitToPaths(getConfigResolvPaths()),
-      Collections.emptyList()
+        splitToPaths(getConfigResolvPaths()),
+        Collections.emptyList()
     );
   }
 
   String getConfigResolvPaths() {
     return Configs.getInstance()
-      .getDefaultDnsResolvConfPaths()
-      ;
+        .getDefaultDnsResolvConfPaths()
+        ;
   }
 
   ResolvFile toResolvFile(Path path) {
-    return ResolvFile.of(path, firstNonNull(LinuxResolverConfDetector.detect(path), Type.RESOLVCONF));
+    return ResolvFile.of(path,
+        firstNonNull(LinuxResolverConfDetector.detect(path), Type.RESOLVCONF)
+    );
   }
 
   void init() {
@@ -142,7 +149,8 @@ public class DnsConfiguratorLinux implements DnsConfigurator {
   }
 
   private RuntimeException newUnsupportedConfType(ResolvFile confFile) {
-    return new UnsupportedOperationException(String.format("conf file not supported: %s", confFile));
+    return new UnsupportedOperationException(
+        String.format("conf file not supported: %s", confFile));
   }
 
   private void configureResolved(IpAddr addr, ResolvFile confFile) {
@@ -161,9 +169,9 @@ public class DnsConfiguratorLinux implements DnsConfigurator {
       ResolvedService.restart();
     } catch (Throwable e) {
       log.warn(
-        "status=can't restart resolved service, please run: "
-        + "'service systemd-resolved restart' to apply DPS as default DNS.\n{}",
-        e.getMessage()
+          "status=can't restart resolved service, please run: "
+              + "'service systemd-resolved restart' to apply DPS as default DNS.\n{}",
+          e.getMessage()
       );
     }
   }

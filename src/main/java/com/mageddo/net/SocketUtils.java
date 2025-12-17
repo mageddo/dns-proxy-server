@@ -1,8 +1,8 @@
 package com.mageddo.net;
 
-import lombok.SneakyThrows;
-
 import java.net.ServerSocket;
+
+import lombok.SneakyThrows;
 
 public class SocketUtils {
 
@@ -15,7 +15,7 @@ public class SocketUtils {
   }
 
   @SneakyThrows
-  public static ServerSocket createServerOnRandomPort(){
+  public static ServerSocket createServerOnRandomPort() {
     return new ServerSocket(0);
   }
 }

@@ -1,16 +1,18 @@
 package com.mageddo.dnsproxyserver.docker.application;
 
-import com.github.dockerjava.api.DockerClient;
-import com.mageddo.commons.concurrent.ThreadPool;
-import com.mageddo.os.Platform;
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
-import lombok.extern.slf4j.Slf4j;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.time.Duration;
-import java.time.LocalDateTime;
+
+import com.github.dockerjava.api.DockerClient;
+import com.mageddo.commons.concurrent.ThreadPool;
+import com.mageddo.os.Platform;
+
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Singleton
@@ -34,7 +36,9 @@ public class DockerConnectionCheck {
       }
       return this.status.isConnected();
     }
-    log.trace("docker features still not supported on this platform :/ , hold tight I'm working hard to fix it someday :D");
+    log.trace(
+        "docker features still not supported on this platform :/ , hold tight I'm working hard to"
+            + " fix it someday :D");
     return false; // todo support all platforms...
   }
 
@@ -55,15 +59,15 @@ public class DockerConnectionCheck {
 
   void triggerUpdate() {
     ThreadPool
-      .main()
-      .submit(this::updateStatus);
+        .main()
+        .submit(this::updateStatus);
   }
 
   private boolean hasExpired() {
     return this.status != null &&
-      Duration
-        .between(this.status.getCreatedAt(), LocalDateTime.now())
-        .compareTo(getTtl()) >= 1;
+        Duration
+            .between(this.status.getCreatedAt(), LocalDateTime.now())
+            .compareTo(getTtl()) >= 1;
   }
 
   static Duration getTtl() {
@@ -72,7 +76,8 @@ public class DockerConnectionCheck {
 
   private Status buildStatus() {
     try {
-      this.client.versionCmd().exec();
+      this.client.versionCmd()
+          .exec();
       return Status.connected();
     } catch (Throwable e) {
       return Status.disconnected();

@@ -1,11 +1,11 @@
 package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application;
 
+import java.util.function.Supplier;
+
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.statetransitor.NopStateTransitor;
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.statetransitor.StateTransitor;
-
-import java.util.function.Supplier;
 
 public class CircuitBreakerDelegateNonResilient implements CircuitBreakerDelegate {
 

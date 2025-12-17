@@ -1,15 +1,17 @@
 package com.mageddo.wait;
 
-import com.mageddo.commons.concurrent.Threads;
-import lombok.Setter;
-import lombok.experimental.Accessors;
-import org.apache.commons.lang3.time.StopWatch;
-
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import com.mageddo.commons.concurrent.Threads;
+
+import org.apache.commons.lang3.time.StopWatch;
+
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 @Accessors(chain = true, fluent = true)
 public class Wait<T> {
@@ -53,14 +55,15 @@ public class Wait<T> {
 
       Threads.sleep(this.pollingEvery);
     }
-    if(this.lastException != null){
+    if (this.lastException != null) {
       throw new UnsatisfiedConditionException(this.lastException);
     }
     throw new UnsatisfiedConditionException();
   }
 
   private boolean shouldContinue(StopWatch stopWatch) {
-    final var notInterrupted = !Thread.currentThread().isInterrupted();
+    final var notInterrupted = !Thread.currentThread()
+        .isInterrupted();
     return notInterrupted && stopWatch.getTime() < this.timeout.toMillis();
   }
 

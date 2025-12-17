@@ -1,10 +1,10 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
-import com.mageddo.conf.parser.Entry;
-import com.mageddo.conf.parser.Transformer;
-
 import java.util.Set;
 import java.util.function.Supplier;
+
+import com.mageddo.conf.parser.Entry;
+import com.mageddo.conf.parser.Transformer;
 
 public class ConfigureDPSHandler implements Transformer {
 
@@ -16,7 +16,8 @@ public class ConfigureDPSHandler implements Transformer {
 
   @Override
   public String handle(Entry entry) {
-    return switch (entry.getType().name()) {
+    return switch (entry.getType()
+        .name()) {
       case EntryTypes.DPS_SERVER -> this.dpsDnsLineBuilder.get();
       case EntryTypes.SERVER -> DpsTokens.comment(entry.getLine());
       default -> entry.getLine();

@@ -1,9 +1,9 @@
 package com.mageddo.dnsproxyserver.config;
 
+import java.time.Duration;
+
 import lombok.Builder;
 import lombok.Value;
-
-import java.time.Duration;
 
 
 @Value
@@ -27,7 +27,8 @@ public class StaticThresholdCircuitBreakerStrategyConfig implements CircuitBreak
   private Duration testDelay;
 
   public static StaticThresholdCircuitBreakerStrategyConfig empty() {
-    return StaticThresholdCircuitBreakerStrategyConfig.builder().build();
+    return StaticThresholdCircuitBreakerStrategyConfig.builder()
+        .build();
   }
 
   @Override

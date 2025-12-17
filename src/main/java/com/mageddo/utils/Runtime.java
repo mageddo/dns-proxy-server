@@ -1,13 +1,14 @@
 package com.mageddo.utils;
 
-import lombok.SneakyThrows;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import org.apache.commons.lang3.ObjectUtils;
 import org.graalvm.nativeimage.ImageInfo;
 import org.graalvm.nativeimage.ProcessProperties;
 
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import lombok.SneakyThrows;
 
 public class Runtime {
 
@@ -32,7 +33,8 @@ public class Runtime {
 
   public static Path getRunningDir() {
     if (ImageInfo.inImageRuntimeCode()) {
-      return Paths.get(ProcessProperties.getExecutableName()).getParent();
+      return Paths.get(ProcessProperties.getExecutableName())
+          .getParent();
     }
     final var path = getRunningPath();
     if (isJar(path)) {
@@ -47,26 +49,26 @@ public class Runtime {
 
   public static boolean isJar(Path jarPath) {
     return jarPath.toString()
-      .endsWith(".jar");
+        .endsWith(".jar");
   }
 
   private static URL getRunningURL() {
     return ObjectUtils.firstNonNull(
-      getUrlWhenNotJar(),
-      getUrlWhenJarAndNotJar()
+        getUrlWhenNotJar(),
+        getUrlWhenJarAndNotJar()
     );
   }
 
   private static URL getUrlWhenNotJar() {
     return Runtime.class
-      .getClassLoader()
-      .getResource(".");
+        .getClassLoader()
+        .getResource(".");
   }
 
   private static URL getUrlWhenJarAndNotJar() {
     return Runtime.class
-      .getProtectionDomain()
-      .getCodeSource()
-      .getLocation();
+        .getProtectionDomain()
+        .getCodeSource()
+        .getLocation();
   }
 }

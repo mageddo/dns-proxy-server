@@ -1,12 +1,13 @@
 package com.mageddo.dnsproxyserver.docker.dataprovider;
 
+import java.util.List;
+
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.ContainerNetwork;
 import com.github.dockerjava.api.model.Network;
 import com.mageddo.dnsproxyserver.docker.domain.NetworkConnectionStatus;
-import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.List;
+import org.apache.commons.lang3.tuple.Pair;
 
 public interface DockerNetworkFacade {
 

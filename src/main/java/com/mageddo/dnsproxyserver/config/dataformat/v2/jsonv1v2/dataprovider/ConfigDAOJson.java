@@ -1,15 +1,17 @@
 package com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider;
 
+import java.nio.file.Path;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.application.ConfigFileFinderService;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.ConfigDAO;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.mapper.ConfigJsonV2Mapper;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.nio.file.Path;
 
 @Slf4j
 @Singleton

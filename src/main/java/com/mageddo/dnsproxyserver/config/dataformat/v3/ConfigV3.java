@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.DurationDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.DurationSerializer;
 import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
-
 import com.mageddo.dnsproxyserver.config.dataformat.v3.jackson.CircuitBreakerConverter;
 
 import lombok.AccessLevel;

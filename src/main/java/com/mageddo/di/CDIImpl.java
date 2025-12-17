@@ -1,14 +1,16 @@
 package com.mageddo.di;
 
-import com.mageddo.dnsproxyserver.di.Context;
-import lombok.RequiredArgsConstructor;
+import java.lang.annotation.Annotation;
+import java.util.Iterator;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.util.TypeLiteral;
-import java.lang.annotation.Annotation;
-import java.util.Iterator;
+
+import com.mageddo.dnsproxyserver.di.Context;
+
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class CDIImpl extends CDI<Object> {

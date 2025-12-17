@@ -1,9 +1,9 @@
 package com.mageddo.dnsproxyserver.docker.application;
 
+import java.util.Map;
+
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.ContainerConfig;
-
-import java.util.Map;
 
 public class Labels {
 

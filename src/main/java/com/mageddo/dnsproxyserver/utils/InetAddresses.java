@@ -1,8 +1,8 @@
 package com.mageddo.dnsproxyserver.utils;
 
-import com.mageddo.net.IpAddr;
-
 import java.net.InetSocketAddress;
+
+import com.mageddo.net.IpAddr;
 
 public class InetAddresses {
 
@@ -11,6 +11,8 @@ public class InetAddresses {
   }
 
   public static InetSocketAddress toSocketAddress(IpAddr dns) {
-    return new InetSocketAddress(Ips.toAddress(dns.getIp().toText()), dns.getPort());
+    return new InetSocketAddress(Ips.toAddress(dns.getIp()
+        .toText()), dns.getPort()
+    );
   }
 }

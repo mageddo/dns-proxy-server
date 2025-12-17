@@ -1,13 +1,14 @@
 package com.mageddo.dnsproxyserver.usecase;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DpsContainerDAO;
 import com.mageddo.net.IP;
 import com.mageddo.net.Networks;
-import lombok.RequiredArgsConstructor;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import lombok.RequiredArgsConstructor;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)

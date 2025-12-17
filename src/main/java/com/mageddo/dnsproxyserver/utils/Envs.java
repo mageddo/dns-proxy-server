@@ -1,18 +1,18 @@
 package com.mageddo.dnsproxyserver.utils;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Envs {
 
   public static Path getPathOrDefault(String env, Path def) {
     return Optional
-      .ofNullable(getPathOrNull(env))
-      .orElse(def);
+        .ofNullable(getPathOrNull(env))
+        .orElse(def);
   }
 
   public static Path getPathOrNull(String env) {
@@ -37,7 +37,7 @@ public class Envs {
   }
 
   static Boolean parseBoolean(String v) {
-    if(StringUtils.isBlank(v)){
+    if (StringUtils.isBlank(v)) {
       return null;
     }
     return Objects.equals(v, "1") || StringUtils.equalsIgnoreCase(v, "true");

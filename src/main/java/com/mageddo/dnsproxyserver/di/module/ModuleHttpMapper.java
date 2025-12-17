@@ -1,17 +1,19 @@
 package com.mageddo.dnsproxyserver.di.module;
 
+import java.util.Set;
+
+import javax.inject.Singleton;
+
 import com.mageddo.dnsproxyserver.server.http.StaticFilesController;
 import com.mageddo.dnsproxyserver.server.rest.CacheResource;
 import com.mageddo.dnsproxyserver.server.rest.EnvResource;
 import com.mageddo.dnsproxyserver.server.rest.HostnameResource;
 import com.mageddo.dnsproxyserver.server.rest.NetworkResource;
 import com.mageddo.http.HttpMapper;
+
 import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.ElementsIntoSet;
-
-import javax.inject.Singleton;
-import java.util.Set;
 
 @Module
 public interface ModuleHttpMapper {

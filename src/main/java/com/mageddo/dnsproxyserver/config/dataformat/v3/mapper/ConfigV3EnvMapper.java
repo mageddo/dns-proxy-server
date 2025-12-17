@@ -19,7 +19,7 @@ public class ConfigV3EnvMapper {
 
   private final EnvMapper envMapper;
 
-  public ConfigV3 ofSystemEnv(){
+  public ConfigV3 ofSystemEnv() {
     return this.of(System.getenv());
   }
 

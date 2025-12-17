@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.sandbox;
 
 import com.mageddo.commons.exec.Result;
+
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
@@ -16,8 +17,8 @@ public class Instance {
 
   public static Instance of(Result result) {
     return Instance.builder()
-      .result(result)
-      .build()
-      ;
+        .result(result)
+        .build()
+        ;
   }
 }

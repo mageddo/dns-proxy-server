@@ -1,15 +1,17 @@
 package com.mageddo.dnsproxyserver.solver;
 
-import com.mageddo.concurrent.SingleThreadQueueProcessor;
-import com.mageddo.dnsproxyserver.solver.CacheName.Name;
-import lombok.extern.slf4j.Slf4j;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import com.mageddo.concurrent.SingleThreadQueueProcessor;
+import com.mageddo.dnsproxyserver.solver.CacheName.Name;
+
+import lombok.extern.slf4j.Slf4j;
 
 import static com.mageddo.dnsproxyserver.solver.CacheName.Name.GLOBAL;
 import static com.mageddo.dnsproxyserver.solver.CacheName.Name.REMOTE;
@@ -24,11 +26,11 @@ public class SolverCacheFactory {
 
   @Inject
   public SolverCacheFactory(
-    @CacheName(name = REMOTE)
-    SolverCache remote,
+      @CacheName(name = REMOTE)
+      SolverCache remote,
 
-    @CacheName(name = GLOBAL)
-    SolverCache global
+      @CacheName(name = GLOBAL)
+      SolverCache global
   ) {
     this.remote = remote;
     this.global = global;
@@ -51,9 +53,11 @@ public class SolverCacheFactory {
 
   public Map<String, Map<String, CacheEntry>> findCachesAsMap(Name name) {
     return this.findInstances(name)
-      .stream()
-      .collect(Collectors.toMap(it -> it.name().name(), SolverCache::asMap))
-      ;
+        .stream()
+        .collect(Collectors.toMap(it -> it.name()
+            .name(), SolverCache::asMap
+        ))
+        ;
   }
 
   private List<SolverCache> getCaches() {
@@ -65,14 +69,17 @@ public class SolverCacheFactory {
       this.scheduleCacheClear();
       return;
     }
-    this.getInstance(name).clear();
+    this.getInstance(name)
+        .clear();
   }
 
   public Map<String, Integer> findInstancesSizeMap(Name name) {
     return this.findInstances(name)
-      .stream()
-      .collect(Collectors.toMap(it -> it.name().name(), SolverCache::getSize))
-      ;
+        .stream()
+        .collect(Collectors.toMap(it -> it.name()
+            .name(), SolverCache::getSize
+        ))
+        ;
   }
 
   /**
@@ -89,10 +96,12 @@ public class SolverCacheFactory {
       cache.clear();
       log.trace("status=cleared, cache={}", cache.name());
     }
-    log.debug("status=finished, caches={}", this.getCaches().size());
+    log.debug("status=finished, caches={}", this.getCaches()
+        .size()
+    );
   }
 
-  public int getProcessedInBackground(){
+  public int getProcessedInBackground() {
     return this.queueProcessor.getProcessedCount();
   }
 }

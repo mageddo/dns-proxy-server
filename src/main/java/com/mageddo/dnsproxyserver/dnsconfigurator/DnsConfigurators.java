@@ -1,5 +1,12 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator;
 
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import com.mageddo.commons.concurrent.ThreadPool;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.application.Configs;
@@ -7,16 +14,12 @@ import com.mageddo.dnsproxyserver.di.StartupEvent;
 import com.mageddo.dnsproxyserver.dnsconfigurator.linux.DnsConfiguratorLinux;
 import com.mageddo.dnsproxyserver.solver.docker.application.DpsContainerService;
 import com.mageddo.net.IpAddr;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.exec.OS;
 import org.apache.commons.lang3.ClassUtils;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Singleton
@@ -46,31 +49,40 @@ public class DnsConfigurators implements StartupEvent {
 
   private void configurationHook(Config config) {
     ThreadPool
-      .scheduled()
-      .scheduleWithFixedDelay(() -> {
-        try {
-          final var addr = this.findIpAddr();
-          log.trace("status=configuringAsDefaultDns, addr={}", addr);
-          this.configure(addr);
-        } catch (Throwable e) {
-          this.failures.incrementAndGet();
-          if (e instanceof IOException) {
-            log.warn("status=failedToConfigureAsDefaultDns, msg={}:{}", ClassUtils.getName(e), e.getMessage());
-          } else {
-            log.warn("status=failedToConfigureAsDefaultDns, path={}, msg={}", config.getDefaultDnsResolvConfPaths(), e.getMessage(), e);
-          }
-          if (this.tooManyFailures()) {
-            log.warn("status=too-many-failures, action=stopping-default-dns-configuration, failures={}", this.failures.get());
-            throw new RuntimeException(e);
-          }
-        }
-      }, this.getInitialDelay(), this.getDelay(), TimeUnit.MILLISECONDS);
+        .scheduled()
+        .scheduleWithFixedDelay(() -> {
+              try {
+                final var addr = this.findIpAddr();
+                log.trace("status=configuringAsDefaultDns, addr={}", addr);
+                this.configure(addr);
+              } catch (Throwable e) {
+                this.failures.incrementAndGet();
+                if (e instanceof IOException) {
+                  log.warn("status=failedToConfigureAsDefaultDns, msg={}:{}", ClassUtils.getName(e),
+                      e.getMessage()
+                  );
+                } else {
+                  log.warn("status=failedToConfigureAsDefaultDns, path={}, msg={}",
+                      config.getDefaultDnsResolvConfPaths(), e.getMessage(), e
+                  );
+                }
+                if (this.tooManyFailures()) {
+                  log.warn(
+                      "status=too-many-failures, action=stopping-default-dns-configuration, "
+                          + "failures={}",
+                      this.failures.get()
+                  );
+                  throw new RuntimeException(e);
+                }
+              }
+            }, this.getInitialDelay(), this.getDelay(), TimeUnit.MILLISECONDS
+        );
   }
 
   IpAddr findIpAddr() {
     return IpAddr.of(
-      this.dpsContainerService.findDpsIP(),
-      findConfig().getDnsServerPort()
+        this.dpsContainerService.findDpsIP(),
+        findConfig().getDnsServerPort()
     );
   }
 
@@ -91,18 +103,21 @@ public class DnsConfigurators implements StartupEvent {
   }
 
   void configureShutdownHook(Config config) {
-    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-      if (this.tooManyFailures()) {
-        log.debug("status=won't try to restore as it has failed to configure");
-        return;
-      }
-      log.debug("status=restoringResolvConf, path={}", config.getDefaultDnsResolvConfPaths());
-      this.getInstance().restore();
-    }));
+    Runtime.getRuntime()
+        .addShutdownHook(new Thread(() -> {
+          if (this.tooManyFailures()) {
+            log.debug("status=won't try to restore as it has failed to configure");
+            return;
+          }
+          log.debug("status=restoringResolvConf, path={}", config.getDefaultDnsResolvConfPaths());
+          this.getInstance()
+              .restore();
+        }));
   }
 
   void configure(IpAddr addr) {
-    this.getInstance().configure(addr);
+    this.getInstance()
+        .configure(addr);
   }
 
   DnsConfigurator getInstance() {
@@ -127,7 +142,9 @@ public class DnsConfigurators implements StartupEvent {
     } else if (OS.isFamilyWindows()) {
       return this.configuratorDefault;
     }
-    log.info("status=unsupported-platform-to-set-as-default-dns-automatically, os={}", System.getProperty("os.name"));
+    log.info("status=unsupported-platform-to-set-as-default-dns-automatically, os={}",
+        System.getProperty("os.name")
+    );
     return new DnsConfigurator() {
       public void configure(IpAddr addr) {
       }

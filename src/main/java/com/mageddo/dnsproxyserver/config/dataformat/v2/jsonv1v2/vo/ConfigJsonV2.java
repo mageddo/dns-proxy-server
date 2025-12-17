@@ -1,5 +1,11 @@
 package com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo;
 
+import java.net.URI;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -14,14 +20,9 @@ import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.mapper.ConfigJso
 import com.mageddo.dnsserver.SimpleServer;
 import com.mageddo.net.IP;
 import com.mageddo.net.IpAddr;
+
 import lombok.Data;
 import lombok.experimental.Accessors;
-
-import java.net.URI;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Accessors(chain = true)
@@ -32,7 +33,8 @@ public class ConfigJsonV2 implements ConfigJson {
   private String activeEnv = Config.Env.DEFAULT_ENV;
 
   @JsonProperty("remoteDnsServers")
-  private List<String> remoteDnsServers = new ArrayList<>(); // dns servers formatted like 192.168.0.1:53
+  private List<String> remoteDnsServers = new ArrayList<>(); // dns servers formatted like 192
+  // .168.0.1:53
 
   @JsonProperty("envs")
   private List<Env> _envs = new ArrayList<>();
@@ -76,9 +78,9 @@ public class ConfigJsonV2 implements ConfigJson {
   @JsonIgnore
   public List<IpAddr> getRemoteDnsServers() {
     return this.remoteDnsServers
-      .stream()
-      .map(IpAddr::of)
-      .toList();
+        .stream()
+        .map(IpAddr::of)
+        .toList();
   }
 
   @JsonIgnore
@@ -120,9 +122,9 @@ public class ConfigJsonV2 implements ConfigJson {
 
     public static Env from(Config.Env from) {
       return new Env()
-        .setName(from.getName())
-        .setHostnames(Entry.from(from.getEntries()))
-        ;
+          .setName(from.getName())
+          .setHostnames(Entry.from(from.getEntries()))
+          ;
     }
   }
 
@@ -140,31 +142,31 @@ public class ConfigJsonV2 implements ConfigJson {
 
     public static Entry from(Config.Entry entry) {
       return new Entry()
-        .setHostname(entry.getHostname())
-        .setId(entry.getId())
-        .setIp(entry.getIpAsText())
-        .setTtl(entry.getTtl())
-        .setTarget(entry.getTarget())
-        .setType(entry.getType())
-        ;
+          .setHostname(entry.getHostname())
+          .setId(entry.getId())
+          .setIp(entry.getIpAsText())
+          .setTtl(entry.getTtl())
+          .setTarget(entry.getTarget())
+          .setType(entry.getType())
+          ;
     }
 
     public static List<Entry> from(List<Config.Entry> entries) {
       return entries
-        .stream()
-        .map(Entry::from)
-        .collect(Collectors.toList());
+          .stream()
+          .map(Entry::from)
+          .collect(Collectors.toList());
     }
 
     public static Entry sample() {
       return Entry.from(Config.Entry
-        .builder()
-        .type(Config.Entry.Type.A)
-        .hostname("dps-sample.dev")
-        .ip(IP.of("192.168.0.254"))
-        .ttl(30)
-        .id(1L)
-        .build()
+          .builder()
+          .type(Config.Entry.Type.A)
+          .hostname("dps-sample.dev")
+          .ip(IP.of("192.168.0.254"))
+          .ttl(30)
+          .id(1L)
+          .build()
       );
     }
   }
@@ -185,14 +187,15 @@ public class ConfigJsonV2 implements ConfigJson {
 
 
   @JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "strategy",
-    defaultImpl = StaticThresholdCircuitBreaker.class
+      use = JsonTypeInfo.Id.NAME,
+      include = JsonTypeInfo.As.PROPERTY,
+      property = "strategy",
+      defaultImpl = StaticThresholdCircuitBreaker.class
   )
   @JsonSubTypes({
-    @JsonSubTypes.Type(value = StaticThresholdCircuitBreaker.class, name = "STATIC_THRESHOLD"),
-    @JsonSubTypes.Type(value = CanaryRateThresholdCircuitBreaker.class, name = "CANARY_RATE_THRESHOLD")
+      @JsonSubTypes.Type(value = StaticThresholdCircuitBreaker.class, name = "STATIC_THRESHOLD"),
+      @JsonSubTypes.Type(value = CanaryRateThresholdCircuitBreaker.class,
+          name = "CANARY_RATE_THRESHOLD")
   })
   public interface CircuitBreaker {
 

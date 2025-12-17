@@ -1,14 +1,16 @@
 package com.mageddo.os.linux;
 
+import java.nio.file.Path;
+
 import com.mageddo.jna.os.linux.Stat;
 import com.mageddo.jna.os.linux.Stats;
-import org.apache.commons.lang3.Validate;
 
-import java.nio.file.Path;
+import org.apache.commons.lang3.Validate;
 
 /**
  * ./sysdeps/mach/hurd/bits/stat.h:#define	__S_IFSOCK	0140000	// Socket.
- * ./sysdeps/unix/sysv/linux/bits/stat.h:#define	__S_IFMT	0170000	// These bits determine file type
+ * ./sysdeps/unix/sysv/linux/bits/stat.h:#define	__S_IFMT	0170000	// These bits determine
+ * file type
  * <p>
  * ./io/sys/stat.h:#define	__S_ISTYPE(mode, mask)	(((mode) & __S_IFMT) == (mask))
  * ./io/sys/stat.h:# define S_ISSOCK(mode) __S_ISTYPE((mode), __S_IFSOCK)

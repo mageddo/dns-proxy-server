@@ -1,12 +1,12 @@
 package com.mageddo.commons.exec;
 
-import lombok.Getter;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.UncheckedIOException;
+
+import lombok.Getter;
 
 public class PipedStream extends OutputStream {
 

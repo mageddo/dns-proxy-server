@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.solver.docker;
 
 import com.mageddo.net.IP;
+
 import lombok.Builder;
 import lombok.Value;
 

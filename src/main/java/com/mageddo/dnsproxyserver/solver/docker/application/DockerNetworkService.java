@@ -1,15 +1,17 @@
 package com.mageddo.dnsproxyserver.solver.docker.application;
 
-import com.mageddo.dnsproxyserver.solver.docker.dataprovider.ContainerDAO;
-import com.mageddo.dnsproxyserver.solver.docker.dataprovider.NetworkDAO;
-import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DpsContainerDAO;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.ArrayList;
-import java.util.List;
+
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.ContainerDAO;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DpsContainerDAO;
+import com.mageddo.dnsproxyserver.solver.docker.dataprovider.NetworkDAO;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Singleton
@@ -36,7 +38,9 @@ public class DockerNetworkService {
 
   public void connectContainerTo(String networkName, String containerId) {
     if (this.dpsContainerDAO.isDpsContainer(containerId)) {
-      log.info("status=won't connect dps container using conventional mode, containerId={}", containerId);
+      log.info("status=won't connect dps container using conventional mode, containerId={}",
+          containerId
+      );
       return;
     }
     final var status = this.networkDAO.connect(networkName, containerId);

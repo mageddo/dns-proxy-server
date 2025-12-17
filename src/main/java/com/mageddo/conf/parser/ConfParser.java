@@ -28,10 +28,10 @@ public class ConfParser {
       String line;
       while ((line = r.readLine()) != null) {
         entries.add(Entry
-          .builder()
-          .type(parser.apply(line))
-          .line(line)
-          .build()
+            .builder()
+            .type(parser.apply(line))
+            .line(line)
+            .build()
         );
       }
       return entries;
@@ -44,12 +44,13 @@ public class ConfParser {
     process(conf, conf, parser, h);
   }
 
-  public static void process(Path source, Path target, Function<String, EntryType> parser, Transformer t) {
+  public static void process(Path source, Path target, Function<String, EntryType> parser,
+      Transformer t) {
     try {
       final var tmpFile = Files.createTempFile("dps", ".conf");
       try (
-        var reader = Files.newBufferedReader(source);
-        var writer = Files.newBufferedWriter(tmpFile)
+          var reader = Files.newBufferedReader(source);
+          var writer = Files.newBufferedWriter(tmpFile)
       ) {
         writeToOut(reader, writer, parser, t);
       }
@@ -61,19 +62,20 @@ public class ConfParser {
   }
 
   static void writeToOut(
-    BufferedReader reader, BufferedWriter writer,
-    Function<String, EntryType> parser, Transformer t
+      BufferedReader reader, BufferedWriter writer,
+      Function<String, EntryType> parser, Transformer t
   ) {
     final var lines = parse(reader, parser);
     lines
-      .stream()
-      .map(t::handle)
-      .filter(Objects::nonNull)
-      .forEach(line -> writeLine(writer, line));
+        .stream()
+        .map(t::handle)
+        .filter(Objects::nonNull)
+        .forEach(line -> writeLine(writer, line));
     final var foundTokens = lines
-      .stream()
-      .map(it -> it.getType().name())
-      .collect(Collectors.toSet());
+        .stream()
+        .map(it -> it.getType()
+            .name())
+        .collect(Collectors.toSet());
     writeLine(writer, t.after(!lines.isEmpty(), foundTokens));
   }
 

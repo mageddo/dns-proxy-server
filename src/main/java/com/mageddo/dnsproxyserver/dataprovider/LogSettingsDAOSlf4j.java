@@ -1,14 +1,15 @@
 package com.mageddo.dnsproxyserver.dataprovider;
 
-import ch.qos.logback.classic.Level;
+import javax.enterprise.inject.Default;
+import javax.inject.Singleton;
+
 import com.mageddo.commons.io.IoUtils;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.mapper.LogLevelMapper;
 import com.mageddo.logback.LogbackUtils;
-import lombok.extern.slf4j.Slf4j;
 
-import javax.enterprise.inject.Default;
-import javax.inject.Singleton;
+import ch.qos.logback.classic.Level;
+import lombok.extern.slf4j.Slf4j;
 
 import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 
@@ -35,7 +36,9 @@ public class LogSettingsDAOSlf4j implements LogSettingsDAO {
   }
 
   static void changeLogLevelToSpecifiedFromConfig(Config config) {
-    LogbackUtils.changeLogLevel("com.mageddo", config.getLogLevel().toLogbackLevel());
+    LogbackUtils.changeLogLevel("com.mageddo", config.getLogLevel()
+        .toLogbackLevel()
+    );
   }
 
   static boolean isSpecificLogLevel(Config config) {

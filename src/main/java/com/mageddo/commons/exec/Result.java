@@ -1,17 +1,19 @@
 package com.mageddo.commons.exec;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.util.function.Supplier;
+
 import com.mageddo.wait.Wait;
+
+import org.apache.commons.exec.Executor;
+import org.apache.commons.lang3.Validate;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.ToString;
-import org.apache.commons.exec.Executor;
-import org.apache.commons.lang3.Validate;
-
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import java.util.function.Supplier;
 
 @Getter
 @Builder
@@ -38,7 +40,9 @@ public class Result {
   }
 
   public String getOutAsString() {
-    Validate.isTrue(this.out instanceof ByteArrayOutputStream, "Only ByteArrayOutputStream is supported");
+    Validate.isTrue(this.out instanceof ByteArrayOutputStream,
+        "Only ByteArrayOutputStream is supported"
+    );
     return this.out.toString();
   }
 
@@ -51,8 +55,8 @@ public class Result {
 
   public String toString(boolean printOut) {
     return String.format(
-      "code=%d, out=%s",
-      this.exitCode, printOut ? this.getOutAsString() : null
+        "code=%d, out=%s",
+        this.exitCode, printOut ? this.getOutAsString() : null
     );
   }
 
@@ -71,12 +75,12 @@ public class Result {
 
   public void waitProcessToFinish() {
     new Wait<>()
-      .infinityTimeout()
-      .ignoreException(IllegalArgumentException.class)
-      .until(() -> {
-        Validate.isTrue(this.isProcessFinished(), "Process not finished yet");
-        return true;
-      });
+        .infinityTimeout()
+        .ignoreException(IllegalArgumentException.class)
+        .until(() -> {
+          Validate.isTrue(this.isProcessFinished(), "Process not finished yet");
+          return true;
+        });
   }
 
   private boolean isProcessFinished() {

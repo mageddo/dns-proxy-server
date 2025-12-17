@@ -1,26 +1,28 @@
 package com.mageddo.dnsproxyserver.solver;
 
-import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.application.Configs;
-import com.mageddo.utils.Priorities;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.List;
-import java.util.stream.Collectors;
+
+import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.application.Configs;
+import com.mageddo.utils.Priorities;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Singleton
 public class SolverProvider {
 
   static final String[] solversOrder = {
-    "SolverSystem",
-    "SolverStub",
-    "SolverDocker",
-    SolverLocalDB.NAME,
-    SolverCachedRemote.NAME
+      "SolverSystem",
+      "SolverStub",
+      "SolverDocker",
+      SolverLocalDB.NAME,
+      SolverCachedRemote.NAME
   };
 
   private final List<Solver> solvers;
@@ -32,10 +34,10 @@ public class SolverProvider {
 
   public SolverProvider(Instance<Solver> solvers, Config config) {
     this.solvers = solvers
-      .stream()
-      .sorted(Priorities.comparator(Solver::name, solversOrder))
-      .filter(it -> !isSolverRemoteWhenItsDisabled(config, it))
-      .toList()
+        .stream()
+        .sorted(Priorities.comparator(Solver::name, solversOrder))
+        .filter(it -> !isSolverRemoteWhenItsDisabled(config, it))
+        .toList()
     ;
   }
 
@@ -49,17 +51,17 @@ public class SolverProvider {
 
   public List<Solver> getSolversExcluding(final Class<?> clazz) {
     return this.solvers
-      .stream()
-      .filter(it -> it.getClass() != clazz)
-      .collect(Collectors.toList())
-      ;
+        .stream()
+        .filter(it -> it.getClass() != clazz)
+        .collect(Collectors.toList())
+        ;
   }
 
   public List<String> getSolversNames() {
     return getSolvers()
-      .stream()
-      .map(Solver::name)
-      .toList();
+        .stream()
+        .map(Solver::name)
+        .toList();
   }
 
 }

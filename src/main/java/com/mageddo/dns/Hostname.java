@@ -1,9 +1,10 @@
 package com.mageddo.dns;
 
-import lombok.EqualsAndHashCode;
+import java.util.Objects;
+
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
 
 /**
  * Case insensitive for comparison but will keep the original value stored when

@@ -1,12 +1,14 @@
 package com.mageddo.dnsproxyserver.solver.docker.dataprovider.mapper;
 
-import com.mageddo.dnsproxyserver.solver.docker.Network;
-import com.mageddo.net.IP;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.Objects;
 import java.util.stream.Stream;
+
+import com.mageddo.dnsproxyserver.solver.docker.Network;
+import com.mageddo.net.IP;
+
+import org.apache.commons.lang3.StringUtils;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class NetworkMapper {
@@ -17,19 +19,19 @@ public class NetworkMapper {
   public static Network of(com.github.dockerjava.api.model.Network n) {
     log.debug("status=mapping, networkName={}", n.getName());
     return Network.builder()
-      .name(n.getName())
-      .driver(n.getDriver())
-      .gateways(Stream
-        .of(
-          findGatewayIp(n, IP.Version.IPV4),
-          findGatewayIp(n, IP.Version.IPV6)
+        .name(n.getName())
+        .driver(n.getDriver())
+        .gateways(Stream
+            .of(
+                findGatewayIp(n, IP.Version.IPV4),
+                findGatewayIp(n, IP.Version.IPV6)
+            )
+            .filter(Objects::nonNull)
+            .toList()
         )
-        .filter(Objects::nonNull)
-        .toList()
-      )
-      .ipv6Active(n.getEnableIPv6())
-      .build()
-      ;
+        .ipv6Active(n.getEnableIPv6())
+        .build()
+        ;
   }
 
   static IP findGatewayIp(com.github.dockerjava.api.model.Network network) {
@@ -43,16 +45,16 @@ public class NetworkMapper {
     final var ipam = network.getIpam();
     if (ipam != null && ipam.getConfig() != null) {
       return ipam
-        .getConfig()
-        .stream()
-        .map(com.github.dockerjava.api.model.Network.Ipam.Config::getGateway)
-        .filter(Objects::nonNull)
-        .map(NetworkMapper::extractIpIfNeedledWhenGatewayIsSubnet)
-        .map(IP::of)
-        .filter(it -> it.version() == version)
-        .findFirst()
-        .orElse(null)
-        ;
+          .getConfig()
+          .stream()
+          .map(com.github.dockerjava.api.model.Network.Ipam.Config::getGateway)
+          .filter(Objects::nonNull)
+          .map(NetworkMapper::extractIpIfNeedledWhenGatewayIsSubnet)
+          .map(IP::of)
+          .filter(it -> it.version() == version)
+          .findFirst()
+          .orElse(null)
+          ;
     }
     return null;
   }

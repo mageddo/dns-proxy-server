@@ -1,8 +1,8 @@
 package com.mageddo.http.codec;
 
-import com.sun.net.httpserver.HttpExchange;
-
 import javax.ws.rs.core.Response;
+
+import com.sun.net.httpserver.HttpExchange;
 
 public interface Encoder {
 

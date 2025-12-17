@@ -1,16 +1,18 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator;
 
-import com.mageddo.net.IpAddr;
-import com.mageddo.dnsproxyserver.utils.Dns;
-import com.mageddo.net.Network;
-import lombok.extern.slf4j.Slf4j;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import com.mageddo.dnsproxyserver.utils.Dns;
+import com.mageddo.net.IpAddr;
+import com.mageddo.net.Network;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Singleton
@@ -34,8 +36,12 @@ public class DnsConfiguratorDefault implements DnsConfigurator {
       if (!this.serversBefore.containsKey(network)) {
         final var serversBefore = this.findNetworkDnsServers(network);
         this.serversBefore.put(network, serversBefore);
-        final var success = this.updateDnsServers(network, Collections.singletonList(addr.getRawIP()));
-        log.debug("status=configuring, network={}, serversBefore={}, success={}", network, this.serversBefore, success);
+        final var success = this.updateDnsServers(network,
+            Collections.singletonList(addr.getRawIP())
+        );
+        log.debug("status=configuring, network={}, serversBefore={}, success={}", network,
+            this.serversBefore, success
+        );
       } else {
         log.debug("status=alreadyConfigured, network={}", network);
       }

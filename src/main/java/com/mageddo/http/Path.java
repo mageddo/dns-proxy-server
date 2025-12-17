@@ -19,7 +19,7 @@ public class Path {
   public static Path of(String root, String... subdirs) {
     final var sb = new StringBuilder(UriUtils.canonicalPath(root));
     for (int i = 0; i < subdirs.length; i++) {
-      if(i == 0 && !root.endsWith(SEPARATOR)){
+      if (i == 0 && !root.endsWith(SEPARATOR)) {
         sb.append(SEPARATOR);
       }
       final String subdir = subdirs[i];

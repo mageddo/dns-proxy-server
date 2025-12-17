@@ -1,13 +1,14 @@
 package com.mageddo.net.osx;
 
-import com.mageddo.commons.exec.CommandLines;
-import com.mageddo.commons.exec.ExecutionValidationFailedException;
-import com.mageddo.commons.lang.Objects;
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
+
+import com.mageddo.commons.exec.CommandLines;
+import com.mageddo.commons.exec.ExecutionValidationFailedException;
+import com.mageddo.commons.lang.Objects;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class Networks {
 
@@ -15,30 +16,32 @@ public class Networks {
 
   public static List<String> findNetworksNames() {
     final var lines = CommandLines
-      .exec("networksetup -listallnetworkservices")
-      .checkExecution()
-      .getOutAsString()
-      .split(LINE_BREAK_REGEX);
+        .exec("networksetup -listallnetworkservices")
+        .checkExecution()
+        .getOutAsString()
+        .split(LINE_BREAK_REGEX);
 
     return Stream.of(lines)
-      .skip(1)
-      .filter(it -> !it.contains("*"))
-      .toList()
-      ;
+        .skip(1)
+        .filter(it -> !it.contains("*"))
+        .toList()
+        ;
   }
 
   public static List<String> findNetworkDnsServers(String networkServiceName) {
     final var out = CommandLines
-      .exec("networksetup -getdnsservers \"%s\"", networkServiceName)
-      .checkExecution()
-      .getOutAsString();
-    if (out.contains(networkServiceName)) { // probably "any DNS Servers set on" but can filter that as language can change
+        .exec("networksetup -getdnsservers \"%s\"", networkServiceName)
+        .checkExecution()
+        .getOutAsString();
+    if (out.contains(
+        networkServiceName)) { // probably "any DNS Servers set on" but can filter that as
+      // language can change
       return Collections.emptyList();
     }
     return Stream
-      .of(out.split(LINE_BREAK_REGEX))
-      .filter(StringUtils::isNotBlank)
-      .toList();
+        .of(out.split(LINE_BREAK_REGEX))
+        .filter(StringUtils::isNotBlank)
+        .toList();
   }
 
   public static List<String> findNetworkDnsServersOrEmpty(String networkName) {
@@ -67,8 +70,8 @@ public class Networks {
     final var serversParam = String.join(" ", dnsServers);
     try {
       CommandLines
-        .exec("networksetup -setdnsservers \"%s\" %s", networkName, serversParam)
-        .checkExecution();
+          .exec("networksetup -setdnsservers \"%s\" %s", networkName, serversParam)
+          .checkExecution();
       return true;
     } catch (ExecutionValidationFailedException e) {
       if (isUnrecognizedNetwork(networkName, e)) {
@@ -79,7 +82,9 @@ public class Networks {
   }
 
   static boolean isUnrecognizedNetwork(String networkName, ExecutionValidationFailedException e) {
-    return e.result().getExitCode() == 4 && e.getMessage().contains(networkName);
+    return e.result()
+        .getExitCode() == 4 && e.getMessage()
+        .contains(networkName);
   }
 
   public static boolean updateDnsServers(String network, List<String> servers) {

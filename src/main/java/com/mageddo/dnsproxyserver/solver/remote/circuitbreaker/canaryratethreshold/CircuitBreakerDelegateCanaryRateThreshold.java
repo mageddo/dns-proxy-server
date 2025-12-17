@@ -1,5 +1,7 @@
 package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.canaryratethreshold;
 
+import java.util.function.Supplier;
+
 import com.mageddo.commons.circuitbreaker.CircuitIsOpenException;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.Result;
@@ -8,12 +10,12 @@ import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.statetransitor.Re
 import com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.statetransitor.StateTransitor;
 import com.mageddo.dnsproxyserver.solver.remote.mapper.Resilience4jStatusMapper;
 import com.mageddo.json.JsonUtils;
+
+import org.apache.commons.lang3.StringUtils;
+
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.function.Supplier;
 
 @Slf4j
 public class CircuitBreakerDelegateCanaryRateThreshold implements CircuitBreakerDelegate {
@@ -63,6 +65,8 @@ public class CircuitBreakerDelegateCanaryRateThreshold implements CircuitBreaker
 
   @Override
   public String toString() {
-    return StringUtils.firstNonBlank(this.name, this.getClass().getSimpleName());
+    return StringUtils.firstNonBlank(this.name, this.getClass()
+        .getSimpleName()
+    );
   }
 }

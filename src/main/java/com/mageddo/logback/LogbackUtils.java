@@ -1,13 +1,14 @@
 package com.mageddo.logback;
 
+import java.io.InputStream;
+
+import org.slf4j.LoggerFactory;
+
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
-import org.slf4j.LoggerFactory;
-
-import java.io.InputStream;
 
 public class LogbackUtils {
 
@@ -28,7 +29,7 @@ public class LogbackUtils {
     return true;
   }
 
-  public static Level getLogLevel(String name){
+  public static Level getLogLevel(String name) {
     return getLoggerImpl(name).getLevel();
   }
 

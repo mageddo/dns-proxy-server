@@ -10,10 +10,10 @@ public class Splits {
 
   public static List<Path> splitToPaths(String v) {
     return splitToList(v)
-      .stream()
-      .map(Paths::get)
-      .toList()
-      ;
+        .stream()
+        .map(Paths::get)
+        .toList()
+        ;
   }
 
   public static List<String> splitToList(String v) {
@@ -21,7 +21,7 @@ public class Splits {
       return null;
     }
     return Arrays
-      .stream(v.split(COMMA_SEPARATED))
-      .toList();
+        .stream(v.split(COMMA_SEPARATED))
+        .toList();
   }
 }

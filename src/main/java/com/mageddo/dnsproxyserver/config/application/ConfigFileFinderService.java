@@ -1,16 +1,18 @@
 package com.mageddo.dnsproxyserver.config.application;
 
-import com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.ConfigDAOCmdArgs;
-import com.mageddo.dnsproxyserver.config.dataformat.v2.legacyenv.ConfigDAOLegacyEnv;
-import com.mageddo.dnsproxyserver.config.dataformat.v2.legacyenv.ConfigEnv;
-import com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.vo.ConfigFlag;
-import com.mageddo.dnsproxyserver.utils.ObjectUtils;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.nio.file.Path;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.nio.file.Path;
+
+import com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.ConfigDAOCmdArgs;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.vo.ConfigFlag;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.legacyenv.ConfigDAOLegacyEnv;
+import com.mageddo.dnsproxyserver.config.dataformat.v2.legacyenv.ConfigEnv;
+import com.mageddo.dnsproxyserver.utils.ObjectUtils;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Singleton
@@ -20,7 +22,7 @@ public class ConfigFileFinderService {
   private final ConfigDAOLegacyEnv configDAOEnv;
   private final ConfigDAOCmdArgs configDAOCmdArgs;
 
-  public Path findPath(){
+  public Path findPath() {
     final var envConfig = this.configDAOEnv.findRaw();
     final var argsConfig = this.configDAOCmdArgs.findRaw();
 
@@ -32,8 +34,8 @@ public class ConfigFileFinderService {
 
   private Path findConfigFilePath(ConfigEnv envConfig, ConfigFlag argsConfig) {
     return ObjectUtils.firstNonNullRequiring(
-      envConfig.getConfigFilePath(),
-      argsConfig.getConfigFileAsPath()
+        envConfig.getConfigFilePath(),
+        argsConfig.getConfigFileAsPath()
     );
   }
 }

@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.config.validator;
 
 import com.mageddo.dnsproxyserver.config.Config;
+
 import org.apache.commons.lang3.Validate;
 
 public class ConfigValidator {
@@ -30,13 +31,19 @@ public class ConfigValidator {
     Validate.notNull(config.getDockerDomain(), "domain");
     Validate.notNull(config.getDockerSolverMustConfigureDpsNetwork(), "must configure dps network");
     Validate.notNull(config.getDpsNetworkAutoConnect(), "DPS network auto connect");
-    Validate.notNull(config.getDockerSolverHostMachineFallbackActive(), "Docker solver host machine fallback active");
+    Validate.notNull(config.getDockerSolverHostMachineFallbackActive(),
+        "Docker solver host machine fallback active"
+    );
     Validate.notNull(config.getServerProtocol(), "Server Protocol");
   }
 
   private static void validateServer(Config config) {
-    Validate.isTrue(config.getWebServerPort() != null && config.getWebServerPort() > 0, "web server port");
-    Validate.isTrue(config.getDnsServerPort() != null && config.getDnsServerPort() > 0, "dns server port");
+    Validate.isTrue(config.getWebServerPort() != null && config.getWebServerPort() > 0,
+        "web server port"
+    );
+    Validate.isTrue(config.getDnsServerPort() != null && config.getDnsServerPort() > 0,
+        "dns server port"
+    );
   }
 
   private static void validateDefaultDns(Config config) {
@@ -48,6 +55,8 @@ public class ConfigValidator {
     final var resolvConf = defaultDns.getResolvConf();
     Validate.notNull(resolvConf, "Default DNS: ResolvConf");
     Validate.notNull(resolvConf.getPaths(), "Default DNS: ResolvConf: Paths");
-    Validate.notNull(resolvConf.getOverrideNameServers(), "Default DNS: ResolvConf: override name servers");
+    Validate.notNull(resolvConf.getOverrideNameServers(),
+        "Default DNS: ResolvConf: override name servers"
+    );
   }
 }

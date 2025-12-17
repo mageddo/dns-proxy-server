@@ -1,5 +1,10 @@
 package com.mageddo.dnsproxyserver.solver.docker.entrypoint;
 
+import java.io.Closeable;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.async.ResultCallback;
 import com.github.dockerjava.api.model.Event;
@@ -7,13 +12,11 @@ import com.mageddo.dnsproxyserver.di.StartupEvent;
 import com.mageddo.dnsproxyserver.solver.docker.Network;
 import com.mageddo.dnsproxyserver.solver.docker.application.DockerNetworkService;
 import com.mageddo.dnsproxyserver.solver.docker.application.DpsDockerEnvironmentSetupService;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.StringUtils;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.io.Closeable;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j
@@ -47,8 +50,8 @@ public class EventListener implements StartupEvent {
       public void onNext(Event event) {
         try {
           log.debug(
-            "status=event, id={}, action={}, type={}, status={}, event={}",
-            event.getId(), event.getAction(), event.getType(), event.getStatus(), event
+              "status=event, id={}, action={}, type={}, status={}, event={}",
+              event.getId(), event.getAction(), event.getType(), event.getStatus(), event
           );
           if (StringUtils.equals(event.getAction(), "start")) {
             networkService.connectContainerTo(Network.Name.DPS.lowerCaseName(), event.getId());
@@ -69,9 +72,9 @@ public class EventListener implements StartupEvent {
       }
     };
     this.dockerClient
-      .eventsCmd()
-      .withEventFilter("start")
-      .exec(callback);
+        .eventsCmd()
+        .withEventFilter("start")
+        .exec(callback);
   }
 
 }

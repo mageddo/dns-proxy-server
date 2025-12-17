@@ -1,13 +1,15 @@
 package com.mageddo.dnsproxyserver.solver;
 
+import java.util.List;
+import java.util.stream.Stream;
+
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.net.IP;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.xbill.DNS.Message;
 
-import java.util.List;
-import java.util.stream.Stream;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class SolverMock implements Solver {
@@ -21,7 +23,9 @@ public class SolverMock implements Solver {
   }
 
   public SolverMock(String name, Pair<String, IP>... mocks) {
-    this(name, Stream.of(mocks).toList());
+    this(name, Stream.of(mocks)
+        .toList()
+    );
   }
 
   public SolverMock(List<Pair<String, IP>> mocks) {
@@ -37,8 +41,11 @@ public class SolverMock implements Solver {
   public Response handle(Message query) {
     final var hostname = Messages.findQuestionHostname(query);
     for (final var entry : this.mocks) {
-      if (entry.getKey().equalsIgnoreCase(hostname.getValue())) {
-        return Response.internalSuccess(Messages.aAnswer(query, entry.getValue().toText()));
+      if (entry.getKey()
+          .equalsIgnoreCase(hostname.getValue())) {
+        return Response.internalSuccess(Messages.aAnswer(query, entry.getValue()
+            .toText()
+        ));
       }
     }
     return null;

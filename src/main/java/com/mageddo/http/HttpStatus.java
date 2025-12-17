@@ -1,7 +1,8 @@
 package com.mageddo.http;
 
 /**
- * See <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">http codes</a> for more details
+ * See <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">http codes</a>
+ * for more details
  */
 public class HttpStatus {
   public static final int CONTINUE = 100;

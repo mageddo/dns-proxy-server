@@ -1,10 +1,10 @@
 package com.mageddo.jna.os.linux;
 
-import com.sun.jna.NativeLong;
-import com.sun.jna.Structure;
-
 import java.util.Arrays;
 import java.util.List;
+
+import com.sun.jna.NativeLong;
+import com.sun.jna.Structure;
 
 /**
  * @see https://github.com/sshtools/pty/blob/master/src/main/java/c/stat.java
@@ -50,8 +50,9 @@ public class Stat extends Structure {
   @Override
   protected List<String> getFieldOrder() {
     return Arrays.asList(
-      "st_dev", "st_ino", "st_nlink", "st_mode", "st_uid", "st_gid", "st_rdev", "st_size", "st_blksize",
-      "st_blocks", "st_atim", "st_mtim", "st_ctim", "__unused"
+        "st_dev", "st_ino", "st_nlink", "st_mode", "st_uid", "st_gid", "st_rdev", "st_size",
+        "st_blksize",
+        "st_blocks", "st_atim", "st_mtim", "st_ctim", "__unused"
     );
   }
 

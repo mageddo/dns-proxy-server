@@ -1,8 +1,8 @@
 package com.mageddo.dnsproxyserver.solver.stub.addressexpression;
 
-import com.mageddo.net.IP;
-
 import java.util.List;
+
+import com.mageddo.net.IP;
 
 public class AddressExpressions {
 
@@ -20,9 +20,9 @@ public class AddressExpressions {
 
   static List<Parser> buildParsers() {
     return List.of(
-      new Ipv6Parser(),
-      new Ipv4Parser(),
-      new HexadecimalParser()
+        new Ipv6Parser(),
+        new Ipv4Parser(),
+        new HexadecimalParser()
     );
   }
 

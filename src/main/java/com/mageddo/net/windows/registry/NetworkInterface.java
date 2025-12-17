@@ -1,11 +1,12 @@
 package com.mageddo.net.windows.registry;
 
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.List;
 
 @Value
 @Builder

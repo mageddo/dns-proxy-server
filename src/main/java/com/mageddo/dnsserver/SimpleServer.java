@@ -1,11 +1,12 @@
 package com.mageddo.dnsserver;
 
-import com.mageddo.dnsproxyserver.server.dns.RequestHandlerDefault;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import com.mageddo.dnsproxyserver.server.dns.RequestHandlerDefault;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Singleton

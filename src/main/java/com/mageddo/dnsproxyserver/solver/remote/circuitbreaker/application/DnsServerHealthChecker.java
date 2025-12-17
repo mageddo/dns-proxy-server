@@ -1,12 +1,14 @@
 package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application;
 
+import java.io.IOException;
+
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.solver.SimpleResolver;
 import com.mageddo.net.IpAddr;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.ClassUtils;
 
-import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class DnsServerHealthChecker implements HealthChecker {
@@ -22,12 +24,14 @@ public class DnsServerHealthChecker implements HealthChecker {
     final var req = Messages.aQuestion("dps.dns.test");
     try {
       final var res = this.resolver.send(req);
-      log.debug("status=done, server={}, res={}", this.resolver.getAddress(), Messages.simplePrint(res));
+      log.debug("status=done, server={}, res={}", this.resolver.getAddress(),
+          Messages.simplePrint(res)
+      );
       return Messages.findQuestionTypeCode(res) != null;
     } catch (IOException e) {
       log.debug(
-        "status=failed, server={}, res={}, clazz={}",
-        this.resolver.getAddress(), e.getMessage(), ClassUtils.getSimpleName(e)
+          "status=failed, server={}, res={}, clazz={}",
+          this.resolver.getAddress(), e.getMessage(), ClassUtils.getSimpleName(e)
       );
       return false;
     }

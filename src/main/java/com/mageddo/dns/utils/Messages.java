@@ -1,5 +1,8 @@
 package com.mageddo.dns.utils;
 
+import java.time.Duration;
+import java.util.Optional;
+
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.dns.Hostname;
 import com.mageddo.dnsproxyserver.config.Config.Entry;
@@ -7,8 +10,7 @@ import com.mageddo.dnsproxyserver.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.solver.Response;
 import com.mageddo.dnsproxyserver.utils.Ips;
 import com.mageddo.net.IP;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.StringUtils;
 import org.xbill.DNS.AAAARecord;
 import org.xbill.DNS.ARecord;
@@ -22,8 +24,8 @@ import org.xbill.DNS.Record;
 import org.xbill.DNS.Section;
 import org.xbill.DNS.Type;
 
-import java.time.Duration;
-import java.util.Optional;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Messages {
@@ -50,15 +52,16 @@ public class Messages {
       }
       final var question = reqOrRes.getQuestion();
       final var type = Objects.useItOrDefault(
-        Objects.toString(Entry.Type.of(question.getType())),
-        () -> String.valueOf(question.getType())
+          Objects.toString(Entry.Type.of(question.getType())),
+          () -> String.valueOf(question.getType())
       );
-      final var hostname = question.getName().toString(true);
+      final var hostname = question.getName()
+          .toString(true);
       final var sb = new StringBuilder();
       if (Messages.hasFlag(reqOrRes, Flags.QR)) {
         sb.append("rc=")
-          .append(rcode)
-          .append(", ")
+            .append(rcode)
+            .append(", ")
         ;
       }
       sb.append(String.format("query=%s:%s", type, hostname));
@@ -86,9 +89,9 @@ public class Messages {
       return null;
     }
     return r
-      .toString()
-      .replaceAll("\\t", "  ")
-      ;
+        .toString()
+        .replaceAll("\\t", "  ")
+        ;
   }
 
   public static Hostname findQuestionHostname(Message m) {
@@ -97,8 +100,8 @@ public class Messages {
       return null;
     }
     final var hostname = question
-      .getName()
-      .toString(true);
+        .getName()
+        .toString(true);
     return Hostname.of(hostname);
   }
 
@@ -111,7 +114,9 @@ public class Messages {
     if (StringUtils.isBlank(ip)) {
       return res;
     }
-    final var answer = new ARecord(res.getQuestion().getName(), DClass.IN, ttl, Ips.toAddress(ip));
+    final var answer = new ARecord(res.getQuestion()
+        .getName(), DClass.IN, ttl, Ips.toAddress(ip)
+    );
     res.addRecord(answer, Section.ANSWER);
     return res;
   }
@@ -156,10 +161,10 @@ public class Messages {
 
   public static Integer findQuestionTypeCode(Message msg) {
     return Optional
-      .ofNullable(msg.getQuestion())
-      .map(Record::getType)
-      .orElse(null)
-      ;
+        .ofNullable(msg.getQuestion())
+        .map(Record::getType)
+        .orElse(null)
+        ;
   }
 
   public static Entry.Type findQuestionType(Message msg) {
@@ -185,17 +190,19 @@ public class Messages {
   @SneakyThrows
   public static Message copyQuestionForNowHostname(Message msg, String hostname) {
     final var newMsg = Message.newQuery(msg
-      .getQuestion()
-      .withName(Name.fromString(hostname))
+        .getQuestion()
+        .withName(Name.fromString(hostname))
     );
-    newMsg.getHeader().setID(msg.getHeader().getID());
+    newMsg.getHeader()
+        .setID(msg.getHeader()
+            .getID());
     return newMsg;
   }
 
   public static Duration findTTL(Message m) {
     final var answer = Optional
-      .ofNullable(Messages.findFirstAnswerRecord(m))
-      .orElseGet(() -> Messages.findFirstAuthorityRecord(m));
+        .ofNullable(Messages.findFirstAnswerRecord(m))
+        .orElseGet(() -> Messages.findFirstAuthorityRecord(m));
     if (answer == null) {
       return Duration.ZERO;
     }
@@ -206,8 +213,10 @@ public class Messages {
    * Set the id of the query into the response, se the response will match if the query;
    */
   public static Message mergeId(Message req, Message res) {
-    final var reqId = req.getHeader().getID();
-    res.getHeader().setID(reqId);
+    final var reqId = req.getHeader()
+        .getID();
+    res.getHeader()
+        .setID(reqId);
     return res;
   }
 
@@ -219,9 +228,10 @@ public class Messages {
   public static Message cnameResponse(Message query, Integer ttl, String hostname) {
     final var res = withNoErrorResponse(query.clone());
     final var answer = new CNAMERecord(
-      res.getQuestion().getName(),
-      DClass.IN, ttl,
-      Name.fromString(Hostnames.toAbsoluteName(hostname))
+        res.getQuestion()
+            .getName(),
+        DClass.IN, ttl,
+        Name.fromString(Hostnames.toAbsoluteName(hostname))
     );
     res.addRecord(answer, Section.ANSWER);
     return res;
@@ -236,7 +246,9 @@ public class Messages {
     if (StringUtils.isBlank(ip)) {
       return res;
     }
-    final var answer = new AAAARecord(res.getQuestion().getName(), DClass.IN, ttl, Ips.toAddress(ip));
+    final var answer = new AAAARecord(res.getQuestion()
+        .getName(), DClass.IN, ttl, Ips.toAddress(ip)
+    );
     res.addRecord(answer, Section.ANSWER);
     return res;
   }
@@ -265,11 +277,12 @@ public class Messages {
 
   public static Message withResponseCode(Message res, int rRode) {
     withDefaultResponseHeaders(res);
-    res.getHeader().setRcode(rRode);
+    res.getHeader()
+        .setRcode(rRode);
     return res;
   }
 
-  public static int getRCode(Message m){
+  public static int getRCode(Message m) {
     return m.getRcode();
   }
 
@@ -288,17 +301,20 @@ public class Messages {
   }
 
   public static Message setFlag(Message m, int flag) {
-    m.getHeader().setFlag(flag);
+    m.getHeader()
+        .setFlag(flag);
     return m;
   }
 
   public static boolean hasFlag(Message msg, int flag) {
-    return msg.getHeader().getFlag(flag);
+    return msg.getHeader()
+        .getFlag(flag);
   }
 
   public static HostnameQuery toHostnameQuery(Message query) {
     final var host = Messages.findQuestionHostname(query);
-    final var version = Entry.Type.of(findQuestionTypeCode(query)).toVersion();
+    final var version = Entry.Type.of(findQuestionTypeCode(query))
+        .toVersion();
     return HostnameQuery.of(host, version);
   }
 

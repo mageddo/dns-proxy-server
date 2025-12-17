@@ -1,14 +1,14 @@
 package com.mageddo.net;
 
-import com.mageddo.net.osx.NetworkOSX;
-import com.mageddo.net.windows.NetworkWindows;
-import com.mageddo.os.Platform;
-
 import java.io.UncheckedIOException;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.List;
 import java.util.stream.Stream;
+
+import com.mageddo.net.osx.NetworkOSX;
+import com.mageddo.net.windows.NetworkWindows;
+import com.mageddo.os.Platform;
 
 public interface Network {
 
@@ -19,6 +19,7 @@ public interface Network {
 
   /**
    * Set the servers as current DNS for the specified network.
+   *
    * @return whether had success.
    */
   boolean updateDnsServers(String network, List<String> servers);
@@ -29,7 +30,7 @@ public interface Network {
    */
   List<String> findNetworkDnsServers(String network);
 
-  default Stream<NetworkInterface> findNetworkInterfaces(){
+  default Stream<NetworkInterface> findNetworkInterfaces() {
     try {
       return NetworkInterface.networkInterfaces();
     } catch (SocketException e) {
@@ -42,10 +43,11 @@ public interface Network {
       return new NetworkOSX();
     } else if (Platform.isWindows()) {
       return new NetworkWindows();
-    } else if(Platform.isLinux()){
+    } else if (Platform.isLinux()) {
       return new NetworkLinux();
     }
-    throw new UnsupportedOperationException("Unsupported platform: " + System.getProperty("os.name"));
+    throw new UnsupportedOperationException(
+        "Unsupported platform: " + System.getProperty("os.name"));
   }
 
 }

@@ -1,17 +1,18 @@
 package com.mageddo.di;
 
-import javax.enterprise.inject.Instance;
-import javax.enterprise.util.TypeLiteral;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
+import javax.enterprise.inject.Instance;
+import javax.enterprise.util.TypeLiteral;
+
 public class InstanceImpl<T> implements Instance<T> {
 
   private final Collection<T> values;
 
-  public InstanceImpl(T instance){
+  public InstanceImpl(T instance) {
     this.values = Collections.singleton(instance);
   }
 

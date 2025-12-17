@@ -1,21 +1,23 @@
 package com.mageddo.commons.exec;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.time.Duration;
+import java.util.Map;
+
 import com.mageddo.io.LogPrinter;
-import lombok.Builder;
-import lombok.NonNull;
-import lombok.Value;
-import lombok.experimental.NonFinal;
+
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.ExecuteResultHandler;
 import org.apache.commons.exec.ExecuteStreamHandler;
 import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.PumpStreamHandler;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.time.Duration;
-import java.util.Map;
+import lombok.Builder;
+import lombok.NonNull;
+import lombok.Value;
+import lombok.experimental.NonFinal;
 
 @Value
 @Builder(toBuilder = true, builderClassName = "RequestBuilder", buildMethodName = "build0")
@@ -34,8 +36,8 @@ public class Request {
 
   @Builder.Default
   private final Streams streams = Streams.builder()
-    .outAndErr(new ByteArrayOutputStream())
-    .build();
+      .outAndErr(new ByteArrayOutputStream())
+      .build();
 
   public ExecuteStreamHandler getStreamHandler() {
     return this.streams.toStreamHandler();
@@ -97,7 +99,8 @@ public class Request {
     }
 
     public OutputStream getBestOriginalOutput() {
-      return this.getBestOut().getOriginalOut();
+      return this.getBestOut()
+          .getOriginalOut();
     }
 
     public static class StreamsBuilder {

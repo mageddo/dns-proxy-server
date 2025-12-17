@@ -1,12 +1,13 @@
 package com.mageddo.io;
 
-import com.mageddo.concurrent.ThreadsV2;
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
+import com.mageddo.concurrent.ThreadsV2;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class LogPrinter {
@@ -28,8 +29,8 @@ public class LogPrinter {
       }
     };
     Thread
-      .ofVirtual()
-      .start(task);
+        .ofVirtual()
+        .start(task);
   }
 
 }

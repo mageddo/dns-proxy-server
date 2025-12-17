@@ -1,11 +1,12 @@
 package com.mageddo.http.codec;
 
-import com.sun.net.httpserver.HttpExchange;
-
-import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
+
+import javax.ws.rs.core.Response;
+
+import com.sun.net.httpserver.HttpExchange;
 
 public class Encoders {
 
@@ -35,9 +36,11 @@ public class Encoders {
   public static void encodePlain(HttpExchange exchange, String text) {
     try {
       final var bytes = text.getBytes(StandardCharsets.UTF_8);
-      exchange.getResponseHeaders().add("Content-Type", "text/plain");
+      exchange.getResponseHeaders()
+          .add("Content-Type", "text/plain");
       exchange.sendResponseHeaders(200, bytes.length);
-      exchange.getResponseBody().write(bytes);
+      exchange.getResponseBody()
+          .write(bytes);
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }

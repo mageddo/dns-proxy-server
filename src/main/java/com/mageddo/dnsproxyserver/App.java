@@ -1,18 +1,20 @@
 package com.mageddo.dnsproxyserver;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import com.mageddo.dnsproxyserver.application.LogSettings;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.ConfigDAOCmdArgs;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.vo.ConfigFlag;
 import com.mageddo.dnsproxyserver.di.Context;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class App {
@@ -38,8 +40,8 @@ public class App {
       throw e;
     } catch (Throwable e) {
       log.error(
-        "status=fatalError, action=exit, msg={}, class={}",
-        ExceptionUtils.getMessage(e), ClassUtils.getSimpleName(e), e
+          "status=fatalError, action=exit, msg={}, class={}",
+          ExceptionUtils.getMessage(e), ClassUtils.getSimpleName(e), e
       );
       this.exitWithError(128);
     }
@@ -56,7 +58,9 @@ public class App {
 
     this.setupLogs();
 
-    log.trace("pid={}", ProcessHandle.current().pid());
+    log.trace("pid={}", ProcessHandle.current()
+        .pid()
+    );
 
     this.startContext();
 
@@ -83,7 +87,7 @@ public class App {
 
   void startContext() {
     Context.create()
-      .start()
+        .start()
     ;
   }
 

@@ -1,14 +1,16 @@
 package com.mageddo.dnsproxyserver.sandbox;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import com.mageddo.utils.Runtime;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.lang3.Validate;
 import org.graalvm.nativeimage.ImageInfo;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class DpsBinaryExecutableFinder {
@@ -24,16 +26,17 @@ public class DpsBinaryExecutableFinder {
     }
     final var javaCommandPath = this.findJavaCommand();
     return new CommandLine(javaCommandPath)
-      .addArgument("-jar")
-      .addArgument(executablePath.toFile().toString());
+        .addArgument("-jar")
+        .addArgument(executablePath.toFile()
+            .toString());
   }
 
   private String findJavaCommand() {
     return ProcessHandle.current()
-      .info()
-      .command()
-      .orElseThrow(() -> new IllegalStateException("Couldn't find current java process command"))
-      ;
+        .info()
+        .command()
+        .orElseThrow(() -> new IllegalStateException("Couldn't find current java process command"))
+        ;
   }
 
   public static Path findPath() {
@@ -64,9 +67,10 @@ public class DpsBinaryExecutableFinder {
   private Path findFirstMatchInPath(Path libsPath) {
     try (var stream = Files.list(libsPath)) {
       return stream
-        .filter(path -> path.toString().endsWith("-all.jar"))
-        .findFirst()
-        .orElseThrow(() -> new IllegalStateException("Unable to find fat jar at libs path"));
+          .filter(path -> path.toString()
+              .endsWith("-all.jar"))
+          .findFirst()
+          .orElseThrow(() -> new IllegalStateException("Unable to find fat jar at libs path"));
     }
   }
 

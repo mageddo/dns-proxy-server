@@ -1,15 +1,17 @@
 package com.mageddo.dnsproxyserver.solver.docker;
 
-import com.mageddo.net.IP;
-import lombok.Builder;
-import lombok.NonNull;
-import lombok.Value;
-import org.apache.commons.lang3.EnumUtils;
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
+import com.mageddo.net.IP;
+
+import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import lombok.Builder;
+import lombok.NonNull;
+import lombok.Value;
 
 @Value
 @Builder
@@ -29,9 +31,9 @@ public class Network {
 
   public IP getGateway(IP.Version version) {
     return this.gateways.stream()
-      .filter(it -> Objects.equals(it.version(), version))
-      .findFirst()
-      .orElse(null);
+        .filter(it -> Objects.equals(it.version(), version))
+        .findFirst()
+        .orElse(null);
   }
 
   public boolean hasAnyGateway() {
@@ -40,9 +42,9 @@ public class Network {
 
   public boolean hasAnyGatewayWith(IP.Version version) {
     return this.gateways
-      .stream()
-      .anyMatch(it -> Objects.equals(it.version(), version))
-      ;
+        .stream()
+        .anyMatch(it -> Objects.equals(it.version(), version))
+        ;
   }
 
   public enum Name {
