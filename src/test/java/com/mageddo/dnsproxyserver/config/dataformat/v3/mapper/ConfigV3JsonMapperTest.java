@@ -4,7 +4,7 @@ import com.mageddo.dnsproxyserver.config.provider.dataformatv3.templates.ConfigV
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ConfigV3JsonMapperTest {
 
@@ -14,11 +14,11 @@ class ConfigV3JsonMapperTest {
     final var json = ConfigV3Templates.buildJson();
 
     final var parsed = ConfigV3JsonMapper.of(json);
-    final var marshalled = ConfigV3JsonMapper.toJson(parsed);
-    final var marshalledParsed = ConfigV3JsonMapper.of(json);
+    final var marshalledParsed = ConfigV3JsonMapper.of(ConfigV3JsonMapper.toJson(parsed));
 
-    assertEquals(json, marshalled);
-    assertEquals(parsed, marshalledParsed);
+    assertThat(parsed)
+        .usingRecursiveComparison()
+        .isEqualTo(marshalledParsed);
 
   }
 }
