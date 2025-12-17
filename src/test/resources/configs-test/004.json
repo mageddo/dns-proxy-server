@@ -31,7 +31,8 @@
       "failureThreshold" : 3,
       "failureThresholdCapacity" : 10,
       "successThreshold" : 5,
-      "testDelay" : 60.0
+      "testDelay" : 60.0,
+      "type" : "STATIC_THRESHOLD"
     },
     "dnsServers" : [ ]
   },
