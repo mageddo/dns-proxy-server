@@ -57,8 +57,8 @@ public class ResolvconfConfiguratorV2 {
 
   /**
    * overrideNameServers=true:
-   * - write dps-entries at top
-   * - create dps-comments with ALL existing active nameservers (dedup), excluding dps server
+   * - write dps-entries after header comments
+   * - create dps-comments with ALL existing active/commented nameservers (dedup), excluding dps server
    * - preserve any non-nameserver lines (comments/options/search/etc.)
    * - do NOT emit inline "# ... # dps-comment" (tests expect only blocks)
    */
@@ -136,7 +136,7 @@ public class ResolvconfConfiguratorV2 {
   ) {
     final var nameservers = new LinkedHashSet<String>();
 
-    // candidates from inline "# ... # dps-comment" removed during cleanup
+    // candidates from inline "# ... # dps-comment" and from previous dps-comments blocks
     nameservers.addAll(cleaned.inlineCommentCandidates());
 
     for (final var line : cleaned.originalLines()) {
@@ -196,7 +196,7 @@ public class ResolvconfConfiguratorV2 {
     final var lines = splitLines(normalizedContent);
 
     final var cleaned = new ArrayList<String>();
-    final var inlineCommentCandidates = new LinkedHashSet<String>();
+    final var commentCandidates = new LinkedHashSet<String>();
 
     boolean insideEntriesBlock = false;
     boolean insideCommentsBlock = false;
@@ -221,8 +221,18 @@ public class ResolvconfConfiguratorV2 {
         continue;
       }
 
-      // drop managed blocks completely (both entries and comments)
-      if (insideEntriesBlock || insideCommentsBlock) {
+      // Collect nameservers from previous dps-comments blocks (idempotency fix)
+      if (insideCommentsBlock) {
+        final var uncommented = uncommentNameserverIfPresent(line); // "# nameserver X" -> "nameserver X"
+        final var ns = uncommented == null ? null : extractActiveNameserver(uncommented);
+        if (ns != null) {
+          commentCandidates.add(ns);
+        }
+        continue;
+      }
+
+      // drop managed entries block completely
+      if (insideEntriesBlock) {
         continue;
       }
 
@@ -236,7 +246,7 @@ public class ResolvconfConfiguratorV2 {
         final var restored = restoreInlineDpsComment(line);
         final var ns = restored == null ? null : extractActiveNameserver(restored);
         if (ns != null) {
-          inlineCommentCandidates.add(ns);
+          commentCandidates.add(ns);
         }
         continue;
       }
@@ -247,7 +257,7 @@ public class ResolvconfConfiguratorV2 {
     trimLeadingBlankLines(cleaned);
     trimTrailingBlankLines(cleaned);
 
-    return new CleanedContent(cleaned, new ArrayList<>(inlineCommentCandidates));
+    return new CleanedContent(cleaned, new ArrayList<>(commentCandidates));
   }
 
   private static String restoreFromContent(final String normalizedContent) {
@@ -326,7 +336,6 @@ public class ResolvconfConfiguratorV2 {
     return joinLines(restored) + LINE_BREAK;
   }
 
-
   private static DnsAddress parseDnsAddress(final String addr) {
     return new DnsAddress(addr);
   }
@@ -350,7 +359,7 @@ public class ResolvconfConfiguratorV2 {
       return null;
     }
     final var uncommented = trimmed.substring(1).trim(); // remove '#'
-    return extractActiveNameserver(uncommented); // reuse parser: "nameserver X"
+    return extractActiveNameserver(uncommented); // "nameserver X"
   }
 
   private static String uncommentNameserverIfPresent(final String line) {
