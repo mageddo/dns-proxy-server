@@ -5,9 +5,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -15,9 +12,9 @@ import javax.inject.Singleton;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Config.DefaultDns;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
-import com.mageddo.dnsproxyserver.version.VersionDAO;
 import com.mageddo.dnsproxyserver.config.validator.ConfigValidator;
 import com.mageddo.dnsproxyserver.utils.Numbers;
+import com.mageddo.dnsproxyserver.version.VersionDAO;
 import com.mageddo.dnsserver.SimpleServer;
 import com.mageddo.net.IpAddr;
 
@@ -25,6 +22,7 @@ import org.apache.commons.lang3.SystemUtils;
 
 import lombok.RequiredArgsConstructor;
 
+import static com.mageddo.commons.Collections.keyBy;
 import static com.mageddo.dnsproxyserver.utils.ListOfObjectUtils.mapField;
 import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonEmptyList;
 import static com.mageddo.dnsproxyserver.utils.ObjectUtils.firstNonEmptyListRequiring;
@@ -51,17 +49,15 @@ public class ConfigMapper {
   }
 
   public static Config replace(Config config, String envKey, Config.Entry entry) {
-    final var envs = new ArrayList<>(config.getEnvs());
-    for (var i = 0; i < envs.size(); i++) {
-      final var env = envs.get(i);
-      if (Objects.equals(env.getName(), envKey)) {
-        envs.set(i, replaceEntry(env, entry));
-      }
-    }
+
+    final var store = keyBy(config.getEnvs(), Config.Env::getName);
+    store.computeIfPresent(envKey, (key, env) -> replaceEntry(env, entry));
+    store.computeIfAbsent(envKey, __ -> Config.Env.of(envKey, List.of(entry)));
+
     return config.toBuilder()
         .solverLocal(config.getSolverLocal()
             .toBuilder()
-            .envs(envs)
+            .envs(new ArrayList<>(store.values()))
             .build())
         .build();
   }
@@ -75,15 +71,50 @@ public class ConfigMapper {
   private static List<Config.Entry> replaceEntry(
       List<Config.Entry> entries, Config.Entry entry
   ) {
-    final var store = entries
-        .stream()
-        .collect(Collectors.toMap(Config.Entry::getId, Function.identity()));
+    final var store = keyBy(entries, Config.Entry::getId);
     store.put(entry.getId(), entry);
     return new ArrayList<>(store.values());
   }
 
   public static Config add(Config config, String env) {
     return add(config, Config.Env.of(env, Collections.emptyList()));
+  }
+
+  public static Config remove(Config config, String envKey, String hostname) {
+
+    final var envs = removeHostName(config, envKey, hostname);
+    if (envs == null) {
+      return null;
+    }
+    return config.toBuilder()
+        .solverLocal(config.getSolverLocal()
+            .toBuilder()
+            .envs(envs)
+            .build()
+        )
+        .build();
+  }
+
+  static List<Config.Env> removeHostName(
+      Config config, String envKey, String hostname
+  ) {
+    final var envsStore = keyBy(config.getEnvs(), Config.Env::getName);
+    if (!envsStore.containsKey(envKey)) {
+      return null;
+    }
+    final var env = envsStore.get(envKey);
+    final var entryStore = keyBy(env.getEntries(), Config.Entry::getHostname);
+    if (!entryStore.containsKey(hostname)) {
+      return null;
+    }
+    entryStore.remove(hostname);
+    final var updatedEnv = env.toBuilder()
+        .entries(new ArrayList<>(entryStore.values()))
+        .build();
+
+    envsStore.put(envKey, updatedEnv);
+
+    return new ArrayList<>(envsStore.values());
   }
 
   public Config mapFrom(List<Config> configs) {

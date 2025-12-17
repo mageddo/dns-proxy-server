@@ -13,7 +13,6 @@ import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Config.Env;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.config.dataprovider.MutableConfigDAO;
-import com.mageddo.dnsproxyserver.config.filter.EnvFilter;
 import com.mageddo.dnsproxyserver.config.mapper.ConfigMapper;
 import com.mageddo.dnsproxyserver.config.predicate.EntryPredicate;
 import com.mageddo.dnsproxyserver.config.predicate.EnvPredicate;
@@ -77,42 +76,31 @@ public class MutableConfigDAOFile implements MutableConfigDAO {
 
   @Override
   public boolean updateEntry(String env, Config.Entry entry) {
-    final var config = ConfigMapper.add(this.find(), env);
-    final var found = EnvFilter.filter(config, env);
-    if (found == null) {
-      return false;
-    }
-    final var hostnames = found.getHostnames();
-    if (hostnames.isEmpty()) {
-      return false;
-    }
-    ConfigMapper.replace(config, env, entry);
-//    return findHostname(
-//        EntryPredicate.byId(entry.getId()),
-//        hostnames,
-//        (foundEntry, i, entries) -> {
-//          entries.set(i, entry);
-//          this.save(config);
-//        }
-//    );
+    this.save(ConfigMapper.replace(this.find(), env, entry));
+    return true;
   }
 
   @Override
   public boolean removeEntry(String env, String hostname) {
-    final var config = this.find();
-    final var found = this.findOrBind(env, config);
-    final var hostnames = found.getHostnames();
-    if (hostnames.isEmpty()) {
+    final var config = ConfigMapper.remove(this.find(), env, hostname);
+    if (config == null) {
       return false;
     }
-    return findHostname(
-        EntryPredicate.exactName(hostname),
-        hostnames,
-        (foundEntry, i, entries) -> {
-          entries.remove((int) i);
-          this.save(config);
-        }
-    );
+    this.save(config);
+    return true;
+//    final var found = this.findOrBind(env, config);
+//    final var hostnames = found.getHostnames();
+//    if (hostnames.isEmpty()) {
+//      return false;
+//    }
+//    return findHostname(
+//        EntryPredicate.exactName(hostname),
+//        hostnames,
+//        (foundEntry, i, entries) -> {
+//          entries.remove((int) i);
+//          this.save(config);
+//        }
+//    );
   }
 
   @Override

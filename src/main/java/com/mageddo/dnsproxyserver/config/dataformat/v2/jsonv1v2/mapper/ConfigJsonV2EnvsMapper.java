@@ -1,22 +1,26 @@
 package com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.mapper;
 
+import java.util.List;
+
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo.ConfigJsonV2;
 import com.mageddo.net.IP;
-import org.apache.commons.lang3.StringUtils;
 
-import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 
 public class ConfigJsonV2EnvsMapper {
 
   public static List<Config.Env> toDomainEnvs(List<ConfigJsonV2.Env> envs) {
     return envs.stream()
-      .map(ConfigJsonV2EnvsMapper::toDomainEnv)
-      .toList();
+        .map(ConfigJsonV2EnvsMapper::toDomainEnv)
+        .toList();
   }
 
   public static Config.Env toDomainEnv(ConfigJsonV2.Env env) {
-    return new Config.Env(env.getName(), ConfigJsonV2EnvsMapper.toDomainEntries(env.getHostnames()));
+    return Config.Env.builder()
+        .name(env.getName())
+        .entries(ConfigJsonV2EnvsMapper.toDomainEntries(env.getHostnames()))
+        .build();
   }
 
   public static List<Config.Entry> toDomainEntries(List<ConfigJsonV2.Entry> hostnames) {
@@ -24,21 +28,21 @@ public class ConfigJsonV2EnvsMapper {
       return null;
     }
     return hostnames
-      .stream()
-      .map(ConfigJsonV2EnvsMapper::toDomainEntry)
-      .toList();
+        .stream()
+        .map(ConfigJsonV2EnvsMapper::toDomainEntry)
+        .toList();
   }
 
   public static Config.Entry toDomainEntry(ConfigJsonV2.Entry hostname) {
     return Config.Entry
-      .builder()
-      .hostname(hostname.getHostname())
-      .id(hostname.getId())
-      .ttl(hostname.getTtl())
-      .ip(IP.of(hostname.getIp()))
-      .target(hostname.getTarget())
-      .type(buildType(hostname))
-      .build();
+        .builder()
+        .hostname(hostname.getHostname())
+        .id(hostname.getId())
+        .ttl(hostname.getTtl())
+        .ip(IP.of(hostname.getIp()))
+        .target(hostname.getTarget())
+        .type(buildType(hostname))
+        .build();
   }
 
   private static Config.Entry.Type buildType(ConfigJsonV2.Entry hostname) {
@@ -50,7 +54,8 @@ public class ConfigJsonV2EnvsMapper {
     } else if (StringUtils.isNotBlank(hostname.getTarget())) {
       return Config.Entry.Type.CNAME;
     }
-    throw new IllegalArgumentException("You must set the hostname type field, then fill target or ip field");
+    throw new IllegalArgumentException(
+        "You must set the hostname type field, then fill target or ip field");
   }
 
 
