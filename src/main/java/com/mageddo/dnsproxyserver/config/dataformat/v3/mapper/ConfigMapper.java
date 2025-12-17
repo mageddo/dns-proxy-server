@@ -14,6 +14,7 @@ import com.mageddo.dnsproxyserver.config.Config.SolverDocker.DpsNetwork;
 import com.mageddo.dnsproxyserver.config.NonResilientCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.dataformat.v3.ConfigV3;
+import com.mageddo.dnsproxyserver.utils.Booleans;
 import com.mageddo.dnsserver.SimpleServer;
 import com.mageddo.net.IP;
 import com.mageddo.net.IpAddr;
@@ -204,7 +205,7 @@ public class ConfigMapper {
     return Config.SolverDocker.Networks.builder()
         .preferred(Config.SolverDocker.Networks.Preferred.builder()
             .names(preferred.getNames())
-            .overrideDefault(preferred.getOverrideDefault())
+            .overrideDefault(Booleans.getOrDefault(preferred.getOverrideDefault(), false))
             .build()
         )
         .build();
