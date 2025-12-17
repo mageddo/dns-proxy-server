@@ -63,7 +63,8 @@ Common DNS resolution mechanisms used by DPS. Solvers are evaluated according to
 
 Default DPS network settings
 
-```json
+```yaml
+---
 - subNet: 172.20.0.0/16
   ipRange: 172.20.5.0/24
   gateway: 172.20.5.1
@@ -118,44 +119,62 @@ Default DPS network settings
 
 * [Solver remote circuit breaker configuration][3]
 
-```json
+```yaml
 version: 3
-server: dns: port: 53
-noEntriesResponseCode: 3
-web: port: 5380
-protocol: UDP_TCP
-solver: remote: active: true
-dnsServers: - 8.8.8.8
-- 4.4.4.4: 53
-circuitBreaker: type: CANARY_RATE_THRESHOLD
-failureRateThreshold: 21
-minimumNumberOfCalls: 50
-permittedNumberOfCallsInHalfOpenState: 10
-docker:
-registerContainerNames: false
-domain: docker
-hostMachineFallback: true
-dpsNetwork: name: dps
-autoCreate: false
-autoConnect: false
-configs: - subNet: 172.20.0.0/16
-ipRange: 172.20.5.0/24
-gateway: 172.20.5.1
-- subNet: fc00: 5c6f: db50:: /64
-gateway: fc00: 5c6f: db50:: 1
-dockerDaemonUri: system: hostMachineHostname: host.docker
-local: activeEnv: ''
-envs: - name: ''
-hostnames: - type: A
-hostname: dps-sample.dev
-ip: 192.168.0.254
-ttl: 30
-stub: domainName: stub
-defaultDns: active: true
-resolvConf: paths: "/host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf"
-overrideNameServers: true
-log: level: DEBUG
-file: console
+server:
+  dns:
+    port: 53
+    noEntriesResponseCode: 3
+  web:
+    port: 5380
+  protocol: UDP_TCP
+solver:
+  remote:
+    active: true
+    dnsServers:
+      - 8.8.8.8
+      - 4.4.4.4:53
+    circuitBreaker:
+      type: CANARY_RATE_THRESHOLD
+      failureRateThreshold: 21
+      minimumNumberOfCalls: 50
+      permittedNumberOfCallsInHalfOpenState: 10
+  docker:
+    registerContainerNames: false
+    domain: docker
+    hostMachineFallback: true
+    dpsNetwork:
+      name: dps
+      autoCreate: false
+      autoConnect: false
+      configs:
+        - subNet: 172.20.0.0/16
+          ipRange: 172.20.5.0/24
+          gateway: 172.20.5.1
+        - subNet: fc00:5c6f:db50::/64
+          gateway: fc00:5c6f:db50::1
+    dockerDaemonUri:
+  system:
+    hostMachineHostname: host.docker
+  local:
+    activeEnv: ''
+    envs:
+      - name: ''
+        hostnames:
+          - type: A
+            hostname: dps-sample.dev
+            ip: 192.168.0.254
+            ttl: 30
+  stub:
+    domainName: stub
+defaultDns:
+  active: true
+  resolvConf:
+    paths: "/host/etc/systemd/resolved.conf,/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf"
+    overrideNameServers: true
+log:
+  level: DEBUG
+  file: console
 ```
 
 ### Legacy Configuration
