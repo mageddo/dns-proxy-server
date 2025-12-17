@@ -1,3 +1,8 @@
+## 4.3.0
+* Defining **Canary Rate Threshold** as the default Circuit Breaker Strategy, see the [docs][4_3_0_1]
+
+[4_3_0_1]: https://mageddo.github.io/dns-proxy-server/4.3/en/2-features/remote-solver-circuitbreaker/#canary-rate-threshold
+
 ## 4.2.0
 * Activating Config v3 for beta testing
 
