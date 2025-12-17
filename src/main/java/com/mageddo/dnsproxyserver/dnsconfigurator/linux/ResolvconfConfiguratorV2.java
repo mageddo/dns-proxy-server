@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.dnsconfigurator.linux;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -19,12 +20,14 @@ public class ResolvconfConfiguratorV2 {
 
   private static final String DPS_ENTRY_SUFFIX = "# dps-entry";
   private static final String DPS_COMMENT_SUFFIX = "# dps-comment";
+  private static final String LINE_BREAK = "\n";
 
   public static void process(final Path confFile, final IpAddr addr) {
     process(confFile, addr, true);
   }
 
-  public static void process(final Path confFile, final IpAddr addr, final boolean overrideNameServers) {
+  public static void process(final Path confFile, final IpAddr addr,
+      final boolean overrideNameServers) {
 
     Dns.validateIsDefaultPort(addr);
 
@@ -49,28 +52,36 @@ public class ResolvconfConfiguratorV2 {
   // Build outputs
   // -------------------------------------------------------------------------
 
-  private static String buildOverrideOutput(final String dpsNameserverHost, final CleanedContent cleaned) {
+  private static String buildOverrideOutput(final String dpsNameserverHost,
+      final CleanedContent cleaned) {
     final var nameserversToComment = collectNameserversToComment(dpsNameserverHost, cleaned);
 
     final var out = new StringBuilder();
-    out.append(BEGIN_ENTRIES).append("\n");
-    out.append(nameserverLine(dpsNameserverHost)).append("\n");
-    out.append(END_ENTRIES).append("\n");
+    out.append(BEGIN_ENTRIES)
+        .append(LINE_BREAK);
+    out.append(nameserverLine(dpsNameserverHost))
+        .append(LINE_BREAK);
+    out.append(END_ENTRIES)
+        .append(LINE_BREAK);
 
     if (nameserversToComment.isEmpty()) {
       return out.toString();
     }
 
-    out.append("\n");
-    out.append(BEGIN_COMMENTS).append("\n");
+    out.append(LINE_BREAK);
+    out.append(BEGIN_COMMENTS)
+        .append(LINE_BREAK);
     for (final var ns : nameserversToComment) {
-      out.append(commentedNameserverLine(ns)).append("\n");
+      out.append(commentedNameserverLine(ns))
+          .append(LINE_BREAK);
     }
-    out.append(END_COMMENTS).append("\n");
+    out.append(END_COMMENTS)
+        .append(LINE_BREAK);
     return out.toString();
   }
 
-  private static String buildNonOverrideOutput(final String dpsNameserverHost, final CleanedContent cleaned) {
+  private static String buildNonOverrideOutput(final String dpsNameserverHost,
+      final CleanedContent cleaned) {
     final var lines = cleaned.originalLines();
 
     final var insertionIndex = indexAfterHeaderComments(lines);
@@ -89,10 +100,12 @@ public class ResolvconfConfiguratorV2 {
     out.addAll(lines.subList(remainderStart, lines.size()));
 
     trimTrailingBlankLines(out);
-    return joinLines(out) + "\n";
+    return joinLines(out) + LINE_BREAK;
   }
 
-  private static List<String> collectNameserversToComment(final String dpsNameserverHost, final CleanedContent cleaned) {
+  private static List<String> collectNameserversToComment(
+      final String dpsNameserverHost, final CleanedContent cleaned
+  ) {
     final var nameservers = new LinkedHashSet<String>();
 
     // inline "# ... # dps-comment" captured during cleanup
@@ -113,7 +126,8 @@ public class ResolvconfConfiguratorV2 {
   private static int indexAfterHeaderComments(final List<String> lines) {
     int i = 0;
     while (i < lines.size()) {
-      final var trimmed = lines.get(i).trim();
+      final var trimmed = lines.get(i)
+          .trim();
       if (!trimmed.startsWith("#")) {
         break;
       }
@@ -127,7 +141,8 @@ public class ResolvconfConfiguratorV2 {
 
   private static int skipBlankLines(final List<String> lines, final int startIndex) {
     int i = startIndex;
-    while (i < lines.size() && lines.get(i).isBlank()) {
+    while (i < lines.size() && lines.get(i)
+        .isBlank()) {
       i++;
     }
     return i;
@@ -137,7 +152,8 @@ public class ResolvconfConfiguratorV2 {
     if (lines.isEmpty()) {
       return;
     }
-    if (!lines.get(lines.size() - 1).isBlank()) {
+    if (!lines.get(lines.size() - 1)
+        .isBlank()) {
       lines.add("");
     }
   }
@@ -260,7 +276,7 @@ public class ResolvconfConfiguratorV2 {
       }
     }
 
-    return joinLines(restored) + "\n";
+    return joinLines(restored) + LINE_BREAK;
   }
 
   private static DnsAddress parseDnsAddress(final String addr) {
@@ -285,16 +301,19 @@ public class ResolvconfConfiguratorV2 {
     if (!trimmed.startsWith("#")) {
       return null;
     }
-    trimmed = trimmed.substring(1).trim();
+    trimmed = trimmed.substring(1)
+        .trim();
     return trimmed.startsWith("nameserver") ? trimmed : null;
   }
 
   private static String restoreInlineDpsComment(final String line) {
     // "# nameserver 8.8.8.8 # dps-comment" -> "nameserver 8.8.8.8"
-    final var withoutSuffix = line.replace(DPS_COMMENT_SUFFIX, "").trim();
+    final var withoutSuffix = line.replace(DPS_COMMENT_SUFFIX, "")
+        .trim();
     var trimmed = withoutSuffix.trim();
     if (trimmed.startsWith("#")) {
-      trimmed = trimmed.substring(1).trim();
+      trimmed = trimmed.substring(1)
+          .trim();
     }
     return trimmed;
   }
@@ -341,7 +360,7 @@ public class ResolvconfConfiguratorV2 {
       }
       return Files.readString(path);
     } catch (final IOException e) {
-      throw new IllegalStateException("Failed to read file: " + path, e);
+      throw new UncheckedIOException("Failed to read file: " + path, e);
     }
   }
 
@@ -353,19 +372,20 @@ public class ResolvconfConfiguratorV2 {
       }
       Files.writeString(path, content);
     } catch (final IOException e) {
-      throw new IllegalStateException("Failed to write file: " + path, e);
+      throw new UncheckedIOException("Failed to write file: " + path, e);
     }
   }
 
   private static String normalizeNewlines(final String s) {
-    return s.replace("\r\n", "\n").replace("\r", "\n");
+    return s.replace("\r\n", LINE_BREAK)
+        .replace("\r", LINE_BREAK);
   }
 
   private static List<String> splitLines(final String normalizedContent) {
     if (normalizedContent.isEmpty()) {
       return List.of();
     }
-    return List.of(normalizedContent.split("\n", -1));
+    return List.of(normalizedContent.split(LINE_BREAK, -1));
   }
 
   private static String joinLines(final List<String> lines) {
@@ -376,20 +396,22 @@ public class ResolvconfConfiguratorV2 {
     for (int i = 0; i < lines.size(); i++) {
       out.append(lines.get(i));
       if (i + 1 < lines.size()) {
-        out.append("\n");
+        out.append(LINE_BREAK);
       }
     }
     return out.toString();
   }
 
   private static void trimLeadingBlankLines(final List<String> lines) {
-    while (!lines.isEmpty() && lines.get(0).isBlank()) {
+    while (!lines.isEmpty() && lines.get(0)
+        .isBlank()) {
       lines.remove(0);
     }
   }
 
   private static void trimTrailingBlankLines(final List<String> lines) {
-    while (!lines.isEmpty() && lines.get(lines.size() - 1).isBlank()) {
+    while (!lines.isEmpty() && lines.get(lines.size() - 1)
+        .isBlank()) {
       lines.remove(lines.size() - 1);
     }
   }
