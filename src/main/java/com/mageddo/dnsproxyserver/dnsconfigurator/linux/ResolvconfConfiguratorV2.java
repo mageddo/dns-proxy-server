@@ -52,32 +52,38 @@ public class ResolvconfConfiguratorV2 {
   // Build outputs
   // -------------------------------------------------------------------------
 
-  private static String buildOverrideOutput(final String dpsNameserverHost,
-      final CleanedContent cleaned) {
-    final var nameserversToComment = collectNameserversToComment(dpsNameserverHost, cleaned);
+  private static String buildOverrideOutput(
+      final String dpsNameserverHost,
+      final CleanedContent cleaned
+  ) {
+    final var nameserversToComment =
+        collectNameserversToComment(dpsNameserverHost, cleaned);
 
     final var out = new StringBuilder();
-    out.append(BEGIN_ENTRIES)
-        .append(LINE_BREAK);
-    out.append(nameserverLine(dpsNameserverHost))
-        .append(LINE_BREAK);
-    out.append(END_ENTRIES)
-        .append(LINE_BREAK);
+
+    append(out, BEGIN_ENTRIES);
+    append(out, nameserverLine(dpsNameserverHost));
+    append(out, END_ENTRIES);
 
     if (nameserversToComment.isEmpty()) {
       return out.toString();
     }
 
-    out.append(LINE_BREAK);
-    out.append(BEGIN_COMMENTS)
-        .append(LINE_BREAK);
+    append(out, "");
+    append(out, BEGIN_COMMENTS);
+
     for (final var ns : nameserversToComment) {
-      out.append(commentedNameserverLine(ns))
-          .append(LINE_BREAK);
+      append(out, commentedNameserverLine(ns));
     }
-    out.append(END_COMMENTS)
-        .append(LINE_BREAK);
+
+    append(out, END_COMMENTS);
+
     return out.toString();
+  }
+
+  private static void append(final StringBuilder out, final String value) {
+    out.append(value)
+        .append(LINE_BREAK);
   }
 
   private static String buildNonOverrideOutput(final String dpsNameserverHost,
