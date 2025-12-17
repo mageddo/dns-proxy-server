@@ -8,10 +8,13 @@ import java.util.function.Predicate;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.mageddo.commons.lang.tuple.Pair;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Config.Env;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.config.dataprovider.MutableConfigDAO;
+import com.mageddo.dnsproxyserver.config.filter.EnvFilter;
+import com.mageddo.dnsproxyserver.config.mapper.ConfigMapper;
 import com.mageddo.dnsproxyserver.config.predicate.EntryPredicate;
 import com.mageddo.dnsproxyserver.config.predicate.EnvPredicate;
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
@@ -21,6 +24,7 @@ import org.apache.commons.lang3.Validate;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 
 @Slf4j
 @Singleton
@@ -68,27 +72,29 @@ public class MutableConfigDAOFile implements MutableConfigDAO {
   @Override
   public void addEntry(String env, Config.Entry entry) {
     final var config = this.find();
-    final var found = this.findOrBind(env, config);
-    found.add(entry);
-    this.save(config);
+    this.save(ConfigMapper.replace(config, env, entry));
   }
 
   @Override
   public boolean updateEntry(String env, Config.Entry entry) {
-    final var config = this.find();
-    final var found = this.findOrBind(env, config);
+    final var config = ConfigMapper.add(this.find(), env);
+    final var found = EnvFilter.filter(config, env);
+    if (found == null) {
+      return false;
+    }
     final var hostnames = found.getHostnames();
     if (hostnames.isEmpty()) {
       return false;
     }
-    return findHostname(
-        EntryPredicate.byId(entry.getId()),
-        hostnames,
-        (foundEntry, i, entries) -> {
-          entries.set(i, entry);
-          this.save(config);
-        }
-    );
+    ConfigMapper.replace(config, env, entry);
+//    return findHostname(
+//        EntryPredicate.byId(entry.getId()),
+//        hostnames,
+//        (foundEntry, i, entries) -> {
+//          entries.set(i, entry);
+//          this.save(config);
+//        }
+//    );
   }
 
   @Override
@@ -177,18 +183,16 @@ public class MutableConfigDAOFile implements MutableConfigDAO {
     this.save(config);
   }
 
-  Env findOrBind(String envKey, Config config) {
+  Pair<Env, Config> findOrBind(String envKey, Config config) {
     for (final var env : config.getEnvs()) {
       if (Objects.equals(env.getName(), envKey)) {
         log.trace("status=envFound, activeEnv={}", envKey);
-        return env;
+        return Pair.of(env, config);
       }
     }
     log.debug("status=envNotFound, action=creating, activeEnv={}", envKey);
     final var def = Env.of(envKey, Collections.emptyList());
-    config.getEnvs()
-        .add(def);
-    return def;
+    return Pair.of(def, ConfigMapper.add(config, def));
   }
 
   static Env findEnv(String envKey, final Config config) {

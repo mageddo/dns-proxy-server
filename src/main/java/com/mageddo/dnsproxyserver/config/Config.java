@@ -282,11 +282,13 @@ public class Config {
   }
 
   @Value
+  @Builder(toBuilder = true)
   public static class Env {
 
     public static final String DEFAULT_ENV = "";
 
     String name;
+
     List<Entry> entries;
 
     public List<Entry> getHostnames() {

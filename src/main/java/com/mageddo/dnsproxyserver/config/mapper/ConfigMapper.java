@@ -5,6 +5,9 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -35,6 +38,53 @@ public class ConfigMapper {
   public static final String RESOLV_CONF_DEFAULT_PATHS = "/host/etc/systemd/resolved.conf,"
       + "/host/etc/resolv.conf,/etc/systemd/resolved.conf,/etc/resolv.conf";
   private final VersionDAO versionDAO;
+
+  public static Config add(Config config, Config.Env def) {
+    final var envs = new ArrayList<>(config.getEnvs());
+    envs.add(def);
+    return config.toBuilder()
+        .solverLocal(config.getSolverLocal()
+            .toBuilder()
+            .envs(envs)
+            .build())
+        .build();
+  }
+
+  public static Config replace(Config config, String envKey, Config.Entry entry) {
+    final var envs = new ArrayList<>(config.getEnvs());
+    for (var i = 0; i < envs.size(); i++) {
+      final var env = envs.get(i);
+      if (Objects.equals(env.getName(), envKey)) {
+        envs.set(i, replaceEntry(env, entry));
+      }
+    }
+    return config.toBuilder()
+        .solverLocal(config.getSolverLocal()
+            .toBuilder()
+            .envs(envs)
+            .build())
+        .build();
+  }
+
+  private static Config.Env replaceEntry(Config.Env env, Config.Entry entry) {
+    return env.toBuilder()
+        .entries(replaceEntry(env.getEntries(), entry))
+        .build();
+  }
+
+  private static List<Config.Entry> replaceEntry(
+      List<Config.Entry> entries, Config.Entry entry
+  ) {
+    final var store = entries
+        .stream()
+        .collect(Collectors.toMap(Config.Entry::getId, Function.identity()));
+    store.put(entry.getId(), entry);
+    return new ArrayList<>(store.values());
+  }
+
+  public static Config add(Config config, String env) {
+    return add(config, Config.Env.of(env, Collections.emptyList()));
+  }
 
   public Config mapFrom(List<Config> configs) {
     final var configsWithDefault = new ArrayList<>(configs);
