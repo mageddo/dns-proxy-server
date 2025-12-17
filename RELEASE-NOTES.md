@@ -1,3 +1,6 @@
+## 4.2.0
+* Activating Config v3 for beta testing
+
 ## 4.1.0
 * Refactoring config module to support config v3
 * Commited Arc Drawio to the source code
