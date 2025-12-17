@@ -8,4 +8,5 @@ public interface ConfigFileDAO {
 
   Config find();
 
+  void delete();
 }

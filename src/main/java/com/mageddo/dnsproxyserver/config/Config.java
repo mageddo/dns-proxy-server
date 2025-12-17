@@ -207,12 +207,11 @@ public class Config {
   @JsonIgnore
   public List<Env> getEnvs() {
     if (this.solverLocal == null) {
-      return null;
+      return Collections.singletonList(Env.theDefault());
     }
     return this.solverLocal.getEnvs();
   }
 
-  @JsonIgnore
   public String getActiveEnv() {
     if (this.solverLocal == null) {
       return null;

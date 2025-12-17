@@ -5,6 +5,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import static java.nio.file.Files.newInputStream;
@@ -69,5 +70,9 @@ public class Files {
   public static String findExtension(Path path) {
     return com.google.common.io.Files.getFileExtension(path.getFileName()
         .toString());
+  }
+
+  public static void deleteQuietly(Path path) {
+    FileUtils.deleteQuietly(path.toFile());
   }
 }

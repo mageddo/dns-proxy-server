@@ -13,6 +13,7 @@ import com.mageddo.di.Eager;
 import com.mageddo.dnsproxyserver.config.configurer.ModuleConfigDAO;
 import com.mageddo.dnsproxyserver.config.configurer.ModuleV2ConfigDAO;
 import com.mageddo.dnsproxyserver.config.configurer.ModuleV3ConfigDAO;
+import com.mageddo.dnsproxyserver.config.dataformat.v3.file.ConfigFileDAO;
 import com.mageddo.dnsproxyserver.di.module.ModuleDao;
 import com.mageddo.dnsproxyserver.di.module.ModuleDockerClient;
 import com.mageddo.dnsproxyserver.di.module.ModuleEager;
@@ -87,6 +88,8 @@ public interface Context {
   DockerNetworkFacade dockerNetworkDAO();
 
   DockerDAO dockerDAO();
+
+  ConfigFileDAO configFileDAO();
 
   @Name("bindings")
   Map<Class<?>, Provider<Object>> bindings();

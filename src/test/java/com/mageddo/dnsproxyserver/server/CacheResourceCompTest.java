@@ -1,19 +1,19 @@
 package com.mageddo.dnsproxyserver.server;
 
-import com.mageddo.dnsproxyserver.config.application.Configs;
+import javax.inject.Inject;
+import javax.ws.rs.core.Response;
+
 import com.mageddo.dnsproxyserver.solver.CacheName;
 import com.mageddo.dnsproxyserver.solver.CacheName.Name;
 import com.mageddo.dnsproxyserver.solver.SolverCache;
-import testing.templates.MessageTemplates;
-import testing.templates.ResponseTemplates;
-import dagger.sheath.junit.DaggerTest;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
+
+import dagger.sheath.junit.DaggerTest;
 import testing.ContextSupplier;
 import testing.Events;
-
-import javax.inject.Inject;
-import javax.ws.rs.core.Response;
+import testing.templates.MessageTemplates;
+import testing.templates.ResponseTemplates;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -26,14 +26,6 @@ class CacheResourceCompTest {
   @Inject
   @CacheName(name = Name.GLOBAL)
   SolverCache cache;
-
-  @BeforeEach
-  void beforeEach(){
-    Configs
-      .getInstance()
-      .resetConfigFile()
-    ;
-  }
 
   @Test
   void mustFindCacheSize() {

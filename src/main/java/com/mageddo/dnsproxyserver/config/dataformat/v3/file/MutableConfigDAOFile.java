@@ -10,7 +10,7 @@ import javax.inject.Singleton;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Config.Env;
-import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.JsonConfigs;
+import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.config.dataprovider.MutableConfigDAO;
 import com.mageddo.dnsproxyserver.config.predicate.EntryPredicate;
 import com.mageddo.dnsproxyserver.config.predicate.EnvPredicate;
@@ -31,7 +31,9 @@ public class MutableConfigDAOFile implements MutableConfigDAO {
 
   @Override
   public Config find() {
-    return this.configFileDAO.find();
+    return Configs.getContext()
+        .configService()
+        .find();
   }
 
   @Override
@@ -142,7 +144,7 @@ public class MutableConfigDAOFile implements MutableConfigDAO {
 
   @Override
   public List<Env> findEnvs() {
-    return JsonConfigs.loadConfigJson()
+    return this.find()
         .getEnvs();
   }
 
@@ -201,6 +203,7 @@ public class MutableConfigDAOFile implements MutableConfigDAO {
   }
 
   void save(Config config) {
+    Configs.clear();
     this.configFileDAO.save(config);
   }
 

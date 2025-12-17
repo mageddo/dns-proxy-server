@@ -16,6 +16,7 @@ import com.mageddo.dnsproxyserver.config.dataformat.v3.converter.ConverterFactor
 
 import lombok.RequiredArgsConstructor;
 
+import static com.mageddo.utils.Files.deleteQuietly;
 import static com.mageddo.utils.Files.findExtension;
 
 @Singleton
@@ -56,6 +57,11 @@ public class ConfigFileDAOImpl implements ConfigFileDAO {
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
+  }
+
+  @Override
+  public void delete() {
+    deleteQuietly(this.configFilePathDAO.find());
   }
 
   private Path findFilePath() {

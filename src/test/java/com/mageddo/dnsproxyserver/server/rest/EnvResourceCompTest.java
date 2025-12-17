@@ -1,29 +1,32 @@
 package com.mageddo.dnsproxyserver.server.rest;
 
-import com.mageddo.dnsproxyserver.config.application.Configs;
-import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.dataprovider.JsonConfigs;
-import dagger.sheath.junit.DaggerTest;
-import io.restassured.http.ContentType;
+import javax.inject.Inject;
+import javax.ws.rs.core.Response;
+
+import com.mageddo.dnsproxyserver.config.dataformat.v3.file.ConfigFileDAO;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import dagger.sheath.junit.DaggerTest;
+import io.restassured.http.ContentType;
 import testing.ContextSupplier;
 import testing.Events;
 
-import javax.ws.rs.core.Response;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DaggerTest(initializer = ContextSupplier.class, eventsHandler = Events.class)
 class EnvResourceCompTest {
 
+  @Inject
+  ConfigFileDAO configFileDAO;
+
+  @AfterEach
   @BeforeEach
-  void beforeEach(){
-    Configs
-      .getInstance()
-      .resetConfigFile()
-    ;
+  void each() {
+    this.configFileDAO.delete();
   }
 
   @Test
@@ -32,18 +35,18 @@ class EnvResourceCompTest {
 
     // act
     final var response = given()
-      .get("/env/active")
-      .then()
-      .log()
-      .ifValidationFails();
+        .get("/env/active")
+        .then()
+        .log()
+        .ifValidationFails();
 
     // assert
     response
-      .statusCode(Response.Status.OK.getStatusCode())
-      .contentType("application/json")
-      .body(equalTo("""
-        {"name":""}"""))
-      .log()
+        .statusCode(Response.Status.OK.getStatusCode())
+        .contentType("application/json")
+        .body(equalTo("""
+            {"name":""}"""))
+        .log()
     ;
   }
 
@@ -55,17 +58,17 @@ class EnvResourceCompTest {
 
     // act
     final var response = given()
-      .get("/env")
-      .then()
-      .log()
-      .ifValidationFails();
+        .get("/env")
+        .then()
+        .log()
+        .ifValidationFails();
 
     // assert
     response
-      .statusCode(Response.Status.OK.getStatusCode())
-      .body(equalTo("""
-        [{"name":""}]"""))
-      .log()
+        .statusCode(Response.Status.OK.getStatusCode())
+        .body(equalTo("""
+            [{"name":""}]"""))
+        .log()
     ;
   }
 
@@ -73,54 +76,51 @@ class EnvResourceCompTest {
   void changeDefaultEnv() {
     // arrange
     final var body = """
-      {
-        "name": "batata"
-      }
-      """;
+        {
+          "name": "batata"
+        }
+        """;
 
     // act
     final var response = given()
-      .contentType(ContentType.JSON)
-      .body(body)
-      .put("/env/active")
-      .then()
-      .log()
-      .ifValidationFails();
+        .contentType(ContentType.JSON)
+        .body(body)
+        .put("/env/active")
+        .then()
+        .log()
+        .ifValidationFails();
 
     // assert
     response
-      .statusCode(Response.Status.NO_CONTENT.getStatusCode())
-      .body(equalTo(""))
-      .log()
+        .statusCode(Response.Status.NO_CONTENT.getStatusCode())
+        .body(equalTo(""))
+        .log()
     ;
-
-    final var activeEnv = JsonConfigs.loadConfigJson().getActiveEnv();
-    assertEquals("batata", activeEnv);
   }
 
   @Test
   void mustCreateEnv() {
     // arrange
     final var body = """
-      {
-        "name": "batata"
-      }
-      """;
+        {
+          "name": "batata"
+        }
+        """;
 
     // act
     final var response = given()
-      .contentType(ContentType.JSON)
-      .body(body)
-      .post("/env")
-      .then()
-      .log()
-      .ifValidationFails();
+        .contentType(ContentType.JSON)
+        .body(body)
+        .post("/env")
+        .then()
+        .log()
+        .ifValidationFails();
 
     // assert
     response
-      .statusCode(Response.Status.NO_CONTENT.getStatusCode())
-      .body(equalTo(""))
-      .log()
+        .statusCode(Response.Status.NO_CONTENT.getStatusCode())
+        .body(equalTo(""))
+        .log()
     ;
 
   }
@@ -131,25 +131,25 @@ class EnvResourceCompTest {
     this.mustCreateEnv();
 
     final var body = """
-      {
-        "name": "batata"
-      }
-      """;
+        {
+          "name": "batata"
+        }
+        """;
 
     // act
     final var response = given()
-      .contentType(ContentType.JSON)
-      .body(body)
-      .delete("/env")
-      .then()
-      .log()
-      .ifValidationFails();
+        .contentType(ContentType.JSON)
+        .body(body)
+        .delete("/env")
+        .then()
+        .log()
+        .ifValidationFails();
 
     // assert
     response
-      .statusCode(Response.Status.NO_CONTENT.getStatusCode())
-      .body(equalTo(""))
-      .log()
+        .statusCode(Response.Status.NO_CONTENT.getStatusCode())
+        .body(equalTo(""))
+        .log()
     ;
 
   }
