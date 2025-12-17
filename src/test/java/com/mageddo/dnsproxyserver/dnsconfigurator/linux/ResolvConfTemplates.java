@@ -77,6 +77,7 @@ public class ResolvConfTemplates {
         #
         # See man:systemd-resolved.service(8) for details about the supported modes of
         # operation for /etc/resolv.conf.
+
         # BEGIN dps-entries
         nameserver 10.10.0.1
         # END dps-entries
@@ -84,6 +85,7 @@ public class ResolvConfTemplates {
         # BEGIN dps-comments
         # nameserver 127.0.0.53
         # END dps-comments
+
         options edns0 trust-ad
         search .
         """;
