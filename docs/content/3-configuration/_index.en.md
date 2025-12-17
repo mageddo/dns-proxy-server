@@ -132,6 +132,12 @@ solver:
       name: dps
       autoCreate: false
       autoConnect: false
+      configs:
+        - subNet: 172.20.0.0/16
+          ipRange: 172.20.5.0/24
+          gateway: 172.20.5.1
+        - subNet: fc00:5c6f:db50::/64
+          gateway: fc00:5c6f:db50::1
     dockerDaemonUri:
   system:
     hostMachineHostname: host.docker
