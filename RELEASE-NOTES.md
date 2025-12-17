@@ -1,3 +1,6 @@
+## 5.3.0
+* Docker Solver: Specify Preferred Networks to use when solving container IP #662
+
 ## 5.2.0
 Docker Solver
 * Fixing DPS Docker Network IP Range
