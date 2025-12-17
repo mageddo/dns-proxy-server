@@ -212,38 +212,34 @@ public class ConfigMapper {
         .name(dpsNetwork.getName())
         .autoCreate(dpsNetwork.getAutoCreate())
         .autoConnect(dpsNetwork.getAutoConnect())
-        .config(mapDomainDpsNetworkDef(dpsNetwork.getConfigs()))
+        .config(mapDomainDpsNetworkConfigs(dpsNetwork.getConfigs()))
         .build();
   }
 
-  private static List<DpsNetwork.Config> mapDomainDpsNetworkDef(
+  private static List<DpsNetwork.Config> mapDomainDpsNetworkConfigs(
       List<ConfigV3.DpsNetwork.Config> configs
   ) {
-    return Collections.map(configs, config -> DpsNetwork.Config.builder()
+    return Collections.map(configs, ConfigMapper::mapDomainDpsNetworkConfig);
+  }
+
+  static DpsNetwork.Config mapDomainDpsNetworkConfig(ConfigV3.DpsNetwork.Config config) {
+    return DpsNetwork.Config.builder()
         .gateway(config.getGateway())
         .ipRange(config.getIpRange())
         .subNet(config.getSubNet())
-        .build()
-    );
+        .build();
   }
 
   private static Config.SolverLocal mapSolverLocal(final ConfigV3.Solver s) {
     if (s == null || s.getLocal() == null) {
       return null;
     }
-
+    final var local = s.getLocal();
     return Config.SolverLocal.builder()
-        .activeEnv(s.getLocal()
-            .getActiveEnv())
-        .envs(
-            s.getLocal()
-                .getEnvs() == null
-                ? emptyList()
-                : s.getLocal()
-                .getEnvs()
-                .stream()
-                .map(ConfigMapper::mapEnv)
-                .collect(toList())
+        .activeEnv(local.getActiveEnv())
+        .envs(local.getEnvs() == null
+            ? emptyList()
+            : Collections.map(local.getEnvs(), ConfigMapper::mapEnv)
         )
         .build();
   }
@@ -253,10 +249,7 @@ public class ConfigMapper {
         e.getName(),
         e.getHostnames() == null
             ? emptyList()
-            : e.getHostnames()
-            .stream()
-            .map(ConfigMapper::mapEntry)
-            .collect(toList())
+            : Collections.map(e.getHostnames(), ConfigMapper::mapEntry)
     );
   }
 
