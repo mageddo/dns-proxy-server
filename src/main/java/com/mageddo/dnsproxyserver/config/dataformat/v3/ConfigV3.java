@@ -4,9 +4,11 @@ import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
 @Data
+@Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ConfigV3 {
 
@@ -17,12 +19,14 @@ public class ConfigV3 {
   public Log log;
 
   @Data
+  @Accessors(chain = true)
   @FieldDefaults(level = AccessLevel.PRIVATE)
   public static class CircuitBreaker {
     public String name;
   }
 
   @Data
+  @Accessors(chain = true)
   @FieldDefaults(level = AccessLevel.PRIVATE)
   public static class DefaultDns {
     public Boolean active;
@@ -30,6 +34,7 @@ public class ConfigV3 {
   }
 
   @Data
+  @Accessors(chain = true)
   @FieldDefaults(level = AccessLevel.PRIVATE)
   public static class Dns {
     public Integer port;
@@ -37,6 +42,7 @@ public class ConfigV3 {
   }
 
   @Data
+  @Accessors(chain = true)
   @FieldDefaults(level = AccessLevel.PRIVATE)
   public static class Docker {
     public Boolean registerContainerNames;
@@ -48,6 +54,7 @@ public class ConfigV3 {
   }
 
   @Data
+  @Accessors(chain = true)
   @FieldDefaults(level = AccessLevel.PRIVATE)
   public static class DpsNetwork {
     public String name;
@@ -56,6 +63,7 @@ public class ConfigV3 {
   }
 
   @Data
+  @Accessors(chain = true)
   @FieldDefaults(level = AccessLevel.PRIVATE)
   public static class Env {
     public String name;
@@ -63,6 +71,7 @@ public class ConfigV3 {
   }
 
   @Data
+  @Accessors(chain = true)
   @FieldDefaults(level = AccessLevel.PRIVATE)
   public static class Hostname {
     public String type;
@@ -72,6 +81,7 @@ public class ConfigV3 {
   }
 
   @Data
+  @Accessors(chain = true)
   @FieldDefaults(level = AccessLevel.PRIVATE)
   public static class Local {
     public String activeEnv;
@@ -79,6 +89,7 @@ public class ConfigV3 {
   }
 
   @Data
+  @Accessors(chain = true)
   @FieldDefaults(level = AccessLevel.PRIVATE)
   public static class Log {
     public String level;
@@ -86,12 +97,14 @@ public class ConfigV3 {
   }
 
   @Data
+  @Accessors(chain = true)
   @FieldDefaults(level = AccessLevel.PRIVATE)
   public static class Networks {
     public List<String> preferredNetworkNames;
   }
 
   @Data
+  @Accessors(chain = true)
   @FieldDefaults(level = AccessLevel.PRIVATE)
   public static class Remote {
     public Boolean active;
@@ -100,6 +113,7 @@ public class ConfigV3 {
   }
 
   @Data
+  @Accessors(chain = true)
   @FieldDefaults(level = AccessLevel.PRIVATE)
   public static class ResolvConf {
     public String paths;
@@ -107,6 +121,7 @@ public class ConfigV3 {
   }
 
   @Data
+  @Accessors(chain = true)
   @FieldDefaults(level = AccessLevel.PRIVATE)
   public static class Server {
     public Dns dns;
@@ -115,6 +130,7 @@ public class ConfigV3 {
   }
 
   @Data
+  @Accessors(chain = true)
   @FieldDefaults(level = AccessLevel.PRIVATE)
   public static class Solver {
     public Remote remote;
@@ -125,18 +141,21 @@ public class ConfigV3 {
   }
 
   @Data
+  @Accessors(chain = true)
   @FieldDefaults(level = AccessLevel.PRIVATE)
   public static class Stub {
     public String domainName;
   }
 
   @Data
+  @Accessors(chain = true)
   @FieldDefaults(level = AccessLevel.PRIVATE)
   public static class System {
     public String hostMachineHostname;
   }
 
   @Data
+  @Accessors(chain = true)
   @FieldDefaults(level = AccessLevel.PRIVATE)
   public static class Web {
     public Integer port;

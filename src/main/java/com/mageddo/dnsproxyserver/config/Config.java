@@ -271,6 +271,7 @@ public class Config {
     DEFAULT,
     MERGED,
     ENV,
+    FILE,
 
     /**
      * Used for testing only;
@@ -471,7 +472,6 @@ public class Config {
     Integer dnsServerNoEntriesResponseCode;
 
     SimpleServer.Protocol serverProtocol;
-
 
   }
 

@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.dataformat.v3.ConfigV3;
+import com.mageddo.dnsserver.SimpleServer;
 import com.mageddo.net.IP;
 import com.mageddo.net.IpAddr;
 
@@ -28,7 +29,7 @@ public class ConfigMapper {
         .solverLocal(mapSolverLocal(c.getSolver()))
         .solverStub(mapSolverStub(c.getSolver()))
         .solverSystem(mapSolverSystem(c.getSolver()))
-        .source(Config.Source.JSON)
+        .source(Config.Source.FILE)
         .build();
   }
 
@@ -47,8 +48,6 @@ public class ConfigMapper {
     return v3;
   }
 
-  /* ================= SERVER ================= */
-
   private static Config.Server mapServer(final ConfigV3.Server s) {
     if (s == null) {
       return null;
@@ -65,31 +64,31 @@ public class ConfigMapper {
             .getPort() : null)
         .serverProtocol(
             s.getProtocol() != null
-                ? com.mageddo.dnsserver.SimpleServer.Protocol.valueOf(s.getProtocol())
+                ? SimpleServer.Protocol.valueOf(s.getProtocol())
                 : null
         )
         .build();
   }
 
-  private static ConfigV3.Server mapServerV3(final Config config) {
+  private static ConfigV3.Server mapServerV3( Config config) {
     if (config.getServer() == null) {
       return null;
     }
 
-    final var s = new ConfigV3.Server();
+    final var server = new ConfigV3.Server();
 
     final var dns = new ConfigV3.Dns();
     dns.setPort(config.getDnsServerPort());
     dns.setNoEntriesResponseCode(config.getNoEntriesResponseCode());
-    s.setDns(dns);
+    server.setDns(dns);
 
     final var web = new ConfigV3.Web();
     web.setPort(config.getWebServerPort());
-    s.setWeb(web);
+    server.setWeb(web);
 
-    s.setProtocol(Objects.toString(config.getServerProtocol(), null));
+    server.setProtocol(Objects.toString(config.getServerProtocol(), null));
 
-    return s;
+    return server;
   }
 
   /* ================= DEFAULT DNS ================= */
