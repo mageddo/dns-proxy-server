@@ -38,15 +38,15 @@ public class ConfigMapper {
       return null;
     }
 
-    final var v3 = new ConfigV3();
-    v3.setVersion(Integer.parseInt(config.getVersion()));
-    v3.setServer(mapServerV3(config));
-    v3.setDefaultDns(mapDefaultDnsV3(config.getDefaultDns()));
-    v3.setLog(mapLogV3(config.getLog()));
-    v3.setSolver(mapSolverV3(config));
-
-    return v3;
+    return new ConfigV3()
+        .setVersion(Integer.parseInt(config.getVersion()))
+        .setServer(mapServerV3(config))
+        .setDefaultDns(mapDefaultDnsV3(config.getDefaultDns()))
+        .setLog(mapLogV3(config.getLog()))
+        .setSolver(mapSolverV3(config));
   }
+
+  /* ================= SERVER ================= */
 
   private static Config.Server mapServer(final ConfigV3.Server s) {
     if (s == null) {
@@ -70,25 +70,20 @@ public class ConfigMapper {
         .build();
   }
 
-  private static ConfigV3.Server mapServerV3( Config config) {
+  private static ConfigV3.Server mapServerV3(final Config config) {
     if (config.getServer() == null) {
       return null;
     }
 
-    final var server = new ConfigV3.Server();
-
-    final var dns = new ConfigV3.Dns();
-    dns.setPort(config.getDnsServerPort());
-    dns.setNoEntriesResponseCode(config.getNoEntriesResponseCode());
-    server.setDns(dns);
-
-    final var web = new ConfigV3.Web();
-    web.setPort(config.getWebServerPort());
-    server.setWeb(web);
-
-    server.setProtocol(Objects.toString(config.getServerProtocol(), null));
-
-    return server;
+    return new ConfigV3.Server()
+        .setDns(new ConfigV3.Dns()
+            .setPort(config.getDnsServerPort())
+            .setNoEntriesResponseCode(config.getNoEntriesResponseCode())
+        )
+        .setWeb(new ConfigV3.Web()
+            .setPort(config.getWebServerPort())
+        )
+        .setProtocol(Objects.toString(config.getServerProtocol(), null));
   }
 
   /* ================= DEFAULT DNS ================= */
@@ -118,19 +113,17 @@ public class ConfigMapper {
       return null;
     }
 
-    final var v3 = new ConfigV3.DefaultDns();
-    v3.setActive(d.getActive());
-
-    if (d.getResolvConf() != null) {
-      final var rc = new ConfigV3.ResolvConf();
-      rc.setPaths(d.getResolvConf()
-          .getPaths());
-      rc.setOverrideNameServers(d.getResolvConf()
-          .getOverrideNameServers());
-      v3.setResolvConf(rc);
-    }
-
-    return v3;
+    return new ConfigV3.DefaultDns()
+        .setActive(d.getActive())
+        .setResolvConf(
+            d.getResolvConf() == null
+                ? null
+                : new ConfigV3.ResolvConf()
+                .setPaths(d.getResolvConf()
+                    .getPaths())
+                .setOverrideNameServers(d.getResolvConf()
+                    .getOverrideNameServers())
+        );
   }
 
   /* ================= LOG ================= */
@@ -151,11 +144,10 @@ public class ConfigMapper {
       return null;
     }
 
-    final var v3 = new ConfigV3.Log();
-    v3.setLevel(l.getLevel() != null ? l.getLevel()
-        .name() : null);
-    v3.setFile(l.getFile());
-    return v3;
+    return new ConfigV3.Log()
+        .setLevel(l.getLevel() != null ? l.getLevel()
+            .name() : null)
+        .setFile(l.getFile());
   }
 
   /* ================= SOLVERS ================= */
@@ -285,67 +277,76 @@ public class ConfigMapper {
     final var solver = new ConfigV3.Solver();
 
     if (config.getSolverRemote() != null) {
-      final var r = new ConfigV3.Remote();
-      r.setActive(config.isSolverRemoteActive());
-      r.setDnsServers(
-          config.getRemoteDnsServers()
-              .stream()
-              .map(IpAddr::toString)
-              .collect(toList())
+      solver.setRemote(new ConfigV3.Remote()
+          .setActive(config.isSolverRemoteActive())
+          .setDnsServers(
+              config.getRemoteDnsServers()
+                  .stream()
+                  .map(IpAddr::toString)
+                  .collect(toList())
+          )
       );
-      solver.setRemote(r);
     }
 
     if (config.getSolverDocker() != null) {
-      final var d = new ConfigV3.Docker();
-      d.setDomain(config.getDockerDomain());
-      d.setRegisterContainerNames(config.getRegisterContainerNames());
-      d.setHostMachineFallback(config.getDockerSolverHostMachineFallbackActive());
-      d.setDockerDaemonUri(Objects.toString(config.getDockerDaemonUri(), null));
-      solver.setDocker(d);
+      solver.setDocker(new ConfigV3.Docker()
+          .setDomain(config.getDockerDomain())
+          .setRegisterContainerNames(config.getRegisterContainerNames())
+          .setHostMachineFallback(config.getDockerSolverHostMachineFallbackActive())
+          .setDockerDaemonUri(Objects.toString(config.getDockerDaemonUri(), null))
+          .setDpsNetwork(
+              config.getDockerSolverDpsNetwork() == null
+                  ? null
+                  : new ConfigV3.DpsNetwork()
+                  .setAutoCreate(config.getDockerSolverDpsNetwork()
+                      .getAutoCreate())
+                  .setAutoConnect(config.getDockerSolverDpsNetwork()
+                      .getAutoConnect())
+          )
+      );
     }
 
     if (config.getSolverLocal() != null) {
-      final var l = new ConfigV3.Local();
-      l.setActiveEnv(config.getActiveEnv());
-      l.setEnvs(
-          config.getEnvs()
-              .stream()
-              .map(env -> {
-                final var e = new ConfigV3.Env();
-                e.setName(env.getName());
-                e.setHostnames(
-                    env.getEntries()
-                        .stream()
-                        .map(entry -> {
-                          final var h = new ConfigV3.Hostname();
-                          h.setHostname(entry.getHostname());
-                          h.setType(entry.getType()
-                              .name());
-                          h.setIp(entry.getIpAsText());
-                          h.setTtl(entry.getTtl());
-                          return h;
-                        })
-                        .collect(toList())
-                );
-                return e;
-              })
-              .collect(toList())
+      solver.setLocal(new ConfigV3.Local()
+          .setActiveEnv(config.getActiveEnv())
+          .setEnvs(
+              config.getEnvs() == null
+                  ? emptyList()
+                  : config.getEnvs()
+                  .stream()
+                  .map(env -> new ConfigV3.Env()
+                      .setName(env.getName())
+                      .setHostnames(
+                          env.getEntries() == null
+                              ? emptyList()
+                              : env.getEntries()
+                              .stream()
+                              .map(entry -> new ConfigV3.Hostname()
+                                  .setHostname(entry.getHostname())
+                                  .setType(entry.getType()
+                                      .name())
+                                  .setIp(entry.getIpAsText())
+                                  .setTtl(entry.getTtl())
+                              )
+                              .collect(toList())
+                      )
+                  )
+                  .collect(toList())
+          )
       );
-      solver.setLocal(l);
     }
 
     if (config.getSolverStub() != null) {
-      final var s = new ConfigV3.Stub();
-      s.setDomainName(config.getSolverStub()
-          .getDomainName());
-      solver.setStub(s);
+      solver.setStub(new ConfigV3.Stub()
+          .setDomainName(config.getSolverStub()
+              .getDomainName())
+      );
     }
 
     if (config.getSolverSystem() != null) {
-      final var s = new ConfigV3.System();
-      s.setHostMachineHostname(config.getHostMachineHostname());
-      solver.setSystem(s);
+      solver.setSystem(new ConfigV3.System()
+          .setHostMachineHostname(config.getHostMachineHostname())
+      );
     }
 
     return solver;

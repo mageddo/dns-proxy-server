@@ -1,6 +1,15 @@
 package com.mageddo.dnsproxyserver.config.dataformat.v3;
 
+import java.time.Duration;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.DurationDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.DurationSerializer;
+import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -21,8 +30,60 @@ public class ConfigV3 {
   @Data
   @Accessors(chain = true)
   @FieldDefaults(level = AccessLevel.PRIVATE)
-  public static class CircuitBreaker {
-    public String name;
+
+  @JsonTypeInfo(
+      use = JsonTypeInfo.Id.NAME,
+      include = JsonTypeInfo.As.PROPERTY,
+      property = "strategy",
+      defaultImpl = CircuitBreaker.CanaryRateThreshold.class
+  )
+  @JsonSubTypes({
+      @JsonSubTypes.Type(
+          name = "STATIC_THRESHOLD",
+          value = CircuitBreaker.StaticThreshold.class
+      ),
+      @JsonSubTypes.Type(
+          name = "CANARY_RATE_THRESHOLD",
+          value = CircuitBreaker.CanaryRateThreshold.class
+      )
+  })
+  public static interface CircuitBreaker {
+
+    CircuitBreakerStrategyConfig.Name getName();
+
+    @Data
+    @Accessors(chain = true)
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    class StaticThreshold implements CircuitBreaker {
+
+      private Integer failureThreshold;
+      private Integer failureThresholdCapacity;
+      private Integer successThreshold;
+
+      @JsonSerialize(using = DurationSerializer.class)
+      @JsonDeserialize(using = DurationDeserializer.class)
+      private Duration testDelay;
+
+      @Override
+      public CircuitBreakerStrategyConfig.Name getName() {
+        return CircuitBreakerStrategyConfig.Name.STATIC_THRESHOLD;
+      }
+    }
+
+    @Data
+    @Accessors(chain = true)
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    class CanaryRateThreshold implements CircuitBreaker {
+
+      private float failureRateThreshold;
+      private int minimumNumberOfCalls;
+      private int permittedNumberOfCallsInHalfOpenState;
+
+      @Override
+      public CircuitBreakerStrategyConfig.Name getName() {
+        return CircuitBreakerStrategyConfig.Name.CANARY_RATE_THRESHOLD;
+      }
+    }
   }
 
   @Data
