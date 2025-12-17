@@ -48,18 +48,23 @@ Common DNS resolution mechanisms used by DPS. Solvers are evaluated according to
 
 ### Docker Solver
 
-| Name                                         | Description                                                                             | Default Value   |
-|----------------------------------------------|-----------------------------------------------------------------------------------------|-----------------|
-| `solver.docker.registerContainerNames`       | Whether container or service names should be registered as DNS hostnames.               | `false`         |
-| `solver.docker.domain`                       | Domain suffix used when registering Docker containers and services.                     | `docker`        |
-| `solver.docker.hostMachineFallback`          | Whether the host machine IP should be returned when a container is found but has no IP. | `true`          |
-| `solver.docker.dockerDaemonUri`              | Docker daemon URI used to connect to Docker.                                            | OS dependent    |
-| `solver.docker.dpsNetwork.autoCreate`        | Whether DPS should automatically create a Docker bridge network.                        | `false`         |
-| `solver.docker.dpsNetwork.autoConnect`       | Whether all containers should be auto-connected to the DPS network.                     | `false`         |
-| `solver.docker.dpsNetwork.configs`           | Docker network IP configuration                                                         |                 |
-| `solver.docker.dpsNetwork.configs[].subNet`  | Subnet                                                                                  | `172.20.0.0/16` |
-| `solver.docker.dpsNetwork.configs[].ipRange` | Ip Range                                                                                | `172.20.5.0/24` |
-| `solver.docker.dpsNetwork.configs[].gateway` | Gateway                                                                                 | `172.20.5.1`    |
+| Name                                               | Description                                                                             | Default Value   |
+|----------------------------------------------------|-----------------------------------------------------------------------------------------|-----------------|
+| `solver.docker.registerContainerNames`             | Whether container or service names should be registered as DNS hostnames.               | `false`         |
+| `solver.docker.domain`                             | Domain suffix used when registering Docker containers and services.                     | `docker`        |
+| `solver.docker.hostMachineFallback`                | Whether the host machine IP should be returned when a container is found but has no IP. | `true`          |
+| `solver.docker.dockerDaemonUri`                    | Docker daemon URI used to connect to Docker.                                            | OS dependent    |
+
+#### DPS Network
+| Name                                               | Description                                                                             | Default Value   |
+|----------------------------------------------------|-----------------------------------------------------------------------------------------|-----------------|
+| `solver.docker.dpsNetwork.autoCreate`              | Whether DPS should automatically create a Docker bridge network.                        | `false`         |
+| `solver.docker.dpsNetwork.autoConnect`             | Whether all containers should be auto-connected to the DPS network.                     | `false`         |
+| `solver.docker.dpsNetwork.configs`                 | Docker network IP configuration                                                         |                 |
+| `solver.docker.dpsNetwork.configs[].subNet`        | Subnet                                                                                  | `172.20.0.0/16` |
+| `solver.docker.dpsNetwork.configs[].ipRange`       | Ip Range                                                                                | `172.20.5.0/24` |
+| `solver.docker.dpsNetwork.configs[].gateway`       | Gateway                                                                                 | `172.20.5.1`    |
+
 
 Default DPS network settings
 
@@ -72,6 +77,13 @@ Default DPS network settings
   gateway: fc00:5c6f:db50::1
 ```
 
+#### Network Priority when Solving Container IP  
+| Name                                               | Description                                                                             | Default Value   |
+|----------------------------------------------------|-----------------------------------------------------------------------------------------|-----------------|
+| `solver.docker.networks.preferred.names`           | Which networks DPS must prioritize when discovering container IP                        |                 |
+| `solver.docker.networks.preferred.overrideDefault` | If will disable DPS and BRIDGE default networks when solving                            | false           |
+
+See more on [specify from which network solve container][6].
 ---
 
 ### System Solver
@@ -154,6 +166,10 @@ solver:
         - subNet: fc00:5c6f:db50::/64
           gateway: fc00:5c6f:db50::1
     dockerDaemonUri:
+    networks:
+      preferred:
+        names:
+          - my-awesome-network
   system:
     hostMachineHostname: host.docker
   local:
@@ -186,3 +202,4 @@ log:
 [3]: {{%relref "2-features/remote-solver-circuitbreaker/_index.en.md" %}}
 [4]: {{%relref "3-configuration/legacy.en.md" %}}
 [5]: {{%relref "3-configuration/format.en.md" %}}
+[6]: {{%relref "2-features/specify-from-which-network-solve-container/_index.en.md" %}}
