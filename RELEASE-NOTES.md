@@ -3,6 +3,19 @@ Docker Solver
 * Fixing DPS Docker Network IP Range
 * Created option to customize the docker network
 
+Breaking Changes
+* Changed default DPS Network IP settings as the actual are not being accepted by docker 
+
+New Settings
+```yaml
+---
+- subNet: 172.20.0.0/16
+  ipRange: 172.20.5.0/24
+  gateway: 172.20.5.1
+- subNet: fc00:5c6f:db50::/64
+  gateway: fc00:5c6f:db50::1
+```
+
 ## 5.1.3
 * Changed resolv.conf handling format to make it compatible with alpine linux see [#627][5_1_0_1][1].
 * Refactoring Linux amd64 static build to work on Github Actions
