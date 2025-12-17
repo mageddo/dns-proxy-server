@@ -189,20 +189,14 @@ public class ConfigMapper {
     if (s == null || s.getDocker() == null) {
       return null;
     }
-
+    final var docker = s.getDocker();
     return com.mageddo.dnsproxyserver.config.Config.SolverDocker.builder()
-        .registerContainerNames(s.getDocker()
-            .getRegisterContainerNames())
-        .domain(s.getDocker()
-            .getDomain())
-        .hostMachineFallback(s.getDocker()
-            .getHostMachineFallback())
-        .dockerDaemonUri(
-            s.getDocker()
-                .getDockerDaemonUri() != null
-                ? URI.create(s.getDocker()
-                .getDockerDaemonUri())
-                : null
+        .registerContainerNames(docker.getRegisterContainerNames())
+        .domain(docker.getDomain())
+        .hostMachineFallback(docker.getHostMachineFallback())
+        .dockerDaemonUri(docker.getDockerDaemonUri() != null
+            ? URI.create(docker.getDockerDaemonUri())
+            : null
         )
         .dpsNetwork(mapDomainDpsNetwork(s))
         .build();
