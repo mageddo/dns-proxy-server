@@ -408,7 +408,7 @@ public class Config {
       }
 
       public boolean isAddressSolving() {
-        return ConfigEntryTypes.is(this, com.mageddo.dnsproxyserver.config.Config.Entry.Type.A, com.mageddo.dnsproxyserver.config.Config.Entry.Type.AAAA);
+        return ConfigEntryTypes.is(this, Config.Entry.Type.A, Config.Entry.Type.AAAA);
       }
     }
   }
