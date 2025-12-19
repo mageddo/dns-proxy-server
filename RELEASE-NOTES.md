@@ -1,4 +1,4 @@
-## 5.5.2
+## 5.6.0
 * Releasing JRE Docker Image Version
 * Enabling DPS to run on any JRE 21+
 * Fixing IPV6 query answers which could fail in some cases by UDP interface issues
