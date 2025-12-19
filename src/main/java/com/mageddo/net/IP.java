@@ -44,6 +44,8 @@ public interface IP {
         .equals(version);
   }
 
+  boolean isLinkLocal();
+
   enum Version {
 
     IPV4,

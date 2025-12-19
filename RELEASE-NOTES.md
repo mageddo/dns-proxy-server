@@ -1,7 +1,8 @@
-## 5.5.1
+## 5.5.2
 * Releasing JRE Docker Image Version
 * Enabling DPS to run on any JRE 21+
 * Fixing IPV6 query answers which could fail in some cases by UDP interface issues
+* Stopped trying to bind UDP server to link local interfaces
 
 ## 5.3.0
 * Docker Solver: Specify Preferred Networks to use when solving container IP #662

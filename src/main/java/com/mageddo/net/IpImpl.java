@@ -94,6 +94,11 @@ class IpImpl implements IP {
     return !Objects.equals(this, IP.of(ip));
   }
 
+  @Override
+  public boolean isLinkLocal() {
+    return this.ip.isLinkLocalAddress();
+  }
+
   private static InetAddress build(String ip) {
     try {
       return InetAddresses.forString(ip);

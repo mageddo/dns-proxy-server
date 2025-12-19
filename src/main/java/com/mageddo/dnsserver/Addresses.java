@@ -32,7 +32,8 @@ public class Addresses {
     }
     return Collections.filter(
         Networks.findMachineIps(),
-        ip -> ip.versionIs(address.version())
+        ip -> ip.versionIs(address.version()),
+         ip -> !ip.isLinkLocal()
     );
   }
 }
