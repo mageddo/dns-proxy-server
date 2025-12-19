@@ -43,7 +43,7 @@ public class TCPServer implements AutoCloseable {
   }
 
   public void start(int port, InetAddress address, SocketClientMessageHandler handler) {
-    log.debug("status=tcpServerStartScheduled, port={}", port);
+    log.debug("status=scheduled, port={}", port);
     this.serverThreadPool.submit(() -> this.start0(port, address, handler));
     getGlobalScheduledThreadPool().scheduleWithFixedDelay(
         this::watchDog, WATCHDOG_DELAY_SECS, WATCHDOG_DELAY_SECS, TimeUnit.SECONDS
@@ -55,7 +55,7 @@ public class TCPServer implements AutoCloseable {
   }
 
   void start0(int port, InetAddress address, SocketClientMessageHandler handler) {
-    log.info("status=tcpServerStarting, port={}", port);
+    log.info("status=starting, port={}", port);
     try (var server = this.server = new ServerSocket(port, 50, address)) {
 
       Socket socket;
@@ -66,10 +66,10 @@ public class TCPServer implements AutoCloseable {
       }
 
     } catch (Throwable e) {
-      log.warn("status=tcpServerGetError, msg={}", e.getMessage(), e);
+      log.warn("status=error, msg={}", e.getMessage(), e);
       throw new RuntimeException(e);
     } finally {
-      log.debug("status=tcpServerClosing...");
+      log.debug("status=closing");
     }
   }
 
@@ -77,7 +77,7 @@ public class TCPServer implements AutoCloseable {
     try {
       final var itr = this.clients.iterator();
       if (this.clients.isEmpty()) {
-        log.trace("status=no-clients");
+        log.trace("status=noClients");
         return;
       }
       final var clientsBefore = this.clients.size();

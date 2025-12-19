@@ -32,7 +32,7 @@ public class UDPServer {
 
   public void start() {
     this.pool.submit(this::start0);
-    log.trace("status=startingUdpServer, address={}", this.address);
+    log.trace("status=starting, address={}", this.address);
   }
 
   private void start0() {
@@ -47,7 +47,7 @@ public class UDPServer {
 
       }
     } catch (Exception e) {
-      log.error("status=dnsServerStartFailed, address={}, msg={}", this.address, e.getMessage(), e);
+      log.error("status=failed, address={}, msg={}", this.address, e.getMessage(), e);
       throw new RuntimeException(e);
     }
   }

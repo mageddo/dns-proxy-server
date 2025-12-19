@@ -33,7 +33,7 @@ public class UDPServerPool {
         address -> new UDPServer(address, this.requestHandler)
     );
     this.servers.forEach(UDPServer::start);
-    log.info("Starting UDP server, addresses={}", this.toString(addresses));
+    log.info("status=starting, addresses={}", this.toString(addresses));
   }
 
   private List<InetSocketAddress> buildAddressesToBind(int port, InetAddress addr) {
