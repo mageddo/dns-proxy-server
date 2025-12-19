@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.sandbox;
 
-import org.graalvm.nativeimage.ImageInfo;
+import com.mageddo.graalvm.ImageInfo;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
