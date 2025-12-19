@@ -106,6 +106,7 @@ case $1 in
     docker tag defreitas/dns-proxy-server:${APP_VERSION} defreitas/dns-proxy-server:unstable &&\
     echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&\
     docker-compose push image-linux-amd64 &&\
+    docker-compose push image-linux-jre &&\
     docker push defreitas/dns-proxy-server:nightly &&\
     docker push defreitas/dns-proxy-server:unstable
     echo "Push done"
@@ -135,6 +136,7 @@ case $1 in
 
   # also builds the jar
   ./builder.bash build-backend amd64
+  ./builder.bash build-backend jre
 
   ./builder.bash compress-artifacts
 
