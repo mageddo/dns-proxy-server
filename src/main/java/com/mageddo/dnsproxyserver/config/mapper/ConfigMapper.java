@@ -16,13 +16,14 @@ import com.mageddo.dnsproxyserver.config.CircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Config.DefaultDns;
 import com.mageddo.dnsproxyserver.config.Config.Env;
+import com.mageddo.dnsproxyserver.config.Config.Server;
 import com.mageddo.dnsproxyserver.config.Config.SolverDocker;
 import com.mageddo.dnsproxyserver.config.StaticThresholdCircuitBreakerStrategyConfig;
 import com.mageddo.dnsproxyserver.config.validator.ConfigValidator;
 import com.mageddo.dnsproxyserver.solver.docker.Network;
 import com.mageddo.dnsproxyserver.utils.Numbers;
 import com.mageddo.dnsproxyserver.version.VersionDAO;
-import com.mageddo.dnsserver.SimpleServer;
+import com.mageddo.dnsserver.SimpleServer.Protocol;
 import com.mageddo.net.IP;
 import com.mageddo.net.IpAddr;
 
@@ -144,14 +145,31 @@ public class ConfigMapper {
   private Config mapFrom0(List<Config> configs) {
 
     final var config = Config.builder()
-        .server(Config.Server
+        .server(Server
             .builder()
             .webServerPort(Numbers.firstPositive(mapField(Config::getWebServerPort, configs)))
-            .dnsServerPort(Numbers.firstPositive(mapField(Config::getDnsServerPort, configs)))
-            .serverProtocol(firstNonNullRequiring(mapField(
-                Config::getServerProtocol, configs)))
-            .dnsServerNoEntriesResponseCode(
-                firstNonNullRequiring(mapField(Config::getNoEntriesResponseCode, configs))
+            .dns(Server.Dns.builder()
+                .protocol(ValueResolver.findFirstOrThrow(
+                    configs,
+                    Config::getDnsServer,
+                    Server.Dns::getProtocol
+                ))
+                .host(ValueResolver.findFirstOrThrow(
+                    configs,
+                    Config::getDnsServer,
+                    Server.Dns::getHost
+                ))
+                .port(ValueResolver.findFirstOrThrow(
+                    configs,
+                    Config::getDnsServer,
+                    Server.Dns::getPort
+                ))
+                .noEntriesResponseCode(ValueResolver.findFirstOrThrow(
+                    configs,
+                    Config::getDnsServer,
+                    Server.Dns::getNoEntriesResponseCode
+                ))
+                .build()
             )
             .build()
         )
@@ -258,9 +276,14 @@ public class ConfigMapper {
   static Config buildDefault() {
     return Config
         .builder()
-        .server(Config.Server
-            .builder()
-            .serverProtocol(SimpleServer.Protocol.UDP_TCP)
+        .server(Server.builder()
+            .dns(Server.Dns.builder()
+                .protocol(Protocol.UDP_TCP)
+                .host("0.0.0.0")
+                .port(53)
+                .noEntriesResponseCode(3)
+                .build()
+            )
             .build()
         )
         .defaultDns(DefaultDns.builder()

@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mageddo.dnsserver.SimpleServer;
+import com.mageddo.dnsserver.SimpleServer.Protocol;
 import com.mageddo.net.IP;
 import com.mageddo.net.IpAddr;
 
@@ -182,11 +182,11 @@ public class Config {
     return this.server.getWebServerPort();
   }
 
-  public SimpleServer.Protocol getServerProtocol() {
+  public Protocol getServerProtocol() {
     if (this.server == null) {
       return null;
     }
-    return this.server.getServerProtocol();
+    return this.server.dns.protocol;
   }
 
   @JsonIgnore
@@ -225,6 +225,13 @@ public class Config {
       return null;
     }
     return this.solverDocker.networks;
+  }
+
+  public Server.Dns getDnsServer() {
+    if (this.server == null) {
+      return null;
+    }
+    return this.server.dns;
   }
 
   @Value
@@ -472,12 +479,16 @@ public class Config {
   public static class Server {
 
     Integer webServerPort;
+    Dns dns;
 
-    Integer dnsServerPort;
-    Integer dnsServerNoEntriesResponseCode;
-
-    SimpleServer.Protocol serverProtocol;
-
+    @Value
+    @Builder
+    public static class Dns {
+      Protocol protocol;
+      String host;
+      Integer port;
+      Integer noEntriesResponseCode;
+    }
   }
 
   @Value

@@ -16,7 +16,6 @@ import javax.inject.Singleton;
 
 import com.mageddo.commons.concurrent.ThreadPool;
 import com.mageddo.commons.io.IoUtils;
-import com.mageddo.dnsproxyserver.utils.Ips;
 import com.mageddo.utils.Executors;
 
 import org.slf4j.MDC;
@@ -57,9 +56,7 @@ public class TCPServer implements AutoCloseable {
 
   void start0(int port, InetAddress address, SocketClientMessageHandler handler) {
     log.info("status=tcpServerStarting, port={}", port);
-    final var addr = Ips.getAnyLocalAddress(); // todo porque isso funciona e sem passar o
-    // endereço nao?
-    try (var server = this.server = new ServerSocket(port, 50, addr)) {
+    try (var server = this.server = new ServerSocket(port, 50, address)) {
 
       Socket socket;
       while (!server.isClosed() && (socket = server.accept()) != null) {

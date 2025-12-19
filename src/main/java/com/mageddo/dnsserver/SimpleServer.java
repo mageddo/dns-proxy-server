@@ -1,9 +1,12 @@
 package com.mageddo.dnsserver;
 
+import java.net.InetAddress;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.mageddo.dnsproxyserver.server.dns.RequestHandlerDefault;
+import com.mageddo.dnsproxyserver.utils.Ips;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,19 +21,23 @@ public class SimpleServer {
   private final RequestHandlerDefault requestHandler;
 
   public void start(int port, Protocol protocol) {
-    this.start0(port, protocol);
+    this.start(protocol, Ips.getAnyLocalAddress(), port);
   }
 
-  void start0(int port, Protocol protocol) {
+  public void start(Protocol protocol, InetAddress addr, int port) {
+    this.start0(protocol, addr, port);
+  }
+
+  void start0(Protocol protocol, InetAddress addr, int port) {
     final var tcpHandler = new DnsQueryTCPHandler(this.requestHandler);
     switch (protocol) {
-      case UDP -> this.udpServerPool.start(port);
+      case UDP -> this.udpServerPool.start(addr, port);
       case TCP -> {
         this.tcpServer.start(port, null, tcpHandler);
       }
       default -> {
-        this.udpServerPool.start(port);
-        this.tcpServer.start(port, null, tcpHandler);
+        this.udpServerPool.start(addr, port);
+        this.tcpServer.start(port, addr, tcpHandler);
       }
     }
   }

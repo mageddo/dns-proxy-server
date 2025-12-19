@@ -4,6 +4,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.mageddo.dnsproxyserver.config.application.Configs;
+import com.mageddo.dnsproxyserver.utils.Ips;
 import com.mageddo.dnsserver.SimpleServer;
 
 import lombok.Getter;
@@ -23,12 +24,13 @@ public class ServerStarter {
 
   public ServerStarter start() {
     final var config = Configs.getInstance();
-    final var port = config.getDnsServerPort();
+    final var dns = config.getDnsServer();
     this.server.start(
-        port,
-        config.getServerProtocol()
+        dns.getProtocol(),
+        Ips.toAddress(dns.getHost()),
+        dns.getPort()
     );
-    log.info("status=startingDnsServer, protocol={}, port={}", config.getServerProtocol(), port);
+    log.info("status=startingDnsServer, protocol={}, port={}", dns.getProtocol(), dns.getPort());
     return this;
   }
 
