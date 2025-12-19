@@ -28,14 +28,18 @@ public class UDPServerPool {
   private List<UDPServer> servers = new ArrayList<>();
 
   public void start(int port) {
-    final var bindIp = Ips.from(Ips.getAnyLocalIpv6Address());
-    final var addresses = this.buildAddressesToBind(bindIp, port);
+    final var addresses = this.buildAddressesToBind(port);
     this.servers = Collections.map(
         addresses,
         address -> new UDPServer(address, this.requestHandler)
     );
     this.servers.forEach(UDPServer::start);
     log.info("Starting UDP server, addresses={}", this.toString(addresses));
+  }
+
+  private List<InetSocketAddress> buildAddressesToBind(int port) {
+    final var bindIp = Ips.from(Ips.getAnyLocalIpv6Address());
+    return this.buildAddressesToBind(bindIp, port);
   }
 
   private List<InetSocketAddress> buildAddressesToBind(IP ip, int port) {
