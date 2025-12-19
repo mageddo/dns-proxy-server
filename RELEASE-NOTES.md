@@ -1,5 +1,6 @@
-## 5.4.0
+## 5.5.0
 * Releasing JRE Docker Image Version
+* Enabling DPS to run on any JRE 21+
 
 ## 5.3.0
 * Docker Solver: Specify Preferred Networks to use when solving container IP #662
