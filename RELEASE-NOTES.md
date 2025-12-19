@@ -3,6 +3,10 @@
 * Enabling DPS to run on any JRE 21+
 * Fixing IPV6 query answers which could fail in some cases by UDP interface issues
 * UDP Server: Stopped trying to bind to link local interfaces
+* Defining `0.0.0.0` as the default host for DNS server
+* Option to customize the DNS host, see the [docs][5521]
+
+[5521]: https://mageddo.github.io/dns-proxy-server/5.5/en/3-configuration/#server
 
 ## 5.3.0
 * Docker Solver: Specify Preferred Networks to use when solving container IP #662
