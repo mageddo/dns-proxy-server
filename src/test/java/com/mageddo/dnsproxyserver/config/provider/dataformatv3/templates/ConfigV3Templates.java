@@ -84,10 +84,10 @@ public class ConfigV3Templates {
           },
           "server" : {
             "dns" : {
+              "protocol" : "UDP_TCP",
               "noEntriesResponseCode" : 3,
               "port" : 53
             },
-            "protocol" : "UDP_TCP",
             "web" : {
               "port" : 5380
             }
