@@ -75,6 +75,7 @@ public class ConfigV3 {
   static public class Dns {
     Integer port;
     Integer noEntriesResponseCode;
+    String protocol;
   }
 
   @Data
@@ -188,9 +189,9 @@ public class ConfigV3 {
   @Accessors(chain = true)
   @FieldDefaults(level = AccessLevel.PRIVATE)
   static public class Server {
+    String host;
     Dns dns;
     Web web;
-    String protocol;
   }
 
   @Data

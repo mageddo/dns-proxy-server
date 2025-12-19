@@ -33,7 +33,7 @@ public class SimpleServer {
     switch (protocol) {
       case UDP -> this.udpServerPool.start(addr, port);
       case TCP -> {
-        this.tcpServer.start(port, null, tcpHandler);
+        this.tcpServer.start(port, addr, tcpHandler);
       }
       default -> {
         this.udpServerPool.start(addr, port);

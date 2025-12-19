@@ -24,10 +24,11 @@ public class ServerStarter {
 
   public ServerStarter start() {
     final var config = Configs.getInstance();
-    final var dns = config.getDnsServer();
+    final var server = config.getServer();
+    final var dns = server.getDns();
     this.server.start(
         dns.getProtocol(),
-        Ips.toAddress(dns.getHost()),
+        Ips.toAddress(server.getHost()),
         dns.getPort()
     );
     log.info("status=startingDnsServer, protocol={}, port={}", dns.getProtocol(), dns.getPort());

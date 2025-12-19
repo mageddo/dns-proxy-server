@@ -24,10 +24,13 @@ public class ConfigJsonV2Mapper {
     return Config.builder()
         .server(Config.Server
             .builder()
-            .dnsServerNoEntriesResponseCode(json.getNoEntriesResponseCode())
+            .dns(Config.Server.Dns.builder()
+                .protocol(json.getServerProtocol())
+                .port(json.getDnsServerPort())
+                .noEntriesResponseCode(json.getNoEntriesResponseCode())
+                .build()
+            )
             .webServerPort(json.getWebServerPort())
-            .dnsServerPort(json.getDnsServerPort())
-            .serverProtocol(json.getServerProtocol())
             .build()
         )
         .defaultDns(Config.DefaultDns

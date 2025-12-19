@@ -9,7 +9,10 @@ public class ConfigEnvMapper {
     return Config.builder()
         .server(Config.Server
             .builder()
-            .dnsServerNoEntriesResponseCode(config.getNoEntriesResponseCode())
+            .dns(Config.Server.Dns.builder()
+                .noEntriesResponseCode(config.getNoEntriesResponseCode())
+                .build()
+            )
             .build()
         )
         .log(Config.Log

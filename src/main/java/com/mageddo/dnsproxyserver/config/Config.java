@@ -162,17 +162,19 @@ public class Config {
   }
 
   public Integer getNoEntriesResponseCode() {
-    if (this.server == null) {
+    if (this.getDnsServer() == null) {
       return null;
     }
-    return this.server.getDnsServerNoEntriesResponseCode();
+    return this.getDnsServer()
+        .getNoEntriesResponseCode();
   }
 
   public Integer getDnsServerPort() {
-    if (this.server == null) {
+    if (this.getDnsServer() == null) {
       return null;
     }
-    return this.server.getDnsServerPort();
+    return this.getDnsServer()
+        .getPort();
   }
 
   public Integer getWebServerPort() {
@@ -477,15 +479,14 @@ public class Config {
   @Value
   @Builder
   public static class Server {
-
-    Integer webServerPort;
+    String host;
     Dns dns;
+    Integer webServerPort;
 
     @Value
     @Builder
     public static class Dns {
       Protocol protocol;
-      String host;
       Integer port;
       Integer noEntriesResponseCode;
     }

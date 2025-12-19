@@ -19,6 +19,8 @@ import com.mageddo.dnsserver.SimpleServer;
 import com.mageddo.net.IP;
 import com.mageddo.net.IpAddr;
 
+import org.apache.commons.lang3.EnumUtils;
+
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
@@ -65,20 +67,24 @@ public class ConfigMapper {
       return null;
     }
 
+    final var web = s.getWeb();
     return Config.Server.builder()
-        .dnsServerPort(s.getDns() != null ? s.getDns()
-            .getPort() : null)
-        .dnsServerNoEntriesResponseCode(
-            s.getDns() != null ? s.getDns()
-                .getNoEntriesResponseCode() : null
-        )
-        .webServerPort(s.getWeb() != null ? s.getWeb()
-            .getPort() : null)
-        .serverProtocol(
-            s.getProtocol() != null
-                ? SimpleServer.Protocol.valueOf(s.getProtocol())
-                : null
-        )
+        .host(s.getHost())
+        .dns(mapDnsServer(s))
+        .webServerPort(web != null ? web.getPort() : null)
+        .build();
+  }
+
+  private static Config.Server.Dns mapDnsServer(ConfigV3.Server server) {
+    final var dns = server.getDns();
+    if(dns == null) {
+      return null;
+    }
+    return Config.Server.Dns
+        .builder()
+        .protocol(EnumUtils.getEnum(SimpleServer.Protocol.class, dns.getProtocol()))
+        .port(dns.getPort())
+        .noEntriesResponseCode(dns.getNoEntriesResponseCode())
         .build();
   }
 
@@ -87,15 +93,17 @@ public class ConfigMapper {
       return null;
     }
 
+    final var server = config.getServer();
     return new ConfigV3.Server()
+        .setHost(server.getHost())
         .setDns(new ConfigV3.Dns()
+            .setProtocol(Objects.toString(config.getServerProtocol(), null))
             .setPort(config.getDnsServerPort())
             .setNoEntriesResponseCode(config.getNoEntriesResponseCode())
         )
         .setWeb(new ConfigV3.Web()
             .setPort(config.getWebServerPort())
-        )
-        .setProtocol(Objects.toString(config.getServerProtocol(), null));
+        );
   }
 
   /* ================= DEFAULT DNS ================= */

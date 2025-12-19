@@ -147,17 +147,17 @@ public class ConfigMapper {
     final var config = Config.builder()
         .server(Server
             .builder()
+            .host(ValueResolver.findFirstOrThrow(
+                configs,
+                Config::getServer,
+                Server::getHost
+            ))
             .webServerPort(Numbers.firstPositive(mapField(Config::getWebServerPort, configs)))
             .dns(Server.Dns.builder()
                 .protocol(ValueResolver.findFirstOrThrow(
                     configs,
                     Config::getDnsServer,
                     Server.Dns::getProtocol
-                ))
-                .host(ValueResolver.findFirstOrThrow(
-                    configs,
-                    Config::getDnsServer,
-                    Server.Dns::getHost
                 ))
                 .port(ValueResolver.findFirstOrThrow(
                     configs,
@@ -277,13 +277,14 @@ public class ConfigMapper {
     return Config
         .builder()
         .server(Server.builder()
+            .host("0.0.0.0")
             .dns(Server.Dns.builder()
                 .protocol(Protocol.UDP_TCP)
-                .host("0.0.0.0")
                 .port(53)
                 .noEntriesResponseCode(3)
                 .build()
             )
+            .webServerPort(5380)
             .build()
         )
         .defaultDns(DefaultDns.builder()
