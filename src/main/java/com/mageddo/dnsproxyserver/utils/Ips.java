@@ -3,7 +3,6 @@ package com.mageddo.dnsproxyserver.utils;
 import java.io.UncheckedIOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 import java.net.UnknownHostException;
 import java.util.regex.Pattern;
 
@@ -59,7 +58,7 @@ public class Ips {
     return toAddress(ip.toText());
   }
 
-  public static SocketAddress toSocketAddress(String ip, int port) {
+  public static InetSocketAddress toSocketAddress(String ip, int port) {
     return new InetSocketAddress(Ips.toAddress(ip), port);
   }
 

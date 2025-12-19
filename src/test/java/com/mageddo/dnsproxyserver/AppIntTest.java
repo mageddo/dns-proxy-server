@@ -1,5 +1,7 @@
 package com.mageddo.dnsproxyserver;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Arrays;
@@ -24,7 +26,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.xbill.DNS.Message;
 
-import lombok.SneakyThrows;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import testing.templates.ConfigFlagArgsTemplates;
@@ -99,7 +100,7 @@ public class AppIntTest {
   private static Result buildAndStartServerApp(String hostToQuery) {
     final var configFile =
         ConfigJsonFileTemplates.withRandomPortsAndNotAsDefaultDnsAndCustomLocalDBEntry(
-        hostToQuery);
+            hostToQuery);
     final var instance = Sandbox.runFromGradleTests(configFile);
     return Result.of(configFile, instance);
   }
@@ -112,11 +113,14 @@ public class AppIntTest {
     return app;
   }
 
-  @SneakyThrows
   static Message queryStartedServer(Integer port, String host) {
-    final var dnsServerAddress = Ips.getAnyLocalAddress(port);
-    final var dnsClient = new SimpleResolver(dnsServerAddress);
-    return dnsClient.send(Messages.aQuestion(host));
+    final var dnsServer = Ips.toSocketAddress("127.0.0.1", port);
+    final var dnsClient = new SimpleResolver(dnsServer);
+    try {
+      return dnsClient.send(Messages.aQuestion(host));
+    } catch (IOException e) {
+      throw new UncheckedIOException(String.format("server=%s", dnsServer), e);
+    }
   }
 
   @Value
