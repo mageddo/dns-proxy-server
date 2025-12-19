@@ -35,9 +35,11 @@ public interface IP {
 
   boolean isLoopback();
 
+  boolean isAnyLocal();
+
   boolean notEqualTo(String ip);
 
-  default boolean isVersionEqualsTo(Version version) {
+  default boolean versionIs(Version version) {
     return this.version()
         .equals(version);
   }

@@ -41,11 +41,11 @@ public class Networks {
   /**
    * The "relevance" is understood as the IP which have most chances of represent the real
    * hardware network interface,
-   * we say "most chances" beucase java api haven't deterministic information on that.
+   * we say "most chances" because java api haven't deterministic information on that.
    *
    * @return Machine ips ordered by relevance.
    */
-  static List<IP> findMachineIps() {
+  public static List<IP> findMachineIps() {
     return findInterfaces()
         .stream()
         .sorted(Comparator.comparingInt(NetworkInterface::getIndex))

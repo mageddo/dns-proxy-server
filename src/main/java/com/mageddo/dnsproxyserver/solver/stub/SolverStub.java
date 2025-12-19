@@ -51,7 +51,7 @@ public class SolverStub implements Solver {
       log.debug("status=notSolved, hostname={}", hostname);
       return null;
     }
-    if (!foundIp.isVersionEqualsTo(questionType.toVersion())) {
+    if (!foundIp.versionIs(questionType.toVersion())) {
       log.debug("status=incompatibleIpAndQueryType, hostname={}, questionType={}", hostname,
           questionType
       );

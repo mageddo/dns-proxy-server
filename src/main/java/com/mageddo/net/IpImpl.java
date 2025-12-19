@@ -85,6 +85,11 @@ class IpImpl implements IP {
   }
 
   @Override
+  public boolean isAnyLocal() {
+    return this.ip.isAnyLocalAddress();
+  }
+
+  @Override
   public boolean notEqualTo(String ip) {
     return !Objects.equals(this, IP.of(ip));
   }

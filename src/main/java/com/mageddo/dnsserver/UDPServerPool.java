@@ -1,5 +1,6 @@
 package com.mageddo.dnsserver;
 
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.ArrayList;
@@ -10,9 +11,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.mageddo.commons.Collections;
+import com.mageddo.dnsproxyserver.utils.InetAddresses;
 import com.mageddo.dnsproxyserver.utils.Ips;
+import com.mageddo.net.IP;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -24,15 +28,26 @@ public class UDPServerPool {
   private List<UDPServer> servers = new ArrayList<>();
 
   public void start(int port) {
-    final var addresses = List.of(
-        Ips.getAnyLocalIpv6Address(port),
-        Ips.getAnyLocalAddress(port)
-    );
+    final var bindIp = Ips.from(Ips.getAnyLocalIpv6Address());
+    final var addresses = this.buildAddressesToBind(bindIp, port);
     this.servers = Collections.map(
-        addresses, address -> new UDPServer(address, this.requestHandler)
+        addresses,
+        address -> new UDPServer(address, this.requestHandler)
     );
     this.servers.forEach(UDPServer::start);
     log.info("Starting UDP server, addresses={}", this.toString(addresses));
+  }
+
+  private List<InetSocketAddress> buildAddressesToBind(IP ip, int port) {
+    return Collections.map(
+        Addresses.findBindAddresses(ip),
+        it -> InetAddresses.toSocketAddress(it, port)
+    );
+  }
+
+  @SneakyThrows
+  private static InetSocketAddress build(int port) {
+    return new InetSocketAddress(InetAddress.getByName("2804:14c:213:5427::251"), port);
   }
 
   private String toString(List<InetSocketAddress> addresses) {

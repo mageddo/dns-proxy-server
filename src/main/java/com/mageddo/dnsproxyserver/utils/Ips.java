@@ -79,7 +79,7 @@ public class Ips {
     return new InetSocketAddress(getAnyLocalIpv6Address(), port);
   }
 
-  private static InetAddress getAnyLocalIpv6Address() {
+  public static InetAddress getAnyLocalIpv6Address() {
     try {
       return InetAddress.getByAddress(new byte[16]);
     } catch (UnknownHostException e) {
