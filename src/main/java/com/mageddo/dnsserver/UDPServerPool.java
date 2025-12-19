@@ -1,6 +1,5 @@
 package com.mageddo.dnsserver;
 
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.ArrayList;
@@ -16,7 +15,6 @@ import com.mageddo.dnsproxyserver.utils.Ips;
 import com.mageddo.net.IP;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -47,11 +45,6 @@ public class UDPServerPool {
         Addresses.findBindAddresses(ip),
         it -> InetAddresses.toSocketAddress(it, port)
     );
-  }
-
-  @SneakyThrows
-  private static InetSocketAddress build(int port) {
-    return new InetSocketAddress(InetAddress.getByName("2804:14c:213:5427::251"), port);
   }
 
   private String toString(List<InetSocketAddress> addresses) {
