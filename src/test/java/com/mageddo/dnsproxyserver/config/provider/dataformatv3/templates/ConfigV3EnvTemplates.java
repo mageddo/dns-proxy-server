@@ -11,10 +11,10 @@ public final class ConfigV3EnvTemplates {
   public static Map<String, String> build() {
     final var env = new LinkedHashMap<String, String>();
     env.put("DPS_VERSION", "3");
+    env.put("DPS_SERVER__DNS__PROTOCOL", "UDP_TCP");
     env.put("DPS_SERVER__DNS__PORT", "53");
     env.put("DPS_SERVER__DNS__NO_ENTRIES_RESPONSE_CODE", "3");
     env.put("DPS_SERVER__WEB__PORT", "5380");
-    env.put("DPS_SERVER__PROTOCOL", "UDP_TCP");
     env.put("DPS_SOLVER__REMOTE__ACTIVE", "true");
     env.put("DPS_SOLVER__REMOTE__DNS_SERVERS_0", "8.8.8.8");
     env.put("DPS_SOLVER__REMOTE__DNS_SERVERS_1", "4.4.4.4:53");
