@@ -1,3 +1,6 @@
+## 5.4.0
+* Releasing JRE Docker Image Version
+
 ## 5.3.0
 * Docker Solver: Specify Preferred Networks to use when solving container IP #662
 
