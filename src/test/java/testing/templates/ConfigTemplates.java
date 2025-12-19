@@ -20,10 +20,13 @@ public class ConfigTemplates {
         .builder()
         .server(Config.Server
             .builder()
-            .serverProtocol(SimpleServer.Protocol.UDP_TCP)
+            .dns(Config.Server.Dns.builder()
+                .protocol(SimpleServer.Protocol.UDP_TCP)
+                .port(53)
+                .noEntriesResponseCode(3)
+                .build()
+            )
             .webServerPort(8080)
-            .dnsServerPort(53)
-            .dnsServerNoEntriesResponseCode(3)
             .build()
         )
         .log(Config.Log
