@@ -5,9 +5,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import com.mageddo.graalvm.ImageInfo;
+import com.mageddo.graalvm.ProcessProperties;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.graalvm.nativeimage.ProcessProperties;
 
 import lombok.SneakyThrows;
 
@@ -33,11 +33,8 @@ public class Runtime {
   }
 
   public static Path getRunningDir() {
-    // FIXME EFS adapt to use graalvm deps only when not running into a regular JVM
-    //   otherwise graalvm will be required to run the jar.
     if (ImageInfo.inImageRuntimeCode()) {
-      return Paths.get(ProcessProperties.getExecutableName())
-          .getParent();
+      return ProcessProperties.getRunningPath();
     }
     final var path = getRunningPath();
     if (isJar(path)) {

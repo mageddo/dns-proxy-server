@@ -3,11 +3,11 @@ package com.mageddo.dnsproxyserver.sandbox;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import com.mageddo.graalvm.ImageInfo;
 import com.mageddo.utils.Runtime;
 
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.lang3.Validate;
-import org.graalvm.nativeimage.ImageInfo;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
