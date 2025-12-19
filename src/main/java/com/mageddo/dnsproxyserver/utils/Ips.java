@@ -75,6 +75,18 @@ public class Ips {
     return new InetSocketAddress(getAnyLocalAddress(), port);
   }
 
+  public static InetSocketAddress getAnyLocalIpv6Address(int port) {
+    return new InetSocketAddress(getAnyLocalIpv6Address(), port);
+  }
+
+  private static InetAddress getAnyLocalIpv6Address() {
+    try {
+      return InetAddress.getByAddress(new byte[16]);
+    } catch (UnknownHostException e) {
+      return null;
+    }
+  }
+
   public static boolean isIpv6(String v) {
     return StringUtils.trimToEmpty(v)
         .contains(":");

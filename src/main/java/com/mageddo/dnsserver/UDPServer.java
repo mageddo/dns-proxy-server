@@ -1,5 +1,6 @@
 package com.mageddo.dnsserver;
 
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketAddress;
@@ -36,19 +37,23 @@ public class UDPServer {
 
   private void start0() {
     try {
-      this.server = new DatagramSocket(this.address);
-      while (!server.isClosed()) {
+      this.server = this.createSocket();
+      while (!this.server.isClosed()) {
 
         final var datagram = new DatagramPacket(new byte[BUFFER_SIZE], 0, BUFFER_SIZE);
-        server.receive(datagram);
+        this.server.receive(datagram);
 
-        this.pool.submit(() -> this.handle(server, datagram));
+        this.pool.submit(() -> this.handle(this.server, datagram));
 
       }
     } catch (Exception e) {
-      log.error("status=dnsServerStartFailed, address={}, msg={}", address, e.getMessage(), e);
+      log.error("status=dnsServerStartFailed, address={}, msg={}", this.address, e.getMessage(), e);
       throw new RuntimeException(e);
     }
+  }
+
+  private DatagramSocket createSocket() throws IOException {
+    return new DatagramSocket(this.address);
   }
 
   void handle(DatagramSocket server, DatagramPacket datagram) {
