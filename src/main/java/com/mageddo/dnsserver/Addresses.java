@@ -1,6 +1,7 @@
 package com.mageddo.dnsserver;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import com.mageddo.commons.Collections;
 import com.mageddo.net.IP;
@@ -28,12 +29,16 @@ public class Addresses {
       return Collections.singletonList(address);
     }
     if (address.versionIs(IP.Version.IPV6)) {
-      return Networks.findMachineIps();
+      return Collections.filter(Networks.findMachineIps(), notLinkLocal());
     }
     return Collections.filter(
         Networks.findMachineIps(),
         ip -> ip.versionIs(address.version()),
-         ip -> !ip.isLinkLocal()
+        notLinkLocal()
     );
+  }
+
+  private static Predicate<IP> notLinkLocal() {
+    return ip -> !ip.isLinkLocal();
   }
 }
