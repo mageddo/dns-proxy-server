@@ -145,13 +145,13 @@ public class ConfigV3Templates {
           "version": 3,
           "server": {
             "dns": {
+              "protocol": "UDP_TCP",
               "port": 53,
               "noEntriesResponseCode": 3
             },
             "web": {
               "port": 5380
-            },
-            "protocol": "UDP_TCP"
+            }
           },
           "solver": {
             "remote": {
