@@ -4,13 +4,18 @@
     "active" : false,
     "resolvConf" : { }
   },
+  "dnsServer" : {
+    "port" : 5391
+  },
   "dnsServerPort" : 5391,
   "log" : {
     "file" : "/var/log/dns-proxy-server.log",
     "level" : "DEBUG"
   },
   "server" : {
-    "dnsServerPort" : 5391,
+    "dns" : {
+      "port": 5391
+    },
     "webServerPort" : 9393
   },
   "solverDocker" : {
