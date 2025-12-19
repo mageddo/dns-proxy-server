@@ -27,6 +27,12 @@ services:
       dockerfile: Dockerfile.builder.linux-aarch64
     platform: linux/arm64/v8
 
+  build-linux-jre:
+    image: defreitas/dns-proxy-server-build:${VERSION:-snapshot}-jre
+    build:
+      context: .
+      dockerfile: Dockerfile.builder.linux-jre
+
   # end:build
 
   # tag:image
@@ -47,4 +53,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.aarch64
+
+  image-linux-jre:
+    image: defreitas/dns-proxy-server:${VERSION:-snapshot}-jre
+    build:
+      context: .
+      dockerfile: Dockerfile.jre
+
   # end:image

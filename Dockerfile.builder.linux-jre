@@ -1,0 +1,7 @@
+FROM debian:9-slim
+
+WORKDIR /app/build
+COPY ./build/artifacts/native-image-source/ /app/build
+RUN mkdir -p /app/build/artifacts/linux-jre && mv dns-proxy-server.jar /app/build/artifacts/linux-jre/
+
+ENTRYPOINT cat

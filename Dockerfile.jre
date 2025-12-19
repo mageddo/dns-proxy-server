@@ -1,0 +1,13 @@
+FROM eclipse-temurin:21-jre
+
+WORKDIR /app
+COPY ./build/artifacts/linux-jre/ /app
+
+LABEL dps.container=true
+ENV DPS_CONTAINER=1
+VOLUME ["/var/run/docker.sock", "/var/run/docker.sock"]
+
+ENTRYPOINT [ \
+  "java", \
+   "-jar", "/app/dns-proxy-server.jar" \
+]
