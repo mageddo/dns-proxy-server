@@ -38,15 +38,15 @@ public class SolverDocker implements Solver {
 
     final var askedHost = Messages.findQuestionHostname(query);
     final var version = type.toVersion();
-    return HostnameMatcher.match(askedHost, version, hostname -> {
-          final var entry = this.containerSolvingService.findBestMatch(hostname);
-          if (!entry.isHostnameMatched()) {
+    return HostnameMatcher.match(askedHost, version, hostnameQuery -> {
+          final var entry = this.containerSolvingService.findBestMatch(hostnameQuery);
+          if (entry.isHostNameNotMatched()) {
             return null;
           }
           return Response.internalSuccess(Messages.answer(
               query,
               entry.getIpText(),
-              hostname.getVersion()
+              hostnameQuery.getVersion()
           ));
         }
     );

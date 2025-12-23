@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.solver;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -64,11 +65,7 @@ public class SolverLocalDB implements Solver {
           );
 
           if (foundType.isAddressSolving()) {
-            final var ip = foundType.equals(questionType) ? found.requireTextIp() : null;
-            return Response.of(
-                Messages.answer(query, ip, questionType.toVersion(), found.getTtl()),
-                Duration.ofSeconds(found.getTtl())
-            );
+            return mapResponse(query, foundType, questionType, found);
           }
           return this.solverDelegate.get()
               .solve(query, found);
@@ -79,6 +76,28 @@ public class SolverLocalDB implements Solver {
     }
     log.trace("status=notFound, askedHost={}, totalTime={}", askedHost, stopWatch.getTime());
     return null;
+  }
+
+  static Response mapResponse(
+      Message query, Type foundType, Type questionType, Config.Entry found
+  ) {
+
+    final var foundIpForQueriedType = foundType.equals(questionType);
+    final var builder = Response.builder()
+        .dpsTtl(Duration.ofSeconds(found.getTtl()))
+        .createdAt(LocalDateTime.now());
+
+    if (foundIpForQueriedType) {
+      return builder.message(Messages.answer(
+              query,
+              found.requireTextIp(),
+              questionType.toVersion(),
+              found.getTtl()
+          ))
+          .build();
+    }
+    return builder.message(Messages.noData(query))
+        .build();
   }
 
   @Override

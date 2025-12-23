@@ -23,8 +23,9 @@ public class ContainerHostnameMatcher {
     return buildPredicate(host, Configs.getInstance());
   }
 
-  static Predicate<InspectContainerResponse> buildPredicate(final HostnameQuery host,
-      final Config config) {
+  static Predicate<InspectContainerResponse> buildPredicate(
+      final HostnameQuery host, final Config config
+  ) {
     return container -> {
 
       final List<Predicate<InspectContainerResponse>> predicates = List.of(
@@ -49,8 +50,9 @@ public class ContainerHostnameMatcher {
     return host.matches(Docker.findContainerHostname(c.getConfig()));
   }
 
-  public static boolean hostnamesEnvMatches(InspectContainerResponse c,
-      HostnameQuery hostnameQuery) {
+  public static boolean hostnamesEnvMatches(
+      InspectContainerResponse c, HostnameQuery hostnameQuery
+  ) {
     return findHostnamesFromEnv(c.getConfig()
         .getEnv())
         .stream()
@@ -58,8 +60,9 @@ public class ContainerHostnameMatcher {
         ;
   }
 
-  public static boolean serviceOrContainerNameMatches(InspectContainerResponse c,
-      HostnameQuery hostQuery, Config config) {
+  public static boolean serviceOrContainerNameMatches(
+      InspectContainerResponse c, HostnameQuery hostQuery, Config config
+  ) {
     return isRegisterContainerNames(config)
         && Docker.buildHostnamesFromServiceOrContainerNames(c, config.getDockerDomain())
         .stream()

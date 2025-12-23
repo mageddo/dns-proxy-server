@@ -329,4 +329,8 @@ public class Messages {
   public static boolean isNxDomain(Message m) {
     return m.getRcode() == Rcode.NXDOMAIN;
   }
+
+  public static Message noData(Message query) {
+    return withResponseCode(query, Rcode.NOERROR);
+  }
 }

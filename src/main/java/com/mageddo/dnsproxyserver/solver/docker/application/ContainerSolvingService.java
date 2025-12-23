@@ -46,7 +46,7 @@ public class ContainerSolvingService {
         .filter(Objects::nonNull)
         .findFirst()
         .orElse(null);
-    final var hostnameMatched = !matchedContainers.isEmpty() && foundIp != null;
+    final var hostnameMatched = !matchedContainers.isEmpty() && foundIp != null; // FIXME EFS Hostname matches but ip not found
     log.trace(
         "status=findDone, query={}, found={}, hostnameMatched={}, time={}",
         query, foundIp, hostnameMatched, stopWatch.getTime()
