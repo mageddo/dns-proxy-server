@@ -29,14 +29,15 @@ public class SolverSystem implements Solver {
 
     final var questionType = Messages.findQuestionType(query);
     if (ConfigEntryTypes.isNot(questionType, Type.A, Type.AAAA)) {
-      log.debug("status=unsupportedType, type={}, query={}", findQuestionTypeCode(query),
-          Messages.simplePrint(query)
+      log.debug(
+          "status=unsupportedType, type={}, query={}",
+          findQuestionTypeCode(query), Messages.simplePrint(query)
       );
       return null;
     }
     final var config = Configs.getInstance();
-    if (hostname.isEqualTo(
-        config.getHostMachineHostname())) { // fixme fazer case com hostname + search domain
+    // fixme fazer case com hostname + search domain
+    if (hostname.isEqualTo(config.getHostMachineHostname())) {
       final var ip = this.machineService.findHostMachineIP(questionType.toVersion());
       log.debug("status=solvingHostMachineName, host={}, ip={}", hostname, ip);
       return ResponseMapper.toDefaultSuccessAnswer(query, ip, questionType.toVersion());
