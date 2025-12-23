@@ -92,3 +92,4 @@ class CircuitBreakerDelegateSelfObservableTest {
     assertEquals(CircuitStatus.OPEN, this.strategy.findStatus());
   }
 }
+
