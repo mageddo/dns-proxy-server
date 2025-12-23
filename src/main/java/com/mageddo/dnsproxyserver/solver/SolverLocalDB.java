@@ -64,7 +64,11 @@ public class SolverLocalDB implements Solver {
           );
 
           if (foundType.isAddressSolving()) {
-            return mapResponse(query, foundType, questionType, found);
+            final var ip = foundType.equals(questionType) ? found.requireTextIp() : null;
+            return Response.of(
+                Messages.answer(query, ip, questionType.toVersion(), found.getTtl()),
+                Duration.ofSeconds(found.getTtl())
+            );
           }
           return this.solverDelegate.get()
               .solve(query, found);
@@ -75,21 +79,6 @@ public class SolverLocalDB implements Solver {
     }
     log.trace("status=notFound, askedHost={}, totalTime={}", askedHost, stopWatch.getTime());
     return null;
-  }
-
-  static Response mapResponse(
-      Message query, Type foundType, Type questionType, Config.Entry found
-  ) {
-    final var foundIpForQueriedType = foundType.equals(questionType);
-    return Response.of(
-        Messages.answer(
-            query,
-            foundIpForQueriedType ? found.requireTextIp() : null,
-            questionType.toVersion(),
-            found.getTtl()
-        ),
-        Duration.ofSeconds(found.getTtl())
-    );
   }
 
   @Override
