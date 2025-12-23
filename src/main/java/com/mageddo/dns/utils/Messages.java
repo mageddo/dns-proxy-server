@@ -331,6 +331,6 @@ public class Messages {
   }
 
   public static Message noData(Message query) {
-    return withResponseCode(query, Rcode.NOERROR);
+    return withResponseCode(query.clone(), Rcode.NOERROR);
   }
 }
