@@ -14,6 +14,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.xbill.DNS.Flags;
+import org.xbill.DNS.Rcode;
 
 import testing.templates.HostnameTemplates;
 import testing.templates.MessageTemplates;
@@ -127,6 +128,7 @@ class SolverDockerTest {
     // assert
     assertNotNull(res);
     assertTrue(Responses.hasFlag(res, Flags.RA));
+    assertEquals(Rcode.NOERROR, res.getRCode());
     assertEquals(Type.AAAA, Messages.findQuestionType(res.getMessage()));
     assertEquals("", Messages.detailedPrint(res.getMessage()));
   }

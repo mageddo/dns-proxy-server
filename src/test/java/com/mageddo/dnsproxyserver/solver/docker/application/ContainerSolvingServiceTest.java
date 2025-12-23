@@ -21,9 +21,9 @@ import testing.templates.server.dns.solver.docker.ContainerTemplates;
 import testing.templates.server.dns.solver.docker.NetworkTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
@@ -253,7 +253,7 @@ class ContainerSolvingServiceTest {
 
     // assert
     assertNotNull(ip);
-    assertFalse(ip.isHostnameMatched());
+    assertTrue(ip.isHostnameMatched());
     assertNull(ip.getIp());
 
   }

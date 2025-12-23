@@ -20,4 +20,12 @@ public class Entry {
   public boolean isHostNameNotMatched() {
     return !this.hostnameMatched;
   }
+
+  public boolean hasNotIP() {
+    return this.ip == null;
+  }
+
+  public boolean hasIp() {
+    return this.ip != null;
+  }
 }
