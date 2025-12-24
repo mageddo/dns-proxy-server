@@ -8,4 +8,8 @@ public enum CircuitStatus {
   public static boolean isOpen(CircuitStatus status) {
     return OPEN == status;
   }
+
+  public static boolean isNotOpen(CircuitStatus status) {
+    return !isOpen(status);
+  }
 }

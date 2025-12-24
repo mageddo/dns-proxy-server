@@ -68,9 +68,10 @@ public class CircuitBreakerDelegateSelfObservable implements CircuitBreakerDeleg
 
   private void healthCheckWhenInOpenState() {
     final var status = this.findStatus();
-    final var notInOpenStatus = !CircuitStatus.isOpen(status);
-    log.trace("status=checking, statusBefore={}, notInOpenStatus={}, circuit={}", status,
-        notInOpenStatus, this
+    final var notInOpenStatus = CircuitStatus.isNotOpen(status);
+    log.trace(
+        "status=checking, statusBefore={}, notInOpenStatus={}, circuit={}",
+        status, notInOpenStatus, this
     );
     if (notInOpenStatus) {
       return;
@@ -88,7 +89,7 @@ public class CircuitBreakerDelegateSelfObservable implements CircuitBreakerDeleg
   }
 
   @Override
-  public void close() throws Exception {
+  public void close() {
     this.open = false;
   }
 
