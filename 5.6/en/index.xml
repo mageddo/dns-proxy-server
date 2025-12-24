@@ -111,7 +111,7 @@ if you know about DPS you will figure out that&amp;rsquo;s a very basic DPS feat
       <description>Contributors Thanks to them  for making Open Source Software a better place !
 .ghContributors{ display:flex; flex-flow: wrap; align-content: flex-start }
 .ghContributors &amp;gt; div{ width: 50% ; display: inline-flex; margin-bottom: 5px; } .ghContributors &amp;gt; div label{ padding-left: 4px ; } .ghContributors &amp;gt; div span{ font-size: x-small; padding-left: 4px ; }
-  @mageddo 933 commits 
+  @mageddo 934 commits 
  @josielrocha 9 commits 
  @mrubli 3 commits 
  @addshore 3 commits</description>
