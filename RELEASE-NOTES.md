@@ -1,3 +1,6 @@
+## 5.6.1
+* Fixing Getting NXDOMAIN when not expected, see #668.
+
 ## 5.6.0
 * Releasing JRE Docker Image Version
 * Enabling DPS to run on any JRE 21+
