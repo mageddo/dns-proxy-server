@@ -190,7 +190,7 @@ public class Messages {
    * @return a clone with the combination.
    */
   public static Message combine(Message source, Message target) {
-    final var clone = clone(target);
+    final var clone = copy(target);
     for (int i = 1; i < 4; i++) {
       final var section = source.getSection(i);
       for (final var record : section) {
@@ -306,7 +306,7 @@ public class Messages {
     return res;
   }
 
-  static Message clone(Message msg) {
+  public static Message copy(Message msg) {
     if (msg == null) {
       return null;
     }
@@ -390,10 +390,6 @@ public class Messages {
 
   public static Message notSupportedHttps(Message m) {
     return authoritative(withNoErrorResponse(copy(m)));
-  }
-
-  private static Message copy(Message m) {
-    return m.clone();
   }
 
   public static List<Record> getAnswers(Message m) {
