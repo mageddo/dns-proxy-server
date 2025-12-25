@@ -348,12 +348,11 @@ public class Messages {
     return authoritative(answer(query, ip, version));
   }
 
-  public static boolean hasAuthoritativeFlag(Response res) {
-    return hasAuthoritativeFlag(res.getMessage());
+  public static boolean isAuthoritative(Message m) {
+    return Messages.hasFlag(m, Flags.AA);
   }
 
-  public static boolean hasAuthoritativeFlag(Message m) {
-    return Messages.hasFlag(m, Flags.RA);
+  public static boolean hasRecursionAvailable(Message m) {
+    return hasFlag(m, Flags.RA);
   }
-
 }

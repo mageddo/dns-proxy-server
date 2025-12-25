@@ -49,7 +49,7 @@ class SolverSystemTest {
     final var res = this.solver.handle(query);
 
     assertNotNull(res);
-    assertTrue(Messages.hasAuthoritativeFlag(res));
+    assertTrue(Responses.isAuthoritative(res));
   }
 
   @Test

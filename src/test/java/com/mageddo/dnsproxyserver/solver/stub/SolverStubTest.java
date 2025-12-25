@@ -2,6 +2,8 @@ package com.mageddo.dnsproxyserver.solver.stub;
 
 import com.mageddo.dns.utils.Messages;
 
+import com.mageddo.dnsproxyserver.solver.Responses;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -85,6 +87,6 @@ class SolverStubTest {
     final var response = this.solver.handle(query);
 
     assertNotNull(response);
-    assertTrue(Messages.hasAuthoritativeFlag(response));
+    assertTrue(Responses.isAuthoritative(response));
   }
 }
