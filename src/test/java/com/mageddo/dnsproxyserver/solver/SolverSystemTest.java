@@ -1,5 +1,8 @@
 package com.mageddo.dnsproxyserver.solver;
 
+import com.mageddo.dns.utils.Messages;
+import com.mageddo.net.IP;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -8,7 +11,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import testing.templates.MessageTemplates;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
 class SolverSystemTest {
@@ -29,4 +36,61 @@ class SolverSystemTest {
     assertNull(res);
   }
 
+
+  @Test
+  void mustBeAuthoritative() {
+
+    doReturn(IP.of("192.168.0.1"))
+        .when(this.solver)
+        .findHostMachineIP(IP.Version.IPV4);
+
+    final var query = MessageTemplates.hostDockerAQuery();
+
+    final var res = this.solver.handle(query);
+
+    assertNotNull(res);
+    assertTrue(Messages.hasAuthoritativeFlag(res));
+  }
+
+  @Test
+  void mustAnswerNoErrorWhenHasNotToAnswerButHostNameMatches() {
+
+    doReturn(null)
+        .when(this.solver)
+        .findHostMachineIP(any());
+
+
+    final var query = MessageTemplates.hostDockerAQuery();
+
+    final var res = this.solver.handle(query);
+
+    assertNotNull(res);
+    assertTrue(Messages.isSuccess(res));
+  }
+
+  @Test
+  void mustAnswerNoErrorWhenQueryAAAAndHasNotToAnswerButHostNameMatches() {
+
+    doReturn(null)
+        .when(this.solver)
+        .findHostMachineIP(any());
+
+
+    final var query = MessageTemplates.hostDockerQuadAQuery();
+
+    final var res = this.solver.handle(query);
+
+    assertNotNull(res);
+    assertTrue(Messages.isSuccess(res));
+  }
+
+  @Test
+  void musReturnNullWhenHostNameDoesntMatch() {
+
+    final var query = MessageTemplates.randomHostnameAQuery();
+
+    final var res = this.solver.handle(query);
+
+    assertNull(res);
+  }
 }

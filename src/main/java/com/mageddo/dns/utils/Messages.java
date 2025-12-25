@@ -323,6 +323,11 @@ public class Messages {
     return HostnameQuery.of(host, version);
   }
 
+
+  public static boolean isSuccess(Response res) {
+    return isSuccess(res.getMessage());
+  }
+
   public static boolean isSuccess(Message res) {
     return res.getRcode() == Rcode.NOERROR;
   }
@@ -342,4 +347,13 @@ public class Messages {
   public static Message authoritativeAnswer(Message query, String ip, IP.Version version) {
     return authoritative(answer(query, ip, version));
   }
+
+  public static boolean hasAuthoritativeFlag(Response res) {
+    return hasAuthoritativeFlag(res.getMessage());
+  }
+
+  public static boolean hasAuthoritativeFlag(Message m) {
+    return Messages.hasFlag(m, Flags.RA);
+  }
+
 }
