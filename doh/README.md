@@ -6,7 +6,8 @@
 
 Restrictions
 
-* Import ca.crt on firefox authorities to make the DPS doh server be accepted.
+* Import ca.crt on firefox under `about:preferences#privacy` -> Certificates -> Authorities to make the DPS doh server
+  be accepted.
 * Activate `network.trr.allow-rfc1918` on `about:config` to make it work with private ip addresses;
 * Some real domains like `.dev` won't work depending on the combination of private ip + default port (80, 443), so evict
   them, .com seems to work
