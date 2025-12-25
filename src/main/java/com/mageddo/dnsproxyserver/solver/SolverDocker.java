@@ -40,8 +40,10 @@ public class SolverDocker implements Solver {
     final var version = type.toVersion();
     return HostnameMatcher.match(askedHost, version, hostname -> {
           final var entry = this.containerSolvingService.findBestMatch(hostname);
-          if (!entry.isHostnameMatched()) {
+          if (entry.isHostNameNotMatched()) {
             return null;
+          } else if (type.isHttps()) {
+            return Response.internalSuccess(Messages.notSupportedHttps(query));
           }
           return Response.internalSuccess(Messages.authoritativeAnswer(
               query,
@@ -54,7 +56,7 @@ public class SolverDocker implements Solver {
   }
 
   private static boolean isNotSupported(Type type) {
-    return ConfigEntryTypes.isNot(type, Type.AAAA, Type.A);
+    return ConfigEntryTypes.isNot(type, Type.AAAA, Type.A, Type.HTTPS);
   }
 
 }

@@ -389,6 +389,7 @@ public class Config {
       A(org.xbill.DNS.Type.A),
       CNAME(org.xbill.DNS.Type.CNAME),
       AAAA(org.xbill.DNS.Type.AAAA),
+      HTTPS(org.xbill.DNS.Type.HTTPS),
       ;
 
       /**
@@ -426,12 +427,17 @@ public class Config {
         return switch (this) {
           case A -> IP.Version.IPV4;
           case AAAA -> IP.Version.IPV6;
+          case HTTPS -> null;
           default -> throw new IllegalStateException("Unexpected value: " + this);
         };
       }
 
       public boolean isAddressSolving() {
         return ConfigEntryTypes.is(this, Config.Entry.Type.A, Config.Entry.Type.AAAA);
+      }
+
+      public boolean isHttps() {
+        return this == HTTPS;
       }
     }
   }

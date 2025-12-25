@@ -131,8 +131,8 @@ public class RequestHandlerDefault implements RequestHandler {
       return Triple.of(solverName, solverTime, null);
     }
     log.debug(
-        "status=solved, currentSolverTime={}, totalTime={}, solver={}, req={}, res={}",
-        solverTime, stopWatch.getTime(), solverName, reqStr, simplePrint(res)
+        "status=solved, res={}, solver={}, answers={}, currentSolverTime={}, totalTime={}",
+        simplePrint(res), solverName, res.countAnswers(), solverTime, stopWatch.getTime()
     );
     return Triple.of(solverName, solverTime, res);
   }

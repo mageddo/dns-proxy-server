@@ -64,8 +64,8 @@ class SolverLocalDBTest {
 
     // arrange
     final var query = MessageTemplates.acmeQuadAQuery();
-    final var wildcardHostName = HostnameQuery.ofWildcard(HostnameTemplates.ACME_HOSTNAME,
-        IP.Version.IPV6
+    final var wildcardHostName = HostnameQuery.ofWildcard(
+        HostnameTemplates.ACME_HOSTNAME, IP.Version.IPV6
     );
 
     doReturn(EntryTemplates.acmeQuadA())

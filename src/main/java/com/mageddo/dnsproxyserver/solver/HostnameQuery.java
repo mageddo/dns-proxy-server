@@ -22,7 +22,6 @@ public class HostnameQuery {
   @NonNull
   private final Hostname hostname;
 
-  @NonNull
   private final IP.Version version;
 
   private final boolean useWildcards;

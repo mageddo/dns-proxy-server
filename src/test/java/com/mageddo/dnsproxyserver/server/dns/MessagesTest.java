@@ -142,4 +142,17 @@ class MessagesTest {
         str
     );
   }
+
+  @Test
+  void mustAddAnswerAndKeepId(){
+
+    final var query = MessageTemplates.acmeAQuery();
+
+    final var res = Messages.answer(query, "10.10.10.1");
+
+    final var resId = Messages.getId(res);
+    assertTrue(resId > 0);
+    assertEquals(Messages.getId(query), resId);
+
+  }
 }

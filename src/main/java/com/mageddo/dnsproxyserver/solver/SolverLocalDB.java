@@ -64,6 +64,11 @@ public class SolverLocalDB implements Solver {
           );
 
           if (foundType.isAddressSolving()) {
+
+            if (questionType.isHttps()) {
+              return Response.internalSuccess(Messages.notSupportedHttps(query));
+            }
+
             final var ip = foundType.equals(questionType) ? found.requireTextIp() : null;
             return Response.of(
                 Messages.authoritativeAnswer(query, ip, questionType.toVersion(), found.getTtl()),
@@ -82,7 +87,7 @@ public class SolverLocalDB implements Solver {
   }
 
   private static boolean isNotSupported(Integer type) {
-    return ConfigEntryTypes.isNot(type, Type.A, Type.CNAME, Type.AAAA);
+    return ConfigEntryTypes.isNot(type, Type.A, Type.CNAME, Type.AAAA, Type.HTTPS);
   }
 
   @Override

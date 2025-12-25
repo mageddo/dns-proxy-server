@@ -88,4 +88,8 @@ public class Response {
     return this.message.getRcode();
   }
 
+  public int countAnswers() {
+    return Messages.getAnswers(this.message)
+        .size();
+  }
 }

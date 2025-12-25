@@ -4,7 +4,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.mageddo.dns.utils.Messages;
-import com.mageddo.dnsproxyserver.config.Config;
+import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.config.ConfigEntryTypes;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.solver.Response;
@@ -31,7 +31,7 @@ public class SolverStub implements Solver {
   @Override
   public Response handle(Message query) {
     final var questionType = Messages.findQuestionType(query);
-    if (ConfigEntryTypes.isNot(questionType, Config.Entry.Type.A, Config.Entry.Type.AAAA)) {
+    if (ConfigEntryTypes.isNot(questionType, Type.A, Type.AAAA, Type.HTTPS)) {
       log.debug("status=unsupportedType, type={}, query={}", findQuestionTypeCode(query),
           Messages.simplePrint(query)
       );
@@ -39,16 +39,22 @@ public class SolverStub implements Solver {
     }
 
     final var hostname = Messages.findQuestionHostname(query);
-    if (!hostname.endsWith(this.findDomainName())) {
+    final var domainName = this.findDomainName();
+    if (!hostname.endsWith(domainName)) {
       log.debug("status=hostnameDoesntMatchRequiredDomain, hostname={}", hostname);
       return null;
     }
 
-    final var foundIp = HostnameIpExtractor.safeExtract(hostname, this.findDomainName());
+    if (questionType.isHttps()) {
+      return Response.internalSuccess(Messages.notSupportedHttps(query));
+    }
+
+    final var foundIp = HostnameIpExtractor.safeExtract(hostname, domainName);
     if (foundIp == null) {
       log.debug("status=notSolved, hostname={}", hostname);
       return null;
     }
+
     final var qTypeVersion = questionType.toVersion();
     final var sameVersion = foundIp.versionIs(qTypeVersion);
     log.debug(

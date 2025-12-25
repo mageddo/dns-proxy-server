@@ -3,6 +3,7 @@ package com.mageddo.dns.utils;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
 
 import com.mageddo.commons.lang.Objects;
@@ -40,7 +41,13 @@ public class Messages {
 
   public static Message authoritative(Message m) {
     setFlag(m, Flags.AA);
+    m.addRecord(SoaRecordMapper.of(findQuestionName(m)), Section.AUTHORITY);
     return m;
+  }
+
+  private static Name findQuestionName(Message m) {
+    return m.getQuestion()
+        .getName();
   }
 
   public static String simplePrint(Response res) {
@@ -117,7 +124,7 @@ public class Messages {
   }
 
   public static Message aAnswer(Message query, String ip, long ttl) {
-    final var res = withNoErrorResponse(query.clone());
+    final var res = withNoErrorResponse(copy(query));
     if (StringUtils.isBlank(ip)) {
       return res;
     }
@@ -358,11 +365,13 @@ public class Messages {
   public static Message unsetAuthoritative(Message m) {
     return unsetFlag(m, Flags.AA);
   }
+
   public static Message authoritativeAnswer(Message query, String ip, IP.Version version) {
     return authoritative(answer(query, ip, version));
   }
 
-  public static Message authoritativeAnswer(Message query, String ip, IP.Version version, long ttl) {
+  public static Message authoritativeAnswer(Message query, String ip, IP.Version version,
+      long ttl) {
     return authoritative(answer(query, ip, version, ttl));
   }
 
@@ -372,5 +381,22 @@ public class Messages {
 
   public static boolean isRecursionAvailable(Message m) {
     return hasFlag(m, Flags.RA);
+  }
+
+  public static int getId(Message m) {
+    return m.getHeader()
+        .getID();
+  }
+
+  public static Message notSupportedHttps(Message m) {
+    return authoritative(withNoErrorResponse(copy(m)));
+  }
+
+  private static Message copy(Message m) {
+    return m.clone();
+  }
+
+  public static List<Record> getAnswers(Message m) {
+    return m.getSection(Section.ANSWER);
   }
 }

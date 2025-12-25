@@ -47,12 +47,12 @@ public class SolverCache {
     final var cachedValue = this.cache.getIfPresent(key);
 
     if (cachedValue != null) {
-      return mapResponse(query, cachedValue);
+      return this.mapResponse(query, cachedValue);
     }
 
-    final var calculatedValue = calculateValueWithoutLocks(key, query, delegate);
+    final var calculatedValue = this.calculateValueWithoutLocks(key, query, delegate);
     this.cacheValue(key, calculatedValue);
-    return mapResponse(query, calculatedValue);
+    return this.mapResponse(query, calculatedValue);
   }
 
   void cacheValue(String key, CacheValue calculatedValue) {
@@ -67,8 +67,9 @@ public class SolverCache {
     return response.withMessage(Messages.mergeId(query, response.getMessage()));
   }
 
-  CacheValue calculateValueWithoutLocks(String key, Message query,
-      Function<Message, Response> delegate) {
+  CacheValue calculateValueWithoutLocks(
+      String key, Message query, Function<Message, Response> delegate
+  ) {
     log.trace("status=lookup, key={}, req={}", key, Messages.simplePrint(query));
     final var _res = delegate.apply(query);
     if (_res == null) {
