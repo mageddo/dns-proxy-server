@@ -5,32 +5,31 @@ import javax.inject.Singleton;
 
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.utils.Ips;
+import com.mageddo.dnsserver.DoHServer;
 import com.mageddo.dnsserver.SimpleServer;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Getter
 @Singleton
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class ServerStarter {
 
   private final SimpleServer server;
-
-  @Inject
-  public ServerStarter(SimpleServer server) {
-    this.server = server;
-  }
+  private final DoHServer doHServer;
 
   public ServerStarter start() {
     final var config = Configs.getInstance();
     final var server = config.getServer();
+    final var address = Ips.toAddress(server.getHost());
     final var dns = server.getDns();
     this.server.start(
-        dns.getProtocol(),
-        Ips.toAddress(server.getHost()),
-        dns.getPort()
+        dns.getProtocol(), address, dns.getPort()
     );
+    this.doHServer.start(address, 8443);
     log.info("status=startingDnsServer, protocol={}, port={}", dns.getProtocol(), dns.getPort());
     return this;
   }
