@@ -1,3 +1,6 @@
+## 5.7.0 Alpha
+* DNS over HTTPS, see #138
+
 ## 5.6.2
 * Fixing Getting Non-authoritative answer when unexpected, see #608.
 * Fixing Getting NXDOMAIN when not expected, see #668.
