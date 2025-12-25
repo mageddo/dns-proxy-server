@@ -24,6 +24,14 @@ Current Version: `3`. See [how to set the configurations][5].
 
 ---
 
+### DoH Server
+
+| Name              | Description                                     | Default Value |
+|-------------------|-------------------------------------------------|---------------|
+| `server.doh.port` | When set, will activate doh server on that port | ``            |
+
+---
+
 ### WEB Server
 
 | Name              | Description   | Default Value |
