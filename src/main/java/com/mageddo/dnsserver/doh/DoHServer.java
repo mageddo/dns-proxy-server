@@ -1,7 +1,6 @@
 package com.mageddo.dnsserver.doh;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.InetAddress;
@@ -29,6 +28,9 @@ import com.sun.net.httpserver.HttpsServer;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+
+import static javax.ws.rs.HttpMethod.GET;
+import static javax.ws.rs.HttpMethod.POST;
 
 /**
  * See
@@ -60,9 +62,7 @@ public final class DoHServer implements AutoCloseable {
     }
 
     this.server = HttpsServer.create(new InetSocketAddress(addr, port), 0);
-
-    final var sslContext = buildSslContext();
-    this.server.setHttpsConfigurator(new HttpsConfigurator(sslContext));
+    this.server.setHttpsConfigurator(new HttpsConfigurator(buildSslContext()));
 
     final var resolver = new DnsResolver() {
       public byte[] resolve(final byte[] query) {
@@ -86,45 +86,48 @@ public final class DoHServer implements AutoCloseable {
   static void handleDnsQuery(final HttpExchange exchange, final DnsResolver resolver) {
     try (exchange) {
 
-      final var method = exchange.getRequestMethod();
-      final var requestHeaders = exchange.getRequestHeaders();
+      try {
 
-      final byte[] requestBytes = switch (method) {
-        case "POST" -> readPostDnsMessage(exchange, requestHeaders);
-        case "GET" -> readGetDnsMessage(exchange.getRequestURI());
-        default -> {
-          sendText(exchange, 405, "Method Not Allowed");
-          yield null;
+        final var method = exchange.getRequestMethod();
+        final var requestHeaders = exchange.getRequestHeaders();
+
+        final byte[] requestBytes = switch (method) {
+          case POST -> readPostDnsMessage(exchange, requestHeaders);
+          case GET -> readGetDnsMessage(exchange.getRequestURI());
+          default -> {
+            sendText(exchange, HttpStatus.METHOD_NOT_ALLOWED, "Method Not Allowed");
+            yield null;
+          }
+        };
+
+        if (requestBytes == null) {
+          return; // resposta já enviada
         }
-      };
 
-      if (requestBytes == null) {
-        return; // resposta já enviada
+        // Aqui você já tem os bytes DNS do request (wire format RFC 1035)
+        final var responseBytes = resolver.resolve(requestBytes);
+
+        if (responseBytes == null || responseBytes.length == 0) {
+          sendText(exchange, HttpStatus.BAD_GATEWAY, "Bad Gateway (empty DNS response)");
+          return;
+        }
+
+        final var responseHeaders = exchange.getResponseHeaders();
+        responseHeaders.set(HttpHeaders.CONTENT_TYPE, DNS_MESSAGE);
+        responseHeaders.set(HttpHeaders.CACHE_CONTROL, "no-store");
+        responseHeaders.set("X-Content-Type-Options", "nosniff");
+
+        exchange.sendResponseHeaders(HttpStatus.OK, responseBytes.length);
+        try (final OutputStream os = exchange.getResponseBody()) {
+          os.write(responseBytes);
+        }
+      } catch (final IllegalArgumentException e) {
+        // base64 inválido, query param inválido, etc.
+        sendText(exchange, HttpStatus.BAD_REQUEST, "Bad Request: " + e.getMessage());
+      } catch (final Exception e) {
+        // falha interna
+        sendText(exchange, HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error");
       }
-
-      // Aqui você já tem os bytes DNS do request (wire format RFC 1035)
-      final var responseBytes = resolver.resolve(requestBytes);
-
-      if (responseBytes == null || responseBytes.length == 0) {
-        sendText(exchange, HttpStatus.BAD_GATEWAY, "Bad Gateway (empty DNS response)");
-        return;
-      }
-
-      final var responseHeaders = exchange.getResponseHeaders();
-      responseHeaders.set("Content-Type", DNS_MESSAGE);
-      responseHeaders.set("Cache-Control", "no-store");
-      responseHeaders.set("X-Content-Type-Options", "nosniff");
-
-      exchange.sendResponseHeaders(HttpStatus.OK, responseBytes.length);
-      try (final OutputStream os = exchange.getResponseBody()) {
-        os.write(responseBytes);
-      }
-    } catch (final IllegalArgumentException e) {
-      // base64 inválido, query param inválido, etc.
-      sendText(exchange, HttpStatus.BAD_REQUEST, "Bad Request: " + e.getMessage());
-    } catch (final Exception e) {
-      // falha interna
-      sendText(exchange, HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error");
     }
   }
 
@@ -142,23 +145,30 @@ public final class DoHServer implements AutoCloseable {
   // Request parsing
   // -------------------------
 
-  private static byte[] readPostDnsMessage(final HttpExchange exchange, final Headers headers)
-      throws IOException {
-    final var contentType = firstHeader(headers, "Content-Type");
-    if (contentType == null || !contentType.toLowerCase()
-        .startsWith(DNS_MESSAGE)) {
-      // Muitos clientes mandam exatamente application/dns-message
-      sendText(exchange, 415, "Unsupported Media Type (expected " + DNS_MESSAGE + ")");
-      return null;
-    }
-
-    try (final InputStream is = exchange.getRequestBody()) {
-      final var bytes = is.readAllBytes();
-      if (bytes.length == 0) {
-        sendText(exchange, 400, "Empty body");
+  static byte[] readPostDnsMessage(final HttpExchange exchange, final Headers headers) {
+    try {
+      final var contentType = firstHeader(headers, HttpHeaders.CONTENT_TYPE);
+      if (contentType == null || !contentType.toLowerCase()
+          .startsWith(DNS_MESSAGE)) {
+        // Muitos clientes mandam exatamente application/dns-message
+        sendText(
+            exchange,
+            HttpStatus.UNSUPPORTED_MEDIA_TYPE,
+            "Unsupported Media Type (expected " + DNS_MESSAGE + ")"
+        );
         return null;
       }
-      return bytes; // <-- BYTES DNS (wire format), prontos pra parsear
+
+      try (final var is = exchange.getRequestBody()) {
+        final var bytes = is.readAllBytes();
+        if (bytes.length == 0) {
+          sendText(exchange, 400, "Empty body");
+          return null;
+        }
+        return bytes; // <-- BYTES DNS (wire format), prontos pra parsear
+      }
+    } catch (final IOException e) {
+      throw new UncheckedIOException(e);
     }
   }
 
@@ -252,10 +262,6 @@ public final class DoHServer implements AutoCloseable {
       throw new UncheckedIOException(e);
     }
   }
-
-  // -------------------------
-  // TLS
-  // -------------------------
 
   static SSLContext buildSslContext() {
     return SslContextMapper.of("/META-INF/resources/doh-server.p12", "changeit".toCharArray());
