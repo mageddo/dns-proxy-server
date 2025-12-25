@@ -72,20 +72,18 @@ public final class DoHServer implements AutoCloseable {
       public byte[] resolve(final byte[] bytes) {
 
         final var query = Messages.of(bytes);
-        final var hostname = Messages.findQuestionHostname(query);
-        final var code = Messages.findQuestionTypeCode(query);
-
-        log.debug("status=begin, code={}, hostname={}", code, hostname);
+//        final var hostname = Messages.findQuestionHostname(query);
+//        final var code = Messages.findQuestionTypeCode(query);
+//
+//        log.debug("status=begin, code={}, hostname={}", code, hostname);
         final var res = requestHandler.handle(query, "doH");
-        if (debug(query)) {
-          log.debug(
-              "status=match, code={}, hostname={}, query={}, res={}",
-              code, hostname, query, res
-          );
-        }
+//        if (debug(query)) {
+//          log.debug(
+//              "status=match, code={}, hostname={}, query={}, res={}",
+//              code, hostname, query, res
+//          );
+//        }
         return res.toWire();
-//        return Messages.unsetAuthoritative(res)
-//            .toWire();
       }
 
       private static boolean debug(Message query) {
