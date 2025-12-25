@@ -1,3 +1,15 @@
+## Configure Doh on firefox
+
+* https://gemini.google.com/app/28a3034438bb1b72
+* about:networking#dns
+* about:preferences#privacy -> dns over https -> Increased Protection = `https://localhost:8443/dns-query`
+
+Restrictions
+
+* Activate `network.trr.allow-rfc1918` on `about:config` to make it work with private ip addresses;
+* Some real domains like `.dev` won't work depending on the combination of private ip + default port (80, 443), so evict
+  them, .com seems to work
+
 ## Generate Certificates for DOH Server
 
 ### 1 - Criar uma CA local (uma vez só)
@@ -82,7 +94,7 @@ Agora você tem:
 4. **Importar `ca.crt`**
 5. Marcar:
 
-  * ✅ *Confiar nesta CA para identificar sites*
+* ✅ *Confiar nesta CA para identificar sites*
 
 ⚠️ **NÃO importe o `doh.crt` no Firefox**
 

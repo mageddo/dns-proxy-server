@@ -11,6 +11,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -24,6 +25,9 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpsConfigurator;
 import com.sun.net.httpserver.HttpsServer;
+
+import org.xbill.DNS.Message;
+import org.xbill.DNS.Type;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -65,11 +69,33 @@ public final class DoHServer implements AutoCloseable {
     this.server.setHttpsConfigurator(new HttpsConfigurator(buildSslContext()));
 
     final var resolver = new DnsResolver() {
-      public byte[] resolve(final byte[] query) {
-        final var res = requestHandler.handle(Messages.of(query), "doH");
+      public byte[] resolve(final byte[] bytes) {
+
+        final var query = Messages.of(bytes);
+        final var hostname = Messages.findQuestionHostname(query);
+        final var code = Messages.findQuestionTypeCode(query);
+
+        log.debug("status=begin, code={}, hostname={}", code, hostname);
+        final var res = requestHandler.handle(query, "doH");
+        if (debug(query)) {
+          log.debug(
+              "status=match, code={}, hostname={}, query={}, res={}",
+              code, hostname, query, res
+          );
+        }
         return res.toWire();
 //        return Messages.unsetAuthoritative(res)
 //            .toWire();
+      }
+
+      private static boolean debug(Message query) {
+        final var code = Messages.findQuestionTypeCode(query);
+        return (query.toString()
+            .contains("nginx-2.dev") || query.toString()
+            .contains("mageddo.com") || query.toString()
+            .contains("nginx-2.docker")
+        ) && Set.of(Type.A, Type.HTTPS)
+            .contains(code);
       }
     };
 
