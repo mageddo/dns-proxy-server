@@ -24,6 +24,7 @@ import javax.ws.rs.core.HttpHeaders;
 
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.server.dns.RequestHandlerDefault;
+import com.mageddo.http.HttpStatus;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpsConfigurator;
@@ -39,7 +40,7 @@ import lombok.SneakyThrows;
  */
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)
-public final class DoHServer {
+public final class DoHServer implements AutoCloseable {
 
   /**
    * RFC 8484 media type
@@ -47,17 +48,26 @@ public final class DoHServer {
   private static final String DNS_MESSAGE = "application/dns-message";
 
   private final RequestHandlerDefault requestHandler;
+  private HttpsServer server;
+  private volatile boolean started;
 
   @SneakyThrows
   public void start(InetAddress addr, int port) {
+
+    synchronized (this) {
+      if (this.started) {
+        throw new IllegalStateException("Server already started");
+      }
+      this.started = true;
+    }
 
     final var keystorePath = "doh.p12";
     final var storePass = "changeit".toCharArray();
 
     final var sslContext = buildSslContext(keystorePath, storePass);
 
-    final var server = HttpsServer.create(new InetSocketAddress(addr, port), 0);
-    server.setHttpsConfigurator(new HttpsConfigurator(sslContext));
+    this.server = HttpsServer.create(new InetSocketAddress(addr, port), 0);
+    this.server.setHttpsConfigurator(new HttpsConfigurator(sslContext));
 
     final var resolver = new DnsResolver() {
       public byte[] resolve(final byte[] query) {
@@ -66,22 +76,20 @@ public final class DoHServer {
       }
     };
 
-    server.createContext("/dns-query", exchange -> handleDnsQuery(exchange, resolver));
-    server.createContext("/health", exchange -> handleHealth(exchange));
+    this.server.createContext("/dns-query", exchange -> handleDnsQuery(exchange, resolver));
+    this.server.createContext("/health", DoHServer::handleHealth);
 
-    server.setExecutor(null); // default executor
-    server.start();
-
-    System.out.println("DoH server listening on https://localhost:" + port + "/dns-query");
+    this.server.setExecutor(null); // default executor
+    this.server.start();
   }
 
   // -------------------------
   // Endpoints
   // -------------------------
 
-  private static void handleDnsQuery(final HttpExchange exchange, final DnsResolver resolver)
-      throws IOException {
+  static void handleDnsQuery(final HttpExchange exchange, final DnsResolver resolver) {
     try (exchange) {
+
       final var method = exchange.getRequestMethod();
       final var requestHeaders = exchange.getRequestHeaders();
 
@@ -102,36 +110,35 @@ public final class DoHServer {
       final var responseBytes = resolver.resolve(requestBytes);
 
       if (responseBytes == null || responseBytes.length == 0) {
-        sendText(exchange, 502, "Bad Gateway (empty DNS response)");
+        sendText(exchange, HttpStatus.BAD_GATEWAY, "Bad Gateway (empty DNS response)");
         return;
       }
 
       final var responseHeaders = exchange.getResponseHeaders();
       responseHeaders.set("Content-Type", DNS_MESSAGE);
       responseHeaders.set("Cache-Control", "no-store");
-      // opcional/útil:
       responseHeaders.set("X-Content-Type-Options", "nosniff");
 
-      exchange.sendResponseHeaders(200, responseBytes.length);
+      exchange.sendResponseHeaders(HttpStatus.OK, responseBytes.length);
       try (final OutputStream os = exchange.getResponseBody()) {
         os.write(responseBytes);
       }
     } catch (final IllegalArgumentException e) {
       // base64 inválido, query param inválido, etc.
-      sendText(exchange, 400, "Bad Request: " + e.getMessage());
+      sendText(exchange, HttpStatus.BAD_REQUEST, "Bad Request: " + e.getMessage());
     } catch (final Exception e) {
       // falha interna
-      sendText(exchange, 500, "Internal Server Error");
+      sendText(exchange, HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error");
     }
   }
 
-  private static void handleHealth(final HttpExchange exchange) throws IOException {
+  static void handleHealth(final HttpExchange exchange) {
     try (exchange) {
       if (!Objects.equals(exchange.getRequestMethod(), "GET")) {
-        sendText(exchange, 405, "Method Not Allowed");
+        sendText(exchange, HttpStatus.METHOD_NOT_ALLOWED, "Method Not Allowed");
         return;
       }
-      sendText(exchange, 200, "ok");
+      sendText(exchange, HttpStatus.OK, "ok");
     }
   }
 
@@ -274,6 +281,13 @@ public final class DoHServer {
     final var ctx = SSLContext.getInstance("TLS");
     ctx.init(kmf.getKeyManagers(), null, null);
     return ctx;
+  }
+
+  @Override
+  public void close() {
+    if (this.server != null) {
+      this.server.stop(0);
+    }
   }
 
   // -------------------------

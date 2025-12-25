@@ -5,8 +5,8 @@ import javax.inject.Singleton;
 
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.utils.Ips;
-import com.mageddo.dnsserver.doh.DoHServer;
 import com.mageddo.dnsserver.SimpleServer;
+import com.mageddo.dnsserver.doh.DoHServer;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -36,5 +36,6 @@ public class ServerStarter {
 
   public void stop() {
     this.server.stop();
+    this.doHServer.close();
   }
 }
