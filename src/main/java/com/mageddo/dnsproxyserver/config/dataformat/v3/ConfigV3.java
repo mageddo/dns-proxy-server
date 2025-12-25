@@ -198,8 +198,8 @@ public class ConfigV3 {
   static public class Server {
     String host;
     Dns dns;
-    Web web;
     DoH doh;
+    Web web;
   }
 
   @Data

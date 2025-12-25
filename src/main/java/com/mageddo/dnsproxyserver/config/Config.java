@@ -236,6 +236,13 @@ public class Config {
     return this.server.dns;
   }
 
+  public Server.DoH getDohServer() {
+    if (this.server == null) {
+      return null;
+    }
+    return this.server.doh;
+  }
+
   @Value
   @Builder(toBuilder = true)
   public static class DefaultDns {

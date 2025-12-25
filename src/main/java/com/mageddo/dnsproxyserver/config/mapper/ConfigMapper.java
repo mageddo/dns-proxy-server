@@ -171,6 +171,7 @@ public class ConfigMapper {
                 ))
                 .build()
             )
+            .doh(firstNonNull(mapField(Config::getDohServer, configs)))
             .build()
         )
         .version(this.versionDAO.findVersion())
