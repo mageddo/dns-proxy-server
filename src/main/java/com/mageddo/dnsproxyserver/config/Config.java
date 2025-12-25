@@ -481,6 +481,7 @@ public class Config {
   public static class Server {
     String host;
     Dns dns;
+    DoH doh;
     Integer webServerPort;
 
     @Value
@@ -489,6 +490,21 @@ public class Config {
       Protocol protocol;
       Integer port;
       Integer noEntriesResponseCode;
+    }
+
+    @Value
+    @Builder
+    public static class DoH {
+
+      Integer port;
+
+      public boolean isActive() {
+        return this.port != null;
+      }
+
+      public boolean isNotActive() {
+        return !this.isActive();
+      }
     }
   }
 
