@@ -14,7 +14,6 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.xbill.DNS.Flags;
-import org.xbill.DNS.Rcode;
 
 import testing.templates.HostnameTemplates;
 import testing.templates.MessageTemplates;
@@ -70,9 +69,15 @@ class SolverDockerTest {
     assertNotNull(res);
 
     final var resText = res.toString();
-    assertTrue(resText.contains(entry.getIp()
-        .toText()), resText
+    assertTrue(
+        resText.contains(
+            entry.getIp()
+                .toText()
+        ),
+        resText
     );
+    assertTrue(Responses.isSuccess(res));
+    assertTrue(Responses.isAuthoritative(res));
     verify(this.containerSolvingService).findBestMatch(hostname);
   }
 
@@ -96,7 +101,8 @@ class SolverDockerTest {
 
     // assert
     assertNotNull(res);
-    assertTrue(Responses.hasFlag(res, Flags.RA));
+    assertTrue(Responses.isRecursionAvailable(res));
+    assertTrue(Responses.isAuthoritative(res));
     final var resText = res.toString();
     assertTrue(resText.contains(entry.getIp()
         .toText()), resText
@@ -128,13 +134,13 @@ class SolverDockerTest {
     // assert
     assertNotNull(res);
     assertTrue(Responses.hasFlag(res, Flags.RA));
-    assertEquals(Rcode.NOERROR, res.getRCode());
+    assertTrue(Responses.isSuccess(res));
     assertEquals(Type.AAAA, Messages.findQuestionType(res.getMessage()));
     assertEquals("", Messages.detailedPrint(res.getMessage()));
   }
 
   @Test
-  void mustReturnNxDomainWhenHostnameDONTMatches() {
+  void mustReturnNullWhenHostnameDONTMatches() {
     // arrange
     final var query = MessageTemplates.acmeQuadAQuery();
     final var entry = EntryTemplates.hostnameNotMatched();
@@ -154,5 +160,7 @@ class SolverDockerTest {
     // assert
     assertNull(res);
   }
+
+
 
 }

@@ -10,7 +10,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.xbill.DNS.Rcode;
 
 import testing.templates.EntryTemplates;
 import testing.templates.HostnameTemplates;
@@ -18,6 +17,7 @@ import testing.templates.MessageTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
@@ -92,8 +92,8 @@ class SolverLocalDBTest {
 
     // arrange
     final var query = MessageTemplates.acmeQuadAQuery();
-    final var wildcardHostName = HostnameQuery.ofWildcard(HostnameTemplates.ACME_HOSTNAME,
-        IP.Version.IPV6
+    final var wildcardHostName = HostnameQuery.ofWildcard(
+        HostnameTemplates.ACME_HOSTNAME, IP.Version.IPV6
     );
 
     doReturn(EntryTemplates.acmeA())
@@ -107,7 +107,8 @@ class SolverLocalDBTest {
     // assert
     assertNotNull(res);
     final var msg = res.getMessage();
-    assertEquals(Rcode.NOERROR, msg.getRcode());
+    assertTrue(Responses.isSuccess(res));
+    assertTrue(Responses.isAuthoritative(res));
     assertEquals("", Messages.detailedPrint(msg));
 
   }

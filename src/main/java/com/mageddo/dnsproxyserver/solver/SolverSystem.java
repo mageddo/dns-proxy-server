@@ -8,6 +8,7 @@ import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.config.ConfigEntryTypes;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.usecase.HostMachineService;
+import com.mageddo.net.IP;
 
 import org.xbill.DNS.Message;
 
@@ -38,11 +39,15 @@ public class SolverSystem implements Solver {
     final var config = Configs.getInstance();
     // fixme fazer case com hostname + search domain
     if (hostname.isEqualTo(config.getHostMachineHostname())) {
-      final var ip = this.machineService.findHostMachineIP(questionType.toVersion());
+      final var ip = this.findHostMachineIP(questionType.toVersion());
       log.debug("status=solvingHostMachineName, host={}, ip={}", hostname, ip);
       return ResponseMapper.toDefaultSuccessAnswer(query, ip, questionType.toVersion());
     }
     return null;
+  }
+
+  IP findHostMachineIP(IP.Version version) {
+    return this.machineService.findHostMachineIP(version);
   }
 
 }

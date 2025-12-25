@@ -2,6 +2,8 @@ package com.mageddo.dnsproxyserver.solver.stub;
 
 import com.mageddo.dns.utils.Messages;
 
+import com.mageddo.dnsproxyserver.solver.Responses;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +16,7 @@ import testing.templates.MessageTemplates;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
@@ -68,12 +71,22 @@ class SolverStubTest {
   }
 
   @Test
-  void mustAnswerNxWhenQueryTypeIsNotEqualsToIpVersion() {
+  void mustAnswerNoErrorWhenQueryTypeIsNotEqualsToIpVersion() {
     final var query = MessageTemplates.stubAQueryWithIpv6AnswerIp();
 
     final var response = this.solver.handle(query);
 
     assertNotNull(response);
-    assertEquals(Rcode.NXDOMAIN, response.getRCode());
+    assertEquals(Rcode.NOERROR, response.getRCode());
+  }
+
+  @Test
+  void mustBeAuthoritative() {
+    final var query = MessageTemplates.stubAQueryWithIpv6AnswerIp();
+
+    final var response = this.solver.handle(query);
+
+    assertNotNull(response);
+    assertTrue(Responses.isAuthoritative(response));
   }
 }

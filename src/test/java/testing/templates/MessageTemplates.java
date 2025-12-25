@@ -39,6 +39,14 @@ public class MessageTemplates {
     return Messages.aQuestion(System.nanoTime() + ".com");
   }
 
+  public static Message hostDockerAQuery() {
+    return Messages.aQuestion("host.docker");
+  }
+
+  public static Message hostDockerQuadAQuery() {
+    return Messages.quadAQuestion("host.docker");
+  }
+
   public static Message buildAAnswerWithoutRA(Message query) {
     final var answer = buildAAnswer(query);
     answer.getHeader()

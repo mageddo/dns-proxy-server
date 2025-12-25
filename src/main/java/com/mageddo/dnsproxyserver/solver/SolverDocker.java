@@ -31,7 +31,7 @@ public class SolverDocker implements Solver {
     }
 
     final var type = Messages.findQuestionType(query);
-    if (ConfigEntryTypes.isNot(type, Type.AAAA, Type.A)) {
+    if (isNotSupported(type)) {
       log.trace("status=unsupportedType, type={}", type);
       return null;
     }
@@ -43,7 +43,7 @@ public class SolverDocker implements Solver {
           if (!entry.isHostnameMatched()) {
             return null;
           }
-          return Response.internalSuccess(Messages.answer(
+          return Response.internalSuccess(Messages.authoritativeAnswer(
               query,
               entry.getIpText(),
               hostname.getVersion()
@@ -51,6 +51,10 @@ public class SolverDocker implements Solver {
         }
     );
 
+  }
+
+  private static boolean isNotSupported(Type type) {
+    return ConfigEntryTypes.isNot(type, Type.AAAA, Type.A);
   }
 
 }

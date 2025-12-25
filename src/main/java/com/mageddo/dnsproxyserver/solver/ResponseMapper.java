@@ -9,7 +9,7 @@ import org.xbill.DNS.Message;
 public class ResponseMapper {
   public static Response toDefaultSuccessAnswer(Message query, IP ip, IP.Version version) {
     return Response.of(
-        Messages.answer(query, Objects.mapOrNull(ip, IP::toText), version),
+        Messages.authoritativeAnswer(query, Objects.mapOrNull(ip, IP::toText), version),
         Messages.DEFAULT_TTL_DURATION
     );
   }

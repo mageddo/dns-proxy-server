@@ -1,4 +1,5 @@
-## 5.6.1
+## 5.6.2
+* Fixing Getting Non-authoritative answer when unexpected, see #608.
 * Fixing Getting NXDOMAIN when not expected, see #668.
 
 ## 5.6.0
