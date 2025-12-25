@@ -22,6 +22,9 @@ public class HostnameQuery {
   @NonNull
   private final Hostname hostname;
 
+  // FIXME EFS it needs to be refactored, looks like version is not a query param
+  //  only the hostname then all found ips could be filtered by version if needle
+  //  HTTPS query type answers the two types at the same request for example.
   private final IP.Version version;
 
   private final boolean useWildcards;
