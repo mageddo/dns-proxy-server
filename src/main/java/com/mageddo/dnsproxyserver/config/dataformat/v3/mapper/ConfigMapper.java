@@ -60,8 +60,6 @@ public class ConfigMapper {
         .setSolver(mapSolverV3(config));
   }
 
-  /* ================= SERVER ================= */
-
   private static Config.Server mapServer(final ConfigV3.Server s) {
     if (s == null) {
       return null;
@@ -71,13 +69,24 @@ public class ConfigMapper {
     return Config.Server.builder()
         .host(s.getHost())
         .dns(mapDnsServer(s))
+        .doh(mapDomainDohServer(s))
         .webServerPort(web != null ? web.getPort() : null)
+        .build();
+  }
+
+  private static Config.Server.DoH mapDomainDohServer(ConfigV3.Server s) {
+    final var doh = s.getDoh();
+    if (doh == null) {
+      return null;
+    }
+    return Config.Server.DoH.builder()
+        .port(doh.getPort())
         .build();
   }
 
   private static Config.Server.Dns mapDnsServer(ConfigV3.Server server) {
     final var dns = server.getDns();
-    if(dns == null) {
+    if (dns == null) {
       return null;
     }
     return Config.Server.Dns
@@ -89,11 +98,11 @@ public class ConfigMapper {
   }
 
   private static ConfigV3.Server mapServerV3(final Config config) {
-    if (config.getServer() == null) {
+    final var server = config.getServer();
+    if (server == null) {
       return null;
     }
 
-    final var server = config.getServer();
     return new ConfigV3.Server()
         .setHost(server.getHost())
         .setDns(new ConfigV3.Dns()
@@ -101,9 +110,19 @@ public class ConfigMapper {
             .setPort(config.getDnsServerPort())
             .setNoEntriesResponseCode(config.getNoEntriesResponseCode())
         )
+        .setDoh(mapDohServer(server))
         .setWeb(new ConfigV3.Web()
             .setPort(config.getWebServerPort())
         );
+  }
+
+  private static ConfigV3.DoH mapDohServer(Config.Server server) {
+    final var doh = server.getDoh();
+    if (doh == null) {
+      return null;
+    }
+    return new ConfigV3.DoH()
+        .setPort(doh.getPort());
   }
 
   /* ================= DEFAULT DNS ================= */
