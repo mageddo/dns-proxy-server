@@ -17,4 +17,8 @@ public class Responses {
   public static boolean isRecursionAvailable(Response res) {
     return Messages.isRecursionAvailable(res.getMessage());
   }
+
+  public static boolean isSuccess(Response res) {
+    return Messages.isSuccess(res.getMessage());
+  }
 }

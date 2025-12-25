@@ -324,10 +324,6 @@ public class Messages {
   }
 
 
-  public static boolean isSuccess(Response res) {
-    return isSuccess(res.getMessage());
-  }
-
   public static boolean isSuccess(Message res) {
     return res.getRcode() == Rcode.NOERROR;
   }
@@ -346,6 +342,10 @@ public class Messages {
 
   public static Message authoritativeAnswer(Message query, String ip, IP.Version version) {
     return authoritative(answer(query, ip, version));
+  }
+
+  public static Message authoritativeAnswer(Message query, String ip, IP.Version version, long ttl) {
+    return authoritative(answer(query, ip, version, ttl));
   }
 
   public static boolean isAuthoritative(Message m) {

@@ -76,7 +76,7 @@ class SolverDockerTest {
         ),
         resText
     );
-    assertTrue(Messages.isSuccess(res));
+    assertTrue(Responses.isSuccess(res));
     assertTrue(Responses.isAuthoritative(res));
     verify(this.containerSolvingService).findBestMatch(hostname);
   }
@@ -134,7 +134,7 @@ class SolverDockerTest {
     // assert
     assertNotNull(res);
     assertTrue(Responses.hasFlag(res, Flags.RA));
-    assertTrue(Messages.isSuccess(res));
+    assertTrue(Responses.isSuccess(res));
     assertEquals(Type.AAAA, Messages.findQuestionType(res.getMessage()));
     assertEquals("", Messages.detailedPrint(res.getMessage()));
   }

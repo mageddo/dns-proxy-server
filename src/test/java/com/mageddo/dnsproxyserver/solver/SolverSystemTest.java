@@ -1,6 +1,5 @@
 package com.mageddo.dnsproxyserver.solver;
 
-import com.mageddo.dns.utils.Messages;
 import com.mageddo.net.IP;
 
 import org.junit.jupiter.api.Test;
@@ -65,7 +64,7 @@ class SolverSystemTest {
     final var res = this.solver.handle(query);
 
     assertNotNull(res);
-    assertTrue(Messages.isSuccess(res));
+    assertTrue(Responses.isSuccess(res));
   }
 
   @Test
@@ -81,7 +80,7 @@ class SolverSystemTest {
     final var res = this.solver.handle(query);
 
     assertNotNull(res);
-    assertTrue(Messages.isSuccess(res));
+    assertTrue(Responses.isSuccess(res));
   }
 
   @Test

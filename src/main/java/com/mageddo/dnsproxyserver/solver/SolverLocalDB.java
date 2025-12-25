@@ -37,9 +37,9 @@ public class SolverLocalDB implements Solver {
     final var stopWatch = StopWatch.createStarted();
 
     final var type = Messages.findQuestionTypeCode(query);
-    if (ConfigEntryTypes.isNot(type, Type.A, Type.CNAME, Type.AAAA)) {
-      log.debug("status=typeNotSupported, action=continue, type={}, time={}", type,
-          stopWatch.getTime()
+    if (isNotSupported(type)) {
+      log.debug(
+          "status=typeNotSupported, action=continue, type={}, time={}", type, stopWatch.getTime()
       );
       return null;
     }
@@ -66,7 +66,7 @@ public class SolverLocalDB implements Solver {
           if (foundType.isAddressSolving()) {
             final var ip = foundType.equals(questionType) ? found.requireTextIp() : null;
             return Response.of(
-                Messages.answer(query, ip, questionType.toVersion(), found.getTtl()),
+                Messages.authoritativeAnswer(query, ip, questionType.toVersion(), found.getTtl()),
                 Duration.ofSeconds(found.getTtl())
             );
           }
@@ -79,6 +79,10 @@ public class SolverLocalDB implements Solver {
     }
     log.trace("status=notFound, askedHost={}, totalTime={}", askedHost, stopWatch.getTime());
     return null;
+  }
+
+  private static boolean isNotSupported(Integer type) {
+    return ConfigEntryTypes.isNot(type, Type.A, Type.CNAME, Type.AAAA);
   }
 
   @Override
