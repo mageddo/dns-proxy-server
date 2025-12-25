@@ -142,7 +142,7 @@ public class WebServer implements AutoCloseable {
 
       server.setExecutor(null);
       server.start();
-      log.info("status=startingWebServer, port={}", port);
+      log.info("status=starting, port={}", port);
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }

@@ -32,12 +32,14 @@ import com.sun.net.httpserver.HttpsServer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * See
  * https://chatgpt.com/g/g-p-6942b7c71414819185e2a851e7e1ae9d-dps/c/694c9615-fdec-8326-8024
  * -68d316bae4cb
  */
+@Slf4j
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public final class DoHServer implements AutoCloseable {
@@ -64,7 +66,8 @@ public final class DoHServer implements AutoCloseable {
     final var keystorePath = "doh.p12";
     final var storePass = "changeit".toCharArray();
 
-    final var sslContext = buildSslContext(keystorePath, storePass);
+//    final var sslContext = buildSslContext(keystorePath, storePass);
+    final var sslContext = MockSSLUtils.setupFakeSSLContext();
 
     this.server = HttpsServer.create(new InetSocketAddress(addr, port), 0);
     this.server.setHttpsConfigurator(new HttpsConfigurator(sslContext));
@@ -81,6 +84,7 @@ public final class DoHServer implements AutoCloseable {
 
     this.server.setExecutor(null); // default executor
     this.server.start();
+    log.info("status=starting, address={}, port={}", addr, port);
   }
 
   // -------------------------
