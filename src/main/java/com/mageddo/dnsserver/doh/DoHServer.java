@@ -66,7 +66,8 @@ public final class DoHServer implements AutoCloseable {
 
     final var resolver = new DnsResolver() {
       public byte[] resolve(final byte[] query) {
-        return requestHandler.handle(Messages.of(query), "doH")
+        final var res = requestHandler.handle(Messages.of(query), "doH");
+        return Messages.unsetAuthoritative(res)
             .toWire();
       }
     };

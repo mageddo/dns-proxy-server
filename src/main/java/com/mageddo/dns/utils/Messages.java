@@ -308,6 +308,12 @@ public class Messages {
     return m;
   }
 
+  public static Message unsetFlag(Message m, int flag) {
+    m.getHeader()
+        .unsetFlag(flag);
+    return m;
+  }
+
   public static boolean hasFlag(Message msg, int flag) {
     return msg.getHeader()
         .getFlag(flag);
@@ -342,5 +348,9 @@ public class Messages {
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
+  }
+
+  public static Message unsetAuthoritative(Message m) {
+    return unsetFlag(m, Flags.AA);
   }
 }
