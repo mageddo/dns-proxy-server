@@ -40,8 +40,7 @@ public class Messages {
   public static final Duration DEFAULT_TTL_DURATION = Duration.ofSeconds(DEFAULT_TTL);
 
   public static Message authoritative(Message m) {
-//    setFlag(m, Flags.AA);
-//    m.addRecord(SoaRecordMapper.of(findQuestionName(m)), Section.AUTHORITY);
+    setFlag(m, Flags.AA);
     return m;
   }
 
@@ -370,8 +369,9 @@ public class Messages {
     return authoritative(answer(query, ip, version));
   }
 
-  public static Message authoritativeAnswer(Message query, String ip, IP.Version version,
-      long ttl) {
+  public static Message authoritativeAnswer(
+      Message query, String ip, IP.Version version, long ttl
+  ) {
     return authoritative(answer(query, ip, version, ttl));
   }
 
