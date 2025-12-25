@@ -8,9 +8,6 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.security.KeyStore;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +15,6 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.ws.rs.core.HttpHeaders;
 
@@ -63,13 +59,9 @@ public final class DoHServer implements AutoCloseable {
       this.started = true;
     }
 
-    final var keystorePath = "doh.p12";
-    final var storePass = "changeit".toCharArray();
-
-//    final var sslContext = buildSslContext(keystorePath, storePass);
-    final var sslContext = MockSSLUtils.setupFakeSSLContext();
-
     this.server = HttpsServer.create(new InetSocketAddress(addr, port), 0);
+
+    final var sslContext = buildSslContext();
     this.server.setHttpsConfigurator(new HttpsConfigurator(sslContext));
 
     final var resolver = new DnsResolver() {
@@ -265,26 +257,8 @@ public final class DoHServer implements AutoCloseable {
   // TLS
   // -------------------------
 
-  private static SSLContext buildSslContext(final String pkcs12Path, final char[] password)
-      throws Exception {
-    final var ks = KeyStore.getInstance("PKCS12");
-    try (final var is = DoHServer.class.getClassLoader()
-        .getResourceAsStream(pkcs12Path)) {
-      if (is != null) {
-        ks.load(is, password);
-      } else {
-        try (final var fis = Files.newInputStream(Path.of(pkcs12Path))) {
-          ks.load(fis, password);
-        }
-      }
-    }
-
-    final var kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-    kmf.init(ks, password);
-
-    final var ctx = SSLContext.getInstance("TLS");
-    ctx.init(kmf.getKeyManagers(), null, null);
-    return ctx;
+  static SSLContext buildSslContext() {
+    return SslContextMapper.of("/META-INF/resources/doh-server.p12", "changeit".toCharArray());
   }
 
   @Override
