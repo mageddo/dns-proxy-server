@@ -14,7 +14,7 @@ public class Responses {
     return Messages.isAuthoritative(res.getMessage());
   }
 
-  public static boolean hasRecursionAvailable(Response res) {
-    return Messages.hasRecursionAvailable(res.getMessage());
+  public static boolean isRecursionAvailable(Response res) {
+    return Messages.isRecursionAvailable(res.getMessage());
   }
 }

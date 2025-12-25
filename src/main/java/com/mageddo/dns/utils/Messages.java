@@ -352,7 +352,7 @@ public class Messages {
     return Messages.hasFlag(m, Flags.AA);
   }
 
-  public static boolean hasRecursionAvailable(Message m) {
+  public static boolean isRecursionAvailable(Message m) {
     return hasFlag(m, Flags.RA);
   }
 }

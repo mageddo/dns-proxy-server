@@ -101,7 +101,7 @@ class SolverDockerTest {
 
     // assert
     assertNotNull(res);
-    assertTrue(Responses.hasRecursionAvailable(res));
+    assertTrue(Responses.isRecursionAvailable(res));
     assertTrue(Responses.isAuthoritative(res));
     final var resText = res.toString();
     assertTrue(resText.contains(entry.getIp()
