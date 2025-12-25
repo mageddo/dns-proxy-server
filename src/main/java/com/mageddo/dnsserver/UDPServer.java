@@ -10,8 +10,6 @@ import com.mageddo.commons.io.IoUtils;
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.utils.Executors;
 
-import org.xbill.DNS.Message;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -58,7 +56,7 @@ public class UDPServer {
 
   void handle(DatagramSocket server, DatagramPacket datagram) {
     try {
-      final var query = new Message(datagram.getData());
+      final var query = Messages.of(datagram.getData());
       final var res = this.requestHandler.handle(query, "udp");
       final var resData = res.toWire();
 

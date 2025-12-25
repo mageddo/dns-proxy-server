@@ -1,5 +1,7 @@
 package com.mageddo.dns.utils;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Optional;
 
@@ -332,5 +334,13 @@ public class Messages {
 
   public static Message noData(Message query) {
     return withResponseCode(query.clone(), Rcode.NOERROR);
+  }
+
+  public static Message of(byte[] m) {
+    try {
+      return new Message(m);
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
   }
 }

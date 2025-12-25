@@ -1,8 +1,9 @@
-package com.mageddo.dnsserver;
+package com.mageddo.dnsserver.doh;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -19,7 +20,9 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
+import javax.ws.rs.core.HttpHeaders;
 
+import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.server.dns.RequestHandlerDefault;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
@@ -27,6 +30,7 @@ import com.sun.net.httpserver.HttpsConfigurator;
 import com.sun.net.httpserver.HttpsServer;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
 /**
  * See
@@ -37,30 +41,28 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public final class DoHServer {
 
-  // RFC 8484 media type
+  /**
+   * RFC 8484 media type
+   */
   private static final String DNS_MESSAGE = "application/dns-message";
 
   private final RequestHandlerDefault requestHandler;
 
-
+  @SneakyThrows
   public void start(InetAddress addr, int port) {
-//    this.start0(protocol, addr, port);
 
-    final var port = 8443;
     final var keystorePath = "doh.p12";
     final var storePass = "changeit".toCharArray();
 
     final var sslContext = buildSslContext(keystorePath, storePass);
 
-    final var server = HttpsServer.create(new InetSocketAddress("0.0.0.0", port), 0);
+    final var server = HttpsServer.create(new InetSocketAddress(addr, port), 0);
     server.setHttpsConfigurator(new HttpsConfigurator(sslContext));
 
     final var resolver = new DnsResolver() {
-      @Override
-      public byte[] resolve(final byte[] dnsQueryBytes) {
-        // TODO: aqui você faz o parse da mensagem DNS (wire format) e gera a resposta.
-        // Retornando um SERVFAIL mínimo só pra "fechar o loop".
-        return DnsWire.servfail(dnsQueryBytes);
+      public byte[] resolve(final byte[] query) {
+        return requestHandler.handle(Messages.of(query), "doH")
+            .toWire();
       }
     };
 
@@ -233,20 +235,18 @@ public final class DoHServer {
     return values.getFirst();
   }
 
-  // -------------------------
-  // Response helpers
-  // -------------------------
-
-  private static void sendText(final HttpExchange exchange, final int status, final String msg)
-      throws IOException {
-    final var bytes = msg.getBytes(StandardCharsets.UTF_8);
-    exchange.getResponseHeaders()
-        .set("Content-Type", "text/plain; charset=utf-8");
-    exchange.getResponseHeaders()
-        .set("Cache-Control", "no-store");
-    exchange.sendResponseHeaders(status, bytes.length);
-    try (final OutputStream os = exchange.getResponseBody()) {
-      os.write(bytes);
+  static void sendText(final HttpExchange exchange, final int status, final String msg) {
+    try {
+      final var bytes = msg.getBytes(StandardCharsets.UTF_8);
+      final var headers = exchange.getResponseHeaders();
+      headers.set(HttpHeaders.CONTENT_TYPE, "text/plain; charset=utf-8");
+      headers.set(HttpHeaders.CACHE_CONTROL, "no-store");
+      exchange.sendResponseHeaders(status, bytes.length);
+      try (final var os = exchange.getResponseBody()) {
+        os.write(bytes);
+      }
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
     }
   }
 

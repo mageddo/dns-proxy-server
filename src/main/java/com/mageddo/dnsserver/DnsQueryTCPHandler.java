@@ -11,7 +11,6 @@ import com.mageddo.utils.Shorts;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.MDC;
-import org.xbill.DNS.Message;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,7 +38,7 @@ class DnsQueryTCPHandler implements SocketClientMessageHandler {
           return;
         }
         final var buff = readBodyAndValidate(in, msgSize);
-        final var query = new Message(buff);
+        final var query = Messages.of(buff);
         final var res = this.handler.handle(query, "tcp")
             .toWire();
 
