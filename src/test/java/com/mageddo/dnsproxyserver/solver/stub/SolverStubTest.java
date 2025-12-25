@@ -68,12 +68,12 @@ class SolverStubTest {
   }
 
   @Test
-  void mustAnswerNxWhenQueryTypeIsNotEqualsToIpVersion() {
+  void mustAnswerNoErrorWhenQueryTypeIsNotEqualsToIpVersion() {
     final var query = MessageTemplates.stubAQueryWithIpv6AnswerIp();
 
     final var response = this.solver.handle(query);
 
     assertNotNull(response);
-    assertEquals(Rcode.NXDOMAIN, response.getRCode());
+    assertEquals(Rcode.NOERROR, response.getRCode());
   }
 }

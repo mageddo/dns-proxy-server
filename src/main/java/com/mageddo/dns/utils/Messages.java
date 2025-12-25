@@ -36,6 +36,11 @@ public class Messages {
   public static final long DEFAULT_TTL = 30L;
   public static final Duration DEFAULT_TTL_DURATION = Duration.ofSeconds(DEFAULT_TTL);
 
+  public static Message authoritative(Message m) {
+    setFlag(m, Flags.AA);
+    return m;
+  }
+
   public static String simplePrint(Response res) {
     return simplePrint(res.getMessage());
   }
@@ -332,5 +337,9 @@ public class Messages {
 
   public static Message noData(Message query) {
     return withResponseCode(query.clone(), Rcode.NOERROR);
+  }
+
+  public static Message authoritativeAnswer(Message query, String ip, IP.Version version) {
+    return authoritative(answer(query, ip, version));
   }
 }

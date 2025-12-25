@@ -28,8 +28,6 @@ import static com.mageddo.dns.utils.Messages.findQuestionTypeCode;
 @AllArgsConstructor(onConstructor_ = @Inject)
 public class SolverStub implements Solver {
 
-  public static final String DOMAIN_NAME = "stub";
-
   @Override
   public Response handle(Message query) {
     final var questionType = Messages.findQuestionType(query);
@@ -51,14 +49,15 @@ public class SolverStub implements Solver {
       log.debug("status=notSolved, hostname={}", hostname);
       return null;
     }
-    if (!foundIp.versionIs(questionType.toVersion())) {
-      log.debug("status=incompatibleIpAndQueryType, hostname={}, questionType={}", hostname,
-          questionType
-      );
-      return Response.nxDomain(query);
-    }
-    log.debug("status=solved, host={}, ip={}", hostname, foundIp);
-    return ResponseMapper.toDefaultSuccessAnswer(query, foundIp, questionType.toVersion());
+    final var qTypeVersion = questionType.toVersion();
+    final var sameVersion = foundIp.versionIs(qTypeVersion);
+    log.debug(
+        "status=solved, host={}, ip={}, qTypeVersion={}",
+        hostname, foundIp, qTypeVersion
+    );
+    return ResponseMapper.toDefaultSuccessAnswer(
+        query, sameVersion ? foundIp : null, qTypeVersion
+    );
   }
 
   String findDomainName() {
