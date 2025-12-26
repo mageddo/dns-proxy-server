@@ -4,11 +4,11 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.mageddo.dnsproxyserver.config.application.Configs;
+import com.mageddo.dnsproxyserver.solver.AddressResolution;
+import com.mageddo.dnsproxyserver.solver.QueryResponseHandler;
 import com.mageddo.dnsproxyserver.solver.Response;
 import com.mageddo.dnsproxyserver.solver.Solver;
 import com.mageddo.dnsproxyserver.solver.SupportedTypes;
-import com.mageddo.dnsproxyserver.solver.QueryResponseHandler;
-import com.mageddo.dnsproxyserver.solver.AddressResolution;
 
 import org.xbill.DNS.Message;
 
@@ -37,21 +37,24 @@ public class SolverStub implements Solver {
 
     return this.handler.mapExactFromResolution(query, hostnameQuery -> {
 
-      final var hostname = hostnameQuery.getHostname();
-      final var domainName = this.findDomainName();
-      if (!hostname.endsWith(domainName)) {
-        log.debug("status=hostnameDoesntMatchRequiredDomain, hostname={}", hostname);
-        return null;
-      }
+          final var hostname = hostnameQuery.getHostname();
+          final var domainName = this.findDomainName();
+          if (!hostname.endsWith(domainName)) {
+            if (log.isTraceEnabled()) {
+              log.trace("status=hostnameDoesntMatchRequiredDomain, hostname={}", hostname);
+            }
+            return null;
+          }
 
-      final var foundIp = HostnameIpExtractor.safeExtract(hostname, domainName);
-      if (foundIp == null) {
-        log.debug("status=notSolved, hostname={}", hostname);
-        return null;
-      }
-      return AddressResolution.matched(foundIp, Response.DEFAULT_LONG);
+          final var foundIp = HostnameIpExtractor.safeExtract(hostname, domainName);
+          if (foundIp == null) {
+            log.debug("status=notSolved, hostname={}", hostname);
+            return null;
+          }
+          return AddressResolution.matched(foundIp, Response.DEFAULT_LONG);
 
-    });
+        }
+    );
 
   }
 

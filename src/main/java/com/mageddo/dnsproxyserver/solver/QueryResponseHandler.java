@@ -61,8 +61,9 @@ public class QueryResponseHandler {
     );
   }
 
-  public Response mapExactFromResolution(Message query, Function<HostnameQuery,
-      AddressResolution> fn) {
+  public Response mapExactFromResolution(
+      Message query, Function<HostnameQuery, AddressResolution> fn
+  ) {
 
     final var type = Messages.findQuestionType(query);
     if (this.isNotSupported(type)) {
@@ -71,7 +72,7 @@ public class QueryResponseHandler {
     }
 
     final var hostnameQuery = HostnameQuery.of(Messages.findQuestionHostname(query));
-    return map(query, fn, hostnameQuery, type);
+    return this.map(query, fn, hostnameQuery, type);
   }
 
   public Response map(Message query, AddressResolution res) {
