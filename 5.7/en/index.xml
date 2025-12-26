@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>DNS Proxy Server</title>
+    <link>http://mageddo.github.io/dns-proxy-server/5.7/en/</link>
+    <description>Recent content on DNS Proxy Server</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    
+	<atom:link href="http://mageddo.github.io/dns-proxy-server/5.7/en/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>V1 Network API</title>
+      <link>http://mageddo.github.io/dns-proxy-server/5.7/en/api/v1/networks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mageddo.github.io/dns-proxy-server/5.7/en/api/v1/networks/</guid>
+      <description> Disconnect containers from network DELETE /network/disconnect-containers HTTP/1.1  Parameters
+   Name Type Decription     netoworkId string The networkId which the containers will be disconnected from    Reponse
+HTTP/1.1 200 [ &amp;quot;success for 551adbb704bf95ae73f3f8e497560609d2016d1566196298f1787f087af4b5cd&amp;quot;, &amp;quot;success for 5f5ce51404b15069795006e7319f270db4f6d822a067e61808eeb0b2922087db&amp;quot; ]  Example
+$ curl -X DELETE dns.mageddo:5380/network/disconnect-containers/?networkId=85e7564c6b71  </description>
+    </item>
+    
+    <item>
+      <title>Supported Formats</title>
+      <link>http://mageddo.github.io/dns-proxy-server/5.7/en/3-configuration/format/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mageddo.github.io/dns-proxy-server/5.7/en/3-configuration/format/</guid>
+      <description>Supported Formats  ENV YAML JSON Command Line Arguments  YAML/JSON File Path Configuration Default: conf/config.json
+The location can be changed by setting DPS_CONFIG_FILE_PATH, MG_CONFIG_FILE_PATH legacy env or --conf-path command line argument. The path can be relative (to the binary path) or absolute.
+Working Dir Default: DPS executing path, a.k.a Working Directory
+Is the path which will be used when ConfigFilePath is set as a relative path. Can be set by DPS_WORK_DIR or DPS_WORK_DIR legacy env.</description>
+    </item>
+    
+    <item>
+      <title>Legacy Configuration (v2)</title>
+      <link>http://mageddo.github.io/dns-proxy-server/5.7/en/3-configuration/legacy/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mageddo.github.io/dns-proxy-server/5.7/en/3-configuration/legacy/</guid>
+      <description>Important: Legacy configurations are supported only for read, they won&amp;rsquo;t receive new properties, can be replaced when using the GUI to make changes on the settings and can be removed on future versions of DPS.
+I would recommend to migrate to version 3.
+Remote DNS Servers Remote DNS servers to be asked when can not solve from docker or local storage. Default: 8.8.8.8.
+Web Server Port Web GUI port, Default: 5380.</description>
+    </item>
+    
+    <item>
+      <title>Release Version Control</title>
+      <link>http://mageddo.github.io/dns-proxy-server/5.7/en/1-getting-started/versioning/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mageddo.github.io/dns-proxy-server/5.7/en/1-getting-started/versioning/</guid>
+      <description>DPS Versioning DPS uses semantic versioning [2] for releasing. The latest stable version is the one which is marked as &amp;ldquo;latest&amp;rdquo; label at Github releases or the latest docker tag. Click here to see the binary releases at Github.
+Promotion to the latest (Stable) Minor pre-releases with at least 1 month since they released without a confirmed bug issued on the Github oficial repo, will be released as the latest.</description>
+    </item>
+    
+    <item>
+      <title>Compiling from source</title>
+      <link>http://mageddo.github.io/dns-proxy-server/5.7/en/4-developing/compiling/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mageddo.github.io/dns-proxy-server/5.7/en/4-developing/compiling/</guid>
+      <description> Requirements See the requirements.
+Building from Source Build the frontend files (optional)
+./builder.bash build-frontend  Build and run the program
+Jar file $ ./gradlew clean build compTest shadowJar -i $ java -jar dns-proxy-server-*-all.jar  Native Image Generated possible necessary metadata
+./gradlew clean -Pagent compTest ./gradlew metadataCopy  Generate the binary
+$ ./gradlew -x check clean build nativeIntTest nativeImageJar nativeCompile $ ./build/native/nativeCompile/dns-proxy-server  </description>
+    </item>
+    
+    <item>
+      <title>Generating the docs</title>
+      <link>http://mageddo.github.io/dns-proxy-server/5.7/en/4-developing/generating-docs/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mageddo.github.io/dns-proxy-server/5.7/en/4-developing/generating-docs/</guid>
+      <description> Introduction DPS uses Hugo and the theme-learn to generate static docs.
+Requirements  Hugo 0.55.4  Live Docs Preview Vanilla $ hugo server --source docs  Docker $ docker-compose -f docker-compose-dev.yml up docs  Generating Doc Statics To generate the HTML use the following
+$ ./builder.bash docs  </description>
+    </item>
+    
+    <item>
+      <title>Release Process</title>
+      <link>http://mageddo.github.io/dns-proxy-server/5.7/en/4-developing/releasing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mageddo.github.io/dns-proxy-server/5.7/en/4-developing/releasing/</guid>
+      <description>Feature Request - Phase 1  Create a pull request CI will be checked automatically Once CI is passing, the author @mageddo must approve the PR Merge the PR  Pre-Releasing New Version - Phase 2  Define the new version number Document the new version and changes at RELEASE-NOTES.md Generate the git tag with the steps below  Patch Version
+$ ./gradlew release  Major Version
+$ VERSION=3.18.0 &amp;amp;&amp;amp; .</description>
+    </item>
+    
+    <item>
+      <title>Configuring a Service Discovery solution on Docker using DNS Proxy Server and NGINX</title>
+      <link>http://mageddo.github.io/dns-proxy-server/5.7/en/5-tutorials/docker-reverse-proxy/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mageddo.github.io/dns-proxy-server/5.7/en/5-tutorials/docker-reverse-proxy/</guid>
+      <description>Requirements  DPS already configured, see the docs if you haven&amp;rsquo;t yet.  Tested on:  DPS 3.11 OS: Mac, Linux, Windows  Introducing You will see how to develop with docker containers solving them by hostnames from your host machine as the following picture shows:
+if you know about DPS you will figure out that&amp;rsquo;s a very basic DPS feature and you don&amp;rsquo;t need complex configurations to achieve that, except on MAC and Windows as docker runs its containers on a virtual machine so DPS default feature to solve containers names will work but the solved IPs are worthless because they aren&amp;rsquo;t accessible from the host.</description>
+    </item>
+    
+    <item>
+      <title>Credits</title>
+      <link>http://mageddo.github.io/dns-proxy-server/5.7/en/credits/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mageddo.github.io/dns-proxy-server/5.7/en/credits/</guid>
+      <description>Contributors Thanks to them  for making Open Source Software a better place !
+.ghContributors{ display:flex; flex-flow: wrap; align-content: flex-start }
+.ghContributors &amp;gt; div{ width: 50% ; display: inline-flex; margin-bottom: 5px; } .ghContributors &amp;gt; div label{ padding-left: 4px ; } .ghContributors &amp;gt; div span{ font-size: x-small; padding-left: 4px ; }
+  @mageddo 937 commits 
+ @josielrocha 9 commits 
+ @mrubli 3 commits 
+ @addshore 3 commits</description>
+    </item>
+    
+    <item>
+      <title>Showcase</title>
+      <link>http://mageddo.github.io/dns-proxy-server/5.7/en/showcase/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mageddo.github.io/dns-proxy-server/5.7/en/showcase/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Stress Tests</title>
+      <link>http://mageddo.github.io/dns-proxy-server/5.7/en/4-developing/stress-tests/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://mageddo.github.io/dns-proxy-server/5.7/en/4-developing/stress-tests/</guid>
+      <description>Start DPS Instance to be tested
+./gradlew clean build compTest shadowJar nativeImageJar nativeCompile -i cp build/native/nativeCompile/dns-proxy-server ./src/stress-test/docker/dps-stress-test-instance/files/ docker-compose -f src/stress-test/docker/dps-stress-test-instance/docker-compose.yml up --build  Start Grafana Stack to Collect Performance Metrics
+docker-compose -f src/stress-test/docker/grafana/docker-compose.yml up --build  Run the Stress Test Suite
+./gradlew build stressTest  Access http://localhost:3000 to see the metrics</description>
+    </item>
+    
+  </channel>
+</rss>

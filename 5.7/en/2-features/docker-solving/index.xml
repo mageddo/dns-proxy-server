@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Solving Docker Containers from Hostname on DNS Proxy Server</title>
+    <link>http://mageddo.github.io/dns-proxy-server/5.7/en/2-features/docker-solving/</link>
+    <description>Recent content in Solving Docker Containers from Hostname on DNS Proxy Server</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    
+	<atom:link href="http://mageddo.github.io/dns-proxy-server/5.7/en/2-features/docker-solving/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+  </channel>
+</rss>
