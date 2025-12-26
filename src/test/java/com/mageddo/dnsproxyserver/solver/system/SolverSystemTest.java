@@ -1,8 +1,9 @@
-package com.mageddo.dnsproxyserver.solver;
+package com.mageddo.dnsproxyserver.solver.system;
 
-import com.mageddo.dnsproxyserver.solver.system.SolverSystem;
+import com.mageddo.dnsproxyserver.solver.Responses;
 import com.mageddo.net.IP;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -49,7 +50,7 @@ class SolverSystemTest {
     final var res = this.solver.handle(query);
 
     assertNotNull(res);
-    assertTrue(Responses.isAuthoritative(res));
+    Assertions.assertTrue(Responses.isAuthoritative(res));
   }
 
   @Test

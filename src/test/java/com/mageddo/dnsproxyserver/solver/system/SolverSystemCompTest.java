@@ -1,10 +1,8 @@
-package com.mageddo.dnsproxyserver.solver;
+package com.mageddo.dnsproxyserver.solver.system;
 
 import javax.inject.Inject;
 
 import com.mageddo.dns.utils.Messages;
-import com.mageddo.dnsproxyserver.solver.system.HostMachineService;
-import com.mageddo.dnsproxyserver.solver.system.SolverSystem;
 import com.mageddo.net.IP;
 
 import org.hamcrest.CoreMatchers;
