@@ -38,7 +38,9 @@ public class SolverCachedRemote implements Solver {
     return this.solversCache.handleRes(
         query,
         __ -> {
-          log.debug("status=hotload, q={}", Messages.simplePrint(query));
+          if (log.isTraceEnabled()) {
+            log.trace("status=hotload, q={}", Messages.simplePrint(query));
+          }
           return NamedResponse.of(this.solverRemote.handle(query), this.name());
         }
     );
