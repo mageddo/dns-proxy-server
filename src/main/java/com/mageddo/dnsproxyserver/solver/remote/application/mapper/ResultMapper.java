@@ -50,7 +50,9 @@ public class ResultMapper {
     }
   }
 
-  private static Message findFutureRes(CompletableFuture<Message> resFuture, Request request) {
+  static Message findFutureRes(
+      CompletableFuture<Message> resFuture, Request request
+  ) {
     try {
       return Messages.setFlag(resFuture.get(), Flags.RA);
     } catch (InterruptedException | ExecutionException e) {

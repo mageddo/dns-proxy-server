@@ -23,7 +23,8 @@ public class Result {
   }
 
   public static Result fromErrorMessage(Message message) {
-    return builder().errorMessage(message)
+    return builder()
+        .errorMessage(message)
         .build();
   }
 

@@ -86,7 +86,8 @@ public class SolverRemote implements Solver, AutoCloseable {
   Result safeQueryResult(Request req) {
     req.splitStopWatch();
     return this.queryUsingCircuitBreaker(
-        new RemoteResultSupplier(req, this.executor, this.netWatchdog));
+        new RemoteResultSupplier(req, this.executor, this.netWatchdog)
+    );
   }
 
   Result queryUsingCircuitBreaker(ResultSupplier sup) {
