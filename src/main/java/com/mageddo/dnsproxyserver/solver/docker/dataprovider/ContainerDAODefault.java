@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Default
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)
-public class ContainerDAODefault implements com.mageddo.dnsproxyserver.solver.docker.dataprovider.ContainerDAO {
+public class ContainerDAODefault implements ContainerDAO {
 
   private final com.mageddo.dnsproxyserver.docker.ContainerDAO containerDAO;
   private final DockerClient dockerClient;
