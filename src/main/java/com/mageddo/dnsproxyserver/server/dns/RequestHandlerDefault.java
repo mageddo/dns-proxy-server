@@ -124,13 +124,17 @@ public class RequestHandlerDefault implements RequestHandler {
       return this.solveTracking0(req, solver, stopWatch);
     } catch (Exception e) {
       final var solverName = solver.name();
+      final var solverTime = stopWatch.getTime() - stopWatch.getSplitTime();
       log.warn(
-          "status=solverFailed, currentSolverTime={}, totalTime={}, solver={}, query={}, "
+          "status=failed, solverTime={}, totalTime={}, solver={}, query={}, "
               + "eClass={}, msg={}",
-          stopWatch.getTime() - stopWatch.getSplitTime(), stopWatch.getTime(), solverName,
+          solverTime, stopWatch.getTime(), solverName,
           simplePrint(req), ClassUtils.getSimpleName(e), e.getMessage(), e
       );
-      return null;
+      return TrackedResponse.builder()
+          .solverName(solverName)
+          .solverTime(solverTime)
+          .build();
     }
   }
 
