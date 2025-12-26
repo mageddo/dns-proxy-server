@@ -70,7 +70,7 @@ class SolversCacheTest {
     assertNotNull(res);
     assertNotNull(this.cache.get(key));
 
-    Threads.sleep(res.getDpsTtl()
+    Threads.sleep(res.getTTL()
         .plusMillis(10));
     assertNull(this.cache.get(key));
   }

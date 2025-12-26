@@ -12,6 +12,8 @@ import com.mageddo.dnsproxyserver.solver.cache.CacheName;
 import com.mageddo.dnsproxyserver.solver.cache.CacheName.Name;
 import com.mageddo.dnsproxyserver.solver.cache.SolverCache;
 
+import com.mageddo.dnsproxyserver.solver.cache.Value;
+
 import org.xbill.DNS.Message;
 
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +47,7 @@ public class SolverCachedRemote implements Solver {
           return NamedResponse.of(this.solverRemote.handle(query), this.name());
         }
     );
-    return Objects.mapOrNull(res, NamedResponse::getResponse);
+    return Objects.mapOrNull(res, Value::getSimpleResponse);
   }
 
   @Override

@@ -71,8 +71,8 @@ public class RequestHandlerDefault implements RequestHandler {
   }
 
   Message solveCaching(Message query, String kind, StopWatch stopWatch) {
-    final var res = this.cache.handle(query, this::solveWithFixedCacheTTL);
-    if (res == null) {
+    final var value = this.cache.handle(query, this::solveWithFixedCacheTTL);
+    if (value == null) {
       final var msg = this.buildDefaultRes(query);
       log.debug(
           "status=defaultAnswer, kind={}, time={}, res={}",
@@ -81,10 +81,12 @@ public class RequestHandlerDefault implements RequestHandler {
       return msg;
     }
     log.debug(
-        "status=solved, kind={}, solver={}, time={}, res={}",
-        kind, res.getSolver(), stopWatch.getTime(), simplePrint(res.getMessage())
+        "status=solved, kind={}, hotload={}, solver={}, time={}, ttl={}, res={}",
+        kind, value.isHotload(),
+        value.getSolver(), stopWatch.getTime(),
+        value.getTTLAsSeconds(), simplePrint(value.getMessage())
     );
-    return res.getMessage();
+    return value.getMessage();
   }
 
   NamedResponse solveWithFixedCacheTTL(Message req) {

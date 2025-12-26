@@ -19,7 +19,6 @@ import com.mageddo.dnsproxyserver.solver.cache.CacheName.Name;
 import org.xbill.DNS.Message;
 
 import lombok.Builder;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
 import static com.mageddo.dns.utils.Messages.findQuestionHostname;
@@ -41,19 +40,25 @@ public class SolverCache {
   }
 
   public Message handleToMsg(Message query, Function<Message, NamedResponse> delegate) {
-    return Objects.mapOrNull(this.handle(query, delegate), NamedResponse::getMessage);
+    return Objects.mapOrNull(this.handle(query, delegate), Value::getMessage);
   }
 
-  public NamedResponse handle(Message query, Function<Message, NamedResponse> delegate) {
+  public Value handle(Message query, Function<Message, NamedResponse> delegate) {
     final var key = buildKey(query);
 
     final var cachedValue = this.cache.getIfPresent(key);
     if (cachedValue != null) {
-      return this.mapResponse(query, cachedValue, true);
+      return Value.builder()
+          .hotload(false)
+          .response(this.mapResponse(query, cachedValue, false))
+          .build();
     }
 
     final var calculatedValue = this.calcCacheAndGet(key, query, delegate);
-    return this.mapResponse(query, calculatedValue, false);
+    return Value.builder()
+        .hotload(true)
+        .response(this.mapResponse(query, calculatedValue, true))
+        .build();
   }
 
   /**
@@ -70,15 +75,18 @@ public class SolverCache {
     this.cache.get(key, k -> value);
   }
 
-  NamedResponse mapResponse(Message query, CacheValue value, boolean cached) {
+  NamedResponse mapResponse(Message query, CacheValue value, boolean hotload) {
     if (value == null) {
       return null;
     }
     final var response = value.getResponse();
-    log.debug(
-        "status=found, fromCache={}, solver={}, reqRes={}, cacheTtl={}",
-        cached, response.getSolver(), simplePrint(response.getMessage()), value.getTtlAsSeconds()
-    );
+    if (log.isTraceEnabled()) {
+      log.trace(
+          "status=found, fromCache={}, solver={}, reqRes={}, cacheTtl={}",
+          !hotload, response.getSolver(),
+          simplePrint(response.getMessage()), value.getTtlAsSeconds()
+      );
+    }
     return response.withMessage(Messages.mergeId(query, response.getMessage()));
   }
 
@@ -93,7 +101,7 @@ public class SolverCache {
       return null;
     }
     final var ttl = res.getDpsTtl();
-    if(log.isTraceEnabled()) {
+    if (log.isTraceEnabled()) {
       final var queryText = Messages.simplePrint(query);
       log.debug("status=res, k={}, ttl={}, simpleMsg={}", key, ttl, queryText);
     }
@@ -141,8 +149,8 @@ public class SolverCache {
     return this.cache.getIfPresent(key);
   }
 
-  @Value
   @Builder
+  @lombok.Value
   static class CacheValue {
 
     NamedResponse response;
@@ -189,6 +197,5 @@ public class SolverCache {
       }
     };
   }
-
 
 }
