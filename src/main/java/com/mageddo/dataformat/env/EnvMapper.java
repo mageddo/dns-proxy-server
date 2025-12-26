@@ -169,7 +169,7 @@ public class EnvMapper {
     if ("null".equalsIgnoreCase(value)) {
       return null;
     }
-    if ("true".equalsIgnoreCase(value) || "false".equalsIgnoreCase(value)) {
+    if ("true".equalsIgnoreCase(value) || "false".equalsIgnoreCase(value) || "1".equals(value)) {
       return Boolean.valueOf(value);
     }
 

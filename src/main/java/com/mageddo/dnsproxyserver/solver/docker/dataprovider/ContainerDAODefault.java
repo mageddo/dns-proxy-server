@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.github.dockerjava.api.DockerClient;
+import com.mageddo.dnsproxyserver.docker.ContainerPredicates;
 import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacade;
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.solver.docker.Container;
@@ -18,8 +19,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Singleton
 @Default
+@Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class ContainerDAODefault implements ContainerDAO {
 
@@ -28,8 +29,8 @@ public class ContainerDAODefault implements ContainerDAO {
 
   @Override
   public List<Container> findActiveContainersMatching(HostnameQuery query) {
-    final var containersToFilter = this.containerFacade.findActiveContainers();
-    return this.containerFacade.inspectFilteringValidContainers(containersToFilter)
+    final var containers = this.findActiveContainers();
+    return this.containerFacade.inspectFilteringValidContainers(containers)
         .filter(ContainerHostnameMatcher.buildPredicate(query))
         .map(ContainerMapper::of)
         .toList();
@@ -41,8 +42,17 @@ public class ContainerDAODefault implements ContainerDAO {
         .withNetworkFilter(List.of(networkId))
         .exec()
         .stream()
+        .filter(ContainerPredicates.isEnabledForDPS())
         .map(ContainerCompactMapper::of)
         .toList();
+  }
+
+  List<com.github.dockerjava.api.model.Container> findActiveContainers() {
+    return this.containerFacade.findActiveContainers()
+        .stream()
+        .filter(ContainerPredicates.isEnabledForDPS())
+        .toList()
+        ;
   }
 
 }

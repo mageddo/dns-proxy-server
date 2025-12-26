@@ -15,6 +15,7 @@ import com.mageddo.dnsproxyserver.config.Config.SolverDocker;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.docker.application.Labels;
 import com.mageddo.dnsproxyserver.solver.docker.Container;
+import com.mageddo.dnsproxyserver.solver.docker.Label;
 import com.mageddo.dnsproxyserver.solver.docker.Network;
 import com.mageddo.net.IP;
 import com.mageddo.net.Networks;
@@ -22,8 +23,6 @@ import com.mageddo.net.Networks;
 import org.apache.commons.lang3.StringUtils;
 
 public class ContainerMapper {
-
-  public static final String DEFAULT_NETWORK_LABEL = "dps.network";
 
   public static Container of(InspectContainerResponse inspect) {
     return of(inspect, findPreferred());
@@ -111,7 +110,7 @@ public class ContainerMapper {
   }
 
   private static String mapPrincipalNetworkName(InspectContainerResponse c) {
-    return Labels.findLabelValue(c.getConfig(), DEFAULT_NETWORK_LABEL);
+    return Labels.findValue(c, Label.DPS_DEFAULT_NETWORK);
   }
 
   private static LinkedHashSet<String> buildDefault(String principalNetworkName) {

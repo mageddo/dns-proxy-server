@@ -12,6 +12,7 @@ import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.docker.application.Containers;
 import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacade;
 import com.mageddo.dnsproxyserver.solver.docker.Container;
+import com.mageddo.dnsproxyserver.solver.docker.Label;
 import com.mageddo.dnsproxyserver.solver.docker.Network;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.mapper.ContainerMapper;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.mapper.IpamMapper;
@@ -47,7 +48,7 @@ public class DpsContainerDAODefault implements DpsContainerDAO {
     final var containers = this.dockerClient
         .listContainersCmd()
         .withStatusFilter(Collections.singletonList("running"))
-        .withLabelFilter(Collections.singletonList("dps.container=true"))
+            .withLabelFilter(Collections.singletonList(Label.DPS_CONTAINER + "=true"))
         .exec();
 
     if (containers.size() > 1) {

@@ -2,7 +2,6 @@ package com.mageddo.dnsproxyserver.utils;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
@@ -33,14 +32,7 @@ public class Envs {
 
   public static Boolean getBooleanOrNull(String env) {
     final var v = StringUtils.trimToEmpty(System.getenv(env));
-    return parseBoolean(v);
-  }
-
-  static Boolean parseBoolean(String v) {
-    if (StringUtils.isBlank(v)) {
-      return null;
-    }
-    return Objects.equals(v, "1") || StringUtils.equalsIgnoreCase(v, "true");
+    return Booleans.parse(v);
   }
 
   public static String getStringOrDefault(String env, String def) {

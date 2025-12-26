@@ -39,13 +39,12 @@ public class ContainerFacadeDefault implements ContainerFacade {
 
   @Override
   public List<Container> findActiveContainers() {
-    final var activeContainers = this.dockerClient
+    return this.dockerClient
         .listContainersCmd()
         .withStatusFilter(Containers.RUNNING_STATUS_LIST)
         .withLimit(1024)
 //      .withNetworkFilter()
         .exec();
-    return activeContainers;
   }
 
   @Override
@@ -72,7 +71,7 @@ public class ContainerFacadeDefault implements ContainerFacade {
   public Stream<InspectContainerResponse> inspectFilteringValidContainers(List<Container> containers) {
     return containers
         .stream()
-        .map(com.github.dockerjava.api.model.Container::getId)
+        .map(Container::getId)
         .map(this::safeInspect)
         .filter(Objects::nonNull)
         ;

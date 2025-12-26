@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.utils;
 
 import org.junit.jupiter.api.Test;
 
-import static com.mageddo.dnsproxyserver.utils.Envs.parseBoolean;
+import static com.mageddo.dnsproxyserver.utils.Booleans.parse;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -15,10 +15,10 @@ class EnvsTest {
 
     // act
     // assert
-    assertTrue(parseBoolean("true"));
-    assertTrue(parseBoolean("TRUE"));
-    assertTrue(parseBoolean("TRuE"));
-    assertTrue(parseBoolean("1"));
+    assertTrue(parse("true"));
+    assertTrue(parse("TRUE"));
+    assertTrue(parse("TRuE"));
+    assertTrue(parse("1"));
   }
 
   @Test
@@ -27,11 +27,11 @@ class EnvsTest {
 
     // act
     // assert
-    assertFalse(parseBoolean("dps"));
-    assertFalse(parseBoolean("0"));
-    assertFalse(parseBoolean("!"));
-    assertFalse(parseBoolean("FALSE"));
-    assertFalse(parseBoolean("false"));
+    assertFalse(parse("dps"));
+    assertFalse(parse("0"));
+    assertFalse(parse("!"));
+    assertFalse(parse("FALSE"));
+    assertFalse(parse("false"));
   }
 
   @Test
@@ -40,6 +40,6 @@ class EnvsTest {
 
     // act
     // assert
-    assertNull(parseBoolean(""));
+    assertNull(parse(""));
   }
 }

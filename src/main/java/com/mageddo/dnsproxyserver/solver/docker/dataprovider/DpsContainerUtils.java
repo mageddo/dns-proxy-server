@@ -3,23 +3,22 @@ package com.mageddo.dnsproxyserver.solver.docker.dataprovider;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.github.dockerjava.api.model.Container;
 import com.mageddo.dns.Hostname;
+import com.mageddo.dnsproxyserver.docker.application.Labels;
 import com.mageddo.dnsproxyserver.utils.Splits;
+
+import static com.mageddo.dnsproxyserver.solver.docker.Label.DPS_CONTAINER;
 
 public class DpsContainerUtils {
 
   public static final String HOSTNAME_ENV = "HOSTNAMES=";
-  public static final String DPS_CONTAINER_LABEL = "dps.container";
 
   public static boolean isDpsContainer(Container c) {
-    final var lbl = c.getLabels()
-        .get(DPS_CONTAINER_LABEL);
-    return Objects.equals(lbl, "true");
+    return Labels.findBoolean(c, DPS_CONTAINER);
   }
 
   public static boolean isNotDpsContainer(Container container) {

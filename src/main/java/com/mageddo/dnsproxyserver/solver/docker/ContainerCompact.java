@@ -12,13 +12,13 @@ import lombok.Value;
 public class ContainerCompact {
 
   @NonNull
-  private String id;
+  String id;
 
   @NonNull
-  private String name;
+  String name;
 
   @NonNull
-  private Boolean dpsContainer;
+  Boolean dpsContainer;
 
   public boolean isNotDpsContainer() {
     return !this.dpsContainer;
