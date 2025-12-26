@@ -414,17 +414,14 @@ public final class DoHServerNetty {
       }
 
       if (frame instanceof Http2DataFrame dataFrame) {
-        try {
-          final var bytes = ByteBufs.toByteArray(dataFrame.content());
-          st.body.write(bytes);
+        final var bytes = ByteBufs.toByteArray(dataFrame.content());
+        st.body.write(bytes);
 
-          if (sawHeaders && dataFrame.isEndStream()) {
-            routes.handleHttp2(ctx, st);
-          }
-        } finally {
-          dataFrame.release();
+        if (sawHeaders && dataFrame.isEndStream()) {
+          routes.handleHttp2(ctx, st);
         }
       }
+
     }
 
     @Override
