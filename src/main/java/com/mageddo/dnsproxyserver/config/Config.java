@@ -408,10 +408,6 @@ public class Config {
        */
       final int type;
 
-      public boolean isNot(Type... types) {
-        return ConfigEntryTypes.isNot(this.type, types);
-      }
-
       public static Type of(Integer code) {
         for (final var t : values()) {
           if (Objects.equals(t.type, code)) {
@@ -444,7 +440,7 @@ public class Config {
       }
 
       public boolean isAddressSolving() {
-        return ConfigEntryTypes.is(this, Type.A, Type.AAAA, Type.HTTPS);
+        return ConfigEntryTypes.isAddressSolving(this);
       }
 
       public boolean isHttps() {
