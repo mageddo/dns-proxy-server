@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.solver;
 
+import com.mageddo.dnsproxyserver.solver.system.SolverSystem;
 import com.mageddo.net.IP;
 
 import org.junit.jupiter.api.Test;

@@ -1,10 +1,10 @@
-package com.mageddo.dnsproxyserver.solver;
+package com.mageddo.dnsproxyserver.solver.system;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.mageddo.dnsproxyserver.config.application.Configs;
-import com.mageddo.dnsproxyserver.usecase.HostMachineService;
+import com.mageddo.dnsproxyserver.solver.*;
 import com.mageddo.net.IP;
 
 import org.xbill.DNS.Message;
@@ -21,9 +21,9 @@ public class SolverSystem implements Solver {
   private final HostMachineService machineService;
 
   private final QueryResponseHandler handler = QueryResponseHandler.builder()
-      .solverName(this.name())
-      .supportedTypes(SupportedTypes.ADDRESSES)
-      .build();
+                                                                   .solverName(this.name())
+                                                                   .supportedTypes(SupportedTypes.ADDRESSES)
+                                                                   .build();
 
   @Override
   public Response handle(Message query) {

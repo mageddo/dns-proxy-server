@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.usecase;
+package com.mageddo.dnsproxyserver.solver.system;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

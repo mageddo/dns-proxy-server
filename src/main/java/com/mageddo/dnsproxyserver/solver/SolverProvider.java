@@ -12,6 +12,7 @@ import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.solver.docker.SolverDocker;
 import com.mageddo.dnsproxyserver.solver.remote.SolverCachedRemote;
 import com.mageddo.dnsproxyserver.solver.stub.SolverStub;
+import com.mageddo.dnsproxyserver.solver.system.SolverSystem;
 import com.mageddo.utils.Priorities;
 
 import lombok.extern.slf4j.Slf4j;
