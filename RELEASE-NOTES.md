@@ -1,3 +1,6 @@
+## 5.8.2
+* Refactoring: Removing code duplication on the Local Solvers.
+
 ## 5.8.1
 * DNS over HTTPS, see #138
 * Option to disable a specific container to be resolved from DPS, see #596.
