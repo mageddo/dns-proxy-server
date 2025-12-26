@@ -1,6 +1,6 @@
 ---
 title: Solving Docker Containers from Hostname
-weight: 4
+weight: 1
 ---
 
 DPS can assign a hostname to your docker containers to solve it's IPs by the :

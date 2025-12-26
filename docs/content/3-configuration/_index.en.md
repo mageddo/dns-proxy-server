@@ -232,4 +232,4 @@ log:
 [3]: {{%relref "2-features/remote-solver-circuitbreaker/_index.en.md" %}}
 [4]: {{%relref "3-configuration/legacy.en.md" %}}
 [5]: {{%relref "3-configuration/format.en.md" %}}
-[6]: {{%relref "2-features/specify-from-which-network-solve-container/_index.en.md" %}}
+[6]: {{%relref "2-features/solver-docker/specify-from-which-network-solve-container/_index.en.md" %}}
