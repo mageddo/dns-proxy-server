@@ -23,11 +23,19 @@
   </url>
   
   <url>
+    <loc>http://mageddo.github.io/dns-proxy-server/latest/en/2-features/solver-docker/solve-from-hostname/</loc>
+  </url>
+  
+  <url>
     <loc>http://mageddo.github.io/dns-proxy-server/latest/en/api/v1/networks/</loc>
   </url>
   
   <url>
     <loc>http://mageddo.github.io/dns-proxy-server/latest/en/1-getting-started/running-it/windows/</loc>
+  </url>
+  
+  <url>
+    <loc>http://mageddo.github.io/dns-proxy-server/latest/en/2-features/solver-docker/</loc>
   </url>
   
   <url>
@@ -44,6 +52,10 @@
   
   <url>
     <loc>http://mageddo.github.io/dns-proxy-server/latest/en/1-getting-started/requirements/</loc>
+  </url>
+  
+  <url>
+    <loc>http://mageddo.github.io/dns-proxy-server/latest/en/2-features/solver-docker/specify-from-which-network-solve-container/</loc>
   </url>
   
   <url>
@@ -68,10 +80,6 @@
   
   <url>
     <loc>http://mageddo.github.io/dns-proxy-server/latest/en/4-developing/compiling/</loc>
-  </url>
-  
-  <url>
-    <loc>http://mageddo.github.io/dns-proxy-server/latest/en/2-features/docker-solving/</loc>
   </url>
   
   <url>
@@ -108,14 +116,6 @@
   
   <url>
     <loc>http://mageddo.github.io/dns-proxy-server/latest/en/versions/</loc>
-  </url>
-  
-  <url>
-    <loc>http://mageddo.github.io/dns-proxy-server/latest/en/2-features/specify-from-which-network-solve-container/</loc>
-  </url>
-  
-  <url>
-    <loc>http://mageddo.github.io/dns-proxy-server/latest/en/2-features/dps-network-resolution/</loc>
   </url>
   
   <url>
@@ -161,7 +161,15 @@
   </url>
   
   <url>
-    <loc>http://mageddo.github.io/dns-proxy-server/latest/en/2-features/docker-different-networks-solving/</loc>
+    <loc>http://mageddo.github.io/dns-proxy-server/latest/en/2-features/solver-docker/dps-network-resolution/</loc>
+  </url>
+  
+  <url>
+    <loc>http://mageddo.github.io/dns-proxy-server/latest/en/2-features/solver-docker/docker-different-networks-solving/</loc>
+  </url>
+  
+  <url>
+    <loc>http://mageddo.github.io/dns-proxy-server/latest/en/2-features/solver-docker/disable-specific-containers-from-solve/</loc>
   </url>
   
   <url>
