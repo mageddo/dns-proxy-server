@@ -20,6 +20,7 @@ import com.mageddo.dnsserver.RequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.buffer.UnpooledByteBufAllocator;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -72,6 +73,19 @@ public final class DoHServerNetty {
   private DoHServerNetty() {
   }
 
+  public static void nativeImageFixes() {
+    // Evita caminhos que dependem de Unsafe/JCTools no native
+    System.setProperty("io.netty.noUnsafe", "true");
+    System.setProperty("io.netty.allocator.type", "unpooled");
+
+    // Opcional: reduz chance de alocação direct em ambientes mais chatos
+    System.setProperty("io.netty.noPreferDirect", "true");
+
+    // Opcional: desliga recycler (menos otimização, mais previsibilidade)
+    System.setProperty("io.netty.recycler.maxCapacity", "0");
+
+  }
+
   /**
    * Hook principal: você recebe a query DNS (wire bytes) e devolve o response DNS (wire bytes).
    * <p>
@@ -114,6 +128,7 @@ public final class DoHServerNetty {
           .group(boss, worker)
           .channel(NioServerSocketChannel.class)
           .childOption(ChannelOption.TCP_NODELAY, true)
+          .childOption(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.DEFAULT)
           .childHandler(new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(final SocketChannel ch) {

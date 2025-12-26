@@ -10,6 +10,8 @@ import com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.ConfigDAOCmdArgs;
 import com.mageddo.dnsproxyserver.config.dataformat.v2.cmdargs.vo.ConfigFlag;
 import com.mageddo.dnsproxyserver.di.Context;
 
+import com.mageddo.dnsserver.doh.DoHServerNetty;
+
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -19,10 +21,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class App {
 
+  static {
+    DoHServerNetty.nativeImageFixes();
+  }
+
   private final String[] args;
   private Config config;
   private ConfigFlag flags;
-  private Context context;
 
   public App(String[] args) {
     this.args = args;
