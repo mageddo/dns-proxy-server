@@ -44,6 +44,7 @@ public class SolverCache {
   }
 
   public Value handle(Message query, Function<Message, NamedResponse> delegate) {
+
     final var key = buildKey(query);
 
     final var cachedValue = this.cache.getIfPresent(key);
@@ -55,6 +56,9 @@ public class SolverCache {
     }
 
     final var calculatedValue = this.calcCacheAndGet(key, query, delegate);
+    if (calculatedValue == null) {
+      return null;
+    }
     return Value.builder()
         .hotload(true)
         .response(this.mapResponse(query, calculatedValue, true))
@@ -67,6 +71,9 @@ public class SolverCache {
    */
   CacheValue calcCacheAndGet(String key, Message query, Function<Message, NamedResponse> delegate) {
     final var value = this.calc(key, query, delegate);
+    if (value == null) {
+      return null;
+    }
     this.cacheValue(key, value);
     return value;
   }
