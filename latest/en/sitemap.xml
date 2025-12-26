@@ -153,11 +153,23 @@
   </url>
   
   <url>
+    <loc>http://mageddo.github.io/dns-proxy-server/latest/en/2-features/doh/chrome-setup/</loc>
+  </url>
+  
+  <url>
+    <loc>http://mageddo.github.io/dns-proxy-server/latest/en/2-features/doh/firefox-setup/</loc>
+  </url>
+  
+  <url>
     <loc>http://mageddo.github.io/dns-proxy-server/latest/en/5-tutorials/docker-reverse-proxy/</loc>
   </url>
   
   <url>
     <loc>http://mageddo.github.io/dns-proxy-server/latest/en/credits/</loc>
+  </url>
+  
+  <url>
+    <loc>http://mageddo.github.io/dns-proxy-server/latest/en/2-features/doh/</loc>
   </url>
   
   <url>
