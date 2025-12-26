@@ -1,6 +1,6 @@
 ---
 title: Specify from which network solve container IP
-weight: 8
+weight: 2
 ---
 
 If your container have multiple networks then you can specify which network to use when solving IP by specifying `dps.network` label.

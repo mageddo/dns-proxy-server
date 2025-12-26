@@ -1,6 +1,6 @@
 ---
 title: Solving Docker Containers from Hostname
-weight: 4
+weight: 1
 ---
 
 DPS can assign a hostname to your docker containers to solve it's IPs by the :
@@ -10,7 +10,7 @@ DPS can assign a hostname to your docker containers to solve it's IPs by the :
 * Container Name
 * Docker Compose Service Name
 
-These are indivual forms of set a hostname to a container to query it, so you only need to use one of them.
+These are individual forms of set a hostname to a container to query it, so you only need to use one of them.
 
 ## Hostnames Env
 

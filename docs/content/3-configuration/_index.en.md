@@ -64,6 +64,8 @@ Common DNS resolution mechanisms used by DPS. Solvers are evaluated according to
 | `solver.docker.hostMachineFallback`    | Whether the host machine IP should be returned when a container is found but has no IP. | `true`        |
 | `solver.docker.dockerDaemonUri`        | Docker daemon URI used to connect to Docker.                                            | OS dependent  |
 
+[Click here][7] to see more docker solver features.
+
 #### DPS Network
 
 | Name                                         | Description                                                         | Default Value   |
@@ -230,4 +232,5 @@ log:
 [3]: {{%relref "2-features/remote-solver-circuitbreaker/_index.en.md" %}}
 [4]: {{%relref "3-configuration/legacy.en.md" %}}
 [5]: {{%relref "3-configuration/format.en.md" %}}
-[6]: {{%relref "2-features/specify-from-which-network-solve-container/_index.en.md" %}}
+[6]: {{%relref "2-features/solver-docker/specify-from-which-network-solve-container/_index.en.md" %}}
+[7]: {{%relref "2-features/solver-docker/_index.en.md" %}}
