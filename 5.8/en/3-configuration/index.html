@@ -12,20 +12,20 @@
     <title>Configuration Reference :: DNS Proxy Server</title>
 
     
-    <link href="/dns-proxy-server/5.8/css/nucleus.css?1766714240" rel="stylesheet">
-    <link href="/dns-proxy-server/5.8/css/fontawesome-all.min.css?1766714240" rel="stylesheet">
-    <link href="/dns-proxy-server/5.8/css/hybrid.css?1766714240" rel="stylesheet">
-    <link href="/dns-proxy-server/5.8/css/featherlight.min.css?1766714240" rel="stylesheet">
-    <link href="/dns-proxy-server/5.8/css/perfect-scrollbar.min.css?1766714240" rel="stylesheet">
-    <link href="/dns-proxy-server/5.8/css/auto-complete.css?1766714240" rel="stylesheet">
-    <link href="/dns-proxy-server/5.8/css/atom-one-dark-reasonable.css?1766714240" rel="stylesheet">
-    <link href="/dns-proxy-server/5.8/css/theme.css?1766714240" rel="stylesheet">
-    <link href="/dns-proxy-server/5.8/css/hugo-theme.css?1766714240" rel="stylesheet">
+    <link href="/dns-proxy-server/5.8/css/nucleus.css?1766715318" rel="stylesheet">
+    <link href="/dns-proxy-server/5.8/css/fontawesome-all.min.css?1766715318" rel="stylesheet">
+    <link href="/dns-proxy-server/5.8/css/hybrid.css?1766715318" rel="stylesheet">
+    <link href="/dns-proxy-server/5.8/css/featherlight.min.css?1766715318" rel="stylesheet">
+    <link href="/dns-proxy-server/5.8/css/perfect-scrollbar.min.css?1766715318" rel="stylesheet">
+    <link href="/dns-proxy-server/5.8/css/auto-complete.css?1766715318" rel="stylesheet">
+    <link href="/dns-proxy-server/5.8/css/atom-one-dark-reasonable.css?1766715318" rel="stylesheet">
+    <link href="/dns-proxy-server/5.8/css/theme.css?1766715318" rel="stylesheet">
+    <link href="/dns-proxy-server/5.8/css/hugo-theme.css?1766715318" rel="stylesheet">
     
-      <link href="/dns-proxy-server/5.8/css/theme-mine.css?1766714240" rel="stylesheet">
+      <link href="/dns-proxy-server/5.8/css/theme-mine.css?1766715318" rel="stylesheet">
     
 
-    <script src="/dns-proxy-server/5.8/js/jquery-3.3.1.min.js?1766714240"></script>
+    <script src="/dns-proxy-server/5.8/js/jquery-3.3.1.min.js?1766715318"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -53,14 +53,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/dns-proxy-server/5.8/js/lunr.min.js?1766714240"></script>
-<script type="text/javascript" src="/dns-proxy-server/5.8/js/auto-complete.js?1766714240"></script>
+<script type="text/javascript" src="/dns-proxy-server/5.8/js/lunr.min.js?1766715318"></script>
+<script type="text/javascript" src="/dns-proxy-server/5.8/js/auto-complete.js?1766715318"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/mageddo.github.io\/dns-proxy-server\/5.8\/en";
     
 </script>
-<script type="text/javascript" src="/dns-proxy-server/5.8/js/search.js?1766714240"></script>
+<script type="text/javascript" src="/dns-proxy-server/5.8/js/search.js?1766715318"></script>
 
     
   </div>
@@ -1167,6 +1167,7 @@
 <li><a href="#stub-solver">Stub Solver</a></li>
 <li><a href="#default-dns">Default DNS</a></li>
 <li><a href="#logs">Logs</a></li>
+<li><a href="#memory-limits">Memory Limits</a></li>
 <li><a href="#file-configuration-example">File Configuration Example</a></li>
 <li><a href="#legacy-configuration">Legacy Configuration</a></li>
 </ul></li>
@@ -1586,6 +1587,23 @@
 </tr>
 </tbody>
 </table>
+
+<h3 id="memory-limits">Memory Limits</h3>
+
+<p>When on binary mode DPS has a default limit of <code>MaxHeapSize=50m</code> + <code>MaxNewSize=10m</code>, you can change that by:</p>
+
+<p><strong>Command Line</strong></p>
+
+<pre><code class="language-bash">./dns-proxy-server -XX:MaxHeapSize=50m -XX:MaxNewSize=10m
+</code></pre>
+
+<p><strong>Docker Compose</strong></p>
+
+<pre><code class="language-yaml">services:
+  dps:
+    image: defreitas/dns-proxy-server
+    command: -XX:MaxHeapSize=50m -XX:MaxNewSize=10m
+</code></pre>
 
 <h3 id="file-configuration-example">File Configuration Example</h3>
 
@@ -2304,20 +2322,20 @@ log:
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/dns-proxy-server/5.8/js/clipboard.min.js?1766714240"></script>
-    <script src="/dns-proxy-server/5.8/js/perfect-scrollbar.min.js?1766714240"></script>
-    <script src="/dns-proxy-server/5.8/js/perfect-scrollbar.jquery.min.js?1766714240"></script>
-    <script src="/dns-proxy-server/5.8/js/jquery.sticky.js?1766714240"></script>
-    <script src="/dns-proxy-server/5.8/js/featherlight.min.js?1766714240"></script>
-    <script src="/dns-proxy-server/5.8/js/html5shiv-printshiv.min.js?1766714240"></script>
-    <script src="/dns-proxy-server/5.8/js/highlight.pack.js?1766714240"></script>
+    <script src="/dns-proxy-server/5.8/js/clipboard.min.js?1766715318"></script>
+    <script src="/dns-proxy-server/5.8/js/perfect-scrollbar.min.js?1766715318"></script>
+    <script src="/dns-proxy-server/5.8/js/perfect-scrollbar.jquery.min.js?1766715318"></script>
+    <script src="/dns-proxy-server/5.8/js/jquery.sticky.js?1766715318"></script>
+    <script src="/dns-proxy-server/5.8/js/featherlight.min.js?1766715318"></script>
+    <script src="/dns-proxy-server/5.8/js/html5shiv-printshiv.min.js?1766715318"></script>
+    <script src="/dns-proxy-server/5.8/js/highlight.pack.js?1766715318"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/dns-proxy-server/5.8/js/modernizr.custom-3.6.0.js?1766714240"></script>
-    <script src="/dns-proxy-server/5.8/js/learn.js?1766714240"></script>
-    <script src="/dns-proxy-server/5.8/js/hugo-learn.js?1766714240"></script>
+    <script src="/dns-proxy-server/5.8/js/modernizr.custom-3.6.0.js?1766715318"></script>
+    <script src="/dns-proxy-server/5.8/js/learn.js?1766715318"></script>
+    <script src="/dns-proxy-server/5.8/js/hugo-learn.js?1766715318"></script>
 
-    <link href="/dns-proxy-server/5.8/mermaid/mermaid.css?1766714240" type="text/css" rel="stylesheet" />
-    <script src="/dns-proxy-server/5.8/mermaid/mermaid.js?1766714240"></script>
+    <link href="/dns-proxy-server/5.8/mermaid/mermaid.css?1766715318" type="text/css" rel="stylesheet" />
+    <script src="/dns-proxy-server/5.8/mermaid/mermaid.js?1766715318"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
