@@ -1,13 +1,9 @@
-package com.mageddo.dnsproxyserver.solver.basic;
+package com.mageddo.dnsproxyserver.solver;
 
 import java.util.Set;
 
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.config.Config.Entry;
-import com.mageddo.dnsproxyserver.solver.HostnameMatcher;
-import com.mageddo.dnsproxyserver.solver.HostnameQuery;
-import com.mageddo.dnsproxyserver.solver.Response;
-import com.mageddo.dnsproxyserver.solver.docker.AddressResolution;
 
 import org.xbill.DNS.Message;
 

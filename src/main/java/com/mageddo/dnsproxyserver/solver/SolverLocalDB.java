@@ -5,8 +5,6 @@ import javax.inject.Singleton;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.dataprovider.MutableConfigDAO;
-import com.mageddo.dnsproxyserver.solver.basic.QueryResponseHandler;
-import com.mageddo.dnsproxyserver.solver.docker.AddressResolution;
 
 import org.apache.commons.lang3.time.StopWatch;
 import org.xbill.DNS.Message;

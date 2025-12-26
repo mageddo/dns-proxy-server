@@ -7,8 +7,8 @@ import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.solver.Response;
 import com.mageddo.dnsproxyserver.solver.Solver;
 import com.mageddo.dnsproxyserver.solver.SupportedTypes;
-import com.mageddo.dnsproxyserver.solver.basic.QueryResponseHandler;
-import com.mageddo.dnsproxyserver.solver.docker.AddressResolution;
+import com.mageddo.dnsproxyserver.solver.QueryResponseHandler;
+import com.mageddo.dnsproxyserver.solver.AddressResolution;
 
 import org.xbill.DNS.Message;
 

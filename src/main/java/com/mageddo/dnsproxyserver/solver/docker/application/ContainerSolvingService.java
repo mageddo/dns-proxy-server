@@ -12,7 +12,7 @@ import javax.inject.Singleton;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.solver.docker.Container;
-import com.mageddo.dnsproxyserver.solver.docker.AddressResolution;
+import com.mageddo.dnsproxyserver.solver.AddressResolution;
 import com.mageddo.dnsproxyserver.solver.docker.Network;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.ContainerDAO;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;

@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.solver.docker;
+package com.mageddo.dnsproxyserver.solver;
 
 import java.time.Duration;
 

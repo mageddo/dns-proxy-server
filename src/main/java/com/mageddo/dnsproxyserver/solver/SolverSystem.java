@@ -4,8 +4,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.mageddo.dnsproxyserver.config.application.Configs;
-import com.mageddo.dnsproxyserver.solver.basic.QueryResponseHandler;
-import com.mageddo.dnsproxyserver.solver.docker.AddressResolution;
 import com.mageddo.dnsproxyserver.usecase.HostMachineService;
 import com.mageddo.net.IP;
 
