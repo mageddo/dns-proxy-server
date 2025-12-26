@@ -1,6 +1,7 @@
 package com.mageddo.dnsproxyserver.server.dns;
 
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -10,8 +11,6 @@ import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.utils.Ips;
 import com.mageddo.dnsserver.SimpleServer;
 import com.mageddo.dnsserver.doh.DoHServer;
-
-import com.mageddo.dnsserver.doh.DoHServerNetty;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +42,7 @@ public class ServerStarter {
 
   void startDohWhenNeedled(Server.DoH doh, InetAddress address) {
     if (doh != null && doh.isActive()) {
-      DoHServerNetty.start(requestHandler, address, doh.getPort());
+      this.doHServer.start(new InetSocketAddress(address, doh.getPort()));
     }
   }
 

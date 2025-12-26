@@ -2,7 +2,7 @@ package com.mageddo.dnsserver.doh;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
@@ -15,7 +15,7 @@ import javax.net.ssl.KeyManagerFactory;
 
 import com.mageddo.commons.io.IoUtils;
 import com.mageddo.dns.utils.Messages;
-import com.mageddo.dnsproxyserver.server.dns.RequestHandlerDefault;
+import com.mageddo.dnsserver.RequestHandler;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
@@ -87,14 +87,18 @@ public final class DoHServerNetty {
   // ---------------------------------------------------------------------------
   public static final class Server {
 
-    private final int port;
     private final InputStream p12;
     private final char[] password;
     private final DnsMessageHandler dnsHandler;
+    private final InetSocketAddress address;
 
-    public Server(final int port, final InputStream p12, final char[] password,
-        final DnsMessageHandler dnsHandler) {
-      this.port = port;
+    public Server(
+        final InetSocketAddress address,
+        final InputStream p12,
+        final char[] password,
+        final DnsMessageHandler dnsHandler
+    ) {
+      this.address = address;
       this.p12 = p12;
       this.password = password;
       this.dnsHandler = dnsHandler;
@@ -119,7 +123,7 @@ public final class DoHServerNetty {
             }
           });
 
-      final var ch = bootstrap.bind(this.port)
+      final var ch = bootstrap.bind(this.address)
           .sync()
           .channel();
 
@@ -536,29 +540,30 @@ public final class DoHServerNetty {
         .build();
   }
 
-  // ---------------------------------------------------------------------------
-  // Exemplo de start compatível com o teu padrão atual (resource p12)
-  // ---------------------------------------------------------------------------
-  public static Channel start(RequestHandlerDefault requestHandler, InetAddress address,
-      Integer port) {
+  public static Channel start(
+      RequestHandler requestHandler, InetSocketAddress address
+  ) {
     try {
-      return start0(requestHandler);
-//      ch.closeFuture().sync();
-
+      return start0(requestHandler, address);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
 
-  private static Channel start0(RequestHandlerDefault requestHandler) throws Exception {
+  static Channel start0(
+      RequestHandler requestHandler, InetSocketAddress address
+  ) throws Exception {
+
     final var in = IoUtils.getResourceAsStream("/META-INF/resources/doh-server.p12");
     final var password = "changeit".toCharArray();
 
-    final DnsMessageHandler handler = queryBytes -> {
-      return requestHandler.handle(Messages.of(queryBytes), "nettyDoH")
-          .toWire();
-    };
+    return new Server(
+        address, in, password, mapHandler(requestHandler)
+    ).start();
+  }
 
-    return new Server(8444, in, password, handler).start();
+  static DnsMessageHandler mapHandler(RequestHandler requestHandler) {
+    return bytes -> requestHandler.handle(Messages.of(bytes), "doh")
+        .toWire();
   }
 }

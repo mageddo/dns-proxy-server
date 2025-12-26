@@ -13,8 +13,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import javax.net.ssl.SSLContext;
 import javax.ws.rs.core.HttpHeaders;
 
@@ -42,9 +40,8 @@ import static javax.ws.rs.HttpMethod.POST;
  * -68d316bae4cb
  */
 @Slf4j
-@Singleton
-@RequiredArgsConstructor(onConstructor_ = @Inject)
-public final class DoHServer implements AutoCloseable {
+@RequiredArgsConstructor
+public final class DoHServerHttp1Vanilla implements AutoCloseable {
 
   /**
    * RFC 8484 media type
@@ -98,7 +95,7 @@ public final class DoHServer implements AutoCloseable {
     };
 
     this.server.createContext("/dns-query", exchange -> handleDnsQuery(exchange, resolver));
-    this.server.createContext("/health", DoHServer::handleHealth);
+    this.server.createContext("/health", DoHServerHttp1Vanilla::handleHealth);
 
     this.server.setExecutor(null); // default executor
     this.server.start();
