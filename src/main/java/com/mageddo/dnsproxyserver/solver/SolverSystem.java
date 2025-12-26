@@ -1,12 +1,8 @@
 package com.mageddo.dnsproxyserver.solver;
 
-import java.util.EnumSet;
-import java.util.Set;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.solver.basic.QueryResponseHandler;
 import com.mageddo.dnsproxyserver.solver.docker.AddressRes;
