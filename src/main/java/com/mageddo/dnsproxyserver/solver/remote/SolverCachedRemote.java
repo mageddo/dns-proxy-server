@@ -4,6 +4,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.mageddo.dns.utils.Messages;
+import com.mageddo.dnsproxyserver.solver.NamedResponse;
 import com.mageddo.dnsproxyserver.solver.Response;
 import com.mageddo.dnsproxyserver.solver.Solver;
 import com.mageddo.dnsproxyserver.solver.cache.CacheName;
@@ -34,10 +35,13 @@ public class SolverCachedRemote implements Solver {
 
   @Override
   public Response handle(Message query) {
-    return this.solversCache.handleRes(query, query_ -> {
+    return this.solversCache.handleRes(
+        query,
+        __ -> {
           log.debug("status=hotload, q={}", Messages.simplePrint(query));
-          return this.solverRemote.handle(query);
-        });
+          return NamedResponse.of(this.solverRemote.handle(query), this.name());
+        }
+    );
   }
 
   @Override

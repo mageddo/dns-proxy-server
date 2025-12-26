@@ -32,7 +32,7 @@ class RequestHandlerDefaultTest {
     ;
 
     // act
-    final var res = this.handler.solveFixingCacheTTL(mesRes);
+    final var res = this.handler.solveWithFixedCacheTTL(mesRes);
 
     // assert
     assertEquals(DEFAULT_GLOBAL_CACHE_DURATION, res.getDpsTtl());

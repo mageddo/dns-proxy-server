@@ -73,7 +73,7 @@ public class RequestHandlerDefault implements RequestHandler {
 
   Message solveCaching(Message query, String kind, StopWatch stopWatch) {
     final var res = Optional
-        .ofNullable(this.cache.handle(query, this::solveFixingCacheTTL))
+        .ofNullable(this.cache.handle(query, this::solveWithFixedCacheTTL))
         .orElseGet(() -> this.buildDefaultRes(query));
     log.debug(
         "status=solveRes, kind={}, time={}, res={}", kind, stopWatch.getTime(), simplePrint(res)
@@ -81,7 +81,7 @@ public class RequestHandlerDefault implements RequestHandler {
     return res;
   }
 
-  NamedResponse solveFixingCacheTTL(Message req) {
+  NamedResponse solveWithFixedCacheTTL(Message req) {
     return Objects.mapOrNull(
         this.solve(req),
         res -> res.withTTL(DEFAULT_GLOBAL_CACHE_DURATION)
