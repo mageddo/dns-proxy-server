@@ -1,10 +1,9 @@
-package com.mageddo.dnsproxyserver.solver;
+package com.mageddo.dnsproxyserver.solver.cache;
 
 import com.mageddo.commons.concurrent.Threads;
 
-import com.mageddo.dnsproxyserver.solver.cache.CacheName;
-import com.mageddo.dnsproxyserver.solver.cache.SolverCache;
-import com.mageddo.dnsproxyserver.solver.cache.SolverCacheFactory;
+import com.mageddo.dnsproxyserver.solver.cache.CacheName.Name;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -17,7 +16,7 @@ import static org.mockito.Mockito.verify;
 class SolverCacheFactoryTest {
 
   SolverCacheFactory factory = spy(new SolverCacheFactory(
-      new SolverCache(CacheName.Name.GLOBAL), new SolverCache(CacheName.Name.GLOBAL)
+      new SolverCache(Name.GLOBAL), new SolverCache(Name.GLOBAL)
   ));
 
   @Test
