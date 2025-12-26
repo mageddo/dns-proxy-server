@@ -13,6 +13,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.Expiry;
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.dns.utils.Messages;
+import com.mageddo.dnsproxyserver.solver.NamedResponse;
 import com.mageddo.dnsproxyserver.solver.Response;
 import com.mageddo.dnsproxyserver.solver.cache.CacheName.Name;
 
@@ -24,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import static com.mageddo.dns.utils.Messages.findQuestionHostname;
 import static com.mageddo.dns.utils.Messages.findQuestionType;
+import static com.mageddo.dns.utils.Messages.simplePrint;
 
 @Slf4j
 public class SolverCache {
@@ -39,46 +41,50 @@ public class SolverCache {
         .build();
   }
 
-  public Message handle(Message query, Function<Message, Response> delegate) {
+  public Message handle(Message query, Function<Message, NamedResponse> delegate) {
     return Objects.mapOrNull(this.handleRes(query, delegate), Response::getMessage);
   }
 
-  public Response handleRes(Message query, Function<Message, Response> delegate) {
+  public Response handleRes(Message query, Function<Message, NamedResponse> delegate) {
     final var key = buildKey(query);
 
     final var cachedValue = this.cache.getIfPresent(key);
     if (cachedValue != null) {
-      return this.mapResponse(query, cachedValue);
+      return this.mapResponse(query, cachedValue, true);
     }
 
     final var calculatedValue = this.calcCacheAndGet(key, query, delegate);
-    return this.mapResponse(query, calculatedValue);
+    return this.mapResponse(query, calculatedValue, false);
   }
 
   /**
    * Same k can be queried twice because no lock is done when doing the query.
    * This is done to prevent deadlocks.
    */
-  CacheValue calcCacheAndGet(String key, Message query, Function<Message, Response> delegate) {
+  CacheValue calcCacheAndGet(String key, Message query, Function<Message, NamedResponse> delegate) {
     final var value = this.calc(key, query, delegate);
     this.cacheValue(key, value);
     return value;
   }
 
-  void cacheValue(String key, CacheValue calculatedValue) {
-    this.cache.get(key, k -> calculatedValue);
+  void cacheValue(String key, CacheValue value) {
+    this.cache.get(key, k -> value);
   }
 
-  Response mapResponse(Message query, CacheValue value) {
+  Response mapResponse(Message query, CacheValue value, boolean cached) {
     if (value == null) {
       return null;
     }
     final var response = value.getResponse();
+    log.debug(
+        "status=found, fromCache={}, solver={}, reqRes={}, cacheTtl={}",
+        cached, response.getSolver(), simplePrint(response.getMessage()), value.getTtlAsSeconds()
+    );
     return response.withMessage(Messages.mergeId(query, response.getMessage()));
   }
 
   CacheValue calc(
-      String key, Message query, Function<Message, Response> delegate
+      String key, Message query, Function<Message, NamedResponse> delegate
   ) {
     final var queryText = Messages.simplePrint(query);
     if (log.isTraceEnabled()) {
@@ -141,10 +147,10 @@ public class SolverCache {
   @Builder
   static class CacheValue {
 
-    Response response;
+    NamedResponse response;
     Duration ttl;
 
-    public static CacheValue of(Response res, Duration ttl) {
+    public static CacheValue of(NamedResponse res, Duration ttl) {
       return CacheValue
           .builder()
           .response(res)
@@ -157,6 +163,10 @@ public class SolverCache {
           .getCreatedAt()
           .plus(this.ttl)
           ;
+    }
+
+    public Long getTtlAsSeconds() {
+      return this.ttl.toSeconds();
     }
   }
 

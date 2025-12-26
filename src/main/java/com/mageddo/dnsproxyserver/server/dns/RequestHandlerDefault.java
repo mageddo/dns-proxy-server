@@ -11,6 +11,7 @@ import javax.inject.Singleton;
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.config.application.Configs;
+import com.mageddo.dnsproxyserver.solver.NamedResponse;
 import com.mageddo.dnsproxyserver.solver.Response;
 import com.mageddo.dnsproxyserver.solver.Solver;
 import com.mageddo.dnsproxyserver.solver.SolverProvider;
@@ -80,14 +81,14 @@ public class RequestHandlerDefault implements RequestHandler {
     return res;
   }
 
-  Response solveFixingCacheTTL(Message req) {
+  NamedResponse solveFixingCacheTTL(Message req) {
     return Objects.mapOrNull(
         this.solve(req),
         res -> res.withTTL(DEFAULT_GLOBAL_CACHE_DURATION)
     );
   }
 
-  Response solve(Message req) {
+  NamedResponse solve(Message req) {
     final var timeSummary = new ArrayList<>();
     try {
       final var stopWatch = StopWatch.createStarted();
@@ -96,7 +97,7 @@ public class RequestHandlerDefault implements RequestHandler {
         final var res = this.solveTracking(req, solver, stopWatch);
         timeSummary.add(Pair.of(res.getSolverName(), res.getSolverTime()));
         if (res.hasResponse()) {
-          return res.getResponse();
+          return NamedResponse.of(res.getResponse(), solver.name());
         }
       }
     } finally {
