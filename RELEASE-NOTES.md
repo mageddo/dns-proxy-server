@@ -1,7 +1,7 @@
 ## 5.8.1
 * DNS over HTTPS, see #138
 * Option to disable a specific container to be resolved from DPS, see #596.
-* Increasing default memory limits up to 60mb, see #511
+* Increasing default memory limits up to 60mb, see #511.
 
 ## 5.6.2
 * Fixing Getting Non-authoritative answer when unexpected, see #608.

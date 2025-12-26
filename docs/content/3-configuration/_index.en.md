@@ -136,6 +136,25 @@ See more on [specify from which network solve container][6].
 | `log.level` | Logging level used by DPS.                     | `INFO`        |
 | `log.file`  | Output target for logs (file path or console). | `console`     |
 
+### Memory Limits
+
+When on binary mode DPS has a default limit of `MaxHeapSize=50m` + `MaxNewSize=10m`, you can change that by:
+
+Command Line
+
+```bash
+./dns-proxy-server -XX:MaxHeapSize=50m -XX:MaxNewSize=10m
+```
+
+Docker Compose
+```yaml
+services:
+  dps:
+    image: defreitas/dns-proxy-server
+    command: -XX:MaxHeapSize=50m -XX:MaxNewSize=10m
+```
+
+
 ### File Configuration Example
 
 * [Solver remote circuit breaker configuration][3]
