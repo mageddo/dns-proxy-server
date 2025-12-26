@@ -12,6 +12,6 @@ public class SupportedTypes {
   );
 
   public static final Set<Type> ADDRESSES_AND_CNAME = EnumSet.of(
-      Type.A, Type.CNAME, Type.AAAA, Type.HTTPS
+      Type.A, Type.AAAA, Type.HTTPS, Type.CNAME
   );
 }

@@ -39,7 +39,7 @@ public class QueryResponseHandler {
 
     final var askedHost = Messages.findQuestionHostname(query);
     final var version = type.toVersion();
-    return HostnameMatcher.match(askedHost, version, finder::apply);
+    return HostnameEvaluator.eval(askedHost, version, finder::apply);
   }
 
   public Response mapDynamicFromResolution(
@@ -54,7 +54,7 @@ public class QueryResponseHandler {
 
     final var askedHost = Messages.findQuestionHostname(query);
     final var version = type.toVersion();
-    return HostnameMatcher.match(
+    return HostnameEvaluator.eval(
         askedHost,
         version,
         hostnameQuery -> map(query, finder, hostnameQuery, type)

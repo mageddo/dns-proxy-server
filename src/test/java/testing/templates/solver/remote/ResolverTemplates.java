@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 
 import com.mageddo.dnsproxyserver.solver.Resolver;
-import com.mageddo.dnsproxyserver.solver.SimpleResolver;
+import com.mageddo.dnsproxyserver.solver.remote.SimpleResolver;
 
 import lombok.SneakyThrows;
 import testing.templates.InetSocketAddressTemplates;

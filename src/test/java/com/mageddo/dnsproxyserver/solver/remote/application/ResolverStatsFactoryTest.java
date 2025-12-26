@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.mageddo.dnsproxyserver.solver.remote.RemoteResolvers;
 import com.mageddo.dnsproxyserver.solver.Resolver;
-import com.mageddo.dnsproxyserver.solver.SimpleResolver;
+import com.mageddo.dnsproxyserver.solver.remote.SimpleResolver;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 
 import org.junit.jupiter.api.Test;

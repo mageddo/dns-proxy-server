@@ -1,9 +1,10 @@
-package com.mageddo.dnsproxyserver.solver;
+package com.mageddo.dnsproxyserver.solver.remote;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 
+import com.mageddo.dnsproxyserver.solver.Resolver;
 import com.mageddo.net.IpAddr;
 import com.mageddo.net.IpAddrs;
 

@@ -1,11 +1,14 @@
-package com.mageddo.dnsproxyserver.solver;
+package com.mageddo.dnsproxyserver.solver.docker;
 
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
+import com.mageddo.dnsproxyserver.solver.HostnameQuery;
+import com.mageddo.dnsproxyserver.solver.Responses;
 import com.mageddo.dnsproxyserver.solver.docker.application.ContainerSolvingService;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
 import com.mageddo.net.IP;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -76,7 +79,7 @@ class SolverDockerTest {
         ),
         resText
     );
-    assertTrue(Responses.isSuccess(res));
+    Assertions.assertTrue(Responses.isSuccess(res));
     assertTrue(Responses.isAuthoritative(res));
     assertEquals(Messages.DEFAULT_TTL, Messages.getFirstAnswerTTL(res));
     verify(this.containerSolvingService).findBestMatch(hostname);

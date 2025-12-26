@@ -9,6 +9,7 @@ import javax.inject.Singleton;
 
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.application.Configs;
+import com.mageddo.dnsproxyserver.solver.docker.SolverDocker;
 import com.mageddo.dnsproxyserver.solver.remote.SolverCachedRemote;
 import com.mageddo.dnsproxyserver.solver.stub.SolverStub;
 import com.mageddo.utils.Priorities;

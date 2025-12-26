@@ -1,8 +1,12 @@
-package com.mageddo.dnsproxyserver.solver;
+package com.mageddo.dnsproxyserver.solver.docker;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.mageddo.dnsproxyserver.solver.QueryResponseHandler;
+import com.mageddo.dnsproxyserver.solver.Response;
+import com.mageddo.dnsproxyserver.solver.Solver;
+import com.mageddo.dnsproxyserver.solver.SupportedTypes;
 import com.mageddo.dnsproxyserver.solver.docker.application.ContainerSolvingService;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
 

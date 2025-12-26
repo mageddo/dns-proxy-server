@@ -6,12 +6,10 @@ import java.util.function.Function;
 import com.mageddo.dns.Hostname;
 import com.mageddo.net.IP;
 
-public class HostnameMatcher {
+public class HostnameEvaluator {
 
-  public static <T> T match(
-      Hostname hostname,
-      IP.Version version,
-      Function<HostnameQuery, T> hostnameProviderFn
+  public static <T> T eval(
+      Hostname hostname, IP.Version version, Function<HostnameQuery, T> providerFn
   ) {
 
     final var wildcardHostname = HostnameQuery.ofWildcard(hostname, version);
@@ -19,7 +17,7 @@ public class HostnameMatcher {
     final var queries = List.of(wildcardHostname, regexHostname);
 
     for (final var host : queries) {
-      final var ip = hostnameProviderFn.apply(host);
+      final var ip = providerFn.apply(host);
       if (ip != null) {
         return ip;
       }

@@ -3,7 +3,7 @@ package com.mageddo.dnsproxyserver.solver.remote.circuitbreaker.application;
 import java.io.IOException;
 
 import com.mageddo.dns.utils.Messages;
-import com.mageddo.dnsproxyserver.solver.SimpleResolver;
+import com.mageddo.dnsproxyserver.solver.remote.SimpleResolver;
 import com.mageddo.net.IpAddr;
 
 import org.apache.commons.lang3.ClassUtils;

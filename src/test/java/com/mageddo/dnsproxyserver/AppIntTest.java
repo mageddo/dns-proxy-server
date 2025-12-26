@@ -16,7 +16,7 @@ import com.mageddo.dnsproxyserver.config.dataformat.v2.jsonv1v2.vo.ConfigJson;
 import com.mageddo.dnsproxyserver.sandbox.Instance;
 import com.mageddo.dnsproxyserver.sandbox.Sandbox;
 import com.mageddo.dnsproxyserver.server.Starter;
-import com.mageddo.dnsproxyserver.solver.SimpleResolver;
+import com.mageddo.dnsproxyserver.solver.remote.SimpleResolver;
 import com.mageddo.dnsproxyserver.utils.Ips;
 import com.mageddo.net.IpAddr;
 import com.mageddo.utils.Executors;
