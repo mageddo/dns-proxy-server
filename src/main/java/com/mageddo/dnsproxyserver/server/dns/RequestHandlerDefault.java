@@ -111,7 +111,7 @@ public class RequestHandlerDefault implements RequestHandler {
       }
     } finally {
       if (log.isDebugEnabled()) {
-        log.debug("timesSummary={}", timeSummary);
+        log.debug("req={} timesSummary={}", Messages.simplePrint(req), timeSummary);
       }
     }
     return null;

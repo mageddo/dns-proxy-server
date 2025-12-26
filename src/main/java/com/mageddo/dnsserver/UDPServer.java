@@ -61,13 +61,15 @@ public class UDPServer {
       final var resData = res.toWire();
 
       server.send(new DatagramPacket(resData, resData.length, datagram.getSocketAddress()));
-      log.debug(
-          "status=success, query={}, res={}, serverAddr={}, clientAddr={}, dataLength={}, "
-              + "datagramLength={}",
-          Messages.simplePrint(query), Messages.simplePrint(res),
-          server.getLocalAddress(), datagram.getSocketAddress(), datagram.getData().length,
-          datagram.getLength()
-      );
+      if(log.isTraceEnabled()){
+        log.trace(
+            "status=success, query={}, res={}, serverAddr={}, clientAddr={}, dataLength={}, "
+                + "datagramLength={}",
+            Messages.simplePrint(query), Messages.simplePrint(res),
+            server.getLocalAddress(), datagram.getSocketAddress(), datagram.getData().length,
+            datagram.getLength()
+        );
+      }
     } catch (Exception e) {
       log.warn("status=messageHandleFailed, msg={}", e.getMessage(), e);
     }

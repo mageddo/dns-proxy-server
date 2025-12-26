@@ -48,10 +48,12 @@ class DnsQueryTCPHandler implements SocketClientMessageHandler {
         out.write(res);
         out.flush();
 
-        log.debug(
-            "status=success, queryMsgSize={}, resMsgSize={}, req={}",
-            msgSize, res.length, Messages.simplePrint(query)
-        );
+        if(log.isTraceEnabled()){
+          log.trace(
+              "status=success, queryMsgSize={}, resMsgSize={}, req={}",
+              msgSize, res.length, Messages.simplePrint(query)
+          );
+        }
 
       }
     } catch (UncheckedIOException | IOException e) {

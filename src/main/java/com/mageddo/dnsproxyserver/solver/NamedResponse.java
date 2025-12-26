@@ -44,4 +44,8 @@ public class NamedResponse {
   public NamedResponse withTTL(Duration ttl) {
     return of(this.response.withTTL(ttl), this.solver);
   }
+
+  public boolean hasResponse() {
+    return this.response == null;
+  }
 }

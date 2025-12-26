@@ -94,7 +94,7 @@ public class SolverCache {
       String key, Message query, Function<Message, NamedResponse> delegate
   ) {
     final var res = delegate.apply(query);
-    if (res == null) {
+    if (res == null || res.hasResponse()) {
       if (log.isTraceEnabled()) {
         log.trace("status=nullRes, action=wontCache, k={}", key);
       }
@@ -103,7 +103,7 @@ public class SolverCache {
     final var ttl = res.getDpsTtl();
     if (log.isTraceEnabled()) {
       final var queryText = Messages.simplePrint(query);
-      log.debug("status=res, k={}, ttl={}, simpleMsg={}", key, ttl, queryText);
+      log.trace("status=res, k={}, ttl={}, simpleMsg={}", key, ttl, queryText);
     }
     return CacheValue.of(res, ttl);
   }
