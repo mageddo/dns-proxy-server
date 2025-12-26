@@ -24,7 +24,6 @@ public class ServerStarter {
 
   private final SimpleServer server;
   private final DoHServer doHServer;
-  private final RequestHandlerDefault requestHandler;
 
   public ServerStarter start() {
     final var server = Configs.getInstance()
