@@ -7,11 +7,11 @@ import lombok.Value;
 
 @Value
 @Builder
-public class Entry {
+public class QueryResponse {
 
-  private boolean hostnameMatched;
+  boolean hostnameMatched;
 
-  private IP ip;
+  IP ip;
 
   public String getIpText() {
     return this.ip != null ? this.ip.toText() : null;

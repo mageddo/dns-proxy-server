@@ -32,6 +32,9 @@ public class HostnameQuery {
   private final boolean useRegex;
 
   public Type getType() {
+    if (this.version == null) {
+      return null;
+    }
     return switch (this.version) {
       case IPV4 -> Type.A;
       case IPV6 -> Type.AAAA;

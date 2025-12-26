@@ -32,7 +32,7 @@ public class Response {
    * The effective response for the client.
    */
   @NonNull
-  private Message message;
+  Message message;
 
   /**
    * The calculated TTL which will be used by DPS to cache entries,
@@ -41,10 +41,10 @@ public class Response {
    * see {@link #DEFAULT_SUCCESS_TTL} for more explanations.
    */
   @NonNull
-  private Duration dpsTtl;
+  Duration dpsTtl;
 
   @NonNull
-  private LocalDateTime createdAt;
+  LocalDateTime createdAt;
 
   public static Response of(Message message, Duration dpsTtl) {
     return Response

@@ -362,7 +362,7 @@ public class Config {
     Integer ttl;
 
     @NonNull
-    Config.Entry.Type type;
+    Type type;
 
     public String requireTextIp() {
       Validate.isTrue(this.type.isAddressSolving() && this.ip != null, "IP is required");
@@ -433,7 +433,7 @@ public class Config {
       }
 
       public boolean isAddressSolving() {
-        return ConfigEntryTypes.is(this, Config.Entry.Type.A, Config.Entry.Type.AAAA);
+        return ConfigEntryTypes.is(this, Type.A, Type.AAAA, Type.HTTPS);
       }
 
       public boolean isHttps() {
