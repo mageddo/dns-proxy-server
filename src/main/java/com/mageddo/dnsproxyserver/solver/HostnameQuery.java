@@ -22,14 +22,14 @@ public class HostnameQuery {
   @NonNull
   Hostname hostname;
 
-  // FIXME EFS it needs to be refactored, looks like version is not a query param
-  //  only the hostname then all found ips could be filtered by version if needle
-  //  HTTPS query type answers the two types at the same request for example.
-  IP.Version version;
-
   boolean useWildcards;
 
   boolean useRegex;
+
+  /**
+   * When null, any IP version must be answered.
+   */
+  IP.Version version;
 
   public Type getType() {
     if (this.version == null) {
@@ -45,6 +45,39 @@ public class HostnameQuery {
   public String getHostnameValue() {
     return this.hostname.getValue();
   }
+
+  public boolean matches(Hostname hostname) {
+    return matches(hostname.getCanonicalValue());
+  }
+
+  public boolean matches(String hostnamePattern) {
+    if (this.useWildcards) {
+      final var hostnames = Wildcards.buildHostAndWildcards(this.hostname);
+      for (final var host : hostnames) {
+        if (host.isEqualTo(hostnamePattern)) {
+          return true;
+        }
+      }
+      return false;
+    }
+    if (this.useRegex && hostnamePattern.startsWith(REGEX_TAG) && hostnamePattern.endsWith(
+        REGEX_TAG)) {
+      return this.hostname
+          .getCanonicalValue()
+          .matches(StringUtils.substringBetween(hostnamePattern, REGEX_TAG, REGEX_TAG))
+          ;
+    }
+    return this.hostname.isEqualTo(hostnamePattern);
+  }
+
+  public boolean matches(HostnameQuery actual) {
+    return this.matches(actual.getHostname()) && this.getVersion() == actual.getVersion();
+  }
+
+  public boolean isTypeEqualTo(Type type) {
+    return this.getType() == type;
+  }
+
 
   public static HostnameQuery of(Hostname hostname) {
     return of(hostname, false, false);
@@ -118,35 +151,4 @@ public class HostnameQuery {
     return of(Hostname.of(hostname), version);
   }
 
-  public boolean matches(Hostname hostname) {
-    return matches(hostname.getCanonicalValue());
-  }
-
-  public boolean matches(String hostnamePattern) {
-    if (this.useWildcards) {
-      final var hostnames = Wildcards.buildHostAndWildcards(this.hostname);
-      for (final var host : hostnames) {
-        if (host.isEqualTo(hostnamePattern)) {
-          return true;
-        }
-      }
-      return false;
-    }
-    if (this.useRegex && hostnamePattern.startsWith(REGEX_TAG) && hostnamePattern.endsWith(
-        REGEX_TAG)) {
-      return this.hostname
-          .getCanonicalValue()
-          .matches(StringUtils.substringBetween(hostnamePattern, REGEX_TAG, REGEX_TAG))
-          ;
-    }
-    return this.hostname.isEqualTo(hostnamePattern);
-  }
-
-  public boolean matches(HostnameQuery actual) {
-    return this.matches(actual.getHostname()) && this.getVersion() == actual.getVersion();
-  }
-
-  public boolean isTypeEqualTo(Type type) {
-    return this.getType() == type;
-  }
 }
