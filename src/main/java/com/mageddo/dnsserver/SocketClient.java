@@ -15,12 +15,10 @@ import com.mageddo.commons.concurrent.Threads;
 import org.apache.commons.lang3.time.StopWatch;
 
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @EqualsAndHashCode(of = "id")
-@ToString(of = "id")
 public class SocketClient implements Runnable, AutoCloseable {
 
   public static final long FPS_60 = (long) (1_000 / 60.0);
@@ -37,56 +35,20 @@ public class SocketClient implements Runnable, AutoCloseable {
   }
 
   @Override
-  public void close() throws Exception {
-    this.socket.close();
-  }
-
-  public Duration getRunningTime() {
-    return Duration.between(this.createdAt, LocalDateTime.now());
-  }
-
-  public boolean isClosed() {
-    return this.socket.isClosed();
-  }
-
-  public void silentClose() {
-    try {
-      this.close();
-      log.debug("status=silentClosed, ranFor={}", this.getRunningTime());
-    } catch (Exception e) {
-      log.warn("status=silentClosingFailed, msg={}", e.getMessage(), e);
-    }
-  }
-
-  public OutputStream getOut() {
-    try {
-      return this.socket.getOutputStream();
-    } catch (IOException e) {
-      throw new UncheckedIOException(e);
-    }
-  }
-
-  public InputStream getIn() {
-    try {
-      return this.socket.getInputStream();
-    } catch (IOException e) {
-      throw new UncheckedIOException(e);
-    }
-  }
-
-  @Override
   public void run() {
     final var stopWatch = StopWatch.createStarted();
     try (final var in = this.socket.getInputStream()) {
       this.read(in);
     } catch (IOException e) {
       log.warn(
-          "status=unexpected-client-close, client={}, runTime={}, msg={}",
+          "status=unexpectedClose, client={}, runTime={}, msg={}",
           this, stopWatch.getTime(), e.getMessage(), e
       );
     } finally {
-      log.debug("status=finalizeClient, client={}, runTime={}", this, stopWatch.getTime());
-      this.silentClose();
+      if (log.isTraceEnabled()) {
+        log.debug("status=finalize, client={}, runTime={}", this, stopWatch.getTime());
+      }
+      this.close();
     }
   }
 
@@ -116,6 +78,18 @@ public class SocketClient implements Runnable, AutoCloseable {
     }
   }
 
+  @Override
+  public void close() {
+    try {
+      this.socket.close();
+      if (log.isTraceEnabled()) {
+        log.debug("status=closed, client={}, runTime={}", this, this.getRunningTime());
+      }
+    } catch (Exception e) {
+      log.warn("status=failed, client={}, msg={}", this, e.getMessage(), e);
+    }
+  }
+
   public boolean isOpen() {
     return !Thread.currentThread()
         .isInterrupted()
@@ -134,5 +108,34 @@ public class SocketClient implements Runnable, AutoCloseable {
     return this.socket.getRemoteSocketAddress();
   }
 
+
+  public Duration getRunningTime() {
+    return Duration.between(this.createdAt, LocalDateTime.now());
+  }
+
+  public boolean isClosed() {
+    return this.socket.isClosed();
+  }
+
+  public OutputStream getOut() {
+    try {
+      return this.socket.getOutputStream();
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
+  }
+
+  public InputStream getIn() {
+    try {
+      return this.socket.getInputStream();
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(this.getId());
+  }
 }
 

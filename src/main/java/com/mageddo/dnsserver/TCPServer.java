@@ -95,7 +95,7 @@ public class TCPServer implements AutoCloseable {
             itr.remove();
             log.debug("status=removedAlreadyClosed, runningTime={}", client.getRunningTime());
           } else if (runningForTooLong(client)) {
-            client.silentClose();
+            client.close();
             itr.remove();
             log.debug("status=forcedToClose, runningTime={}", client.getRunningTime());
           }
