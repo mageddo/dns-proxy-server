@@ -13,9 +13,9 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.Expiry;
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.dns.utils.Messages;
+import com.mageddo.dnsproxyserver.solver.Response;
 import com.mageddo.dnsproxyserver.solver.cache.CacheName.Name;
 
-import com.mageddo.dnsproxyserver.solver.Response;
 import org.xbill.DNS.Message;
 
 import lombok.Builder;
@@ -45,48 +45,63 @@ public class SolverCache {
 
   public Response handleRes(Message query, Function<Message, Response> delegate) {
     final var key = buildKey(query);
-    final var cachedValue = this.cache.getIfPresent(key);
 
+    final var cachedValue = this.cache.getIfPresent(key);
     if (cachedValue != null) {
       return this.mapResponse(query, cachedValue);
     }
 
-    final var calculatedValue = this.calculateValueWithoutLocks(key, query, delegate);
-    this.cacheValue(key, calculatedValue);
+    final var calculatedValue = this.calcCacheAndGet(key, query, delegate);
     return this.mapResponse(query, calculatedValue);
+  }
+
+  /**
+   * Same k can be queried twice because no lock is done when doing the query.
+   * This is done to prevent deadlocks.
+   */
+  CacheValue calcCacheAndGet(String key, Message query, Function<Message, Response> delegate) {
+    final var value = this.calc(key, query, delegate);
+    this.cacheValue(key, value);
+    return value;
   }
 
   void cacheValue(String key, CacheValue calculatedValue) {
     this.cache.get(key, k -> calculatedValue);
   }
 
-  Response mapResponse(Message query, CacheValue cachedValue) {
-    if (cachedValue == null) {
+  Response mapResponse(Message query, CacheValue value) {
+    if (value == null) {
       return null;
     }
-    final var response = cachedValue.getResponse();
+    final var response = value.getResponse();
     return response.withMessage(Messages.mergeId(query, response.getMessage()));
   }
 
-  CacheValue calculateValueWithoutLocks(
+  CacheValue calc(
       String key, Message query, Function<Message, Response> delegate
   ) {
-    log.trace("status=lookup, key={}, req={}", key, Messages.simplePrint(query));
-    final var _res = delegate.apply(query);
-    if (_res == null) {
-      log.debug("status=noAnswer, action=cantCache, key={}", key);
+    final var queryText = Messages.simplePrint(query);
+    if (log.isTraceEnabled()) {
+      log.trace("status=finding, key={}, req={}", key, queryText);
+    }
+    final var res = delegate.apply(query);
+    if (res == null) {
+      if (log.isTraceEnabled()) {
+        log.trace("status=nullRes, action=wontCache, k={}", key);
+      }
       return null;
     }
-    final var ttl = _res.getDpsTtl();
-    log.debug("status=hotload, k={}, ttl={}, simpleMsg={}", key, ttl, Messages.simplePrint(query));
-    return CacheValue.of(_res, ttl);
+    final var ttl = res.getDpsTtl();
+    log.debug("status=hotloadRes, k={}, ttl={}, simpleMsg={}", key, ttl, queryText);
+    return CacheValue.of(res, ttl);
   }
 
   static String buildKey(Message reqMsg) {
     final var type = findQuestionType(reqMsg);
     return String.format(
         "%s-%s",
-        type != null ? type : UUID.randomUUID(), // FIXME EFS it makes sense to save random id on cache
+        type != null ? type : UUID.randomUUID(),
+        // FIXME EFS it makes sense to save random id on cache
         findQuestionHostname(reqMsg)
     );
   }
