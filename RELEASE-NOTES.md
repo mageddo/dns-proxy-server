@@ -1,4 +1,7 @@
-## 5.8.2
+## 5.8.3
+* DNS over HTTPS, see #138
+* Option to disable a specific container to be resolved from DPS, see #596.
+* Increasing default memory limits up to 60mb, see #511.
 * Refactoring: Removing code duplication on the Local Solvers.
 * Optimizing logs
 
