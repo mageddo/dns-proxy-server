@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
-import com.mageddo.dnsproxyserver.solver.basic.BasicSolver;
+import com.mageddo.dnsproxyserver.solver.basic.QueryResponseHandler;
 import com.mageddo.dnsproxyserver.solver.docker.application.ContainerSolvingService;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
 
@@ -26,8 +26,10 @@ public class SolverDocker implements Solver {
   );
 
   private final ContainerSolvingService containerSolvingService;
+
   private final DockerDAO dockerDAO;
-  private final BasicSolver solver = BasicSolver.builder()
+
+  private final QueryResponseHandler solver = QueryResponseHandler.builder()
       .solverName(this.name())
       .supportedTypes(SUPPORTED_TYPES)
       .build();
@@ -40,7 +42,7 @@ public class SolverDocker implements Solver {
       return null;
     }
 
-    return this.solver.solve(query, this.containerSolvingService::findBestMatch);
+    return this.solver.ofQueryResponse(query, this.containerSolvingService::findBestMatch);
   }
 
 }

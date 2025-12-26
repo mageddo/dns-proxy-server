@@ -1,15 +1,16 @@
 package com.mageddo.dnsproxyserver.solver;
 
-import java.time.Duration;
+import java.util.EnumSet;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
-import com.mageddo.dnsproxyserver.config.ConfigEntryTypes;
 import com.mageddo.dnsproxyserver.config.dataprovider.MutableConfigDAO;
+import com.mageddo.dnsproxyserver.solver.basic.QueryResponseHandler;
+import com.mageddo.dnsproxyserver.solver.docker.AddressRes;
 
 import org.apache.commons.lang3.time.StopWatch;
 import org.xbill.DNS.Message;
@@ -28,26 +29,27 @@ public class SolverLocalDB implements Solver {
 
   public static final String NAME = "SolverLocalDB";
 
+  private static final Set<Type> SUPPORTED_TYPES = EnumSet.of(
+      Type.A, Type.CNAME, Type.AAAA, Type.HTTPS
+  );
+
+  private final QueryResponseHandler solver = QueryResponseHandler.builder()
+      .solverName(NAME)
+      .supportedTypes(SUPPORTED_TYPES)
+      .build();
+
   private final MutableConfigDAO mutableConfigDAO;
-  private final Lazy<SolverDelegate> solverDelegate;
+  private final Lazy<SolverDelegate> cnameSolver;
 
   @Override
   public Response handle(Message query) {
 
     final var stopWatch = StopWatch.createStarted();
 
-    final var type = Messages.findQuestionTypeCode(query);
-    if (isNotSupported(type)) {
-      log.debug(
-          "status=typeNotSupported, action=continue, type={}, time={}", type, stopWatch.getTime()
-      );
-      return null;
-    }
+    return this.solver.ofResponse(query, hostname -> {
 
-    final var askedHost = Messages.findQuestionHostname(query);
-    final var questionType = Messages.findQuestionType(query);
-    final var res = HostnameMatcher.match(askedHost, questionType.toVersion(), hostname -> {
           stopWatch.split();
+          final var askedHost = hostname.getHostname();
           final var found = this.findEntryTo(hostname);
           if (found == null) {
             log.trace(
@@ -55,39 +57,16 @@ public class SolverLocalDB implements Solver {
                 askedHost, stopWatch.getTime() - stopWatch.getSplitTime()
             );
             return null;
+          } else if (found.isCname()) {
+            return this.cnameSolver.get()
+                .solve(query, found);
           }
-          final var foundType = found.getType();
-          log.trace(
-              "status=found, type={}, askedHost={}, time={}, totalTime={}",
-              foundType, askedHost, stopWatch.getTime() - stopWatch.getSplitTime(),
-              stopWatch.getTime()
-          );
 
-          if (foundType.isAddressSolving()) {
+          return QueryResponseHandler.toResponse(query, AddressRes.matched(found.getIp()));
 
-            if (questionType.isHttps()) {
-              return Response.internalSuccess(Messages.notSupportedHttps(query));
-            }
-
-            final var ip = foundType.equals(questionType) ? found.requireTextIp() : null;
-            return Response.of(
-                Messages.authoritativeAnswer(query, ip, questionType.toVersion(), found.getTtl()),
-                Duration.ofSeconds(found.getTtl())
-            );
-          }
-          return this.solverDelegate.get()
-              .solve(query, found);
         }
     );
-    if (res != null) {
-      return res;
-    }
-    log.trace("status=notFound, askedHost={}, totalTime={}", askedHost, stopWatch.getTime());
-    return null;
-  }
 
-  private static boolean isNotSupported(Integer type) {
-    return ConfigEntryTypes.isNot(type, Type.A, Type.CNAME, Type.AAAA, Type.HTTPS);
   }
 
   @Override

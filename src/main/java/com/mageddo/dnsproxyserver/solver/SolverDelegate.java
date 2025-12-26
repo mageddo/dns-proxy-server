@@ -32,7 +32,8 @@ public class SolverDelegate {
     );
 
     final var cnameAnswer = cnameAnswer(query, entry);
-    final var question = Messages.copyQuestionForNowHostname(query,
+    final var question = Messages.copyQuestionForNowHostname(
+        query,
         Hostnames.toAbsoluteName(entry.getTarget())
     );
 
@@ -51,6 +52,8 @@ public class SolverDelegate {
   }
 
   static Message cnameAnswer(Message query, Config.Entry entry) {
-    return Messages.cnameResponse(query, entry.getTtl(), entry.getTarget());
+    return Messages.authoritative(
+        Messages.cnameResponse(query, entry.getTtl(), entry.getTarget())
+    );
   }
 }

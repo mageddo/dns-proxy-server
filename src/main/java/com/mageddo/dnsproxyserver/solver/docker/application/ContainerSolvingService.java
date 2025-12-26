@@ -12,7 +12,7 @@ import javax.inject.Singleton;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.solver.docker.Container;
-import com.mageddo.dnsproxyserver.solver.docker.QueryResponse;
+import com.mageddo.dnsproxyserver.solver.docker.AddressRes;
 import com.mageddo.dnsproxyserver.solver.docker.Network;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.ContainerDAO;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
@@ -37,7 +37,7 @@ public class ContainerSolvingService {
   private final DockerDAO dockerDAO;
   private final ContainerDAO containerDAO;
 
-  public QueryResponse findBestMatch(HostnameQuery query) {
+  public AddressRes findBestMatch(HostnameQuery query) {
     final var stopWatch = StopWatch.createStarted();
     final var matchedContainers = this.containerDAO.findActiveContainersMatching(query);
     final var foundIp = matchedContainers
@@ -51,7 +51,7 @@ public class ContainerSolvingService {
         "status=findDone, query={}, found={}, hostnameMatched={}, time={}",
         query, foundIp, hostnameMatched, stopWatch.getTime()
     );
-    return QueryResponse
+    return AddressRes
         .builder()
         .hostnameMatched(hostnameMatched)
         .ip(IP.of(foundIp))

@@ -15,6 +15,7 @@ import com.mageddo.dnsproxyserver.utils.Ips;
 import com.mageddo.net.IP;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.xbill.DNS.AAAARecord;
 import org.xbill.DNS.ARecord;
 import org.xbill.DNS.CNAMERecord;
@@ -239,7 +240,7 @@ public class Messages {
 
   @SneakyThrows
   public static Message cnameResponse(Message query, Integer ttl, String hostname) {
-    final var res = withNoErrorResponse(query.clone());
+    final var res = withNoErrorResponse(copy(query));
     final var answer = new CNAMERecord(
         res.getQuestion()
             .getName(),
@@ -273,15 +274,17 @@ public class Messages {
     return Messages.aAnswer(query, ip);
   }
 
-  public static Message answer(Message query, String ip, IP.Version version) {
-    return answer(query, ip, version, DEFAULT_TTL);
+  public static Message answer(Message query, String ip, Entry.Type type) {
+    return answer(query, ip, type, DEFAULT_TTL);
   }
 
-  public static Message answer(Message query, String ip, IP.Version version, long ttl) {
-    if (version.isIpv6()) {
-      return Messages.quadAnswer(query, ip, ttl);
-    }
-    return Messages.aAnswer(query, ip, ttl);
+  public static Message answer(Message query, String ip, Entry.Type type, long ttl) {
+    Validate.notNull(type, "type must not be null, query=%s", toHostnameQuery(query));
+    return switch (type) {
+      case A -> Messages.aAnswer(query, ip, ttl);
+      case AAAA -> Messages.quadAnswer(query, ip, ttl);
+      default -> throw new UnsupportedOperationException(String.valueOf(type));
+    };
   }
 
   static Message withNoErrorResponse(Message res) {
@@ -365,8 +368,8 @@ public class Messages {
     return unsetFlag(m, Flags.AA);
   }
 
-  public static Message authoritativeAnswer(Message query, String ip, IP.Version version) {
-    return authoritative(answer(query, ip, version));
+  public static Message authoritativeAnswer(Message query, String ip, Entry.Type type) {
+    return authoritative(answer(query, ip, type));
   }
 
   public static Message authoritativeAnswer(

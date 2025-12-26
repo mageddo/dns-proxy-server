@@ -373,6 +373,17 @@ public class Config {
       return mapOrNull(this.ip, IP::toText);
     }
 
+    public boolean isCname() {
+      return this.type.isCname();
+    }
+
+    public IP getIp(IP.Version version) {
+      if (version == null || this.ip.versionIs(version)) {
+        return this.ip;
+      }
+      return null;
+    }
+
     public static class EntryBuilder {
       public Entry build() {
         if (this.id == null) {
@@ -438,6 +449,10 @@ public class Config {
 
       public boolean isHttps() {
         return this == HTTPS;
+      }
+
+      public boolean isCname() {
+        return this == CNAME;
       }
     }
   }

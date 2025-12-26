@@ -1,37 +1,37 @@
 package testing.templates.docker;
 
-import com.mageddo.dnsproxyserver.solver.docker.QueryResponse;
+import com.mageddo.dnsproxyserver.solver.docker.AddressRes;
 import com.mageddo.net.IP;
 
 import testing.templates.IpTemplates;
 
 public class EntryTemplates {
-  public static QueryResponse zeroIp() {
-    return QueryResponse
+  public static AddressRes zeroIp() {
+    return AddressRes
         .builder()
         .ip(IP.of(IpTemplates.ZERO))
         .hostnameMatched(true)
         .build();
   }
 
-  public static QueryResponse localIpv6() {
-    return QueryResponse
+  public static AddressRes localIpv6() {
+    return AddressRes
         .builder()
         .hostnameMatched(true)
         .ip(IP.of(IpTemplates.LOCAL_EXTENDED_IPV6))
         .build();
   }
 
-  public static QueryResponse hostnameMatchedButNoAddress() {
-    return QueryResponse
+  public static AddressRes hostnameMatchedButNoAddress() {
+    return AddressRes
         .builder()
         .hostnameMatched(true)
         .build()
         ;
   }
 
-  public static QueryResponse hostnameNotMatched() {
-    return QueryResponse
+  public static AddressRes hostnameNotMatched() {
+    return AddressRes
         .builder()
         .build()
         ;
