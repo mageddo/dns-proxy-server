@@ -14,7 +14,6 @@ import com.github.benmanes.caffeine.cache.Expiry;
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.solver.NamedResponse;
-import com.mageddo.dnsproxyserver.solver.Response;
 import com.mageddo.dnsproxyserver.solver.cache.CacheName.Name;
 
 import org.xbill.DNS.Message;
@@ -41,11 +40,11 @@ public class SolverCache {
         .build();
   }
 
-  public Message handle(Message query, Function<Message, NamedResponse> delegate) {
-    return Objects.mapOrNull(this.handleRes(query, delegate), Response::getMessage);
+  public Message handleToMsg(Message query, Function<Message, NamedResponse> delegate) {
+    return Objects.mapOrNull(this.handle(query, delegate), NamedResponse::getMessage);
   }
 
-  public Response handleRes(Message query, Function<Message, NamedResponse> delegate) {
+  public NamedResponse handle(Message query, Function<Message, NamedResponse> delegate) {
     final var key = buildKey(query);
 
     final var cachedValue = this.cache.getIfPresent(key);
@@ -71,7 +70,7 @@ public class SolverCache {
     this.cache.get(key, k -> value);
   }
 
-  Response mapResponse(Message query, CacheValue value, boolean cached) {
+  NamedResponse mapResponse(Message query, CacheValue value, boolean cached) {
     if (value == null) {
       return null;
     }
@@ -86,10 +85,6 @@ public class SolverCache {
   CacheValue calc(
       String key, Message query, Function<Message, NamedResponse> delegate
   ) {
-    final var queryText = Messages.simplePrint(query);
-    if (log.isTraceEnabled()) {
-      log.trace("status=finding, key={}, req={}", key, queryText);
-    }
     final var res = delegate.apply(query);
     if (res == null) {
       if (log.isTraceEnabled()) {
@@ -98,7 +93,10 @@ public class SolverCache {
       return null;
     }
     final var ttl = res.getDpsTtl();
-    log.debug("status=hotloadRes, k={}, ttl={}, simpleMsg={}", key, ttl, queryText);
+    if(log.isTraceEnabled()) {
+      final var queryText = Messages.simplePrint(query);
+      log.debug("status=res, k={}, ttl={}, simpleMsg={}", key, ttl, queryText);
+    }
     return CacheValue.of(res, ttl);
   }
 

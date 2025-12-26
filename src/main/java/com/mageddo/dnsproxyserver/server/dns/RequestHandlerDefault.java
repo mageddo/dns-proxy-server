@@ -3,7 +3,6 @@ package com.mageddo.dnsproxyserver.server.dns;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -55,9 +54,9 @@ public class RequestHandlerDefault implements RequestHandler {
 
   @Override
   public Message handle(Message query, String kind) {
-    final var queryStr = simplePrint(query);
     final var stopWatch = StopWatch.createStarted();
     if (log.isTraceEnabled()) {
+      final var queryStr = simplePrint(query);
       log.trace("status=solving, kind={}, query={}", kind, queryStr);
     }
     try {
@@ -72,13 +71,20 @@ public class RequestHandlerDefault implements RequestHandler {
   }
 
   Message solveCaching(Message query, String kind, StopWatch stopWatch) {
-    final var res = Optional
-        .ofNullable(this.cache.handle(query, this::solveWithFixedCacheTTL))
-        .orElseGet(() -> this.buildDefaultRes(query));
+    final var res = this.cache.handle(query, this::solveWithFixedCacheTTL);
+    if (res == null) {
+      final var msg = this.buildDefaultRes(query);
+      log.debug(
+          "status=defaultAnswer, kind={}, time={}, res={}",
+          kind, stopWatch.getTime(), simplePrint(msg)
+      );
+      return msg;
+    }
     log.debug(
-        "status=solveRes, kind={}, time={}, res={}", kind, stopWatch.getTime(), simplePrint(res)
+        "status=solved, kind={}, solver={}, time={}, res={}",
+        kind, res.getSolver(), stopWatch.getTime(), simplePrint(res.getMessage())
     );
-    return res;
+    return res.getMessage();
   }
 
   NamedResponse solveWithFixedCacheTTL(Message req) {
@@ -102,7 +108,7 @@ public class RequestHandlerDefault implements RequestHandler {
       }
     } finally {
       if (log.isDebugEnabled()) {
-        log.debug("status=solveSummary, summary={}", timeSummary);
+        log.debug("timesSummary={}", timeSummary);
       }
     }
     return null;

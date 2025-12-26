@@ -16,8 +16,8 @@ import com.mageddo.commons.concurrent.ThreadPool;
 import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.solver.cache.CacheName.Name;
-
 import com.mageddo.dnsproxyserver.solver.cache.SolverCache;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -26,6 +26,7 @@ import org.xbill.DNS.Message;
 
 import lombok.SneakyThrows;
 import testing.templates.MessageTemplates;
+import testing.templates.NamedResponseTemplates;
 import testing.templates.ResponseTemplates;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -58,9 +59,11 @@ class SolversCacheTest {
     final var key = "A-acme.com";
 
     // act
-    final var res = this.cache.handleRes(req, message -> {
-          return Response.of(Messages.aAnswer(message, "0.0.0.0"), Duration.ofMillis(50));
-        }
+    final var res = this.cache.handle(
+        req,
+        message -> NamedResponseTemplates.of(
+            Response.of(Messages.aAnswer(message, "0.0.0.0"), Duration.ofMillis(50))
+        )
     );
 
     // assert
@@ -79,8 +82,11 @@ class SolversCacheTest {
     final var req = MessageTemplates.acmeAQuery();
 
     // act
-    final var res = this.cache.handle(req,
-        message -> Response.internalSuccess(Messages.aAnswer(message, "0.0.0.0"))
+    final var res = this.cache.handleToMsg(
+        req,
+        message -> NamedResponseTemplates.of(
+            Response.internalSuccess(Messages.aAnswer(message, "0.0.0.0"))
+        )
     );
 
     // assert
@@ -102,7 +108,7 @@ class SolversCacheTest {
     final var query = MessageTemplates.acmeAQuery();
 
     // act
-    final var res = this.cache.handle(query, message -> null);
+    final var res = this.cache.handleToMsg(query, message -> null);
 
     // assert
     assertNull(res);
@@ -113,17 +119,19 @@ class SolversCacheTest {
   void mustEvictLocksAndDeadLocks() throws Exception {
     // arrange
     final var r = new SecureRandom();
-    final Function<Message, Response> fn = message -> {
+    final Function<Message, NamedResponse> fn = message -> {
       Threads.sleep(r.nextInt(50) + 10);
       this.cache.clear();
-      return ResponseTemplates.acmeAResponse();
+      return NamedResponseTemplates.of(ResponseTemplates.acmeAResponse());
     };
 
     final var pool = ThreadPool.newFixed(3);
 
     // act
     this.runNTimes(
-        it -> pool.submit(() -> this.cache.handle(MessageTemplates.randomHostnameAQuery(), fn)),
+        it -> pool.submit(() -> this.cache.handleToMsg(
+            MessageTemplates.randomHostnameAQuery(), fn
+        )),
         30
     );
 
@@ -164,11 +172,11 @@ class SolversCacheTest {
     }
   }
 
-  private Object handleRequest(Message req, Random r) {
-    this.cache.handleRes(req, message -> {
+  Object handleRequest(Message req, Random r) {
+    this.cache.handle(req, message -> {
           final var res = Response.internalSuccess(Messages.aAnswer(message, "0.0.0.0"));
           Threads.sleep(r.nextInt(10));
-          return res;
+          return NamedResponseTemplates.of(res);
         }
     );
     return null;

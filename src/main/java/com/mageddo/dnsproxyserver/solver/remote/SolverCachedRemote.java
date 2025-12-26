@@ -3,6 +3,7 @@ package com.mageddo.dnsproxyserver.solver.remote;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.mageddo.commons.lang.Objects;
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.solver.NamedResponse;
 import com.mageddo.dnsproxyserver.solver.Response;
@@ -35,7 +36,7 @@ public class SolverCachedRemote implements Solver {
 
   @Override
   public Response handle(Message query) {
-    return this.solversCache.handleRes(
+    final var res = this.solversCache.handle(
         query,
         __ -> {
           if (log.isTraceEnabled()) {
@@ -44,6 +45,7 @@ public class SolverCachedRemote implements Solver {
           return NamedResponse.of(this.solverRemote.handle(query), this.name());
         }
     );
+    return Objects.mapOrNull(res, NamedResponse::getResponse);
   }
 
   @Override

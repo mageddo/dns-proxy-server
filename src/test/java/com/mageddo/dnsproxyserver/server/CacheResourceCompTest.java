@@ -13,7 +13,7 @@ import dagger.sheath.junit.DaggerTest;
 import testing.ContextSupplier;
 import testing.Events;
 import testing.templates.MessageTemplates;
-import testing.templates.ResponseTemplates;
+import testing.templates.NamedResponseTemplates;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -50,7 +50,7 @@ class CacheResourceCompTest {
   @Test
   void mustFindCaches() {
     // arrange
-    this.cache.handle(MessageTemplates.acmeAQuery(), ResponseTemplates::to);
+    this.cache.handleToMsg(MessageTemplates.acmeAQuery(), NamedResponseTemplates::of);
 
     // act
     final var response = given()

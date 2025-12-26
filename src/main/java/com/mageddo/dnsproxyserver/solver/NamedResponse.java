@@ -29,8 +29,8 @@ public class NamedResponse {
     return this.response.getCreatedAt();
   }
 
-  public Response withMessage(Message message) {
-    return this.response.withMessage(message);
+  public NamedResponse withMessage(Message message) {
+    return of(this.response.withMessage(message), this.solver);
   }
 
   public Message getMessage() {
