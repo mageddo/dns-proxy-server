@@ -7,6 +7,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import testing.templates.MessageTemplates;
+import testing.templates.NamedResponseTemplates;
 import testing.templates.ResponseTemplates;
 
 import static com.mageddo.dnsproxyserver.server.dns.RequestHandlerDefault.DEFAULT_GLOBAL_CACHE_DURATION;
@@ -23,18 +24,16 @@ class RequestHandlerDefaultTest {
 
   @Test
   void mustCacheWithFixedTTL() {
-    // arrange
+
     final var mesRes = MessageTemplates.acmeAResponse();
 
-    doReturn(ResponseTemplates.acmeAResponse())
+    doReturn(NamedResponseTemplates.of(ResponseTemplates.acmeAResponse()))
         .when(this.handler)
         .solve(eq(mesRes))
     ;
 
-    // act
     final var res = this.handler.solveWithFixedCacheTTL(mesRes);
 
-    // assert
     assertEquals(DEFAULT_GLOBAL_CACHE_DURATION, res.getDpsTtl());
   }
 }
