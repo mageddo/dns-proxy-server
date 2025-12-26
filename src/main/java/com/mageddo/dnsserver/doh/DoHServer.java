@@ -36,6 +36,9 @@ public final class DoHServer implements AutoCloseable {
 
   @Override
   public void close() {
+    if (!this.started) {
+      return;
+    }
     try {
       this.channel.closeFuture()
           .sync();
