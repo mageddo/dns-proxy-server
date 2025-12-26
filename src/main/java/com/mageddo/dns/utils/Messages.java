@@ -405,4 +405,9 @@ public class Messages {
   public static Record getFirstAnswer(Message message) {
     return getFirstRecord(message, Section.ANSWER);
   }
+
+  public static Duration getFirstAnswerTTLDuration(Response response) {
+    final var ttl = getFirstAnswerTTL(response);
+    return Objects.mapOrNull(ttl, Duration::ofSeconds);
+  }
 }

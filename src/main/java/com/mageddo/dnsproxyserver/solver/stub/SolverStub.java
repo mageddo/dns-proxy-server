@@ -47,7 +47,7 @@ public class SolverStub implements Solver {
         log.debug("status=notSolved, hostname={}", hostname);
         return null;
       }
-      return AddressResolution.matched(foundIp, Response.DEFAULT_SUCCESS_TTL);
+      return AddressResolution.matched(foundIp, Response.DEFAULT_LONG);
 
     });
 

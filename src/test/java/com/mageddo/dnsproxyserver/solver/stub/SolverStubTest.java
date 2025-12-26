@@ -1,7 +1,7 @@
 package com.mageddo.dnsproxyserver.solver.stub;
 
 import com.mageddo.dns.utils.Messages;
-
+import com.mageddo.dnsproxyserver.solver.Response;
 import com.mageddo.dnsproxyserver.solver.Responses;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -59,6 +59,8 @@ class SolverStubTest {
 
     assertNotNull(response);
     assertEquals("192.168.3.1", Messages.findAnswerRawIP(response.getMessage()));
+    assertEquals(Response.DEFAULT_LONG, response.getDpsTtl());
+    assertEquals(Response.DEFAULT_LONG, response.getMessageTTL());
   }
 
   @Test

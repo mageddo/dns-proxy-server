@@ -25,8 +25,15 @@ public class Response {
    * caches found
    * hostnames for at least 5 minutes and the don't found for 1 hour, it might speed up a lot."
    */
-  public static final Duration DEFAULT_SUCCESS_TTL = Duration.ofMinutes(5);
-  public static final Duration DEFAULT_NXDOMAIN_TTL = Duration.ofMinutes(60);
+
+  public static final Duration FIVE_MINUTES = Duration.ofMinutes(5);
+  public static final Duration ONE_HOUR = Duration.ofMinutes(60);
+
+  public static final Duration DEFAULT = FIVE_MINUTES;
+  public static final Duration DEFAULT_LONG = ONE_HOUR;
+
+  public static final Duration DEFAULT_SUCCESS_TTL = FIVE_MINUTES;
+  public static final Duration DEFAULT_NXDOMAIN_TTL = ONE_HOUR;
 
   /**
    * The effective response for the client.
@@ -91,5 +98,9 @@ public class Response {
   public int countAnswers() {
     return Messages.getAnswers(this.message)
         .size();
+  }
+
+  public Duration getMessageTTL() {
+    return Messages.getFirstAnswerTTLDuration(this);
   }
 }
