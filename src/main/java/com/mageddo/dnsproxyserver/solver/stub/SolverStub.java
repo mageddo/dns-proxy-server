@@ -62,7 +62,7 @@ public class SolverStub implements Solver {
         hostname, foundIp, qTypeVersion
     );
     return ResponseMapper.toDefaultSuccessAnswer(
-        query, sameVersion ? foundIp : null, qTypeVersion
+        query, sameVersion ? foundIp : null, questionType
     );
   }
 

@@ -47,7 +47,7 @@ public class SolverSystem implements Solver {
 
       final var ip = this.findHostMachineIP(questionType.toVersion());
       log.debug("status=solvingHostMachineName, host={}, ip={}", hostname, ip);
-      return ResponseMapper.toDefaultSuccessAnswer(query, ip, questionType.toVersion());
+      return ResponseMapper.toDefaultSuccessAnswer(query, ip, questionType);
     }
     return null;
   }
