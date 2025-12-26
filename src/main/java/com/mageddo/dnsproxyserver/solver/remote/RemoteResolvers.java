@@ -1,8 +1,9 @@
-package com.mageddo.dnsproxyserver.solver;
+package com.mageddo.dnsproxyserver.solver.remote;
 
 import java.util.List;
 import java.util.function.Function;
 
+import com.mageddo.dnsproxyserver.solver.Resolver;
 import com.mageddo.net.IpAddr;
 
 public class RemoteResolvers {

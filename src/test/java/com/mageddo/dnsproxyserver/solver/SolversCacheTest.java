@@ -15,8 +15,9 @@ import java.util.stream.IntStream;
 import com.mageddo.commons.concurrent.ThreadPool;
 import com.mageddo.commons.concurrent.Threads;
 import com.mageddo.dns.utils.Messages;
-import com.mageddo.dnsproxyserver.solver.CacheName.Name;
+import com.mageddo.dnsproxyserver.solver.cache.CacheName.Name;
 
+import com.mageddo.dnsproxyserver.solver.cache.SolverCache;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

@@ -1,10 +1,14 @@
-package com.mageddo.dnsproxyserver.solver;
+package com.mageddo.dnsproxyserver.solver.remote;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.mageddo.dns.utils.Messages;
-import com.mageddo.dnsproxyserver.solver.CacheName.Name;
+import com.mageddo.dnsproxyserver.solver.*;
+import com.mageddo.dnsproxyserver.solver.cache.CacheName;
+import com.mageddo.dnsproxyserver.solver.cache.CacheName.Name;
+
+import com.mageddo.dnsproxyserver.solver.cache.SolverCache;
 
 import org.xbill.DNS.Message;
 

@@ -25,6 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor(onConstructor_ = @Inject)
 public class SolverStub implements Solver {
 
+  public static final String NAME = "SolverStub";
+
   private final QueryResponseHandler handler = QueryResponseHandler.builder()
       .solverName(this.name())
       .supportedTypes(SupportedTypes.ADDRESSES)
@@ -51,6 +53,11 @@ public class SolverStub implements Solver {
 
     });
 
+  }
+
+  @Override
+  public String name() {
+    return NAME;
   }
 
   String findDomainName() {

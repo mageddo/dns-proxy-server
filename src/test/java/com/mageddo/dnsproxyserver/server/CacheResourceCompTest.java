@@ -3,9 +3,9 @@ package com.mageddo.dnsproxyserver.server;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 
-import com.mageddo.dnsproxyserver.solver.CacheName;
-import com.mageddo.dnsproxyserver.solver.CacheName.Name;
-import com.mageddo.dnsproxyserver.solver.SolverCache;
+import com.mageddo.dnsproxyserver.solver.cache.CacheName;
+import com.mageddo.dnsproxyserver.solver.cache.CacheName.Name;
+import com.mageddo.dnsproxyserver.solver.cache.SolverCache;
 
 import org.junit.jupiter.api.Test;
 

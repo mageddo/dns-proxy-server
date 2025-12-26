@@ -10,11 +10,11 @@ import javax.inject.Singleton;
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.config.application.Configs;
-import com.mageddo.dnsproxyserver.solver.CacheName;
-import com.mageddo.dnsproxyserver.solver.CacheName.Name;
+import com.mageddo.dnsproxyserver.solver.cache.CacheName;
+import com.mageddo.dnsproxyserver.solver.cache.CacheName.Name;
 import com.mageddo.dnsproxyserver.solver.Response;
 import com.mageddo.dnsproxyserver.solver.Solver;
-import com.mageddo.dnsproxyserver.solver.SolverCache;
+import com.mageddo.dnsproxyserver.solver.cache.SolverCache;
 import com.mageddo.dnsproxyserver.solver.SolverProvider;
 import com.mageddo.dnsserver.RequestHandler;
 

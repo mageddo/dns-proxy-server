@@ -2,6 +2,9 @@ package com.mageddo.dnsproxyserver.solver;
 
 import com.mageddo.commons.concurrent.Threads;
 
+import com.mageddo.dnsproxyserver.solver.cache.CacheName;
+import com.mageddo.dnsproxyserver.solver.cache.SolverCache;
+import com.mageddo.dnsproxyserver.solver.cache.SolverCacheFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

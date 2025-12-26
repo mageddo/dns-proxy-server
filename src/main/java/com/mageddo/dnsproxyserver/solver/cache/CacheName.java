@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.solver;
+package com.mageddo.dnsproxyserver.solver.cache;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

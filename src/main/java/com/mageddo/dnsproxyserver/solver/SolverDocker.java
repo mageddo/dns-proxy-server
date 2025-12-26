@@ -16,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class SolverDocker implements Solver {
 
+  public static final String NAME = "SolverDocker";
+
   private final ContainerSolvingService containerSolvingService;
 
   private final DockerDAO dockerDAO;
@@ -33,7 +35,13 @@ public class SolverDocker implements Solver {
       return null;
     }
 
-    return this.handler.mapDynamicFromResolution(query, this.containerSolvingService::findBestMatch);
+    return this.handler.mapDynamicFromResolution(query,
+        this.containerSolvingService::findBestMatch
+    );
   }
 
+  @Override
+  public String name() {
+    return NAME;
+  }
 }

@@ -11,9 +11,9 @@ import lombok.Value;
 public class ResolverStats {
 
   @NonNull
-  private Resolver resolver;
+  Resolver resolver;
 
-  private CircuitStatus circuitStatus;
+  CircuitStatus circuitStatus;
 
   public boolean isValidToUse() {
     return !CircuitStatus.OPEN.equals(this.circuitStatus);

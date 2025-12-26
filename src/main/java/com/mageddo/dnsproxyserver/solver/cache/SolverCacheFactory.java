@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.solver;
+package com.mageddo.dnsproxyserver.solver.cache;
 
 import java.util.Collections;
 import java.util.List;
@@ -9,12 +9,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.mageddo.concurrent.SingleThreadQueueProcessor;
-import com.mageddo.dnsproxyserver.solver.CacheName.Name;
+import com.mageddo.dnsproxyserver.solver.cache.CacheName.Name;
 
 import lombok.extern.slf4j.Slf4j;
 
-import static com.mageddo.dnsproxyserver.solver.CacheName.Name.GLOBAL;
-import static com.mageddo.dnsproxyserver.solver.CacheName.Name.REMOTE;
+import static com.mageddo.dnsproxyserver.solver.cache.CacheName.Name.GLOBAL;
+import static com.mageddo.dnsproxyserver.solver.cache.CacheName.Name.REMOTE;
 
 @Slf4j
 @Singleton

@@ -2,6 +2,8 @@ package com.mageddo.dnsproxyserver.solver;
 
 import java.util.List;
 
+import com.mageddo.dnsproxyserver.solver.cname.SolverCNameDelegate;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,16 +19,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
-class SolverDelegateTest {
+class SolverCNameDelegateTest {
 
   @Mock
   SolverProvider solverProvider;
 
-  SolverDelegate delegate;
+  SolverCNameDelegate delegate;
 
   @BeforeEach
   void beforeEach() {
-    this.delegate = new SolverDelegate(this.solverProvider);
+    this.delegate = new SolverCNameDelegate(this.solverProvider);
   }
 
   @Test

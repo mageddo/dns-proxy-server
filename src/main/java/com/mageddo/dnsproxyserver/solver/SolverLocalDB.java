@@ -6,6 +6,8 @@ import javax.inject.Singleton;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.dataprovider.MutableConfigDAO;
 
+import com.mageddo.dnsproxyserver.solver.cname.SolverCNameDelegate;
+
 import org.apache.commons.lang3.time.StopWatch;
 import org.xbill.DNS.Message;
 
@@ -14,7 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * When finds a wildcard hostname, delegate the found hostname to {@link SolverDelegate} class.
+ * When finds a wildcard hostname, delegate the found hostname to {@link SolverCNameDelegate} class.
  */
 @Slf4j
 @Singleton
@@ -29,7 +31,7 @@ public class SolverLocalDB implements Solver {
       .build();
 
   private final MutableConfigDAO mutableConfigDAO;
-  private final Lazy<SolverDelegate> cnameSolver;
+  private final Lazy<SolverCNameDelegate> cnameSolver;
 
   @Override
   public Response handle(Message query) {

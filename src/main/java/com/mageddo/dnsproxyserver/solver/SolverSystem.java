@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor(onConstructor_ = @Inject)
 public class SolverSystem implements Solver {
 
+  public static final String NAME = "SolverSystem";
   private final HostMachineService machineService;
 
   private final QueryResponseHandler handler = QueryResponseHandler.builder()
@@ -44,4 +45,8 @@ public class SolverSystem implements Solver {
     return this.machineService.findHostMachineIP(version);
   }
 
+  @Override
+  public String name() {
+    return NAME;
+  }
 }

@@ -2,6 +2,7 @@ package com.mageddo.dnsproxyserver.solver;
 
 import javax.inject.Inject;
 
+import com.mageddo.dnsproxyserver.solver.remote.RemoteResolvers;
 import org.junit.jupiter.api.Test;
 
 import dagger.sheath.junit.DaggerTest;

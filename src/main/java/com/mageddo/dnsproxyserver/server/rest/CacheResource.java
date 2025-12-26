@@ -5,8 +5,8 @@ import javax.inject.Singleton;
 import javax.ws.rs.core.Response;
 
 import com.mageddo.dnsproxyserver.server.rest.reqres.CacheEntryResV1;
-import com.mageddo.dnsproxyserver.solver.CacheName.Name;
-import com.mageddo.dnsproxyserver.solver.SolverCacheFactory;
+import com.mageddo.dnsproxyserver.solver.cache.CacheName.Name;
+import com.mageddo.dnsproxyserver.solver.cache.SolverCacheFactory;
 import com.mageddo.http.HttpMapper;
 import com.mageddo.http.Request;
 import com.mageddo.http.WebServer;

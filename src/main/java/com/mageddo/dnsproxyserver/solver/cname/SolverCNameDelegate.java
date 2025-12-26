@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.solver;
+package com.mageddo.dnsproxyserver.solver.cname;
 
 import java.time.Duration;
 
@@ -9,6 +9,9 @@ import com.mageddo.dns.utils.Hostnames;
 import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.config.Config;
 
+import com.mageddo.dnsproxyserver.solver.Response;
+import com.mageddo.dnsproxyserver.solver.SolverLocalDB;
+import com.mageddo.dnsproxyserver.solver.SolverProvider;
 import org.xbill.DNS.Message;
 
 import lombok.AllArgsConstructor;
@@ -22,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Singleton
 @AllArgsConstructor(onConstructor_ = @Inject)
-public class SolverDelegate {
+public class SolverCNameDelegate {
 
   private final SolverProvider solverProvider;
 

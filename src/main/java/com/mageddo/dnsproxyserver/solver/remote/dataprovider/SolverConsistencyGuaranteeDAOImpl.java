@@ -3,7 +3,7 @@ package com.mageddo.dnsproxyserver.solver.remote.dataprovider;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.mageddo.dnsproxyserver.solver.SolverCacheFactory;
+import com.mageddo.dnsproxyserver.solver.cache.SolverCacheFactory;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.solver;
+package com.mageddo.dnsproxyserver.solver.remote;
 
 import java.util.List;
 import java.util.Objects;
@@ -9,8 +9,9 @@ import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.mageddo.dnsproxyserver.solver.remote.Request;
-import com.mageddo.dnsproxyserver.solver.remote.Result;
+import com.mageddo.dnsproxyserver.solver.Resolver;
+import com.mageddo.dnsproxyserver.solver.Response;
+import com.mageddo.dnsproxyserver.solver.Solver;
 import com.mageddo.dnsproxyserver.solver.remote.application.CircuitBreakerService;
 import com.mageddo.dnsproxyserver.solver.remote.application.RemoteResultSupplier;
 import com.mageddo.dnsproxyserver.solver.remote.application.ResolverStatsFactory;

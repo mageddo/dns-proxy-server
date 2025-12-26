@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.mageddo.dnsproxyserver.solver.CacheEntry;
+import com.mageddo.dnsproxyserver.solver.cache.CacheEntry;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.solver;
+package com.mageddo.dnsproxyserver.solver.cache;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -13,8 +13,9 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.Expiry;
 import com.mageddo.commons.lang.Objects;
 import com.mageddo.dns.utils.Messages;
-import com.mageddo.dnsproxyserver.solver.CacheName.Name;
+import com.mageddo.dnsproxyserver.solver.cache.CacheName.Name;
 
+import com.mageddo.dnsproxyserver.solver.Response;
 import org.xbill.DNS.Message;
 
 import lombok.Builder;
@@ -125,8 +126,8 @@ public class SolverCache {
   @Builder
   static class CacheValue {
 
-    private Response response;
-    private Duration ttl;
+    Response response;
+    Duration ttl;
 
     public static CacheValue of(Response res, Duration ttl) {
       return CacheValue
