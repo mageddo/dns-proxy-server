@@ -8,7 +8,6 @@ import com.mageddo.dnsproxyserver.solver.docker.application.ContainerSolvingServ
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
 import com.mageddo.net.IP;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -79,7 +78,7 @@ class SolverDockerTest {
         ),
         resText
     );
-    Assertions.assertTrue(Responses.isSuccess(res));
+    assertTrue(Responses.isSuccess(res));
     assertTrue(Responses.isAuthoritative(res));
     assertEquals(Messages.DEFAULT_TTL, Messages.getFirstAnswerTTL(res));
     verify(this.containerSolvingService).findBestMatch(hostname);
