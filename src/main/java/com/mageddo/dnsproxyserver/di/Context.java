@@ -22,7 +22,7 @@ import com.mageddo.dnsproxyserver.di.module.ModuleMain;
 import com.mageddo.dnsproxyserver.di.module.ModuleMap;
 import com.mageddo.dnsproxyserver.di.module.ModuleSolver;
 import com.mageddo.dnsproxyserver.di.module.ModuleStartup;
-import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacade;
+import com.mageddo.dnsproxyserver.docker.DockerNetworkDAO;
 import com.mageddo.dnsproxyserver.quarkus.QuarkusConfig;
 import com.mageddo.dnsproxyserver.server.Starter;
 import com.mageddo.dnsproxyserver.solver.Solver;
@@ -85,7 +85,7 @@ public interface Context {
 
   ContainerSolvingService containerSolvingService();
 
-  DockerNetworkFacade dockerNetworkDAO();
+  DockerNetworkDAO dockerNetworkDAO();
 
   DockerDAO dockerDAO();
 

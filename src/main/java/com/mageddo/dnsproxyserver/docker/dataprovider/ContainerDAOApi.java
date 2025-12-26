@@ -13,6 +13,7 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.exception.NotFoundException;
 import com.github.dockerjava.api.model.Container;
+import com.mageddo.dnsproxyserver.docker.ContainerDAO;
 import com.mageddo.dnsproxyserver.docker.application.Containers;
 
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Default
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)
-public class ContainerFacadeDefault implements ContainerFacade {
+public class ContainerDAOApi implements ContainerDAO {
 
   private final DockerClient dockerClient;
 

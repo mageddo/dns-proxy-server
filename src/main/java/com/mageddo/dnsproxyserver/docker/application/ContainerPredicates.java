@@ -1,7 +1,6 @@
-package com.mageddo.dnsproxyserver.docker;
+package com.mageddo.dnsproxyserver.docker.application;
 
 import com.github.dockerjava.api.model.Container;
-import com.mageddo.dnsproxyserver.docker.application.Labels;
 import com.mageddo.dnsproxyserver.solver.docker.Label;
 
 public class ContainerPredicates {

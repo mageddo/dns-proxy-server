@@ -7,8 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.github.dockerjava.api.DockerClient;
-import com.mageddo.dnsproxyserver.docker.ContainerPredicates;
-import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacade;
+import com.mageddo.dnsproxyserver.docker.application.ContainerPredicates;
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.solver.docker.Container;
 import com.mageddo.dnsproxyserver.solver.docker.ContainerCompact;
@@ -22,15 +21,15 @@ import lombok.extern.slf4j.Slf4j;
 @Default
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)
-public class ContainerDAODefault implements ContainerDAO {
+public class ContainerDAODefault implements com.mageddo.dnsproxyserver.solver.docker.dataprovider.ContainerDAO {
 
-  private final ContainerFacade containerFacade;
+  private final com.mageddo.dnsproxyserver.docker.ContainerDAO containerDAO;
   private final DockerClient dockerClient;
 
   @Override
   public List<Container> findActiveContainersMatching(HostnameQuery query) {
     final var containers = this.findActiveContainers();
-    return this.containerFacade.inspectFilteringValidContainers(containers)
+    return this.containerDAO.inspectFilteringValidContainers(containers)
         .filter(ContainerHostnameMatcher.buildPredicate(query))
         .map(ContainerMapper::of)
         .toList();
@@ -48,7 +47,7 @@ public class ContainerDAODefault implements ContainerDAO {
   }
 
   List<com.github.dockerjava.api.model.Container> findActiveContainers() {
-    return this.containerFacade.findActiveContainers()
+    return this.containerDAO.findActiveContainers()
         .stream()
         .filter(ContainerPredicates::isEnabledForDPS)
         .toList()
@@ -57,7 +56,7 @@ public class ContainerDAODefault implements ContainerDAO {
 
   @Override
   public boolean isEnabledForDPS(String containerId) {
-    return ContainerPredicates.isEnabledForDPS(this.containerFacade.findById(containerId));
+    return ContainerPredicates.isEnabledForDPS(this.containerDAO.findById(containerId));
   }
 
 }

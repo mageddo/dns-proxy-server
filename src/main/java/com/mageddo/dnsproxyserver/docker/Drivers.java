@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.docker.domain;
+package com.mageddo.dnsproxyserver.docker;
 
 public class Drivers {
   public static final String BRIDGE = "bridge";

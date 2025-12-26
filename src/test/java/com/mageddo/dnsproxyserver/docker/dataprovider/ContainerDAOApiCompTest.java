@@ -20,16 +20,16 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
 @ExtendWith(MockitoExtension.class)
-class ContainerFacadeDefaultCompTest {
+class ContainerDAOApiCompTest {
 
-  ContainerFacadeDefault dao;
+  ContainerDAOApi dao;
 
   DockerClient dockerClient;
 
   @BeforeEach
   void before() {
     this.dockerClient = DockerClientTemplates.buildSpy();
-    this.dao = spy(new ContainerFacadeDefault(this.dockerClient));
+    this.dao = spy(new ContainerDAOApi(this.dockerClient));
   }
 
   @Test

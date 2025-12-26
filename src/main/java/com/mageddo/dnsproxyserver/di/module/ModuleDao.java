@@ -2,12 +2,10 @@ package com.mageddo.dnsproxyserver.di.module;
 
 import javax.inject.Singleton;
 
-import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacade;
-import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacadeDefault;
-import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacade;
-import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacadeDefault;
-import com.mageddo.dnsproxyserver.solver.docker.dataprovider.ContainerDAO;
-import com.mageddo.dnsproxyserver.solver.docker.dataprovider.ContainerDAODefault;
+import com.mageddo.dnsproxyserver.docker.ContainerDAO;
+import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerDAOApi;
+import com.mageddo.dnsproxyserver.docker.DockerNetworkDAO;
+import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkDAOApi;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAODefault;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DpsContainerDAO;
@@ -23,17 +21,17 @@ public interface ModuleDao {
 
   @Binds
   @Singleton
-  DockerNetworkFacade dockerNetworkFacade(DockerNetworkFacadeDefault impl);
+  DockerNetworkDAO dockerNetworkFacade(DockerNetworkDAOApi impl);
 
   @Binds
   @Singleton
-  ContainerFacade containerFacade(ContainerFacadeDefault impl);
+  ContainerDAO containerFacade(ContainerDAOApi impl);
 
   // ---------------- END:FACADE --------------- //
 
   @Binds
   @Singleton
-  ContainerDAO containerDAO(ContainerDAODefault impl);
+  com.mageddo.dnsproxyserver.solver.docker.dataprovider.ContainerDAO containerDAO(com.mageddo.dnsproxyserver.solver.docker.dataprovider.ContainerDAODefault impl);
 
   @Binds
   @Singleton

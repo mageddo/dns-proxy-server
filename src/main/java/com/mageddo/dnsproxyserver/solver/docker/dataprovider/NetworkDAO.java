@@ -3,7 +3,7 @@ package com.mageddo.dnsproxyserver.solver.docker.dataprovider;
 
 import java.util.function.Predicate;
 
-import com.mageddo.dnsproxyserver.docker.domain.NetworkConnectionStatus;
+import com.mageddo.dnsproxyserver.docker.NetworkConnectionStatus;
 import com.mageddo.dnsproxyserver.solver.docker.ContainerCompact;
 import com.mageddo.dnsproxyserver.solver.docker.Network;
 

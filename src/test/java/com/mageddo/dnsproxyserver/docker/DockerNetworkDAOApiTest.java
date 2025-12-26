@@ -2,7 +2,7 @@ package com.mageddo.dnsproxyserver.docker;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.exception.DockerException;
-import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacadeDefault;
+import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkDAOApi;
 import com.mageddo.http.HttpStatus;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -12,22 +12,22 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import testing.templates.docker.DockerClientTemplates;
 
-import static com.mageddo.dnsproxyserver.docker.domain.NetworkConnectionStatus.ALREADY_CONNECTED;
-import static com.mageddo.dnsproxyserver.docker.domain.NetworkConnectionStatus.CONNECTED;
+import static com.mageddo.dnsproxyserver.docker.NetworkConnectionStatus.ALREADY_CONNECTED;
+import static com.mageddo.dnsproxyserver.docker.NetworkConnectionStatus.CONNECTED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doThrow;
 
 @ExtendWith(MockitoExtension.class)
-class DockerNetworkFacadeDefaultTest {
+class DockerNetworkDAOApiTest {
 
-  DockerNetworkFacadeDefault dao;
+  DockerNetworkDAOApi dao;
 
   DockerClient dockerClient;
 
   @BeforeEach
   void before() {
     this.dockerClient = DockerClientTemplates.buildSpy();
-    this.dao = new DockerNetworkFacadeDefault(this.dockerClient);
+    this.dao = new DockerNetworkDAOApi(this.dockerClient);
   }
 
   @Test

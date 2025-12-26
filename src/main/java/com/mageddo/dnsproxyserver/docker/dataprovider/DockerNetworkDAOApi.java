@@ -12,7 +12,8 @@ import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.ContainerNetwork;
 import com.github.dockerjava.api.model.Network;
 import com.mageddo.commons.lang.Objects;
-import com.mageddo.dnsproxyserver.docker.domain.NetworkConnectionStatus;
+import com.mageddo.dnsproxyserver.docker.DockerNetworkDAO;
+import com.mageddo.dnsproxyserver.docker.NetworkConnectionStatus;
 import com.mageddo.net.Networks;
 
 import org.apache.commons.lang3.StringUtils;
@@ -22,14 +23,14 @@ import org.apache.commons.lang3.tuple.Pair;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.mageddo.dnsproxyserver.docker.domain.NetworkConnectionStatus.ALREADY_CONNECTED;
-import static com.mageddo.dnsproxyserver.docker.domain.NetworkConnectionStatus.CONNECTED;
+import static com.mageddo.dnsproxyserver.docker.NetworkConnectionStatus.ALREADY_CONNECTED;
+import static com.mageddo.dnsproxyserver.docker.NetworkConnectionStatus.CONNECTED;
 
 @Slf4j
 @Default
 @Singleton
 @AllArgsConstructor(onConstructor_ = @Inject)
-public class DockerNetworkFacadeDefault implements DockerNetworkFacade {
+public class DockerNetworkDAOApi implements DockerNetworkDAO {
 
   private final DockerClient dockerClient;
 

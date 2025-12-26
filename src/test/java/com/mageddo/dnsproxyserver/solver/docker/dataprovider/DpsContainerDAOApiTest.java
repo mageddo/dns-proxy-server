@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
-class DpsContainerDAODefaultTest {
+class DpsContainerDAOApiTest {
 
   @Spy
   @InjectMocks

@@ -19,11 +19,11 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 
 @ExtendWith(MockitoExtension.class)
-class ContainerFacadeDefaultTest {
+class ContainerDAOApiTest {
 
   @Spy
   @InjectMocks
-  ContainerFacadeDefault facade;
+  ContainerDAOApi facade;
 
   @Test
   void mustNotThrowErrorWhenInspectContainerGetNotFound() {

@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.docker.domain;
+package com.mageddo.dnsproxyserver.docker;
 
 public enum NetworkConnectionStatus {
   ALREADY_CONNECTED,

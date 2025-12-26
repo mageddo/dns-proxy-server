@@ -10,7 +10,7 @@ import javax.inject.Singleton;
 import com.github.dockerjava.api.DockerClient;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.docker.application.Containers;
-import com.mageddo.dnsproxyserver.docker.dataprovider.ContainerFacade;
+import com.mageddo.dnsproxyserver.docker.ContainerDAO;
 import com.mageddo.dnsproxyserver.solver.docker.Container;
 import com.mageddo.dnsproxyserver.solver.docker.Label;
 import com.mageddo.dnsproxyserver.solver.docker.Network;
@@ -30,7 +30,7 @@ public class DpsContainerDAODefault implements DpsContainerDAO {
   static final String DPS_INSIDE_CONTAINER_YES = "1";
 
   private final DockerClient dockerClient;
-  private final ContainerFacade containerFacade;
+  private final ContainerDAO containerDAO;
 
   @Override
   public boolean isDpsRunningInsideContainer() {
@@ -39,7 +39,7 @@ public class DpsContainerDAODefault implements DpsContainerDAO {
 
   @Override
   public boolean isDpsContainer(String containerId) {
-    return DpsContainerUtils.isDpsContainer(this.containerFacade.findById(containerId));
+    return DpsContainerUtils.isDpsContainer(this.containerDAO.findById(containerId));
   }
 
   @Override
@@ -58,7 +58,7 @@ public class DpsContainerDAODefault implements DpsContainerDAO {
     } else {
       log.debug("dpsContainersFound={}", containers.size());
     }
-    return this.containerFacade.inspectFilteringValidContainers(containers)
+    return this.containerDAO.inspectFilteringValidContainers(containers)
         .findFirst()
         .map(ContainerMapper::of)
         .orElse(null);

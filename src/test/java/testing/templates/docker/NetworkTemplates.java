@@ -2,7 +2,7 @@ package testing.templates.docker;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.github.dockerjava.api.model.Network;
-import com.mageddo.dnsproxyserver.docker.domain.Drivers;
+import com.mageddo.dnsproxyserver.docker.Drivers;
 import com.mageddo.json.JsonUtils;
 
 import lombok.SneakyThrows;

@@ -8,8 +8,8 @@ import javax.inject.Singleton;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
 import com.mageddo.dnsproxyserver.docker.application.Containers;
-import com.mageddo.dnsproxyserver.docker.dataprovider.DockerNetworkFacade;
-import com.mageddo.dnsproxyserver.docker.domain.NetworkConnectionStatus;
+import com.mageddo.dnsproxyserver.docker.DockerNetworkDAO;
+import com.mageddo.dnsproxyserver.docker.NetworkConnectionStatus;
 import com.mageddo.dnsproxyserver.solver.docker.ContainerCompact;
 import com.mageddo.dnsproxyserver.solver.docker.Network;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.mapper.ContainerCompactMapper;
@@ -28,42 +28,42 @@ import static com.mageddo.commons.lang.Objects.mapOrNull;
 public class NetworkDAODefault implements NetworkDAO {
 
   private final DockerClient dockerClient;
-  private final DockerNetworkFacade dockerNetworkFacade;
+  private final DockerNetworkDAO dockerNetworkDAO;
 
   @Override
   public Network findById(String networkId) {
-    return NetworkMapper.of(this.dockerNetworkFacade.findById(networkId));
+    return NetworkMapper.of(this.dockerNetworkDAO.findById(networkId));
   }
 
   @Override
   public Network findByName(String networkName) {
-    return NetworkMapper.of(this.dockerNetworkFacade.findByName(networkName));
+    return NetworkMapper.of(this.dockerNetworkDAO.findByName(networkName));
   }
 
   @Override
   public boolean existsByName(String networkName) {
-    return this.dockerNetworkFacade.findByName(networkName) != null;
+    return this.dockerNetworkDAO.findByName(networkName) != null;
   }
 
   @Override
   public String findContainerWithNetworkAndIp(String networkName, String ip) {
-    final var pair = this.dockerNetworkFacade.findContainerWithIp(networkName, ip);
+    final var pair = this.dockerNetworkDAO.findContainerWithIp(networkName, ip);
     return mapOrNull(pair, Pair::getKey);
   }
 
   @Override
   public void disconnect(String networkId, String containerId) {
-    this.dockerNetworkFacade.disconnect(networkId, containerId);
+    this.dockerNetworkDAO.disconnect(networkId, containerId);
   }
 
   @Override
   public NetworkConnectionStatus connect(String networkNameOrId, String containerId) {
-    return this.dockerNetworkFacade.connect(networkNameOrId, containerId);
+    return this.dockerNetworkDAO.connect(networkNameOrId, containerId);
   }
 
   @Override
   public void connect(String networkNameOrId, String containerId, String networkIp) {
-    this.dockerNetworkFacade.connect(networkNameOrId, containerId, networkIp);
+    this.dockerNetworkDAO.connect(networkNameOrId, containerId, networkIp);
   }
 
   @Override
