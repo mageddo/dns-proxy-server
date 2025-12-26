@@ -8,7 +8,7 @@ import org.xbill.DNS.Rcode;
 
 import testing.templates.MessageTemplates;
 
-import static com.mageddo.dns.utils.Messages.findFirstAnswerRecord;
+import static com.mageddo.dns.utils.Messages.getFirstAnswer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -101,7 +101,7 @@ class MessagesTest {
   @Test
   void mustBuildSimpleAnswer() {
     // arrange
-    final var answer = findFirstAnswerRecord(acmeAResponse());
+    final var answer = getFirstAnswer(acmeAResponse());
 
     // act
     final var str = Messages.simplePrint(answer);

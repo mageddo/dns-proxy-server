@@ -78,6 +78,7 @@ class SolverDockerTest {
     );
     assertTrue(Responses.isSuccess(res));
     assertTrue(Responses.isAuthoritative(res));
+    assertEquals(Messages.DEFAULT_TTL, Messages.getFirstAnswerTTL(res));
     verify(this.containerSolvingService).findBestMatch(hostname);
   }
 

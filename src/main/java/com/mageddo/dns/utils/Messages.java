@@ -58,7 +58,7 @@ public class Messages {
       return null;
     }
     try {
-      final var answer = findFirstAnswerRecord(reqOrRes);
+      final var answer = getFirstAnswer(reqOrRes);
       final var rcode = reqOrRes.getRcode();
       if (answer != null) {
         return String.format("rc=%d, res=%s", rcode, simplePrint(answer));
@@ -135,12 +135,8 @@ public class Messages {
   }
 
   public static String findFirstAnswerRecordStr(Message msg) {
-    final var v = findFirstAnswerRecord(msg);
+    final var v = getFirstAnswer(msg);
     return v == null ? null : v.toString();
-  }
-
-  public static Record findFirstAnswerRecord(Message msg) {
-    return getFirstRecord(msg, Section.ANSWER);
   }
 
   public static Record findFirstAuthorityRecord(Message msg) {
@@ -152,7 +148,7 @@ public class Messages {
     if (section.isEmpty()) {
       return null;
     }
-    return section.get(0);
+    return section.getFirst();
   }
 
   public static Message aQuestion(String host) {
@@ -214,7 +210,7 @@ public class Messages {
 
   public static Duration findTTL(Message m) {
     final var answer = Optional
-        .ofNullable(Messages.findFirstAnswerRecord(m))
+        .ofNullable(Messages.getFirstAnswer(m))
         .orElseGet(() -> Messages.findFirstAuthorityRecord(m));
     if (answer == null) {
       return Duration.ZERO;
@@ -344,7 +340,7 @@ public class Messages {
   }
 
   public static String findAnswerRawIP(Message res) {
-    return findFirstAnswerRecord(res).rdataToString();
+    return getFirstAnswer(res).rdataToString();
   }
 
   public static boolean isNxDomain(Message m) {
@@ -396,5 +392,17 @@ public class Messages {
 
   public static List<Record> getAnswers(Message m) {
     return m.getSection(Section.ANSWER);
+  }
+
+  public static long getFirstAnswerTTL(Response res) {
+    return getFirstAnswerTTL(res.getMessage());
+  }
+
+  public static long getFirstAnswerTTL(Message message) {
+    return Objects.mapOrNull(getFirstAnswer(message), Record::getTTL);
+  }
+
+  public static Record getFirstAnswer(Message message) {
+    return getFirstRecord(message, Section.ANSWER);
   }
 }

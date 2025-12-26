@@ -38,6 +38,9 @@ public class SolverStub implements Solver {
 
   @Override
   public Response handle(Message query) {
+
+//    this.handler.mapExactFromResolution()
+
     final var questionType = Messages.findQuestionType(query);
     if (ConfigEntryTypes.isNot(questionType, Type.A, Type.AAAA, Type.HTTPS)) {
       log.debug("status=unsupportedType, type={}, query={}", findQuestionTypeCode(query),
