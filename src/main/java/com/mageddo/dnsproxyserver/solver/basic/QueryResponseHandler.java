@@ -7,7 +7,7 @@ import com.mageddo.dnsproxyserver.config.Config.Entry;
 import com.mageddo.dnsproxyserver.solver.HostnameMatcher;
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.solver.Response;
-import com.mageddo.dnsproxyserver.solver.docker.AddressRes;
+import com.mageddo.dnsproxyserver.solver.docker.AddressResolution;
 
 import org.xbill.DNS.Message;
 
@@ -29,7 +29,7 @@ public class QueryResponseHandler {
   @Singular
   Set<Entry.Type> supportedTypes;
 
-  public Response ofResponse(Message query, Function<Response> finder) {
+  public Response mapDynamicFromResponse(Message query, Function<HostnameQuery, Response> finder) {
 
     final var type = Messages.findQuestionType(query);
     if (this.isNotSupported(type)) {
@@ -42,7 +42,7 @@ public class QueryResponseHandler {
     return HostnameMatcher.match(askedHost, version, finder::apply);
   }
 
-  public Response ofQueryResponse(Message query, Function<AddressRes> finder) {
+  public Response mapDynamicFromResolution(Message query, Function<HostnameQuery, AddressResolution> finder) {
 
     final var type = Messages.findQuestionType(query);
     if (this.isNotSupported(type)) {
@@ -55,26 +55,38 @@ public class QueryResponseHandler {
     return HostnameMatcher.match(
         askedHost,
         version,
-        hostnameQuery -> toResponse(query, finder, hostnameQuery, type)
+        hostnameQuery -> map(query, finder, hostnameQuery, type)
     );
   }
 
-  static Response toResponse(
+  public Response mapExactFromResolution(Message query, Function<HostnameQuery, AddressResolution> fn) {
+
+    final var type = Messages.findQuestionType(query);
+    if (this.isNotSupported(type)) {
+      log.trace("status=unsupportedType, solver={}, type={}", this.solverName, type);
+      return null;
+    }
+
+    final var hostnameQuery = HostnameQuery.of(Messages.findQuestionHostname(query));
+    return map(query, fn, hostnameQuery, type);
+  }
+
+  static Response map(
       Message query,
-      Function<AddressRes> finder,
+      Function<HostnameQuery, AddressResolution> finder,
       HostnameQuery hostnameQuery,
       Entry.Type type
   ) {
     final var res = finder.apply(hostnameQuery);
-    return toResponse(query, res, type);
+    return map(query, res, type);
   }
 
-  public static Response toResponse(Message query, AddressRes res) {
+  public static Response map(Message query, AddressResolution res) {
     final var type = Messages.findQuestionType(query);
-    return toResponse(query, res, type);
+    return map(query, res, type);
   }
 
-  public static Response toResponse(Message query, AddressRes res, Entry.Type type) {
+  public static Response map(Message query, AddressResolution res, Entry.Type type) {
     if (res == null || res.isHostNameNotMatched()) {
       return null;
     } else if (type.isHttps()) {
@@ -96,7 +108,7 @@ public class QueryResponseHandler {
   }
 
   @FunctionalInterface
-  public static interface Function<T> {
-    T apply(HostnameQuery hostnameQuery);
+  public static interface Function<From, To> {
+    To apply(From from);
   }
 }

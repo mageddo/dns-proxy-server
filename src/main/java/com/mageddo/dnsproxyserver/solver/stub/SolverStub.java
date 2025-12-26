@@ -11,6 +11,9 @@ import com.mageddo.dnsproxyserver.solver.Response;
 import com.mageddo.dnsproxyserver.solver.ResponseMapper;
 import com.mageddo.dnsproxyserver.solver.Solver;
 
+import com.mageddo.dnsproxyserver.solver.SupportedTypes;
+import com.mageddo.dnsproxyserver.solver.basic.QueryResponseHandler;
+
 import org.xbill.DNS.Message;
 
 import lombok.AllArgsConstructor;
@@ -27,6 +30,11 @@ import static com.mageddo.dns.utils.Messages.findQuestionTypeCode;
 @Singleton
 @AllArgsConstructor(onConstructor_ = @Inject)
 public class SolverStub implements Solver {
+
+  private final QueryResponseHandler handler = QueryResponseHandler.builder()
+      .solverName(this.name())
+      .supportedTypes(SupportedTypes.ADDRESSES)
+      .build();
 
   @Override
   public Response handle(Message query) {

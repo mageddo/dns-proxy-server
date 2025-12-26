@@ -5,7 +5,7 @@ import javax.inject.Singleton;
 
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.solver.basic.QueryResponseHandler;
-import com.mageddo.dnsproxyserver.solver.docker.AddressRes;
+import com.mageddo.dnsproxyserver.solver.docker.AddressResolution;
 import com.mageddo.dnsproxyserver.usecase.HostMachineService;
 import com.mageddo.net.IP;
 
@@ -29,14 +29,14 @@ public class SolverSystem implements Solver {
   @Override
   public Response handle(Message query) {
 
-    return this.handler.ofQueryResponse(query, hostnameQuery -> {
+    return this.handler.mapExactFromResolution(query, hostnameQuery -> {
           final var hostname = hostnameQuery.getHostname();
           final var config = Configs.getInstance();
           if (hostname.isEqualTo(config.getHostMachineHostname())) {
             final var ip = this.findHostMachineIP(hostnameQuery.getVersion());
-            return AddressRes.matched(ip);
+            return AddressResolution.matched(ip);
           }
-          return AddressRes.notMatched();
+          return AddressResolution.notMatched();
         }
     );
 

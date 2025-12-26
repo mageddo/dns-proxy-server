@@ -10,7 +10,7 @@ import lombok.Value;
 
 @Value
 @Builder
-public class AddressRes {
+public class AddressResolution {
 
   boolean hostnameMatched;
 
@@ -49,11 +49,11 @@ public class AddressRes {
     return null;
   }
 
-  public static AddressRes matched(IP ip) {
+  public static AddressResolution matched(IP ip) {
     return matched(ip, null);
   }
 
-  public static AddressRes matched(IP ip, Integer ttl) {
+  public static AddressResolution matched(IP ip, Integer ttl) {
     return builder()
         .hostnameMatched(true)
         .ip(ip)
@@ -62,7 +62,7 @@ public class AddressRes {
   }
 
 
-  public static AddressRes notMatched() {
+  public static AddressResolution notMatched() {
     return builder()
         .hostnameMatched(false)
         .build();

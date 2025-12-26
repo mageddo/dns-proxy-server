@@ -6,7 +6,7 @@ import javax.inject.Singleton;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.dnsproxyserver.config.dataprovider.MutableConfigDAO;
 import com.mageddo.dnsproxyserver.solver.basic.QueryResponseHandler;
-import com.mageddo.dnsproxyserver.solver.docker.AddressRes;
+import com.mageddo.dnsproxyserver.solver.docker.AddressResolution;
 
 import org.apache.commons.lang3.time.StopWatch;
 import org.xbill.DNS.Message;
@@ -38,7 +38,7 @@ public class SolverLocalDB implements Solver {
 
     final var stopWatch = StopWatch.createStarted();
 
-    return this.handler.ofResponse(query, hostname -> {
+    return this.handler.mapDynamicFromResponse(query, hostname -> {
 
           stopWatch.split();
           final var askedHost = hostname.getHostname();
@@ -54,8 +54,8 @@ public class SolverLocalDB implements Solver {
                 .solve(query, found);
           }
 
-          return QueryResponseHandler.toResponse(
-              query, AddressRes.matched(found.getIp(), found.getTtl())
+          return QueryResponseHandler.map(
+              query, AddressResolution.matched(found.getIp(), found.getTtl())
           );
 
         }
