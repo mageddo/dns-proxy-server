@@ -24,10 +24,13 @@ public class SocketClientTemplates {
       }
 
       @Override
-      public void close() throws Exception {
-        this.closed = true;
-        in.close();
-        out.close();
+      public void close() {
+        try {
+          this.closed = true;
+          in.close();
+          out.close();
+        } catch (Exception ignored) {
+        }
       }
 
       @Override
