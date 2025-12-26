@@ -60,8 +60,10 @@ public class HostnameQuery {
       }
       return false;
     }
-    if (this.useRegex && hostnamePattern.startsWith(REGEX_TAG) && hostnamePattern.endsWith(
-        REGEX_TAG)) {
+    if (this.useRegex
+        && hostnamePattern.startsWith(REGEX_TAG)
+        && hostnamePattern.endsWith(REGEX_TAG)
+    ) {
       return this.hostname
           .getCanonicalValue()
           .matches(StringUtils.substringBetween(hostnamePattern, REGEX_TAG, REGEX_TAG))
