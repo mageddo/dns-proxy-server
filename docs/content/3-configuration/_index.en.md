@@ -140,13 +140,12 @@ See more on [specify from which network solve container][6].
 
 When on binary mode DPS has a default limit of `MaxHeapSize=50m` + `MaxNewSize=10m`, you can change that by:
 
-Command Line
-
+**Command Line**
 ```bash
 ./dns-proxy-server -XX:MaxHeapSize=50m -XX:MaxNewSize=10m
 ```
 
-Docker Compose
+**Docker Compose**
 ```yaml
 services:
   dps:
