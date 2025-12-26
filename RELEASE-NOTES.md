@@ -1,5 +1,6 @@
-## 5.7.0 Alpha
+## 5.8.0
 * DNS over HTTPS, see #138
+* Option to disable a specific container to be resolved from DPS, see #596.
 
 ## 5.6.2
 * Fixing Getting Non-authoritative answer when unexpected, see #608.
