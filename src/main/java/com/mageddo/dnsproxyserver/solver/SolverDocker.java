@@ -1,11 +1,13 @@
 package com.mageddo.dnsproxyserver.solver;
 
+import java.util.EnumSet;
+import java.util.Set;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.mageddo.dns.utils.Messages;
 import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
-import com.mageddo.dnsproxyserver.config.ConfigEntryTypes;
+import com.mageddo.dnsproxyserver.solver.basic.BasicSolver;
 import com.mageddo.dnsproxyserver.solver.docker.application.ContainerSolvingService;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
 
@@ -19,8 +21,16 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class SolverDocker implements Solver {
 
+  private static final Set<Type> SUPPORTED_TYPES = EnumSet.of(
+      Type.AAAA, Type.A, Type.HTTPS
+  );
+
   private final ContainerSolvingService containerSolvingService;
   private final DockerDAO dockerDAO;
+  private final BasicSolver solver = BasicSolver.builder()
+      .solverName(this.name())
+      .supportedTypes(SUPPORTED_TYPES)
+      .build();
 
   @Override
   public Response handle(Message query) {
@@ -30,33 +40,7 @@ public class SolverDocker implements Solver {
       return null;
     }
 
-    final var type = Messages.findQuestionType(query);
-    if (isNotSupported(type)) {
-      log.trace("status=unsupportedType, type={}", type);
-      return null;
-    }
-
-    final var askedHost = Messages.findQuestionHostname(query);
-    final var version = type.toVersion();
-    return HostnameMatcher.match(askedHost, version, hostname -> {
-          final var entry = this.containerSolvingService.findBestMatch(hostname);
-          if (entry.isHostNameNotMatched()) {
-            return null;
-          } else if (type.isHttps()) {
-            return Response.internalSuccess(Messages.notSupportedHttps(query));
-          }
-          return Response.internalSuccess(Messages.authoritativeAnswer(
-              query,
-              entry.getIpText(),
-              hostname.getVersion()
-          ));
-        }
-    );
-
-  }
-
-  private static boolean isNotSupported(Type type) {
-    return ConfigEntryTypes.isNot(type, Type.AAAA, Type.A, Type.HTTPS);
+    return this.solver.solve(query, this.containerSolvingService::findBestMatch);
   }
 
 }
