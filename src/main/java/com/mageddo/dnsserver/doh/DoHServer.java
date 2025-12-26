@@ -308,47 +308,4 @@ public final class DoHServer implements AutoCloseable {
     byte[] resolve(byte[] dnsQueryBytes);
   }
 
-  /**
-   * Helper MINIMALISTA: cria uma resposta SERVFAIL copiando o ID do request.
-   * Isso é só pra testar o pipeline end-to-end.
-   * Você vai substituir pela tua implementação real.
-   */
-  public static final class DnsWire {
-
-    private DnsWire() {
-    }
-
-    public static byte[] servfail(final byte[] query) {
-      if (query.length < 12) {
-        // header DNS mínimo tem 12 bytes; se vier lixo, devolve vazio
-        return new byte[0];
-      }
-
-      final var response = query.clone();
-
-      // DNS Header:
-      // [0..1] ID: mantém igual
-      // [2..3] Flags: set QR=1 (response), RCODE=2 (SERVFAIL), limpa algumas flags
-      // Isso é bem simplificado (não é um "resolver" real).
-      final int flags = ((response[2] & 0xFF) << 8) | (response[3] & 0xFF);
-
-      // força QR=1
-      final int flagsWithQr = flags | 0x8000;
-      // zera RCODE e seta SERVFAIL(2)
-      final int flagsServfail = (flagsWithQr & 0xFFF0) | 0x0002;
-
-      response[2] = (byte) ((flagsServfail >> 8) & 0xFF);
-      response[3] = (byte) (flagsServfail & 0xFF);
-
-      // zera contadores de resposta (AN/NS/AR = 0)
-      response[6] = 0;
-      response[7] = 0;  // ANCOUNT
-      response[8] = 0;
-      response[9] = 0;  // NSCOUNT
-      response[10] = 0;
-      response[11] = 0; // ARCOUNT
-
-      return response;
-    }
-  }
 }

@@ -11,6 +11,8 @@ import com.mageddo.dnsproxyserver.utils.Ips;
 import com.mageddo.dnsserver.SimpleServer;
 import com.mageddo.dnsserver.doh.DoHServer;
 
+import com.mageddo.dnsserver.doh.DoHServerNetty;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,7 @@ public class ServerStarter {
 
   private final SimpleServer server;
   private final DoHServer doHServer;
+  private final RequestHandlerDefault requestHandler;
 
   public ServerStarter start() {
     final var server = Configs.getInstance()
@@ -40,7 +43,7 @@ public class ServerStarter {
 
   void startDohWhenNeedled(Server.DoH doh, InetAddress address) {
     if (doh != null && doh.isActive()) {
-      this.doHServer.start(address, doh.getPort());
+      DoHServerNetty.start(requestHandler, address, doh.getPort());
     }
   }
 
