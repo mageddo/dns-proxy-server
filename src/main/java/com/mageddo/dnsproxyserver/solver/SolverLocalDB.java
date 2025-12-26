@@ -52,7 +52,7 @@ public class SolverLocalDB implements Solver {
                 .solve(query, found);
           }
 
-          return QueryResponseHandler.map(
+          return this.handler.map(
               query, AddressResolution.matched(found.getIp(), found.getTtl())
           );
 
