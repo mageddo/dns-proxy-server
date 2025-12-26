@@ -12,4 +12,5 @@ public interface ContainerDAO {
 
   List<Container> findActiveContainersMatching(HostnameQuery query);
 
+  boolean isEnabledForDPS(String containerId);
 }

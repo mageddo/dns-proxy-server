@@ -42,7 +42,7 @@ public class ContainerDAODefault implements ContainerDAO {
         .withNetworkFilter(List.of(networkId))
         .exec()
         .stream()
-        .filter(ContainerPredicates.isEnabledForDPS())
+        .filter(ContainerPredicates::isEnabledForDPS)
         .map(ContainerCompactMapper::of)
         .toList();
   }
@@ -50,9 +50,14 @@ public class ContainerDAODefault implements ContainerDAO {
   List<com.github.dockerjava.api.model.Container> findActiveContainers() {
     return this.containerFacade.findActiveContainers()
         .stream()
-        .filter(ContainerPredicates.isEnabledForDPS())
+        .filter(ContainerPredicates::isEnabledForDPS)
         .toList()
         ;
+  }
+
+  @Override
+  public boolean isEnabledForDPS(String containerId) {
+    return ContainerPredicates.isEnabledForDPS(this.containerFacade.findById(containerId));
   }
 
 }

@@ -38,8 +38,15 @@ public class DockerNetworkService {
 
   public void connectContainerTo(String networkName, String containerId) {
     if (this.dpsContainerDAO.isDpsContainer(containerId)) {
-      log.info("status=won't connect dps container using conventional mode, containerId={}",
+      log.info(
+          "status=won't connect dps container using conventional mode, containerId={}",
           containerId
+      );
+      return;
+    } else if (!this.containerDAO.isEnabledForDPS(containerId)) {
+      log.info(
+          "status=wontConnectToNetwork, reason=disabledForDps, network={}, containerId={}",
+          networkName, containerId
       );
       return;
     }

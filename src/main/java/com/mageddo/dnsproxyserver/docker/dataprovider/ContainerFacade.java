@@ -17,4 +17,5 @@ public interface ContainerFacade {
   InspectContainerResponse safeInspect(String id);
 
   Stream<InspectContainerResponse> inspectFilteringValidContainers(List<Container> containers);
+
 }

@@ -24,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor(onConstructor_ = @Inject)
 public class EventListener implements StartupEvent {
 
+  public static final String START_EVENT = "start";
   private final DockerClient dockerClient;
   private final DpsDockerEnvironmentSetupService dpsDockerEnvironmentSetupService;
   private final DockerNetworkService networkService;
@@ -53,7 +54,7 @@ public class EventListener implements StartupEvent {
               "status=event, id={}, action={}, type={}, status={}, event={}",
               event.getId(), event.getAction(), event.getType(), event.getStatus(), event
           );
-          if (StringUtils.equals(event.getAction(), "start")) {
+          if (StringUtils.equals(event.getAction(), START_EVENT)) {
             networkService.connectContainerTo(Network.Name.DPS.lowerCaseName(), event.getId());
             return;
           }
@@ -73,7 +74,7 @@ public class EventListener implements StartupEvent {
     };
     this.dockerClient
         .eventsCmd()
-        .withEventFilter("start")
+        .withEventFilter(START_EVENT)
         .exec(callback);
   }
 
