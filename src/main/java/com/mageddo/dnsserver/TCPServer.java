@@ -93,7 +93,9 @@ public class TCPServer implements AutoCloseable {
           MDC.put("clientId", String.valueOf(client.getId()));
           if (client.isClosed()) {
             itr.remove();
-            log.debug("status=removedAlreadyClosed, runningTime={}", client.getRunningTime());
+            if(log.isTraceEnabled()){
+              log.debug("status=removedAlreadyClosed, runningTime={}", client.getRunningTime());
+            }
           } else if (runningForTooLong(client)) {
             client.close();
             itr.remove();
@@ -108,7 +110,7 @@ public class TCPServer implements AutoCloseable {
           clientsBefore - this.clients.size(), clientsBefore, this.clients.size()
       );
     } catch (Throwable e) {
-      log.error("status=watchdogFailed, msg={}", e.getMessage(), e);
+      log.warn("status=watchdogFailed, msg={}", e.getMessage(), e);
     }
   }
 
