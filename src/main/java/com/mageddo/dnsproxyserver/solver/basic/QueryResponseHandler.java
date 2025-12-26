@@ -92,7 +92,7 @@ public class QueryResponseHandler {
     } else if (type.isHttps()) {
       return Response.internalSuccess(Messages.notSupportedHttps(query));
     }
-    final var ttl = res.getTTLDuration(Messages.DEFAULT_TTL_DURATION);
+    final var ttl = res.getTTL(Messages.DEFAULT_TTL_DURATION);
     final var msg = Messages.authoritativeAnswer(
         query,
         res.getIp(type),

@@ -2,11 +2,14 @@ package com.mageddo.dnsproxyserver.solver.docker;
 
 import java.time.Duration;
 
+import com.mageddo.commons.lang.Objects;
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.net.IP;
 
 import lombok.Builder;
 import lombok.Value;
+
+import static java.util.Objects.requireNonNullElse;
 
 @Value
 @Builder
@@ -16,17 +19,18 @@ public class AddressResolution {
 
   IP ip;
 
-  Integer ttl;
+  Duration ttl;
 
   public String getIpText() {
     return this.ip != null ? this.ip.toText() : null;
   }
 
-  public Duration getTTLDuration(Duration def) {
-    if (this.ttl == null) {
-      return def;
-    }
-    return Duration.ofSeconds(this.ttl);
+  public Duration getTTL(Duration def) {
+    return requireNonNullElse(this.ttl, def);
+  }
+
+  public Long getTTLAsSeconds() {
+    return Objects.mapOrNull(this.ttl, Duration::toSeconds);
   }
 
   public boolean isHostNameNotMatched() {
@@ -50,17 +54,20 @@ public class AddressResolution {
   }
 
   public static AddressResolution matched(IP ip) {
-    return matched(ip, null);
+    return matched(ip, (Duration) null);
   }
 
   public static AddressResolution matched(IP ip, Integer ttl) {
+    return matched(ip, Duration.ofSeconds(ttl));
+  }
+
+  public static AddressResolution matched(IP ip, Duration ttl) {
     return builder()
         .hostnameMatched(true)
         .ip(ip)
         .ttl(ttl)
         .build();
   }
-
 
   public static AddressResolution notMatched() {
     return builder()

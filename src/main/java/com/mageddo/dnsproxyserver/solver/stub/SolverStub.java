@@ -14,6 +14,8 @@ import com.mageddo.dnsproxyserver.solver.Solver;
 import com.mageddo.dnsproxyserver.solver.SupportedTypes;
 import com.mageddo.dnsproxyserver.solver.basic.QueryResponseHandler;
 
+import com.mageddo.dnsproxyserver.solver.docker.AddressResolution;
+
 import org.xbill.DNS.Message;
 
 import lombok.AllArgsConstructor;
@@ -39,15 +41,39 @@ public class SolverStub implements Solver {
   @Override
   public Response handle(Message query) {
 
-//    this.handler.mapExactFromResolution()
+    return this.handler.mapExactFromResolution(query, hostnameQuery -> {
+      final var hostname = hostnameQuery.getHostname();
+      final var domainName = this.findDomainName();
+      if (!hostname.endsWith(domainName)) {
+        log.debug("status=hostnameDoesntMatchRequiredDomain, hostname={}", hostname);
+        return null;
+      }
 
-    final var questionType = Messages.findQuestionType(query);
-    if (ConfigEntryTypes.isNot(questionType, Type.A, Type.AAAA, Type.HTTPS)) {
-      log.debug("status=unsupportedType, type={}, query={}", findQuestionTypeCode(query),
-          Messages.simplePrint(query)
-      );
-      return null;
-    }
+      final var foundIp = HostnameIpExtractor.safeExtract(hostname, domainName);
+      if (foundIp == null) {
+        log.debug("status=notSolved, hostname={}", hostname);
+        return null;
+      }
+      return AddressResolution.matched(foundIp, Response.DEFAULT_SUCCESS_TTL);
+//
+//      final var qTypeVersion = questionType.toVersion();
+//      final var sameVersion = foundIp.versionIs(qTypeVersion);
+//      log.debug(
+//          "status=solved, host={}, ip={}, qTypeVersion={}",
+//          hostname, foundIp, qTypeVersion
+//      );
+//      return ResponseMapper.toDefaultSuccessAnswer(
+//          query, sameVersion ? foundIp : null, questionType
+//      );
+    });
+
+//    final var questionType = Messages.findQuestionType(query);
+//    if (ConfigEntryTypes.isNot(questionType, Type.A, Type.AAAA, Type.HTTPS)) {
+//      log.debug("status=unsupportedType, type={}, query={}", findQuestionTypeCode(query),
+//          Messages.simplePrint(query)
+//      );
+//      return null;
+//    }
 
     final var hostname = Messages.findQuestionHostname(query);
     final var domainName = this.findDomainName();

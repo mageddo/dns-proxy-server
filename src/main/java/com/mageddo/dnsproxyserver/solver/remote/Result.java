@@ -14,8 +14,8 @@ import lombok.Value;
 @Builder
 public class Result {
 
-  private Response successResponse;
-  private Message errorMessage;
+  Response successResponse;
+  Message errorMessage;
 
   public static Result empty() {
     return Result.builder()

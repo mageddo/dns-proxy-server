@@ -83,7 +83,9 @@ public class SolverCache {
 
   static String buildKey(Message reqMsg) {
     final var type = findQuestionType(reqMsg);
-    return String.format("%s-%s", type != null ? type : UUID.randomUUID(),
+    return String.format(
+        "%s-%s",
+        type != null ? type : UUID.randomUUID(), // FIXME EFS it makes sense to save random id on cache
         findQuestionHostname(reqMsg)
     );
   }
