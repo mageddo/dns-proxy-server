@@ -62,7 +62,9 @@ public class SolverLocalDB implements Solver {
                 .solve(query, found);
           }
 
-          return QueryResponseHandler.toResponse(query, AddressRes.matched(found.getIp()));
+          return QueryResponseHandler.toResponse(
+              query, AddressRes.matched(found.getIp(), found.getTtl())
+          );
 
         }
     );

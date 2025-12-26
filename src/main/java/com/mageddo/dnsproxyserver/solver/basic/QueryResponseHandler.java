@@ -80,11 +80,14 @@ public class QueryResponseHandler {
     } else if (type.isHttps()) {
       return Response.internalSuccess(Messages.notSupportedHttps(query));
     }
-    return Response.internalSuccess(Messages.authoritativeAnswer(
+    final var ttl = res.getTTLDuration(Response.DEFAULT_NXDOMAIN_TTL);
+    final var msg = Messages.authoritativeAnswer(
         query,
         res.getIp(type),
-        type
-    ));
+        type,
+        ttl.toSeconds()
+    );
+    return Response.of(msg, ttl);
   }
 
 

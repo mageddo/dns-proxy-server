@@ -1,5 +1,7 @@
 package com.mageddo.dnsproxyserver.solver.docker;
 
+import java.time.Duration;
+
 import com.mageddo.dnsproxyserver.config.Config;
 import com.mageddo.net.IP;
 
@@ -14,8 +16,17 @@ public class AddressRes {
 
   IP ip;
 
+  Integer ttl;
+
   public String getIpText() {
     return this.ip != null ? this.ip.toText() : null;
+  }
+
+  public Duration getTTLDuration(Duration def) {
+    if (this.ttl == null) {
+      return def;
+    }
+    return Duration.ofSeconds(this.ttl);
   }
 
   public boolean isHostNameNotMatched() {
@@ -39,11 +50,17 @@ public class AddressRes {
   }
 
   public static AddressRes matched(IP ip) {
+    return matched(ip, null);
+  }
+
+  public static AddressRes matched(IP ip, Integer ttl) {
     return builder()
         .hostnameMatched(true)
         .ip(ip)
+        .ttl(ttl)
         .build();
   }
+
 
   public static AddressRes notMatched() {
     return builder()
