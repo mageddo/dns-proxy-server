@@ -1,13 +1,9 @@
 package com.mageddo.dnsproxyserver.solver;
 
-import java.util.EnumSet;
-import java.util.Set;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.mageddo.dnsproxyserver.config.Config;
-import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.config.dataprovider.MutableConfigDAO;
 import com.mageddo.dnsproxyserver.solver.basic.QueryResponseHandler;
 import com.mageddo.dnsproxyserver.solver.docker.AddressRes;
@@ -29,13 +25,9 @@ public class SolverLocalDB implements Solver {
 
   public static final String NAME = "SolverLocalDB";
 
-  private static final Set<Type> SUPPORTED_TYPES = EnumSet.of(
-      Type.A, Type.CNAME, Type.AAAA, Type.HTTPS
-  );
-
-  private final QueryResponseHandler solver = QueryResponseHandler.builder()
+  private final QueryResponseHandler handler = QueryResponseHandler.builder()
       .solverName(NAME)
-      .supportedTypes(SUPPORTED_TYPES)
+      .supportedTypes(SupportedTypes.ADDRESSES_AND_CNAME)
       .build();
 
   private final MutableConfigDAO mutableConfigDAO;
@@ -46,7 +38,7 @@ public class SolverLocalDB implements Solver {
 
     final var stopWatch = StopWatch.createStarted();
 
-    return this.solver.ofResponse(query, hostname -> {
+    return this.handler.ofResponse(query, hostname -> {
 
           stopWatch.split();
           final var askedHost = hostname.getHostname();

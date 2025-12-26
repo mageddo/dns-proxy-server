@@ -31,7 +31,6 @@ public class DockerDAODefault implements DockerDAO {
     return this.connectionCheck.isConnected();
   }
 
-
   @Override
   public IP findHostMachineIp(IP.Version version) {
     return Objects.mapOrNull(this.findBestNetwork(version),

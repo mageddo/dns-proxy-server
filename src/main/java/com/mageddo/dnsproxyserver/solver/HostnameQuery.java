@@ -20,16 +20,16 @@ public class HostnameQuery {
   public static final String REGEX_TAG = "/";
 
   @NonNull
-  private final Hostname hostname;
+  Hostname hostname;
 
   // FIXME EFS it needs to be refactored, looks like version is not a query param
   //  only the hostname then all found ips could be filtered by version if needle
   //  HTTPS query type answers the two types at the same request for example.
-  private final IP.Version version;
+  IP.Version version;
 
-  private final boolean useWildcards;
+  boolean useWildcards;
 
-  private final boolean useRegex;
+  boolean useRegex;
 
   public Type getType() {
     if (this.version == null) {
@@ -40,6 +40,10 @@ public class HostnameQuery {
       case IPV6 -> Type.AAAA;
       default -> throw new UnsupportedOperationException("Invalid version: " + this.version);
     };
+  }
+
+  public String getHostnameValue() {
+    return this.hostname.getValue();
   }
 
   public static HostnameQuery of(Hostname hostname) {

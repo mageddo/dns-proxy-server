@@ -1,12 +1,8 @@
 package com.mageddo.dnsproxyserver.solver;
 
-import java.util.EnumSet;
-import java.util.Set;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.mageddo.dnsproxyserver.config.Config.Entry.Type;
 import com.mageddo.dnsproxyserver.solver.basic.QueryResponseHandler;
 import com.mageddo.dnsproxyserver.solver.docker.application.ContainerSolvingService;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
@@ -21,17 +17,13 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class SolverDocker implements Solver {
 
-  private static final Set<Type> SUPPORTED_TYPES = EnumSet.of(
-      Type.AAAA, Type.A, Type.HTTPS
-  );
-
   private final ContainerSolvingService containerSolvingService;
 
   private final DockerDAO dockerDAO;
 
-  private final QueryResponseHandler solver = QueryResponseHandler.builder()
+  private final QueryResponseHandler handler = QueryResponseHandler.builder()
       .solverName(this.name())
-      .supportedTypes(SUPPORTED_TYPES)
+      .supportedTypes(SupportedTypes.ADDRESSES)
       .build();
 
   @Override
@@ -42,7 +34,7 @@ public class SolverDocker implements Solver {
       return null;
     }
 
-    return this.solver.ofQueryResponse(query, this.containerSolvingService::findBestMatch);
+    return this.handler.ofQueryResponse(query, this.containerSolvingService::findBestMatch);
   }
 
 }
