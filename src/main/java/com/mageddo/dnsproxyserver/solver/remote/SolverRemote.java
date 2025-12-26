@@ -38,10 +38,12 @@ public class SolverRemote implements Solver, AutoCloseable {
   public Response handle(Message query) {
     final var stopWatch = StopWatch.createStarted();
     final var result = this.queryResultFromAvailableResolvers(query, stopWatch);
-    log.debug(
-        "status=finally, time={}, success={}, error={}",
-        stopWatch.getTime(), result.hasSuccessMessage(), result.hasErrorMessage()
-    );
+    if(log.isTraceEnabled()) {
+      log.debug(
+          "status=finally, time={}, success={}, error={}",
+          stopWatch.getTime(), result.hasSuccessMessage(), result.hasErrorMessage()
+      );
+    }
     return Stream
         .of(result.getSuccessResponse(), result.getErrorResponse())
         .filter(Objects::nonNull)

@@ -2,7 +2,7 @@
 <configuration>
   <property
     name="dpsLogPatternDefault"
-    value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-15.15thread] %3.-3level %-0.70logger{70} m=%method l=%line %mdc %msg%n"
+    value="%d{HH:mm:ss.SSS} t=%.-15thread l=%3.-3level c=%.30logger{30}:%.4line m=%.30method{30} %mdc %msg%n"
   />
 
   <property
@@ -15,7 +15,7 @@
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <fileNamePattern>${logFile}.%d{yyyy-MM-dd}.log</fileNamePattern>
       <maxHistory>120</maxHistory>
-      <totalSizeCap>20MB</totalSizeCap>
+      <totalSizeCap>1000MB</totalSizeCap>
     </rollingPolicy>
     <encoder>
       <pattern>${dpsLogPattern:-${dpsLogPatternDefault}}</pattern>

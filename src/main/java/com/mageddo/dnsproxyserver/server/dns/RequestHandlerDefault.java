@@ -75,16 +75,18 @@ public class RequestHandlerDefault implements RequestHandler {
     if (value == null) {
       final var msg = this.buildDefaultRes(query);
       log.debug(
-          "status=defaultAnswer, kind={}, time={}, res={}",
+          "status=defaultAnswer, kind={}, totalTime={}, res={}",
           kind, stopWatch.getTime(), simplePrint(msg)
       );
       return msg;
     }
     log.debug(
-        "status=solved, entrypoint={}, hotload={}, solver={}, time={}, ttl={}, answers={}, res={}",
+        "status=solved, entrypoint={}, hotload={}, solver={}, totalTime={}, ttl={}, answers={}, res={}",
         kind, value.isHotload(),
-        value.getSolver(), stopWatch.getTime(),
-        value.getTTLAsSeconds(), value.countAnswers(),
+        value.getSolver(),
+        stopWatch.getTime(),
+        value.getTTLAsSeconds(),
+        value.countAnswers(),
         simplePrint(value.getMessage())
     );
     return value.getMessage();
