@@ -1,5 +1,6 @@
 ## 5.8.2
 * Refactoring: Removing code duplication on the Local Solvers.
+* Optimizing logs
 
 ## 5.8.1
 * DNS over HTTPS, see #138
