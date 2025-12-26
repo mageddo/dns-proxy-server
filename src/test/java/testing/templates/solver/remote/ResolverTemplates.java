@@ -3,7 +3,7 @@ package testing.templates.solver.remote;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-import com.mageddo.dnsproxyserver.solver.Resolver;
+import com.mageddo.dnsproxyserver.solver.remote.Resolver;
 import com.mageddo.dnsproxyserver.solver.remote.SimpleResolver;
 
 import lombok.SneakyThrows;

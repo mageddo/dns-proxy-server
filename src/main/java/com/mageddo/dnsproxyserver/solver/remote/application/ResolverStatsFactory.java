@@ -6,7 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.mageddo.dnsproxyserver.solver.remote.RemoteResolvers;
-import com.mageddo.dnsproxyserver.solver.Resolver;
+import com.mageddo.dnsproxyserver.solver.remote.Resolver;
 import com.mageddo.dnsproxyserver.solver.remote.ResolverStats;
 import com.mageddo.dnsproxyserver.solver.remote.mapper.ResolverMapper;
 

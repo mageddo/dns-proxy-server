@@ -6,7 +6,7 @@ import javax.enterprise.inject.Produces;
 
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.solver.remote.RemoteResolvers;
-import com.mageddo.dnsproxyserver.solver.Resolver;
+import com.mageddo.dnsproxyserver.solver.remote.Resolver;
 import com.mageddo.dnsproxyserver.solver.remote.mapper.ResolverMapper;
 import com.mageddo.net.IpAddr;
 

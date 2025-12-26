@@ -16,8 +16,9 @@ public class HostnameIpExtractor {
     try {
       return extract(hostname, domain);
     } catch (Exception e) {
-      log.info("status=failedToExtractIpFromHostname, hostname={}, msg={}", hostname,
-          e.getMessage(), e
+      log.info(
+          "status=failedToExtractIpFromHostname, hostname={}, msg={}",
+          hostname, e.getMessage(), e
       );
       return null;
     }

@@ -5,7 +5,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 import com.mageddo.dns.utils.Messages;
-import com.mageddo.dnsproxyserver.solver.Resolver;
 import com.mageddo.net.IpAddr;
 import com.mageddo.net.IpAddrs;
 

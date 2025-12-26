@@ -1,4 +1,4 @@
-package com.mageddo.dnsproxyserver.solver;
+package com.mageddo.dnsproxyserver.solver.remote;
 
 
 import java.net.InetSocketAddress;

@@ -1,7 +1,5 @@
 package com.mageddo.dnsproxyserver.solver.remote;
 
-import com.mageddo.dnsproxyserver.solver.Resolver;
-
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;

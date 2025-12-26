@@ -2,7 +2,7 @@ package testing.templates.solver.remote;
 
 import java.util.List;
 
-import com.mageddo.dnsproxyserver.solver.Resolver;
+import com.mageddo.dnsproxyserver.solver.remote.Resolver;
 
 public class RemoteResolversTemplates {
 

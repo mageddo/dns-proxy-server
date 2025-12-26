@@ -9,7 +9,6 @@ import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.mageddo.dnsproxyserver.solver.Resolver;
 import com.mageddo.dnsproxyserver.solver.Response;
 import com.mageddo.dnsproxyserver.solver.Solver;
 import com.mageddo.dnsproxyserver.solver.remote.application.CircuitBreakerService;

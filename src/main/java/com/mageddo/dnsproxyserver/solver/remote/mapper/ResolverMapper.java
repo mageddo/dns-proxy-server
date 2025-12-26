@@ -3,7 +3,7 @@ package com.mageddo.dnsproxyserver.solver.remote.mapper;
 import java.net.InetSocketAddress;
 import java.time.Duration;
 
-import com.mageddo.dnsproxyserver.solver.Resolver;
+import com.mageddo.dnsproxyserver.solver.remote.Resolver;
 import com.mageddo.dnsproxyserver.solver.remote.SimpleResolver;
 import com.mageddo.dnsproxyserver.solver.remote.CircuitStatus;
 import com.mageddo.dnsproxyserver.solver.remote.ResolverStats;
