@@ -12,7 +12,6 @@ import com.mageddo.dnsproxyserver.config.Config.Entry;
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.solver.Response;
 import com.mageddo.dnsproxyserver.utils.Ips;
-import com.mageddo.net.IP;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -373,9 +372,9 @@ public class Messages {
   }
 
   public static Message authoritativeAnswer(
-      Message query, String ip, IP.Version version, long ttl
+      Message query, String ip, Entry.Type type, long ttl
   ) {
-    return authoritative(answer(query, ip, version, ttl));
+    return authoritative(answer(query, ip, type, ttl));
   }
 
   public static boolean isAuthoritative(Message m) {
