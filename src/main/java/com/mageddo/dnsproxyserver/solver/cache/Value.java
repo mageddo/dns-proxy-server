@@ -39,4 +39,9 @@ public class Value {
     return this.getTTL()
         .toSeconds();
   }
+
+  public int countAnswers() {
+    return this.response.getResponse()
+        .countAnswers();
+  }
 }

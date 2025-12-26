@@ -81,10 +81,11 @@ public class RequestHandlerDefault implements RequestHandler {
       return msg;
     }
     log.debug(
-        "status=solved, kind={}, hotload={}, solver={}, time={}, ttl={}, res={}",
+        "status=solved, entrypoint={}, hotload={}, solver={}, time={}, ttl={}, answers={}, res={}",
         kind, value.isHotload(),
         value.getSolver(), stopWatch.getTime(),
-        value.getTTLAsSeconds(), simplePrint(value.getMessage())
+        value.getTTLAsSeconds(), value.countAnswers(),
+        simplePrint(value.getMessage())
     );
     return value.getMessage();
   }
@@ -154,10 +155,12 @@ public class RequestHandlerDefault implements RequestHandler {
           .solverTime(solverTime)
           .build();
     }
-    log.debug(
-        "status=solved, res={}, solver={}, answers={}, currentSolverTime={}, totalTime={}",
-        simplePrint(res), solverName, res.countAnswers(), solverTime, stopWatch.getTime()
-    );
+    if (log.isTraceEnabled()) {
+      log.trace(
+          "status=solved, res={}, solver={}, answers={}, currentSolverTime={}, totalTime={}",
+          simplePrint(res), solverName, res.countAnswers(), solverTime, stopWatch.getTime()
+      );
+    }
     return TrackedResponse.builder()
         .solverName(solverName)
         .solverTime(solverTime)
