@@ -137,7 +137,7 @@
 	"title": "Compiling from source",
 	"tags": [],
 	"description": "",
-	"content": " Requirements See the requirements.\nBuilding from Source Build the frontend files (optional)\n./builder.bash build-frontend  Build and run the program\nJar file $ ./gradlew clean build compTest shadowJar -i $ java -jar dns-proxy-server-*-all.jar  Native Image Generated possible necessary metadata\n./gradlew clean -Pagent compTest ./gradlew metadataCopy  Generate the binary\n$ ./gradlew -x check clean build nativeIntTest nativeImageJar nativeCompile $ ./build/native/nativeCompile/dns-proxy-server  "
+	"content": " Requirements See the requirements.\nBuilding from Source Build the frontend files (optional)\n./builder.bash build-frontend  Build and run the program\nJar file $ ./gradlew clean build compTest shadowJar -i $ java -jar dns-proxy-server-*-all.jar  Native Image Generated possible necessary metadata\n./gradlew clean -Pagent compTest ./gradlew metadataCopy  Generate the binary\n$ ./gradlew -x check clean build nativeIntTest nativeImageJar nativeCompile $ ./build/native/nativeCompile/dns-proxy-server  AMD64 Static Compiling the source JAR\n$ ./gradlew build -x check shadowJar nativeImageJar $ mkdir -p build/artifacts/native-image-source \u0026amp;\u0026amp; cp build/libs/native-image-*.jar ./build/artifacts/native-image-source/dns-proxy-server.jar $ tree build/artifacts/ build/artifacts/ └── native-image-source └── dns-proxy-server.jar 1 directory, 1 file  Generating the native image\n$ ./builder.bash build-backend amd64-static  "
 },
 {
 	"uri": "http://mageddo.github.io/dns-proxy-server/latest/en/5-tutorials/",
@@ -249,7 +249,7 @@
 	"title": "Credits",
 	"tags": [],
 	"description": "",
-	"content": " Contributors Thanks to them  for making Open Source Software a better place !\n.ghContributors{ display:flex; flex-flow: wrap; align-content: flex-start }\n.ghContributors \u0026gt; div{ width: 50% ; display: inline-flex; margin-bottom: 5px; } .ghContributors \u0026gt; div label{ padding-left: 4px ; } .ghContributors \u0026gt; div span{ font-size: x-small; padding-left: 4px ; }\n  @mageddo 943 commits \n @josielrocha 9 commits \n @mrubli 3 commits \n @addshore 3 commits \n @ThisIsQasim 2 commits \n @AJenbo 1 commits \n @Copilot 1 commits \n @dvarrazzo 1 commits \n @defung 1 commits \n @imartinezortiz 1 commits \n @SimJoSt 1 commits \n @dependabot[bot] 1 commits \n\n"
+	"content": " Contributors Thanks to them  for making Open Source Software a better place !\n.ghContributors{ display:flex; flex-flow: wrap; align-content: flex-start }\n.ghContributors \u0026gt; div{ width: 50% ; display: inline-flex; margin-bottom: 5px; } .ghContributors \u0026gt; div label{ padding-left: 4px ; } .ghContributors \u0026gt; div span{ font-size: x-small; padding-left: 4px ; }\n  @mageddo 944 commits \n @josielrocha 9 commits \n @mrubli 3 commits \n @addshore 3 commits \n @ThisIsQasim 2 commits \n @AJenbo 1 commits \n @Copilot 1 commits \n @dvarrazzo 1 commits \n @defung 1 commits \n @imartinezortiz 1 commits \n @SimJoSt 1 commits \n @dependabot[bot] 1 commits \n\n"
 },
 {
 	"uri": "http://mageddo.github.io/dns-proxy-server/latest/en/2-features/doh/",

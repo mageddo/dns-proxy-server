@@ -62,12 +62,13 @@ Promotion to the latest (Stable) Minor pre-releases with at least 1 month since 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://mageddo.github.io/dns-proxy-server/5.8/en/4-developing/compiling/</guid>
-      <description> Requirements See the requirements.
+      <description>Requirements See the requirements.
 Building from Source Build the frontend files (optional)
 ./builder.bash build-frontend  Build and run the program
 Jar file $ ./gradlew clean build compTest shadowJar -i $ java -jar dns-proxy-server-*-all.jar  Native Image Generated possible necessary metadata
 ./gradlew clean -Pagent compTest ./gradlew metadataCopy  Generate the binary
-$ ./gradlew -x check clean build nativeIntTest nativeImageJar nativeCompile $ ./build/native/nativeCompile/dns-proxy-server  </description>
+$ ./gradlew -x check clean build nativeIntTest nativeImageJar nativeCompile $ ./build/native/nativeCompile/dns-proxy-server  AMD64 Static Compiling the source JAR
+$ .</description>
     </item>
     
     <item>
@@ -111,7 +112,7 @@ if you know about DPS you will figure out that&amp;rsquo;s a very basic DPS feat
       <description>Contributors Thanks to them  for making Open Source Software a better place !
 .ghContributors{ display:flex; flex-flow: wrap; align-content: flex-start }
 .ghContributors &amp;gt; div{ width: 50% ; display: inline-flex; margin-bottom: 5px; } .ghContributors &amp;gt; div label{ padding-left: 4px ; } .ghContributors &amp;gt; div span{ font-size: x-small; padding-left: 4px ; }
-  @mageddo 943 commits 
+  @mageddo 944 commits 
  @josielrocha 9 commits 
  @mrubli 3 commits 
  @addshore 3 commits</description>

@@ -12,20 +12,20 @@
     <title>Compiling from source :: DNS Proxy Server</title>
 
     
-    <link href="/dns-proxy-server/latest/css/nucleus.css?1766790117" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/fontawesome-all.min.css?1766790117" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/hybrid.css?1766790117" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/featherlight.min.css?1766790117" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/perfect-scrollbar.min.css?1766790117" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/auto-complete.css?1766790117" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/atom-one-dark-reasonable.css?1766790117" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/theme.css?1766790117" rel="stylesheet">
-    <link href="/dns-proxy-server/latest/css/hugo-theme.css?1766790117" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/nucleus.css?1766835648" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/fontawesome-all.min.css?1766835648" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/hybrid.css?1766835648" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/featherlight.min.css?1766835648" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/perfect-scrollbar.min.css?1766835648" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/auto-complete.css?1766835648" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/atom-one-dark-reasonable.css?1766835648" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/theme.css?1766835648" rel="stylesheet">
+    <link href="/dns-proxy-server/latest/css/hugo-theme.css?1766835648" rel="stylesheet">
     
-      <link href="/dns-proxy-server/latest/css/theme-mine.css?1766790117" rel="stylesheet">
+      <link href="/dns-proxy-server/latest/css/theme-mine.css?1766835648" rel="stylesheet">
     
 
-    <script src="/dns-proxy-server/latest/js/jquery-3.3.1.min.js?1766790117"></script>
+    <script src="/dns-proxy-server/latest/js/jquery-3.3.1.min.js?1766835648"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -53,14 +53,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/dns-proxy-server/latest/js/lunr.min.js?1766790117"></script>
-<script type="text/javascript" src="/dns-proxy-server/latest/js/auto-complete.js?1766790117"></script>
+<script type="text/javascript" src="/dns-proxy-server/latest/js/lunr.min.js?1766835648"></script>
+<script type="text/javascript" src="/dns-proxy-server/latest/js/auto-complete.js?1766835648"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/mageddo.github.io\/dns-proxy-server\/latest\/en";
     
 </script>
-<script type="text/javascript" src="/dns-proxy-server/latest/js/search.js?1766790117"></script>
+<script type="text/javascript" src="/dns-proxy-server/latest/js/search.js?1766835648"></script>
 
     
   </div>
@@ -1317,6 +1317,7 @@
 <li><a href="#jar-file">Jar file</a></li>
 </ul></li>
 <li><a href="#native-image">Native Image</a></li>
+<li><a href="#amd64-static">AMD64 Static</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -1377,6 +1378,25 @@ $ java -jar dns-proxy-server-*-all.jar
 
 <pre><code class="language-bash">$ ./gradlew -x check clean build nativeIntTest nativeImageJar nativeCompile
 $ ./build/native/nativeCompile/dns-proxy-server
+</code></pre>
+
+<h3 id="amd64-static">AMD64 Static</h3>
+
+<p>Compiling the source JAR</p>
+
+<pre><code class="language-bash">$ ./gradlew build -x check shadowJar nativeImageJar
+$ mkdir -p build/artifacts/native-image-source &amp;&amp; cp build/libs/native-image-*.jar ./build/artifacts/native-image-source/dns-proxy-server.jar
+$ tree build/artifacts/
+build/artifacts/
+└── native-image-source
+    └── dns-proxy-server.jar
+
+1 directory, 1 file
+</code></pre>
+
+<p>Generating the native image</p>
+
+<pre><code class="language-bash">$ ./builder.bash build-backend amd64-static
 </code></pre>
 
 
@@ -2107,20 +2127,20 @@ $ ./build/native/nativeCompile/dns-proxy-server
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/dns-proxy-server/latest/js/clipboard.min.js?1766790117"></script>
-    <script src="/dns-proxy-server/latest/js/perfect-scrollbar.min.js?1766790117"></script>
-    <script src="/dns-proxy-server/latest/js/perfect-scrollbar.jquery.min.js?1766790117"></script>
-    <script src="/dns-proxy-server/latest/js/jquery.sticky.js?1766790117"></script>
-    <script src="/dns-proxy-server/latest/js/featherlight.min.js?1766790117"></script>
-    <script src="/dns-proxy-server/latest/js/html5shiv-printshiv.min.js?1766790117"></script>
-    <script src="/dns-proxy-server/latest/js/highlight.pack.js?1766790117"></script>
+    <script src="/dns-proxy-server/latest/js/clipboard.min.js?1766835648"></script>
+    <script src="/dns-proxy-server/latest/js/perfect-scrollbar.min.js?1766835648"></script>
+    <script src="/dns-proxy-server/latest/js/perfect-scrollbar.jquery.min.js?1766835648"></script>
+    <script src="/dns-proxy-server/latest/js/jquery.sticky.js?1766835648"></script>
+    <script src="/dns-proxy-server/latest/js/featherlight.min.js?1766835648"></script>
+    <script src="/dns-proxy-server/latest/js/html5shiv-printshiv.min.js?1766835648"></script>
+    <script src="/dns-proxy-server/latest/js/highlight.pack.js?1766835648"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/dns-proxy-server/latest/js/modernizr.custom-3.6.0.js?1766790117"></script>
-    <script src="/dns-proxy-server/latest/js/learn.js?1766790117"></script>
-    <script src="/dns-proxy-server/latest/js/hugo-learn.js?1766790117"></script>
+    <script src="/dns-proxy-server/latest/js/modernizr.custom-3.6.0.js?1766835648"></script>
+    <script src="/dns-proxy-server/latest/js/learn.js?1766835648"></script>
+    <script src="/dns-proxy-server/latest/js/hugo-learn.js?1766835648"></script>
 
-    <link href="/dns-proxy-server/latest/mermaid/mermaid.css?1766790117" type="text/css" rel="stylesheet" />
-    <script src="/dns-proxy-server/latest/mermaid/mermaid.js?1766790117"></script>
+    <link href="/dns-proxy-server/latest/mermaid/mermaid.css?1766835648" type="text/css" rel="stylesheet" />
+    <script src="/dns-proxy-server/latest/mermaid/mermaid.js?1766835648"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
