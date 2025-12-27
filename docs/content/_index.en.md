@@ -1,6 +1,9 @@
 [![CI](https://github.com/mageddo/dns-proxy-server/actions/workflows/ci.yml/badge.svg)](https://github.com/mageddo/dns-proxy-server/actions/workflows/ci.yml)
 [![help me to keep DPS up to date][7]][6]
 
+![](https://i.imgur.com/gsmn5Jj.png)
+
+
 ### Main features
 
 DPS is a lightweight end user (Developers, Server Administrators) DNS server tool
@@ -26,8 +29,6 @@ Checkout the [full list of features][4] with examples.
 * [✅ Wildcard][8]
 * [✅ DNS over HTTPS][10]
 * [✅ RFC-1035 Compliant][1]
-
-![](https://i.imgur.com/aR9dl0O.png)
 
 ### Basic Running it
 You can run DPS as native binary downloading the latest [binaries releases][2]
