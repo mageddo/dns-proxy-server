@@ -17,7 +17,6 @@ on the configured environment.
 Checkout the [full list of features][4] with examples.
 
 ### Comparison Table
-
 * [✅ Authoritative][1]
 * [✅ Recursive][2]
 * ✅ Secondary mode
@@ -25,18 +24,6 @@ Checkout the [full list of features][4] with examples.
 * [✅ IPv6][7]
 * [✅ Wildcard][8]
 * [✅ DNS over HTTPS][10]
-* [❌ Recursion ACL][3]
-* [❌ Split horizon][9]
-* [❌ DNS over QUIC][11]
-* [❓DNSSEC][5]
-* [❓TSIG][6]
-
-```
-❓ = Unknown
-❌ = Not implemented
-✅ = Implemented
-🟡 = Partially Implemented
-```
 
 ![](https://i.imgur.com/aR9dl0O.png)
 
