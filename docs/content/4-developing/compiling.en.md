@@ -37,4 +37,11 @@ $ ./gradlew -x check clean build nativeIntTest nativeImageJar nativeCompile
 $ ./build/native/nativeCompile/dns-proxy-server
 ```
 
+### AMD64 Static
+
+```bash
+$ ./builder.bash build-backend amd64
+$ ./builder.bash build-backend amd64-static
+```
+
 [1]: {{%relref "1-getting-started/requirements/_index.en.md" %}}
