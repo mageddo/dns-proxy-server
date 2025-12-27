@@ -39,8 +39,21 @@ $ ./build/native/nativeCompile/dns-proxy-server
 
 ### AMD64 Static
 
+Compiling the source JAR
 ```bash
-$ ./builder.bash build-backend amd64
+$ ./gradlew build -x check shadowJar nativeImageJar
+$ mkdir -p build/artifacts/native-image-source && cp build/libs/native-image-*.jar ./build/artifacts/native-image-source/dns-proxy-server.jar
+$ tree build/artifacts/
+build/artifacts/
+└── native-image-source
+    └── dns-proxy-server.jar
+
+1 directory, 1 file
+```
+
+Generating the native image
+
+```bash
 $ ./builder.bash build-backend amd64-static
 ```
 
