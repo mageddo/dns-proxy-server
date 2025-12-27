@@ -12,7 +12,7 @@ pre: "<b>2. </b>"
 * [✅ Caching][4]
 * [✅ IPv6][7]
 * [✅ Wildcard][8]
-* [🟡 DNS over HTTPS][10]
+* [✅ DNS over HTTPS][10]
 * [❌ Recursion ACL][3]
 * [❌ Split horizon][9]
 * [❌ DNS over QUIC][11]

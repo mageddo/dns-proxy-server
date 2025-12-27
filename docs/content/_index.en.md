@@ -5,7 +5,7 @@
 
 DPS is a lightweight end user (Developers, Server Administrators) DNS server tool
 which make it easy to develop in systems where one hostname can solve to different IPs based
-on the configured environment, so you can:
+on the configured environment.
 
 * Solve hostnames from local configuration database
 * Solve hostnames from [docker containers][11]
@@ -14,8 +14,29 @@ on the configured environment, so you can:
 * Graphic interface to Create/List/Update/Delete **A/CNAME** records
 * Solve host machine IP using `host.docker` hostname
 
+Checkout the [full list of features][4] with examples.
 
-Checkout the [full list of features][4] with examples
+### Comparison Table
+
+* [✅ Authoritative][1]
+* [✅ Recursive][2]
+* ✅ Secondary mode
+* [✅ Caching][4]
+* [✅ IPv6][7]
+* [✅ Wildcard][8]
+* [✅ DNS over HTTPS][10]
+* [❌ Recursion ACL][3]
+* [❌ Split horizon][9]
+* [❌ DNS over QUIC][11]
+* [❓DNSSEC][5]
+* [❓TSIG][6]
+
+```
+❓ = Unknown
+❌ = Not implemented
+✅ = Implemented
+🟡 = Partially Implemented
+```
 
 ![](https://i.imgur.com/aR9dl0O.png)
 
