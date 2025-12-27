@@ -16,7 +16,7 @@ on the configured environment.
 
 Checkout the [full list of features][4] with examples.
 
-### Comparison Table
+**Comparison Table**
 * [✅ Authoritative][1]
 * [✅ Recursive][2]
 * ✅ Secondary mode
