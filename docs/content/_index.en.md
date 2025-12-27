@@ -7,11 +7,11 @@ DPS is a lightweight end user (Developers, Server Administrators) DNS server too
 which make it easy to develop in systems where one hostname can solve to different IPs based
 on the configured environment.
 
+* Solve hostnames to [docker containers][11]
 * Solve hostnames from local configuration database
-* Solve hostnames from [docker containers][11]
-* Solve hostnames from a list of configured remote DNS servers(as a proxy) if no answer of two above
-* Solve hostnames using wildcards
-* Graphic interface to Create/List/Update/Delete **A/CNAME** records
+* Recursive solving from a list of configured remote DNS servers
+* Solve hostnames using wildcards/regex
+* Graphic interface to Create/List/Update/Delete **A/AAAA/CNAME** records
 * Solve host machine IP using `host.docker` hostname
 
 Checkout the [full list of features][4] with examples.
@@ -29,8 +29,7 @@ Checkout the [full list of features][4] with examples.
 
 ![](https://i.imgur.com/aR9dl0O.png)
 
-### Basic running it
-
+### Basic Running it
 You can run DPS as native binary downloading the latest [binaries releases][2]
 or via docker looking at [Dockerhub images][3]. See [complete running it][5] documentation for running on
 Mac, Windows, Docker, etc.
