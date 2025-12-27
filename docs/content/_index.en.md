@@ -17,6 +17,7 @@ on the configured environment.
 Checkout the [full list of features][4] with examples.
 
 **Comparison Table**
+
 * [✅ Authoritative][1]
 * [✅ Recursive][2]
 * ✅ Secondary mode
@@ -24,6 +25,7 @@ Checkout the [full list of features][4] with examples.
 * [✅ IPv6][7]
 * [✅ Wildcard][8]
 * [✅ DNS over HTTPS][10]
+* [✅ Compliant to RFC-1035][1]
 
 ![](https://i.imgur.com/aR9dl0O.png)
 
