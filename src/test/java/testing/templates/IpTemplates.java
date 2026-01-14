@@ -25,4 +25,8 @@ public class IpTemplates {
   public static IP localIpv6_3() {
     return IP.of("2001:db8:1:0:0:0:0:3");
   }
+
+  public static IP local_192() {
+    return IP.of(LOCAL_192);
+  }
 }

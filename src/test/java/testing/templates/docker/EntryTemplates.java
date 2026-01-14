@@ -1,5 +1,7 @@
 package testing.templates.docker;
 
+import java.util.List;
+
 import com.mageddo.dnsproxyserver.solver.AddressResolution;
 import com.mageddo.net.IP;
 
@@ -35,5 +37,13 @@ public class EntryTemplates {
         .builder()
         .build()
         ;
+  }
+
+  public static AddressResolution multipleIps() {
+    return AddressResolution
+        .builder()
+        .ips(List.of(IpTemplates.local(), IpTemplates.local_192()))
+        .hostnameMatched(true)
+        .build();
   }
 }

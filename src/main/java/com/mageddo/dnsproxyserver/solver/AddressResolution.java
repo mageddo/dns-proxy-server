@@ -73,9 +73,7 @@ public class AddressResolution {
         .build();
   }
 
-  public String ipsToString() {
-    return IpMapper
-        .toText(this.ips)
-        .toString();
+  public String firstAsText() {
+    return IpMapper.toText(Collections.first(this.ips));
   }
 }
