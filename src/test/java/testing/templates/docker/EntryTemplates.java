@@ -9,7 +9,7 @@ public class EntryTemplates {
   public static AddressResolution zeroIp() {
     return AddressResolution
         .builder()
-        .ips(IP.of(IpTemplates.ZERO))
+        .ip(IP.of(IpTemplates.ZERO))
         .hostnameMatched(true)
         .build();
   }
@@ -18,7 +18,7 @@ public class EntryTemplates {
     return AddressResolution
         .builder()
         .hostnameMatched(true)
-        .ips(IP.of(IpTemplates.LOCAL_EXTENDED_IPV6))
+        .ip(IP.of(IpTemplates.LOCAL_EXTENDED_IPV6))
         .build();
   }
 

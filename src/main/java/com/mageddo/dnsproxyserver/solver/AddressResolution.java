@@ -73,4 +73,9 @@ public class AddressResolution {
         .build();
   }
 
+  public String ipsToString() {
+    return IpMapper
+        .toText(this.ips)
+        .toString();
+  }
 }

@@ -10,7 +10,6 @@ import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.mageddo.commons.Collections;
 import com.mageddo.dnsproxyserver.config.application.Configs;
 import com.mageddo.dnsproxyserver.solver.AddressResolution;
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
@@ -51,7 +50,7 @@ public class ContainerSolvingService {
     return AddressResolution
         .builder()
         .hostnameMatched(hostnameMatched)
-        .ips(Collections.first(foundIps))
+        .ips(foundIps)
         .build();
   }
 
