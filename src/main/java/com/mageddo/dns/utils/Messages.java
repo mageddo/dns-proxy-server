@@ -124,7 +124,8 @@ public class Messages {
   }
 
   public static Message aAnswer(Message query, String ip, long ttl) {
-    // FIXME EFS esse copy deveria ser feito por quem chama o mapper
+    // FIXME EFS esse copy deveria ser feito por quem chama
+    //  o mapper para evitar várias copias sem necessidade
     final var res = withNoErrorResponse(copy(query));
     if (StringUtils.isBlank(ip)) {
       return res;
