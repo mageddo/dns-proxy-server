@@ -1,3 +1,6 @@
+## 5.9.0
+* Answer all docker service replicas IPs, see #434.
+
 ## 5.8.4
 * DNS over HTTPS, see #138
 * Option to disable a specific container to be resolved from DPS, see #596.
