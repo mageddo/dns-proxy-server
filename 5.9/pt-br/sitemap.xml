@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>http://mageddo.github.io/dns-proxy-server/5.9/pt-br/categories/</loc>
+    <priority>0</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://mageddo.github.io/dns-proxy-server/5.9/en/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="pt-br"
+                href="http://mageddo.github.io/dns-proxy-server/5.9/pt-br/categories/"
+                />
+  </url>
+  
+  <url>
+    <loc>http://mageddo.github.io/dns-proxy-server/5.9/pt-br/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://mageddo.github.io/dns-proxy-server/5.9/en/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="pt-br"
+                href="http://mageddo.github.io/dns-proxy-server/5.9/pt-br/"
+                />
+  </url>
+  
+  <url>
+    <loc>http://mageddo.github.io/dns-proxy-server/5.9/pt-br/tags/</loc>
+    <priority>0</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://mageddo.github.io/dns-proxy-server/5.9/en/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="pt-br"
+                href="http://mageddo.github.io/dns-proxy-server/5.9/pt-br/tags/"
+                />
+  </url>
+  
+</urlset>
