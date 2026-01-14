@@ -1,5 +1,6 @@
 package com.mageddo.dnsproxyserver.solver.docker.application;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -9,10 +10,11 @@ import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.mageddo.commons.Collections;
 import com.mageddo.dnsproxyserver.config.application.Configs;
+import com.mageddo.dnsproxyserver.solver.AddressResolution;
 import com.mageddo.dnsproxyserver.solver.HostnameQuery;
 import com.mageddo.dnsproxyserver.solver.docker.Container;
-import com.mageddo.dnsproxyserver.solver.AddressResolution;
 import com.mageddo.dnsproxyserver.solver.docker.Network;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.ContainerDAO;
 import com.mageddo.dnsproxyserver.solver.docker.dataprovider.DockerDAO;
@@ -40,22 +42,26 @@ public class ContainerSolvingService {
   public AddressResolution findBestMatch(HostnameQuery query) {
     final var stopWatch = StopWatch.createStarted();
     final var matchedContainers = this.containerDAO.findActiveContainersMatching(query);
-    final var foundIp = matchedContainers
-        .stream()
-        .map(it -> this.findBestIpMatch(it, query.getVersion()))
-        .filter(Objects::nonNull)
-        .findFirst()
-        .orElse(null);
+    final var foundIps = this.mapToIps(matchedContainers, query);
     final var hostnameMatched = !matchedContainers.isEmpty();
     log.trace(
-        "status=findDone, query={}, found={}, hostnameMatched={}, time={}",
-        query, foundIp, hostnameMatched, stopWatch.getTime()
+        "status=done, query={}, found={}, hostnameMatched={}, time={}",
+        query, foundIps, hostnameMatched, stopWatch.getTime()
     );
     return AddressResolution
         .builder()
         .hostnameMatched(hostnameMatched)
-        .ip(IP.of(foundIp))
+        .ip(Collections.first(foundIps))
         .build();
+  }
+
+  List<IP> mapToIps(List<Container> containers, HostnameQuery query) {
+    return containers
+        .stream()
+        .map(it -> this.findBestIpMatch(it, query.getVersion()))
+        .filter(Objects::nonNull)
+        .map(IP::of)
+        .toList();
   }
 
   public String findBestIpMatch(Container c) {

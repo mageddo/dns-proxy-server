@@ -39,8 +39,8 @@ public class SolverDocker implements Solver {
       return null;
     }
 
-    return this.handler.mapDynamicFromResolution(query,
-        this.containerSolvingService::findBestMatch
+    return this.handler.mapDynamicFromResolution(
+        query, this.containerSolvingService::findBestMatch
     );
   }
 
