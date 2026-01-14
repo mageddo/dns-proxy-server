@@ -51,7 +51,7 @@ public class ContainerSolvingService {
     return AddressResolution
         .builder()
         .hostnameMatched(hostnameMatched)
-        .ip(Collections.first(foundIps))
+        .ips(Collections.first(foundIps))
         .build();
   }
 

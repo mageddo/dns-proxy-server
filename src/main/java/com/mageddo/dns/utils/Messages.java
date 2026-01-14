@@ -123,12 +123,16 @@ public class Messages {
   }
 
   public static Message aAnswer(Message query, String ip, long ttl) {
+    // FIXME EFS esse copy deveria ser feito por quem chama o mapper
     final var res = withNoErrorResponse(copy(query));
     if (StringUtils.isBlank(ip)) {
       return res;
     }
-    final var answer = new ARecord(res.getQuestion()
-        .getName(), DClass.IN, ttl, Ips.toAddress(ip)
+    final var answer = new ARecord(
+        findQuestionName(query),
+        DClass.IN,
+        ttl,
+        Ips.toAddress(ip)
     );
     res.addRecord(answer, Section.ANSWER);
     return res;
@@ -273,6 +277,14 @@ public class Messages {
     return answer(query, ip, type, DEFAULT_TTL);
   }
 
+  public static Message answer(Message query, List<String> ips, Entry.Type type, long ttl) {
+    Message res = query;
+    for (final var ip : ips) {
+      res = answer(res, ip, type, ttl);
+    }
+    return res;
+  }
+
   public static Message answer(Message query, String ip, Entry.Type type, long ttl) {
     Validate.notNull(type, "type must not be null, query=%s", toHostnameQuery(query));
     return switch (type) {
@@ -368,9 +380,9 @@ public class Messages {
   }
 
   public static Message authoritativeAnswer(
-      Message query, String ip, Entry.Type type, long ttl
+      Message query, List<String> ips, Entry.Type type, long ttl
   ) {
-    return authoritative(answer(query, ip, type, ttl));
+    return authoritative(answer(query, ips, type, ttl));
   }
 
   public static boolean isAuthoritative(Message m) {

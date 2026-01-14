@@ -89,7 +89,7 @@ public class QueryResponseHandler {
     final var ttl = res.getTTL(this.defaultTTL);
     final var msg = Messages.authoritativeAnswer(
         query,
-        res.getIp(type),
+        res.getIps(type),
         type,
         ttl.toSeconds()
     );

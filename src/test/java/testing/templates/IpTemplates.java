@@ -17,4 +17,8 @@ public class IpTemplates {
   public static IP loopback() {
     return IP.of("127.0.0.1");
   }
+
+  public static IP localIpv6() {
+    return IP.of(LOCAL_IPV6);
+  }
 }

@@ -73,7 +73,7 @@ class SolverDockerTest {
     final var resText = res.toString();
     assertTrue(
         resText.contains(
-            entry.getIp()
+            entry.getIps()
                 .toText()
         ),
         resText
@@ -107,7 +107,7 @@ class SolverDockerTest {
     assertTrue(Responses.isRecursionAvailable(res));
     assertTrue(Responses.isAuthoritative(res));
     final var resText = res.toString();
-    assertTrue(resText.contains(entry.getIp()
+    assertTrue(resText.contains(entry.getIps()
         .toText()), resText
     );
     verify(this.containerSolvingService).findBestMatch(this.hostnameQueryCaptor.capture());
