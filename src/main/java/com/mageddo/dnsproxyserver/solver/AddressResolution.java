@@ -60,6 +60,12 @@ public class AddressResolution {
   }
 
   public static AddressResolution matched(IP ip, Duration ttl) {
+    if (ip == null) {
+      return builder()
+          .hostnameMatched(true)
+          .ttl(ttl)
+          .build();
+    }
     return builder()
         .hostnameMatched(true)
         .ip(ip)

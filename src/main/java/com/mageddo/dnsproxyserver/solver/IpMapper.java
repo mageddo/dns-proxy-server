@@ -1,10 +1,12 @@
 package com.mageddo.dnsproxyserver.solver;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.mageddo.commons.Collections;
-import com.mageddo.commons.lang.Objects;
 import com.mageddo.net.IP;
+
+import org.apache.commons.lang3.ObjectUtils;
 
 public class IpMapper {
 
@@ -20,8 +22,9 @@ public class IpMapper {
     if (version == null) {
       return IpMapper.toText(ips);
     }
-    return Objects.firstNonNull(ips, Collections.<IP>emptyList())
+    return ObjectUtils.firstNonNull(ips, Collections.<IP>emptyList())
         .stream()
+        .filter(Objects::nonNull)
         .filter(ip -> ip.versionIs(version))
         .map(IpMapper::toText)
         .toList();
