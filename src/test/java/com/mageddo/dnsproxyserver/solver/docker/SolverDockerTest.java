@@ -15,7 +15,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.xbill.DNS.Flags;
 
 import testing.templates.HostnameTemplates;
 import testing.templates.MessageTemplates;
@@ -133,10 +132,10 @@ class SolverDockerTest {
 
     // assert
     assertNotNull(res);
-    assertTrue(Responses.hasFlag(res, Flags.RA));
+    assertEquals("", Messages.detailedPrint(res.getMessage()));
+    assertTrue(Responses.isRecursionAvailable(res));
     assertTrue(Responses.isSuccess(res));
     assertEquals(Type.AAAA, Messages.findQuestionType(res.getMessage()));
-    assertEquals("", Messages.detailedPrint(res.getMessage()));
   }
 
   @Test

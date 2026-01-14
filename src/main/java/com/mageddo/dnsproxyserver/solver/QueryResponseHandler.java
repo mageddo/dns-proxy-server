@@ -57,7 +57,7 @@ public class QueryResponseHandler {
     return HostnameEvaluator.eval(
         askedHost,
         version,
-        hostnameQuery -> map(query, finder, hostnameQuery, type)
+        hostnameQuery -> this.map(query, finder, hostnameQuery, type)
     );
   }
 
