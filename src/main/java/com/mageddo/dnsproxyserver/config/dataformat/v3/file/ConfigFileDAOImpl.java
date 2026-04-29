@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.io.FileUtils;
 
+import static com.mageddo.utils.Files.createDirectories;
 import static com.mageddo.utils.Files.createParentDirectories;
 import static com.mageddo.utils.Files.deleteQuietly;
 import static com.mageddo.utils.Files.findExtension;
@@ -72,8 +73,9 @@ public class ConfigFileDAOImpl implements ConfigFileDAO {
 
   Path findFilePath() {
     final var path = this.configFilePathDAO.find();
-    if (!Files.exists(path)) {
-      createParentDirectories(path);
+    final var dir = path.getParent();
+    if (!Files.exists(dir)) {
+      createDirectories(dir);
       log.info("status=createdConfigPath, path={}", path);
     }
     return path;

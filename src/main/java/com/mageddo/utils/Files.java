@@ -83,4 +83,12 @@ public class Files {
       throw new UncheckedIOException(e);
     }
   }
+
+  public static void createDirectories(Path dir) {
+    try {
+      java.nio.file.Files.createDirectories(dir);
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
+  }
 }
