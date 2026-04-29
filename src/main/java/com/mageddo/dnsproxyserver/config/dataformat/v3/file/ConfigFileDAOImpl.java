@@ -81,7 +81,7 @@ public class ConfigFileDAOImpl implements ConfigFileDAO {
     return path;
   }
 
-  private Converter findConverter(Path path) {
+  Converter findConverter(Path path) {
     final var extension = findExtension(path);
     return this.converterFactory.find(extension);
   }
