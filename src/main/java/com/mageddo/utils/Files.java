@@ -75,4 +75,20 @@ public class Files {
   public static void deleteQuietly(Path path) {
     FileUtils.deleteQuietly(path.toFile());
   }
+
+  public static void createParentDirectories(Path path) {
+    try {
+      FileUtils.createParentDirectories(path.toFile());
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
+  }
+
+  public static void createDirectories(Path dir) {
+    try {
+      java.nio.file.Files.createDirectories(dir);
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
+  }
 }
