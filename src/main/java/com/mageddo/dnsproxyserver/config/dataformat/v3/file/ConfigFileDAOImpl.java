@@ -16,12 +16,15 @@ import com.mageddo.dnsproxyserver.config.dataformat.v3.converter.ConverterFactor
 
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.io.FileUtils;
 
 import static com.mageddo.utils.Files.createParentDirectories;
 import static com.mageddo.utils.Files.deleteQuietly;
 import static com.mageddo.utils.Files.findExtension;
 
+@Slf4j
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class ConfigFileDAOImpl implements ConfigFileDAO {
@@ -69,7 +72,10 @@ public class ConfigFileDAOImpl implements ConfigFileDAO {
 
   Path findFilePath() {
     final var path = this.configFilePathDAO.find();
-    createParentDirectories(path);
+    if (!Files.exists(path)) {
+      createParentDirectories(path);
+      log.info("status=createdConfigPath, path={}", path);
+    }
     return path;
   }
 
