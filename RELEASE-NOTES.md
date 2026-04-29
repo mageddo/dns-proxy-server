@@ -1,3 +1,6 @@
+## 5.9.1
+* Creating the config file dir when it not exists, #699.
+
 ## 5.9.0
 * Answer all docker service replicas IPs, see #434.
 
